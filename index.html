@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="UTF-8">
+    <title>KawAnime</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.indigo-deep_purple.min.css"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="app/style.css">
+    <script src="./node_modules/material-design-lite/material.min.js"></script>
+  </head>
+  <body>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+
+    <div id="container">
+      <div v-if="show" id="title">
+        <h3>{{ Title }}</h3>
+      </div>
+
+      <div id="buttons-container">
+        <div id="downloader-button">
+          <button v-bind:class="activeStyle" v-on:click="open()">{{ message }}</button>
+        </div>
+
+        <div id="get-info-button">
+          <button v-bind:class="activeStyle" v-on:click="open()">{{ message }}</button>
+        </div>
+      </div>
+
+      <div id="greetings" v-bind:title="title">
+        <h5>{{ Greetings }}</h5>
+      </div>
+
+      <div id="grid">
+
+        <div class="elem">
+
+          <p class="anime-title">{{ animeTitle }}</p>
+          <div class="card horizontal">
+            <div class="card-image">
+              <img v-bind:src="picUrl">
+            </div>
+            <div class="card-stacked">
+              <div class="card-content">
+                <p>{{ synopsis }}</p>
+              </div>
+              <div class="card-action">
+                <a href="#" class="download">Download!</a>
+                <a href="#" class="more">More</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </body>
+
+  <script>
+    // You can also require other files to run in this process
+    require('./renderer.js')
+  </script>
+</html>

@@ -1,0 +1,117 @@
+/* Style for the main window */
+
+*
+{
+    box-sizing: border-box;
+}
+
+body
+{
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    background-size: cover;
+    background-image: url('../resources/indexBack.jpg');
+    background-repeat: no-repeat;
+    overflow: hidden;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+#container
+{
+    height: 100%;
+    margin-top: 15px;
+    margin-right: 1%;
+    margin-left: 1%;
+}
+
+#title
+{
+    text-align: center;
+}
+
+#title h3
+{
+    /*font-family: "Apple Chancery", monospace;*/
+    /*font-style: oblique;*/
+}
+
+#greetings
+{
+    margin-left: 5%;
+}
+
+#buttons-container
+{
+    overflow: auto;
+    margin-bottom: 15px;
+}
+
+#downloader-button
+{
+    float: left;
+    margin-left: 20%;
+}
+
+#get-info-button
+{
+    float: right;
+    margin-right: 20%;
+}
+
+#grid
+{
+    display: inline-block;
+    margin-top: 2%;
+}
+
+.elem
+{
+    width: 24%;
+    color: #000;
+    display: inline-block;
+    margin-right: 5px;
+    margin-bottom: 3%;
+}
+
+.card .card-content p
+{
+    line-height: 120%;
+}
+
+.card .card-content
+{
+
+    padding: 10px 10px 15px 20px;
+}
+
+.card .card-action a:not(.btn):not(.btn-large):not(.btn-floating)
+{
+    margin-right: 0;
+}
+
+.card .card-action
+{
+    padding: 15px 15px 10px 10px;
+}
+
+.anime-title
+{
+    margin-left: 7%;
+    font-size: medium;
+    line-height: 15px;
+    margin-bottom: 0;
+}
+
+.download
+{
+    float: left;
+}
+
+.more
+{
+    float: right;
+    margin-right: 0;
+    font-size: small;
+}
+

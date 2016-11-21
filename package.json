@@ -1,0 +1,25 @@
+{
+  "name": "KawAnime",
+  "version": "0.0.2",
+  "description": "A Software for Otaku Community.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": "",
+  "keywords": [
+    "Torrent",
+    "KawAnime",
+    "Otaku"
+  ],
+  "author": "Kylart",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^1.4.1"
+  },
+  "dependencies": {
+    "malapi": "0.0.3",
+    "maljs": "^0.1.0",
+    "node-nyaa-api": "latest"
+  }
+}
