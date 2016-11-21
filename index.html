@@ -22,6 +22,10 @@
           <button v-bind:class="activeStyle" v-on:click="open()">{{ message }}</button>
         </div>
 
+        <div id="torrent-button">
+          <button v-bind:class="activeStyle" v-on:click="open()">{{ message }}</button>
+        </div>
+
         <div id="get-info-button">
           <button v-bind:class="activeStyle" v-on:click="open()">{{ message }}</button>
         </div>
@@ -34,7 +38,6 @@
       <div id="grid">
 
         <div class="elem">
-
           <p class="anime-title">{{ animeTitle }}</p>
           <div class="card horizontal">
             <div class="card-image">

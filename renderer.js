@@ -108,3 +108,16 @@ let infoButton = new Vue({
         activeStyle: classForButton
     }
 })
+
+let torrentButton = new Vue({
+    el: '#torrent-button',
+    methods: {
+        open: function () {
+            console.log("Torrents requested")
+        }
+    },
+    data: {
+        message: 'My torrents',
+        activeStyle: classForButton
+    }
+})

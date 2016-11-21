@@ -43,20 +43,28 @@ body
 
 #buttons-container
 {
-    overflow: auto;
+    width: 100%;
     margin-bottom: 15px;
+    display: inline-block;
+
 }
 
 #downloader-button
 {
-    float: left;
+    margin-left: 10%;
+    display: inline-block;
+}
+
+#torrent-button
+{
+    display: inline-block;
     margin-left: 20%;
 }
 
 #get-info-button
 {
-    float: right;
-    margin-right: 20%;
+    display: inline-block;
+    margin-left: 20%;
 }
 
 #grid
