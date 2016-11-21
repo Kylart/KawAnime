@@ -56,7 +56,9 @@ function makeResearchOnMal(name, index)
         latestReleases[index].synopsis = reduceString(anime.synopsis)
         makeElems(index)
     })
-    finishedLoad = true
+    bottomContainer.isVisible = true
+    loader.isVisible = false
+    greetings.show = true
 }
 
 // Get the latest releases from Nyaa.
@@ -77,6 +79,9 @@ Nyaa.get_latest(function(err, articles) {
     {
         makeResearchOnMal(latestReleases[anime], anime)
     }
+    setTimeout(function () {
+        console.log(latestReleases)
+    }, 2000)    // Shouldn't have any warning
 })
 
 function makeElems (index) {
@@ -116,7 +121,19 @@ function makeElems (index) {
     })
 }
 
+let bottomContainer = new Vue({
+    el: '#bottom-container',
+    data: {
+        isVisible: false
+    }
+})
 
+let loader = new Vue({
+    el: "#loading",
+    data: {
+        isVisible: true
+    }
+})
 
 
 let title = new Vue({
@@ -131,7 +148,7 @@ let greetings = new Vue({
     el: '#greetings',
     data: {
         Greetings: `Greetings ${os.userInfo().username} ! Here are, for you, the latest anime releases.`,
-        title: 'You may click on one of them to download it immediately.'
+        show: false
     }
 })
 

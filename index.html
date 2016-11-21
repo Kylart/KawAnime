@@ -31,12 +31,11 @@
         </div>
       </div>
 
-      <div id="bottom-container" v-if="show">
-
-        <div id="greetings" v-bind:title="title">
+        <div v-if="show" id="greetings">
           <h5>{{ Greetings }}</h5>
         </div>
 
+      <div v-if="isVisible" id="bottom-container">
         <div id="grid">
           <elem0></elem0>
           <elem1></elem1>
@@ -47,7 +46,11 @@
           <elem6></elem6>
           <elem7></elem7>
         </div>
+      </div>
 
+      <div id="loading" v-if="isVisible">
+        <h1>Gathering the information...</h1>
+        <img src="resources/tmpLoading.gif">
       </div>
 
     </div>
