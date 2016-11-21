@@ -70,32 +70,40 @@ body
 #grid
 {
     display: inline-block;
-    margin-top: 2%;
+    margin-top: 0;
 }
 
 .elem
 {
     width: 24%;
+    height: 20%;
     color: #000;
     display: inline-block;
     margin-right: 5px;
     margin-bottom: 3%;
 }
 
+.card-image
+{
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
 .card .card-content p
 {
     line-height: 120%;
+    font-size: small;
 }
 
 .card .card-content
 {
-
     padding: 10px 10px 15px 20px;
 }
 
 .card .card-action a:not(.btn):not(.btn-large):not(.btn-floating)
 {
     margin-right: 0;
+    font-size: x-small;
 }
 
 .card .card-action

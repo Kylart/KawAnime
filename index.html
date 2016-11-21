@@ -31,36 +31,29 @@
         </div>
       </div>
 
-      <div id="greetings" v-bind:title="title">
-        <h5>{{ Greetings }}</h5>
-      </div>
+      <div id="bottom-container" v-if="show">
 
-      <div id="grid">
+        <div id="greetings" v-bind:title="title">
+          <h5>{{ Greetings }}</h5>
+        </div>
 
-        <div class="elem">
-          <p class="anime-title">{{ animeTitle }}</p>
-          <div class="card horizontal">
-            <div class="card-image">
-              <img v-bind:src="picUrl">
-            </div>
-            <div class="card-stacked">
-              <div class="card-content">
-                <p>{{ synopsis }}</p>
-              </div>
-              <div class="card-action">
-                <a href="#" class="download">Download!</a>
-                <a href="#" class="more">More</a>
-              </div>
-            </div>
-          </div>
+        <div id="grid">
+          <elem0></elem0>
+          <elem1></elem1>
+          <elem2></elem2>
+          <elem3></elem3>
+          <elem4></elem4>
+          <elem5></elem5>
+          <elem6></elem6>
+          <elem7></elem7>
         </div>
 
       </div>
+
     </div>
   </body>
 
   <script>
-    // You can also require other files to run in this process
     require('./renderer.js')
   </script>
 </html>

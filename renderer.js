@@ -11,7 +11,16 @@ const os = require('os')
 const classForButton =  "mdl-button mdl-js-button mdl-button--raised mdl-button--colored " +
                         "mdl-js-ripple-effect mdl-button--accent"
 
-let latestRelease = []
+let latestReleases = []
+let finishedLoad = false
+Vue.config.silent = true
+
+function reduceString(string) {
+    if (string.length > 100)
+        return string.substring(0, 100) + ('...')
+    return string
+}
+
 
 function horribleSubsFilter(name) {
     if ('[HorribleSubs]' === name.split(' ')[0])
@@ -22,12 +31,32 @@ function horribleSubsFilter(name) {
     return false
 }
 
-function getName(string) {
-    let tmp = string.split(' ')
-    tmp.pop()
-    tmp.pop()
-    console.log(tmp.join(' '))
-    return { tmp }
+function gatherInfoFromHorrible(article)
+{
+    let title = article.title.split(' ')
+    title.shift()
+    title.pop()
+
+    return {
+        title: title.join(' '),
+        link: article.link,
+        image: '',
+        synopsis: ''
+    }
+}
+
+function makeResearchOnMal(name, index)
+{
+    let tmpName = name.title.split(' ')
+    tmpName.pop()
+    tmpName.pop()
+
+    mal.fromName(tmpName.join(' ')).then(anime => {
+        latestReleases[index].image = anime.image
+        latestReleases[index].synopsis = reduceString(anime.synopsis)
+        makeElems(index)
+    })
+    finishedLoad = true
 }
 
 // Get the latest releases from Nyaa.
@@ -38,23 +67,56 @@ Nyaa.get_latest(function(err, articles) {
     {
         if(horribleSubsFilter(articles[article].title))
         {
-            let name = articles[article].title.split(' ')
-            name.shift()
-            name.reverse().shift()
-
-            latestRelease.push({ text: name.reverse().join(' ') })
-            console.log(name.join(' '))
+            if (latestReleases.length < 8)
+            {
+                latestReleases.push(gatherInfoFromHorrible(articles[article]))
+            }
         }
     }
-    let tmp = latestRelease[0].text.split(' ')
-    tmp.pop()
-    tmp.pop()
-    console.log(tmp.join(' '))
-
-    mal.fromName(tmp.join(' ')).then(anime => {
-        console.log(anime);
-    })
+    for (let anime in latestReleases)
+    {
+        makeResearchOnMal(latestReleases[anime], anime)
+    }
 })
+
+function makeElems (index) {
+    // for (let index in latestRelease) {
+        Vue.component('elem' + index.toString(), {
+            template: `
+                <div class="elem">
+                  <p class="anime-title">{{ animeTitle }}</p>
+                  <div class="card horizontal">
+                    <div class="card-image">
+                      <img v-bind:src="picUrl" height="200">
+                    </div>
+                    <div class="card-stacked">
+                      <div class="card-content">
+                        <p>{{ synopsis }}</p>
+                      </div>
+                      <div class="card-action">
+                        <a v-bind:href="link" class="download">Download!</a>
+                        <a href="#" class="more">More</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>`,
+            data: function () {
+                return {
+                    animeTitle: latestReleases[index].title,
+                    synopsis: latestReleases[index].synopsis,
+                    picUrl: latestReleases[index].image,
+                    link: latestReleases[index].link
+                }
+            }
+        })
+    // }
+
+    new Vue({
+        el: '#grid'
+    })
+}
+
+
 
 
 let title = new Vue({
@@ -72,15 +134,6 @@ let greetings = new Vue({
         title: 'You may click on one of them to download it immediately.'
     }
 })
-
-// let latestRelease = new Vue({
-//     el: '#latest-release',
-//     data: {
-//         releases: [
-//
-//         ]
-//     }
-// })
 
 let downloadButton = new Vue({
     el: '#downloader-button',
