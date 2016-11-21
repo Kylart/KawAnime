@@ -6,10 +6,10 @@ More features are to come.
 Be sure that you have Npm installed. You can find how to install npm
 [here](https://docs.npmjs.com/cli/install).
 ```
-git clone https://github.com/Kylart/Anime-downloader
+git clone https://github.com/Kylart/KawAnime
 ```
 ```
-cd Anime-downloader/
+cd KawAnime/
 ```
 ```
 npm install && npm start
