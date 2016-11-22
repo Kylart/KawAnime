@@ -79,6 +79,23 @@ exports.openDownloader = () => {
   })
 }
 
+exports.getInfoPage = () => {
+  mainWindow.loadURL(url.format({
+    pathname: path.join(__dirname, 'app/InformationPage/index.html'),
+    protocol: 'file:',
+    slashes: true
+  }))
+}
+
+exports.getMainPage = () => {
+    mainWindow.loadURL(url.format({
+        pathname: path.join(__dirname, 'index.html'),
+        protocol: 'file:',
+        slashes: true
+    }))
+
+}
+
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.

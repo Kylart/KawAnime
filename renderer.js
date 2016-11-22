@@ -12,8 +12,7 @@ const classForButton =  "mdl-button mdl-js-button mdl-button--raised mdl-button-
                         "mdl-js-ripple-effect mdl-button--accent"
 
 let latestReleases = []
-let finishedLoad = false
-Vue.config.silent = true
+Vue.config.silent = true    // TODO : get better at VueJs to set this to false.
 
 function reduceString(string) {
     if (string.length > 100)
@@ -72,6 +71,7 @@ Nyaa.get_latest(function(err, articles) {
             if (latestReleases.length < 8)
             {
                 latestReleases.push(gatherInfoFromHorrible(articles[article]))
+                // Try to do research on Mal here
             }
         }
     }
@@ -79,13 +79,10 @@ Nyaa.get_latest(function(err, articles) {
     {
         makeResearchOnMal(latestReleases[anime], anime)
     }
-    setTimeout(function () {
-        console.log(latestReleases)
-    }, 2000)    // Shouldn't have any warning
 })
 
 function makeElems (index) {
-    // for (let index in latestRelease) {
+    // for (let index in latestReleases) {
         Vue.component('elem' + index.toString(), {
             template: `
                 <div class="elem">
@@ -120,6 +117,7 @@ function makeElems (index) {
         el: '#grid'
     })
 }
+
 
 let bottomContainer = new Vue({
     el: '#bottom-container',
@@ -171,6 +169,7 @@ let infoButton = new Vue({
     methods: {
         open : function () {
             console.log("Info requested.")
+            main.getInfoPage()
         }
     },
     data: {

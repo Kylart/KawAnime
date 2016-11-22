@@ -1,0 +1,39 @@
+body
+{
+    width: 100%;
+    height: 100%;
+    background: center center fixed;
+    background-image: url('../../resources/formBack.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+#form-container
+{
+    text-align: center;
+    margin-top: 45vh;
+    transform: translateY(-50%);
+    color: #000036;
+}
+
+#buttons-container
+{
+    display: inline;
+}
+
+#info
+{
+    margin-left: 2%;
+}
+
+#back
+{
+    margin-right: 2%;
+}
+
+.form-fade-enter-active, .form-fade-leave-active {
+    transition: opacity 3s ease;
+}
+.form-fade-enter, .form-fade-leave-active {
+    opacity: 0;
+}

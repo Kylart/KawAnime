@@ -71,6 +71,7 @@ body
 {
     display: inline-block;
     margin-top: 0;
+    margin-left: 1%;
 }
 
 .elem
@@ -117,6 +118,7 @@ body
     font-size: medium;
     line-height: 15px;
     margin-bottom: 0;
+    /*color: ;*/
 }
 
 .download
