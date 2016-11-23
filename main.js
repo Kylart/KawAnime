@@ -18,9 +18,11 @@ function createWindow () {
     height: 720,
     titleBarStyle: 'hidden',
     show: false,
-    title: 'KawAnime'
+    title: 'KawAnime',
     // maximizable: false,
-    // resizable: false
+    // resizable: false,
+    minHeight: 720,
+    minWidth: 1200
   })
 
   // and load the index.html of the app.
@@ -88,11 +90,11 @@ exports.getInfoPage = () => {
 }
 
 exports.getMainPage = () => {
-    mainWindow.loadURL(url.format({
-        pathname: path.join(__dirname, 'index.html'),
-        protocol: 'file:',
-        slashes: true
-    }))
+  mainWindow.loadURL(url.format({
+    pathname: path.join(__dirname, 'index.html'),
+    protocol: 'file:',
+    slashes: true
+  }))
 
 }
 

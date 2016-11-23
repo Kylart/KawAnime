@@ -1,10 +1,17 @@
-# Anime-downloader
-    TODO: Find a real name.
-This is a software for otakus that are tired of not batched torrent.
-More features are to come.
+# _KawAnime_
+
+Disclaimer : This is a software for otaku/anime-fans. Do not try if you're not prepared.
+
+This software allows one to: 
+* Be aware of the latest anime release.
+* Download a anime via Torrent (one would need a torrent client for the moment).
+* Get information from any anime (those come from myanimelist.net).
+* More features are to come
+
+This is a software developped with Electron framework. It is still in development. 
+
 ## Installation
-Be sure that you have Npm installed. You can find how to install npm
-[here](https://docs.npmjs.com/cli/install).
+Be sure that you have Npm installed. You can find how to install npm[here](https://docs.npmjs.com/cli/install).
 ```
 git clone https://github.com/Kylart/KawAnime
 ```
@@ -21,11 +28,22 @@ npm install && npm start
 4. Push to the branch: `git push origin my-new-feature`
 5. Submit a pull request.
 
-## History
-TODO: Write history
-
-## Credits
-TODO: Write credits
+## TODOs
+* Make a better design.
+* Make _KawAnime_ completlely responsive
+* Optimize main index page.
+* Make a torrent client inside _KawAnime_.
 
 ## License
 MIT License
+
+Copyright (c) Kylart
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+
