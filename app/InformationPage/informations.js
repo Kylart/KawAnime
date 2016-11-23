@@ -113,7 +113,7 @@ let container = new Vue({
                     </p>
                     <p class="chara-stat">
                         <span class="lang">{{ chara.language }}</span>
-                        <span class="role">{{ chara.role }}</span>
+                        <span class="role">{{ chara.role.slice(0, 7) }}</span>
                     </p>
                 </div>
             </div>
