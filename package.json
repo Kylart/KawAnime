@@ -1,16 +1,17 @@
 {
   "name": "KawAnime",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "description": "A Software for Otaku Community.",
   "main": "main.js",
   "scripts": {
     "start": "electron ."
   },
-  "repository": "",
+  "repository": "https://github.com/Kylart/KawAnime",
   "keywords": [
     "Torrent",
     "KawAnime",
-    "Otaku"
+    "Otaku",
+    "Anime"
   ],
   "author": "Kylart",
   "license": "MIT",

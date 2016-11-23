@@ -24,9 +24,9 @@ let container = new Vue({
             template: `
                     <div id="form-container">
                     <h4>{{ title }}</h4>
-                    <form action="#" @keydown.enter="gotInfo()">
+                    <form action="#">
                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                            <input v-model="animeName" class="mdl-textfield__input" type="text" id="sample3" autofocus>
+                            <input @keydown.enter="gotInfo()" v-model="animeName" class="mdl-textfield__input" type="text" id="sample3" autofocus>
                             <label class="mdl-textfield__label" for="sample3">Enter the anime name</label>
                         </div>
                     </form>
@@ -69,88 +69,88 @@ let container = new Vue({
         },
         'v-b': {
             template: `
-    <div>
-        <div id="left-container">
-            <div id="image" v-bind:style="{backgroundImage: 'url(' + image + ')'}">
-                <div id="anime-title"><span>{{ title }}</span></div>
-            </div>
-            <h6 id="jap-title">Japanese title : <span>{{ japaneseTitle }}</span></h6>
-
-            <div id="genres">
-                <h6>Genres</h6>
-                <ul>
-                    <li v-for="genre in genres">
-                        {{ genre }}
-                    </li>
-                </ul>
-            </div>
-            <div id="studio">
-                <h6>Studio</h6>
-                <ul>
-                    <li v-for="studio in studios">
-                        {{ studio }}
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-        <div id="middle-container">
-            <div id="middle-title">
-                <h3>{{ title }}</h3>
-            </div>
-            <h6>Synopsis</h6>
-            <div id="synopsis">
-                <pre>{{ synopsis }}</pre>
-            </div>
-            <h6 style="margin-bottom: 2%">Characters</h6>
-            <div id="character-grid">
-                <div class="character" v-for="chara in characters">
-                    <p class="seiyuu">
-                        <span class="chara-name">{{ chara.name }}</span>
-                    </p>
-                    <p class="chara-stat">
-                        <span>&#x2192; </span><span class="actor-name">{{ chara.actor }}</span>
-                    </p>
-                    <p class="chara-stat">
-                        <span class="lang">{{ chara.language }}</span>
-                        <span class="role">{{ chara.role.slice(0, 7) }}</span>
-                    </p>
+                <div>
+                    <div id="left-container">
+                        <div id="image" v-bind:style="{backgroundImage: 'url(' + image + ')'}">
+                            <div id="anime-title"><span>{{ title }}</span></div>
+                        </div>
+                        <h6 id="jap-title">Japanese title : <span>{{ japaneseTitle }}</span></h6>
+            
+                        <div id="genres">
+                            <h6>Genres</h6>
+                            <ul>
+                                <li v-for="genre in genres">
+                                    {{ genre }}
+                                </li>
+                            </ul>
+                        </div>
+                        <div id="studio">
+                            <h6>Studio</h6>
+                            <ul>
+                                <li v-for="studio in studios">
+                                    {{ studio }}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+            
+                    <div id="middle-container">
+                        <div id="middle-title">
+                            <h3>{{ title }}</h3>
+                        </div>
+                        <h6>Synopsis</h6>
+                        <div id="synopsis">
+                            <pre>{{ synopsis }}</pre>
+                        </div>
+                        <h6 style="margin-bottom: 2%">Characters</h6>
+                        <div id="character-grid">
+                            <div class="character" v-for="chara in characters">
+                                <p class="seiyuu">
+                                    <span class="chara-name">{{ chara.name }}</span>
+                                </p>
+                                <p class="chara-stat">
+                                    <span>&#x2192; </span><span class="actor-name">{{ chara.actor }}</span>
+                                </p>
+                                <p class="chara-stat">
+                                    <span class="lang">{{ chara.language }}</span>
+                                    <span class="role">{{ chara.role.slice(0, 7) }}</span>
+                                </p>
+                            </div>
+                        </div>
+            
+                        <div id="info-buttons-container">
+                            <button v-on:click="back()" id="info-back"
+                                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                                Home
+                            </button>
+                            <button v-on:click="getDownloader()" id="info-download"
+                                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                                Downloader
+                            </button>
+            
+                            <button v-on:click="toSearch()" id="info-to-search"
+                                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                                Search
+                            </button>
+                        </div>
+            
+                    </div>
+            
+                    <div id="right-container">
+                        <div id="mark-displayer"></div>
+                        <div id="info-displayer">
+                            <h6>{{ episodes }} episodes</h6>
+                            <h6>{{ status }}</h6>
+                            <h6>Aired on {{ aired }}</h6>
+                            <ul>
+                                <li v-for="guy in staff">
+                                    <p>{{ guy.role[0] }} : <span>{{ guy.name }}</span></p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-            </div>
-
-            <div id="info-buttons-container">
-                <button v-on:click="back()" id="info-back"
-                        class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-                    Home
-                </button>
-                <button v-on:click="getDownloader()" id="info-download"
-                        class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-                    Downloader
-                </button>
-
-                <button v-on:click="toSearch()" id="info-to-search"
-                        class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-                    Search
-                </button>
-            </div>
-
-        </div>
-
-        <div id="right-container">
-            <div id="mark-displayer"></div>
-            <div id="info-displayer">
-                <h6>{{ episodes }} episodes</h6>
-                <h6>{{ status }}</h6>
-                <h6>Aired on {{ aired }}</h6>
-                <ul>
-                    <li v-for="guy in staff">
-                        <p>{{ guy.role[0] }} : <span>{{ guy.name }}</span></p>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-`,
+            `,
             data: function () {
                 return animeData
             },
@@ -176,7 +176,6 @@ function makeResearch(name) {
     mal.fromName(name).then(anime => {
         let t0 = performance.now();
         animeData.title = anime.title
-        console.log(anime.japaneseTitle)
         animeData.japaneseTitle = anime.japaneseTitle
         animeData.image = anime.image
         animeData.synopsis = anime.synopsis
@@ -194,8 +193,8 @@ function makeResearch(name) {
     })
 }
 
-let animeData = {
-    title: 'Sakura Trick',
+let animeData = {   // Template in case no name is entered
+    title: 'Sakura Trick | The best',
     japaneseTitle: '桜Trick',
     image: 'https://myanimelist.cdn-dena.com/images/anime/2/56189.jpg',
     synopsis: 'Love is in the air when the story of Sakura Trick begins. Haruka Takayama and Yuu Sonoda were best' +
@@ -250,44 +249,42 @@ let animeData = {
 
 // This is for the mark displayer
 function setMark(mark) {
-    // let seekElem = setInterval(function () {
-        try {
-            let bar = new ProgressBar.Circle(document.getElementById('mark-displayer'), {
-                color: '#aaa',
-                // This has to be the same size as the maximum width to
-                // prevent clipping
-                strokeWidth: 4,
-                trailWidth: 1,
-                easing: 'easeInOut',
-                duration: 1400,
-                text: {
-                    autoStyleContainer: false
-                },
-                from: {color: '#aaa', width: 1},
-                to: {color: '#0af', width: 4},
-                // Set default step function for all animate calls
-                step: function (state, circle) {
-                    circle.path.setAttribute('stroke', state.color)
-                    circle.path.setAttribute('stroke-width', state.width)
+    try {
+        let bar = new ProgressBar.Circle(document.getElementById('mark-displayer'), {
+            color: '#aaa',
+            // This has to be the same size as the maximum width to
+            // prevent clipping
+            strokeWidth: 4,
+            trailWidth: 1,
+            easing: 'easeInOut',
+            duration: 1400,
+            text: {
+                autoStyleContainer: false
+            },
+            from: {color: '#aaa', width: 1},
+            to: {color: '#0af', width: 4},
+            // Set default step function for all animate calls
+            step: function (state, circle) {
+                circle.path.setAttribute('stroke', state.color)
+                circle.path.setAttribute('stroke-width', state.width)
 
-                    let value = Math.round(circle.value() * 100)
-                    if (value === 0) {
-                        circle.setText('')
-                    } else {
-                        circle.setText(value / 10)
-                    }
-
+                let value = Math.round(circle.value() * 100)
+                if (value === 0) {
+                    circle.setText('')
+                } else {
+                    circle.setText(value / 10)
                 }
-            })
-            bar.text.style.fontFamily = '"Raleway", Helvetica, sans-serif'
-            bar.text.style.color = '#3cf'
 
-            bar.animate(mark / 10);  // Number from 0.0 to 1.0
+            }
+        })
+        bar.text.style.fontFamily = '"Raleway", Helvetica, sans-serif'
+        bar.text.style.color = '#3cf'
 
-            clearInterval(seekElem)
-        }
-        catch (e) {
+        bar.animate(mark / 10);  // Number from 0.0 to 1.0
 
-        }
-    // }, 100)
+        clearInterval(seekElem)
+    }
+    catch (e) {
+
+    }
 }

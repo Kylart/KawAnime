@@ -71,7 +71,6 @@ Nyaa.get_latest(function(err, articles) {
             if (latestReleases.length < 8)
             {
                 latestReleases.push(gatherInfoFromHorrible(articles[article]))
-                // Try to do research on Mal here
             }
         }
     }
@@ -111,7 +110,6 @@ function makeElems (index) {
                 }
             }
         })
-    // }
 
     new Vue({
         el: '#grid'

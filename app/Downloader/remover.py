@@ -11,4 +11,11 @@ if __name__ == '__main__':
                 os.remove(os.path.join(root, currentFile))
 
     sleep(1.5)
-    os.system('open %s*.torrent' % sys.argv[1])
+    plat = sys.platform
+    arg = sys.argv[1]
+    if plat == 'darwin':
+        os.system('open %s*.torrent' % arg)
+    elif plat == 'win32':
+        os.system('%s*.torrent' % arg)
+    elif plat == 'linux':
+        os.system('xdg-open %s*.torrent' % arg)
