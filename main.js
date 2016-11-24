@@ -15,14 +15,10 @@ function createWindow () {
   // Create the browser window.
   mainWindow = new BrowserWindow({
     width: 1200,
-    height: 720,
+    height: 800,
     titleBarStyle: 'hidden',
     show: false,
     title: 'KawAnime',
-    // maximizable: false,
-    // resizable: false,
-    minHeight: 720,
-    minWidth: 1200
   })
 
   // and load the index.html of the app.

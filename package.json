@@ -1,5 +1,5 @@
 {
-  "name": "KawAnime",
+  "name": "kaw-anime",
   "version": "0.0.4",
   "description": "A Software for Otaku Community.",
   "main": "main.js",
@@ -19,6 +19,7 @@
     "electron": "^1.4.1"
   },
   "dependencies": {
+    "is-online": "^5.2.0",
     "malapi": "0.0.3",
     "maljs": "^0.1.0",
     "node-nyaa-api": "latest"

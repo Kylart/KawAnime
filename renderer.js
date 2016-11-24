@@ -4,15 +4,12 @@
 
 const remote = require('electron').remote
 const main = remote.require('./main.js')
-const Nyaa = require('node-nyaa-api')
+
+// Mal API
 const mal = require('malapi').Anime
-const os = require('os')
+// Nyaa API
+const Nyaa = require('node-nyaa-api')
 
-const classForButton =  "mdl-button mdl-js-button mdl-button--raised mdl-button--colored " +
-                        "mdl-js-ripple-effect mdl-button--accent"
-
-let latestReleases = []
-Vue.config.silent = true    // TODO : get better at VueJs to set this to false.
 
 function reduceString(string) {
     if (string.length > 100)
@@ -20,7 +17,7 @@ function reduceString(string) {
     return string
 }
 
-
+// I like HorribleSubs
 function horribleSubsFilter(name) {
     if ('[HorribleSubs]' === name.split(' ')[0])
     {
@@ -30,161 +27,64 @@ function horribleSubsFilter(name) {
     return false
 }
 
-function gatherInfoFromHorrible(article)
-{
-    let title = article.title.split(' ')
-    title.shift()
-    title.pop()
-
-    return {
-        title: title.join(' '),
-        link: article.link,
-        image: '',
-        synopsis: ''
-    }
+function getNameOnly(name) {
+    let tmp = name.split(' ')
+    tmp.pop()
+    tmp.shift()
+    return tmp.join(' ')
 }
 
-function makeResearchOnMal(name, index)
-{
-    let tmpName = name.title.split(' ')
-    tmpName.pop()
-    tmpName.pop()
+// Make the research for the latest animes
+Nyaa.get_latest( function (err, animes) {
+    if (err) throw err
 
-    mal.fromName(tmpName.join(' ')).then(anime => {
-        latestReleases[index].image = anime.image
-        latestReleases[index].synopsis = reduceString(anime.synopsis)
-        makeElems(index)
-    })
-    bottomContainer.isVisible = true
-    loader.isVisible = false
-    greetings.show = true
-}
-
-// Get the latest releases from Nyaa.
-Nyaa.get_latest(function(err, articles) {
-    if (err) throw err;
-
-    for (let article in articles)
+    for(let anime in animes)
     {
-        if(horribleSubsFilter(articles[article].title))
+        if (horribleSubsFilter(animes[anime].title))
         {
-            if (latestReleases.length < 8)
+            let tmp = animes[anime].title.split(' ')
+            tmp.pop()   // Remove the episode number
+            tmp.pop()   // Remove the annoying '-'
+
+            // Make the actual research
+            mal.fromName(tmp.join(' ')).then(result => {
+                releases.releases.push({
+                    title: getNameOnly(animes[anime].title),
+                    link: animes[anime].link,
+                    synopsis: reduceString(result.synopsis),
+                    picture: result.image
+                })
+            })
+        }
+    }
+})
+
+let releases = new Vue({
+    el: '#releases',
+    data: {
+        releases: []
+    },
+    watch: {
+        releases: function () {  // Whenever releases changes, this function will run
+            if (this.releases.length > 9)  // I want only the 12 latest releases
             {
-                latestReleases.push(gatherInfoFromHorrible(articles[article]))
+                let tmp = this.releases
+                tmp.pop()
+                this.releases = tmp
             }
         }
     }
-    for (let anime in latestReleases)
-    {
-        makeResearchOnMal(latestReleases[anime], anime)
-    }
 })
 
-function makeElems (index) {
-    // for (let index in latestReleases) {
-        Vue.component('elem' + index.toString(), {
-            template: `
-                <div class="elem">
-                  <p class="anime-title">{{ animeTitle }}</p>
-                  <div class="card horizontal">
-                    <div class="card-image">
-                      <img v-bind:src="picUrl" height="200">
-                    </div>
-                    <div class="card-stacked">
-                      <div class="card-content">
-                        <p>{{ synopsis }}</p>
-                      </div>
-                      <div class="card-action">
-                        <a v-bind:href="link" class="download">Download!</a>
-                        <a href="#" class="more">More</a>
-                      </div>
-                    </div>
-                  </div>
-                </div>`,
-            data: function () {
-                return {
-                    animeTitle: latestReleases[index].title,
-                    synopsis: latestReleases[index].synopsis,
-                    picUrl: latestReleases[index].image,
-                    link: latestReleases[index].link
-                }
-            }
-        })
-
-    new Vue({
-        el: '#grid'
-    })
-}
-
-
-let bottomContainer = new Vue({
-    el: '#bottom-container',
-    data: {
-        isVisible: false
-    }
-})
-
-let loader = new Vue({
-    el: "#loading",
-    data: {
-        isVisible: true
-    }
-})
-
-
-let title = new Vue({
-    el: '#title',
-    data: {
-        Title: 'KawAnime',
-        show: true
-    }
-})
-
-let greetings = new Vue({
-    el: '#greetings',
-    data: {
-        Greetings: `Greetings ${os.userInfo().username} ! Here are, for you, the latest anime releases.`,
-        show: false
-    }
-})
-
-let downloadButton = new Vue({
-    el: '#downloader-button',
+// Vue object to open the other pages
+new Vue({
+    el: '.mdl-navigation',
     methods: {
-      open: function () {
-          console.log("Downloader Window has been requested.")
-          main.openDownloader()
-      }
-    },
-    data: {
-        message: "Open Downloader!",
-        activeStyle: classForButton
-    }
-})
-
-let infoButton = new Vue({
-    el: '#get-info-button',
-    methods: {
-        open : function () {
-            console.log("Info requested.")
+        getDownloader: function () {
+            main.openDownloader()
+        },
+        getInfoPage: function () {
             main.getInfoPage()
         }
-    },
-    data: {
-        message: 'Get information!',
-        activeStyle: classForButton
-    }
-})
-
-let torrentButton = new Vue({
-    el: '#torrent-button',
-    methods: {
-        open: function () {
-            console.log("Torrents requested")
-        }
-    },
-    data: {
-        message: 'My torrents',
-        activeStyle: classForButton
     }
 })

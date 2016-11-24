@@ -1,62 +1,100 @@
 <!DOCTYPE html>
-<html xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta charset="UTF-8">
-    <title>KawAnime</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
-    <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.indigo-deep_purple.min.css"/>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="app/style.css">
-    <script defer src="https://code.getmdl.io/1.2.1/material.min.js"></script>
-  </head>
-  <body>
-    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+<html xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <title>Hello World!</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.indigo-pink.min.css">
+  <link rel="stylesheet" href="app/style.css">
+</head>
+<body>
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
 
-    <div id="container">
-      <div v-if="show" id="title">
-        <h3>{{ Title }}</h3>
-      </div>
+<div id="not-online">
+  <h1>You're not connected to the internet...</h1>
+  <h3>Please connect the Internet and restart KawAnime.</h3>
+</div>
 
-      <div id="buttons-container">
-        <div id="downloader-button">
-          <button v-bind:class="activeStyle" v-on:click="open()">{{ message }}</button>
-        </div>
-
-        <div id="torrent-button">
-          <button v-bind:class="activeStyle" v-on:click="open()">{{ message }}</button>
-        </div>
-
-        <div id="get-info-button">
-          <button v-bind:class="activeStyle" v-on:click="open()">{{ message }}</button>
-        </div>
-      </div>
-
-        <div v-if="show" id="greetings">
-          <h5>{{ Greetings }}</h5>
-        </div>
-
-      <div v-if="isVisible" id="bottom-container">
-        <div id="grid">
-          <elem0></elem0>
-          <elem1></elem1>
-          <elem2></elem2>
-          <elem3></elem3>
-          <elem4></elem4>
-          <elem5></elem5>
-          <elem6></elem6>
-          <elem7></elem7>
+<div id="container">
+  <div class="left-background"></div>
+  <div class="mdl-layout mdl-js-layout mdl-layout--fixed-drawer
+            mdl-layout--fixed-header">
+    <header class="mdl-layout__header">
+      <div class="mdl-layout__header-row">
+        <div class="mdl-layout-spacer"></div>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable
+                  mdl-textfield--floating-label mdl-textfield--align-right">
+          <label class="mdl-button mdl-js-button mdl-button--icon"
+                 for="fixed-header-drawer-exp">
+            <i class="material-icons">search</i>
+          </label>
+          <div class="mdl-textfield__expandable-holder">
+            <input class="mdl-textfield__input" type="text" name="sample"
+                   id="fixed-header-drawer-exp">
+          </div>
         </div>
       </div>
-
-      <div id="loading" v-if="isVisible">
-        <h1>Gathering the information...</h1>
-        <img src="resources/tmpLoading.gif">
-      </div>
-
+    </header>
+    <div class="mdl-layout__drawer">
+      <span class="mdl-layout-title">KawAnime</span>
+      <nav class="mdl-navigation">
+        <a class="mdl-navigation__link" href="#" v-on:click="getDownloader()">Download an anime</a>
+        <a class="mdl-navigation__link" href="#" v-on:click="getInfoPage()">Get information</a>
+        <a class="mdl-navigation__link" href="#">My Torrents</a>
+        <a class="mdl-navigation__link" href="#">My Library</a>
+      </nav>
     </div>
-  </body>
+    <main class="mdl-layout__content">
+      <div class="page-content">
+        <div id="releases" class="mdl-grid" >
+          <template v-for="release in releases">
+            <div class="mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet">
+              <div class="elem">
+                <h6>{{ release.title }}</h6>
+                <div class="picture"><!--v-bind:style="{ content: 'url(' + release.picture + ')' }" -->
+                  <img v-bind:src="release.picture" height="180">
+                </div>
+                <div class="text-container">
+                  <div class="synopsis">
+                    <p>{{ release.synopsis }}</p>
+                  </div>
+                </div>
+                <div class="links">
+                  <!-- Flat button with ripple -->
+                  <button class="link-download mdl-button mdl-js-button mdl-js-ripple-effect">
+                    <a :href="release.link">download!</a>
+                  </button>
+                  <!-- Flat button with ripple -->
+                  <button class="link-more mdl-button mdl-js-button mdl-js-ripple-effect">
+                    More
+                  </button>
+                </div>
+              </div>
+            </div>
+          </template>
+        </div>
+      </div>
+    </main>
+  </div>`
+</div>
 
-  <script>
-    require('./renderer.js')
-  </script>
+<script>
+    const isOnline = require('is-online')
+
+    isOnline(function(err, online) {
+        if (err) throw err
+
+        if(online)
+        {
+            require('./renderer.js')
+        }
+        else
+        {
+            document.getElementById('not-online').style.display = 'block'
+            document.getElementById('container').style.display = 'none'
+        }
+    })
+</script>
+<script defer src="https://code.getmdl.io/1.2.1/material.min.js"></script>
+</body>
 </html>

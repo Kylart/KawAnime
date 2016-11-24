@@ -1,148 +1,114 @@
-/* Style for the main window */
-
-*
-{
-    box-sizing: border-box;
-}
-
 body
 {
     width: 100%;
     height: 100%;
     margin: 0;
-    background-size: cover;
-    background-image: url('../resources/indexBack.jpg');
-    background-repeat: no-repeat;
-    overflow: hidden;
-    color: rgba(255, 255, 255, 0.8);
 }
 
-#container
+/* If the user has no internet connection */
+#not-online
 {
-    height: 100%;
-    margin-top: 15px;
-    margin-right: 1%;
-    margin-left: 1%;
-}
-
-#title
-{
+    display: none;
     text-align: center;
 }
 
-#title h3
+#not-online h1
 {
-    /*font-family: "Apple Chancery", monospace;*/
-    /*font-style: oblique;*/
+    margin-top: 30%;
 }
 
-#greetings
-{
-    margin-left: 5%;
-}
+/* --------------------------------------- */
 
-#buttons-container
+#container
 {
     width: 100%;
-    margin-bottom: 15px;
-    display: inline-block;
-
+    height: 100%;
+    margin: 0;
 }
 
-#downloader-button
+.mdl-layout__drawer
 {
-    margin-left: 10%;
-    display: inline-block;
+    background-image: url('../resources/leftBackground.png');
+    background-position: left bottom;
+    background-repeat: no-repeat;
+    background-size: 100%;
 }
 
-#torrent-button
+.page-content
 {
-    display: inline-block;
-    margin-left: 20%;
-}
-
-#get-info-button
-{
-    display: inline-block;
-    margin-left: 20%;
-}
-
-#grid
-{
-    display: inline;
-    margin-top: 0;
-    margin-left: 1%;
+    background-image: url('../resources/indexBack.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 
 .elem
 {
-    width: 24%;
-    height: 20%;
-    color: #000;
-    display: inline-block;
-    margin-right: 5px;
-    margin-bottom: 2%;
+    position: relative;
+    margin: 0;
+    overflow: hidden;
+    background-color: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
 }
 
-.card-image
+.elem h6
 {
-    background-size: cover;
-    background-repeat: no-repeat;
+    margin: 2% 1.5% 2% 3.5%;
+    white-space: nowrap;
 }
 
-.card .card-content p
+.picture
 {
-    line-height: 120%;
-    font-size: small;
-}
-
-.card .card-content
-{
-    padding: 10px 10px 15px 20px;
-}
-
-.card .card-action a:not(.btn):not(.btn-large):not(.btn-floating)
-{
-    margin-right: 0;
-    font-size: x-small;
-}
-
-.card .card-action
-{
-    padding: 15px 15px 10px 10px;
-}
-
-.anime-title
-{
-    margin-left: 7%;
-    font-size: medium;
-    line-height: 15px;
-    margin-bottom: 0;
-}
-
-.download
-{
+    width: 40%;
     float: left;
 }
 
-.more
+.text-container
 {
-    float: right;
-    margin-right: 0;
+    height: 100%;
+    width: 60%;
+    margin-left: 45%;
+    position: relative;
+}
+
+.synopsis
+{
+    height: 80%;
+    padding: 15px 15px 15px 15px;
+    color: rgba(0, 0, 0, 0.74);
+    word-wrap: break-word;
     font-size: small;
 }
 
-#loading
+.synopsis p
 {
-    margin-left: 30%;
+    line-height: 130%;
+}
+
+.links
+{
+    border-top: solid 1px rgba(0, 0, 0, 0.07);
+    height: 18%;
+    padding: 5px 5px 5px 5px;
+    overflow: hidden;
     position: absolute;
     bottom: 0;
+    right: 0;
 }
 
-#loading h1
+.links a
 {
-    color: rgba(182, 15, 255, 0.78);
-    margin-left: -10%;
-    text-align: center;
+    text-decoration: none;
+    color: rgba(0, 0, 0, 0.74);
 }
 
+.link-download
+{
+    float: left;
+    font-size: x-small;
+}
+
+.link-more
+{
+    float: right;
+    font-size: x-small;
+}
