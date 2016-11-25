@@ -4,14 +4,14 @@ Disclaimer : This is a software for otaku/anime-fans. Do not try if you're not p
 
 This software allows one to: 
 * Be aware of the latest anime release.
-* Download a anime via Torrent (one would need a torrent client for the moment).
+* Download an anime via Torrent (one would need a torrent client for the moment).
 * Get information from any anime (those come from myanimelist.net).
 * More features are to come
 
 This is a software developped with Electron framework. It is still in development. 
 
 ## Installation
-Be sure that you have Npm installed. You can find how to install npm[here](https://docs.npmjs.com/cli/install).
+Be sure that you have Npm installed. You can find how to install npm (node) [here](https://nodejs.org/en/).
 ```
 git clone https://github.com/Kylart/KawAnime
 ```
