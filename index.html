@@ -6,6 +6,8 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.indigo-pink.min.css">
   <link rel="stylesheet" href="app/style.css">
+  <link href="https://unpkg.com/animate.css@3.5.1/animate.min.css" rel="stylesheet" type="text/css">
+
 </head>
 <body>
 <script src="https://unpkg.com/vue/dist/vue.js"></script>
@@ -42,40 +44,39 @@
       <nav class="mdl-navigation">
         <a class="mdl-navigation__link" href="#" v-on:click="getDownloader()">Download an anime</a>
         <a class="mdl-navigation__link" href="#" v-on:click="getInfoPage()">Get information</a>
-        <a class="mdl-navigation__link" href="#">My Torrents</a>
-        <a class="mdl-navigation__link" href="#">My Library</a>
+        <a class="mdl-navigation__link" href="#">Watch List</a>
       </nav>
     </div>
     <main class="mdl-layout__content">
-      <div class="page-content">
-        <div id="releases" class="mdl-grid" >
-          <template v-for="release in releases">
-            <div class="mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet">
-              <div class="elem">
-                <h6>{{ release.title }}</h6>
-                <div class="picture">
-                  <img v-bind:src="release.picture" height="180">
-                </div>
-                <div class="text-container">
-                  <div class="synopsis">
-                    <p>{{ release.synopsis }}</p>
+        <div class="page-content">
+          <div id="releases" class="mdl-grid" >
+            <template v-for="release in releases">
+              <div class="mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet">
+                <div class="elem">
+                  <h6>{{ release.title }}</h6>
+                  <div class="picture">
+                    <img v-bind:src="release.picture" height="180">
+                  </div>
+                  <div class="text-container">
+                    <div class="synopsis">
+                      <p>{{ release.synopsis }}</p>
+                    </div>
+                  </div>
+                  <div class="links">
+                    <!-- Flat button with ripple -->
+                    <button class="link-download mdl-button mdl-js-button mdl-js-ripple-effect">
+                      <a :href="release.link">download!</a>
+                    </button>
+                    <!-- Flat button with ripple -->
+                    <button class="link-more mdl-button mdl-js-button mdl-js-ripple-effect">
+                      <a href="#">more</a>
+                    </button>
                   </div>
                 </div>
-                <div class="links">
-                  <!-- Flat button with ripple -->
-                  <button class="link-download mdl-button mdl-js-button mdl-js-ripple-effect">
-                    <a :href="release.link">download!</a>
-                  </button>
-                  <!-- Flat button with ripple -->
-                  <button class="link-more mdl-button mdl-js-button mdl-js-ripple-effect">
-                    <a href="#">more</a>
-                  </button>
-                </div>
               </div>
-            </div>
-          </template>
+            </template>
+          </div>
         </div>
-      </div>
     </main>
   </div>`
 </div>

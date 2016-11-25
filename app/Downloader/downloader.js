@@ -3,6 +3,7 @@
  */
 const request = require('request');
 const fs = require('fs')
+const path = require('path')
 const PythonShell = require('python-shell')
 const Nyaa = require('node-nyaa-api')
 
@@ -60,9 +61,9 @@ function execPython(file)
 {
     let options = {
         mode: 'text',
-        pythonPath: '/usr/local/bin/python3',  //TODO: get python path automatically
+        pythonPath: '/usr/bin/python',  //TODO: get python path automatically
         scriptPath: __dirname,
-        args: [`${__dirname}/../../resources/tmp/`]
+        args: [path.join(__dirname, '..', '..', 'resources', 'tmp/')]
     };
 
     PythonShell.run(`${file}.py`, options, function (err, results) {

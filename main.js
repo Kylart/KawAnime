@@ -19,6 +19,7 @@ function createWindow () {
     titleBarStyle: 'hidden',
     show: false,
     title: 'KawAnime',
+    vibrancy: 'dark',
   })
 
   // and load the index.html of the app.
@@ -33,7 +34,7 @@ function createWindow () {
   })
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools()
+  // mainWindow.webContents.openDevTools()
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {
