@@ -56,7 +56,9 @@
     </div>
 
     <script>
-        require('./downloader.js')
+        const path = require('path')
+
+        require(path.join(__dirname, 'downloader.js'))
     </script>
 </body>
 </html>

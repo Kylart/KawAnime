@@ -18,6 +18,11 @@
         </transition>
     </div>
 
-    <script>require(`${__dirname}/informations.js`)</script>
+    <script>
+        const path = require('path')
+
+        require(path.join(__dirname, 'informations.js'))
+//        require(`${__dirname}/informations.js`)
+    </script>
 </body>
 </html>
