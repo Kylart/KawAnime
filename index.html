@@ -2,7 +2,7 @@
 <html xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="UTF-8">
-  <title>Hello World!</title>
+  <title>KawAnime</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.indigo-pink.min.css">
   <link rel="stylesheet" href="app/style.css">
@@ -21,7 +21,9 @@
             mdl-layout--fixed-header">
     <header class="mdl-layout__header">
       <div class="mdl-layout__header-row">
-        <div class="mdl-layout-spacer"></div>
+        <div
+                class="mdl-layout-spacer"><h4 class="greetings">Welcome {{ username }} ! Here are some of the
+          latest anime episodes.</h4></div>
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable
                   mdl-textfield--floating-label mdl-textfield--align-right">
           <label class="mdl-button mdl-js-button mdl-button--icon"
@@ -51,7 +53,7 @@
             <div class="mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet">
               <div class="elem">
                 <h6>{{ release.title }}</h6>
-                <div class="picture"><!--v-bind:style="{ content: 'url(' + release.picture + ')' }" -->
+                <div class="picture">
                   <img v-bind:src="release.picture" height="180">
                 </div>
                 <div class="text-container">
@@ -66,7 +68,7 @@
                   </button>
                   <!-- Flat button with ripple -->
                   <button class="link-more mdl-button mdl-js-button mdl-js-ripple-effect">
-                    More
+                    <a href="#">more</a>
                   </button>
                 </div>
               </div>

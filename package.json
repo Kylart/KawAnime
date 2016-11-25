@@ -21,7 +21,7 @@
   "dependencies": {
     "is-online": "^5.2.0",
     "malapi": "0.0.3",
-    "maljs": "^0.1.0",
-    "node-nyaa-api": "latest"
+    "node-nyaa-api": "latest",
+    "progressbar.js": "^1.0.1"
   }
 }

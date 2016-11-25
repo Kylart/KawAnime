@@ -64,7 +64,7 @@ exports.openDownloader = () => {
   })
 
   downloaderWindow.loadURL(url.format({
-    pathname: path.join(__dirname, 'app/Downloader/index.html'),
+    pathname: path.join(__dirname, 'app', 'Downloader', 'index.html'),
     protocol: 'file:',
     slashes: true
   }))
@@ -79,7 +79,7 @@ exports.openDownloader = () => {
 
 exports.getInfoPage = () => {
   mainWindow.loadURL(url.format({
-    pathname: path.join(__dirname, 'app/InformationPage/index.html'),
+    pathname: path.join(__dirname, 'app', 'InformationPage', 'index.html'),
     protocol: 'file:',
     slashes: true
   }))

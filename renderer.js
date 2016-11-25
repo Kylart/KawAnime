@@ -4,6 +4,7 @@
 
 const remote = require('electron').remote
 const main = remote.require('./main.js')
+const os = require('os')
 
 // Mal API
 const mal = require('malapi').Anime
@@ -66,12 +67,7 @@ let releases = new Vue({
     },
     watch: {
         releases: function () {  // Whenever releases changes, this function will run
-            if (this.releases.length > 9)  // I want only the 12 latest releases
-            {
-                let tmp = this.releases
-                tmp.pop()
-                this.releases = tmp
-            }
+            // Code
         }
     }
 })
@@ -86,5 +82,13 @@ new Vue({
         getInfoPage: function () {
             main.getInfoPage()
         }
+    }
+})
+
+// For the greeting's message
+new Vue({
+    el: '.greetings',
+    data: {
+        username: os.userInfo().username
     }
 })
