@@ -4,7 +4,14 @@
 
 const remote = require('electron').remote
 const main = remote.require('./main.js')
+const fs = require('fs')
 const os = require('os')
+
+// Those are needed to download the torrents
+const path = require('path')
+const request = require('request')
+const exec = require('child_process').exec
+const findRemoveSync = require('find-remove')
 
 // Mal API
 const mal = require('malapi').Anime
@@ -50,6 +57,7 @@ Nyaa.get_latest( function (err, animes) {
             // Make the actual research
             mal.fromName(tmp.join(' ')).then(result => {
                 releases.releases.push({
+                    realTitle: animes[anime].title,
                     title: getNameOnly(animes[anime].title),
                     link: animes[anime].link,
                     synopsis: reduceString(result.synopsis),
@@ -68,6 +76,11 @@ let releases = new Vue({
     watch: {
         releases: function () {  // Whenever releases changes, this function will run
             // Code
+        }
+    },
+    methods: {
+        download: function (url, name) {
+            startTorrent(url, name)
         }
     }
 })
@@ -92,3 +105,50 @@ new Vue({
         username: os.userInfo().username
     }
 })
+
+function downloadFile (file_url, name){
+    let req = request({
+        method: 'GET',
+        uri: file_url
+    });
+
+    let out = fs.createWriteStream(path.join(__dirname, 'resources', 'tmp', `${name}.torrent`));
+    req.pipe(out);
+}
+
+function startTorrent (file_url, name) {
+    const torrents = path.join(__dirname, 'resources', 'tmp', `*.torrent`)
+    let openCmd
+
+    // Remove all torrent files in tmp directory
+    // fs.unlink(path.join(__dirname, 'resources', 'tmp', '*.torrent'), () => {
+    //     console.log('No more torrent files in tmp directory.')
+    //     downloadFile(file_url, name)
+    // })
+
+    findRemoveSync(path.join(__dirname, 'resources', 'tmp'), {extensions: ['.torrent']})
+
+    downloadFile(file_url, name)
+
+    switch (process.platform)
+    {
+        case 'darwin':
+            openCmd = 'open '
+            break
+        case 'linux':
+            openCmd = 'xdg-open '
+            break
+        case 'win32':
+            openCmd = ''
+    }
+
+    exec(openCmd + torrents, (error, stdout, stderr) => {
+        if (error)
+        {
+            console.error(`exec error: ${error}`);
+            return;
+        }
+        console.log(`stdout: ${stdout}`);
+        console.log(`stderr: ${stderr}`);
+    })
+}

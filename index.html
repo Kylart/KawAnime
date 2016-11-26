@@ -64,8 +64,9 @@
                   </div>
                   <div class="links">
                     <!-- Flat button with ripple -->
-                    <button class="link-download mdl-button mdl-js-button mdl-js-ripple-effect">
-                      <a :href="release.link">download!</a>
+                    <button @click="download(release.link, release.realTitle)"
+                            class="link-download mdl-button mdl-js-button mdl-js-ripple-effect">
+                      <a> <!-- :href="release.link" -->download!</a>
                     </button>
                     <!-- Flat button with ripple -->
                     <button class="link-more mdl-button mdl-js-button mdl-js-ripple-effect">

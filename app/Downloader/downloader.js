@@ -1,11 +1,12 @@
 /**
  * Created by Kylart on 20/11/16.
  */
-const request = require('request');
+const request = require('request')
 const fs = require('fs')
 const path = require('path')
-const exec = require('child_process').exec;
+const exec = require('child_process').exec
 const Nyaa = require('node-nyaa-api')
+const findRemoveSync = require('find-remove')
 
 let animes = []
 
@@ -59,7 +60,7 @@ let untilEp = new Vue({
 
 // Inspired by
 // http://ourcodeworld.com/articles/read/228/how-to-download-a-webfile-with-electron-save-it-and-show-download-progress
-function downloadFile(file_url , targetPath){
+function downloadFile (file_url , targetPath){
     let req = request({
         method: 'GET',
         uri: file_url
@@ -104,9 +105,7 @@ let downloadButton = new Vue({
     methods: {
         download: function () {
             // Remove all torrent files in tmp directory
-            fs.unlink(path.join(__dirname, '..', '..', 'resources', 'tmp', '*.torrent'), () => {
-                console.log('No more torrent files in tmp directory.')
-            })
+            findRemoveSync(path.join(__dirname, '..', '..', 'resources', 'tmp'), {extensions: ['.torrent']})
 
 
             console.log(`Retrieving ${name.anime} from ${fromEp.ep} to ${untilEp.ep}...`)
