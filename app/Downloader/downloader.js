@@ -4,7 +4,7 @@
 const request = require('request');
 const fs = require('fs')
 const path = require('path')
-const PythonShell = require('python-shell')
+const exec = require('child_process').exec;
 const Nyaa = require('node-nyaa-api')
 
 let animes = []
@@ -57,22 +57,6 @@ let untilEp = new Vue({
     }
 })
 
-function execPython(file)
-{
-    let options = {
-        mode: 'text',
-        pythonPath: '/usr/bin/python',  //TODO: get python path automatically
-        scriptPath: __dirname,
-        args: [path.join(__dirname, '..', '..', 'resources', 'tmp/')]
-    };
-
-    PythonShell.run(`${file}.py`, options, function (err, results) {
-        if (err) throw err
-        // results is an array consisting of messages collected during execution
-        console.log('Python says: ', results)
-    });
-}
-
 // Inspired by
 // http://ourcodeworld.com/articles/read/228/how-to-download-a-webfile-with-electron-save-it-and-show-download-progress
 function downloadFile(file_url , targetPath){
@@ -85,6 +69,33 @@ function downloadFile(file_url , targetPath){
     req.pipe(out);
 }
 
+function startTorrent () {
+    const torrents = path.join(__dirname, '..', '..', 'resources', 'tmp', '*.torrent')
+    let openCmd
+
+    switch (process.platform)
+    {
+        case 'darwin':
+            openCmd = 'open '
+            break
+        case 'linux':
+            openCmd = 'xdg-open '
+            break
+        case 'win32':
+            openCmd = ''
+    }
+
+    exec(openCmd + torrents, (error, stdout, stderr) => {
+        if (error)
+        {
+            console.error(`exec error: ${error}`);
+            return;
+        }
+        console.log(`stdout: ${stdout}`);
+        console.log(`stderr: ${stderr}`);
+    })
+}
+
 let downloadButton = new Vue({
     el: '#button-container',
     data: {
@@ -92,7 +103,12 @@ let downloadButton = new Vue({
     },
     methods: {
         download: function () {
-            execPython('remover')
+            // Remove all torrent files in tmp directory
+            fs.unlink(path.join(__dirname, '..', '..', 'resources', 'tmp', '*.torrent'), () => {
+                console.log('No more torrent files in tmp directory.')
+            })
+
+
             console.log(`Retrieving ${name.anime} from ${fromEp.ep} to ${untilEp.ep}...`)
 
             // Get the right torrents
@@ -112,9 +128,11 @@ let downloadButton = new Vue({
 
                     if (epNumber >= fromEp.ep && epNumber <= untilEp.ep) {
                         console.log(name + "\n" + url)
-                        downloadFile(url, `${__dirname}/../../resources/tmp/${name}.torrent`);
+                        downloadFile(url, path.join(__dirname, '..', '..', 'resources', 'tmp', `${name}.torrent`))
                     }
                 }
+
+                startTorrent()
             })
         }
     }

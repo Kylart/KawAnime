@@ -22,7 +22,6 @@
     "is-online": "^5.2.0",
     "malapi": "0.0.3",
     "node-nyaa-api": "latest",
-    "progressbar.js": "^1.0.1",
-    "python-shell": "^0.4.0"
+    "progressbar.js": "^1.0.1"
   }
 }
