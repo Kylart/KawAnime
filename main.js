@@ -19,7 +19,6 @@ function createWindow () {
     titleBarStyle: 'hidden',
     show: false,
     title: 'KawAnime',
-    vibrancy: 'dark',
   })
 
   // and load the index.html of the app.

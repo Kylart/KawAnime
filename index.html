@@ -49,7 +49,7 @@
     </div>
     <main class="mdl-layout__content">
         <div class="page-content">
-          <div id="releases" class="mdl-grid" >
+          <div id="releases" class="mdl-grid" v-if="show">
             <template v-for="release in releases">
               <div class="mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet">
                 <div class="elem">
@@ -76,6 +76,12 @@
                 </div>
               </div>
             </template>
+          </div>
+          <div id="loader-container" v-if="show">
+            <div class="loading-text">
+              <h3>少々お待ち下さい。</h3>
+            </div>
+            <div class="loader-gif" v-bind:style="{ content: 'url(' + gif + ')' }"></div>
           </div>
         </div>
     </main>

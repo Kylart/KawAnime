@@ -126,7 +126,6 @@ let downloadButton = new Vue({
                     let epNumber = parseInt(name.split(' ').reverse()[1])
 
                     if (epNumber >= fromEp.ep && epNumber <= untilEp.ep) {
-                        console.log(name + "\n" + url)
                         downloadFile(url, path.join(__dirname, '..', '..', 'resources', 'tmp', `${name}.torrent`))
                     }
                 }

@@ -66,12 +66,18 @@ Nyaa.get_latest( function (err, animes) {
             })
         }
     }
+    setTimeout( () => {
+        loader.show = false
+        releases.show = true
+    }, 3000)
+
 })
 
 let releases = new Vue({
     el: '#releases',
     data: {
-        releases: []
+        releases: [],
+        show: false
     },
     watch: {
         releases: function () {  // Whenever releases changes, this function will run
@@ -81,6 +87,20 @@ let releases = new Vue({
     methods: {
         download: function (url, name) {
             startTorrent(url, name)
+        }
+    }
+})
+
+let loader = new Vue({
+    el: '#loader-container',
+    data: {
+        show: true,
+        gif: path.join(__dirname, 'resources', 'totoro-hoola-hoop.gif')
+    },
+    methods: {
+        test: function () {
+            this.show = false
+            releases.show = true
         }
     }
 })
@@ -110,21 +130,15 @@ function downloadFile (file_url, name){
     let req = request({
         method: 'GET',
         uri: file_url
-    });
+    })
 
-    let out = fs.createWriteStream(path.join(__dirname, 'resources', 'tmp', `${name}.torrent`));
-    req.pipe(out);
+    let out = fs.createWriteStream(path.join(__dirname, 'resources', 'tmp', `${name}.torrent`))
+    req.pipe(out)
 }
 
 function startTorrent (file_url, name) {
     const torrents = path.join(__dirname, 'resources', 'tmp', `*.torrent`)
     let openCmd
-
-    // Remove all torrent files in tmp directory
-    // fs.unlink(path.join(__dirname, 'resources', 'tmp', '*.torrent'), () => {
-    //     console.log('No more torrent files in tmp directory.')
-    //     downloadFile(file_url, name)
-    // })
 
     findRemoveSync(path.join(__dirname, 'resources', 'tmp'), {extensions: ['.torrent']})
 
@@ -145,10 +159,10 @@ function startTorrent (file_url, name) {
     exec(openCmd + torrents, (error, stdout, stderr) => {
         if (error)
         {
-            console.error(`exec error: ${error}`);
-            return;
+            console.error(`exec error: ${error}`)
+            return
         }
-        console.log(`stdout: ${stdout}`);
-        console.log(`stderr: ${stderr}`);
+        console.log(`stdout: ${stdout}`)
+        console.log(`stderr: ${stderr}`)
     })
 }

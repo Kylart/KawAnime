@@ -33,7 +33,7 @@ body
     background-size: 100%;
 }
 
-.page-content
+#releases
 {
     background-image: url('../resources/indexBack.jpg');
     background-size: cover;
@@ -110,4 +110,27 @@ body
 {
     float: right;
     font-size: x-small;
+}
+
+/* --------------- LOADER ---------------- */
+#loader-container
+{
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+
+#loader-container h3
+{
+    margin-top: 12%;
+    font-family: "YuMincho +36p Kana", sans-serif;
+}
+
+.loader-gif
+{
+    position: absolute;
+    bottom: 0;
+    /*content: url('../resources/totoro-hoola-hoop.gif');*/
+    margin-left: 20%;
+    margin-right: 20%;
 }
