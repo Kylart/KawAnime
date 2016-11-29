@@ -2,6 +2,8 @@
 // be executed in the renderer process for that window.
 // All of the Node.js APIs are available in this process.
 
+/* ------------------ IMPORTS ------------------ */
+
 const remote = require('electron').remote
 const main = remote.require('./main.js')
 const fs = require('fs')
@@ -18,6 +20,9 @@ const mal = require('malapi').Anime
 // Nyaa API
 const Nyaa = require('node-nyaa-api')
 
+/* ----------------- END IMPORTS ----------------- */
+
+/* -----------------  FUNCTIONS  ----------------- */
 
 function reduceString(string) {
     if (string.length > 100)
@@ -42,89 +47,49 @@ function getNameOnly(name) {
     return tmp.join(' ')
 }
 
+function getNameForResearch(name) {
+    let tmp = getNameOnly(name).split(' ')
+    tmp.pop()   // Episode number
+
+    return tmp.join(' ')
+}
+
 // Make the research for the latest animes
-Nyaa.get_latest( function (err, animes) {
-    if (err) throw err
+function getLatest () {
+    Nyaa.get_latest( function (err, animes) {
+        // Initialize
+        releases.releases = []
+        releases.show = false
+        loader.show = true
+        if (err) throw err
 
-    for(let anime in animes)
-    {
-        if (horribleSubsFilter(animes[anime].title))
+        for(let anime in animes)
         {
-            let tmp = animes[anime].title.split(' ')
-            tmp.pop()   // Remove the episode number
-            tmp.pop()   // Remove the annoying '-'
+            if (horribleSubsFilter(animes[anime].title))
+            {
+                let tmp = animes[anime].title.split(' ')
+                tmp.pop()   // Remove the extension
+                tmp.pop()   // Remove the episode number
+                tmp.shift()
 
-            // Make the actual research
-            mal.fromName(tmp.join(' ')).then(result => {
-                releases.releases.push({
-                    realTitle: animes[anime].title,
-                    title: getNameOnly(animes[anime].title),
-                    link: animes[anime].link,
-                    synopsis: reduceString(result.synopsis),
-                    picture: result.image
+                // Make the actual research
+                mal.fromName(tmp.join(' ')).then(result => {
+                    releases.releases.push({
+                        realTitle: animes[anime].title,
+                        title: getNameOnly(animes[anime].title),
+                        link: animes[anime].link,
+                        synopsis: reduceString(result.synopsis),
+                        picture: result.image
+                    })
                 })
-            })
+            }
         }
-    }
-    setTimeout( () => {
-        loader.show = false
-        releases.show = true
-    }, 3000)
-
-})
-
-let releases = new Vue({
-    el: '#releases',
-    data: {
-        releases: [],
-        show: false
-    },
-    watch: {
-        releases: function () {  // Whenever releases changes, this function will run
-            // Code
-        }
-    },
-    methods: {
-        download: function (url, name) {
-            startTorrent(url, name)
-        }
-    }
-})
-
-let loader = new Vue({
-    el: '#loader-container',
-    data: {
-        show: true,
-        gif: path.join(__dirname, 'resources', 'totoro-hoola-hoop.gif')
-    },
-    methods: {
-        test: function () {
-            this.show = false
+        setTimeout( () => {
+            loader.show = false
             releases.show = true
-        }
-    }
-})
-
-// Vue object to open the other pages
-new Vue({
-    el: '.mdl-navigation',
-    methods: {
-        getDownloader: function () {
-            main.openDownloader()
-        },
-        getInfoPage: function () {
-            main.getInfoPage()
-        }
-    }
-})
-
-// For the greeting's message
-new Vue({
-    el: '.greetings',
-    data: {
-        username: os.userInfo().username
-    }
-})
+        }, 3000)
+    })
+}
 
 function downloadFile (file_url, name){
     let req = request({
@@ -166,3 +131,129 @@ function startTorrent (file_url, name) {
         console.log(`stderr: ${stderr}`)
     })
 }
+
+function makeResearchOnMal (name) {
+
+    mal.fromName(name).then(anime => {
+        info.infos.title = anime.title
+        info.infos.japTitle = anime.japaneseTitle
+        info.infos.image = anime.image
+        info.infos.synopsis = anime.synopsis
+        info.infos.episodes = anime.episoes
+        info.infos.studios = anime.studios
+        info.infos.stats = anime.statistics
+        info.infos.genres = anime.genres
+        info.infos.type = anime.type.split(' ').slice(0, 3).join(' ')
+        info.infos.characters = anime.characters
+        info.infos.staff = anime.staff
+
+        releases.show = false
+        loader.show = false
+        info.display = 'block'
+        info.show = true
+    })
+}
+
+/* -------------------- END FUNCTIONS ----------------- */
+
+// First research at kawAnime's start
+getLatest()
+
+/* ------------------- VUE.JS OBJECTS ----------------- */
+
+
+let releases = new Vue({
+    el: '#releases',
+    data: {
+        releases: [],
+        show: false
+    },
+    watch: {
+        releases: function () {  // Whenever releases changes, this function will run
+            // Code
+        }
+    },
+    methods: {
+        download: function (url, name) {
+            startTorrent(url, name)
+        },
+        refresh: function () {
+            getLatest()
+        },
+        searchThis: function (arg) {
+            info.infos = {}
+            this.show = false
+            loader.show = true
+            makeResearchOnMal(getNameForResearch(arg))
+        }
+    }
+})
+
+let loader = new Vue({
+    el: '#loader-container',
+    data: {
+        show: true
+    },
+    methods: {
+        test: function () {
+            this.show = false
+            releases.show = true
+        }
+    }
+})
+
+let info = new Vue({
+    el: '#info-container',
+    data: {
+        infos: {
+            stats: {
+                score: {value: ''},
+                ranking: ''
+            }
+        },
+        display: 'none',
+        show: false
+    },
+    methods: {
+        downlaodThis: function () {
+
+        },
+        show: function () {
+            this.display = 'block'
+            this.show = true
+        },
+        hide: function () {
+            this.show = false
+        },
+        test: function () {
+            this.hide()
+            releases.show = true
+        }
+    },
+    watch: {
+        infos: function () {
+
+        }
+    }
+})
+
+// Vue object to open the other pages
+new Vue({
+    el: '.mdl-navigation',
+    methods: {
+        getDownloader: function () {
+            main.openDownloader()
+        },
+        getInfoPage: function () {
+            main.getInfoPage()
+        }
+    }
+})
+
+// For the greeting's message
+new Vue({
+    el: '.greetings',
+    data: {
+        username: os.userInfo().username
+    }
+})

@@ -130,7 +130,58 @@ body
 {
     position: absolute;
     bottom: 0;
-    /*content: url('../resources/totoro-hoola-hoop.gif');*/
     margin-left: 20%;
     margin-right: 20%;
+    content: url('https://media.giphy.com/media/pt0EKLDJmVvlS/giphy.gif');
+}
+
+/* ----------------- INFOS ----------------- */
+#info-container
+{
+    width: 100%;
+    height: 100%;
+    display: none;
+}
+
+#info-container .mdl-grid
+{
+    padding-top: 0;
+    padding-left: 0;
+}
+
+#info-picture
+{
+    margin-left: 0;
+    margin-top: 0;
+}
+
+#info-title
+{
+    text-align: center;
+}
+
+#info-title h5
+{
+    margin: 2% 0 0 0;
+}
+
+#synopsis-container
+{
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+#synopsis-container pre
+{
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
+    margin-top: 0;
+    line-height: 130%;
+    text-align: justify;
+    text-indent: 20px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-family: inherit;
+    padding: 3% 3% 3% 3%;
+    background-color: rgba(255, 255, 255, 0.7);
 }

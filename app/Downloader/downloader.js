@@ -83,7 +83,7 @@ function startTorrent () {
             openCmd = 'xdg-open '
             break
         case 'win32':
-            openCmd = ''
+            openCmd = 'start '
     }
 
     exec(openCmd + torrents, (error, stdout, stderr) => {

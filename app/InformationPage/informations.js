@@ -174,7 +174,7 @@ let container = new Vue({
 
 function makeResearch(name) {
     mal.fromName(name).then(anime => {
-        let t0 = performance.now();
+        let t0 = performance.now()
         animeData.title = anime.title
         animeData.japaneseTitle = anime.japaneseTitle
         animeData.image = anime.image
@@ -188,7 +188,7 @@ function makeResearch(name) {
         animeData.type = anime.type.split(' ').slice(0, 3).join(' ')
         animeData.characters = anime.characters
         animeData.staff = anime.staff
-        let t1 = performance.now();
+        let t1 = performance.now()
         console.log("Information gathered in " + (t1 - t0) + " seconds.")
     })
 }
