@@ -267,9 +267,13 @@ let searchButton = document.getElementById('fixed-header-drawer-exp')
 searchButton.addEventListener('keydown', (key) => {
     if (key.keyCode === 13)
     {
-        releases.show = false
-        loader.show = true
-        makeResearchOnMal(searchButton.value.toString())
+        info.show = false
+        if (searchButton.value.length > 3)
+        {
+            releases.show = false
+            loader.show = true
+            makeResearchOnMal(searchButton.value.toString())
+        }
         searchButton.value = ''
     }
 })
