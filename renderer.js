@@ -70,7 +70,7 @@ function getLatest () {
                 let tmp = animes[anime].title.split(' ')
                 tmp.pop()   // Remove the extension
                 tmp.pop()   // Remove the episode number
-                tmp.shift()
+                tmp.shift() // Remove the Horrible Subs tag
 
                 // Make the actual research
                 mal.fromName(tmp.join(' ')).then(result => {
@@ -118,7 +118,7 @@ function startTorrent (file_url, name) {
             openCmd = 'xdg-open '
             break
         case 'win32':
-            openCmd = ''
+            openCmd = 'start '
     }
 
     exec(openCmd + torrents, (error, stdout, stderr) => {
@@ -127,24 +127,28 @@ function startTorrent (file_url, name) {
             console.error(`exec error: ${error}`)
             return
         }
-        console.log(`stdout: ${stdout}`)
-        console.log(`stderr: ${stderr}`)
+        if (stdout == null && stderr == null)
+        {
+            console.log(`Starting torrent stdout: ${stdout}`)
+            console.log(`Starting torrent stderr: ${stderr}`)
+        }
+
     })
 }
 
 function makeResearchOnMal (name) {
 
     mal.fromName(name).then(anime => {
-        info.infos.title = anime.title
-        info.infos.japTitle = anime.japaneseTitle
-        info.infos.image = anime.image
-        info.infos.synopsis = anime.synopsis
-        info.infos.episodes = anime.episoes
-        info.infos.studios = anime.studios
-        info.infos.stats = anime.statistics
-        info.infos.genres = anime.genres
-        info.infos.type = anime.type.split(' ').slice(0, 3).join(' ')
-        info.infos.characters = anime.characters
+        info.infos.title = anime.title //
+        info.infos.japTitle = anime.japaneseTitle //
+        info.infos.image = anime.image //
+        info.infos.synopsis = anime.synopsis //
+        info.infos.episodes = anime.episodes //
+        info.infos.studios = anime.studios //
+        info.infos.stats = anime.statistics //
+        info.infos.genres = anime.genres //
+        info.infos.type = anime.type.split(' ').slice(0, 3).join(' ') //
+        info.infos.characters = anime.characters //
         info.infos.staff = anime.staff
 
         releases.show = false

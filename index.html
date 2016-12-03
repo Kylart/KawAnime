@@ -63,12 +63,10 @@
                     </div>
                   </div>
                   <div class="links">
-                    <!-- Flat button with ripple -->
                     <button @click="download(release.link, release.realTitle)"
                             class="link-download mdl-button mdl-js-button mdl-js-ripple-effect">
                       <a>download!</a>
                     </button>
-                    <!-- Flat button with ripple -->
                     <button @click="searchThis(release.realTitle)"
                             class="link-more mdl-button mdl-js-button mdl-js-ripple-effect">
                       <a href="#">more</a>
@@ -92,36 +90,46 @@
               </div>
               <div id="title-synopsis-container" class="mdl-cell mdl-cell--9-col mdl-cell--8-col-tablet">
                 <div id="info-title">
-                  <h5>{{ infos.title }}</h5>
+                  <h5>{{ infos.title }} [{{ infos.type }}]</h5>
                 </div>
                 <div @click="test()" id="synopsis-container">
                   <pre>{{ infos.synopsis }}</pre>
                 </div>
               </div>
-              <div class="mdl-cell mdl-cell--4-col mdl-cell--4-col-phone">
-
+              <div class="infos-bottom-left mdl-cell mdl-cell--3-col mdl-cell--4-col-phone">
+                <h6 class="infos-japTitle">Japanese title: {{ infos.japTitle }}</h6>
+                <h6>{{ infos.episodes }} episodes</h6>
               </div>
-              <div class="mdl-cell mdl-cell--6-col mdl-cell--6-col-phone">
+              <div class="infos-bottom-middle mdl-cell mdl-cell--7-col mdl-cell--6-col-phone">
                 <div class="studios">
                   <h6>Studios</h6>
                   <ul>
                     <li v-for="studio in infos.studios">{{ studio }}</li>
                   </ul>
                 </div>
-                <div class="characters">
-                  <h6>Characters</h6>
+                <div class="genres">
+                  <h6 class="infos-genresTitle">Genres</h6>
                   <ul>
-                    <li v-for="character in infos.characters">
-                      <p>{{ character.name }}</p>
-                      <p>{{ character.actor }}</p>
+                    <li v-for="genre in infos.genres">
+                      {{ genre }}
                     </li>
                   </ul>
                 </div>
               </div>
-              <div class="mdl-cell mdl-cell--2-col mdl-cell--2-col-phone">
-                <!-- For some reason, those generate warnings on initial render-->
-                <p>{{ infos.stats.score.value}}</p>
-                <p>{{ infos.stats.ranking}}</p>
+              <div class="infos-bottom-right mdl-cell mdl-cell--2-col mdl-cell--2-col-phone">
+                <h6>Score:</h6>
+                <h4>{{ infos.stats.score.value }}</h4>
+                <h6>{{ infos.stats.ranking }}</h6>
+              </div>
+              <div class="characters mdl-cell mdl-cell--12-col mdl-cell--12-col-phone">
+                <h5>Characters</h5>
+                <div class="mdl-grid">
+                  <div v-for="character in infos.characters"
+                       class="character mdl-cell mdl-cell--3-col mdl-cell--3-col-phone">
+                    <h6 class="character-name">{{ character.name }}</h6>
+                    <h6 class="seiyuu-name">{{ character.actor }}</h6>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

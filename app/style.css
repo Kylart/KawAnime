@@ -1,3 +1,4 @@
+
 body
 {
     width: 100%;
@@ -141,10 +142,14 @@ body
     width: 100%;
     height: 100%;
     display: none;
+    background-image: url("http://wallpapers.ws/large/201503/2280.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 
 #info-container .mdl-grid
 {
+    height: 100%;
     padding-top: 0;
     padding-left: 0;
 }
@@ -170,6 +175,7 @@ body
     display: flex;
     align-items: center;
     height: 100%;
+    width: 100%;
 }
 
 #synopsis-container pre
@@ -183,5 +189,77 @@ body
     word-wrap: break-word;
     font-family: inherit;
     padding: 3% 3% 3% 3%;
-    background-color: rgba(255, 255, 255, 0.7);
+    background-color: rgba(255, 255, 255, 0.95);
+    width: 100%;
+}
+
+.infos-bottom-left
+{
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
+    background-color: rgba(255, 255, 255, 0.95);
+    padding-left: 5%;
+    padding-right: 5%;
+}
+
+.infos-bottom-middle
+{
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
+    position: relative;
+    padding-left: 3%;
+    padding-right: 3%;
+    background-color: rgba(255, 255, 255, 0.95);
+}
+
+.studios
+{
+    float: left;
+    width: 60%;
+}
+
+.genres
+{
+    float: right;
+    width: 40%;
+}
+
+.infos-bottom-right
+{
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
+    background-color: rgba(255, 255, 255, 0.95);
+    padding-left: 2%;
+    padding-right: 2%;
+}
+
+.infos-bottom-right h4
+{
+    margin: 0 10% 0 20%;
+}
+
+.characters
+{
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 2% 2% 2% 2%;
+}
+
+.characters h5
+{
+    margin-bottom: 0;
+    margin-top: 0;
+}
+
+.character
+{
+    position: relative;
+}
+
+.character h6
+{
+    margin-top: 0;
+}
+
+.seiyuu-name
+{
+    text-align: right;
+    margin-bottom: 3%;
 }
