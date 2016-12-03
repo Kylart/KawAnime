@@ -165,7 +165,6 @@ getLatest()
 
 /* ------------------- VUE.JS OBJECTS ----------------- */
 
-
 let releases = new Vue({
     el: '#releases',
     data: {
@@ -259,5 +258,18 @@ new Vue({
     el: '.greetings',
     data: {
         username: os.userInfo().username
+    }
+})
+
+// Research button on top right
+let searchButton = document.getElementById('fixed-header-drawer-exp')
+
+searchButton.addEventListener('keydown', (key) => {
+    if (key.keyCode === 13)
+    {
+        releases.show = false
+        loader.show = true
+        makeResearchOnMal(searchButton.value.toString())
+        searchButton.value = ''
     }
 })
