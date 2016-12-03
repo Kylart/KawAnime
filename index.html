@@ -83,6 +83,9 @@
             <div class="loader-gif" ></div>
           </div>
           <div id="info-container" v-if="show" v-bind:style="{ display: display }">
+            <button @click="backToMain()" id="back-button" class="mdl-button mdl-js-button mdl-button--raised">
+              Back
+            </button>
             <div class="mdl-grid">
               <div id="info-picture"
                    class="mdl-cell mdl-cell--3-col mdl-cell--4-col-tablet">
@@ -92,7 +95,7 @@
                 <div id="info-title">
                   <h5>{{ infos.title }} [{{ infos.type }}]</h5>
                 </div>
-                <div @click="test()" id="synopsis-container">
+                <div id="synopsis-container">
                   <pre>{{ infos.synopsis }}</pre>
                 </div>
               </div>

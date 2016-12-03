@@ -139,16 +139,16 @@ function startTorrent (file_url, name) {
 function makeResearchOnMal (name) {
 
     mal.fromName(name).then(anime => {
-        info.infos.title = anime.title //
-        info.infos.japTitle = anime.japaneseTitle //
-        info.infos.image = anime.image //
-        info.infos.synopsis = anime.synopsis //
-        info.infos.episodes = anime.episodes //
-        info.infos.studios = anime.studios //
-        info.infos.stats = anime.statistics //
-        info.infos.genres = anime.genres //
-        info.infos.type = anime.type.split(' ').slice(0, 3).join(' ') //
-        info.infos.characters = anime.characters //
+        info.infos.title = anime.title
+        info.infos.japTitle = anime.japaneseTitle
+        info.infos.image = anime.image
+        info.infos.synopsis = anime.synopsis
+        info.infos.episodes = anime.episodes
+        info.infos.studios = anime.studios
+        info.infos.stats = anime.statistics
+        info.infos.genres = anime.genres
+        info.infos.type = anime.type.split(' ').slice(0, 3).join(' ')
+        info.infos.characters = anime.characters
         info.infos.staff = anime.staff
 
         releases.show = false
@@ -229,7 +229,7 @@ let info = new Vue({
         hide: function () {
             this.show = false
         },
-        test: function () {
+        backToMain: function () {
             this.hide()
             releases.show = true
         }
