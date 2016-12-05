@@ -14,7 +14,8 @@ This is a software developped with Electron framework. It is still in developmen
 * For the moment, kawAnime fully works only on Mac OS X.
 * On Linux, the download probably won't start but the torrent file will be downloaded. One would find it in 
 `KawAnime/resources/tmp` directory.
-* The download function doesn't work on Windows. This will most likely be fixed in the end of December. 
+* Same problem for the downloading in Windows as in Linux: downloads won't start but will be present in
+`KawAnime/resources/tmp` directory
 
 ## Installation
 Be sure that you have Npm installed. You can find how to install npm (node) [here](https://nodejs.org/en/).
