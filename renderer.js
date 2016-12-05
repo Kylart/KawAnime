@@ -140,7 +140,7 @@ function makeResearchOnMal (name) {
 
     mal.fromName(name).then(anime => {
         info.infos.title = anime.title
-        info.infos.japTitle = anime.japaneseTitle
+        info.infos.japTitle = anime.alternativeTitles.japanese[0].slice(10)
         info.infos.image = anime.image
         info.infos.synopsis = anime.synopsis
         info.infos.episodes = anime.episodes
@@ -150,6 +150,8 @@ function makeResearchOnMal (name) {
         info.infos.type = anime.type.split(' ').slice(0, 3).join(' ')
         info.infos.characters = anime.characters
         info.infos.staff = anime.staff
+        info.infos.aired = anime.aired
+        info.infos.status = anime.status
 
         releases.show = false
         loader.show = false

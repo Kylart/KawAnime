@@ -100,8 +100,11 @@
                 </div>
               </div>
               <div class="infos-bottom-left mdl-cell mdl-cell--3-col mdl-cell--4-col-phone">
-                <h6 class="infos-japTitle">Japanese title: {{ infos.japTitle }}</h6>
+                <h6>Japanese title: </h6>
+                <h6 class="infos-japTitle">{{ infos.japTitle }}</h6>
                 <h6>{{ infos.episodes }} episodes</h6>
+                <h6>{{ infos.status }}</h6>
+                <p class="airing">{{ infos.aired }}</p>
               </div>
               <div class="infos-bottom-middle mdl-cell mdl-cell--7-col mdl-cell--6-col-phone">
                 <div class="studios">
@@ -120,9 +123,11 @@
                 </div>
               </div>
               <div class="infos-bottom-right mdl-cell mdl-cell--2-col mdl-cell--2-col-phone">
-                <h6>Score:</h6>
-                <h4>{{ infos.stats.score.value }}</h4>
-                <h6>{{ infos.stats.ranking }}</h6>
+                <div class="infos-bottom-right-inside">
+                    <h6>Score:</h6>
+                    <h4>{{ infos.stats.score.value }}</h4>
+                    <h5>{{ infos.stats.ranking }}</h5>
+                </div>
               </div>
               <div class="characters mdl-cell mdl-cell--12-col mdl-cell--12-col-phone">
                 <h5>Characters</h5>

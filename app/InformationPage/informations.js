@@ -176,7 +176,7 @@ function makeResearch(name) {
     mal.fromName(name).then(anime => {
         let t0 = performance.now()
         animeData.title = anime.title
-        animeData.japaneseTitle = anime.japaneseTitle
+        animeData.japaneseTitle = anime.alternativeTitles.japanese[0].slice(10)
         animeData.image = anime.image
         animeData.synopsis = anime.synopsis
         animeData.episodes = anime.episodes
