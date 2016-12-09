@@ -55,7 +55,7 @@
                 <div class="elem">
                   <h6>{{ release.title }}</h6>
                   <div class="picture">
-                    <img v-bind:src="release.picture" height="180">
+                    <img v-bind:src="release.picture" height="180" width="105%">
                   </div>
                   <div class="text-container">
                     <div class="synopsis">
@@ -133,7 +133,7 @@
                 <h5>Characters</h5>
                 <div class="mdl-grid">
                   <div v-for="character in infos.characters"
-                       class="character mdl-cell mdl-cell--3-col mdl-cell--3-col-phone">
+                       class="character mdl-cell mdl-cell--3-col mdl-cell--6-col-phone">
                     <h6 class="character-name">{{ character.name }}</h6>
                     <h6 class="seiyuu-name" >by {{ character.actor }}</h6>
                   </div>

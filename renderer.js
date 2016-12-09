@@ -54,9 +54,18 @@ function getNameForResearch(name) {
     return tmp.join(' ')
 }
 
+function byProperty(prop) {
+    return function(a, b) {
+        if (typeof a[prop] == "number") {
+            return (a[prop] - b[prop])
+        }
+        return ((a[prop] < b[prop]) ? -1 : ((a[prop] > b[prop]) ? 1 : 0))
+    }
+}
+
 // Make the research for the latest animes
 function getLatest () {
-    Nyaa.get_latest( function (err, animes) {
+    Nyaa.search('[HorribleSubs]', function (err, animes) {
         // Initialize
         releases.releases = []
         releases.show = false
@@ -79,15 +88,27 @@ function getLatest () {
                         title: getNameOnly(animes[anime].title),
                         link: animes[anime].link,
                         synopsis: reduceString(result.synopsis),
-                        picture: result.image
+                        picture: result.image,
+                        published: animes[anime].published
                     })
+                }).then( () => {
+                    if (releases.releases.length === 35)
+                    {
+                        releases.releases.sort(byProperty('published'))
+                        releases.releases.reverse()
+
+                        // 35 elements is too much, reducing to 18
+                        for (let i = 0; i < 17; ++i)
+                            releases.releases.pop()
+                    }
+                }).then( () => {
+                    setTimeout( () => {
+                        loader.show = false
+                        releases.show = true
+                    }, 1200)
                 })
             }
         }
-        setTimeout( () => {
-            loader.show = false
-            releases.show = true
-        }, 3000)
     })
 }
 

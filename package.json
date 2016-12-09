@@ -21,6 +21,7 @@
   "dependencies": {
     "find-remove": "^1.0.0",
     "is-online": "^5.2.0",
+    "mal-scraper": "^1.0.6",
     "malapi": "0.0.3",
     "node-nyaa-api": "latest",
     "progressbar.js": "^1.0.1"
