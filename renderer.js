@@ -65,6 +65,8 @@ function byProperty(prop) {
 
 // Make the research for the latest animes
 function getLatest () {
+    let sorted = false
+
     Nyaa.search('[HorribleSubs]', function (err, animes) {
         // Initialize
         releases.releases = []
@@ -92,15 +94,17 @@ function getLatest () {
                         published: animes[anime].published
                     })
                 }).then( () => {
-                    if (releases.releases.length === 35)
+                    if (releases.releases.length > 32)
                     {
                         releases.releases.sort(byProperty('published'))
                         releases.releases.reverse()
-
-                        // 35 elements is too much, reducing to 18
-                        for (let i = 0; i < 17; ++i)
-                            releases.releases.pop()
+                        sorted = true
                     }
+                }).then( () => {
+                    // 35 elements is too much, reducing to 18
+                    if (sorted)
+                        while (releases.releases.length > 18)
+                            releases.releases.pop()
                 }).then( () => {
                     setTimeout( () => {
                         loader.show = false
