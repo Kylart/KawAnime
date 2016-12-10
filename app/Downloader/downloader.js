@@ -4,7 +4,6 @@
 const request = require('request')
 const fs = require('fs')
 const path = require('path')
-const exec = require('child_process').exec
 const Nyaa = require('node-nyaa-api')
 const findRemoveSync = require('find-remove')
 

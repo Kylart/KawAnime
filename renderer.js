@@ -6,13 +6,13 @@
 
 const remote = require('electron').remote
 const main = remote.require('./main.js')
+const shell = require('electron').shell
 const fs = require('fs')
 const os = require('os')
 
 // Those are needed to download the torrents
 const path = require('path')
 const request = require('request')
-const exec = require('child_process').exec
 const findRemoveSync = require('find-remove')
 
 // Mal API
