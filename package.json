@@ -1,6 +1,6 @@
 {
-  "name": "kaw-anime",
-  "version": "0.0.4",
+  "name": "KawAnime",
+  "version": "0.1.0",
   "description": "A Software for Otaku Community.",
   "main": "main.js",
   "scripts": {

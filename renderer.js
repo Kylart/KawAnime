@@ -88,36 +88,41 @@ function getLatest () {
                 tmp.shift() // Remove the Horrible Subs tag
 
                 // Make the actual research
-                mal.fromName(tmp.join(' ')).then(result => {
-                    releases.releases.push({
-                        realTitle: animes[anime].title,
-                        title: getNameOnly(animes[anime].title),
-                        link: animes[anime].link,
-                        synopsis: reduceString(result.synopsis),
-                        picture: result.image,
-                        published: animes[anime].published
-                    })
-                }).then( () => {
-                    if (releases.releases.length > 32)
-                    {
-                        releases.releases.sort(byProperty('published'))
-                        releases.releases.reverse()
-                        sorted = true
-                    }
-                }).then( () => {
-                    // 35 elements is too much, reducing to 18
-                    if (sorted)
-                        while (releases.releases.length > 18)
-                            releases.releases.pop()
-                }).then( () => {
-                    setTimeout( () => {
-                        if (!news.show)
-                        {
-                            loader.show = false
-                            releases.show = true
+                try
+                {
+                    mal.fromName(tmp.join(' ')).then(result => {
+                        releases.releases.push({
+                            realTitle: animes[anime].title,
+                            title: getNameOnly(animes[anime].title),
+                            link: animes[anime].link,
+                            synopsis: reduceString(result.synopsis),
+                            picture: result.image,
+                            published: animes[anime].published
+                        })
+                    }).then(() => {
+                        if (releases.releases.length > 29) {
+                            releases.releases.sort(byProperty('published'))
+                            releases.releases.reverse()
+                            sorted = true
                         }
-                    }, 1200)
-                })
+                    }).then(() => {
+                        // 35 elements is too much, reducing to 18
+                        if (sorted)
+                            while (releases.releases.length > 18)
+                                releases.releases.pop()
+                    }).then(() => {
+                        setTimeout(() => {
+                            if (!news.show) {
+                                loader.show = false
+                                releases.show = true
+                            }
+                        }, 1200)
+                    })
+                }
+                catch (e)
+                {
+                    console.log("There was a 'Too many request' error.")
+                }
             }
         }
     })
