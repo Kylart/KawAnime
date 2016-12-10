@@ -298,6 +298,7 @@ body
 
 #news-container
 {
+    display: none;
     box-sizing: border-box;
     background-image: url('https://thumbs.dreamstime.com/x/seamless-fabric-background-4903761.jpg');
 }

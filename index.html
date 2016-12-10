@@ -142,10 +142,10 @@
               </div>
             </div>
           </div>
-          <div id="news-container" style="display: none">
+          <div id="news-container" v-if="show" v-bind:style="{ display: display }">
             <div class="mdl-grid">
               <div v-for="article in news"
-                   class="news mdl-cell mdl-cell--12-col mdl-cell--6-col-phone">
+                   class="news mdl-cell mdl-cell--12-col mdl-cell--12-col-phone">
                 <h5 class="news-title">{{ article.title }}</h5>
                 <div class="news-picture" v-bind:style="{content: 'url(' + article.image + ')'}"></div>
                 <div class="news-synopsis">

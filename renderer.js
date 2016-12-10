@@ -268,7 +268,8 @@ let news = new Vue({
     el: '#news-container',
     data: {
         show: false,
-        news: []
+        news: [],
+        display: 'none'
     },
     methods: {
         openLink: function (link) {
@@ -291,14 +292,11 @@ new Vue({
                 releases.show = true
                 news.show = false
             }
-
         },
         getNewsPage: function () {
             // For first time
-            let tmp = document.getElementById('news-container')
-
-            if (tmp.style.display === 'none')
-                tmp.style.display = 'block'
+            if (news.display === 'none')
+                news.display = 'block'
 
             releases.show = false
             news.show = true
