@@ -9,14 +9,12 @@ This software allows one to:
 * Get anime-related news from MyAnimeList.net.
 * More features are to come
 
-This is a software developped with Electron framework. It is still in development. 
+This is a software developed with Electron framework. It is still in development. 
 
 ## About OS
-* For the moment, kawAnime fully works only on Mac OS X.
+* For the moment, KawAnime fully works only on Mac OS X.
 * On Linux, the torrents will start only if your client is defined as the default action for torrent files.
-* On Windows, the torrent client will start but it seems not with the torrent files you asked fo, you can find your 
-torrents in
-`KawAnime/resources/tmp` directory
+* On Windows, the download function does not yet fully works, this will most likely be fixed in the end of December.
 
 ## Installation
 Be sure that you have Npm installed. You can find how to install npm (node) [here](https://nodejs.org/en/).

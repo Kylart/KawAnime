@@ -8,12 +8,21 @@ const shell = require('electron').shell
 const path = require('path')
 const url = require('url')
 const fs = require('fs')
+const os = require('os')
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow, downloaderWindow
+const BASE_PATH = os.userInfo().homedir
 
 function createWindow () {
+  // Create the directory to download files
+  const dir = path.join(BASE_PATH, '.KawAnime')
+
+  if (!fs.existsSync(dir)){
+      fs.mkdirSync(dir)
+  }
+
   // Create the browser window.
   mainWindow = new BrowserWindow({
     width: 1200,
@@ -96,13 +105,13 @@ exports.getMainPage = () => {
 }
 
 exports.openTorrents = () => {
-  const TORRENT_PATH = path.join(__dirname, 'resources', 'tmp')
+  const TORRENT_PATH = path.join(BASE_PATH, '.KawAnime')
 
   const tmpFiles = fs.readdirSync(TORRENT_PATH)
 
   tmpFiles.forEach( (elem) => {
     if (elem.split('.').pop() === 'torrent')
-      shell.openItem(path.join(TORRENT_PATH, elem))
+        shell.openItem(path.join(TORRENT_PATH, elem))
   })
 }
 

@@ -4,10 +4,12 @@
 const request = require('request')
 const fs = require('fs')
 const path = require('path')
+const os = require('os')
 const Nyaa = require('node-nyaa-api')
 const findRemoveSync = require('find-remove')
 
 const main = require('electron').remote.require(path.join(__dirname, '..', '..', 'main.js'))
+const DIR = path.join(os.userInfo().homedir, '.KawAnime')
 
 let animes = []
 
@@ -67,8 +69,8 @@ function downloadFile (file_url , targetPath){
         uri: file_url
     });
 
-    let out = fs.createWriteStream(targetPath);
-    req.pipe(out);
+    let out = fs.createWriteStream(targetPath)
+    req.pipe(out)
 }
 
 function startTorrent () {
@@ -83,7 +85,7 @@ new Vue({
     methods: {
         download: function () {
             // Remove all torrent files in tmp directory
-            findRemoveSync(path.join(__dirname, '..', '..', 'resources', 'tmp'), {extensions: ['.torrent']})
+            findRemoveSync(DIR, {extensions: ['.torrent']})
 
             console.log(`Retrieving ${name.anime} from ${fromEp.ep} to ${untilEp.ep}...`)
 
@@ -103,7 +105,7 @@ new Vue({
                     let epNumber = parseInt(name.split(' ').reverse()[1])
 
                     if (epNumber >= fromEp.ep && epNumber <= untilEp.ep) {
-                        downloadFile(url, path.join(__dirname, '..', '..', 'resources', 'tmp', `${name}.torrent`))
+                        downloadFile(url, path.join(DIR, `${name}.torrent`))
                     }
                 }
 

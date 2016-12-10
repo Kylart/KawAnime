@@ -24,6 +24,8 @@ const malScraper = require('mal-scraper')
 
 /* ----------------- END IMPORTS ----------------- */
 
+const DIR = path.join(os.userInfo().homedir, '.KawAnime')
+
 /* -----------------  FUNCTIONS  ----------------- */
 
 function reduceString(string) {
@@ -127,13 +129,13 @@ function downloadFile (file_url, name){
         uri: file_url
     })
 
-    let out = fs.createWriteStream(path.join(__dirname, 'resources', 'tmp', `${name}.torrent`))
+    let out = fs.createWriteStream(path.join(DIR, `${name}.torrent`))
     req.pipe(out)
 }
 
 function startTorrent (file_url, name) {
     // Removing old torrents
-    findRemoveSync(path.join(__dirname, 'resources', 'tmp'), {extensions: ['.torrent']})
+    findRemoveSync(DIR, {extensions: ['.torrent']})
 
     // Downloading the new ones
     downloadFile(file_url, name)
