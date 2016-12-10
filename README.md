@@ -6,15 +6,16 @@ This software allows one to:
 * Be aware of the latest anime release.
 * Download an anime via Torrent (one would need a torrent client for the moment).
 * Get information from any anime (those come from myanimelist.net).
+* Get anime-related news from MyAnimeList.net.
 * More features are to come
 
 This is a software developped with Electron framework. It is still in development. 
 
 ## About OS
 * For the moment, kawAnime fully works only on Mac OS X.
-* On Linux, the download probably won't start but the torrent file will be downloaded. One would find it in 
-`KawAnime/resources/tmp` directory.
-* Same problem for the downloading in Windows as in Linux: downloads won't start but will be present in
+* On Linux, the torrents will start only if your client is defined as the default action for torrent files.
+* On Windows, the torrent client will start but it seems not with the torrent files you asked fo, you can find your 
+torrents in
 `KawAnime/resources/tmp` directory
 
 ## Installation
@@ -28,6 +29,13 @@ cd KawAnime/
 ```
 npm install && npm start
 ```
+
+## Start
+```
+npm start
+```
+
+
 ## Contributing
 1. Fork it!
 2. Create your feature branch: `git checkout -b my-new-feature`

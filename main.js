@@ -98,13 +98,11 @@ exports.getMainPage = () => {
 exports.openTorrents = () => {
   const TORRENT_PATH = path.join(__dirname, 'resources', 'tmp')
 
-  let tmpFiles = fs.readdirSync(TORRENT_PATH)
+  const tmpFiles = fs.readdirSync(TORRENT_PATH)
 
   tmpFiles.forEach( (elem) => {
     if (elem.split('.').pop() === 'torrent')
-    {
       shell.openItem(path.join(TORRENT_PATH, elem))
-    }
   })
 }
 
