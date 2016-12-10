@@ -8,6 +8,8 @@ const exec = require('child_process').exec
 const Nyaa = require('node-nyaa-api')
 const findRemoveSync = require('find-remove')
 
+const main = require('electron').remote.require(path.join(__dirname, '..', '..', 'main.js'))
+
 let animes = []
 
 let name = new Vue({
@@ -71,33 +73,10 @@ function downloadFile (file_url , targetPath){
 }
 
 function startTorrent () {
-    const torrents = path.join(__dirname, '..', '..', 'resources', 'tmp', '*.torrent')
-    let openCmd
-
-    switch (process.platform)
-    {
-        case 'darwin':
-            openCmd = 'open '
-            break
-        case 'linux':
-            openCmd = 'xdg-open '
-            break
-        case 'win32':
-            openCmd = 'start '
-    }
-
-    exec(openCmd + torrents, (error, stdout, stderr) => {
-        if (error)
-        {
-            console.error(`exec error: ${error}`);
-            return;
-        }
-        console.log(`stdout: ${stdout}`);
-        console.log(`stderr: ${stderr}`);
-    })
+    main.openTorrents()
 }
 
-let downloadButton = new Vue({
+new Vue({
     el: '#button-container',
     data: {
         msg : 'Download!'
@@ -106,7 +85,6 @@ let downloadButton = new Vue({
         download: function () {
             // Remove all torrent files in tmp directory
             findRemoveSync(path.join(__dirname, '..', '..', 'resources', 'tmp'), {extensions: ['.torrent']})
-
 
             console.log(`Retrieving ${name.anime} from ${fromEp.ep} to ${untilEp.ep}...`)
 

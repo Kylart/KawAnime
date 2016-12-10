@@ -295,3 +295,46 @@ body
     text-align: right;
     margin-bottom: 3%;
 }
+
+#news-container
+{
+    box-sizing: border-box;
+    background-image: url('https://thumbs.dreamstime.com/x/seamless-fabric-background-4903761.jpg');
+}
+
+.news
+{
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
+    overflow: auto;
+    position: relative;
+    padding: 5px 10px 0 0;
+    background-color: rgba(255, 255, 255, 0.95);
+}
+
+.news-title
+{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 0 10px 0 25px;
+}
+
+.news-picture
+{
+    float: left;
+    width: 15%;
+}
+
+.news-synopsis
+{
+    float: right;
+    width: 80%;
+    text-align: justify;
+    padding: 10px 20px 10px 10px;
+}
+
+.news-link
+{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}

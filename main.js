@@ -4,8 +4,10 @@ const app = electron.app
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow
 
+const shell = require('electron').shell
 const path = require('path')
 const url = require('url')
+const fs = require('fs')
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -91,7 +93,19 @@ exports.getMainPage = () => {
     protocol: 'file:',
     slashes: true
   }))
+}
 
+exports.openTorrents = () => {
+  const TORRENT_PATH = path.join(__dirname, 'resources', 'tmp')
+
+  let tmpFiles = fs.readdirSync(TORRENT_PATH)
+
+  tmpFiles.forEach( (elem) => {
+    if (elem.split('.').pop() === 'torrent')
+    {
+      shell.openItem(path.join(TORRENT_PATH, elem))
+    }
+  })
 }
 
 

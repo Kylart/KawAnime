@@ -43,7 +43,8 @@
       <span class="mdl-layout-title">KawAnime</span>
       <nav class="mdl-navigation">
         <a class="mdl-navigation__link" href="#" v-on:click="getDownloader()">Download an anime</a>
-        <a class="mdl-navigation__link" href="#" v-on:click="getInfoPage()">Get information</a>
+        <a class="mdl-navigation__link" href="#" v-on:click="getMainPage()">Main page</a>
+        <a class="mdl-navigation__link" href="#" v-on:click="getNewsPage()">Get news</a>
         <a class="mdl-navigation__link" href="#">Watch List</a>
       </nav>
     </div>
@@ -140,6 +141,22 @@
                 </div>
               </div>
             </div>
+          </div>
+          <div id="news-container" style="display: none">
+            <div class="mdl-grid">
+              <div v-for="article in news"
+                   class="news mdl-cell mdl-cell--12-col mdl-cell--6-col-phone">
+                <h5 class="news-title">{{ article.title }}</h5>
+                <div class="news-picture" v-bind:style="{content: 'url(' + article.image + ')'}"></div>
+                <div class="news-synopsis">
+                  {{ article.text }}
+                </div>
+                <button @click="openLink(article.link)"
+                        class="news-link mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                  Open
+                </button>
+
+              </div>
           </div>
         </div>
     </main>

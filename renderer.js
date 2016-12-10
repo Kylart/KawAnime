@@ -19,6 +19,8 @@ const findRemoveSync = require('find-remove')
 const mal = require('malapi').Anime
 // Nyaa API
 const Nyaa = require('node-nyaa-api')
+// Scraping the news from Mal
+const malScraper = require('mal-scraper')
 
 /* ----------------- END IMPORTS ----------------- */
 
@@ -107,8 +109,11 @@ function getLatest () {
                             releases.releases.pop()
                 }).then( () => {
                     setTimeout( () => {
-                        loader.show = false
-                        releases.show = true
+                        if (!news.show)
+                        {
+                            loader.show = false
+                            releases.show = true
+                        }
                     }, 1200)
                 })
             }
@@ -127,38 +132,14 @@ function downloadFile (file_url, name){
 }
 
 function startTorrent (file_url, name) {
-    const torrents = path.join(__dirname, 'resources', 'tmp', `*.torrent`)
-    let openCmd
-
+    // Removing old torrents
     findRemoveSync(path.join(__dirname, 'resources', 'tmp'), {extensions: ['.torrent']})
 
+    // Downloading the new ones
     downloadFile(file_url, name)
 
-    switch (process.platform)
-    {
-        case 'darwin':
-            openCmd = 'open '
-            break
-        case 'linux':
-            openCmd = 'xdg-open '
-            break
-        case 'win32':
-            openCmd = 'start '
-    }
-
-    exec(openCmd + torrents, (error, stdout, stderr) => {
-        if (error)
-        {
-            console.error(`exec error: ${error}`)
-            return
-        }
-        if (stdout == null && stderr == null)
-        {
-            console.log(`Starting torrent stdout: ${stdout}`)
-            console.log(`Starting torrent stderr: ${stderr}`)
-        }
-
-    })
+    // Opening them
+    main.openTorrents()
 }
 
 function makeResearchOnMal (name) {
@@ -185,10 +166,19 @@ function makeResearchOnMal (name) {
     })
 }
 
+function getNews() {
+    let tmp = malScraper.getNewsNoDetails( () => {
+        news.news = tmp
+    })
+}
+
 /* -------------------- END FUNCTIONS ----------------- */
 
 // First research at kawAnime's start
 getLatest()
+
+// Getting the news in advance
+getNews()
 
 /* ------------------- VUE.JS OBJECTS ----------------- */
 
@@ -267,6 +257,20 @@ let info = new Vue({
     }
 })
 
+let news = new Vue({
+    el: '#news-container',
+    data: {
+        show: false,
+        news: []
+    },
+    methods: {
+        openLink: function (link) {
+            event.preventDefault()
+            shell.openExternal(link)
+        }
+    }
+})
+
 // Vue object to open the other pages
 new Vue({
     el: '.mdl-navigation',
@@ -274,8 +278,24 @@ new Vue({
         getDownloader: function () {
             main.openDownloader()
         },
-        getInfoPage: function () {
-            main.getInfoPage()
+        getMainPage: function () {
+            if (!loader.show)
+            {
+                releases.show = true
+                news.show = false
+            }
+
+        },
+        getNewsPage: function () {
+            // For first time
+            let tmp = document.getElementById('news-container')
+
+            if (tmp.style.display === 'none')
+                tmp.style.display = 'block'
+
+            releases.show = false
+            news.show = true
+            loader.show = false
         }
     }
 })
