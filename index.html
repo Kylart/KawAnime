@@ -7,7 +7,8 @@
   <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.indigo-pink.min.css">
   <link rel="stylesheet" href="app/style.css">
   <link href="https://unpkg.com/animate.css@3.5.1/animate.min.css" rel="stylesheet" type="text/css">
-
+  <link rel="stylesheet" href="node_modules/vue-material/dist/vue-material.css">
+  <script defer src="https://code.getmdl.io/1.2.1/material.min.js"></script>
 </head>
 <body>
 <script src="https://unpkg.com/vue/dist/vue.js"></script>
@@ -55,8 +56,9 @@
               <div class="mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet">
                 <div class="elem">
                   <h6>{{ release.title }}</h6>
-                  <div class="picture">
-                    <img v-bind:src="release.picture" height="180" width="105%">
+                  <div class="picture-container">
+                    <!--<img v-bind:src="release.picture" height="180" width="105%">-->
+                    <div class="picture" v-bind:style="{ content : 'url(' + release.picture + ')'}"></div>
                   </div>
                   <div class="text-container">
                     <div class="synopsis">
@@ -64,14 +66,16 @@
                     </div>
                   </div>
                   <div class="links">
-                    <button @click="download(release.link, release.realTitle)"
-                            class="link-download mdl-button mdl-js-button mdl-js-ripple-effect">
-                      <a>download!</a>
-                    </button>
-                    <button @click="searchThis(release.realTitle)"
-                            class="link-more mdl-button mdl-js-button mdl-js-ripple-effect">
-                      <a href="#">more</a>
-                    </button>
+                    <md-button @click="download(release.link, release.realTitle)"
+                               class="md-dense link-download"
+                               v-bind:style="styleButton">
+                      <p>Download</p>
+                    </md-button>
+                    <md-button @click="searchThis(release.realTitle)"
+                               class="md-dense link-more"
+                               v-bind:style="styleButton">
+                      <p>More</p>
+                    </md-button>
                   </div>
                 </div>
               </div>
@@ -84,9 +88,11 @@
             <div class="loader-gif" ></div>
           </div>
           <div id="info-container" v-if="show" v-bind:style="{ display: display }">
-            <button @click="backToMain()" id="back-button" class="mdl-button mdl-js-button mdl-button--raised">
+            <md-button @click="backToMain()"
+                       id="back-button"
+                       class="md-raised">
               Back
-            </button>
+            </md-button>
             <div class="mdl-grid">
               <div id="info-picture"
                    class="mdl-cell mdl-cell--3-col mdl-cell--4-col-tablet">
@@ -151,12 +157,13 @@
                 <div class="news-synopsis">
                   {{ article.text }}
                 </div>
-                <button @click="openLink(article.link)"
-                        class="news-link mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                <md-button @click="openLink(article.link)"
+                           class="md-raised md-primary news-link"
+                v-bind:style="buttonStyle">
                   Open
-                </button>
-
+                </md-button>
               </div>
+            </div>
           </div>
         </div>
     </main>
@@ -180,6 +187,5 @@
         }
     })
 </script>
-<script defer src="https://code.getmdl.io/1.2.1/material.min.js"></script>
 </body>
 </html>

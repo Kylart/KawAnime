@@ -44,6 +44,7 @@ body
 .elem
 {
     position: relative;
+    height: 100%;
     margin: 0;
     overflow: hidden;
     background-color: rgba(255, 255, 255, 0.95);
@@ -56,10 +57,16 @@ body
     white-space: nowrap;
 }
 
-.picture
+.picture-container
 {
     width: 40%;
     float: left;
+}
+
+.picture
+{
+    width: 125px;
+    height: 180px;
 }
 
 .text-container
@@ -73,7 +80,7 @@ body
 .synopsis
 {
     height: 80%;
-    padding: 15px 15px 15px 15px;
+    padding: 15px 30px 15px 15px;
     color: rgba(0, 0, 0, 0.74);
     word-wrap: break-word;
     font-size: small;
@@ -91,14 +98,16 @@ body
     padding: 5px 5px 5px 5px;
     overflow: hidden;
     position: absolute;
-    bottom: 0;
+    bottom: 4px;
     right: 0;
 }
 
-.links a
+.links p
 {
     text-decoration: none;
     color: rgba(0, 0, 0, 0.74);
+    font-size: x-small;
+    margin-bottom: 0;
 }
 
 .link-download

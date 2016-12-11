@@ -24,6 +24,7 @@
     "mal-scraper": "^1.0.8",
     "malapi": "0.0.3",
     "node-nyaa-api": "latest",
-    "progressbar.js": "^1.0.1"
+    "progressbar.js": "^1.0.1",
+    "vue-material": "^0.4.1"
   }
 }

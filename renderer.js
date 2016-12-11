@@ -26,6 +26,10 @@ const malScraper = require('mal-scraper')
 
 const DIR = path.join(os.userInfo().homedir, '.KawAnime')
 
+const VueMaterial = require('vue-material')
+
+Vue.use(VueMaterial)
+
 /* -----------------  FUNCTIONS  ----------------- */
 
 function reduceString(string) {
@@ -193,7 +197,14 @@ let releases = new Vue({
     el: '#releases',
     data: {
         releases: [],
-        show: false
+        show: false,
+        styleButton: {
+            minWidth: '0px',
+            marginBottom: '0px',
+            marginTop: '0px',
+            marginLeft: '2px',
+            marginRight: '2px'
+        }
     },
     watch: {
         releases: function () {  // Whenever releases changes, this function will run
@@ -269,7 +280,10 @@ let news = new Vue({
     data: {
         show: false,
         news: [],
-        display: 'none'
+        display: 'none',
+        buttonStyle: {
+            position: 'absolute'
+        }
     },
     methods: {
         openLink: function (link) {
@@ -291,6 +305,7 @@ new Vue({
             {
                 releases.show = true
                 news.show = false
+                info.show = false
             }
         },
         getNewsPage: function () {
