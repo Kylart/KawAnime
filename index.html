@@ -186,7 +186,7 @@
                   <md-input type="number" v-model="year" @keydown.enter="getThisSeason(year, season)"></md-input>
                 </md-input-container>
 
-                <md-button id="season-search" disabled
+                <md-button id="season-search"
                            @click="getThisSeason(year, season)"
                            class="md-raised md-accent">
                   Not yet
@@ -287,7 +287,7 @@
                       <div class="mdl-cell mdl-cell--6-col mdl-cell--6-col-tablet">
                         <div class="elem">
                           <div class="title-container">
-                            <h6>{{ reduced(anime.title, 40) }}</h6>
+                            <h6>{{ reduced(anime.title, 30) }}</h6>
                             <p class="from-type">[{{ anime.fromType }}]</p>
                           </div>
                           <div class="genres-score">
