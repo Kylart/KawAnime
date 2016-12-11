@@ -497,6 +497,8 @@ searchButton.addEventListener('keydown', (key) => {
         if (searchButton.value.length > 3)
         {
             releases.show = false
+            news.show = false
+            season.show = false
             loader.show = true
             makeResearchOnMal(searchButton.value.toString())
         }
