@@ -44,8 +44,9 @@
       <span class="mdl-layout-title">KawAnime</span>
       <nav class="mdl-navigation">
         <a class="mdl-navigation__link" href="#" v-on:click="getDownloader()">Download an anime</a>
-        <a class="mdl-navigation__link" href="#" v-on:click="getMainPage()">Main page</a>
+        <a class="mdl-navigation__link" href="#" v-on:click="getMainPage()">Recent releases</a>
         <a class="mdl-navigation__link" href="#" v-on:click="getNewsPage()">Get news</a>
+        <a class="mdl-navigation__link" href="#" v-on:click="getSeasonPage()">Check seasons</a>
         <a class="mdl-navigation__link" href="#">Watch List</a>
       </nav>
     </div>
@@ -57,7 +58,6 @@
                 <div class="elem">
                   <h6>{{ release.title }}</h6>
                   <div class="picture-container">
-                    <!--<img v-bind:src="release.picture" height="180" width="105%">-->
                     <div class="picture" v-bind:style="{ content : 'url(' + release.picture + ')'}"></div>
                   </div>
                   <div class="text-container">
@@ -88,7 +88,7 @@
             <div class="loader-gif" ></div>
           </div>
           <div id="info-container" v-if="show" v-bind:style="{ display: display }">
-            <md-button @click="backToMain()"
+            <md-button @click="back()"
                        id="back-button"
                        class="md-raised">
               Back
@@ -162,6 +162,254 @@
                 v-bind:style="buttonStyle">
                   Open
                 </md-button>
+              </div>
+            </div>
+          </div>
+          <div id="season-info-container"
+               v-md-theme="'default'"
+               v-if="show"
+               v-bind:style="{ display: display }">
+            <div id="season-form-container">
+              <div class="field-group">
+                <md-input-container id="season-container" style="margin-right: 20px;">
+                  <label for="season">Season</label>
+                  <md-select name="season" id="season" v-model="season">
+                    <md-option value="winter">Winter</md-option>
+                    <md-option value="spring">Spring</md-option>
+                    <md-option value="summer">Summer</md-option>
+                    <md-option value="fall">Fall</md-option>
+                  </md-select>
+                </md-input-container>
+
+                <md-input-container id="year-container">
+                  <label>Year</label>
+                  <md-input type="number" v-model="year" @keydown.enter="getThisSeason(year, season)"></md-input>
+                </md-input-container>
+
+                <md-button id="season-search" disabled
+                           @click="getThisSeason(year, season)"
+                           class="md-raised md-accent">
+                  Not yet
+                </md-button>
+              </div>
+
+              <div id="season-displayer">
+                <md-tabs md-fixed>
+                  <md-tab id="tv" md-label="TV">
+                    <div class="mdl-grid">
+                      <template v-for="anime in TVs">
+                        <div class="mdl-cell mdl-cell--6-col mdl-cell--6-col-tablet">
+                          <div class="elem">
+                            <div class="title-container">
+                              <h6>{{ reduced(anime.title, 40) }}</h6>
+                              <p class="from-type">[{{ anime.fromType }}]</p>
+                            </div>
+                            <div class="genres-score">
+                              <p class="genres">
+                                {{ reduced(anime.genres.join(' '), 47) }}
+                              </p>
+                              <h5 class="score" v-bind:style="scoreStyle">{{ anime.scores }}</h5>
+                            </div>
+                            <div class="picture-container">
+                              <div class="picture" v-bind:style="{ content : 'url(' + anime.image + ')'}"></div>
+                            </div>
+                            <div class="text-container" v-bind:style="textStyle">
+                              <div class="synopsis" v-bind:style="synopsisStyle">
+                                <p>{{ reduced(anime.synopsis, 175) }}</p>
+                              </div>
+                            </div>
+                            <div class="season-footer">
+                              <div class="date-nbEp">
+                                <p class="release-date">{{ anime.releaseDates }}</p>
+                                <p class="season-nb-ep" v-bind:style="">{{ anime.nbEp }}</p>
+                              </div>
+                              <div class="producers-more">
+                                <p class="producers">{{ anime.producers }}</p>
+                                <md-button @click="searchThis(anime.title)"
+                                           class="md-dense season-link-more"
+                                           v-bind:style="link">
+                                  More
+                                </md-button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </template>
+                    </div>
+                  </md-tab>
+
+                  <md-tab id="ona" md-label="ONA">
+                    <div class="mdl-grid">
+                      <template v-for="anime in ONAs">
+                        <div class="mdl-cell mdl-cell--6-col mdl-cell--6-col-tablet">
+                          <div class="elem">
+                            <div class="title-container">
+                              <h6>{{ reduced(anime.title, 40) }}</h6>
+                              <p class="from-type">[{{ anime.fromType }}]</p>
+                            </div>
+                            <div class="genres-score">
+                              <p class="genres">
+                                {{ reduced(anime.genres.join(' '), 47) }}
+                              </p>
+                              <h5 class="score" v-bind:style="scoreStyle">{{ anime.scores }}</h5>
+                            </div>
+                            <div class="picture-container">
+                              <div class="picture" v-bind:style="{ content : 'url(' + anime.image + ')'}"></div>
+                            </div>
+                            <div class="text-container" v-bind:style="textStyle">
+                              <div class="synopsis" v-bind:style="synopsisStyle">
+                                <p>{{ reduced(anime.synopsis, 175) }}</p>
+                              </div>
+                            </div>
+                            <div class="season-footer">
+                              <div class="date-nbEp">
+                                <p class="release-date">{{ anime.releaseDates }}</p>
+                                <p class="season-nb-ep" v-bind:style="">{{ anime.nbEp }}</p>
+                              </div>
+                              <div class="producers-more">
+                                <p class="producers">{{ anime.producers }}</p>
+                                <md-button @click="searchThis(anime.title)"
+                                        class="md-dense season-link-more"
+                                        v-bind:style="link">
+                                  More
+                                </md-button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </template>
+                    </div>
+                  </md-tab>
+
+                  <md-tab id="ova" md-label="OVA">
+                    <div class="mdl-grid">
+                      <template v-for="anime in OVAs">
+                      <div class="mdl-cell mdl-cell--6-col mdl-cell--6-col-tablet">
+                        <div class="elem">
+                          <div class="title-container">
+                            <h6>{{ reduced(anime.title, 40) }}</h6>
+                            <p class="from-type">[{{ anime.fromType }}]</p>
+                          </div>
+                          <div class="genres-score">
+                            <p class="genres">
+                              {{ reduced(anime.genres.join(' '), 47) }}
+                            </p>
+                            <h5 class="score" v-bind:style="scoreStyle">{{ anime.scores }}</h5>
+                          </div>
+                          <div class="picture-container">
+                            <div class="picture" v-bind:style="{ content : 'url(' + anime.image + ')'}"></div>
+                          </div>
+                          <div class="text-container" v-bind:style="textStyle">
+                            <div class="synopsis" v-bind:style="synopsisStyle">
+                              <p>{{ reduced(anime.synopsis, 175) }}</p>
+                            </div>
+                          </div>
+                          <div class="season-footer">
+                            <div class="date-nbEp">
+                              <p class="release-date">{{ anime.releaseDates }}</p>
+                              <p class="season-nb-ep" v-bind:style="">{{ anime.nbEp }}</p>
+                            </div>
+                            <div class="producers-more">
+                              <p class="producers">{{ anime.producers }}</p>
+                              <md-button @click="searchThis(anime.title)"
+                                         class="md-dense season-link-more"
+                                         v-bind:style="link">
+                                More
+                              </md-button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </template>
+                    </div>
+                  </md-tab>
+
+                  <md-tab id="movies" md-label=Movies>
+                    <div class="mdl-grid">
+                      <template v-for="anime in Movies">
+                      <div class="mdl-cell mdl-cell--6-col mdl-cell--6-col-tablet">
+                        <div class="elem">
+                          <div class="title-container">
+                            <h6>{{ reduced(anime.title, 40) }}</h6>
+                            <p class="from-type">[{{ anime.fromType }}]</p>
+                          </div>
+                          <div class="genres-score">
+                            <p class="genres">
+                              {{ reduced(anime.genres.join(' '), 47) }}
+                            </p>
+                            <h5 class="score" v-bind:style="scoreStyle">{{ anime.scores }}</h5>
+                          </div>
+                          <div class="picture-container">
+                            <div class="picture" v-bind:style="{ content : 'url(' + anime.image + ')'}"></div>
+                          </div>
+                          <div class="text-container" v-bind:style="textStyle">
+                            <div class="synopsis" v-bind:style="synopsisStyle">
+                              <p>{{ reduced(anime.synopsis, 175) }}</p>
+                            </div>
+                          </div>
+                          <div class="season-footer">
+                            <div class="date-nbEp">
+                              <p class="release-date">{{ anime.releaseDates }}</p>
+                              <p class="season-nb-ep" v-bind:style="">{{ anime.nbEp }}</p>
+                            </div>
+                            <div class="producers-more">
+                              <p class="producers">{{ anime.producers }}</p>
+                              <md-button @click="searchThis(anime.title)"
+                                         class="md-dense season-link-more"
+                                         v-bind:style="link">
+                                More
+                              </md-button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </template>
+                    </div>
+                  </md-tab>
+
+                  <md-tab id="specials" md-label=Specials>
+                    <div class="mdl-grid">
+                      <template v-for="anime in Specials">
+                      <div class="mdl-cell mdl-cell--6-col mdl-cell--6-col-tablet">
+                        <div class="elem">
+                          <div class="title-container">
+                            <h6>{{ reduced(anime.title, 40) }}</h6>
+                            <p class="from-type">[{{ anime.fromType }}]</p>
+                          </div>
+                          <div class="genres-score">
+                            <p class="genres">
+                              {{ reduced(anime.genres.join(' '), 47) }}
+                            </p>
+                            <h5 class="score" v-bind:style="scoreStyle">{{ anime.scores }}</h5>
+                          </div>
+                          <div class="picture-container">
+                            <div class="picture" v-bind:style="{ content : 'url(' + anime.image + ')'}"></div>
+                          </div>
+                          <div class="text-container" v-bind:style="textStyle">
+                            <div class="synopsis" v-bind:style="synopsisStyle">
+                              <p>{{ reduced(anime.synopsis, 175) }}</p>
+                            </div>
+                          </div>
+                          <div class="season-footer">
+                            <div class="date-nbEp">
+                              <p class="release-date">{{ anime.releaseDates }}</p>
+                              <p class="season-nb-ep" v-bind:style="">{{ anime.nbEp }}</p>
+                            </div>
+                            <div class="producers-more">
+                              <p class="producers">{{ anime.producers }}</p>
+                              <md-button @click="searchThis(anime.title)"
+                                         class="md-dense season-link-more"
+                                         v-bind:style="link">
+                                More
+                              </md-button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </template>
+                    </div>
+                  </md-tab>
+                </md-tabs>
               </div>
             </div>
           </div>

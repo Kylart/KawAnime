@@ -4,7 +4,7 @@
     <inspection_tool class="HtmlUnknownAttribute" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="myValues">
         <value>
-          <list size="12">
+          <list size="13">
             <item index="0" class="java.lang.String" itemvalue="@keydown.enter" />
             <item index="1" class="java.lang.String" itemvalue="v-on:click" />
             <item index="2" class="java.lang.String" itemvalue="v-bind:style" />
@@ -17,6 +17,7 @@
             <item index="9" class="java.lang.String" itemvalue="v-bind:src" />
             <item index="10" class="java.lang.String" itemvalue="@keydown.delete" />
             <item index="11" class="java.lang.String" itemvalue="@click" />
+            <item index="12" class="java.lang.String" itemvalue="v-md-theme" />
           </list>
         </value>
       </option>
@@ -25,7 +26,7 @@
     <inspection_tool class="HtmlUnknownTag" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="myValues">
         <value>
-          <list size="8">
+          <list size="15">
             <item index="0" class="java.lang.String" itemvalue="nobr" />
             <item index="1" class="java.lang.String" itemvalue="noembed" />
             <item index="2" class="java.lang.String" itemvalue="comment" />
@@ -34,6 +35,13 @@
             <item index="5" class="java.lang.String" itemvalue="script" />
             <item index="6" class="java.lang.String" itemvalue="transition" />
             <item index="7" class="java.lang.String" itemvalue="component" />
+            <item index="8" class="java.lang.String" itemvalue="md-tabs" />
+            <item index="9" class="java.lang.String" itemvalue="md-tab" />
+            <item index="10" class="java.lang.String" itemvalue="md-input-container" />
+            <item index="11" class="java.lang.String" itemvalue="md-select" />
+            <item index="12" class="java.lang.String" itemvalue="md-option" />
+            <item index="13" class="java.lang.String" itemvalue="md-input" />
+            <item index="14" class="java.lang.String" itemvalue="md-button" />
           </list>
         </value>
       </option>

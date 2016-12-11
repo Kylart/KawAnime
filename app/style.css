@@ -348,3 +348,149 @@ body
     bottom: 0;
     right: 0;
 }
+
+#season-info-container
+{
+    display: none;
+}
+
+#season-form-container
+{
+    position: relative;
+}
+
+#year
+{
+
+}
+
+.md-input-container
+{
+    width: 20%;
+}
+
+.field-group
+{
+    margin-top: 15px;
+    position: relative;
+}
+
+#season-search
+{
+    position: absolute;
+    top: 10px;
+    right: 7%;
+}
+
+#year-container
+{
+    float: right;
+    margin-right: 25%;
+}
+
+#season-container
+{
+    float: left;
+    margin-left: 25%;
+}
+
+#season-container .title-container
+{
+    width: 100%;
+    padding: 2px 5px 2px 5px;
+    margin: 0;
+}
+
+.title-container
+{
+    overflow: auto;
+    margin: 5px 10px 5px 10px;
+}
+
+.elem .title-container h6
+{
+    width: 80%;
+    margin: 0 0 0 0;
+    float: left;
+}
+
+.from-type
+{
+    width: 20%;
+    margin: 0 0 0 0;
+    float: right;
+    text-align: right;
+}
+
+.genres-score
+{
+    width: 100%;
+    overflow: auto;
+    margin-bottom: 5px;
+    padding: 2px 5px 2px 10px;
+}
+
+.genres-score .genres
+{
+    float: left;
+    width: 85%;
+    margin-bottom: 0;
+}
+
+.score
+{
+    width: 15%;
+    float: right;
+    text-align: right;
+    padding-right: 15px;
+}
+
+#season-container .text-container
+{
+    margin-left: 30%;
+}
+
+#season-container .synopsis
+{
+    text-align: justify;
+}
+
+.season-footer
+{
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    width: 67%;
+    height: 23%;
+    overflow: hidden;
+}
+
+.date-nbEp
+{
+    height: 40%;
+    overflow: hidden;
+}
+
+.release-date
+{
+    float: left;
+    margin: 0 0 0 0;
+}
+
+.season-nb-ep
+{
+    float: right;
+    margin: 0 10px 0 0;
+    font-size: 16px;
+}
+
+.producers-more
+{
+    margin-top: 5px;
+}
+
+.producers
+{
+    margin-bottom: 0;
+    float: left;
+}

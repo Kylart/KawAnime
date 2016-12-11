@@ -30,11 +30,18 @@ const VueMaterial = require('vue-material')
 
 Vue.use(VueMaterial)
 
+Vue.material.theme.register('default', {
+    primary: 'white',
+    accent: 'indigo',
+    warn: 'deep-orange',
+    background: 'grey'
+})
+
 /* -----------------  FUNCTIONS  ----------------- */
 
-function reduceString(string) {
-    if (string.length > 100)
-        return string.substring(0, 100) + ('...')
+function reduceString(string, wanted) {
+    if (string.length > wanted)
+        return string.substring(0, wanted) + ('...')
     return string
 }
 
@@ -99,7 +106,7 @@ function getLatest () {
                             realTitle: animes[anime].title,
                             title: getNameOnly(animes[anime].title),
                             link: animes[anime].link,
-                            synopsis: reduceString(result.synopsis),
+                            synopsis: reduceString(result.synopsis, 100),
                             picture: result.image,
                             published: animes[anime].published
                         })
@@ -116,7 +123,8 @@ function getLatest () {
                                 releases.releases.pop()
                     }).then(() => {
                         setTimeout(() => {
-                            if (!news.show) {
+                            if (loader.show)
+                            {
                                 loader.show = false
                                 releases.show = true
                             }
@@ -177,10 +185,60 @@ function makeResearchOnMal (name) {
     })
 }
 
-function getNews() {
+function getNews () {
     let tmp = malScraper.getNewsNoDetails( () => {
         news.news = tmp
     })
+}
+
+function getCurrentSeason () {
+    const date = new Date()
+
+    // Get current year
+    const year = 1900 + date.getYear()
+
+    // Get current month
+    const month = 1 + date.getMonth()   // I am a weak person that like 1-indexed things
+
+    if (0 < month && month < 4)  // Winter
+        return { season: 'winter', year: year}
+    else if (3 < month && month < 7)  // Spring
+        return { season: 'spring', year: year}
+    else if (6 < month && month < 10)  // Summer
+        return { season: 'summer', year: year}
+    else if (9 < month && month < 13)  // Fall
+        return { season: 'fall', year: year}
+}
+
+function fillSeason(seasonalInfo) {
+    seasonalInfo.info.forEach( (elem) => {
+        switch (elem.type)
+        {
+            case 'TV':
+                season.TVs.push(elem)
+                break
+
+            case 'ONA':
+                season.ONAs.push(elem)
+                break
+
+            case 'OVA':
+                season.OVAs.push(elem)
+                break
+
+            case 'Movie':
+                season.Movies.push(elem)
+                break
+
+            case 'Special':
+                season.Specials.push(elem)
+                break
+
+            default:
+                break
+        }
+    })
+    season.infoWatcher = false
 }
 
 /* -------------------- END FUNCTIONS ----------------- */
@@ -191,7 +249,14 @@ getLatest()
 // Getting the news in advance
 getNews()
 
+// Getting the current season's information
+let seasonalInfo = malScraper.getSeason(getCurrentSeason().year, getCurrentSeason().season, () => {
+    fillSeason(seasonalInfo)
+})
+
 /* ------------------- VUE.JS OBJECTS ----------------- */
+
+let lastPage = 'release'
 
 let releases = new Vue({
     el: '#releases',
@@ -206,11 +271,6 @@ let releases = new Vue({
             marginRight: '2px'
         }
     },
-    watch: {
-        releases: function () {  // Whenever releases changes, this function will run
-            // Code
-        }
-    },
     methods: {
         download: function (url, name) {
             startTorrent(url, name)
@@ -223,6 +283,8 @@ let releases = new Vue({
             this.show = false
             loader.show = true
             makeResearchOnMal(getNameForResearch(arg))
+
+            lastPage = 'release'
         }
     }
 })
@@ -263,13 +325,21 @@ let info = new Vue({
         hide: function () {
             this.show = false
         },
-        backToMain: function () {
+        back: function () {
             this.hide()
-            releases.show = true
-        }
-    },
-    watch: {
-        infos: function () {
+            switch (lastPage)
+            {
+                case 'release':
+                    releases.show = true
+                    break
+
+                case 'season':
+                    season.show = true
+                    break
+
+                default:
+                    break
+            }
 
         }
     }
@@ -293,6 +363,81 @@ let news = new Vue({
     }
 })
 
+let season = new Vue({
+    el: '#season-info-container',
+    data: {
+        display: 'none',
+        show: false,
+        searching: false,
+        season: getCurrentSeason().season,
+        year: getCurrentSeason().year,
+        infoWatcher: false,
+        TVs: [],
+        ONAs: [],
+        OVAs: [],
+        Movies: [],
+        Specials: [],
+        link: {
+            marginTop: 0,
+            marginBottom: 0,
+            float: 'right'
+        },
+        scoreStyle: {
+            margin: '0 0 0 0',
+        },
+        textStyle: {
+            marginLeft: '30%',
+            height: '50%'
+        },
+        synopsisStyle: {
+            paddingRight: '0',
+            textAlign: 'justify',
+            paddingTop: '5px'
+        }
+    },
+    watch: {
+        infoWatcher: function (bool) {
+            if (bool)
+            {
+                this.TVs = []
+                this.ONAs = []
+                this.OVAs = []
+                this.Movies = []
+                this.Specials = []
+                console.log("ERASED", this.TVs.length)
+            }
+        }
+    },
+    methods: {
+        reduced: function (text, nb) {
+            return reduceString(text, nb)
+        },
+        getGenres: function (genres) {
+            let result = ''
+
+            genres.forEach( (elem) => {
+                result += `${elem}, `
+            })
+
+            return result.slice(0, -2)
+        },
+        searchThis: function (arg) {
+            info.infos = {}
+            this.show = false
+            loader.show = true
+            makeResearchOnMal(arg)
+            lastPage = 'season'
+        },
+        getThisSeason: function (year, season) {
+            this.infoWatcher = true
+            self = this
+            let newSeasonalInfo = malScraper.getSeason(year, season, function () {
+                fillSeason(newSeasonalInfo)
+            })
+        }
+    },
+})
+
 // Vue object to open the other pages
 new Vue({
     el: '.mdl-navigation',
@@ -306,6 +451,7 @@ new Vue({
                 releases.show = true
                 news.show = false
                 info.show = false
+                season.show = false
             }
         },
         getNewsPage: function () {
@@ -316,6 +462,19 @@ new Vue({
             releases.show = false
             news.show = true
             loader.show = false
+            season.show = false
+            info.show = false
+        },
+        getSeasonPage: function () {
+            // For first time
+            if (season.display === 'none')
+                season.display = 'block'
+
+            releases.show = false
+            news.show = false
+            loader.show = false
+            season.show = true
+            info.show = false
         }
     }
 })
