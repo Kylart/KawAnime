@@ -5,10 +5,10 @@
   <title>KawAnime</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.indigo-pink.min.css">
-  <link rel="stylesheet" href="app/style.css">
   <link href="https://unpkg.com/animate.css@3.5.1/animate.min.css" rel="stylesheet" type="text/css">
   <link rel="stylesheet" href="node_modules/vue-material/dist/vue-material.css">
-  <script defer src="https://code.getmdl.io/1.2.1/material.min.js"></script>
+  <link rel="stylesheet" href="app/style.css">
+  <script src="https://code.getmdl.io/1.2.1/material.min.js"></script>
 </head>
 <body>
 <script src="https://unpkg.com/vue/dist/vue.js"></script>
@@ -46,7 +46,7 @@
         <a class="mdl-navigation__link" href="#" v-on:click="getDownloader()">Download an anime</a>
         <a class="mdl-navigation__link" href="#" v-on:click="getMainPage()">Recent releases</a>
         <a class="mdl-navigation__link" href="#" v-on:click="getNewsPage()">Get news</a>
-        <a class="mdl-navigation__link" href="#" v-on:click="getSeasonPage()">Check seasons</a>
+        <a class="mdl-navigation__link" href="#" v-on:click="getSeasonPage()">Check animes from season</a>
         <a class="mdl-navigation__link" href="#">Watch List</a>
       </nav>
     </div>
@@ -56,6 +56,7 @@
             <template v-for="release in releases">
               <div class="mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet">
                 <div class="elem">
+                  <md-ink-ripple></md-ink-ripple>
                   <h6>{{ release.title }}</h6>
                   <div class="picture-container">
                     <div class="picture" v-bind:style="{ content : 'url(' + release.picture + ')'}"></div>
@@ -152,6 +153,7 @@
             <div class="mdl-grid">
               <div v-for="article in news"
                    class="news mdl-cell mdl-cell--12-col mdl-cell--12-col-phone">
+                <md-ink-ripple></md-ink-ripple>
                 <h5 class="news-title">{{ article.title }}</h5>
                 <div class="news-picture" v-bind:style="{content: 'url(' + article.image + ')'}"></div>
                 <div class="news-synopsis">
@@ -174,10 +176,10 @@
                 <md-input-container id="season-container" style="margin-right: 20px;">
                   <label for="season">Season</label>
                   <md-select name="season" id="season" v-model="season">
-                    <md-option value="winter">Winter</md-option>
-                    <md-option value="spring">Spring</md-option>
-                    <md-option value="summer">Summer</md-option>
-                    <md-option value="fall">Fall</md-option>
+                    <md-option value="winter"><a>Winter</a></md-option>
+                    <md-option value="spring"><a>Spring</a></md-option>
+                    <md-option value="summer"><a>Summer</a></md-option>
+                    <md-option value="fall"><a>Fall</a></md-option>
                   </md-select>
                 </md-input-container>
 
@@ -186,10 +188,10 @@
                   <md-input type="number" v-model="year" @keydown.enter="getThisSeason(year, season)"></md-input>
                 </md-input-container>
 
-                <md-button id="season-search" disabled
+                <md-button id="season-search"
                            @click="getThisSeason(year, season)"
                            class="md-raised md-accent">
-                  Not yet
+                  Search
                 </md-button>
               </div>
 
@@ -200,6 +202,7 @@
                       <template v-for="anime in TVs">
                         <div class="mdl-cell mdl-cell--6-col mdl-cell--6-col-tablet">
                           <div class="elem">
+                            <md-ink-ripple></md-ink-ripple>
                             <div class="title-container">
                               <h6>{{ reduced(anime.title, 40) }}</h6>
                               <p class="from-type">[{{ anime.fromType }}]</p>
@@ -210,7 +213,7 @@
                               </p>
                               <h5 class="score" v-bind:style="scoreStyle">{{ anime.scores }}</h5>
                             </div>
-                            <div class="picture-container">
+                            <div class="picture-container" v-bind:style="pictureStyle">
                               <div class="picture" v-bind:style="{ content : 'url(' + anime.image + ')'}"></div>
                             </div>
                             <div class="text-container" v-bind:style="textStyle">
@@ -243,6 +246,7 @@
                       <template v-for="anime in ONAs">
                         <div class="mdl-cell mdl-cell--6-col mdl-cell--6-col-tablet">
                           <div class="elem">
+                            <md-ink-ripple></md-ink-ripple>
                             <div class="title-container">
                               <h6>{{ reduced(anime.title, 40) }}</h6>
                               <p class="from-type">[{{ anime.fromType }}]</p>
@@ -253,7 +257,7 @@
                               </p>
                               <h5 class="score" v-bind:style="scoreStyle">{{ anime.scores }}</h5>
                             </div>
-                            <div class="picture-container">
+                            <div class="picture-container" v-bind:style="pictureStyle">
                               <div class="picture" v-bind:style="{ content : 'url(' + anime.image + ')'}"></div>
                             </div>
                             <div class="text-container" v-bind:style="textStyle">
@@ -286,8 +290,9 @@
                       <template v-for="anime in OVAs">
                       <div class="mdl-cell mdl-cell--6-col mdl-cell--6-col-tablet">
                         <div class="elem">
+                          <md-ink-ripple></md-ink-ripple>
                           <div class="title-container">
-                            <h6>{{ reduced(anime.title, 30) }}</h6>
+                            <h6>{{ anime.title }}</h6>
                             <p class="from-type">[{{ anime.fromType }}]</p>
                           </div>
                           <div class="genres-score">
@@ -296,7 +301,7 @@
                             </p>
                             <h5 class="score" v-bind:style="scoreStyle">{{ anime.scores }}</h5>
                           </div>
-                          <div class="picture-container">
+                          <div class="picture-container" v-bind:style="pictureStyle">
                             <div class="picture" v-bind:style="{ content : 'url(' + anime.image + ')'}"></div>
                           </div>
                           <div class="text-container" v-bind:style="textStyle">
@@ -329,6 +334,7 @@
                       <template v-for="anime in Movies">
                       <div class="mdl-cell mdl-cell--6-col mdl-cell--6-col-tablet">
                         <div class="elem">
+                          <md-ink-ripple></md-ink-ripple>
                           <div class="title-container">
                             <h6>{{ reduced(anime.title, 40) }}</h6>
                             <p class="from-type">[{{ anime.fromType }}]</p>
@@ -339,7 +345,7 @@
                             </p>
                             <h5 class="score" v-bind:style="scoreStyle">{{ anime.scores }}</h5>
                           </div>
-                          <div class="picture-container">
+                          <div class="picture-container" v-bind:style="pictureStyle">
                             <div class="picture" v-bind:style="{ content : 'url(' + anime.image + ')'}"></div>
                           </div>
                           <div class="text-container" v-bind:style="textStyle">
@@ -372,6 +378,7 @@
                       <template v-for="anime in Specials">
                       <div class="mdl-cell mdl-cell--6-col mdl-cell--6-col-tablet">
                         <div class="elem">
+                          <md-ink-ripple></md-ink-ripple>
                           <div class="title-container">
                             <h6>{{ reduced(anime.title, 40) }}</h6>
                             <p class="from-type">[{{ anime.fromType }}]</p>
@@ -382,7 +389,7 @@
                             </p>
                             <h5 class="score" v-bind:style="scoreStyle">{{ anime.scores }}</h5>
                           </div>
-                          <div class="picture-container">
+                          <div class="picture-container" v-bind:style="pictureStyle">
                             <div class="picture" v-bind:style="{ content : 'url(' + anime.image + ')'}"></div>
                           </div>
                           <div class="text-container" v-bind:style="textStyle">

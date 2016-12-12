@@ -386,13 +386,17 @@ let season = new Vue({
             margin: '0 0 0 0',
         },
         textStyle: {
-            marginLeft: '30%',
+            marginLeft: '35%',
             height: '50%'
         },
         synopsisStyle: {
             paddingRight: '0',
             textAlign: 'justify',
             paddingTop: '5px'
+        },
+        pictureStyle: {
+            position: 'absolute',
+            bottom: 0
         }
     },
     watch: {

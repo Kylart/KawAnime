@@ -29,7 +29,9 @@ function createWindow () {
     height: 800,
     titleBarStyle: 'hidden',
     show: false,
-    title: 'KawAnime'
+    title: 'KawAnime',
+    preload: 'https://unpkg.com/vue/dist/vue.js',
+    scrollBounce: true
   })
 
   // and load the index.html of the app.
