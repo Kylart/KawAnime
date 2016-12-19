@@ -392,7 +392,8 @@ let season = new Vue({
         synopsisStyle: {
             paddingRight: '0',
             textAlign: 'justify',
-            paddingTop: '5px'
+            paddingTop: '5px',
+            height: '123.5px'
         },
         pictureStyle: {
             position: 'absolute',
