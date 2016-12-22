@@ -11,11 +11,8 @@ body
 {
     display: none;
     text-align: center;
-}
-
-#not-online h1
-{
-    margin-top: 30%;
+    overflow: hidden;
+    margin-top: 20%;
 }
 /* --------------------------------------- */
 
