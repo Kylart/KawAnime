@@ -26,7 +26,7 @@ body
 /*noinspection CssOptimizeSimilarProperties*/
 .mdl-layout__drawer
 {
-    background-image: url('../resources/leftBackground-1.jpg');
+    background-image: url('../resources/leftBackground-1.png');
     background-position: left bottom;
     background-repeat: no-repeat;
     background-size: 100%;
@@ -103,8 +103,7 @@ body
     right: 0;
 }
 
-.links p
-{
+.links p {
     text-decoration: none;
     color: rgba(0, 0, 0, 0.74);
     font-size: x-small;
@@ -134,7 +133,7 @@ body
 #loader-container h3
 {
     margin-top: 12%;
-    font-family: "YuMincho +36p Kana", sans-serif;
+    font-family: "YuMincho +36p Kana", serif;
 }
 
 .loader-gif

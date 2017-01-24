@@ -140,6 +140,9 @@ function getLatest () {
     })
 }
 
+// Set a preference for
+// -- Download torrent file (might have a problem when downloading several)
+// -- Download magnet
 function downloadFile (file_url, name){
     let req = request({
         method: 'GET',
@@ -263,6 +266,7 @@ let releases = new Vue({
     data: {
         releases: [],
         show: false,
+        prefMagnets: true,
         styleButton: {
             minWidth: '0px',
             marginBottom: '0px',
@@ -273,7 +277,8 @@ let releases = new Vue({
     },
     methods: {
         download: function (url, name) {
-            startTorrent(url, name)
+            if (!this.prefMagnets)
+                startTorrent(url, name)
         },
         refresh: function () {
             getLatest()
@@ -435,7 +440,7 @@ let season = new Vue({
         },
         getThisSeason: function (year, season) {
             this.infoWatcher = true
-            self = this
+            console.log(`Looking for season ${season} ${year}.`)
             let newSeasonalInfo = malScraper.getSeason(year, season, function () {
                 fillSeason(newSeasonalInfo)
             })

@@ -60,7 +60,7 @@
             <div class="mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet">
               <div class="elem">
                 <md-ink-ripple></md-ink-ripple>
-                <h6>{{ release.title }}</h6>
+                <h6 v-bind:title="release.title">{{ release.title }}</h6>
                 <div class="picture-container">
                   <div class="picture" v-bind:style="{ content : 'url(' + release.picture + ')'}"></div>
                 </div>
@@ -70,7 +70,14 @@
                   </div>
                 </div>
                 <div class="links">
-                  <md-button @click="download(release.link, release.realTitle)"
+                  <md-button v-if="prefMagnets"
+                             v-bind:href="release.link + '&magnet=1'"
+                             class="md-dense link-download"
+                             v-bind:style="styleButton">
+                    <p style="margin-top: 4px;">Download</p>
+                  </md-button>
+                  <md-button v-else
+                             @click="download(release.link, release.realTitle)"
                              class="md-dense link-download"
                              v-bind:style="styleButton">
                     <p>Download</p>
@@ -191,7 +198,7 @@
                 <md-input type="number" v-model="year" @keydown.enter="getThisSeason(year, season)"></md-input>
               </md-input-container>
 
-              <md-button id="season-search"
+              <md-button id="season-search" disabled
                          @click="getThisSeason(year, season)"
                          class="md-raised md-accent">
                 Search
@@ -429,25 +436,28 @@
 </div>
 
 <script>
-    const isOnline = require('is-online')
+    require('./renderer.js')
+    document.getElementById('container').style.display = 'block'
 
-    isOnline(function(err, online) {
-        if (err) throw err
-
-        if(online)
-        {
-            require('./renderer.js')
-            document.getElementById('container').style.display = 'block'
-        }
-        else
-        {
-            document.getElementById('not-online').style.display = 'block'
-
-            document.getElementById('not-online-button').addEventListener('click', function () {
-                location.reload()
-            })
-        }
-    })
+//    const isOnline = require('is-online')
+//
+//    isOnline(function(err, online) {
+//        if (err) throw err
+//
+//        if(online)
+//        {
+//            require('./renderer.js')
+//            document.getElementById('container').style.display = 'block'
+//        }
+//        else
+//        {
+//            document.getElementById('not-online').style.display = 'block'
+//
+//            document.getElementById('not-online-button').addEventListener('click', function () {
+//                location.reload()
+//            })
+//        }
+//    })
 </script>
 </body>
 </html>
