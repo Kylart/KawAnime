@@ -16,7 +16,7 @@
   "author": "Kylart",
   "license": "MIT",
   "devDependencies": {
-    "electron": "^1.4.12"
+    "electron": "^1.4.15"
   },
   "dependencies": {
     "find-remove": "^1.0.0",

@@ -113,7 +113,7 @@ exports.openTorrents = () => {
 
   tmpFiles.forEach( (elem) => {
     if (elem.split('.').pop() === 'torrent')
-        shell.openItem(path.join(TORRENT_PATH, elem))
+      shell.openItem(path.join(TORRENT_PATH, elem))
   })
 }
 

@@ -145,6 +145,52 @@ body
     content: url('https://media.giphy.com/media/pt0EKLDJmVvlS/giphy.gif');
 }
 
+/* --------------- DOWNLOADER -------------- */
+/*.download-container*/
+/*{*/
+    /*display: none;*/
+    /*height: 100%;*/
+    /*width: 100%;*/
+    /*background-image: url(../resources/downloader-back.jpg);*/
+    /*background-size: cover;*/
+    /*background-repeat: no-repeat;*/
+/*}*/
+
+/*#footer-back-left*/
+/*{*/
+    /*bottom: 0;*/
+    /*left: 0;*/
+    /*position: absolute;*/
+    /*content: url(../resources/downloader-char-left.png);*/
+    /*width: 20%;*/
+/*}*/
+
+/*#footer-back-right*/
+/*{*/
+    /*bottom: 0;*/
+    /*right: 0;*/
+    /*position: absolute;*/
+    /*content: url(../resources/downloader-char-right.png);*/
+    /*width: 24%;*/
+/*}*/
+
+/*#download-button*/
+/*{*/
+    /*!*background-color: rgba(40, 40, 40, 0.8);*!*/
+/*}*/
+
+/*.downloader-form-container*/
+/*{*/
+    /*justify-content: center;*/
+    /*align-items: center;*/
+/*}*/
+
+/*.downloader-input*/
+/*{*/
+    /*margin-right: auto;*/
+    /*margin-left: auto;*/
+/*}*/
+
 /* ----------------- INFOS ----------------- */
 #info-container
 {
