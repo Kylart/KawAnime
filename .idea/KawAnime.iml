@@ -9,5 +9,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="material" level="application" />
+    <orderEntry type="library" name="vue" level="application" />
   </component>
 </module>

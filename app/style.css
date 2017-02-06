@@ -146,50 +146,79 @@ body
 }
 
 /* --------------- DOWNLOADER -------------- */
-/*.download-container*/
-/*{*/
-    /*display: none;*/
-    /*height: 100%;*/
-    /*width: 100%;*/
-    /*background-image: url(../resources/downloader-back.jpg);*/
-    /*background-size: cover;*/
-    /*background-repeat: no-repeat;*/
-/*}*/
+.downloader-header
+{
+    margin-top: 10%;
+}
 
-/*#footer-back-left*/
-/*{*/
-    /*bottom: 0;*/
-    /*left: 0;*/
-    /*position: absolute;*/
-    /*content: url(../resources/downloader-char-left.png);*/
-    /*width: 20%;*/
-/*}*/
+.download-container
+{
+    display: none;
+    height: 100%;
+    width: 100%
+}
 
-/*#footer-back-right*/
-/*{*/
-    /*bottom: 0;*/
-    /*right: 0;*/
-    /*position: absolute;*/
-    /*content: url(../resources/downloader-char-right.png);*/
-    /*width: 24%;*/
-/*}*/
+#footer-back-left
+{
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    content: url(../resources/downloader-char-left.png);
+    width: 20%;
+}
 
-/*#download-button*/
-/*{*/
-    /*!*background-color: rgba(40, 40, 40, 0.8);*!*/
-/*}*/
+#footer-back-right
+{
+    bottom: 0;
+    right: 0;
+    position: absolute;
+    content: url(../resources/downloader-char-right.png);
+    width: 24%;
+}
 
-/*.downloader-form-container*/
-/*{*/
-    /*justify-content: center;*/
-    /*align-items: center;*/
-/*}*/
+#download-button .md-button
+{
+    background-color: rgba(40, 40, 40, 0.8);
+    margin-top: 5%;
+    color: rgba(255, 255, 255, 0.8);
+    margin-right: 3%;
+}
 
-/*.downloader-input*/
-/*{*/
-    /*margin-right: auto;*/
-    /*margin-left: auto;*/
-/*}*/
+#download-button h6
+{
+    margin-bottom: 0;
+    margin-top: 0;
+}
+
+.downloader-form-container
+{
+    justify-content: center;
+    align-items: center;
+}
+
+.downloader-input
+{
+    margin-right: auto;
+    margin-left: auto;
+    color: white;
+}
+
+.download-container p
+{
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.download-container h6
+{
+    margin-top: 0;
+    margin-bottom: 0;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.download-container textarea
+{
+    color: rgba(255, 255, 255, 0.8);
+}
 
 /* ----------------- INFOS ----------------- */
 #info-container

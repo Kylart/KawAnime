@@ -237,10 +237,46 @@ function fillSeason(seasonalInfo) {
   season.infoWatcher = false
 }
 
+function setDownloaderBackground() {
+  document.getElementsByClassName('mdl-layout__content')[0].style.backgroundImage = "url('./resources/downloader-back.jpg')"
+  document.getElementsByClassName('mdl-layout__content')[0].style.backgroundSize = 'cover'
+  document.getElementsByClassName('mdl-layout__content')[0].style.backgroundRepeat = 'no-repeat'
+}
+
+function disableDownloaderBackground() {
+  document.getElementsByClassName('mdl-layout__content')[0].style.backgroundImage = "url('')"
+}
+
+function checkOnlyQuality(quality) {
+  switch (quality)
+  {
+    case '480p':
+      document.getElementsByName('720p')[0].click()
+      document.getElementsByName('1080p')[0].click()
+
+      break
+
+    case '720p':
+      document.getElementsByName('480p')[0].click()
+      document.getElementsByName('1080p')[0].click()
+
+      break
+
+    case '1080p':
+      document.getElementsByName('720p')[0].click()
+      document.getElementsByName('480p')[0].click()
+
+      break
+
+    default:
+      break
+  }
+}
+
 /* -------------------- END FUNCTIONS ----------------- */
 
 // First research at kawAnime's start
-getLatest()
+// getLatest()
 
 // Getting the news in advance
 getNews()
@@ -258,7 +294,13 @@ let downloader = new Vue({
   el: '.download-container',
   data: {
     show: false,
-    display: "none"
+    display: "none",
+    quality: ['720p']
+  },
+  methods: {
+    download: function () {
+      console.log(this.quality)
+    }
   }
 })
 
@@ -289,6 +331,8 @@ let releases = new Vue({
       this.show = false
       loader.show = true
       makeResearchOnMal(getNameForResearch(arg))
+
+      disableDownloaderBackground()
 
       lastPage = 'release'
     }
@@ -436,6 +480,8 @@ let season = new Vue({
       loader.show = true
       makeResearchOnMal(arg)
       lastPage = 'season'
+
+      disableDownloaderBackground()
     },
     getThisSeason: function (year, season) {
       this.infoWatcher = true
@@ -452,18 +498,25 @@ new Vue({
   el: '.mdl-navigation',
   methods: {
     getDownloader: function () {
-      main.openDownloader()
+      // Could be set in preferences ?
+      // main.openDownloader()
 
-      //First time
-      // if (downloader.display === "none")
-      //   downloader.display = "block"
-      //
-      // downloader.show = true
-      // releases.show = false
-      // news.show = false
-      // info.show = false
-      // season.show = false
-      // loader.show = false
+      // First time
+      if (downloader.display === "none")
+        downloader.display = "block"
+
+      setDownloaderBackground()
+
+      setTimeout(() => {
+        checkOnlyQuality(downloader.quality[0])
+      }, 70)
+
+      downloader.show = true
+      releases.show = false
+      news.show = false
+      info.show = false
+      season.show = false
+      loader.show = false
     },
     getMainPage: function () {
       if (!loader.show) {
@@ -485,6 +538,8 @@ new Vue({
       season.show = false
       info.show = false
       downloader.show = false
+
+      disableDownloaderBackground()
     },
     getSeasonPage: function () {
       // For first time
@@ -497,6 +552,8 @@ new Vue({
       season.show = true
       info.show = false
       downloader.show = false
+
+      disableDownloaderBackground()
     }
   }
 })

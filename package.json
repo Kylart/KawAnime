@@ -25,6 +25,6 @@
     "malapi": "0.0.3",
     "node-nyaa-api": "latest",
     "progressbar.js": "^1.0.1",
-    "vue-material": "^0.4.1"
+    "vue-material": "^0.4.3"
   }
 }

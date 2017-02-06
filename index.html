@@ -61,48 +61,65 @@
           <div id="footer-back-left"></div>
           <div id="footer-back-right"></div>
 
+          <div class="downloader-header"></div>
+
           <div class="mdl-grid mdl-layout__content mdl-typography--text-center downloader-form-container">
             <div class="mdl-cell mdl-cell--12-col">
               <md-input-container class="downloader-input">
-                <label>Name of the anime...</label>
-                <md-textarea></md-textarea>
+                <label><p>Name of the anime...</p></label>
+                <md-input autofocus style="color: rgba(255, 255, 255, 0.8);"></md-input>
+              </md-input-container>
+            </div>
+
+
+            <div class="mdl-cell mdl-cell--12-col">
+              <md-input-container class="downloader-input">
+                <label><p>From episode...</p></label>
+                <md-input style="color: rgba(255, 255, 255, 0.8);"></md-input>
               </md-input-container>
             </div>
             <div class="mdl-cell mdl-cell--12-col">
               <md-input-container class="downloader-input">
-                <label>From episode...</label>
-                <md-textarea></md-textarea>
-              </md-input-container>
-            </div>
-            <div class="mdl-cell mdl-cell--12-col">
-              <md-input-container class="downloader-input">
-                <label>Until episode...</label>
-                <md-textarea></md-textarea>
+                <label><p>Until episode...</p></label>
+                <md-input style="color: rgba(255, 255, 255, 0.8);"></md-input>
               </md-input-container>
             </div>
 
             <div class="mdl-cell mdl-cell--12-col">
+              <!-- Would be cool to uncheck those boxes without clicking on it after 70ms-->
               <div class="mdl-grid">
                 <div class="mdl-cell mdl-cell--4-col">
-                  <md-checkbox id="my-test1" name="my-test1" v-model="checkbox">
-                    <p>480p</p>
+                  <md-checkbox type="checkbox" class="md-warn"
+                               id="480p"
+                               name="480p"
+                               md-value="480p" value="480p"
+                               v-model="quality">
+                    <h6>480p</h6>
                   </md-checkbox>
                 </div>
                 <div class="mdl-cell mdl-cell--4-col">
-                  <md-checkbox id="my-test1" name="my-test1" v-model="checkbox">
-                    <p>720p</p>
+                  <md-checkbox type="checkbox"
+                               id="720p"
+                               name="720p"
+                               md-value="720p" value="720p"
+                               v-model="quality">
+                    <h6>720p</h6>
                   </md-checkbox>
                 </div>
                 <div class="mdl-cell mdl-cell--4-col">
-                  <md-checkbox id="my-test1" name="my-test1" v-model="checkbox">
-                    <p>1080p</p>
+                  <md-checkbox type="checkbox"
+                               id="1080p"
+                               name="1080p"
+                               md-value="1080p" value="1080p"
+                               v-model="quality">
+                    <h6>1080p</h6>
                   </md-checkbox>
                 </div>
               </div>
             </div>
 
-            <div class="mdl-cell mdl-cell--12-col">
-              <md-button class="md-raised">Download!</md-button>
+            <div class="mdl-cell mdl-cell--12-col" id="download-button">
+              <md-button class="md-raised" @click="download()"><h6>Download!</h6></md-button>
             </div>
           </div>
 
@@ -496,28 +513,27 @@
 </div>
 
 <script>
-    require('./renderer.js')
-    document.getElementById('container').style.display = 'block'
+//  require('./renderer.js')
+//  document.getElementById('container').style.display = 'block'
 
-    //    const isOnline = require('is-online')
-    //
-    //    isOnline(function(err, online) {
-    //        if (err) throw err
-    //
-    //        if(online)
-    //        {
-    //            require('./renderer.js')
-    //            document.getElementById('container').style.display = 'block'
-    //        }
-    //        else
-    //        {
-    //            document.getElementById('not-online').style.display = 'block'
-    //
-    //            document.getElementById('not-online-button').addEventListener('click', function () {
-    //                location.reload()
-    //            })
-    //        }
-    //    })
+  const isOnline = require('is-online')
+
+  isOnline(function (err, online) {
+    if (err) throw err
+
+    if (online) {
+      require('./renderer.js')
+      document.getElementById('container').style.display = 'block'
+    }
+    else
+    {
+      document.getElementById('not-online').style.display = 'block'
+
+      document.getElementById('not-online-button').addEventListener('click', function () {
+        location.reload()
+      })
+    }
+  })
 </script>
 </body>
 </html>
