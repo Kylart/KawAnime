@@ -179,7 +179,7 @@ body
 #download-button .md-button
 {
     background-color: rgba(40, 40, 40, 0.8);
-    margin-top: 5%;
+    margin-top: 15%;
     color: rgba(255, 255, 255, 0.8);
     margin-right: 3%;
 }
@@ -194,6 +194,20 @@ body
 {
     justify-content: center;
     align-items: center;
+    background-color: rgba(55, 55, 55, 0.5);
+    margin-left: 10%;
+    margin-right: 10%;
+    position: inherit;
+}
+
+.dummy-cell
+{
+    height: 5%;
+}
+
+.md-input-container
+{
+    width: 35%;
 }
 
 .downloader-input
@@ -220,7 +234,12 @@ body
     color: rgba(255, 255, 255, 0.8);
 }
 
-/* ----------------- INFOS ----------------- */
+.md-radio .md-radio-container
+{
+    border: 2px solid rgba(255, 255, 255, 0.5);
+}
+
+    /* ----------------- INFOS ----------------- */
 #info-container
 {
     width: 100%;
@@ -441,7 +460,7 @@ body
 
 .md-input-container
 {
-    width: 20%;
+    /*width: 20%;*/
 }
 
 .field-group

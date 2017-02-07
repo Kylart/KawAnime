@@ -4,7 +4,7 @@
     <inspection_tool class="HtmlUnknownAttribute" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="myValues">
         <value>
-          <list size="14">
+          <list size="15">
             <item index="0" class="java.lang.String" itemvalue="@keydown.enter" />
             <item index="1" class="java.lang.String" itemvalue="v-on:click" />
             <item index="2" class="java.lang.String" itemvalue="v-bind:style" />
@@ -19,6 +19,7 @@
             <item index="11" class="java.lang.String" itemvalue="@click" />
             <item index="12" class="java.lang.String" itemvalue="v-md-theme" />
             <item index="13" class="java.lang.String" itemvalue="v-bind:title" />
+            <item index="14" class="java.lang.String" itemvalue="@submit.stop.prevent" />
           </list>
         </value>
       </option>
@@ -27,7 +28,7 @@
     <inspection_tool class="HtmlUnknownTag" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="myValues">
         <value>
-          <list size="18">
+          <list size="20">
             <item index="0" class="java.lang.String" itemvalue="nobr" />
             <item index="1" class="java.lang.String" itemvalue="noembed" />
             <item index="2" class="java.lang.String" itemvalue="comment" />
@@ -46,11 +47,14 @@
             <item index="15" class="java.lang.String" itemvalue="md-ink-ripple" />
             <item index="16" class="java.lang.String" itemvalue="md-textarea" />
             <item index="17" class="java.lang.String" itemvalue="md-checkbox" />
+            <item index="18" class="java.lang.String" itemvalue="md-radio" />
+            <item index="19" class="java.lang.String" itemvalue="md-theme" />
           </list>
         </value>
       </option>
       <option name="myCustomValuesEnabled" value="true" />
     </inspection_tool>
+    <inspection_tool class="JSUnfilteredForInLoop" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="RequiredAttributes" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="myAdditionalRequiredHtmlAttributes" value="src" />
     </inspection_tool>

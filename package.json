@@ -19,12 +19,13 @@
     "electron": "^1.4.15"
   },
   "dependencies": {
+    "electron": "^1.4.15",
     "find-remove": "^1.0.0",
     "is-online": "^5.2.0",
     "mal-scraper": "^1.0.9",
     "malapi": "0.0.3",
     "node-nyaa-api": "latest",
     "progressbar.js": "^1.0.1",
-    "vue-material": "^0.4.3"
+    "vue-material": "^0.6.3"
   }
 }

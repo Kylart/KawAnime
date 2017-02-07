@@ -4,8 +4,7 @@
   <meta charset="UTF-8">
   <title>KawAnime</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-  <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.indigo-pink.min.css">
-  <link href="https://unpkg.com/animate.css@3.5.1/animate.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.indigo-red.min.css">
   <link rel="stylesheet" href="node_modules/vue-material/dist/vue-material.css">
   <link rel="stylesheet" href="app/style.css">
   <script src="https://code.getmdl.io/1.2.1/material.min.js"></script>
@@ -62,66 +61,69 @@
           <div id="footer-back-right"></div>
 
           <div class="downloader-header"></div>
+            <div class="mdl-grid mdl-layout__content mdl-typography--text-center downloader-form-container">
+              <div class="dummy-cell mdl-cell mdl-cell--12-col"></div>
+              <div class="mdl-cell mdl-cell--12-col">
+                <form novalidate @submit.stop.prevent="animeNameNext">
+                  <md-input-container id="anime-name" class="downloader-input">
+                    <label><p>Name of the anime...</p></label>
+                    <md-input autofocus v-model="animeName" id="animeName-input"
+                              style="color: rgba(255, 255, 255, 0.8);"></md-input>
+                  </md-input-container>
+                </form>
+              </div>
 
-          <div class="mdl-grid mdl-layout__content mdl-typography--text-center downloader-form-container">
-            <div class="mdl-cell mdl-cell--12-col">
-              <md-input-container class="downloader-input">
-                <label><p>Name of the anime...</p></label>
-                <md-input autofocus style="color: rgba(255, 255, 255, 0.8);"></md-input>
-              </md-input-container>
-            </div>
+              <div class="mdl-cell mdl-cell--12-col">
+                <form novalidate @submit.stop.prevent="fromEpNext" @keydown.delete="fromEpPrevious">
+                  <md-input-container id="fromEp" class="downloader-input">
+                    <label><p>From episode...</p></label>
+                    <md-input type="number" v-model="fromEp" id="fromEp-input"
+                              style="color: rgba(255, 255, 255, 0.8);"></md-input>
+                  </md-input-container>
+                </form>
+              </div>
+              <div class="mdl-cell mdl-cell--12-col">
+                <form novalidate @submit.stop.prevent="untilEpNext" @keydown.delete="untilEpPrevious">
+                  <md-input-container id="untilEp" class="downloader-input">
+                    <label><p>Until episode...</p></label>
+                    <md-input type="number" v-model="untilEp" id="untilEp-input" style="color:
+                    rgba(255, 255, 255, 0.8);"></md-input>
+                  </md-input-container>
+                </form>
+              </div>
 
-
-            <div class="mdl-cell mdl-cell--12-col">
-              <md-input-container class="downloader-input">
-                <label><p>From episode...</p></label>
-                <md-input style="color: rgba(255, 255, 255, 0.8);"></md-input>
-              </md-input-container>
-            </div>
-            <div class="mdl-cell mdl-cell--12-col">
-              <md-input-container class="downloader-input">
-                <label><p>Until episode...</p></label>
-                <md-input style="color: rgba(255, 255, 255, 0.8);"></md-input>
-              </md-input-container>
-            </div>
-
-            <div class="mdl-cell mdl-cell--12-col">
-              <!-- Would be cool to uncheck those boxes without clicking on it after 70ms-->
-              <div class="mdl-grid">
-                <div class="mdl-cell mdl-cell--4-col">
-                  <md-checkbox type="checkbox" class="md-warn"
-                               id="480p"
-                               name="480p"
-                               md-value="480p" value="480p"
-                               v-model="quality">
-                    <h6>480p</h6>
-                  </md-checkbox>
-                </div>
-                <div class="mdl-cell mdl-cell--4-col">
-                  <md-checkbox type="checkbox"
-                               id="720p"
-                               name="720p"
-                               md-value="720p" value="720p"
-                               v-model="quality">
-                    <h6>720p</h6>
-                  </md-checkbox>
-                </div>
-                <div class="mdl-cell mdl-cell--4-col">
-                  <md-checkbox type="checkbox"
-                               id="1080p"
-                               name="1080p"
-                               md-value="1080p" value="1080p"
-                               v-model="quality">
-                    <h6>1080p</h6>
-                  </md-checkbox>
+              <div class="mdl-cell mdl-cell--12-col">
+                <md-theme md-name="radio">
+                <div class="mdl-grid">
+                  <div class="mdl-cell mdl-cell--4-col">
+                    <md-radio v-model="quality"
+                              id="480p"
+                              name="480p"
+                              md-value="480p"><h6>480p</h6>
+                    </md-radio>
+                  </div>
+                  <div class="mdl-cell mdl-cell--4-col">
+                    <md-radio v-model="quality"
+                              id="720p"
+                              name="720p"
+                              md-value="720p"><h6>720p</h6>
+                    </md-radio>
+                  </div>
+                  <div class="mdl-cell mdl-cell--4-col">
+                    <md-radio v-model="quality"
+                              id="1080p"
+                              name="1080p"
+                              md-value="1080p"><h6>1080p</h6>
+                    </md-radio>
+                  </div>
                 </div>
               </div>
             </div>
-
-            <div class="mdl-cell mdl-cell--12-col" id="download-button">
-              <md-button class="md-raised" @click="download()"><h6>Download!</h6></md-button>
+            <div class="mdl-grid">
+              <div class="mdl-cell mdl-cell--5-col mdl-cell--5-offset" id="download-button">
+                <md-button id="downloader-button" class="md-raised" @click="download()"><h6>Download!</h6></md-button>
+              </div>
             </div>
-          </div>
 
 
         </div>
@@ -513,27 +515,27 @@
 </div>
 
 <script>
-//  require('./renderer.js')
-//  document.getElementById('container').style.display = 'block'
+  require('./renderer.js')
+  document.getElementById('container').style.display = 'block'
 
-  const isOnline = require('is-online')
-
-  isOnline(function (err, online) {
-    if (err) throw err
-
-    if (online) {
-      require('./renderer.js')
-      document.getElementById('container').style.display = 'block'
-    }
-    else
-    {
-      document.getElementById('not-online').style.display = 'block'
-
-      document.getElementById('not-online-button').addEventListener('click', function () {
-        location.reload()
-      })
-    }
-  })
+//  const isOnline = require('is-online')
+//
+//  isOnline(function (err, online) {
+//    if (err) throw err
+//
+//    if (online) {
+//      require('./renderer.js')
+//      document.getElementById('container').style.display = 'block'
+//    }
+//    else
+//    {
+//      document.getElementById('not-online').style.display = 'block'
+//
+//      document.getElementById('not-online-button').addEventListener('click', function () {
+//        location.reload()
+//      })
+//    }
+//  })
 </script>
 </body>
 </html>

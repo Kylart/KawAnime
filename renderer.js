@@ -30,11 +30,19 @@ const VueMaterial = require('vue-material')
 
 Vue.use(VueMaterial)
 
-Vue.material.theme.register('default', {
-  primary: 'white',
-  accent: 'indigo',
-  warn: 'deep-orange',
-  background: 'grey'
+Vue.material.registerTheme({
+  default: {
+    primary: 'white',
+    accent: 'indigo',
+    warn: 'deep-orange',
+    background: 'grey'
+  },
+  radio: {
+    primary: 'white',
+    accent: 'pink',
+    warn: 'deep-orange',
+    background: 'grey'
+  }
 })
 
 /* -----------------  FUNCTIONS  ----------------- */
@@ -247,36 +255,10 @@ function disableDownloaderBackground() {
   document.getElementsByClassName('mdl-layout__content')[0].style.backgroundImage = "url('')"
 }
 
-function checkOnlyQuality(quality) {
-  switch (quality)
-  {
-    case '480p':
-      document.getElementsByName('720p')[0].click()
-      document.getElementsByName('1080p')[0].click()
-
-      break
-
-    case '720p':
-      document.getElementsByName('480p')[0].click()
-      document.getElementsByName('1080p')[0].click()
-
-      break
-
-    case '1080p':
-      document.getElementsByName('720p')[0].click()
-      document.getElementsByName('480p')[0].click()
-
-      break
-
-    default:
-      break
-  }
-}
-
 /* -------------------- END FUNCTIONS ----------------- */
 
 // First research at kawAnime's start
-// getLatest()
+getLatest()
 
 // Getting the news in advance
 getNews()
@@ -295,11 +277,59 @@ let downloader = new Vue({
   data: {
     show: false,
     display: "none",
-    quality: ['720p']
+    quality: '720p',
+    animeName: '',
+    fromEp: '',
+    untilEp: ''
   },
   methods: {
     download: function () {
-      console.log(this.quality)
+      console.log(`Retrieving ${this.animeName} from ${this.fromEp} to ${this.untilEp}...`)
+
+      const quality = this.quality
+      const animeName = this.animeName
+      const fromEp = this.fromEp
+      const untilEp = this.untilEp
+
+      Nyaa.search(`[HorribleSubs] ${quality} ${animeName}`, (err, articles) =>{
+        if (err) throw err
+
+        let animes = []
+
+        for (let article in articles)
+          animes.push(articles[article])
+
+        animes.forEach( (elem) => {
+          console.log(elem)
+          const url = elem.link
+          const epNumber = parseInt(elem.title.split(' ').reverse()[1])
+
+          if (epNumber >= fromEp && epNumber <= untilEp)
+            window.open(`${url}&magnet=1`)
+        })
+      })
+
+      this.untilEp = ''
+      this.fromEp = ''
+      this.animeName = ''
+    },
+    animeNameNext: function () {
+      document.getElementById('fromEp-input').focus()
+    },
+    fromEpNext: function () {
+      document.getElementById('untilEp-input').focus()
+    },
+    untilEpNext: function () {
+      document.getElementById('animeName-input').focus()
+      document.getElementById('downloader-button').click()
+    },
+    fromEpPrevious: function () {
+      if (this.fromEp === '')
+        document.getElementById('animeName-input').focus()
+    },
+    untilEpPrevious: function () {
+      if (this.untilEp === '')
+        document.getElementById('fromEp-input').focus()
     }
   }
 })
@@ -506,10 +536,6 @@ new Vue({
         downloader.display = "block"
 
       setDownloaderBackground()
-
-      setTimeout(() => {
-        checkOnlyQuality(downloader.quality[0])
-      }, 70)
 
       downloader.show = true
       releases.show = false
