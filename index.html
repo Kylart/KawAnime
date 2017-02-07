@@ -173,8 +173,7 @@
         </div>
         <div id="info-container" v-if="show" v-bind:style="{ display: display }">
           <md-button @click="back()"
-                     id="back-button"
-                     class="md-raised">
+                     id="back-button" class="md-raised md-accent">
             Back
           </md-button>
           <div class="mdl-grid">
@@ -251,7 +250,6 @@
           </div>
         </div>
         <div id="season-info-container"
-             v-md-theme="'default'"
              v-if="show"
              v-bind:style="{ display: display }">
           <div id="season-form-container">

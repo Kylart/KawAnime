@@ -35,7 +35,7 @@ Vue.material.registerTheme({
     primary: 'white',
     accent: 'indigo',
     warn: 'deep-orange',
-    background: 'grey'
+    background: 'white'
   },
   radio: {
     primary: 'white',

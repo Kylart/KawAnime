@@ -205,7 +205,7 @@ body
     height: 5%;
 }
 
-.md-input-container
+.md-input-container.downloader-input
 {
     width: 35%;
 }
@@ -460,7 +460,7 @@ body
 
 .md-input-container
 {
-    /*width: 20%;*/
+    width: 20%;
 }
 
 .field-group
