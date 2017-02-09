@@ -16,7 +16,8 @@
   "author": "Kylart",
   "license": "MIT",
   "devDependencies": {
-    "electron": "^1.4.15"
+    "electron": "^1.4.15",
+    "request": "latest"
   },
   "dependencies": {
     "electron": "^1.4.15",
@@ -26,6 +27,7 @@
     "malapi": "0.0.3",
     "node-nyaa-api": "latest",
     "progressbar.js": "^1.0.1",
-    "vue-material": "^0.6.3"
+    "vue-material": "^0.6.3",
+    "request": "latest"
   }
 }

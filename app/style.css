@@ -240,6 +240,7 @@ body
 }
 
     /* ----------------- INFOS ----------------- */
+/*noinspection CssOptimizeSimilarProperties*/
 #info-container
 {
     width: 100%;

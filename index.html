@@ -68,7 +68,7 @@
                   <md-input-container id="anime-name" class="downloader-input">
                     <label><p>Name of the anime...</p></label>
                     <md-input autofocus v-model="animeName" id="animeName-input"
-                              style="color: rgba(255, 255, 255, 0.8);"></md-input>
+                              style="color: rgba(255, 255, 255, 0.8);text-shadow: 0 0 0 rgba(255, 255, 255, 0.8); "></md-input>
                   </md-input-container>
                 </form>
               </div>
@@ -94,29 +94,30 @@
 
               <div class="mdl-cell mdl-cell--12-col">
                 <md-theme md-name="radio">
-                <div class="mdl-grid">
-                  <div class="mdl-cell mdl-cell--4-col">
-                    <md-radio v-model="quality"
-                              id="480p"
-                              name="480p"
-                              md-value="480p"><h6>480p</h6>
-                    </md-radio>
+                  <div class="mdl-grid">
+                    <div class="mdl-cell mdl-cell--4-col">
+                      <md-radio v-model="quality"
+                                id="480p"
+                                name="480p"
+                                md-value="480p"><h6>480p</h6>
+                      </md-radio>
+                    </div>
+                    <div class="mdl-cell mdl-cell--4-col">
+                      <md-radio v-model="quality"
+                                id="720p"
+                                name="720p"
+                                md-value="720p"><h6>720p</h6>
+                      </md-radio>
+                    </div>
+                    <div class="mdl-cell mdl-cell--4-col">
+                      <md-radio v-model="quality"
+                                id="1080p"
+                                name="1080p"
+                                md-value="1080p"><h6>1080p</h6>
+                      </md-radio>
+                    </div>
                   </div>
-                  <div class="mdl-cell mdl-cell--4-col">
-                    <md-radio v-model="quality"
-                              id="720p"
-                              name="720p"
-                              md-value="720p"><h6>720p</h6>
-                    </md-radio>
-                  </div>
-                  <div class="mdl-cell mdl-cell--4-col">
-                    <md-radio v-model="quality"
-                              id="1080p"
-                              name="1080p"
-                              md-value="1080p"><h6>1080p</h6>
-                    </md-radio>
-                  </div>
-                </div>
+                </md-theme>
               </div>
             </div>
             <div class="mdl-grid">
@@ -255,6 +256,7 @@
           <div id="season-form-container">
             <div class="field-group">
               <md-input-container id="season-container" style="margin-right: 20px;">
+                <!--suppress XmlInvalidId -->
                 <label for="season">Season</label>
                 <md-select name="season" id="season" v-model="season">
                   <md-option value="winter"><a>Winter</a></md-option>
