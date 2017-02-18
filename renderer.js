@@ -300,7 +300,6 @@ let downloader = new Vue({
           animes.push(articles[article])
 
         animes.forEach( (elem) => {
-          console.log(elem)
           const url = elem.link
           const epNumber = parseInt(elem.title.split(' ').reverse()[1])
 
@@ -361,6 +360,8 @@ let releases = new Vue({
       this.show = false
       loader.show = true
       makeResearchOnMal(getNameForResearch(arg))
+
+      console.log("Hello")
 
       disableDownloaderBackground()
 

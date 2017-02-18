@@ -22,7 +22,6 @@
 </div>
 
 <div id="container" style="display: none;">
-  <div class="left-background"></div>
   <div class="mdl-layout mdl-js-layout mdl-layout--fixed-drawer
             mdl-layout--fixed-header">
     <header class="mdl-layout__header">
@@ -61,70 +60,70 @@
           <div id="footer-back-right"></div>
 
           <div class="downloader-header"></div>
-            <div class="mdl-grid mdl-layout__content mdl-typography--text-center downloader-form-container">
-              <div class="dummy-cell mdl-cell mdl-cell--12-col"></div>
-              <div class="mdl-cell mdl-cell--12-col">
-                <form novalidate @submit.stop.prevent="animeNameNext">
-                  <md-input-container id="anime-name" class="downloader-input">
-                    <label><p>Name of the anime...</p></label>
-                    <md-input autofocus v-model="animeName" id="animeName-input"
-                              style="color: rgba(255, 255, 255, 0.8);text-shadow: 0 0 0 rgba(255, 255, 255, 0.8); "></md-input>
-                  </md-input-container>
-                </form>
-              </div>
+          <div class="mdl-grid mdl-layout__content mdl-typography--text-center downloader-form-container">
+            <div class="dummy-cell mdl-cell mdl-cell--12-col"></div>
+            <div class="mdl-cell mdl-cell--12-col">
+              <form novalidate @submit.stop.prevent="animeNameNext">
+                <md-input-container id="anime-name" class="downloader-input">
+                  <label><p>Name of the anime...</p></label>
+                  <md-input autofocus v-model="animeName" id="animeName-input"
+                            style="color: rgba(255, 255, 255, 0.8);text-shadow: 0 0 0 rgba(255, 255, 255, 0.8); "></md-input>
+                </md-input-container>
+              </form>
+            </div>
 
-              <div class="mdl-cell mdl-cell--12-col">
-                <form novalidate @submit.stop.prevent="fromEpNext" @keydown.delete="fromEpPrevious">
-                  <md-input-container id="fromEp" class="downloader-input">
-                    <label><p>From episode...</p></label>
-                    <md-input type="number" v-model="fromEp" id="fromEp-input"
-                              style="color: rgba(255, 255, 255, 0.8); text-shadow: 0 0 0 rgba(255, 255, 255, 0.8)"></md-input>
-                  </md-input-container>
-                </form>
-              </div>
-              <div class="mdl-cell mdl-cell--12-col">
-                <form novalidate @submit.stop.prevent="untilEpNext" @keydown.delete="untilEpPrevious">
-                  <md-input-container id="untilEp" class="downloader-input">
-                    <label><p>Until episode...</p></label>
-                    <md-input type="number" v-model="untilEp" id="untilEp-input" style="color:
+            <div class="mdl-cell mdl-cell--12-col">
+              <form novalidate @submit.stop.prevent="fromEpNext" @keydown.delete="fromEpPrevious">
+                <md-input-container id="fromEp" class="downloader-input">
+                  <label><p>From episode...</p></label>
+                  <md-input type="number" v-model="fromEp" id="fromEp-input"
+                            style="color: rgba(255, 255, 255, 0.8); text-shadow: 0 0 0 rgba(255, 255, 255, 0.8)"></md-input>
+                </md-input-container>
+              </form>
+            </div>
+            <div class="mdl-cell mdl-cell--12-col">
+              <form novalidate @submit.stop.prevent="untilEpNext" @keydown.delete="untilEpPrevious">
+                <md-input-container id="untilEp" class="downloader-input">
+                  <label><p>Until episode...</p></label>
+                  <md-input type="number" v-model="untilEp" id="untilEp-input" style="color:
                     rgba(255, 255, 255, 0.8); text-shadow: 0 0 0 rgba(255, 255, 255, 0.8)"></md-input>
-                  </md-input-container>
-                </form>
-              </div>
+                </md-input-container>
+              </form>
+            </div>
 
-              <div class="mdl-cell mdl-cell--12-col">
-                <md-theme md-name="radio">
-                  <div class="mdl-grid">
-                    <div class="mdl-cell mdl-cell--4-col">
-                      <md-radio v-model="quality"
-                                id="480p"
-                                name="480p"
-                                md-value="480p"><h6>480p</h6>
-                      </md-radio>
-                    </div>
-                    <div class="mdl-cell mdl-cell--4-col">
-                      <md-radio v-model="quality"
-                                id="720p"
-                                name="720p"
-                                md-value="720p"><h6>720p</h6>
-                      </md-radio>
-                    </div>
-                    <div class="mdl-cell mdl-cell--4-col">
-                      <md-radio v-model="quality"
-                                id="1080p"
-                                name="1080p"
-                                md-value="1080p"><h6>1080p</h6>
-                      </md-radio>
-                    </div>
+            <div class="mdl-cell mdl-cell--12-col">
+              <md-theme md-name="radio">
+                <div class="mdl-grid">
+                  <div class="mdl-cell mdl-cell--4-col">
+                    <md-radio v-model="quality"
+                              id="480p"
+                              name="480p"
+                              md-value="480p"><h6>480p</h6>
+                    </md-radio>
                   </div>
-                </md-theme>
-              </div>
+                  <div class="mdl-cell mdl-cell--4-col">
+                    <md-radio v-model="quality"
+                              id="720p"
+                              name="720p"
+                              md-value="720p"><h6>720p</h6>
+                    </md-radio>
+                  </div>
+                  <div class="mdl-cell mdl-cell--4-col">
+                    <md-radio v-model="quality"
+                              id="1080p"
+                              name="1080p"
+                              md-value="1080p"><h6>1080p</h6>
+                    </md-radio>
+                  </div>
+                </div>
+              </md-theme>
             </div>
-            <div class="mdl-grid">
-              <div class="mdl-cell mdl-cell--5-col mdl-cell--5-offset" id="download-button">
-                <md-button id="downloader-button" class="md-raised" @click="download()"><h6>Download!</h6></md-button>
-              </div>
+          </div>
+          <div class="mdl-grid">
+            <div class="mdl-cell mdl-cell--5-col mdl-cell--5-offset" id="download-button">
+              <md-button id="downloader-button" class="md-raised" @click.native="download()"><h6>Download!</h6></md-button>
             </div>
+          </div>
 
 
         </div>
@@ -151,12 +150,12 @@
                     <p style="margin-top: 4px;">Download</p>
                   </md-button>
                   <md-button v-else
-                             @click="download(release.link, release.realTitle)"
+                             @click.native="download(release.link, release.realTitle)"
                              class="md-dense link-download"
                              v-bind:style="styleButton">
                     <p>Download</p>
                   </md-button>
-                  <md-button @click="searchThis(release.realTitle)"
+                  <md-button @click.native="searchThis(release.realTitle)"
                              class="md-dense link-more"
                              v-bind:style="styleButton">
                     <p>More</p>
@@ -173,7 +172,7 @@
           <div class="loader-gif"></div>
         </div>
         <div id="info-container" v-if="show" v-bind:style="{ display: display }">
-          <md-button @click="back()"
+          <md-button @click.native="back()"
                      id="back-button" class="md-raised md-accent">
             Back
           </md-button>
@@ -242,7 +241,7 @@
               <div class="news-synopsis">
                 {{ article.text }}
               </div>
-              <md-button @click="openLink(article.link)"
+              <md-button @click.native="openLink(article.link)"
                          class="md-raised md-primary news-link"
                          v-bind:style="buttonStyle">
                 Open
@@ -273,7 +272,7 @@
               </md-input-container>
 
               <md-button id="season-search" disabled
-                         @click="getThisSeason(year, season)"
+                         @click.native="getThisSeason(year, season)"
                          class="md-raised md-accent">
                 Search
               </md-button>
@@ -314,7 +313,7 @@
                           </div>
                           <div class="producers-more">
                             <p class="producers">{{ anime.producers }}</p>
-                            <md-button @click="searchThis(anime.title)"
+                            <md-button @click.native="searchThis(anime.title)"
                                        class="md-dense season-link-more"
                                        v-bind:style="link">
                               More
@@ -359,7 +358,7 @@
                           </div>
                           <div class="producers-more">
                             <p class="producers">{{ anime.producers }}</p>
-                            <md-button @click="searchThis(anime.title)"
+                            <md-button @click.native="searchThis(anime.title)"
                                        class="md-dense season-link-more"
                                        v-bind:style="link">
                               More
@@ -404,7 +403,7 @@
                           </div>
                           <div class="producers-more">
                             <p class="producers">{{ anime.producers }}</p>
-                            <md-button @click="searchThis(anime.title)"
+                            <md-button @click.native="searchThis(anime.title)"
                                        class="md-dense season-link-more"
                                        v-bind:style="link">
                               More
@@ -449,7 +448,7 @@
                           </div>
                           <div class="producers-more">
                             <p class="producers">{{ anime.producers }}</p>
-                            <md-button @click="searchThis(anime.title)"
+                            <md-button @click.native="searchThis(anime.title)"
                                        class="md-dense season-link-more"
                                        v-bind:style="link">
                               More
@@ -494,7 +493,7 @@
                           </div>
                           <div class="producers-more">
                             <p class="producers">{{ anime.producers }}</p>
-                            <md-button @click="searchThis(anime.title)"
+                            <md-button @click.native="searchThis(anime.title)"
                                        class="md-dense season-link-more"
                                        v-bind:style="link">
                               More
@@ -518,24 +517,24 @@
   require('./renderer.js')
   document.getElementById('container').style.display = 'block'
 
-//  const isOnline = require('is-online')
-//
-//  isOnline(function (err, online) {
-//    if (err) throw err
-//
-//    if (online) {
-//      require('./renderer.js')
-//      document.getElementById('container').style.display = 'block'
-//    }
-//    else
-//    {
-//      document.getElementById('not-online').style.display = 'block'
-//
-//      document.getElementById('not-online-button').addEventListener('click', function () {
-//        location.reload()
-//      })
-//    }
-//  })
+  //  const isOnline = require('is-online')
+  //
+  //  isOnline(function (err, online) {
+  //    if (err) throw err
+  //
+  //    if (online) {
+  //      require('./renderer.js')
+  //      document.getElementById('container').style.display = 'block'
+  //    }
+  //    else
+  //    {
+  //      document.getElementById('not-online').style.display = 'block'
+  //
+  //      document.getElementById('not-online-button').addEventListener('click', function () {
+  //        location.reload()
+  //      })
+  //    }
+  //  })
 </script>
 </body>
 </html>
