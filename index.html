@@ -121,8 +121,19 @@
             </div>
           </div>
           <div class="mdl-grid">
-            <div class="mdl-cell mdl-cell--5-col mdl-cell--5-offset" id="download-button">
-              <md-button id="downloader-button" class="md-raised" @click.native="download()"><h6>Download!</h6></md-button>
+            <div class="mdl-cell mdl-cell--3-col mdl-cell--3-offset download-button">
+              <md-button id="downloader-button"
+                         class="md-raised"
+                         @click.native="download()">
+                <h6>Download!</h6>
+              </md-button>
+            </div>
+            <div class="mdl-cell mdl-cell--3-col download-button">
+              <md-button id="magnet-downloader-button"
+                         class="md-raised"
+                         @click.native="downloadMagnets()">
+                <h6>Get Magnets!</h6>
+              </md-button>
             </div>
           </div>
 

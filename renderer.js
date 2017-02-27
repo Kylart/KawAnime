@@ -14,6 +14,7 @@ const os = require('os')
 const path = require('path')
 const request = require('request')
 const findRemoveSync = require('find-remove')
+const parseTorrent = require('parse-torrent')
 
 // Mal API
 const mal = require('malapi').Anime
@@ -25,6 +26,7 @@ const malScraper = require('mal-scraper')
 /* ----------------- END IMPORTS ----------------- */
 
 const DIR = path.join(os.userInfo().homedir, '.KawAnime')
+const magnetPath = path.join(DIR, 'magnets.txt')
 
 const VueMaterial = require('vue-material')
 
@@ -142,9 +144,6 @@ function getLatest() {
   })
 }
 
-// Set a preference for
-// -- Download torrent file (might have a problem when downloading several)
-// -- Download magnet
 function downloadFile(file_url, name) {
   let req = request({
     method: 'GET',
@@ -153,6 +152,39 @@ function downloadFile(file_url, name) {
 
   let out = fs.createWriteStream(path.join(DIR, `${name}.torrent`))
   req.pipe(out)
+}
+
+function torrent2Magnet(torrentPath) {
+  const torrentFile = parseTorrent(fs.readFileSync(torrentPath))
+
+  const infoHash = torrentFile.infoHash
+
+  return parseTorrent.toMagnetURI({
+    infoHash: this.infoHash
+  })
+}
+
+function magnet2File(torrentPath) {
+  const torrentFile = parseTorrent(fs.readFileSync(torrentPath))
+
+  const torrentName = torrentFile.name
+
+  // Convert to magnet
+  const torrentHash = parseTorrent.toMagnetURI({
+    infoHash: torrentFile.infoHash
+  })
+
+  // Write magnet on ~/KawAnime/magnets.txt
+  // Date
+  const date = new Date()
+  // Write name of torrent
+  fs.appendFileSync(magnetPath, `${date.toDateString()}: ${torrentName}`)
+
+  // Write hashCode
+  fs.appendFileSync(magnetPath, torrentHash)
+
+  // Blank line afterwards
+  fs.appendFileSync(magnetPath, '')
 }
 
 function startTorrent(file_url, name) {
@@ -311,6 +343,35 @@ let downloader = new Vue({
       this.untilEp = ''
       this.fromEp = ''
       this.animeName = ''
+    },
+    downloadMagnets: function () {
+      console.log(`Retrieving ${this.animeName} from ${this.fromEp} to ${this.untilEp}...`)
+
+      const quality = this.quality
+      const animeName = this.animeName
+      const fromEp = this.fromEp
+      const untilEp = this.untilEp
+
+      Nyaa.search(`[HorribleSubs] ${quality} ${animeName}`, (err, articles) =>{
+        if (err) throw err
+
+        let animes = []
+
+        for (let article in articles)
+          animes.push(articles[article])
+
+        animes.forEach( (elem) => {
+          const url = elem.link
+          const epNumber = parseInt(elem.title.split(' ').reverse()[1])
+
+          // Downloading torrent files
+          if (epNumber >= fromEp && epNumber <= untilEp)
+            downloadFile(url, path.join(DIR, `${name}.torrent`))
+        })
+
+        // Here we convert the torrent files to magnets
+
+      })
     },
     animeNameNext: function () {
       document.getElementById('fromEp-input').focus()

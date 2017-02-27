@@ -185,15 +185,24 @@ body
     width: 24%;
 }
 
-#download-button .md-button
+.download-button .md-button
 {
-    background-color: rgba(40, 40, 40, 0.8);
     margin-top: 15%;
     color: rgba(255, 255, 255, 0.8);
     margin-right: 3%;
 }
 
-#download-button h6
+#downloader-button
+{
+    background-color: rgba(40, 40, 40, 0.8);
+}
+
+#magnet-downloader-button
+{
+    background-color: rgba(40, 40, 40, 0.8);
+}
+
+.download-button h6
 {
     margin-bottom: 0;
     margin-top: 0;
