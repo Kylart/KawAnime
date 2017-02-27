@@ -26,8 +26,9 @@
             mdl-layout--fixed-header">
     <header class="mdl-layout__header">
       <div class="mdl-layout__header-row">
-        <div class="mdl-layout-spacer">
-          <h4 class="greetings">Welcome {{ username }} !</h4></div>
+        <div class="mdl-layout-spacer dragable">
+          <h4 class="greetings">Welcome {{ username }} !</h4>
+        </div>
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable
                   mdl-textfield--floating-label mdl-textfield--align-right">
           <label class="mdl-button mdl-js-button mdl-button--icon"
@@ -41,7 +42,7 @@
         </div>
       </div>
     </header>
-    <div class="mdl-layout__drawer">
+    <div class="mdl-layout__drawer dragable">
       <span class="mdl-layout-title">KawAnime</span>
       <nav class="mdl-navigation">
         <a class="mdl-navigation__link" href="#" v-on:click="getDownloader()">Download an anime</a>

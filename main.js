@@ -26,7 +26,7 @@ function createWindow () {
   // Create the browser window.
   mainWindow = new BrowserWindow({
     width: 1200,
-    height: 800,
+    height: 820,
     titleBarStyle: 'hidden',
     show: false,
     title: 'KawAnime',
