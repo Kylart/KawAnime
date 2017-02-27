@@ -1,9 +1,18 @@
-
 body
 {
     width: 100%;
     height: 100%;
     margin: 0;
+}
+
+.dragable
+{
+    -webkit-app-region: drag;
+}
+
+.non-dragable
+{
+    -webkit-app-region: no-drag;
 }
 
 /* If the user has no internet connection */
@@ -26,7 +35,7 @@ body
 /*noinspection CssOptimizeSimilarProperties*/
 .mdl-layout__drawer
 {
-    background-image: url('../resources/leftBackground-1.png');
+    background-image: url('../resources/leftBackground-2.png');
     background-position: left bottom;
     background-repeat: no-repeat;
     background-size: 100%;

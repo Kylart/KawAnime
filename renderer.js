@@ -361,8 +361,6 @@ let releases = new Vue({
       loader.show = true
       makeResearchOnMal(getNameForResearch(arg))
 
-      console.log("Hello")
-
       disableDownloaderBackground()
 
       lastPage = 'release'

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<html xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="UTF-8">
   <title>KawAnime</title>
@@ -132,13 +132,13 @@
             <div class="mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet">
               <div class="elem">
                 <md-ink-ripple></md-ink-ripple>
-                <h6 v-bind:title="release.title">{{ release.title }}</h6>
+                <h6  v-bind:title="release.title">{{ release.title }}</h6>
                 <div class="picture-container">
                   <div class="picture"
                        v-bind:style="{ content : 'url(' + release.picture + ')'}"></div>
                 </div>
                 <div class="text-container">
-                  <div class="synopsis">
+                  <div class="synopsis ">
                     <p>{{ release.synopsis }}</p>
                   </div>
                 </div>
@@ -182,14 +182,14 @@
               <div v-bind:style="{ content: 'url(' + infos.image + ')'}"></div>
             </div>
             <div id="title-synopsis-container" class="mdl-cell mdl-cell--9-col mdl-cell--8-col-tablet">
-              <div id="info-title">
+              <div id="info-title" >
                 <h5>{{ infos.title }} [{{ infos.type }}]</h5>
               </div>
-              <div id="synopsis-container">
+              <div id="synopsis-container" >
                 <pre>{{ infos.synopsis }}</pre>
               </div>
             </div>
-            <div class="infos-bottom-left mdl-cell mdl-cell--3-col mdl-cell--4-col-phone">
+            <div class="infos-bottom-left mdl-cell mdl-cell--3-col mdl-cell--4-col-phone ">
               <h6>Japanese title: </h6>
               <h6 class="infos-japTitle">{{ infos.japTitle }}</h6>
               <h6>{{ infos.episodes }} episodes</h6>
@@ -197,16 +197,16 @@
               <p class="airing">{{ infos.aired }}</p>
             </div>
             <div class="infos-bottom-middle mdl-cell mdl-cell--7-col mdl-cell--6-col-phone">
-              <div class="studios">
+              <div class="studios ">
                 <h6>Studios</h6>
                 <ul>
                   <li v-for="studio in infos.studios">{{ studio }}</li>
                 </ul>
               </div>
-              <div class="genres">
+              <div class="genres ">
                 <h6 class="infos-genresTitle">Genres</h6>
                 <ul>
-                  <li v-for="genre in infos.genres">
+                  <li v-for="genre in infos.genres" >
                     {{ genre }}
                   </li>
                 </ul>
@@ -214,9 +214,9 @@
             </div>
             <div class="infos-bottom-right mdl-cell mdl-cell--2-col mdl-cell--2-col-phone">
               <div class="infos-bottom-right-inside">
-                <h6>Score:</h6>
-                <h4>{{ infos.stats.score.value }}</h4>
-                <h5>{{ infos.stats.ranking }}</h5>
+                <h6 >Score:</h6>
+                <h4 >{{ infos.stats.score.value }}</h4>
+                <h5 >{{ infos.stats.ranking }}</h5>
               </div>
             </div>
             <div class="characters mdl-cell mdl-cell--12-col mdl-cell--12-col-phone">
@@ -224,8 +224,8 @@
               <div class="mdl-grid">
                 <div v-for="character in infos.characters"
                      class="character mdl-cell mdl-cell--3-col mdl-cell--6-col-phone">
-                  <h6 class="character-name">{{ character.name }}</h6>
-                  <h6 class="seiyuu-name">by {{ character.actor }}</h6>
+                  <h6 class="character-name ">{{ character.name }}</h6>
+                  <h6 class="seiyuu-name ">by {{ character.actor }}</h6>
                 </div>
               </div>
             </div>
@@ -517,24 +517,24 @@
   require('./renderer.js')
   document.getElementById('container').style.display = 'block'
 
-  //  const isOnline = require('is-online')
-  //
-  //  isOnline(function (err, online) {
-  //    if (err) throw err
-  //
-  //    if (online) {
-  //      require('./renderer.js')
-  //      document.getElementById('container').style.display = 'block'
-  //    }
-  //    else
-  //    {
-  //      document.getElementById('not-online').style.display = 'block'
-  //
-  //      document.getElementById('not-online-button').addEventListener('click', function () {
-  //        location.reload()
-  //      })
-  //    }
-  //  })
+//    const isOnline = require('is-online')
+//
+//    isOnline(function (err, online) {
+//      if (err) throw err
+//
+//      if (online) {
+//        require('./renderer.js')
+//        document.getElementById('container').style.display = 'block'
+//      }
+//      else
+//      {
+//        document.getElementById('not-online').style.display = 'block'
+//
+//        document.getElementById('not-online-button').addEventListener('click', function () {
+//          location.reload()
+//        })
+//      }
+//    })
 </script>
 </body>
 </html>
