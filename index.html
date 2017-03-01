@@ -135,9 +135,15 @@
                 <h6>Get Magnets!</h6>
               </md-button>
             </div>
+            <div class="mdl-cell mdl-cell--12-col">
+              <md-snackbar :md-position="vertical + ' ' + horizontal" ref="snackbar" :md-duration="duration">
+                <span>Your magnets are ready, you can open them </span>
+                <md-button class="md-accent"
+                           md-theme="light-blue"
+                           @click.native="openMagnets()">Here!</md-button>
+              </md-snackbar>
+            </div>
           </div>
-
-
         </div>
         <div id="releases" class="mdl-grid" v-if="show">
           <template v-for="release in releases">

@@ -280,7 +280,10 @@ let downloader = new Vue({
     quality: '720p',
     animeName: '',
     fromEp: '',
-    untilEp: ''
+    untilEp: '',
+    vertical: 'top',
+    horizontal: 'center',
+    duration: '4000'
   },
   methods: {
     download: function () {
@@ -367,8 +370,18 @@ let downloader = new Vue({
               fs.appendFileSync(path.join(DIR, 'magnets.txt'), `${uri}\n\n`)
             }
           }
+
+          this.openSnackbar()
         }, 1000)
       })
+    },
+    openSnackbar: function () {
+      this.$refs.snackbar.open();
+    },
+    openMagnets: function () {
+      this.$refs.snackbar.close()
+
+      shell.openItem(path.join(DIR, 'magnets.txt'))
     },
     animeNameNext: function () {
       document.getElementById('fromEp-input').focus()
