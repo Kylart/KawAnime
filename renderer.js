@@ -14,8 +14,9 @@ const os = require('os')
 const path = require('path')
 const request = require('request')
 const findRemoveSync = require('find-remove')
-const bencode = require('bencode')
 const parseTorrent = require('parse-torrent')
+
+const player = require('play-sound')(opts = {})
 
 // Mal API
 const mal = require('malapi').Anime
@@ -372,6 +373,11 @@ let downloader = new Vue({
           }
 
           this.openSnackbar()
+
+          // Nyanpasu! ~
+          player.play(path.join(__dirname, 'resources', 'Nyanpasu.m4a'), (err) => {
+            if (err) throw err
+          })
         }, 1000)
       })
     },

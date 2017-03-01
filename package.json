@@ -20,7 +20,6 @@
     "request": "latest"
   },
   "dependencies": {
-    "bencode": "^0.11.0",
     "electron": "^1.4.15",
     "find-remove": "^1.0.0",
     "is-online": "^5.2.0",
@@ -28,6 +27,7 @@
     "malapi": "0.0.3",
     "node-nyaa-api": "latest",
     "parse-torrent": "^5.8.1",
+    "play-sound": "^1.1.1",
     "progressbar.js": "^1.0.1",
     "request": "latest",
     "vue-material": "^0.7.1"
