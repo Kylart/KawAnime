@@ -69,13 +69,12 @@ body
 
 .picture-container
 {
-    width: 40%;
+    width: 50%;
     float: left;
 }
 
 .picture
 {
-    width: 125px;
     height: 180px;
 }
 
@@ -90,7 +89,7 @@ body
 .synopsis
 {
     height: 80%;
-    padding: 15px 30px 15px 15px;
+    padding: 3% 15% 3% 3%;
     color: rgba(0, 0, 0, 0.74);
     word-wrap: break-word;
     font-size: small;
