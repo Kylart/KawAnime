@@ -14,6 +14,7 @@ const os = require('os')
 const path = require('path')
 const request = require('request')
 const findRemoveSync = require('find-remove')
+const bencode = require('bencode')
 const parseTorrent = require('parse-torrent')
 
 // Mal API
@@ -152,39 +153,6 @@ function downloadFile(file_url, name) {
 
   let out = fs.createWriteStream(path.join(DIR, `${name}.torrent`))
   req.pipe(out)
-}
-
-function torrent2Magnet(torrentPath) {
-  const torrentFile = parseTorrent(fs.readFileSync(torrentPath))
-
-  const infoHash = torrentFile.infoHash
-
-  return parseTorrent.toMagnetURI({
-    infoHash: this.infoHash
-  })
-}
-
-function magnet2File(torrentPath) {
-  const torrentFile = parseTorrent(fs.readFileSync(torrentPath))
-
-  const torrentName = torrentFile.name
-
-  // Convert to magnet
-  const torrentHash = parseTorrent.toMagnetURI({
-    infoHash: torrentFile.infoHash
-  })
-
-  // Write magnet on ~/KawAnime/magnets.txt
-  // Date
-  const date = new Date()
-  // Write name of torrent
-  fs.appendFileSync(magnetPath, `${date.toDateString()}: ${torrentName}`)
-
-  // Write hashCode
-  fs.appendFileSync(magnetPath, torrentHash)
-
-  // Blank line afterwards
-  fs.appendFileSync(magnetPath, '')
 }
 
 function startTorrent(file_url, name) {
@@ -331,7 +299,7 @@ let downloader = new Vue({
         for (let article in articles)
           animes.push(articles[article])
 
-        animes.forEach( (elem) => {
+        animes.forEach((elem) => {
           const url = elem.link
           const epNumber = parseInt(elem.title.split(' ').reverse()[1])
 
@@ -347,11 +315,15 @@ let downloader = new Vue({
     downloadMagnets: function () {
       console.log(`Retrieving ${this.animeName} from ${this.fromEp} to ${this.untilEp}...`)
 
+      // Removing old torrents
+      findRemoveSync(DIR, { extensions: ['.torrent']})
+
       const quality = this.quality
       const animeName = this.animeName
       const fromEp = this.fromEp
       const untilEp = this.untilEp
 
+      // TODO : Need to make only 10 by 10 downloads
       Nyaa.search(`[HorribleSubs] ${quality} ${animeName}`, (err, articles) =>{
         if (err) throw err
 
@@ -360,17 +332,42 @@ let downloader = new Vue({
         for (let article in articles)
           animes.push(articles[article])
 
-        animes.forEach( (elem) => {
+        animes.forEach((elem) => {
           const url = elem.link
           const epNumber = parseInt(elem.title.split(' ').reverse()[1])
+          const name = elem.title.split(' ').slice(0, -1).join(' ')
 
           // Downloading torrent files
           if (epNumber >= fromEp && epNumber <= untilEp)
-            downloadFile(url, path.join(DIR, `${name}.torrent`))
+            downloadFile(url, name)
         })
 
-        // Here we convert the torrent files to magnets
+        // Need to wait for the downloads to be over
+        setTimeout( () => {
+          // Here we convert the torrent files to magnets
+          const dirFiles = fs.readdirSync(DIR)
 
+          // Grabbing all the torrents
+          for (let i = 0; i < dirFiles.length; ++i)
+          {
+            let torrent = dirFiles[i]
+            if (path.extname(torrent) === '.torrent')
+            {
+              const file = fs.readFileSync(path.join(DIR, dirFiles[i]))
+
+              const torrent = parseTorrent(file)
+
+              const name = torrent.name
+              const torrentHash = torrent. infoHash
+              const date = new Date()
+
+              const uri = parseTorrent.toMagnetURI({ infoHash: torrentHash })
+
+              fs.appendFileSync(path.join(DIR, 'magnets.txt'), `${date}: ${name}\n\t`)
+              fs.appendFileSync(path.join(DIR, 'magnets.txt'), `${uri}\n\n`)
+            }
+          }
+        }, 1000)
       })
     },
     animeNameNext: function () {

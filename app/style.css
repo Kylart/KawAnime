@@ -228,6 +228,11 @@ body
     width: 35%;
 }
 
+.md-input-container.md-has-value input, .md-input-container.md-has-value textarea
+{
+    color: rgba(255, 255, 255, 0.8);
+}
+
 .downloader-input
 {
     margin-right: auto;
