@@ -109,7 +109,7 @@ function getLatest() {
 
         // Make the actual research
         try {
-          mal.fromName(tmp.join(' ')).then(result => {
+          mal.fromName(tmp.join(' ')).then( (result) => {
             releases.releases.push({
               realTitle: animes[anime].title,
               title: getNameOnly(animes[anime].title),
@@ -118,19 +118,19 @@ function getLatest() {
               picture: result.image,
               published: animes[anime].published
             })
-          }).then(() => {
+          }).then( () => {
             if (releases.releases.length > 29) {
               releases.releases.sort(byProperty('published'))
               releases.releases.reverse()
               sorted = true
             }
-          }).then(() => {
+          }).then( () => {
             // 35 elements is too much, reducing to 18
             if (sorted)
               while (releases.releases.length > 18)
                 releases.releases.pop()
-          }).then(() => {
-            setTimeout(() => {
+          }).then( () => {
+            setTimeout( () => {
               if (loader.show) {
                 loader.show = false
                 releases.show = true
@@ -169,7 +169,7 @@ function startTorrent(file_url, name) {
 
 function makeResearchOnMal(name) {
 
-  mal.fromName(name).then(anime => {
+  mal.fromName(name).then( (anime) => {
     info.infos.title = anime.title
     info.infos.japTitle = anime.alternativeTitles.japanese[0].slice(10)
     info.infos.image = anime.image
@@ -192,7 +192,7 @@ function makeResearchOnMal(name) {
 }
 
 function getNews() {
-  let tmp = malScraper.getNewsNoDetails(() => {
+  let tmp = malScraper.getNewsNoDetails( () => {
     news.news = tmp
   })
 }
@@ -217,7 +217,7 @@ function getCurrentSeason() {
 }
 
 function fillSeason(seasonalInfo) {
-  seasonalInfo.info.forEach((elem) => {
+  seasonalInfo.info.forEach( (elem) => {
     switch (elem.type) {
       case 'TV':
         season.TVs.push(elem)
@@ -303,7 +303,7 @@ let downloader = new Vue({
         for (let article in articles)
           animes.push(articles[article])
 
-        animes.forEach((elem) => {
+        animes.forEach( (elem) => {
           const url = elem.link
           const epNumber = parseInt(elem.title.split(' ').reverse()[1])
 
@@ -336,7 +336,7 @@ let downloader = new Vue({
         for (let article in articles)
           animes.push(articles[article])
 
-        animes.forEach((elem) => {
+        animes.forEach( (elem) => {
           const url = elem.link
           const epNumber = parseInt(elem.title.split(' ').reverse()[1])
           const name = elem.title.split(' ').slice(0, -1).join(' ')
@@ -574,7 +574,7 @@ let season = new Vue({
     getGenres: function (genres) {
       let result = ''
 
-      genres.forEach((elem) => {
+      genres.forEach( (elem) => {
         result += `${elem}, `
       })
 

@@ -23,7 +23,7 @@
     "electron": "^1.4.15",
     "find-remove": "^1.0.0",
     "is-online": "^5.2.0",
-    "mal-scraper": "^1.0.9",
+    "mal-scraper": "latest",
     "malapi": "0.0.3",
     "node-nyaa-api": "latest",
     "parse-torrent": "^5.8.1",
