@@ -274,7 +274,7 @@ let seasonalInfo = malScraper.getSeason(getCurrentSeason().year, getCurrentSeaso
 let lastPage = 'release'
 
 let downloader = new Vue({
-  el: '.download-container',
+  el: '#download-container',
   data: {
     show: false,
     display: "none",

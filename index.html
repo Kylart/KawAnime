@@ -54,7 +54,7 @@
     </div>
     <main class="mdl-layout__content">
       <div class="page-content">
-        <div class="download-container"
+        <div id="download-container"
              v-if="show"
              v-bind:style="{ display: display }">
           <div id="footer-back-left"></div>
@@ -77,8 +77,10 @@
               <form novalidate @submit.stop.prevent="fromEpNext" @keydown.delete="fromEpPrevious">
                 <md-input-container id="fromEp" class="downloader-input">
                   <label><p>From episode...</p></label>
-                  <md-input type="number" v-model="fromEp" id="fromEp-input"
-                            style="color: rgba(255, 255, 255, 0.8); text-shadow: 0 0 0 rgba(255, 255, 255, 0.8)"></md-input>
+                  <md-input type="number"
+                            v-model="fromEp"
+                            id="fromEp-input"
+                            style="text-shadow: 0 0 0 rgba(255, 255, 255, 0.8)"></md-input>
                 </md-input-container>
               </form>
             </div>
@@ -86,8 +88,10 @@
               <form novalidate @submit.stop.prevent="untilEpNext" @keydown.delete="untilEpPrevious">
                 <md-input-container id="untilEp" class="downloader-input">
                   <label><p>Until episode...</p></label>
-                  <md-input type="number" v-model="untilEp" id="untilEp-input" style="color:
-                    rgba(255, 255, 255, 0.8); text-shadow: 0 0 0 rgba(255, 255, 255, 0.8)"></md-input>
+                  <md-input type="number"
+                            v-model="untilEp"
+                            id="untilEp-input"
+                            style="text-shadow: 0 0 0 rgba(255, 255, 255, 0.8)"></md-input>
                 </md-input-container>
               </form>
             </div>
@@ -285,7 +289,7 @@
 
               <md-input-container id="year-container">
                 <label>Year</label>
-                <md-input type="number" v-model="year"
+                <md-input type="number" v-model="year" style="color; rgba(0, 0, 0, 0.87);"
                           @keydown.enter="getThisSeason(year, season)"></md-input>
               </md-input-container>
 

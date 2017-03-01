@@ -160,7 +160,7 @@ body
     margin-top: 10%;
 }
 
-.download-container
+#download-container
 {
     display: none;
     height: 100%;
@@ -240,19 +240,19 @@ body
     color: white;
 }
 
-.download-container p
+#download-container p
 {
     color: rgba(255, 255, 255, 0.8);
 }
 
-.download-container h6
+#download-container h6
 {
     margin-top: 0;
     margin-bottom: 0;
     color: rgba(255, 255, 255, 0.8);
 }
 
-.download-container textarea
+#download-container textarea
 {
     color: rgba(255, 255, 255, 0.8);
 }
