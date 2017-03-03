@@ -1,18 +1,17 @@
+/**
+ *
+ * This file is the main one in the rendering process. Here we navigate
+ * between the vue objects and set up most important functions.
+ *
+ */
+
 /* ------------------ IMPORTS ------------------ */
 
 const remote = require('electron').remote
 const main = remote.require('./main.js')
-const shell = require('electron').shell
 const fs = require('fs')
 const os = require('os')
-
-// Those are needed to download the torrents
 const path = require('path')
-const request = require('request')
-const findRemoveSync = require('find-remove')
-const parseTorrent = require('parse-torrent')
-
-const player = require('play-sound')(opts = {})
 
 // Mal API
 const mal = require('malapi').Anime
@@ -22,9 +21,6 @@ const Nyaa = require('node-nyaa-api')
 const malScraper = require('mal-scraper')
 
 /* ----------------- END IMPORTS ----------------- */
-
-const DIR = path.join(os.userInfo().homedir, '.KawAnime')
-const magnetPath = path.join(DIR, 'magnets.txt')
 
 /* ----------------- VUE IMPORTS ----------------- */
 
@@ -152,27 +148,6 @@ function getLatest() {
       }
     }
   })
-}
-
-function downloadFile(file_url, name) {
-  let req = request({
-    method: 'GET',
-    uri: file_url
-  })
-
-  let out = fs.createWriteStream(path.join(DIR, `${name}.torrent`))
-  req.pipe(out)
-}
-
-function startTorrent(file_url, name) {
-  // Removing old torrents
-  findRemoveSync(DIR, {extensions: ['.torrent']})
-
-  // Downloading the new ones
-  downloadFile(file_url, name)
-
-  // Opening them
-  main.openTorrents()
 }
 
 function makeResearchOnMal(name) {
