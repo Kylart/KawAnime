@@ -26,6 +26,10 @@ const malScraper = require('mal-scraper')
 const DIR = path.join(os.userInfo().homedir, '.KawAnime')
 const magnetPath = path.join(DIR, 'magnets.txt')
 
+/* ----------------- VUE IMPORTS ----------------- */
+
+require(path.join(__dirname, 'downloader', 'index.js'))
+
 const VueMaterial = require('vue-material')
 
 Vue.use(VueMaterial)
@@ -283,135 +287,6 @@ let downloader = new Vue({
   data: {
     show: false,
     display: "none",
-    quality: '720p',
-    animeName: '',
-    fromEp: '',
-    untilEp: '',
-    vertical: 'top',
-    horizontal: 'center',
-    duration: '4000'
-  },
-  methods: {
-    download: function () {
-      console.log(`Retrieving ${this.animeName} from ${this.fromEp} to ${this.untilEp}...`)
-
-      const quality = this.quality
-      const animeName = this.animeName
-      const fromEp = this.fromEp
-      const untilEp = this.untilEp
-
-      Nyaa.search(`[HorribleSubs] ${quality} ${animeName}`, (err, articles) => {
-        if (err) throw err
-
-        let animes = []
-
-        for (let article in articles)
-          animes.push(articles[article])
-
-        animes.forEach((elem) => {
-          const url = elem.link
-          const epNumber = parseInt(elem.title.split(' ').reverse()[1])
-
-          if (epNumber >= fromEp && epNumber <= untilEp)
-            window.open(`${url}&magnet=1`)
-        })
-      })
-
-      this.untilEp = ''
-      this.fromEp = ''
-      this.animeName = ''
-    },
-    downloadMagnets: function () {
-      console.log(`Retrieving ${this.animeName} from ${this.fromEp} to ${this.untilEp}...`)
-
-      // Removing old torrents
-      findRemoveSync(DIR, {extensions: ['.torrent']})
-
-      const quality = this.quality
-      const animeName = this.animeName
-      const fromEp = this.fromEp
-      const untilEp = this.untilEp
-
-      // TODO : Need to make only 10 by 10 downloads
-      Nyaa.search(`[HorribleSubs] ${quality} ${animeName}`, (err, articles) => {
-        if (err) throw err
-
-        let animes = []
-
-        for (let article in articles)
-          animes.push(articles[article])
-
-        animes.forEach((elem) => {
-          const url = elem.link
-          const epNumber = parseInt(elem.title.split(' ').reverse()[1])
-          const name = elem.title.split(' ').slice(0, -1).join(' ')
-
-          // Downloading torrent files
-          if (epNumber >= fromEp && epNumber <= untilEp)
-            downloadFile(url, name) // TODO : implement a method to know when the files are done downloading
-        })
-
-        // Need to wait for the downloads to be over
-        setTimeout(() => {
-          // Here we convert the torrent files to magnets
-          const dirFiles = fs.readdirSync(DIR)
-
-          // Grabbing all the torrents
-          for (let i = 0; i < dirFiles.length; ++i)
-          {
-            let torrent = dirFiles[i]
-            if (path.extname(torrent) === '.torrent')
-            {
-              const file = fs.readFileSync(path.join(DIR, dirFiles[i]))
-
-              const torrent = parseTorrent(file)
-
-              const name = torrent.name
-              const torrentHash = torrent.infoHash
-              const date = new Date()
-
-              const uri = parseTorrent.toMagnetURI({infoHash: torrentHash})
-
-              fs.appendFileSync(path.join(DIR, 'magnets.txt'), `${date}: ${name}\n\t`)
-              fs.appendFileSync(path.join(DIR, 'magnets.txt'), `${uri}\n\n`)
-            }
-          }
-
-          this.openSnackbar()
-
-          // Nyanpasu! ~
-          player.play(path.join(__dirname, '..', 'resources', 'Nyanpasu.m4a'), (err) => {
-            if (err) throw err
-          })
-        }, 600 + (untilEp - fromEp) * 100)
-      })
-    },
-    openSnackbar: function () {
-      this.$refs.snackbar.open();
-    },
-    openMagnets: function () {
-      this.$refs.snackbar.close()
-
-      shell.openItem(path.join(DIR, 'magnets.txt'))
-    },
-    animeNameNext: function () {
-      document.getElementById('fromEp-input').focus()
-    },
-    fromEpNext: function () {
-      document.getElementById('untilEp-input').focus()
-    },
-    untilEpNext: function () {
-      document.getElementById('animeName-input').focus()
-      document.getElementById('downloader-button').click()
-    },
-    fromEpPrevious: function () {
-      if (this.fromEp === '')
-        document.getElementById('animeName-input').focus()
-    },
-    untilEpPrevious: function () {
-      if (this.untilEp === '')
-        document.getElementById('fromEp-input').focus()
-    }
   }
 })
 
