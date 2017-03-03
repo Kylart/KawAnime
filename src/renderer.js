@@ -1,7 +1,3 @@
-// This file is required by the index.html file and will
-// be executed in the renderer process for that window.
-// All of the Node.js APIs are available in this process.
-
 /* ------------------ IMPORTS ------------------ */
 
 const remote = require('electron').remote
@@ -59,7 +55,8 @@ function reduceString(string, wanted) {
 
 // I like HorribleSubs
 function horribleSubsFilter(name) {
-  if ('[HorribleSubs]' === name.split(' ')[0]) {
+  if ('[HorribleSubs]' === name.split(' ')[0])
+  {
     if ('[720p].mkv' === name.split(' ').reverse()[0])
       return true
   }
@@ -82,7 +79,8 @@ function getNameForResearch(name) {
 
 function byProperty(prop) {
   return function (a, b) {
-    if (typeof a[prop] == "number") {
+    if (typeof a[prop] == "number")
+    {
       return (a[prop] - b[prop])
     }
     return ((a[prop] < b[prop]) ? -1 : ((a[prop] > b[prop]) ? 1 : 0))
@@ -100,16 +98,19 @@ function getLatest() {
     loader.show = true
     if (err) throw err
 
-    for (let anime in animes) {
-      if (horribleSubsFilter(animes[anime].title)) {
+    for (let anime in animes)
+    {
+      if (horribleSubsFilter(animes[anime].title))
+      {
         let tmp = animes[anime].title.split(' ')
         tmp.pop()   // Remove the extension
         tmp.pop()   // Remove the episode number
         tmp.shift() // Remove the Horrible Subs tag
 
         // Make the actual research
-        try {
-          mal.fromName(tmp.join(' ')).then( (result) => {
+        try
+        {
+          mal.fromName(tmp.join(' ')).then((result) => {
             releases.releases.push({
               realTitle: animes[anime].title,
               title: getNameOnly(animes[anime].title),
@@ -118,27 +119,30 @@ function getLatest() {
               picture: result.image,
               published: animes[anime].published
             })
-          }).then( () => {
-            if (releases.releases.length > 29) {
+          }).then(() => {
+            if (releases.releases.length > 29)
+            {
               releases.releases.sort(byProperty('published'))
               releases.releases.reverse()
               sorted = true
             }
-          }).then( () => {
+          }).then(() => {
             // 35 elements is too much, reducing to 18
             if (sorted)
               while (releases.releases.length > 18)
                 releases.releases.pop()
-          }).then( () => {
-            setTimeout( () => {
-              if (loader.show) {
+          }).then(() => {
+            setTimeout(() => {
+              if (loader.show)
+              {
                 loader.show = false
                 releases.show = true
               }
             }, 1200)
           })
         }
-        catch (e) {
+        catch (e)
+        {
           console.log("There was a 'Too many request' error.")
         }
       }
@@ -169,7 +173,7 @@ function startTorrent(file_url, name) {
 
 function makeResearchOnMal(name) {
 
-  mal.fromName(name).then( (anime) => {
+  mal.fromName(name).then((anime) => {
     info.infos.title = anime.title
     info.infos.japTitle = anime.alternativeTitles.japanese[0].slice(10)
     info.infos.image = anime.image
@@ -192,7 +196,7 @@ function makeResearchOnMal(name) {
 }
 
 function getNews() {
-  let tmp = malScraper.getNewsNoDetails( () => {
+  let tmp = malScraper.getNewsNoDetails(() => {
     news.news = tmp
   })
 }
@@ -217,8 +221,9 @@ function getCurrentSeason() {
 }
 
 function fillSeason(seasonalInfo) {
-  seasonalInfo.info.forEach( (elem) => {
-    switch (elem.type) {
+  seasonalInfo.info.forEach((elem) => {
+    switch (elem.type)
+    {
       case 'TV':
         season.TVs.push(elem)
         break
@@ -295,7 +300,7 @@ let downloader = new Vue({
       const fromEp = this.fromEp
       const untilEp = this.untilEp
 
-      Nyaa.search(`[HorribleSubs] ${quality} ${animeName}`, (err, articles) =>{
+      Nyaa.search(`[HorribleSubs] ${quality} ${animeName}`, (err, articles) => {
         if (err) throw err
 
         let animes = []
@@ -303,7 +308,7 @@ let downloader = new Vue({
         for (let article in articles)
           animes.push(articles[article])
 
-        animes.forEach( (elem) => {
+        animes.forEach((elem) => {
           const url = elem.link
           const epNumber = parseInt(elem.title.split(' ').reverse()[1])
 
@@ -320,7 +325,7 @@ let downloader = new Vue({
       console.log(`Retrieving ${this.animeName} from ${this.fromEp} to ${this.untilEp}...`)
 
       // Removing old torrents
-      findRemoveSync(DIR, { extensions: ['.torrent']})
+      findRemoveSync(DIR, {extensions: ['.torrent']})
 
       const quality = this.quality
       const animeName = this.animeName
@@ -328,7 +333,7 @@ let downloader = new Vue({
       const untilEp = this.untilEp
 
       // TODO : Need to make only 10 by 10 downloads
-      Nyaa.search(`[HorribleSubs] ${quality} ${animeName}`, (err, articles) =>{
+      Nyaa.search(`[HorribleSubs] ${quality} ${animeName}`, (err, articles) => {
         if (err) throw err
 
         let animes = []
@@ -336,18 +341,18 @@ let downloader = new Vue({
         for (let article in articles)
           animes.push(articles[article])
 
-        animes.forEach( (elem) => {
+        animes.forEach((elem) => {
           const url = elem.link
           const epNumber = parseInt(elem.title.split(' ').reverse()[1])
           const name = elem.title.split(' ').slice(0, -1).join(' ')
 
           // Downloading torrent files
           if (epNumber >= fromEp && epNumber <= untilEp)
-            downloadFile(url, name)
+            downloadFile(url, name) // TODO : implement a method to know when the files are done downloading
         })
 
         // Need to wait for the downloads to be over
-        setTimeout( () => {
+        setTimeout(() => {
           // Here we convert the torrent files to magnets
           const dirFiles = fs.readdirSync(DIR)
 
@@ -362,10 +367,10 @@ let downloader = new Vue({
               const torrent = parseTorrent(file)
 
               const name = torrent.name
-              const torrentHash = torrent. infoHash
+              const torrentHash = torrent.infoHash
               const date = new Date()
 
-              const uri = parseTorrent.toMagnetURI({ infoHash: torrentHash })
+              const uri = parseTorrent.toMagnetURI({infoHash: torrentHash})
 
               fs.appendFileSync(path.join(DIR, 'magnets.txt'), `${date}: ${name}\n\t`)
               fs.appendFileSync(path.join(DIR, 'magnets.txt'), `${uri}\n\n`)
@@ -375,10 +380,10 @@ let downloader = new Vue({
           this.openSnackbar()
 
           // Nyanpasu! ~
-          player.play(path.join(__dirname, 'resources', 'Nyanpasu.m4a'), (err) => {
+          player.play(path.join(__dirname, '..', 'resources', 'Nyanpasu.m4a'), (err) => {
             if (err) throw err
           })
-        }, 1000)
+        }, 600 + (untilEp - fromEp) * 100)
       })
     },
     openSnackbar: function () {
@@ -483,7 +488,8 @@ let info = new Vue({
     },
     back: function () {
       this.hide()
-      switch (lastPage) {
+      switch (lastPage)
+      {
         case 'release':
           releases.show = true
           break
@@ -557,7 +563,8 @@ let season = new Vue({
   },
   watch: {
     infoWatcher: function (bool) {
-      if (bool) {
+      if (bool)
+      {
         this.TVs = []
         this.ONAs = []
         this.OVAs = []
@@ -574,7 +581,7 @@ let season = new Vue({
     getGenres: function (genres) {
       let result = ''
 
-      genres.forEach( (elem) => {
+      genres.forEach((elem) => {
         result += `${elem}, `
       })
 
@@ -621,7 +628,8 @@ new Vue({
       loader.show = false
     },
     getMainPage: function () {
-      if (!loader.show) {
+      if (!loader.show)
+      {
         releases.show = true
         news.show = false
         info.show = false
@@ -672,9 +680,11 @@ new Vue({
 let searchButton = document.getElementById('fixed-header-drawer-exp')
 
 searchButton.addEventListener('keydown', (key) => {
-  if (key.keyCode === 13) {
+  if (key.keyCode === 13)
+  {
     info.show = false
-    if (searchButton.value.length > 3) {
+    if (searchButton.value.length > 3)
+    {
       releases.show = false
       news.show = false
       season.show = false
