@@ -13,6 +13,7 @@ const html = `
   <div class="mdl-grid">
     <template v-for="file in files">
       <div class="mdl-cell mdl-cell--6-col local-elem" v-bind:style="elemStyle">
+      <md-ink-ripple></md-ink-ripple>
         <div class="mdl-grid local-info">
           <div class="mdl-cell mdl-cell--6-col">
             <div class="local-title text-ellipsis">
