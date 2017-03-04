@@ -39,7 +39,8 @@ const html = `
             </div>
           </div>
           <div class="mdl-cell mdl-cell--8-col">
-            <p class="genres-text text-ellipsis">{{ file.genres }}</p>
+            <p class="genres-text text-ellipsis"
+               v-bind:title="file.genres">{{ file.genres }}</p>
           </div>
           <div class="mdl-cell mdl-cell--4-col">
             <p class="classification-text text-ellipsis"
