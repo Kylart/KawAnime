@@ -262,6 +262,109 @@ body
 }
 
     /* ----------------- INFOS ----------------- */
+    /* ----------------- LOCAL ----------------- */
+#local-page .local-elem
+{
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
+}
+
+.text-ellipsis
+{
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+#local-page .local-info
+{
+    padding-left: 0;
+    padding-bottom: 0;
+}
+
+#local-page .title-text
+{
+    margin-top: 0;
+    margin-bottom: 3px;
+}
+
+#local-page .ep-number-text
+{
+    margin-top: 0;
+    margin-bottom: 3px;
+}
+
+#local-page .genres-text
+{
+    margin-bottom: 3px;
+}
+
+#local-page .classification-text
+{
+    margin-bottom: 3px;
+}
+
+#local-page .mdl-cell
+{
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+#local-page .local-pic-synopsis-container
+{
+    position: relative;
+}
+
+#local-page img
+{
+    max-height: 100%;
+    max-width: 100%;
+}
+
+#local-page .local-picture
+{
+    float: left;
+    width: 40%;
+}
+
+#local-page .synopsis-year-container
+{
+    position: relative;
+    float: right;
+    width: 55%;
+    height: 95%;
+    text-align: justify;
+}
+
+#local-page .local-synopsis
+{
+    padding-top: 5%;
+    padding-right: 5%;
+}
+
+#local-page .local-year-container
+{
+    position: absolute;
+    bottom: 0;
+}
+
+#local-page .local-year
+{
+    position: relative;
+    column-count: 2;
+}
+
+#local-page .local-year-text
+{
+    float: right;
+}
+
+#local-page .local-status
+{
+    float: left;
+}
+
+    /* ----------------- INFOS ----------------- */
 /*noinspection CssOptimizeSimilarProperties*/
 #info-container
 {
