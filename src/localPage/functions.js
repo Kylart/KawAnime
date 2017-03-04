@@ -8,12 +8,13 @@
 
 const self = this
 
-// This will be later set with the config file
+// This will later be set with the config file
 const downloadRep = 'Downloads'
 
 const fs = require('fs')
 const path = require('path')
 const os = require('os')
+const shell = require('electron').shell
 
 const mal = require('malapi').Anime
 
@@ -47,6 +48,7 @@ exports.byProperty = (prop) => {
 // [FANSUB] <NAME> <-> <EP_NUMBER> <EXTENSION_NAME>
 exports.searchAnime = (filename, object) => {
   let epNumber = 0
+  const initFilename = filename
 
   filename = filename.split(' ')
   for (let i = 0; i < 3; ++i) i === 1 ? epNumber = filename.pop()
@@ -56,7 +58,8 @@ exports.searchAnime = (filename, object) => {
 
   let result = {
     title: filename,
-    episode: epNumber
+    episode: epNumber,
+    filename: initFilename
   }
 
   mal.fromName(filename).then((anime) => {
@@ -81,5 +84,23 @@ exports.findFiles = (object) => {
 
   filteredFiles.forEach((file) => {
     self.searchAnime(file, object)
+  })
+}
+
+exports.playFile = (name) => {
+  shell.openItem(path.join(DIR, name))
+}
+
+exports.delFile = (object, name) => {
+  const namePath = path.join(DIR, name)
+
+  fs.unlink(namePath, () => {
+    console.log(`${name} was deleted.`)
+
+    // Looking for that file in object.files
+    for (let i = 0; i < object.files.length; ++i)
+    {
+      if (object.files[i].filename === name) object.files.splice(i, 1)
+    }
   })
 }

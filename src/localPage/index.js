@@ -28,11 +28,13 @@ const html = `
           </div>
           <div class="mdl-cell mdl-cell--3-col">
             <div class="local-page-buttons">
-              <md-button class="md-icon-button play-button" @click.native=""
+              <md-button class="md-icon-button play-button"
+                         @click.native="openFile(file.filename)"
                          v-bind:style="playButtonStyle">
                 <i class="mdi mdi-play-circle-outline mdi-36px"></i>
               </md-button>
-              <md-button class="md-icon-button play-button" @click.native=""
+              <md-button class="md-icon-button play-button" 
+                         @click.native="delFile(file.filename)"
                          v-bind:style="delButtonStyle">
                 <i class="mdi mdi-delete-empty mdi-24px"></i>
               </md-button>
@@ -95,8 +97,11 @@ Vue.component('local-page', {
     findFiles: function () {
       return functions.findFiles(this)
     },
-    test: function () {
-      console.log("Hello")
+    openFile: function (name) {
+      functions.playFile(name)
+    },
+    delFile: function (name) {
+      functions.delFile(this, name)
     }
   },
   created: function () {
