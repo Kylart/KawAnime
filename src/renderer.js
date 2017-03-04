@@ -487,6 +487,7 @@ new Vue({
       info.show = false
       season.show = false
       loader.show = false
+      localPage.show = false
     },
     getMainPage: function () {
       if (!loader.show)
@@ -496,6 +497,7 @@ new Vue({
         info.show = false
         season.show = false
         downloader.show = false
+        localPage.show = false
       }
     },
     getLocalPage: function () {
@@ -519,6 +521,7 @@ new Vue({
       season.show = false
       info.show = false
       downloader.show = false
+      localPage.show = false
 
       disableDownloaderBackground()
     },
@@ -533,6 +536,7 @@ new Vue({
       season.show = true
       info.show = false
       downloader.show = false
+      localPage.show = false
 
       disableDownloaderBackground()
     }
@@ -560,6 +564,7 @@ searchButton.addEventListener('keydown', (key) => {
       news.show = false
       season.show = false
       downloader.show = false
+      localPage.show = false
       loader.show = true
       makeResearchOnMal(searchButton.value.toString())
     }
