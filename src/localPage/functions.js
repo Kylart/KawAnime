@@ -99,8 +99,6 @@ exports.delFile = (object, name) => {
 
     // Looking for that file in object.files
     for (let i = 0; i < object.files.length; ++i)
-    {
       if (object.files[i].filename === name) object.files.splice(i, 1)
-    }
   })
 }
