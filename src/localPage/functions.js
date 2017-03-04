@@ -64,7 +64,7 @@ exports.searchAnime = (filename, object) => {
 
   mal.fromName(filename).then((anime) => {
     result.picture = anime.image
-    result.synopsis = anime.synopsis.slice(0, 200) + '...'
+    result.synopsis = anime.synopsis.slice(0, 170) + '...'
     result.numberOfEpisodes = anime.episodes.replace('Unknown', 'NC')
     result.status = anime.status
     result.year = anime.aired.split(' ')[2]

@@ -14,7 +14,7 @@ const html = `
     <template v-for="file in files">
       <div class="mdl-cell mdl-cell--6-col local-elem" v-bind:style="elemStyle">
         <div class="mdl-grid local-info">
-          <div class="mdl-cell mdl-cell--7-col">
+          <div class="mdl-cell mdl-cell--6-col">
             <div class="local-title text-ellipsis">
                <h6 class="title-text" v-bind:title="file.title">{{ file.title }}</h6>
             </div>
@@ -26,7 +26,7 @@ const html = `
              </h6>
             </div>
           </div>
-          <div class="mdl-cell mdl-cell--3-col">
+          <div class="mdl-cell mdl-cell--4-col">
             <div class="local-page-buttons">
               <md-button class="md-icon-button play-button"
                          @click.native="openFile(file.filename)"
@@ -58,7 +58,7 @@ const html = `
               </div>
               <div class="local-year-container">
                 <div class="local-year">
-                  <div class="local-status">
+                  <div class="local-status text-ellipsis">
                     {{ file.status }}
                   </div>
                   <div class="local-year-text">
