@@ -21,7 +21,7 @@
   </button>
 </div>
 
-<div id="container" >
+<div id="container" style="display: none;">
   <div class="mdl-layout mdl-js-layout mdl-layout--fixed-drawer
             mdl-layout--fixed-header">
     <header class="mdl-layout__header">
@@ -47,6 +47,7 @@
       <nav class="mdl-navigation">
         <a class="mdl-navigation__link" href="#" v-on:click="getDownloader()">Download an anime</a>
         <a class="mdl-navigation__link" href="#" v-on:click="getMainPage()">Recent releases</a>
+        <a class="mdl-navigation__link" href="#" v-on:click="getLocalPage()">Local animes</a>
         <a class="mdl-navigation__link" href="#" v-on:click="getNewsPage()">Get news</a>
         <a class="mdl-navigation__link" href="#" v-on:click="getSeasonPage()">Check animes from season</a>
         <a class="mdl-navigation__link" href="#">Watch List</a>
@@ -95,6 +96,9 @@
               </div>
             </div>
           </template>
+        </div>
+        <div id="local-page" v-if="show">
+          <local-page></local-page>
         </div>
         <div id="loader-container" v-if="show">
           <div class="loading-text">

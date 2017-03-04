@@ -5,6 +5,8 @@
  *
  */
 
+const self = this
+
 /* ------------------ IMPORTS ------------------ */
 
 const remote = require('electron').remote
@@ -25,6 +27,8 @@ const malScraper = require('mal-scraper')
 /* ----------------- VUE IMPORTS ----------------- */
 
 require(path.join(__dirname, 'downloader', 'index.js'))
+// require(path.join(__dirname, 'infoPage', 'index.js'))
+require(path.join(__dirname, 'localPage', 'index.js'))
 
 const VueMaterial = require('vue-material')
 
@@ -255,7 +259,7 @@ let seasonalInfo = malScraper.getSeason(getCurrentSeason().year, getCurrentSeaso
 
 /* ------------------- VUE.JS OBJECTS ----------------- */
 
-let lastPage = 'release'
+exports.lastPage = 'release'
 
 let downloader = new Vue({
   el: '#download-container',
@@ -295,8 +299,15 @@ let releases = new Vue({
 
       disableDownloaderBackground()
 
-      lastPage = 'release'
+      self.lastPage = 'release'
     }
+  }
+})
+
+let localPage = new Vue({
+  el: '#local-page',
+  data: {
+    show: false
   }
 })
 
@@ -338,7 +349,7 @@ let info = new Vue({
     },
     back: function () {
       this.hide()
-      switch (lastPage)
+      switch (self.lastPage)
       {
         case 'release':
           releases.show = true
@@ -442,7 +453,7 @@ let season = new Vue({
       this.show = false
       loader.show = true
       makeResearchOnMal(arg)
-      lastPage = 'season'
+      self.lastPage = 'season'
 
       disableDownloaderBackground()
     },
@@ -486,6 +497,16 @@ new Vue({
         season.show = false
         downloader.show = false
       }
+    },
+    getLocalPage: function () {
+      releases.show = false
+      news.show = false
+      loader.show = false
+      season.show = false
+      downloader.show = false
+      localPage.show = true
+
+      disableDownloaderBackground()
     },
     getNewsPage: function () {
       // For first time

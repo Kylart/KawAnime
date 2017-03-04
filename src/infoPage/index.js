@@ -5,3 +5,5 @@
  * of the information page.
  *
  */
+
+const functions = require('./functions.js')
