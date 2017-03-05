@@ -102,3 +102,5 @@ exports.delFile = (object, name) => {
       if (object.files[i].filename === name) object.files.splice(i, 1)
   })
 }
+
+// TODO: make an initial findFiles method
