@@ -770,3 +770,88 @@ body
 }
 
 /* ------------------ WatchList ---------------- */
+#watch-list-container
+{
+    background-color: rgb(50, 50, 50);
+}
+
+#watch-list-container .list-title
+{
+    margin: 2% 0 0 0;
+    text-align: right;
+}
+
+#watch-list-container .list-title h4
+{
+    margin: 0;
+    padding-right: 7%;
+}
+
+
+#watch-list-container .list
+{
+    background-color: rgb(60, 60, 60);
+    color: rgba(255, 255, 255, 0.8);
+    padding-left: 1.5%;
+}
+
+#watch-list-container .md-input-container label
+{
+    color: rgba(255, 255, 255, 0.8);
+}
+
+#watch-list-container .entry-button
+{
+    text-align: left;
+    margin: -7% 0 0 0;
+    padding-left: 15%;
+}
+
+#watch-list-container .watch-list
+{
+    background-color: rgb(60, 60, 60);
+    color: rgba(255, 255, 255, 0.8);
+}
+
+#watch-list-container .watch-list .list-title
+{
+    margin: 3% 0 0 0;
+    text-align: right;
+}
+
+#watch-list-container .watch-list .list-title h4
+{
+    margin: 0;
+    padding-right: 20%;
+}
+
+#watch-list-container .watch-list .entry-button
+{
+    margin: -4% 0 0 0;
+}
+
+#watch-list-container h6
+{
+    margin: 0;
+}
+
+#watch-list-container .entry-container
+{
+    margin: 0;
+}
+
+#watch-list-container .entry
+{
+    padding: 0;
+}
+
+#watch-list-container .entry-name
+{
+    margin: 0;
+}
+
+#watch-list-container .entry-options
+{
+    text-align: right;
+    margin: 0;
+}
