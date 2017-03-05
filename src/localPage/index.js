@@ -91,6 +91,7 @@ Vue.component('local-page', {
     return {
       files: [],
       currentDir: functions.DIR,
+      alreadyLoaded: false,
       elemStyle: {
         marginBottom: '1.5%'
       },
@@ -122,7 +123,7 @@ Vue.component('local-page', {
       functions.delFile(this, name)
     },
     changeDir: function () {
-      functions.changePathDiaog(this)
+      functions.changePathDialog(this)
     },
     refreshDir: function () {
       this.files = []
@@ -130,6 +131,10 @@ Vue.component('local-page', {
     }
   },
   created: function () {
-    this.findFiles()
+    if (!this.alreadyLoaded)
+    {
+      this.findFiles()
+      this.alreadyloaded = true
+    }
   }
 })

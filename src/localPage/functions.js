@@ -104,7 +104,8 @@ exports.delFile = (object, name) => {
   })
 }
 
-exports.changePathDiaog = (object) => {
+exports.changePathDialog = (object) => {
+  // TODO: Find a way to catch TypeError on escape press of Dialog.
   dialog.showOpenDialog({properties: ['openDirectory']}, (dirPath) => {
     object.files = []
     object.currentDir = dirPath[0]
