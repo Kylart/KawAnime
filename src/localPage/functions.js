@@ -93,7 +93,7 @@ exports.playFile = (name) => {
 }
 
 exports.delFile = (object, name) => {
-  const namePath = path.join(DIR, name)
+  const namePath = path.join(self.DIR, name)
 
   fs.unlink(namePath, () => {
     console.log(`${name} was deleted.`)
