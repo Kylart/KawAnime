@@ -4,7 +4,9 @@
   "description": "A Software for Otaku Community.",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "pack": "build --dir",
+    "dist": "build"
   },
   "repository": "https://github.com/Kylart/KawAnime",
   "keywords": [
@@ -17,10 +19,9 @@
   "license": "MIT",
   "devDependencies": {
     "electron": "^1.4.15",
-    "request": "latest"
+    "electron-builder": "^14.5.3"
   },
   "dependencies": {
-    "electron": "^1.4.15",
     "find-remove": "^1.0.0",
     "is-online": "^5.2.0",
     "mal-scraper": "latest",
@@ -32,5 +33,23 @@
     "progressbar.js": "^1.0.1",
     "request": "latest",
     "vue-material": "^0.7.1"
-  }
+  },
+  "build": {
+    "appId": "KawAnime"
+  },
+  "dmg": {
+    "contents": [
+      {
+        "x": 130,
+        "y": 220
+      },
+      {
+        "x": 410,
+        "y": 220,
+        "type": "link",
+        "path": "/Applications"
+      }
+    ]
+  },
+  "postinstall": "install-app-deps"
 }
