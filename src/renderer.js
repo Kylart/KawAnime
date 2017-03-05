@@ -597,6 +597,7 @@ searchButton.addEventListener('keydown', (key) => {
       downloader.show = false
       localPage.show = false
       loader.show = true
+      watchList.show = false
       makeResearchOnMal(searchButton.value.toString())
     }
     searchButton.value = ''
