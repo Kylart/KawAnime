@@ -15,10 +15,11 @@ const fs = require('fs')
 const path = require('path')
 const os = require('os')
 const shell = require('electron').shell
+const {dialog} = require('electron').remote
 
 const mal = require('malapi').Anime
 
-const DIR = path.join(os.userInfo().homedir, downloadRep)
+exports.DIR = path.join(os.userInfo().homedir, downloadRep)
 
 exports.filterFiles = (files, filters) => {
   let filteredFiles = []
@@ -77,8 +78,8 @@ exports.searchAnime = (filename, object) => {
   })
 }
 
-exports.findFiles = (object) => {
-  const allFiles = fs.readdirSync(DIR)
+exports.findFiles = (object, dir) => {
+  const allFiles = fs.readdirSync(dir)
 
   const filteredFiles = self.filterFiles(allFiles, ['.mkv', '.mp4'])
 
@@ -100,6 +101,14 @@ exports.delFile = (object, name) => {
     // Looking for that file in object.files
     for (let i = 0; i < object.files.length; ++i)
       if (object.files[i].filename === name) object.files.splice(i, 1)
+  })
+}
+
+exports.changePathDiaog = (object) => {
+  dialog.showOpenDialog({properties: ['openDirectory']}, (dirPath) => {
+    object.files = []
+    object.currentDir = dirPath[0]
+    self.findFiles(object, dirPath[0])
   })
 }
 

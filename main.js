@@ -90,34 +90,6 @@ exports.openDownloader = () => {
   })
 }
 
-exports.getInfoPage = () => {
-  mainWindow.loadURL(url.format({
-    pathname: path.join(__dirname, 'app', 'InformationPage', 'index.html'),
-    protocol: 'file:',
-    slashes: true
-  }))
-}
-
-exports.getMainPage = () => {
-  mainWindow.loadURL(url.format({
-    pathname: path.join(__dirname, 'index.html'),
-    protocol: 'file:',
-    slashes: true
-  }))
-}
-
-exports.openTorrents = () => {
-  const TORRENT_PATH = path.join(BASE_PATH, '.KawAnime')
-
-  const tmpFiles = fs.readdirSync(TORRENT_PATH)
-
-  tmpFiles.forEach( (elem) => {
-    if (elem.split('.').pop() === 'torrent')
-      shell.openItem(path.join(TORRENT_PATH, elem))
-  })
-}
-
-
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.

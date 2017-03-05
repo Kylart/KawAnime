@@ -11,6 +11,16 @@ const functions = require('./functions.js')
 const html = `
 <div>
   <div class="mdl-grid">
+    <div class="mdl-cell mdl-cell--12-col top-buttons">
+      <md-button class="md-icon-button play-button"
+                 @click.native="refreshDir()"
+                 title="Refresh current directory."
+                 v-bind:style="refreshButtonStyle">
+        <i class="mdi mdi-refresh mdi-36px"></i>
+      </md-button>
+            <md-button @click.native="changeDir()">Change Dir</md-button>
+
+    </div>
     <template v-for="file in files">
       <div class="mdl-cell mdl-cell--6-col local-elem" v-bind:style="elemStyle">
       <md-ink-ripple></md-ink-ripple>
@@ -80,6 +90,7 @@ Vue.component('local-page', {
   data: function () {
     return {
       files: [],
+      currentDir: functions.DIR,
       elemStyle: {
         marginBottom: '1.5%'
       },
@@ -91,18 +102,31 @@ Vue.component('local-page', {
       delButtonStyle: {
         paddingLeft: '8px',
         marginLeft: '0px'
+      },
+      refreshButtonStyle: {
+        paddingLeft: '2px',
+        marginRight: '0px',
+        marginLeft: '0px',
+        marginTop: '0.4%'
       }
     }
   },
   methods: {
     findFiles: function () {
-      return functions.findFiles(this)
+      return functions.findFiles(this, this.currentDir)
     },
     openFile: function (name) {
       functions.playFile(name)
     },
     delFile: function (name) {
       functions.delFile(this, name)
+    },
+    changeDir: function () {
+      functions.changePathDiaog(this)
+    },
+    refreshDir: function () {
+      this.files = []
+      this.findFiles()
     }
   },
   created: function () {
