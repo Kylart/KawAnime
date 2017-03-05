@@ -89,7 +89,7 @@ exports.findFiles = (object, dir) => {
 }
 
 exports.playFile = (name) => {
-  shell.openItem(path.join(DIR, name))
+  shell.openItem(path.join(self.DIR, name))
 }
 
 exports.delFile = (object, name) => {
