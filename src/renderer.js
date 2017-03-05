@@ -47,6 +47,12 @@ Vue.material.registerTheme({
     accent: 'pink',
     warn: 'deep-orange',
     background: 'grey'
+  },
+  watchList: {
+    primary: 'grey',
+    accent: 'pink',
+    warn: 'deep-orange',
+    background: 'grey'
   }
 })
 
