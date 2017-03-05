@@ -23,6 +23,7 @@ const seeingHtml = `
       </form>
     </div>
     <div class="mdl-cell mdl-cell--12-col entry-container" v-for="anime in seeing">
+      <md-ink-ripple></md-ink-ripple>
       <div class="mdl-grid entry">
         <div class="mdl-cell mdl-cell--8-col entry-name">
           <h6 class="text-ellipsis" v-bind:title="anime">{{ anime }}</h6>
@@ -59,6 +60,7 @@ const seenHtml = `
       </form>
     </div>
     <div class="mdl-cell mdl-cell--12-col entry-container" v-for="anime in seen">
+      <md-ink-ripple></md-ink-ripple>
       <div class="mdl-grid entry">
         <div class="mdl-cell mdl-cell--8-col entry-name">
           <h6 class="text-ellipsis" v-bind:title="anime">{{ anime }}</h6>
@@ -95,6 +97,7 @@ const watchListHtml = `
       </form>
     </div>
     <div class="mdl-cell mdl-cell--6-col entry-container" v-for="anime in watchList">
+      <md-ink-ripple></md-ink-ripple>
       <div class="mdl-grid entry">
         <div class="mdl-cell mdl-cell--8-col entry-name">
           <h6 class="text-ellipsis" v-bind:title="anime">{{ anime }}</h6>

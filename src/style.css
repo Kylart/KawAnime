@@ -788,7 +788,6 @@ body
     padding-right: 7%;
 }
 
-
 #watch-list-container .list
 {
     background-color: rgb(60, 60, 60);
@@ -851,8 +850,19 @@ body
     margin: 0;
 }
 
+#watch-list-container .entry-name h6
+{
+    padding-left: 5%;
+    padding-top: 3%;
+}
+
 #watch-list-container .entry-options
 {
     text-align: right;
     margin: 0;
+}
+
+#watch-list-container .entry-container
+{
+    position: relative;
 }
