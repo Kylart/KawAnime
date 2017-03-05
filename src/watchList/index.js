@@ -123,8 +123,8 @@ const html = `
   <md-theme md-name="watchList">
         <div class="mdl-grid">
           ${watchListHtml}
-          ${seeingHtml}
           ${seenHtml}
+          ${seeingHtml}
         </div>
   </md-theme>
 </div>
