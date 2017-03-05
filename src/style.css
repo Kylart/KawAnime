@@ -32,6 +32,11 @@ body
     margin: 0;
 }
 
+.white
+{
+    color: rgba(255, 255, 255, 0.8);
+}
+
 /*noinspection CssOptimizeSimilarProperties*/
 .mdl-layout__drawer
 {
@@ -39,6 +44,19 @@ body
     background-position: left bottom;
     background-repeat: no-repeat;
     background-size: 100%;
+    background-color: rgb(50, 50, 50);
+    color: rgba(255, 255, 255, 0.8);
+    border: 0;
+}
+
+.mdl-layout__drawer .mdl-navigation .mdl-navigation__link
+{
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.mdl-layout__drawer .mdl-navigation .mdl-navigation__link:hover
+{
+    color: rgb(50, 50, 50);
 }
 
 /*noinspection CssOptimizeSimilarProperties*/

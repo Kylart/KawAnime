@@ -29,6 +29,7 @@ const malScraper = require('mal-scraper')
 require(path.join(__dirname, 'downloader', 'index.js'))
 // require(path.join(__dirname, 'infoPage', 'index.js'))
 require(path.join(__dirname, 'localPage', 'index.js'))
+require(path.join(__dirname, 'watchList', 'index.js'))
 
 const VueMaterial = require('vue-material')
 
@@ -467,6 +468,13 @@ let season = new Vue({
   },
 })
 
+let watchList = new Vue({
+  el: '#watch-list-container',
+  data: {
+    show: false
+  }
+})
+
 // Vue object to open the other pages
 new Vue({
   el: '.mdl-navigation',
@@ -488,6 +496,7 @@ new Vue({
       season.show = false
       loader.show = false
       localPage.show = false
+      watchList.show = false
     },
     getMainPage: function () {
       if (!loader.show)
@@ -498,6 +507,7 @@ new Vue({
         season.show = false
         downloader.show = false
         localPage.show = false
+        watchList.show = false
       }
     },
     getLocalPage: function () {
@@ -506,6 +516,7 @@ new Vue({
       loader.show = false
       season.show = false
       downloader.show = false
+      watchList.show = false
       localPage.show = true
 
       disableDownloaderBackground()
@@ -522,6 +533,7 @@ new Vue({
       info.show = false
       downloader.show = false
       localPage.show = false
+      watchList.show = false
 
       disableDownloaderBackground()
     },
@@ -537,6 +549,19 @@ new Vue({
       info.show = false
       downloader.show = false
       localPage.show = false
+      watchList.show = false
+
+      disableDownloaderBackground()
+    },
+    getWatchListPage: function () {
+      releases.show = false
+      news.show = false
+      loader.show = false
+      season.show = false
+      info.show = false
+      downloader.show = false
+      localPage.show = false
+      watchList.show = true
 
       disableDownloaderBackground()
     }
