@@ -6,9 +6,16 @@
  *
  */
 
+// This will later be set with config file.
+const quality = '720p'
+const fansub = 'HorribleSubs'
+
 const os = require('os')
 const path = require('path')
 const fs = require('fs')
+
+const Nyaa = require('node-nyaa-api')
+const mal = require('malapi').Anime
 
 const DIR = path.join(os.userInfo().homedir, '.KawAnime')
 const listsPath = path.join(DIR, 'lists.json')
@@ -104,4 +111,16 @@ exports.delItem = (object, name, listName) => {
 
       break
   }
+}
+
+exports.downloadAnime = (name) => {
+  mal.fromName(name).then((anime) => {
+    Nyaa.search(`[${fansub}] ${quality} ${name}`, (err, animes) => {
+      if (err) throw err
+
+      animes.forEach((elem) => {
+        window.open(`${elem.link}&magnet=1`)
+      })
+    })
+  })
 }

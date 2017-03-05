@@ -30,7 +30,7 @@ const seeingHtml = `
         </div>
         <div class="mdl-cell mdl-cell--4-col entry-options">
           <md-button class="md-icon-button dl-button" 
-             @click.native=""
+             @click.native="downloadThis(anime)"
              v-bind:style="dlButtonStyle">
             <i class="mdi mdi-download mdi-36px"></i>
           </md-button>
@@ -67,7 +67,7 @@ const seenHtml = `
         </div>
         <div class="mdl-cell mdl-cell--4-col entry-options">
           <md-button class="md-icon-button dl-button" 
-             @click.native=""
+             @click.native="downloadThis(anime)"
              v-bind:style="dlButtonStyle">
             <i class="mdi mdi-download mdi-36px"></i>
           </md-button>
@@ -104,7 +104,7 @@ const watchListHtml = `
         </div>
         <div class="mdl-cell mdl-cell--4-col entry-options">
           <md-button class="md-icon-button dl-button" 
-             @click.native=""
+             @click.native="downloadThis(anime)"
              v-bind:style="dlButtonStyle">
             <i class="mdi mdi-download mdi-36px"></i>
           </md-button>
@@ -168,6 +168,9 @@ Vue.component('watch-list', {
     delItem: function (name, listName) {
       functions.delItem(this, name, listName)
       functions.saveLists(this)
+    },
+    downloadThis: function (name) {
+      functions.downloadAnime(name)
     }
   },
   created: function () {
