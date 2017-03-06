@@ -10,6 +10,7 @@ const self = this
 
 // This will later be set with the config file
 const downloadRep = 'Downloads'
+const ascending = false
 
 const fs = require('fs')
 const path = require('path')
@@ -33,16 +34,6 @@ exports.filterFiles = (files, filters) => {
   }
 
   return filteredFiles
-}
-
-exports.byProperty = (prop) => {
-  return function (a, b) {
-    if (typeof a[prop] == "number")
-    {
-      return (a[prop] - b[prop])
-    }
-    return ((a[prop] < b[prop]) ? -1 : ((a[prop] > b[prop]) ? 1 : 0))
-  }
 }
 
 // This function works only if the file is named this way:
@@ -74,7 +65,15 @@ exports.searchAnime = (filename, object) => {
     result.mark = anime.statistics.score.value
 
     object.files.push(result)
-    object.files.sort(self.byProperty('title'))
+
+    if (ascending)
+      object.files.sort((a, b) => a.title === b.title ?
+          - b.episode.toString().localeCompare(a.episode) :
+          a.title.toString().localeCompare(b.title))
+    else
+      object.files.sort((a, b) => a.title === b.title ?
+          b.episode.toString().localeCompare(a.episode) :
+          a.title.toString().localeCompare(b.title))
   })
 }
 
