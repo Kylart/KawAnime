@@ -35,6 +35,10 @@ exports.loadLists = (object) => {
 }
 
 exports.saveLists = (object) => {
+  object.seeing.sort()
+  object.seen.sort()
+  object.watchList.sort()
+
   let json = JSON.stringify({
     "seeing": object.seeing,
     "seen": object.seen,

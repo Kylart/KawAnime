@@ -6,7 +6,8 @@
   "scripts": {
     "start": "electron .",
     "pack": "build --dir",
-    "dist": "build"
+    "dist": "build -mwl",
+    "helpBuild": "echo 'https://github.com/electron-userland/electron-builder#cli-usage'"
   },
   "repository": "https://github.com/Kylart/KawAnime",
   "keywords": [
@@ -40,12 +41,12 @@
   "dmg": {
     "contents": [
       {
-        "x": 130,
-        "y": 220
+        "x": 120,
+        "y": 100
       },
       {
-        "x": 410,
-        "y": 220,
+        "x": 400,
+        "y": 100,
         "type": "link",
         "path": "/Applications"
       }
