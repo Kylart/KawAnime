@@ -52,7 +52,7 @@ exports.saveLists = (object) => {
 
 exports.alreadyExists = (name, checkList) => {
   for (let i = 0; i < checkList.length; ++i)
-    if (checkList[i] === name) return true
+    if (checkList[i].toLowerCase() === name.toLocaleLowerCase()) return true
 
   return false
 }
