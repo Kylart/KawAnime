@@ -271,8 +271,7 @@ exports.lastPage = 'release'
 let downloader = new Vue({
   el: '#download-container',
   data: {
-    show: false,
-    display: "none",
+    show: false
   }
 })
 
