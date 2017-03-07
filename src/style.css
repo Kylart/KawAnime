@@ -32,6 +32,11 @@ body
     margin: 0;
 }
 
+.mdl-layout__content
+{
+    /*background-color: rgb(50, 50, 50);*/
+}
+
 /*noinspection CssOptimizeSimilarProperties*/
 .mdl-layout__drawer
 {
@@ -383,6 +388,7 @@ body
 {
     position: absolute;
     bottom: 0;
+    width: 100%;
 }
 
 #local-page .local-year
@@ -399,6 +405,11 @@ body
 #local-page .local-status
 {
     float: left;
+}
+
+#local-page .mark
+{
+    margin: 0;
 }
 
     /* ----------------- INFOS ----------------- */

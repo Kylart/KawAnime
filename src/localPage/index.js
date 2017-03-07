@@ -68,12 +68,15 @@ const html = `
                 {{ file.synopsis }}
               </div>
               <div class="local-year-container">
-                <div class="local-year">
-                  <div class="local-status text-ellipsis">
+                <div class="mdl-grid">
+                  <div class="mdl-cell mdl-cell--2-col">
+                   {{ file.year }}
+                  </div>
+                  <div class="mdl-cell mdl-cell--7-col text-ellipsis">
                     {{ file.status }}
                   </div>
-                  <div class="local-year-text">
-                    {{ file.year }}
+                  <div class="mdl-cell mdl-cell--3-col">
+                    <h5 class="mark">{{ file.mark }}</h5>
                   </div>
                 </div>
               </div>

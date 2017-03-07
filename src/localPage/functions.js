@@ -10,7 +10,7 @@ const self = this
 
 // This will later be set with the config file
 const downloadRep = 'Downloads'
-const ascending = false
+const ascending = true
 
 const fs = require('fs')
 const path = require('path')
