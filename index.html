@@ -60,6 +60,14 @@
           <downloader></downloader>
         </div>
         <div id="releases" class="mdl-grid" v-if="show">
+          <div class="mdl-cell mdl-cell--12-col button-container">
+            <md-button class="md-icon-button play-button"
+                       @click.native="refresh()"
+                       title="Refresh"
+                       v-bind:style="refreshButtonStyle">
+              <i class="mdi mdi-refresh mdi-36px"></i>
+            </md-button>
+          </div>
           <template v-for="release in releases">
             <div class="mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet">
               <div class="elem">

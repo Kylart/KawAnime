@@ -68,6 +68,12 @@ body
     background-repeat: no-repeat;
 }
 
+#releases .button-container
+{
+    text-align: right;
+    margin: 0 7% 0 0 ;
+}
+
 .elem
 {
     position: relative;

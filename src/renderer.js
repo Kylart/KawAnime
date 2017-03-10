@@ -287,6 +287,13 @@ let releases = new Vue({
       marginTop: '0px',
       marginLeft: '2px',
       marginRight: '2px'
+    },
+    refreshButtonStyle: {
+      paddingLeft: '2px',
+      marginRight: '0px',
+      marginLeft: '0px',
+      marginTop: '0.4%',
+      color: 'rgba(255, 255, 255, 0.8)'
     }
   },
   methods: {
