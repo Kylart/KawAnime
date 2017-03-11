@@ -21,7 +21,8 @@
   "devDependencies": {
     "electron": "^1.4.15",
     "electron-builder": "^14.5.3",
-    "electron-reload": "^1.1.0"
+    "electron-reload": "^1.1.0",
+    "vue-devtools": "^3.0.8"
   },
   "dependencies": {
     "find-remove": "^1.0.0",
