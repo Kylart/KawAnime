@@ -10,9 +10,11 @@ const url = require('url')
 const fs = require('fs')
 const os = require('os')
 
+require('electron-reload')(__dirname)
+
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
-let mainWindow, downloaderWindow
+let mainWindow
 const BASE_PATH = os.userInfo().homedir
 
 function createWindow () {
@@ -54,39 +56,6 @@ function createWindow () {
     // in an array if your src supports multi windows, this is the time
     // when you should delete the corresponding element.
     mainWindow = null
-  })
-}
-
-exports.openDownloader = () => {
-  if(downloaderWindow != null)
-    downloaderWindow.destroy()
-
-  downloaderWindow = new BrowserWindow({
-    width: 360,
-    height: 480,
-    x: 0, y: 0,
-    resizable: false,
-    maximizable: false,
-    titleBarStyle: 'hidden',
-    show: false,
-    parent: mainWindow
-  })
-
-  downloaderWindow.once('ready-to-show', () => {
-    downloaderWindow.show()
-  })
-
-  downloaderWindow.loadURL(url.format({
-    pathname: path.join(__dirname, 'app', 'Downloader', 'index.html'),
-    protocol: 'file:',
-    slashes: true
-  }))
-
-  downloaderWindow.on('closed', function () {
-    // Dereference the window object, usually you would store windows
-    // in an array if your src supports multi windows, this is the time
-    // when you should delete the corresponding element.
-    downloaderWindow = null
   })
 }
 

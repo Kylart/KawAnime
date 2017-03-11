@@ -20,7 +20,8 @@
   "license": "MIT",
   "devDependencies": {
     "electron": "^1.4.15",
-    "electron-builder": "^14.5.3"
+    "electron-builder": "^14.5.3",
+    "electron-reload": "^1.1.0"
   },
   "dependencies": {
     "find-remove": "^1.0.0",
