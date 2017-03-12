@@ -51,7 +51,7 @@ exports.saveAnime = (anime) => {
     synopsis: anime.synopsis.toString(),
     numberOfEpisode: anime.numberOfEpisodes.toString(),
     status: anime.status.toString(),
-    year: anime.status.toString(),
+    year: anime.year.toString(),
     genres: anime.genres.toString(),
     classification: anime.classification.toString(),
     mark: anime.mark.toString()
@@ -119,13 +119,58 @@ exports.searchAnime = (filename, object) => {
   })
 }
 
+// This function works only if the file is named this way:
+// [FANSUB] <NAME> <-> <EP_NUMBER> <EXTENSION_NAME>
+exports.searchInJSON = (filename, object) => {
+  const jsonFile = require(animeLocalStoragePath)
+
+  let epNumber = 0
+  const initFilename = filename
+
+  filename = filename.split(' ')
+  for (let i = 0; i < 3; ++i) i === 1 ? epNumber = filename.pop()
+      : filename.pop()
+
+  filename = filename.slice(1).join(' ')
+
+  const jsonFileName = filename.split(' ').join('').toLowerCase()
+
+  if (jsonFile[jsonFileName])
+  {
+    const local = JSON.parse(jsonFile[jsonFileName])
+
+    console.log(local)
+
+    object.files.push({
+      title: filename,
+      episode: epNumber,
+      filename: initFilename,
+      picture: local.picture,
+      synopsis: local.synopsis,
+      numberOfEpisodes: local.numberOfEpisode,
+      status: local.status,
+      year: local.year,
+      genres: local.genres,
+      classification: local.classification,
+      mark: local.mark
+    })
+
+    return true
+  }
+
+  return false
+}
+
 exports.findFiles = (object, dir) => {
   const allFiles = fs.readdirSync(dir)
 
   const filteredFiles = self.filterFiles(allFiles, ['.mkv', '.mp4'])
 
+  // First we look for a local-stored information.
   filteredFiles.forEach((file) => {
-    self.searchAnime(file, object)
+    // If we don't have it, we look for it online.
+    if (!self.searchInJSON(file, object))
+      self.searchAnime(file, object)
   })
 }
 
