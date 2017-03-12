@@ -20,7 +20,47 @@ const {dialog} = require('electron').remote
 
 const mal = require('malapi').Anime
 
+const animeLocalStoragePath = path.join(os.userInfo().homedir, '.KawAnime', 'anime.json')
 exports.DIR = path.join(os.userInfo().homedir, downloadRep)
+
+exports.createJSON = () => {
+  fs.access(animeLocalStoragePath, fs.constants.R_OK | fs.constants.W_OK, (err) => {
+    if (err)
+    {
+      fs.appendFileSync(animeLocalStoragePath, '{}')
+      console.log('Local anime JSON file was created.')
+      return true
+    }
+    else
+    {
+      console.log('Local anime JSON file already exists.')
+      return false
+    }
+  })
+}
+
+const wasCreated = self.createJSON()
+
+exports.saveAnime = (anime) => {
+  const name = anime.title.split(' ').join('').toLocaleLowerCase()
+
+  const parsedJSON = require(animeLocalStoragePath)
+
+  parsedJSON[name] = JSON.stringify({
+    picture: anime.picture.toString(),
+    synopsis: anime.synopsis.toString(),
+    numberOfEpisode: anime.numberOfEpisodes.toString(),
+    status: anime.status.toString(),
+    year: anime.status.toString(),
+    genres: anime.genres.toString(),
+    classification: anime.classification.toString(),
+    mark: anime.mark.toString()
+  })
+
+  fs.writeFileSync(animeLocalStoragePath, JSON.stringify(parsedJSON), 'utf-8', (err) => {
+    if (err) throw err
+  })
+}
 
 exports.filterFiles = (files, filters) => {
   let filteredFiles = []
@@ -74,6 +114,8 @@ exports.searchAnime = (filename, object) => {
       object.files.sort((a, b) => a.title === b.title ?
           b.episode.toString().localeCompare(a.episode) :
           a.title.toString().localeCompare(b.title))
+
+    self.saveAnime(result)
   })
 }
 
@@ -81,8 +123,6 @@ exports.findFiles = (object, dir) => {
   const allFiles = fs.readdirSync(dir)
 
   const filteredFiles = self.filterFiles(allFiles, ['.mkv', '.mp4'])
-
-  object.numberOfEpisodes = filteredFiles.length
 
   filteredFiles.forEach((file) => {
     self.searchAnime(file, object)

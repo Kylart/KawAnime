@@ -101,7 +101,6 @@ Vue.component('local-page', {
       files: [],
       currentDir: functions.DIR,
       alreadyLoaded: false,
-      numberOfEpisodes: '',
       elemStyle: {
         marginBottom: '1.5%'
       },
@@ -127,6 +126,9 @@ Vue.component('local-page', {
       return this.numberOfEpisodes === 1
         ? 'episode'
         : 'episodes'
+    },
+    numberOfEpisodes: function () {
+      return this.files.length
     }
   },
   methods: {
