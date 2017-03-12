@@ -12,14 +12,20 @@ const html = `
 <div>
   <div class="mdl-grid">
     <div class="mdl-cell mdl-cell--12-col top-buttons">
-      <md-button class="md-icon-button play-button"
-                 @click.native="refreshDir()"
-                 title="Refresh current directory."
-                 v-bind:style="refreshButtonStyle">
-        <i class="mdi mdi-refresh mdi-36px"></i>
-      </md-button>
-            <md-button @click.native="changeDir()">Change Dir</md-button>
-
+      <div class="mdl-grid">
+        <div class="mdl-cell mdl-cell--4-col nb-ep">
+          <h6>{{ numberOfEpisodes }} {{ episodeLabel }}</h6>
+        </div>
+        <div class="mdl-cell mdl-cell--8-col">
+          <md-button class="md-icon-button play-button"
+                     @click.native="refreshDir()"
+                     title="Refresh current directory."
+                     v-bind:style="refreshButtonStyle">
+            <i class="mdi mdi-refresh mdi-36px"></i>
+          </md-button>
+          <md-button @click.native="changeDir()">Change Dir</md-button>
+        </div>
+      </div>
     </div>
     <template v-for="file in files">
       <div class="mdl-cell mdl-cell--6-col local-elem" v-bind:style="elemStyle">
@@ -95,6 +101,7 @@ Vue.component('local-page', {
       files: [],
       currentDir: functions.DIR,
       alreadyLoaded: false,
+      numberOfEpisodes: '',
       elemStyle: {
         marginBottom: '1.5%'
       },
@@ -113,6 +120,13 @@ Vue.component('local-page', {
         marginLeft: '0px',
         marginTop: '0.4%'
       }
+    }
+  },
+  computed: {
+    episodeLabel: function () {
+      return this.numberOfEpisodes === 1
+        ? 'episode'
+        : 'episodes'
     }
   },
   methods: {

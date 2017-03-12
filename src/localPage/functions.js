@@ -82,6 +82,8 @@ exports.findFiles = (object, dir) => {
 
   const filteredFiles = self.filterFiles(allFiles, ['.mkv', '.mp4'])
 
+  object.numberOfEpisodes = filteredFiles.length
+
   filteredFiles.forEach((file) => {
     self.searchAnime(file, object)
   })
