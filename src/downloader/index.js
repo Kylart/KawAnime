@@ -6,6 +6,8 @@
  *
  */
 
+const self = this
+
 // To open files
 const shell = require('electron').shell
 const path = require('path')
@@ -115,6 +117,7 @@ Vue.component('downloader', {
   template: html,
   data: function () {
     return {
+      show: self.show,
       display: "none",
       quality: '720p',
       animeName: '',
@@ -124,6 +127,9 @@ Vue.component('downloader', {
       horizontal: 'center',
       duration: '4000'
     }
+  },
+  computed: {
+
   },
   methods: {
     download: function () {
@@ -162,5 +168,12 @@ Vue.component('downloader', {
       if (this.untilEp === '')
         document.getElementById('fromEp-input').focus()
     }
+  }
+})
+
+exports.downloader = new Vue({
+  el: '#download-container',
+  data: {
+    show: false
   }
 })

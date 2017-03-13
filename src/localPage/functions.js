@@ -139,8 +139,6 @@ exports.searchInJSON = (filename, object) => {
   {
     const local = JSON.parse(jsonFile[jsonFileName])
 
-    console.log(local)
-
     object.files.push({
       title: filename,
       episode: epNumber,

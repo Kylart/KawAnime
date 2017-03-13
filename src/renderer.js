@@ -15,22 +15,11 @@ const fs = require('fs')
 const os = require('os')
 const path = require('path')
 
-// Mal API
-const mal = require('malapi').Anime
-// Nyaa API
-const Nyaa = require('node-nyaa-api')
-// Scraping the news from Mal
-const malScraper = require('mal-scraper')
+exports.lastPage = 'releases'
 
 /* ----------------- END IMPORTS ----------------- */
 
-/* ----------------- VUE IMPORTS ----------------- */
-
-require(path.join(__dirname, 'downloader', 'index.js'))
-// require(path.join(__dirname, 'infoPage', 'index.js'))
-require(path.join(__dirname, 'localPage', 'index.js'))
-require(path.join(__dirname, 'watchList', 'index.js'))
-
+/* ----------------- VUE CONFIG ----------------- */
 const VueMaterial = require('vue-material')
 
 Vue.use(VueMaterial)
@@ -58,190 +47,7 @@ Vue.material.registerTheme({
 
 /* -----------------  FUNCTIONS  ----------------- */
 
-function reduceString(string, wanted) {
-  if (string.length > wanted)
-    return string.substring(0, wanted) + ('...')
-  return string
-}
-
-// I like HorribleSubs
-function horribleSubsFilter(name) {
-  if ('[HorribleSubs]' === name.split(' ')[0])
-  {
-    if ('[720p].mkv' === name.split(' ').reverse()[0])
-      return true
-  }
-  return false
-}
-
-function getNameOnly(name) {
-  let tmp = name.split(' ')
-  tmp.pop()
-  tmp.shift()
-  return tmp.join(' ')
-}
-
-function getNameForResearch(name) {
-  let tmp = getNameOnly(name).split(' ')
-  tmp.pop()   // Episode number
-
-  return tmp.join(' ')
-}
-
-function byProperty(prop) {
-  return function (a, b) {
-    if (typeof a[prop] == "number")
-    {
-      return (a[prop] - b[prop])
-    }
-    return ((a[prop] < b[prop]) ? -1 : ((a[prop] > b[prop]) ? 1 : 0))
-  }
-}
-
-// Make the research for the latest animes
-function getLatest() {
-  let sorted = false
-
-  Nyaa.search('[HorribleSubs]', function (err, animes) {
-    // Initialize
-    releases.releases = []
-    releases.show = false
-    loader.show = true
-    if (err) throw err
-
-    for (let anime in animes)
-    {
-      if (horribleSubsFilter(animes[anime].title))
-      {
-        let tmp = animes[anime].title.split(' ')
-        tmp.pop()   // Remove the extension
-        tmp.pop()   // Remove the episode number
-        tmp.shift() // Remove the Horrible Subs tag
-
-        // Make the actual research
-        try
-        {
-          mal.fromName(tmp.join(' ')).then((result) => {
-            releases.releases.push({
-              realTitle: animes[anime].title,
-              title: getNameOnly(animes[anime].title),
-              link: animes[anime].link,
-              synopsis: reduceString(result.synopsis, 100),
-              picture: result.image,
-              published: animes[anime].published
-            })
-          }).then(() => {
-            if (releases.releases.length > 29)
-            {
-              releases.releases.sort(byProperty('published'))
-              releases.releases.reverse()
-              sorted = true
-            }
-          }).then(() => {
-            // 35 elements is too much, reducing to 18
-            if (sorted)
-              while (releases.releases.length > 18)
-                releases.releases.pop()
-          }).then(() => {
-            setTimeout(() => {
-              if (loader.show)
-              {
-                loader.show = false
-                releases.show = true
-              }
-            }, 1200)
-          })
-        }
-        catch (e)
-        {
-          console.log("There was a 'Too many request' error.")
-        }
-      }
-    }
-  })
-}
-
-function makeResearchOnMal(name) {
-
-  mal.fromName(name).then((anime) => {
-    info.infos.title = anime.title
-    info.infos.japTitle = anime.alternativeTitles.japanese[0].slice(10)
-    info.infos.image = anime.image
-    info.infos.synopsis = anime.synopsis
-    info.infos.episodes = anime.episodes
-    info.infos.studios = anime.studios
-    info.infos.stats = anime.statistics
-    info.infos.genres = anime.genres
-    info.infos.type = anime.type.split(' ').slice(0, 3).join(' ')
-    info.infos.characters = anime.characters
-    info.infos.staff = anime.staff
-    info.infos.aired = anime.aired
-    info.infos.status = anime.status
-
-    releases.show = false
-    loader.show = false
-    info.display = 'block'
-    info.show = true
-  })
-}
-
-function getNews() {
-  let tmp = malScraper.getNewsNoDetails(() => {
-    news.news = tmp
-  })
-}
-
-function getCurrentSeason() {
-  const date = new Date()
-
-  // Get current year
-  const year = 1900 + date.getYear()
-
-  // Get current month
-  const month = 1 + date.getMonth()   // I am a weak person that like 1-indexed things
-
-  if (0 < month && month < 4)  // Winter
-    return {season: 'winter', year: year}
-  else if (3 < month && month < 7)  // Spring
-    return {season: 'spring', year: year}
-  else if (6 < month && month < 10)  // Summer
-    return {season: 'summer', year: year}
-  else if (9 < month && month < 13)  // Fall
-    return {season: 'fall', year: year}
-}
-
-function fillSeason(seasonalInfo) {
-  seasonalInfo.info.forEach((elem) => {
-    switch (elem.type)
-    {
-      case 'TV':
-        season.TVs.push(elem)
-        break
-
-      case 'ONA':
-        season.ONAs.push(elem)
-        break
-
-      case 'OVA':
-        season.OVAs.push(elem)
-        break
-
-      case 'Movie':
-        season.Movies.push(elem)
-        break
-
-      case 'Special':
-        season.Specials.push(elem)
-        break
-
-      default:
-        break
-    }
-  })
-  season.infoWatcher = false
-}
-
-function setDownloaderBackground() {
+exports.setDownloaderBackground = () => {
   document.getElementsByClassName('mdl-layout__content')[0].style.backgroundImage = "url('./resources/downloader-back.jpg')"
   document.getElementsByClassName('mdl-layout__content')[0].style.backgroundSize = 'cover'
   document.getElementsByClassName('mdl-layout__content')[0].style.backgroundRepeat = 'no-repeat'
@@ -251,329 +57,88 @@ function disableDownloaderBackground() {
   document.getElementsByClassName('mdl-layout__content')[0].style.backgroundImage = "url('')"
 }
 
+function shutAllPages() {
+  self.downloader.downloader.show = false
+  self.info.infoPage.show = false
+  self.loader.loader.show = false
+  self.localPage.localPage.show = false
+  self.news.news.show = false
+  self.releases.releases.show = false
+  self.season.season.show = false
+  self.watchList.watchList.show = false
+}
+
 /* -------------------- END FUNCTIONS ----------------- */
-
-// First research at kawAnime's start
-getLatest()
-
-// Getting the news in advance
-getNews()
-
-// Getting the current season's information
-let seasonalInfo = malScraper.getSeason(getCurrentSeason().year, getCurrentSeason().season, () => {
-  fillSeason(seasonalInfo)
-})
 
 /* ------------------- VUE.JS OBJECTS ----------------- */
 
-exports.lastPage = 'release'
+exports.downloader = require(path.join(__dirname, 'downloader', 'index.js'))
+exports.info = require(path.join(__dirname, 'infoPage', 'index.js'))
+exports.loader = require(path.join(__dirname, 'loader', 'index.js'))
+exports.localPage = require(path.join(__dirname, 'localPage', 'index.js'))
+exports.news = require(path.join(__dirname, 'news', 'index.js'))
+exports.releases = require(path.join(__dirname, 'releases', 'index.js'))
+exports.season = require(path.join(__dirname, 'seasonInfo', 'index.js'))
+exports.watchList = require(path.join(__dirname, 'watchList', 'index.js'))
 
-let downloader = new Vue({
-  el: '#download-container',
-  data: {
-    show: false
-  }
-})
-
-let releases = new Vue({
-  el: '#releases',
-  data: {
-    releases: [],
-    show: false,
-    prefMagnets: true,
-    styleButton: {
-      minWidth: '0px',
-      marginBottom: '0px',
-      marginTop: '0px',
-      marginLeft: '2px',
-      marginRight: '2px'
-    },
-    refreshButtonStyle: {
-      paddingLeft: '2px',
-      marginRight: '0px',
-      marginLeft: '0px',
-      marginTop: '0.4%',
-      color: 'rgba(255, 255, 255, 0.8)'
-    }
-  },
-  methods: {
-    download: function (url, name) {
-      if (!this.prefMagnets)
-        startTorrent(url, name)
-    },
-    refresh: function () {
-      getLatest()
-    },
-    searchThis: function (arg) {
-      info.infos = {}
-      this.show = false
-      loader.show = true
-      makeResearchOnMal(getNameForResearch(arg))
-
-      disableDownloaderBackground()
-
-      self.lastPage = 'release'
-    }
-  }
-})
-
-let localPage = new Vue({
-  el: '#local-page',
-  data: {
-    show: false
-  }
-})
-
-let loader = new Vue({
-  el: '#loader-container',
-  data: {
-    show: true
-  },
-  methods: {
-    test: function () {
-      this.show = false
-      releases.show = true
-    }
-  }
-})
-
-let info = new Vue({
-  el: '#info-container',
-  data: {
-    infos: {
-      stats: {
-        score: {value: ''},
-        ranking: ''
-      }
-    },
-    display: 'none',
-    show: false
-  },
-  methods: {
-    downlaodThis: function () {
-
-    },
-    show: function () {
-      this.display = 'block'
-      this.show = true
-    },
-    hide: function () {
-      this.show = false
-    },
-    back: function () {
-      this.hide()
-      switch (self.lastPage)
-      {
-        case 'release':
-          releases.show = true
-          break
-
-        case 'season':
-          season.show = true
-          break
-
-        default:
-          break
-      }
-
-    }
-  }
-})
-
-let news = new Vue({
-  el: '#news-container',
-  data: {
-    show: false,
-    news: [],
-    display: 'none',
-    buttonStyle: {
-      position: 'absolute'
-    }
-  },
-  methods: {
-    openLink: function (link) {
-      event.preventDefault()
-      shell.openExternal(link)
-    }
-  }
-})
-
-let season = new Vue({
-  el: '#season-info-container',
-  data: {
-    display: 'none',
-    show: false,
-    searching: false,
-    season: getCurrentSeason().season,
-    year: getCurrentSeason().year,
-    infoWatcher: false,
-    TVs: [],
-    ONAs: [],
-    OVAs: [],
-    Movies: [],
-    Specials: [],
-    link: {
-      marginTop: 0,
-      marginBottom: 0,
-      float: 'right'
-    },
-    scoreStyle: {
-      margin: '0 0 0 0',
-    },
-    textStyle: {
-      marginLeft: '35%',
-      height: '50%'
-    },
-    synopsisStyle: {
-      paddingRight: '0',
-      textAlign: 'justify',
-      paddingTop: '5px',
-      height: '123.5px'
-    },
-    pictureStyle: {
-      position: 'absolute',
-      bottom: 0
-    }
-  },
-  watch: {
-    infoWatcher: function (bool) {
-      if (bool)
-      {
-        this.TVs = []
-        this.ONAs = []
-        this.OVAs = []
-        this.Movies = []
-        this.Specials = []
-        console.log("ERASED", this.TVs.length)
-      }
-    }
-  },
-  methods: {
-    reduced: function (text, nb) {
-      return reduceString(text, nb)
-    },
-    getGenres: function (genres) {
-      let result = ''
-
-      genres.forEach((elem) => {
-        result += `${elem}, `
-      })
-
-      return result.slice(0, -2)
-    },
-    searchThis: function (arg) {
-      info.infos = {}
-      this.show = false
-      loader.show = true
-      makeResearchOnMal(arg)
-      self.lastPage = 'season'
-
-      disableDownloaderBackground()
-    },
-    getThisSeason: function (year, season) {
-      this.infoWatcher = true
-      console.log(`Looking for season ${season} ${year}.`)
-      let newSeasonalInfo = malScraper.getSeason(year, season, function () {
-        fillSeason(newSeasonalInfo)
-      })
-    }
-  },
-})
-
-let watchList = new Vue({
-  el: '#watch-list-container',
-  data: {
-    show: false
-  }
-})
+const {searchThisFrom} = require(path.join(__dirname, 'infoPage', 'functions.js'))
 
 // Vue object to open the other pages
 new Vue({
   el: '.mdl-navigation',
   methods: {
     getDownloader: function () {
-      // Could be set in preferences ?
-      // main.openDownloader()
+      shutAllPages()
 
-      // First time
-      if (downloader.display === "none")
-        downloader.display = "block"
+      self.downloader.downloader.show = true
 
-      setDownloaderBackground()
+      self.lastPage = "downloader"
 
-      downloader.show = true
-      releases.show = false
-      news.show = false
-      info.show = false
-      season.show = false
-      loader.show = false
-      localPage.show = false
-      watchList.show = false
+      self.setDownloaderBackground()
     },
     getMainPage: function () {
-      if (!loader.show)
-      {
-        releases.show = true
-        news.show = false
-        info.show = false
-        season.show = false
-        downloader.show = false
-        localPage.show = false
-        watchList.show = false
-      }
+      shutAllPages()
+
+      self.releases.releases.show = true
+
+      self.lastPage = "releases"
+
+      disableDownloaderBackground()
     },
     getLocalPage: function () {
-      releases.show = false
-      news.show = false
-      loader.show = false
-      season.show = false
-      downloader.show = false
-      watchList.show = false
-      localPage.show = true
+      shutAllPages()
+
+      self.localPage.localPage.show = true
+
+      self.lastPage = "local"
 
       disableDownloaderBackground()
     },
     getNewsPage: function () {
-      // For first time
-      if (news.display === 'none')
-        news.display = 'block'
 
-      releases.show = false
-      news.show = true
-      loader.show = false
-      season.show = false
-      info.show = false
-      downloader.show = false
-      localPage.show = false
-      watchList.show = false
+      shutAllPages()
+
+      self.news.news.show = true
+
+      self.lastPage = "news"
 
       disableDownloaderBackground()
     },
     getSeasonPage: function () {
-      // For first time
-      if (season.display === 'none')
-        season.display = 'block'
+      shutAllPages()
 
-      releases.show = false
-      news.show = false
-      loader.show = false
-      season.show = true
-      info.show = false
-      downloader.show = false
-      localPage.show = false
-      watchList.show = false
+      self.season.season.show = true
+
+      self.lastPage = "seasonInfo"
 
       disableDownloaderBackground()
     },
     getWatchListPage: function () {
-      releases.show = false
-      news.show = false
-      loader.show = false
-      season.show = false
-      info.show = false
-      downloader.show = false
-      localPage.show = false
-      watchList.show = true
+      shutAllPages()
+
+      self.watchList.watchList.show = true
+
+      self.lastPage = "watchList"
 
       disableDownloaderBackground()
     }
@@ -594,17 +159,14 @@ let searchButton = document.getElementById('fixed-header-drawer-exp')
 searchButton.addEventListener('keydown', (key) => {
   if (key.keyCode === 13)
   {
-    info.show = false
     if (searchButton.value.length > 3)
     {
-      releases.show = false
-      news.show = false
-      season.show = false
-      downloader.show = false
-      localPage.show = false
-      loader.show = true
-      watchList.show = false
-      makeResearchOnMal(searchButton.value.toString())
+      shutAllPages()
+      disableDownloaderBackground()
+      self.loader.loader.show = true
+      searchThisFrom(self.lastPage, searchButton.value.toString(), () => {
+        self.loader.loader.show = false
+      })
     }
     searchButton.value = ''
   }

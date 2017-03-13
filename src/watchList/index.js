@@ -6,6 +6,8 @@
  *
  */
 
+const self = this
+
 const functions = require('./functions.js')
 
 const seeingHtml = `
@@ -175,5 +177,12 @@ Vue.component('watch-list', {
   },
   created: function () {
     functions.loadLists(this)
+  }
+})
+
+exports.watchList = new Vue({
+  el: '#watch-list-container',
+  data: {
+    show: false
   }
 })

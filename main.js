@@ -10,7 +10,7 @@ const url = require('url')
 const fs = require('fs')
 const os = require('os')
 
-require('electron-reload')(__dirname)
+// require('electron-reload')(__dirname)
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.

@@ -6,6 +6,8 @@
  *
  */
 
+const self = this
+
 const functions = require('./functions.js')
 
 const html = `
@@ -155,5 +157,12 @@ Vue.component('local-page', {
       this.findFiles()
       this.alreadyloaded = true
     }
+  }
+})
+
+exports.localPage = new Vue({
+  el: '#local-page',
+  data: {
+    show: false
   }
 })
