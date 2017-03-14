@@ -1,88 +1,88 @@
 <!DOCTYPE html>
 <html xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml">
 <head>
-  <meta charset="UTF-8">
-  <title>KawAnime</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-  <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.indigo-red.min.css">
-  <link rel="stylesheet" href="node_modules/vue-material/dist/vue-material.css">
-  <link href="node_modules/mdi/css/materialdesignicons.min.css" media="all" rel="stylesheet" type="text/css" />
-  <link rel="stylesheet" href="src/style.css">
-  <script src="https://code.getmdl.io/1.2.1/material.min.js"></script>
+	<meta charset="UTF-8">
+	<title>KawAnime</title>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.indigo-red.min.css">
+	<link rel="stylesheet" href="node_modules/vue-material/dist/vue-material.css">
+	<link href="node_modules/mdi/css/materialdesignicons.min.css" media="all" rel="stylesheet" type="text/css"/>
+	<link rel="stylesheet" href="src/style.css">
+	<script src="https://code.getmdl.io/1.2.1/material.min.js"></script>
 </head>
 <body>
 <script src="https://unpkg.com/vue"></script>
 
 <div id="not-online">
-  <h1>You're not connected to the internet...</h1>
-  <h3>Please connect the Internet and press refresh.</h3>
-  <button id="not-online-button"
-          class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
-    refresh
-  </button>
+	<h1>You're not connected to the internet...</h1>
+	<h3>Please connect the Internet and press refresh.</h3>
+	<button id="not-online-button"
+	        class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+		refresh
+	</button>
 </div>
 
 <div id="container" style="display: none;">
-  <div class="mdl-layout mdl-js-layout mdl-layout--fixed-drawer
+	<div class="mdl-layout mdl-js-layout mdl-layout--fixed-drawer
             mdl-layout--fixed-header">
-    <header class="mdl-layout__header">
-      <div class="mdl-layout__header-row">
-        <div class="mdl-layout-spacer dragable">
-          <h4 class="greetings">Welcome {{ username }} !</h4>
-        </div>
-        <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable
+		<header class="mdl-layout__header">
+			<div class="mdl-layout__header-row">
+				<div class="mdl-layout-spacer dragable">
+					<h4 class="greetings">Welcome {{ username }} !</h4>
+				</div>
+				<div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable
                   mdl-textfield--floating-label mdl-textfield--align-right">
-          <label class="mdl-button mdl-js-button mdl-button--icon"
-                 for="fixed-header-drawer-exp">
-            <i class="material-icons">search</i>
-          </label>
-          <div class="mdl-textfield__expandable-holder">
-            <input class="mdl-textfield__input" type="text" name="search"
-                   id="fixed-header-drawer-exp">
-          </div>
-        </div>
-      </div>
-    </header>
-    <div class="mdl-layout__drawer dragable">
-      <span class="mdl-layout-title">KawAnime</span>
-      <nav class="mdl-navigation">
-        <a class="mdl-navigation__link" href="#" v-on:click="getDownloader()">Download an anime</a>
-        <a class="mdl-navigation__link" href="#" v-on:click="getMainPage()">Recent releases</a>
-        <a class="mdl-navigation__link" href="#" v-on:click="getLocalPage()">Local animes</a>
-        <a class="mdl-navigation__link" href="#" v-on:click="getNewsPage()">Get news</a>
-        <a class="mdl-navigation__link" href="#" v-on:click="getSeasonPage()">Check anime seasons</a>
-        <a class="mdl-navigation__link" href="#" v-on:click="getWatchListPage()">Watch List</a>
-      </nav>
-    </div>
-    <main class="mdl-layout__content">
-      <div class="page-content">
-        <div id="loader-container" v-if="show">
-          <loader></loader>
-        </div>
-        <div id="download-container" v-if="show">
-          <downloader></downloader>
-        </div>
-        <div id="releases-container" v-if="show">
-          <releases></releases>
-        </div>
-        <div id="local-page" v-if="show">
-          <local-page></local-page>
-        </div>
-        <div id="info-container" v-if="show">
-          <info></info>
-        </div>
-        <div id="news-container" v-if="show">
-          <news></news>
-        </div>
-        <div id="season-info-container" v-if="show">
-          <season-info></season-info>
-        </div>
-        <div id="watch-list-container" v-if="show">
-          <watch-list></watch-list>
-        </div>
-      </div>
-    </main>
-  </div>
+					<label class="mdl-button mdl-js-button mdl-button--icon"
+					       for="fixed-header-drawer-exp">
+						<i class="material-icons">search</i>
+					</label>
+					<div class="mdl-textfield__expandable-holder">
+						<input class="mdl-textfield__input" type="text" name="search"
+						       id="fixed-header-drawer-exp">
+					</div>
+				</div>
+			</div>
+		</header>
+		<div class="mdl-layout__drawer dragable">
+			<span class="mdl-layout-title">KawAnime</span>
+			<nav class="mdl-navigation">
+				<a class="mdl-navigation__link" href="#" v-on:click="getDownloader()">Download an anime</a>
+				<a class="mdl-navigation__link" href="#" v-on:click="getMainPage()">Recent releases</a>
+				<a class="mdl-navigation__link" href="#" v-on:click="getLocalPage()">Local animes</a>
+				<a class="mdl-navigation__link" href="#" v-on:click="getNewsPage()">Get news</a>
+				<a class="mdl-navigation__link" href="#" v-on:click="getSeasonPage()">Check anime seasons</a>
+				<a class="mdl-navigation__link" href="#" v-on:click="getWatchListPage()">Watch List</a>
+			</nav>
+		</div>
+		<main class="mdl-layout__content">
+			<div class="page-content">
+				<div id="loader-container" v-if="show">
+					<loader></loader>
+				</div>
+				<div id="download-container" v-if="show">
+					<downloader></downloader>
+				</div>
+				<div id="releases-container" v-if="show">
+					<releases></releases>
+				</div>
+				<div id="local-page" v-if="show">
+					<local-page></local-page>
+				</div>
+				<div id="info-container" v-if="show">
+					<info></info>
+				</div>
+				<div id="news-container" v-if="show">
+					<news></news>
+				</div>
+				<div id="season-info-container" v-if="show">
+					<season-info></season-info>
+				</div>
+				<div id="watch-list-container" v-if="show">
+					<watch-list></watch-list>
+				</div>
+			</div>
+		</main>
+	</div>
 </div>
 
 <script>

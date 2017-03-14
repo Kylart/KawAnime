@@ -23,6 +23,7 @@ body
     overflow: hidden;
     margin-top: 20%;
 }
+
 /* --------------------------------------- */
 
 #container
@@ -59,10 +60,12 @@ body
     color: rgb(50, 50, 50);
 }
 
+/* ------------------ RELEASES ----------------- */
+
 /*noinspection CssOptimizeSimilarProperties*/
 #releases
 {
-    background-color: rgb(50, 50, 50);
+    background-color: rgb(50, 50, 50); /* Dark Theme */
     /*background-image: url('../resources/indexBack.jpg');*/
     background-size: cover;
     background-repeat: no-repeat;
@@ -71,7 +74,7 @@ body
 #releases .button-container
 {
     text-align: right;
-    margin: 0 7% 0 0 ;
+    margin: 0 7% 0 0;
 }
 
 .elem
@@ -83,7 +86,7 @@ body
     /*background-color: rgba(255, 255, 255, 0.95);*/
     background-color: rgb(60, 60, 60);
     color: rgba(255, 255, 255, 0.8);
-    box-shadow: 0 2px 2px 0 rgba(255,255,255,.14),0 3px 1px -2px rgba(255,255,255,.2),0 1px 5px 0 rgba(255,255,255,.12);
+    box-shadow: 0 2px 2px 0 rgba(255, 255, 255, .14), 0 3px 1px -2px rgba(255, 255, 255, .2), 0 1px 5px 0 rgba(255, 255, 255, .12);
 }
 
 .elem h6
@@ -138,7 +141,8 @@ body
     right: 0;
 }
 
-.links p {
+.links p
+{
     text-decoration: none;
     /*color: rgba(0, 0, 0, 0.74);*/
     font-size: x-small;
@@ -288,11 +292,11 @@ body
     border: 2px solid rgba(255, 255, 255, 0.5);
 }
 
-    /* ----------------- LOCAL ----------------- */
+/* ----------------- LOCAL ----------------- */
 #local-page
 {
     /* Remove these to get rid of "dark" theme */
-    background-color: rgb(50, 50,50);
+    background-color: rgb(50, 50, 50);
     color: rgba(255, 255, 255, 0.8)
 }
 
@@ -323,7 +327,7 @@ body
     flex-flow: row nowrap;
     align-items: flex-end;
     position: relative;
-    background-color: rgb(60, 60, 60);  /* Remove this too to get rid of "dark" theme */
+    background-color: rgb(60, 60, 60); /* Remove this too to get rid of "dark" theme */
 }
 
 .text-ellipsis
@@ -433,7 +437,7 @@ body
     margin: 0;
 }
 
-    /* ----------------- INFOS ----------------- */
+/* ----------------- INFOS ----------------- */
 /*noinspection CssOptimizeSimilarProperties*/
 #info-container
 {
@@ -486,7 +490,7 @@ body
 
 #synopsis-container pre
 {
-    box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .2), 0 1px 5px 0 rgba(0, 0, 0, .12);
     margin-top: 0;
     line-height: 130%;
     text-align: justify;
@@ -501,7 +505,7 @@ body
 
 .infos-bottom-left
 {
-    box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .2), 0 1px 5px 0 rgba(0, 0, 0, .12);
     background-color: rgba(255, 255, 255, 0.95);
     padding-left: 2%;
     padding-right: 2%;
@@ -526,7 +530,7 @@ body
 
 .infos-bottom-middle
 {
-    box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .2), 0 1px 5px 0 rgba(0, 0, 0, .12);
     position: relative;
     padding-left: 3%;
     padding-right: 3%;
@@ -547,7 +551,7 @@ body
 
 .infos-bottom-right
 {
-    box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .2), 0 1px 5px 0 rgba(0, 0, 0, .12);
     background-color: rgba(255, 255, 255, 0.95);
     padding-left: 2%;
     padding-right: 2%;
@@ -566,7 +570,7 @@ body
 
 .characters
 {
-    box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .2), 0 1px 5px 0 rgba(0, 0, 0, .12);
     background-color: rgba(255, 255, 255, 0.95);
     padding: 2% 2% 2% 2%;
 }
@@ -601,7 +605,7 @@ body
 
 .news
 {
-    box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .2), 0 1px 5px 0 rgba(0, 0, 0, .12);
     overflow: auto;
     position: relative;
     padding: 5px 10px 0 0;
@@ -659,7 +663,7 @@ body
     /*background-color: rgb(50, 50, 50);*/
     /*color: rgba(255, 255, 255, 0.8);*/
     color: rgba(0, 0, 0, 0.7);
-    box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .2), 0 1px 5px 0 rgba(0, 0, 0, .12);
 }
 
 #year

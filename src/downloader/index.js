@@ -112,7 +112,6 @@ const html = `<div>
           </div>
         </div>`
 
-
 Vue.component('downloader', {
   template: html,
   data: function () {
@@ -128,9 +127,7 @@ Vue.component('downloader', {
       duration: '4000'
     }
   },
-  computed: {
-
-  },
+  computed: {},
   methods: {
     download: function () {
       functions.download(this)

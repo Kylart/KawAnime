@@ -39,7 +39,12 @@ exports.getLatest = () => {
   Nyaa.search(`[${fansub}] ${quality}`, (err, animes) => {
     if (err) throw err
 
-    const nyaaReleases = animes.sort(self.byProperty("published")).reverse().slice(0, 18)
+    const latestReleases = []
+
+    const nyaaReleases = animes
+        .sort(self.byProperty("published"))
+        .reverse()
+        .slice(0, 18)
 
     let counter = 1
 
@@ -69,12 +74,14 @@ exports.getLatest = () => {
 
         result.synopsis = anime.synopsis
         result.reducedSynopsis = anime.synopsis.length > 100
-                                ? anime.synopsis.slice(0, 100) + '...'
-                                : anime.synopsis
+            ? anime.synopsis.slice(0, 100) + '...'
+            : anime.synopsis
         result.picture = anime.image
 
-        index.releases.releases.push(result)
-        index.releases.releases.sort(self.byProperty('published')).reverse()
+        latestReleases.push(result)
+        latestReleases.sort(self.byProperty('published')).reverse()
+
+        index.releases.releases = latestReleases
       })
     })
   })

@@ -100,8 +100,6 @@ Vue.component('local-page', {
   template: html,
   data: function () {
     return {
-      files: [],
-      currentDir: functions.DIR,
       alreadyLoaded: false,
       elemStyle: {
         marginBottom: '1.5%'
@@ -126,36 +124,33 @@ Vue.component('local-page', {
   computed: {
     episodeLabel: function () {
       return this.numberOfEpisodes === 1
-        ? 'episode'
-        : 'episodes'
+          ? 'episode'
+          : 'episodes'
     },
     numberOfEpisodes: function () {
-      return this.files.length
+      return this.$root.files.length
+    },
+    files: function () {
+      return this.$root.files
     }
   },
   methods: {
     findFiles: function () {
-      return functions.findFiles(this, this.currentDir)
+      return functions.findFiles(this.$root, this.$root.currentDir)
     },
     openFile: function (name) {
       functions.playFile(name)
     },
     delFile: function (name) {
-      functions.delFile(this, name)
+      functions.delFile(this.$root, name)
     },
     changeDir: function () {
-      functions.changePathDialog(this)
+      functions.changePathDialog(this.$root)
     },
     refreshDir: function () {
-      this.files = []
+      this.$root.files = []
       this.findFiles()
-    }
-  },
-  created: function () {
-    if (!this.alreadyLoaded)
-    {
-      this.findFiles()
-      this.alreadyloaded = true
+      console.log("Local files refreshed.")
     }
   }
 })
@@ -163,6 +158,11 @@ Vue.component('local-page', {
 exports.localPage = new Vue({
   el: '#local-page',
   data: {
-    show: false
+    show: false,
+    files: [],
+    currentDir: functions.DIR
   }
 })
+
+// Init
+self.findFiles(index.localPage, index.localPage.currentDir)

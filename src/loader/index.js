@@ -1,9 +1,9 @@
 /**
  * Created by Kylart on 13/03/2017.
- * 
+ *
  * In this file is present the vue object to render this HTML part
  * of the loader page.
- * 
+ *
  */
 
 const self = this

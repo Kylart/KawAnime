@@ -23,7 +23,7 @@ const Nyaa = require('node-nyaa-api')
 const os = require('os')
 const DIR = path.join(os.userInfo().homedir, '.KawAnime')
 
-const downloadFile= (file_url, name) => {
+const downloadFile = (file_url, name) => {
   let req = request({
     method: 'GET',
     uri: file_url

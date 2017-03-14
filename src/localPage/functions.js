@@ -20,6 +20,7 @@ const {dialog} = require('electron').remote
 
 const mal = require('malapi').Anime
 
+const index = require('./index.js')
 const animeLocalStoragePath = path.join(os.userInfo().homedir, '.KawAnime', 'anime.json')
 exports.DIR = path.join(os.userInfo().homedir, downloadRep)
 
@@ -84,7 +85,7 @@ exports.searchAnime = (filename, object) => {
 
   filename = filename.split(' ')
   for (let i = 0; i < 3; ++i) i === 1 ? epNumber = filename.pop()
-                                      : filename.pop()
+      : filename.pop()
 
   filename = filename.slice(1).join(' ')
 
@@ -108,7 +109,7 @@ exports.searchAnime = (filename, object) => {
 
     if (ascending)
       object.files.sort((a, b) => a.title === b.title ?
-          - b.episode.toString().localeCompare(a.episode) :
+          -b.episode.toString().localeCompare(a.episode) :
           a.title.toString().localeCompare(b.title))
     else
       object.files.sort((a, b) => a.title === b.title ?
@@ -198,5 +199,3 @@ exports.changePathDialog = (object) => {
     }
   })
 }
-
-// TODO: make an initial findFiles method

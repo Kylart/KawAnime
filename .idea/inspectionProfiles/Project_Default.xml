@@ -41,7 +41,7 @@
     <inspection_tool class="HtmlUnknownTag" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="myValues">
         <value>
-          <list size="28">
+          <list size="31">
             <item index="0" class="java.lang.String" itemvalue="nobr" />
             <item index="1" class="java.lang.String" itemvalue="noembed" />
             <item index="2" class="java.lang.String" itemvalue="comment" />
@@ -70,6 +70,9 @@
             <item index="25" class="java.lang.String" itemvalue="watch-list" />
             <item index="26" class="java.lang.String" itemvalue="info" />
             <item index="27" class="java.lang.String" itemvalue="news" />
+            <item index="28" class="java.lang.String" itemvalue="loader" />
+            <item index="29" class="java.lang.String" itemvalue="releases" />
+            <item index="30" class="java.lang.String" itemvalue="season-info" />
           </list>
         </value>
       </option>

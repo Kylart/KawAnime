@@ -10,20 +10,16 @@ const url = require('url')
 const fs = require('fs')
 const os = require('os')
 
-// require('electron-reload')(__dirname)
-
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
 const BASE_PATH = os.userInfo().homedir
 
-function createWindow () {
+function createWindow() {
   // Create the directory to download files
   const dir = path.join(BASE_PATH, '.KawAnime')
 
-  if (!fs.existsSync(dir)){
-      fs.mkdirSync(dir)
-  }
+  if (!fs.existsSync(dir)) fs.mkdirSync(dir)
 
   // Create the browser window.
   mainWindow = new BrowserWindow({
@@ -64,16 +60,15 @@ function createWindow () {
 // Some APIs can only be used after this event occurs.
 app.on('ready', () => {
   createWindow()
-  if (process.env.NODE_ENV !== 'production') {
-    require('vue-devtools').install()
-  }
+  if (process.env.NODE_ENV !== 'production') require('vue-devtools').install()
 })
 
 // Quit when all windows are closed.
 app.on('window-all-closed', function () {
   // On OS X it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
-  if (process.platform !== 'darwin') {
+  if (process.platform !== 'darwin')
+  {
     app.quit()
   }
 })
@@ -81,7 +76,8 @@ app.on('window-all-closed', function () {
 app.on('activate', function () {
   // On OS X it's common to re-create a window in the src when the
   // dock icon is clicked and there are no other windows open.
-  if (mainWindow === null) {
+  if (mainWindow === null)
+  {
     createWindow()
   }
 })
