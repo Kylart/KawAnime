@@ -53,11 +53,11 @@ exports.setDownloaderBackground = () => {
   document.getElementsByClassName('mdl-layout__content')[0].style.backgroundRepeat = 'no-repeat'
 }
 
-function disableDownloaderBackground() {
+exports.disableDownloaderBackground = () => {
   document.getElementsByClassName('mdl-layout__content')[0].style.backgroundImage = "url('')"
 }
 
-function shutAllPages() {
+exports.shutAllPages = () => {
   self.downloader.downloader.show = false
   self.info.infoPage.show = false
   self.loader.loader.show = false
@@ -83,67 +83,8 @@ exports.watchList = require(path.join(__dirname, 'watchList', 'index.js'))
 
 const {searchThisFrom} = require(path.join(__dirname, 'infoPage', 'functions.js'))
 
-// Vue object to open the other pages
-new Vue({
-  el: '.mdl-navigation',
-  methods: {
-    getDownloader: function () {
-      shutAllPages()
-
-      self.downloader.downloader.show = true
-
-      self.lastPage = "downloader"
-
-      self.setDownloaderBackground()
-    },
-    getMainPage: function () {
-      shutAllPages()
-
-      self.releases.releases.show = true
-
-      self.lastPage = "releases"
-
-      disableDownloaderBackground()
-    },
-    getLocalPage: function () {
-      shutAllPages()
-
-      self.localPage.localPage.show = true
-
-      self.lastPage = "local"
-
-      disableDownloaderBackground()
-    },
-    getNewsPage: function () {
-
-      shutAllPages()
-
-      self.news.news.show = true
-
-      self.lastPage = "news"
-
-      disableDownloaderBackground()
-    },
-    getSeasonPage: function () {
-      shutAllPages()
-
-      self.season.season.show = true
-
-      self.lastPage = "seasonInfo"
-
-      disableDownloaderBackground()
-    },
-    getWatchListPage: function () {
-      shutAllPages()
-
-      self.watchList.watchList.show = true
-
-      self.lastPage = "watchList"
-
-      disableDownloaderBackground()
-    }
-  }
-})
+// Navigation bar
+require('./navigationBar.js')
 
 // For the greeting's message
 new Vue({
@@ -161,8 +102,8 @@ searchButton.addEventListener('keydown', (key) => {
   {
     if (searchButton.value.length > 3)
     {
-      shutAllPages()
-      disableDownloaderBackground()
+      self.shutAllPages()
+      self.disableDownloaderBackground()
       self.loader.loader.show = true
       searchThisFrom(self.lastPage, searchButton.value.toString(), () => {
         self.loader.loader.show = false
