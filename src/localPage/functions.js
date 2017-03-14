@@ -20,7 +20,6 @@ const {dialog} = require('electron').remote
 
 const mal = require('malapi').Anime
 
-const index = require('./index.js')
 const animeLocalStoragePath = path.join(os.userInfo().homedir, '.KawAnime', 'anime.json')
 exports.DIR = path.join(os.userInfo().homedir, downloadRep)
 

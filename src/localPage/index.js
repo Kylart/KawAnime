@@ -165,4 +165,5 @@ exports.localPage = new Vue({
 })
 
 // Init
-self.findFiles(index.localPage, index.localPage.currentDir)
+functions.findFiles(self.localPage, self.localPage.currentDir)
+console.log("[INIT] Local Files loaded.")
