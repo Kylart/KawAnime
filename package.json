@@ -1,6 +1,6 @@
 {
   "name": "KawAnime",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A Software for Otaku Community.",
   "main": "main.js",
   "scripts": {
@@ -20,9 +20,7 @@
   "license": "MIT",
   "devDependencies": {
     "electron": "^1.4.15",
-    "electron-builder": "^14.5.3",
-    "electron-reload": "^1.1.0",
-    "vue-devtools": "^3.0.8"
+    "electron-builder": "^15.4.3"
   },
   "dependencies": {
     "find-remove": "^1.0.0",
@@ -33,8 +31,8 @@
     "node-nyaa-api": "latest",
     "parse-torrent": "^5.8.1",
     "play-sound": "^1.1.1",
-    "progressbar.js": "^1.0.1",
     "request": "latest",
+    "vue-devtools": "^3.0.8",
     "vue-material": "^0.7.1"
   },
   "build": {
@@ -43,12 +41,12 @@
   "dmg": {
     "contents": [
       {
-        "x": 120,
-        "y": 100
+        "x": 130,
+        "y": 20
       },
       {
-        "x": 400,
-        "y": 100,
+        "x": 130,
+        "y": 80,
         "type": "link",
         "path": "/Applications"
       }
