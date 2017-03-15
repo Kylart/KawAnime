@@ -8,9 +8,15 @@
 
 const self = this
 
+// Will be set via configuration file.
+const inside = true
+
+const path = require('path')
 const shell = require('electron').shell
+const remote = require('electron').remote
 const malScraper = require('mal-scraper')
 const index = require('./index.js')
+const {openANewsWindow} = remote.require(path.join(__dirname, '..', '..', 'main.js'))
 
 exports.getNews = (object) => {
   let tmp = malScraper.getNewsNoDetails(() => {
@@ -20,5 +26,5 @@ exports.getNews = (object) => {
 }
 
 exports.openLink = (link) => {
-  shell.openExternal(link)
+  inside ? openANewsWindow(link) : shell.openExternal(link)
 }

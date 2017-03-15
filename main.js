@@ -13,6 +13,7 @@ const os = require('os')
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
+let newsWindow
 const BASE_PATH = os.userInfo().homedir
 
 function createWindow() {
@@ -84,3 +85,26 @@ app.on('activate', function () {
 
 // In this file you can include the rest of your src's specific main process
 // code. You can also put them in separate files and require them here.
+exports.openANewsWindow = (uri) => {
+  // Create the browser window.
+  newsWindow = new BrowserWindow({
+    width: 720,
+    height: 480,
+    parent: mainWindow
+  })
+
+  // and load the index.html of the src.
+  newsWindow.loadURL(uri)
+
+  newsWindow.once('ready-to-show', () => {
+    newsWindow.show()
+  })
+
+  // Emitted when the window is closed.
+  newsWindow.on('closed', function () {
+    // Dereference the window object, usually you would store windows
+    // in an array if your src supports multi windows, this is the time
+    // when you should delete the corresponding element.
+    newsWindow = null
+  })
+}
