@@ -88,9 +88,11 @@ app.on('activate', function () {
 exports.openANewsWindow = (uri) => {
   // Create the browser window.
   newsWindow = new BrowserWindow({
-    width: 720,
-    height: 480,
-    parent: mainWindow
+    width: 800,
+    height: 500,
+    parent: mainWindow,
+    minimizable: false,
+    maximizable: false
   })
 
   // and load the index.html of the src.
