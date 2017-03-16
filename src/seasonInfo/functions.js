@@ -93,5 +93,5 @@ exports.refresh = (year, season) => {
 // Init
 let seasonalInfo = malScraper.getSeason(self.getCurrentSeason().year, self.getCurrentSeason().season, () => {
   self.fillSeason(seasonalInfo)
-  console.log(`[INIT] Season loaded: ${self.getCurrentSeason().season} ${self.getCurrentSeason().year}`)
+  console.log(`[INIT] Season loaded: ${self.getCurrentSeason().season} ${self.getCurrentSeason().year}.`)
 })
