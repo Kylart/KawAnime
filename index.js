@@ -8,6 +8,8 @@
 
 const path = require('path')
 
+window.Vue = require(path.join(__dirname, 'node_modules', 'vue', 'dist', 'vue.common.js'))
+
 // Will be set with the user's configuration once configuration is
 // implemented
 const check = false
