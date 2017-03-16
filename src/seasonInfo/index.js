@@ -82,7 +82,7 @@ Vue.component('season-info', {
       functions.searchThis(arg)
     },
     getThisSeason: function (year, season) {
-      // TODO
+      functions.refresh(year, season)
     }
   }
 })

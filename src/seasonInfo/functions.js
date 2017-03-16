@@ -77,6 +77,19 @@ exports.searchThis = (name) => {
   })
 }
 
+exports.refresh = (year, season) => {
+  let tmp = malScraper.getSeason(year, season, () => {
+    index.season.TVs = []
+    index.season.ONAs = []
+    index.season.OVAs = []
+    index.season.Specials = []
+    index.season.Movies = []
+
+    self.fillSeason(tmp)
+    console.log(`Season loaded: ${year}, ${season}.`)
+  })
+}
+
 // Init
 let seasonalInfo = malScraper.getSeason(self.getCurrentSeason().year, self.getCurrentSeason().season, () => {
   self.fillSeason(seasonalInfo)
