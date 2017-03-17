@@ -6,6 +6,11 @@
  *
  */
 
+if (process.env.NODE_ENV === 'development')
+  console.log('%cKawAnime is running in development mode.',
+      'color:green; ' +
+      'font-size:13px;')
+
 const path = require('path')
 
 window.Vue = require(path.join(__dirname, 'node_modules', 'vue', 'dist', 'vue.js'))

@@ -5,6 +5,8 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
+    "dev": "NODE_ENV=development electron .",
+    "hotDev": "NODE_ENV=hotDevelopment electron .",
     "pack": "build --dir",
     "dist": "build -mwl",
     "helpBuild": "echo 'https://github.com/electron-userland/electron-builder#cli-usage'"
@@ -20,7 +22,9 @@
   "license": "MIT",
   "devDependencies": {
     "electron": "^1.4.15",
-    "electron-builder": "^15.4.3"
+    "electron-builder": "^15.6.2",
+    "electron-reload": "^1.1.0",
+    "vue-devtools": "^3.0.8"
   },
   "dependencies": {
     "find-remove": "^1.0.0",
@@ -32,7 +36,6 @@
     "parse-torrent": "^5.8.1",
     "play-sound": "^1.1.1",
     "request": "latest",
-    "vue-devtools": "^3.0.8",
     "vue-material": "^0.7.1"
   },
   "build": {

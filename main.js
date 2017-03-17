@@ -16,6 +16,11 @@ let mainWindow
 let newsWindow
 const BASE_PATH = os.userInfo().homedir
 
+if (process.env.NODE_ENV === 'hotDevelopment')
+  require('electron-reload')(__dirname, {
+    electron: path.join(__dirname, 'node_modules', '.bin', 'electron')
+  })
+
 function createWindow() {
   // Create the directory to download files
   const dir = path.join(BASE_PATH, '.KawAnime')
@@ -61,7 +66,12 @@ function createWindow() {
 // Some APIs can only be used after this event occurs.
 app.on('ready', () => {
   createWindow()
-  if (process.env.NODE_ENV !== 'production') require('vue-devtools').install()
+
+  // Dev tools
+  if (process.env.NODE_ENV !== 'production')
+  {
+    require('vue-devtools').install()
+  }
 })
 
 // Quit when all windows are closed.
