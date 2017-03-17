@@ -16,7 +16,21 @@ const html = `
     <div class="mdl-cell mdl-cell--12-col top-buttons">
       <div class="mdl-grid">
         <div class="mdl-cell mdl-cell--4-col nb-ep">
-          <h6>{{ numberOfEpisodes }} {{ episodeLabel }}</h6>
+          <h6>{{ numberOfEpisodes }} {{ episodeLabel }}
+          <md-button class="md-icon-button"
+                     @click.native="sort()"
+                     v-bind:style="sortButtonStyle"
+                     v-if="descendingFilter"
+                     v-bind:title="sortButtonTitle">
+            <i class="mdi mdi-sort-ascending mdi-24px"></i>
+          </md-button>
+          <md-button class="md-icon-button"
+                     @click.native="sort()"
+                     v-bind:style="sortButtonStyle" v-else
+                     v-bind:title="sortButtonTitle">
+            <i class="mdi mdi-sort-descending mdi-24px"></i>
+          </md-button>
+          </h6>
         </div>
         <div class="mdl-cell mdl-cell--8-col">
           <md-button class="md-icon-button play-button"
@@ -118,6 +132,13 @@ Vue.component('local-page', {
         marginRight: '0px',
         marginLeft: '0px',
         marginTop: '0.4%'
+      },
+      sortButtonStyle: {
+        paddingLeft: '9px',
+        paddingTop: '8px',
+        marginTop: '-3%',
+        marginLeft: '20%',
+        marginRight: '0'
       }
     }
   },
@@ -132,6 +153,15 @@ Vue.component('local-page', {
     },
     files: function () {
       return this.$root.files
+    },
+    descendingFilter: function () {
+      // true corresponds to descending sorting.
+      return this.$root.descendingFilter
+    },
+    sortButtonTitle: function () {
+      return this.descendingFilter
+          ? 'Sort by ascending episodes.'
+          : 'Sort by descending episodes.'
     }
   },
   methods: {
@@ -151,6 +181,15 @@ Vue.component('local-page', {
       this.$root.files = []
       this.findFiles()
       console.log("Local files refreshed.")
+    },
+    sort: function () {
+      this.$root.descendingFilter
+          ? this.$root.descendingFilter = false
+          : this.$root.descendingFilter = true
+
+      functions.sortFiles(this.$root.files, this.$root.descendingFilter)
+
+      console.log("Sorting changed.")
     }
   }
 })
@@ -160,7 +199,8 @@ exports.localPage = new Vue({
   data: {
     show: false,
     files: [],
-    currentDir: functions.DIR
+    currentDir: functions.DIR,
+    descendingFilter: false
   }
 })
 

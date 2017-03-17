@@ -67,9 +67,12 @@ exports.getLatest = () => {
         ++counter
         if (counter === nyaaReleases.length)
         {
-          index.releases.show = true
-          loader.loader.show = false
-          console.log('Releases updated.')
+          if (loader.loader.show)
+          {
+            loader.loader.show = false
+            index.releases.show = true
+            console.log('Releases updated.')
+          }
         }
 
         result.synopsis = anime.synopsis

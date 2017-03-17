@@ -22,6 +22,7 @@ const mal = require('malapi').Anime
 
 const animeLocalStoragePath = path.join(os.userInfo().homedir, '.KawAnime', 'anime.json')
 exports.DIR = path.join(os.userInfo().homedir, downloadRep)
+const index = require('./index.js')
 
 exports.createJSON = () => {
   fs.access(animeLocalStoragePath, fs.constants.R_OK | fs.constants.W_OK, (err) => {
@@ -173,11 +174,11 @@ exports.findFiles = (object, dir) => {
 }
 
 exports.playFile = (name) => {
-  shell.openItem(path.join(self.DIR, name))
+  shell.openItem(path.join(index.localPage.currentDir, name))
 }
 
 exports.delFile = (object, name) => {
-  const namePath = path.join(self.DIR, name)
+  const namePath = path.join(index.localPage.currentDir, name)
 
   fs.unlink(namePath, () => {
     console.log(`${name} was deleted.`)
@@ -197,4 +198,15 @@ exports.changePathDialog = (object) => {
       self.findFiles(object, dirPath[0])
     }
   })
+}
+
+exports.sortFiles = (array, descending) => {
+  if (descending)
+    array.sort((a, b) => a.title === b.title ?
+        b.episode.toString().localeCompare(a.episode) :
+        a.title.toString().localeCompare(b.title))
+  else
+    array.sort((a, b) => a.title === b.title ?
+        -b.episode.toString().localeCompare(a.episode) :
+        a.title.toString().localeCompare(b.title))
 }
