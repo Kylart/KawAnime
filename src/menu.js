@@ -24,6 +24,16 @@ let template = [
       },
       {
         role: 'delete'
+      },
+      {
+        type: 'separator'
+      },
+      {
+        label: 'preferences',
+        accelerator: 'Ctrl+,',
+        click: function () {
+          self.openPreferences()
+        }
       }
     ]
   },
