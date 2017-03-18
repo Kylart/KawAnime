@@ -1,6 +1,7 @@
 const electron = require('electron')
 // Module to control application life.
 const app = electron.app
+const Menu = electron.Menu
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow
 
@@ -10,10 +11,16 @@ const url = require('url')
 const fs = require('fs')
 const os = require('os')
 
+// Menu
+const menuFile = require(path.join(__dirname, 'src', 'menu.js'))
+const template = menuFile.template
+const menu = Menu.buildFromTemplate(template)
+
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
 let newsWindow
+let preferencesWindow
 const BASE_PATH = os.userInfo().homedir
 
 if (process.env.NODE_ENV === 'hotDevelopment')
@@ -66,6 +73,8 @@ function createWindow() {
 // Some APIs can only be used after this event occurs.
 app.on('ready', () => {
   createWindow()
+
+  Menu.setApplicationMenu(menu)
 
   // Dev tools
   if (process.env.NODE_ENV !== 'production')

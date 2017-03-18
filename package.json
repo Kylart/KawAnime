@@ -22,13 +22,12 @@
   "license": "MIT",
   "devDependencies": {
     "devtron": "^1.4.0",
-    "electron": "^1.4.15",
+    "electron": "^1.6.2",
     "electron-builder": "^15.6.2",
     "electron-reload": "^1.1.0",
     "vue-devtools": "^3.0.8"
   },
   "dependencies": {
-    "electron": "^1.6.2",
     "find-remove": "^1.0.0",
     "is-online": "^5.2.0",
     "mal-scraper": "latest",
