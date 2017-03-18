@@ -18,99 +18,100 @@ const DIR = path.join(os.userInfo().homedir, '.KawAnime')
 
 const functions = require('./functions.js')
 
-const html = `<div>
-          <div id="footer-back-left"></div>
-          <div id="footer-back-right"></div>
+const html = `
+<div>
+  <div id="footer-back-left"></div>
+  <div id="footer-back-right"></div>
 
-          <div class="downloader-header"></div>
-          <div class="mdl-grid mdl-layout__content mdl-typography--text-center downloader-form-container">
-            <div class="dummy-cell mdl-cell mdl-cell--12-col"></div>
-            <div class="mdl-cell mdl-cell--12-col">
-              <form novalidate @submit.stop.prevent="animeNameNext">
-                <md-input-container id="anime-name" class="downloader-input">
-                  <label><p>Name of the anime...</p></label>
-                  <md-input autofocus v-model="animeName" id="animeName-input"
-                            style="color: rgba(255, 255, 255, 0.8);text-shadow: 0 0 0 rgba(255, 255, 255, 0.8); "></md-input>
-                </md-input-container>
-              </form>
-            </div>
+  <div class="downloader-header"></div>
+  <div class="mdl-grid mdl-layout__content mdl-typography--text-center downloader-form-container">
+    <div class="dummy-cell mdl-cell mdl-cell--12-col"></div>
+    <div class="mdl-cell mdl-cell--12-col">
+      <form novalidate @submit.stop.prevent="animeNameNext">
+        <md-input-container id="anime-name" class="downloader-input">
+          <label><p>Name of the anime...</p></label>
+          <md-input autofocus v-model="animeName" id="animeName-input"
+                    style="color: rgba(255, 255, 255, 0.8);text-shadow: 0 0 0 rgba(255, 255, 255, 0.8); "></md-input>
+        </md-input-container>
+      </form>
+    </div>
 
-            <div class="mdl-cell mdl-cell--12-col">
-              <form novalidate @submit.stop.prevent="fromEpNext" @keydown.delete="fromEpPrevious">
-                <md-input-container id="fromEp" class="downloader-input">
-                  <label><p>From episode...</p></label>
-                  <md-input type="number"
-                            v-model="fromEp"
-                            id="fromEp-input"
-                            style="text-shadow: 0 0 0 rgba(255, 255, 255, 0.8)"></md-input>
-                </md-input-container>
-              </form>
-            </div>
-            <div class="mdl-cell mdl-cell--12-col">
-              <form novalidate @submit.stop.prevent="untilEpNext" @keydown.delete="untilEpPrevious">
-                <md-input-container id="untilEp" class="downloader-input">
-                  <label><p>Until episode...</p></label>
-                  <md-input type="number"
-                            v-model="untilEp"
-                            id="untilEp-input"
-                            style="text-shadow: 0 0 0 rgba(255, 255, 255, 0.8)"></md-input>
-                </md-input-container>
-              </form>
-            </div>
+    <div class="mdl-cell mdl-cell--12-col">
+      <form novalidate @submit.stop.prevent="fromEpNext" @keydown.delete="fromEpPrevious">
+        <md-input-container id="fromEp" class="downloader-input">
+          <label><p>From episode...</p></label>
+          <md-input type="number"
+                    v-model="fromEp"
+                    id="fromEp-input"
+                    style="text-shadow: 0 0 0 rgba(255, 255, 255, 0.8)"></md-input>
+        </md-input-container>
+      </form>
+    </div>
+    <div class="mdl-cell mdl-cell--12-col">
+      <form novalidate @submit.stop.prevent="untilEpNext" @keydown.delete="untilEpPrevious">
+        <md-input-container id="untilEp" class="downloader-input">
+          <label><p>Until episode...</p></label>
+          <md-input type="number"
+                    v-model="untilEp"
+                    id="untilEp-input"
+                    style="text-shadow: 0 0 0 rgba(255, 255, 255, 0.8)"></md-input>
+        </md-input-container>
+      </form>
+    </div>
 
-            <div class="mdl-cell mdl-cell--12-col">
-              <md-theme md-name="radio">
-                <div class="mdl-grid">
-                  <div class="mdl-cell mdl-cell--4-col">
-                    <md-radio v-model="quality"
-                              id="480p"
-                              name="480p"
-                              md-value="480p"><h6>480p</h6>
-                    </md-radio>
-                  </div>
-                  <div class="mdl-cell mdl-cell--4-col">
-                    <md-radio v-model="quality"
-                              id="720p"
-                              name="720p"
-                              md-value="720p"><h6>720p</h6>
-                    </md-radio>
-                  </div>
-                  <div class="mdl-cell mdl-cell--4-col">
-                    <md-radio v-model="quality"
-                              id="1080p"
-                              name="1080p"
-                              md-value="1080p"><h6>1080p</h6>
-                    </md-radio>
-                  </div>
-                </div>
-              </md-theme>
-            </div>
+    <div class="mdl-cell mdl-cell--12-col">
+      <md-theme md-name="radio">
+        <div class="mdl-grid">
+          <div class="mdl-cell mdl-cell--4-col">
+            <md-radio v-model="quality"
+                      id="480p"
+                      name="480p"
+                      md-value="480p"><h6>480p</h6>
+            </md-radio>
           </div>
-          <div class="mdl-grid">
-            <div class="mdl-cell mdl-cell--3-col mdl-cell--3-offset download-button">
-              <md-button id="downloader-button"
-                         class="md-raised"
-                         @click.native="download()">
-                <h6>Download!</h6>
-              </md-button>
-            </div>
-            <div class="mdl-cell mdl-cell--3-col download-button">
-              <md-button id="magnet-downloader-button"
-                         class="md-raised"
-                         @click.native="downloadMagnets()">
-                <h6>Get Magnets!</h6>
-              </md-button>
-            </div>
-            <div class="mdl-cell mdl-cell--12-col">
-              <md-snackbar :md-position="vertical + ' ' + horizontal" ref="snackbar" :md-duration="duration">
-                <span>Your magnets are ready, you can open them </span>
-                <md-button class="md-accent"
-                           md-theme="light-blue"
-                           @click.native="openMagnets()">Here!</md-button>
-              </md-snackbar>
-            </div>
+          <div class="mdl-cell mdl-cell--4-col">
+            <md-radio v-model="quality"
+                      id="720p"
+                      name="720p"
+                      md-value="720p"><h6>720p</h6>
+            </md-radio>
           </div>
-        </div>`
+          <div class="mdl-cell mdl-cell--4-col">
+            <md-radio v-model="quality"
+                      id="1080p"
+                      name="1080p"
+                      md-value="1080p"><h6>1080p</h6>
+            </md-radio>
+          </div>
+        </div>
+      </md-theme>
+    </div>
+  </div>
+  <div class="mdl-grid">
+    <div class="mdl-cell mdl-cell--3-col mdl-cell--3-offset download-button">
+      <md-button id="downloader-button"
+                 class="md-raised"
+                 @click.native="download()">
+        <h6>Download!</h6>
+      </md-button>
+    </div>
+    <div class="mdl-cell mdl-cell--3-col download-button">
+      <md-button id="magnet-downloader-button"
+                 class="md-raised"
+                 @click.native="downloadMagnets()">
+        <h6>Get Magnets!</h6>
+      </md-button>
+    </div>
+    <div class="mdl-cell mdl-cell--12-col">
+      <md-snackbar :md-position="vertical + ' ' + horizontal" ref="snackbar" :md-duration="duration">
+        <span>Your magnets are ready, you can open them </span>
+        <md-button class="md-accent"
+                   md-theme="light-blue"
+                   @click.native="openMagnets()">Here!</md-button>
+      </md-snackbar>
+    </div>
+  </div>
+</div>`
 
 Vue.component('downloader', {
   template: html,
