@@ -4,7 +4,7 @@
   "description": "A Software for Otaku Community.",
   "main": "main.js",
   "scripts": {
-    "start": "electron .",
+    "start": "NODE_ENV=production electron .",
     "dev": "NODE_ENV=development electron .",
     "hotDev": "NODE_ENV=hotDevelopment electron .",
     "pack": "build --dir",

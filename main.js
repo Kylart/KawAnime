@@ -11,9 +11,13 @@ const url = require('url')
 const fs = require('fs')
 const os = require('os')
 
+const self = this
+
 // Menu
 const menuFile = require(path.join(__dirname, 'src', 'menu.js'))
-const template = menuFile.template
+const template = menuFile.template(() => {
+  self.openPreferences()
+})
 const menu = Menu.buildFromTemplate(template)
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -77,7 +81,7 @@ app.on('ready', () => {
   Menu.setApplicationMenu(menu)
 
   // Dev tools
-  if (process.env.NODE_ENV !== 'production')
+  if (process.env.NODE_ENV === 'development')
   {
     require('vue-devtools').install()
     require('devtron').install()
@@ -128,5 +132,40 @@ exports.openANewsWindow = (uri) => {
     // in an array if your src supports multi windows, this is the time
     // when you should delete the corresponding element.
     newsWindow = null
+  })
+}
+
+// Preferences window
+exports.openPreferences = () => {
+  // Create the browser window.
+  preferencesWindow = new BrowserWindow({
+    parent: mainWindow,
+    x: 50,
+    y: 50,
+    width: 800,
+    height: 500,
+    minimizable: false,
+    maximizable: false,
+    frame: 'none',
+    titleBarStyle: 'hidden'
+  })
+
+  // and load the index.html of the src.
+  preferencesWindow.loadURL(url.format({
+    pathname: path.join(__dirname, 'src', 'preferences', 'index.html'),
+    protocol: 'file:',
+    slashes: true
+  }))
+
+  preferencesWindow.once('ready-to-show', () => {
+    preferencesWindow.show()
+  })
+
+  // Emitted when the window is closed.
+  preferencesWindow.on('closed', function () {
+    // Dereference the window object, usually you would store windows
+    // in an array if your src supports multi windows, this is the time
+    // when you should delete the corresponding element.
+    preferencesWindow = null
   })
 }
