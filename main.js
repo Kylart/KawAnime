@@ -71,6 +71,7 @@ app.on('ready', () => {
   if (process.env.NODE_ENV !== 'production')
   {
     require('vue-devtools').install()
+    require('devtron').install()
   }
 })
 
