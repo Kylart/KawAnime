@@ -4,9 +4,9 @@
   "description": "A Software for Otaku Community.",
   "main": "main.js",
   "scripts": {
-    "start": "NODE_ENV=production electron .",
-    "dev": "NODE_ENV=development electron .",
-    "hotDev": "NODE_ENV=hotDevelopment electron .",
+    "start": "cross-env NODE_ENV=production electron .",
+    "dev": "cross-env NODE_ENV=development electron .",
+    "hotDev": "cross-env NODE_ENV=hotDevelopment electron .",
     "pack": "build --dir",
     "dist": "build -mwl",
     "helpBuild": "echo 'https://github.com/electron-userland/electron-builder#cli-usage'"
@@ -40,21 +40,21 @@
     "vue-material": "^0.7.1"
   },
   "build": {
-    "appId": "KawAnime"
-  },
-  "dmg": {
-    "contents": [
-      {
-        "x": 130,
-        "y": 20
-      },
-      {
-        "x": 130,
-        "y": 80,
-        "type": "link",
-        "path": "/Applications"
-      }
-    ]
+    "appId": "KawAnime",
+    "dmg": {
+      "contents": [
+        {
+          "x": 150,
+          "y": 90
+        },
+        {
+          "x": 150,
+          "y": 275,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    }
   },
   "postinstall": "install-app-deps"
 }

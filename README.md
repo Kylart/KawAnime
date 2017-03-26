@@ -13,7 +13,7 @@ This software allows one to:
 This is a software developed with Electron framework. It is still in development. 
 
 ## About OS
-_KawAnime_ is completly cross-platform
+_KawAnime_ is completely cross-platform
 
 Yet, if you find any problem, you can tell me anytime in the `issues` section.
 

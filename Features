@@ -1,6 +1,6 @@
 **********************************************
 
-In this document, one can write any feature idea he might have. ANY idea might grow to become a good idea so pleae
+In this document, one can write any feature idea he might have. ANY idea might grow to become a good idea so please
 write whatever you would like to see in this software in this document following this example.
 
 <NAME/NICKNAME> : <MAIL(optional)>
@@ -11,10 +11,12 @@ write whatever you would like to see in this software in this document following
 **********************************************
 
 Kylart :
-    1 -- Anime lists ?
-    2 -- Info about seasons (from MAL)
-        --> Scrap info from https://myanimelist.net/anime/season/<YEAR>/<SEASON>
-    3 -- Info about each episode of an anime
-    4 -- Find a fansub for OVA and Films (KissAnime ?)
-    5 -- Parsing names on Nyaa instead of taking only HorribleSubs's episodes.
-    6 -- === 1 ? Make editable anime list (plan to, watched,...) in local
+    1 -- Info about each episode of an anime
+    2 -- Find a fansub for OVA and Films (KissAnime ?)
+    3 -- Link to mal if user wants it
+    4 -- Log file registering everything
+
+    TODO :
+        -- Refresh button on news page
+        -- flush local anime info to get newer ones / refresh local anime info (json)
+        -- Add mdl's loader on refreshing methods

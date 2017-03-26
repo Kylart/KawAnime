@@ -24,7 +24,7 @@ const menu = Menu.buildFromTemplate(template)
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
 let newsWindow
-let preferencesWindow
+let preferencesWindow = null
 const BASE_PATH = os.userInfo().homedir
 
 if (process.env.NODE_ENV === 'hotDevelopment')
@@ -137,6 +137,9 @@ exports.openANewsWindow = (uri) => {
 
 // Preferences window
 exports.openPreferences = () => {
+  // We do not want two preferencesWindows at the same time
+  if (preferencesWindow !== null) preferencesWindow.destroy()
+
   // Create the browser window.
   preferencesWindow = new BrowserWindow({
     parent: mainWindow,
@@ -146,8 +149,8 @@ exports.openPreferences = () => {
     height: 500,
     minimizable: false,
     maximizable: false,
-    frame: 'none',
-    titleBarStyle: 'hidden'
+    frame: false,
+    resizable: false
   })
 
   // and load the index.html of the src.

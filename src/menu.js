@@ -29,7 +29,7 @@ const template = (preferencesFunction) => {
           type: 'separator'
         },
         {
-          label: 'preferences',
+          label: 'Preferences',
           accelerator: 'Ctrl+,',
           click: function () {
             preferencesFunction()
@@ -144,21 +144,22 @@ const template = (preferencesFunction) => {
       ]
     })
     // Edit menu.
+    menu[1].submenu.pop()   // Removing preferences from this part.
     menu[1].submenu.push(
-        {
-          type: 'separator'
-        },
-        {
-          label: 'Speech',
-          submenu: [
-            {
-              role: 'startspeaking'
-            },
-            {
-              role: 'stopspeaking'
-            }
-          ]
-        }
+      {
+        type: 'separator'
+      },
+      {
+        label: 'Speech',
+        submenu: [
+          {
+            role: 'startspeaking'
+          },
+          {
+            role: 'stopspeaking'
+          }
+        ]
+      }
     )
     // Window menu.
     menu[3].submenu = [
