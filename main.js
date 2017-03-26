@@ -20,6 +20,18 @@ const template = menuFile.template(() => {
 })
 const menu = Menu.buildFromTemplate(template)
 
+// Checking if that config file already exists
+fs.access(path.join(os.userInfo().homedir, '.KawAnime', 'config.js'), fs.constants.R_OK | fs.constants.W_OK, (err) => {
+  if (err)  // This means the file does not exist
+  {
+    console.log('Creating initial config file.')
+
+    // Taking the template config
+    fs.createReadStream(path.join(__dirname, 'resources', 'initConfig.js'))
+        .pipe(fs.createWriteStream(path.join(os.userInfo().homedir, '.KawAnime', 'config.js')))
+  }
+})
+
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow

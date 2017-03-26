@@ -30,7 +30,7 @@
   "dependencies": {
     "find-remove": "^1.0.0",
     "is-online": "^5.2.0",
-    "mal-scraper": "latest",
+    "mal-scraper": "^1.2.0",
     "malapi": "0.0.3",
     "mdi": "^1.8.36",
     "node-nyaa-api": "latest",

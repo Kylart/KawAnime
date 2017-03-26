@@ -94,7 +94,10 @@ exports.downloadMagnets = (object) => {
       // Here we convert the torrent files to magnets
       const dirFiles = fs.readdirSync(DIR)
 
+      const date = new Date()
+
       // Grabbing all the torrents
+      fs.appendFileSync(path.join(DIR, 'magnets.txt'), `${date}: ${animeName} ${fromEp} - ${untilEp}\n`)
       for (let i = 0; i < dirFiles.length; ++i)
       {
         let torrent = dirFiles[i]
@@ -106,12 +109,10 @@ exports.downloadMagnets = (object) => {
 
           const name = torrent.name
           const torrentHash = torrent.infoHash
-          const date = new Date()
 
           const uri = parseTorrent.toMagnetURI({infoHash: torrentHash})
 
-          fs.appendFileSync(path.join(DIR, 'magnets.txt'), `${date}: ${name}\n\t`)
-          fs.appendFileSync(path.join(DIR, 'magnets.txt'), `${uri}\n\n`)
+          fs.appendFileSync(path.join(DIR, 'magnets.txt'), `${uri}\n`)
         }
       }
 
