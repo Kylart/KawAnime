@@ -7,11 +7,6 @@ const self = this
 const path = require('path')
 const player = require('play-sound')(opts = {})
 
-/** TODO :
- * Preferences for :
- *  -- News inside / outside
- */
-
 exports.playSound = (name) => {
   if (name === 'None') return
 
