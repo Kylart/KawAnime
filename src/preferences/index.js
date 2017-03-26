@@ -146,13 +146,7 @@ Vue.component('preferences', {
   template: html,
   data: function () {
     return {
-      config: {
-        fansub: 'HorribleSubs',
-        quality: '720p',
-        sound: 'Nyanpasu',
-        localPath: path.join(os.userInfo().homedir, 'Downloads'),
-        inside: true
-      },
+      config: {},
       vertical: 'bottom',
       horizontal: 'center',
       duration: 1000,
