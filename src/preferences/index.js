@@ -19,7 +19,7 @@ Vue.use(VueMaterial)
 
 Vue.material.registerTheme({
   default: {
-    primary: 'indigo',
+    primary: 'white',
     accent: 'pink',
     warn: 'deep-orange',
     background: 'cyan'

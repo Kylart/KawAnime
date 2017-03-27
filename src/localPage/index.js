@@ -114,7 +114,6 @@ Vue.component('local-page', {
   template: html,
   data: function () {
     return {
-      alreadyLoaded: false,
       elemStyle: {
         marginBottom: '1.5%'
       },

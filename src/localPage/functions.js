@@ -8,20 +8,23 @@
 
 const self = this
 
-// This will later be set with the config file
-const downloadRep = 'Downloads'
-const ascending = true
-
 const fs = require('fs')
 const path = require('path')
 const os = require('os')
+
+// Config file
+const configFile = JSON.parse(require(path.join(os.userInfo().homedir, '.KawAnime', 'config.json')).config)
+const downloadRep = configFile.localPath
+
+const ascending = true
+
 const shell = require('electron').shell
 const {dialog} = require('electron').remote
 
 const mal = require('malapi').Anime
 
 const animeLocalStoragePath = path.join(os.userInfo().homedir, '.KawAnime', 'anime.json')
-exports.DIR = path.join(os.userInfo().homedir, downloadRep)
+exports.DIR = downloadRep
 const index = require('./index.js')
 
 exports.createJSON = () => {

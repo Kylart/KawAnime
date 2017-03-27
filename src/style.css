@@ -33,11 +33,15 @@ body
     margin: 0;
 }
 
+.greetings
+{
+    margin: 0;
+}
+
 .mdl-layout__content
 {
     /*background-color: rgb(50, 50, 50);*/
 }
-
 /*noinspection CssOptimizeSimilarProperties*/
 .mdl-layout__drawer
 {
@@ -769,6 +773,8 @@ body
     margin-left: 36.5%;
     overflow: hidden;
 }
+
+
 
 .date-nbEp
 {
