@@ -19,12 +19,12 @@ exports.playSound = (name) => {
 }
 
 exports.loadConf = (object) => {
-  object.config = JSON.parse(configFile.config)
-  console.log(JSON.parse(configFile.config))
+  object.config = configFile.config
+  console.log(configFile.config)
 }
 
 exports.saveConfig = (object) => {
-  const newData = JSON.stringify(object.config)
+  const newData = object.config
 
   const toSave = {
     config: newData
