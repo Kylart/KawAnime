@@ -16,7 +16,7 @@ const quality = '720p'
 
 const path = require('path')
 const Nyaa = require('node-nyaa-api')
-const mal = require('malapi').Anime
+const malScraper = require('mal-scraper')
 const {loader} = require(path.join(__dirname, '..', 'renderer.js'))
 
 exports.reduceString = (string, wanted) => {
@@ -62,8 +62,18 @@ exports.getLatest = () => {
         published: release.published
       }
 
-      // Research MAL for info
-      mal.fromName(name).then((anime) => {
+      malScraper.getResultsFromSearch(name).then((items) => {
+        return malScraper.getInfoFromURI(malScraper.getBestMatch(name, items))
+      }).then((item) => {
+        result.synopsis = item.synopsis
+        result.reducedSynopsis = item.synopsis.length > 100
+            ? item.synopsis.slice(0, 100) + '...'
+            : item.synopsis
+        result.picture = item.image_url
+
+        latestReleases.push(result)
+        latestReleases.sort(self.byProperty('published')).reverse()
+
         ++counter
         if (counter === nyaaReleases.length)
         {
@@ -73,18 +83,9 @@ exports.getLatest = () => {
             index.releases.show = true
             console.log('Releases updated.')
           }
+
+          index.releases.releases = latestReleases
         }
-
-        result.synopsis = anime.synopsis
-        result.reducedSynopsis = anime.synopsis.length > 100
-            ? anime.synopsis.slice(0, 100) + '...'
-            : anime.synopsis
-        result.picture = anime.image
-
-        latestReleases.push(result)
-        latestReleases.sort(self.byProperty('published')).reverse()
-
-        index.releases.releases = latestReleases
       })
     })
   })

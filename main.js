@@ -26,7 +26,7 @@ fs.access(path.join(os.userInfo().homedir, '.KawAnime', 'config.json'), fs.const
   {
     console.log('Creating initial config file.')
 
-    const initPath = path.join(os.userInfo().homedir, '.Downloads')
+    const initPath = path.join(os.userInfo().homedir, 'Downloads')
 
     const initConf = {
       config: {

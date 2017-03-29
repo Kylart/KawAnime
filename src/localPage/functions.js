@@ -13,7 +13,7 @@ const path = require('path')
 const os = require('os')
 
 // Config file
-const configFile = JSON.parse(require(path.join(os.userInfo().homedir, '.KawAnime', 'config.json')).config)
+const configFile = require(path.join(os.userInfo().homedir, '.KawAnime', 'config.json')).config
 const downloadRep = configFile.localPath
 
 const ascending = true
