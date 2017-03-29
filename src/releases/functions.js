@@ -62,14 +62,14 @@ exports.getLatest = () => {
         published: release.published
       }
 
-      malScraper.getResultsFromSearch(name).then((items) => {
+      malScraper.getResultsFromSearch(researchName).then((items) => {
         return malScraper.getInfoFromURI(malScraper.getBestMatch(name, items))
       }).then((item) => {
         result.synopsis = item.synopsis
         result.reducedSynopsis = item.synopsis.length > 100
             ? item.synopsis.slice(0, 100) + '...'
             : item.synopsis
-        result.picture = item.image_url
+        result.picture = item.picture
 
         latestReleases.push(result)
         latestReleases.sort(self.byProperty('published')).reverse()
