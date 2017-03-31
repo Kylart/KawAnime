@@ -22,6 +22,17 @@ const Nyaa = require('node-nyaa-api')
 
 const os = require('os')
 const DIR = path.join(os.userInfo().homedir, '.KawAnime')
+const configFile = require(path.join(DIR, 'config.json')).config
+
+const fansub = configFile.fansub
+const quality = configFile.quality
+const sound = configFile.sound
+
+exports.config = {
+  fansub: fansub,
+  quality: quality,
+  sound: sound
+}
 
 const downloadFile = (file_url, name) => {
   let req = request({
@@ -41,7 +52,7 @@ exports.download = (object) => {
   const fromEp = object.fromEp
   const untilEp = object.untilEp
 
-  Nyaa.search(`[HorribleSubs] ${quality} ${animeName}`, (err, articles) => {
+  Nyaa.search(`[${fansub}] ${quality} ${animeName}`, (err, articles) => {
     if (err) throw err
 
     let animes = []
@@ -71,7 +82,7 @@ exports.downloadMagnets = (object) => {
   const untilEp = object.untilEp
 
   // TODO : Need to make only 10 by 10 downloads
-  Nyaa.search(`[HorribleSubs] ${quality} ${animeName}`, (err, articles) => {
+  Nyaa.search(`[${fansub}] ${quality} ${animeName}`, (err, articles) => {
     if (err) throw err
 
     let animes = []
@@ -112,6 +123,8 @@ exports.downloadMagnets = (object) => {
 
           const uri = parseTorrent.toMagnetURI({infoHash: torrentHash})
 
+          console.log(uri)
+
           fs.appendFileSync(path.join(DIR, 'magnets.txt'), `${uri}\n`)
         }
       }
@@ -119,9 +132,10 @@ exports.downloadMagnets = (object) => {
       object.openSnackbar()
 
       // Nyanpasu! ~
-      player.play(path.join(__dirname, '..', '..', 'resources', 'Nyanpasu.m4a'), (err) => {
-        if (err) throw err
-      })
+      if (sound !== 'None')
+        player.play(path.join(__dirname, '..', '..', 'resources', `${sound}.m4a`), (err) => {
+          if (err) throw err
+        })
     }, 600 + (untilEp - fromEp) * 100)
   })
 }

@@ -119,7 +119,7 @@ Vue.component('downloader', {
     return {
       show: self.show,
       display: "none",
-      quality: '720p',
+      quality: functions.config.quality,
       animeName: '',
       fromEp: '',
       untilEp: '',
