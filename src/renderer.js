@@ -15,6 +15,10 @@ const fs = require('fs')
 const os = require('os')
 const path = require('path')
 
+const animeLocalStoragePath = path.join(os.userInfo().homedir, '.KawAnime', 'anime.json')
+
+exports.watcher = require(path.join(__dirname, 'watcher', 'watcher.js'))
+
 exports.lastPage = 'releases'
 
 /* ----------------- END IMPORTS ----------------- */
@@ -67,6 +71,25 @@ exports.shutAllPages = () => {
   self.season.season.show = false
   self.watchList.watchList.show = false
 }
+
+exports.createJSON = () => {
+  fs.access(animeLocalStoragePath, fs.constants.R_OK | fs.constants.W_OK, (err) => {
+    if (err)
+    {
+      fs.appendFileSync(animeLocalStoragePath, '{}')
+      console.log('Local anime JSON file was created.')
+      return true
+    }
+    else
+    {
+      console.log('Local anime JSON file already exists.')
+      return false
+    }
+  })
+}
+
+// Creates anime.json at rendering.
+const animeJSONCreated = self.createJSON()
 
 /* -------------------- END FUNCTIONS ----------------- */
 

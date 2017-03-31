@@ -27,24 +27,6 @@ const animeLocalStoragePath = path.join(os.userInfo().homedir, '.KawAnime', 'ani
 exports.DIR = downloadRep
 const index = require('./index.js')
 
-exports.createJSON = () => {
-  fs.access(animeLocalStoragePath, fs.constants.R_OK | fs.constants.W_OK, (err) => {
-    if (err)
-    {
-      fs.appendFileSync(animeLocalStoragePath, '{}')
-      console.log('Local anime JSON file was created.')
-      return true
-    }
-    else
-    {
-      console.log('Local anime JSON file already exists.')
-      return false
-    }
-  })
-}
-
-const wasCreated = self.createJSON()
-
 exports.saveAnime = (anime) => {
   const name = anime.title.split(' ').join('').toLocaleLowerCase()
 
