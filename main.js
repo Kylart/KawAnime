@@ -20,29 +20,7 @@ const template = menuFile.template(() => {
 })
 const menu = Menu.buildFromTemplate(template)
 
-// Checking if that config file already exists
-fs.access(path.join(os.userInfo().homedir, '.KawAnime', 'config.json'), fs.constants.R_OK | fs.constants.W_OK, (err) => {
-  if (err)  // This means the file does not exist
-  {
-    console.log('Creating initial config file.')
-
-    const initPath = path.join(os.userInfo().homedir, 'Downloads')
-
-    const initConf = {
-      config: {
-        fansub: 'HorribleSubs',
-        quality: '720p',
-        sound: 'Nyanpasu',
-        localPath: initPath,
-        inside: true,
-      }
-    }
-
-    const json = JSON.stringify(initConf)
-
-    fs.writeFileSync(path.join(os.userInfo().homedir, '.KawAnime', 'config.json'), json)
-  }
-})
+const animeLocalStoragePath = path.join(os.userInfo().homedir, '.KawAnime', 'anime.json')
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -103,6 +81,11 @@ app.on('ready', () => {
   createWindow()
 
   Menu.setApplicationMenu(menu)
+
+  const animeJSONCreated = self.createJSON()
+
+  // Checking if that config file already exists
+  self.createConfig()
 
   // Dev tools
   if (process.env.NODE_ENV === 'development')
@@ -194,5 +177,46 @@ exports.openPreferences = () => {
     // in an array if your src supports multi windows, this is the time
     // when you should delete the corresponding element.
     preferencesWindow = null
+  })
+}
+
+exports.createJSON = () => {
+  fs.access(animeLocalStoragePath, fs.constants.R_OK | fs.constants.W_OK, (err) => {
+    if (err)
+    {
+      fs.appendFileSync(animeLocalStoragePath, '{}')
+      console.log('Local anime JSON file was created.')
+      return true
+    }
+    else
+    {
+      console.log('Local anime JSON file already exists.')
+      return false
+    }
+  })
+}
+
+exports.createConfig = () => {
+  fs.access(path.join(os.userInfo().homedir, '.KawAnime', 'config.json'), fs.constants.R_OK | fs.constants.W_OK, (err) => {
+    if (err)  // This means the file does not exist
+    {
+      console.log('Creating initial config file.')
+
+      const initPath = path.join(os.userInfo().homedir, 'Downloads')
+
+      const initConf = {
+        config: {
+          fansub: 'HorribleSubs',
+          quality: '720p',
+          sound: 'Nyanpasu',
+          localPath: initPath,
+          inside: true,
+        }
+      }
+
+      const json = JSON.stringify(initConf)
+
+      fs.writeFileSync(path.join(os.userInfo().homedir, '.KawAnime', 'config.json'), json)
+    }
   })
 }
