@@ -110,6 +110,7 @@ body
 .picture
 {
     height: 180px;
+    max-width: 150px;
 }
 
 .text-container
