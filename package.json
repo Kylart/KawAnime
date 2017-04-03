@@ -28,6 +28,7 @@
     "vue-devtools": "^3.0.8"
   },
   "dependencies": {
+    "cross-env": "^4.0.0",
     "find-remove": "^1.0.0",
     "is-online": "^5.2.0",
     "mal-scraper": "^1.2.2",
