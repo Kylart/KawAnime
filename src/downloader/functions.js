@@ -123,8 +123,6 @@ exports.downloadMagnets = (object) => {
 
           const uri = parseTorrent.toMagnetURI({infoHash: torrentHash})
 
-          console.log(uri)
-
           fs.appendFileSync(path.join(DIR, 'magnets.txt'), `${uri}\n`)
         }
       }
