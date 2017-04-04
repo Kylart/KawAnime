@@ -1,0 +1,32 @@
+{
+  "name": "KawAnime",
+  "version": "0.3.0",
+  "description": "A Software for Otaku Community.",
+  "main": "main.js",
+  "repository": "",
+  "author": "Kylart",
+  "license": "MIT",
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development electron .",
+    "build": "nuxt build",
+    "start": "electron .",
+    "pack": "npm run build && electron-packager ./ --overwrite"
+  },
+  "dependencies": {
+    "axios": "^0.16.0",
+    "cheerio": "^0.22.0",
+    "cross-env": "^3.1.4",
+    "electron": "^1.4.15",
+    "mal-scraper": "^1.2.3",
+    "nuxt": "latest",
+    "nyaapi": "^1.0.0",
+    "url-parse": "^1.1.8",
+    "vuetify": "^0.9.4"
+  },
+  "devDependencies": {
+    "devtron": "^1.4.0",
+    "stylus": "^0.54.5",
+    "stylus-loader": "^3.0.1",
+    "vue-devtools": "^3.0.8"
+  }
+}
