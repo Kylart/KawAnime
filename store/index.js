@@ -60,16 +60,28 @@ const store = new Vuex.Store({
       console.log('Seasons refreshed.')
     },
     async download({state}) {
-      const name = state.downloaderForm.name
+      const name = state.downloaderForm.name.replace(' ', '_')
       const fromEp = state.downloaderForm.fromEp !== ''
           ? state.downloaderForm.fromEp
           : 0
       const untilEp = state.downloaderForm.untilEp !== ''
           ? state.downloaderForm.untilEp
           : 20000
+      const quality = state.downloaderForm.quality
 
       console.log(`Received a request to download ${name} from ep ${fromEp} to ep ${untilEp}. Transmitting...`)
 
+      const {data, status} = await axios.get(`download?name=${name}&fromEp=${fromEp}&untilEp=${untilEp}&quality=${quality}`)
+
+      status === 404
+          ? console.log('Oops. It looks like something went wrong. Pls check your internet connection and retry.')
+          : console.log('Request fulfilled!')
+
+      state.downloaderForm.loading = false
+
+      data.links.forEach((link) => {
+        window.open(link)
+      })
     }
   }
 })

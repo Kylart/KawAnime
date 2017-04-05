@@ -7,6 +7,7 @@ const URL = require('url-parse')
 const {openExternal} = require('./openExternal.js')
 const releases = require('./releases.js')
 const seasons = require('./seasons.js')
+const downloader = require('./downloader.js')
 
 exports.route = (nuxt) => {
   return (req, res) => {
@@ -24,6 +25,10 @@ exports.route = (nuxt) => {
 
       case '/releases.json':
         releases.getLatest(url, res)
+        break
+
+      case '/download':
+        downloader.download(url, res)
         break
 
       default:

@@ -57,7 +57,8 @@ const newWin = () => {
   win = new bw({
     width: config.electron.width || 800,
     height: config.electron.height || 600,
-    titleBarStyle: 'hidden'
+    titleBarStyle: 'hidden',
+    show: false
   })
   if (!config.dev)
   {
@@ -69,6 +70,11 @@ const newWin = () => {
     slashes: true
   }))
   win.on('closed', () => win = null)
+
+  win.once('ready-to-show', () => {
+    win.show()
+  })
+
   pollServer()
 }
 

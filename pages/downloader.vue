@@ -55,20 +55,19 @@
 					<v-radio class="radio"
 					         label="480p"
 					         v-model="$store.state.downloaderForm.quality"
-					         value="480p"
-					         error dark/>
+					         value="480p" primary dark/>
 				</v-col>
 				<v-col xs12 sm6 md4>
 					<v-radio class="radio"
 					         label="720p"
 					         v-model="$store.state.downloaderForm.quality"
-					         value="720p" error dark/>
+					         value="720p" primary dark/>
 				</v-col>
 				<v-col xs12 sm6 md4>
 					<v-radio class="radio"
 					         label="1080p"
 					         v-model="$store.state.downloaderForm.quality"
-					         value="1080p" error dark/>
+					         value="1080p" primary dark/>
 				</v-col>
 			</v-row>
 		</div>
@@ -102,6 +101,14 @@
       download() {
         if (this.$store.state.downloaderForm.name)
           this.$store.dispatch('download')
+
+	        this.$store.commit('setDownloaderValues', {
+	          name: '',
+	          fromEp: '',
+	          untilEp: '',
+	          quality: this.$store.state.downloaderForm.quality,
+	          loading: true
+	        })
       },
       next(number) {
         switch (number)
@@ -117,14 +124,6 @@
           case 3:
 						document.getElementById('download-btn').click();
             document.getElementsByName('input-1')[0].focus();
-
-            this.$store.commit('setDownloaderValues', {
-              name: '',
-	            fromEp: '',
-	            untilEp: '',
-	            quality: this.$store.state.downloaderForm.quality,
-	            loading: true
-            });
             break
 
           default:
