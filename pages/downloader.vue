@@ -1,15 +1,233 @@
 <template>
-    <div>
-        <h1>This is the downloader page !</h1>
-    </div>
+	<v-container fluid class="container" id="downloader">
+		<div class="cute-char left-pic"></div>
+		<div class="cute-char right-pic"></div>
+
+		<div class="form-container">
+			<v-row>
+				<v-col xs2 sm7 md9>
+					<!-- Dummy cell -->
+				</v-col>
+				<v-col xs10 sm5 md3>
+					<div class="choose-magnets">
+						<v-card class="z-depth-0">
+							<v-card-text class="switch">
+								<v-switch label="Pref Magnets" primary v-model="$store.state.prefMagnets" dark/>
+							</v-card-text>
+						</v-card>
+					</div>
+				</v-col>
+				<v-col xs4></v-col>
+				<v-col xs4 @keydown.enter="next(1)">
+					<v-text-field name="input-1" autofocus
+					              type="text"
+					              label="Name of the anime"
+					              v-model="$store.state.downloaderForm.name"
+					              dark>
+					</v-text-field>
+				</v-col>
+				<v-col xs4></v-col>
+				<v-col xs4></v-col>
+				<v-col xs4
+				       @keydown.enter="next(2)"
+				       @keydown.delete="previous(2)">
+					<v-text-field name="input-2"
+					              type="number" min="0"
+					              label="From episode..."
+					              v-model="$store.state.downloaderForm.fromEp"
+					              dark>
+					</v-text-field>
+				</v-col>
+				<v-col xs4></v-col>
+				<v-col xs4></v-col>
+				<v-col xs4
+				       @keydown.enter="next(3)"
+				       @keydown.delete="previous(3)">
+					<v-text-field name="input-3"
+					              type="number"
+					              label="Until episode.."
+					              v-model="$store.state.downloaderForm.untilEp"
+					              dark>
+					</v-text-field>
+				</v-col>
+				<v-col xs4></v-col>
+				<v-col xs12 sm6 md4 class="radio-container">
+					<v-radio class="radio"
+					         label="480p"
+					         v-model="$store.state.downloaderForm.quality"
+					         value="480p"
+					         error dark/>
+				</v-col>
+				<v-col xs12 sm6 md4>
+					<v-radio class="radio"
+					         label="720p"
+					         v-model="$store.state.downloaderForm.quality"
+					         value="720p" error dark/>
+				</v-col>
+				<v-col xs12 sm6 md4>
+					<v-radio class="radio"
+					         label="1080p"
+					         v-model="$store.state.downloaderForm.quality"
+					         value="1080p" error dark/>
+				</v-col>
+			</v-row>
+		</div>
+		<div class="download-button-container">
+			<div class="download-button">
+				<v-btn dark block secondary
+				       id="download-btn"
+				       @click.native="download()"
+				       v-if="!$store.state.downloaderForm.loading">
+					Download!
+				</v-btn>
+				<v-btn dark block secondary loading v-else>Download!</v-btn>
+			</div>
+		</div>
+	</v-container>
 </template>
 
 <script>
   export default {
+    data() {
+      return {
+        modalText: ''
+      }
+    },
+	  computed: {
+      formValues: function () {
+	      return this.$store.state.downloaderForm
+      }
+	  },
+    methods: {
+      download() {
+        if (this.$store.state.downloaderForm.name)
+          this.$store.dispatch('download')
+      },
+      next(number) {
+        switch (number)
+        {
+	        case 1:
+            document.getElementsByName('input-2')[0].focus()
+            break
 
+          case 2:
+            document.getElementsByName('input-3')[0].focus()
+            break
+
+          case 3:
+						document.getElementById('download-btn').click();
+            document.getElementsByName('input-1')[0].focus();
+
+            this.$store.commit('setDownloaderValues', {
+              name: '',
+	            fromEp: '',
+	            untilEp: '',
+	            quality: this.$store.state.downloaderForm.quality,
+	            loading: true
+            });
+            break
+
+          default:
+            break
+        }
+      },
+	    previous(number) {
+        switch (number)
+        {
+	        case 2:
+	          if (!this.formValues.fromEp) document.getElementsByName('input-1')[0].focus()
+	          break
+
+	        case 3:
+            if (!this.formValues.untilEp) document.getElementsByName('input-2')[0].focus()
+	          break
+
+	        default:
+	          break
+        }
+	    }
+    }
   }
 </script>
 
-<style>
+<style scoped>
+	*
+	{
+		color: rgba(255, 255, 255, 0.8);
+	}
 
+	.cute-char
+	{
+		position: absolute;
+		bottom: 0;
+		height: 45%;
+	}
+
+	.right-pic
+	{
+		content: url(~assets/images/downloader-char-right.png);
+		right: 2%;
+	}
+
+	.left-pic
+	{
+		content: url(~assets/images/downloader-char-left.png);
+		left: 2%;
+	}
+
+	.container
+	{
+		height: 100%;
+		width: 100%;
+		align-content: center;
+		background-image: url('~assets/images/downloader-back.jpg');
+		background-size: cover;
+		background-repeat: no-repeat;
+		text-align: center;
+	}
+
+	.form-container
+	{
+		background-color: rgba(0, 0, 0, 0.4);
+		width: 65%;
+		display: inline-block;
+		margin-top: 4%;
+		padding-bottom: 4%;
+		padding-top: 3%;
+	}
+
+	.switch
+	{
+		margin-top: 0;
+		margin-bottom: -15px;
+	}
+
+	/* Needed! */
+	/*noinspection CssUnusedSymbol*/
+	.card
+	{
+		background-color: rgba(0, 0, 0, 0);
+	}
+
+	.radio-container
+	{
+		text-align: center;
+	}
+
+	.radio
+	{
+		margin-left: 35%;
+	}
+
+	.download-button-container
+	{
+		align-content: center;
+	}
+
+	.download-button
+	{
+		margin-top: 45px;
+		display: inline-block;
+		width: 20%;
+	}
 </style>

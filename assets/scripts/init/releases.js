@@ -46,7 +46,7 @@ exports.getLatest = (url, res) => {
       }).then((item) => {
         const picture = item.picture
         const fullSynopsis = item.synopsis
-        const synopsis = item.synopsis.length > 175
+        const synopsis = item.synopsis.length > 170
             ? item.synopsis.slice(0, 175) + '...'
             : fullSynopsis
 

@@ -7,6 +7,14 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   state: {
     releases: [],
+    prefMagnets: true,
+    downloaderForm: {
+      name: '',
+      fromEp: '',
+      untilEp: '',
+      quality: '720p',
+      loading: false
+    },
     seasons: [],
     seasonsStats: {},
     year: 2017,
@@ -16,7 +24,7 @@ const store = new Vuex.Store({
     setSeasons: function (state, data) {
       state.seasons = data.info
       state.seasonsStats = data.stats
-      console.log('Seasons set.')
+      console.log(`[${(new Date()).toLocaleTimeString()}]: Seasons set.`)
     },
     emptySeasons: function (state) {
       state.seasons = []
@@ -24,6 +32,9 @@ const store = new Vuex.Store({
     setReleases: function (state, data) {
       state.releases = data
       console.log(`[${(new Date()).toLocaleTimeString()}]: Releases updated.`)
+    },
+    setDownloaderValues: function (state, data) {
+      state.downloaderForm = data
     }
   },
   actions: {
@@ -47,6 +58,18 @@ const store = new Vuex.Store({
       commit('setSeasons', data)
 
       console.log('Seasons refreshed.')
+    },
+    async download({state}) {
+      const name = state.downloaderForm.name
+      const fromEp = state.downloaderForm.fromEp !== ''
+          ? state.downloaderForm.fromEp
+          : 0
+      const untilEp = state.downloaderForm.untilEp !== ''
+          ? state.downloaderForm.untilEp
+          : 20000
+
+      console.log(`Received a request to download ${name} from ep ${fromEp} to ep ${untilEp}. Transmitting...`)
+
     }
   }
 })

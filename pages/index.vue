@@ -166,7 +166,7 @@
 
 	.picture
 	{
-		max-width: 160px;
+		max-width: 140px;
 	}
 
 	.elem-text-links
