@@ -12,7 +12,7 @@
 					<div class="choose-magnets">
 						<v-card class="z-depth-0">
 							<v-card-text class="switch">
-								<v-switch label="Pref Magnets" primary v-model="$store.state.prefMagnets" dark/>
+								<v-switch label="Get Magnets" primary v-model="$store.state.prefMagnets" dark/>
 							</v-card-text>
 						</v-card>
 					</div>
@@ -75,13 +75,43 @@
 			<div class="download-button">
 				<v-btn dark block secondary
 				       id="download-btn"
-				       @click.native="download()"
+				       @click.native="isDownloadable()"
 				       v-if="!$store.state.downloaderForm.loading">
 					Download!
 				</v-btn>
-				<v-btn dark block secondary loading v-else>Download!</v-btn>
+				<v-btn dark block secondary loading v-else></v-btn>
 			</div>
 		</div>
+		<v-modal v-model="$store.state.downloaderModal.show" class="magnet-modal">
+			<v-card class="secondary white--text">
+				<v-card-text class="white--text">
+					<h2 class="title">Magnets for <strong>{{ $store.state.downloaderModal.title }}</strong></h2>
+				</v-card-text>
+				<v-card-text class="subheading white--text">
+					<v-row>
+						<v-col xs12 v-for="link in $store.state.downloaderModal.text"
+						       class="subheading grey--text modal-text" :key="link">{{ link }}
+						</v-col>
+					</v-row>
+				</v-card-text>
+				<v-card-row actions>
+					<v-spacer></v-spacer>
+					<v-btn primary dark
+					       v-on:click.native="$store.state.downloaderModal.show = false">
+						Thanks!
+					</v-btn>
+				</v-card-row>
+			</v-card>
+		</v-modal>
+		<v-snackbar :timeout="timeout"
+								:top="y === 'top'"
+								:bottom="y === 'bottom'"
+								:right="x === 'right'"
+								:left="x === 'left'"
+								v-model="snackbar">
+			Please, enter a valid name (at least 3 letters...)
+			<v-btn flat class="pink--text" @click.native="snackbar = false">ok!</v-btn>
+		</v-snackbar>
 	</v-container>
 </template>
 
@@ -89,31 +119,43 @@
   export default {
     data() {
       return {
-        modalText: ''
+        modalText: '',
+	      snackbar: false,
+	      timeout: 4000,
+	      x: '',
+	      y: 'top'
       }
     },
-	  computed: {
+    computed: {
       formValues: function () {
-	      return this.$store.state.downloaderForm
+        return this.$store.state.downloaderForm
       }
-	  },
+    },
     methods: {
+      isDownloadable () {
+        if (this.$store.state.downloaderForm.name.length >= 3)
+          this.download()
+        else
+        {
+					this.snackbar = true
+        }
+      },
       download() {
         if (this.$store.state.downloaderForm.name)
           this.$store.dispatch('download')
 
-	        this.$store.commit('setDownloaderValues', {
-	          name: '',
-	          fromEp: '',
-	          untilEp: '',
-	          quality: this.$store.state.downloaderForm.quality,
-	          loading: true
-	        })
+        this.$store.commit('setDownloaderValues', {
+          name: '',
+          fromEp: '',
+          untilEp: '',
+          quality: this.$store.state.downloaderForm.quality,
+          loading: true
+        })
       },
       next(number) {
         switch (number)
         {
-	        case 1:
+          case 1:
             document.getElementsByName('input-2')[0].focus()
             break
 
@@ -122,7 +164,7 @@
             break
 
           case 3:
-						document.getElementById('download-btn').click();
+            document.getElementById('download-btn').click();
             document.getElementsByName('input-1')[0].focus();
             break
 
@@ -130,21 +172,21 @@
             break
         }
       },
-	    previous(number) {
+      previous(number) {
         switch (number)
         {
-	        case 2:
-	          if (!this.formValues.fromEp) document.getElementsByName('input-1')[0].focus()
-	          break
+          case 2:
+            if (!this.formValues.fromEp) document.getElementsByName('input-1')[0].focus()
+            break
 
-	        case 3:
+          case 3:
             if (!this.formValues.untilEp) document.getElementsByName('input-2')[0].focus()
-	          break
+            break
 
-	        default:
-	          break
+          default:
+            break
         }
-	    }
+      }
     }
   }
 </script>
@@ -203,7 +245,7 @@
 
 	/* Needed! */
 	/*noinspection CssUnusedSymbol*/
-	.card
+	.form-container .card
 	{
 		background-color: rgba(0, 0, 0, 0);
 	}
@@ -228,5 +270,25 @@
 		margin-top: 45px;
 		display: inline-block;
 		width: 20%;
+	}
+
+	.modal-text
+	{
+		white-space: pre-wrap;
+		word-wrap: break-word;
+		margin: 0;
+		padding: 0;
+		height: 22px;
+	}
+
+	.magnet-modal .title
+	{
+		color: rgba(255, 255, 255, 0.8);
+		padding: 0;
+	}
+
+	.magnet-modal .title strong
+	{
+		color: rgba(255, 255, 255, 0.8);
 	}
 </style>

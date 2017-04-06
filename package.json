@@ -3,7 +3,7 @@
   "version": "0.3.0",
   "description": "A Software for Otaku Community.",
   "main": "main.js",
-  "repository": "",
+  "repository": "https://github.com/Kylart/NuxtKawAnime.git",
   "author": "Kylart",
   "license": "MIT",
   "scripts": {
@@ -20,6 +20,8 @@
     "mal-scraper": "^1.2.3",
     "nuxt": "latest",
     "nyaapi": "^1.0.0",
+    "parse-torrent": "^5.8.2",
+    "play-sound": "^1.1.1",
     "url-parse": "^1.1.8",
     "vuetify": "^0.9.4"
   },

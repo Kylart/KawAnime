@@ -5,3 +5,13 @@
 .page-enter, .page-leave-active {
     opacity: 0;
 }
+
+.dragable
+{
+    -webkit-app-region: drag;
+}
+
+.non-dragable
+{
+    -webkit-app-region: no-drag;
+}

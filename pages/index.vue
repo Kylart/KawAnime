@@ -4,14 +4,14 @@
 			<v-row style="margin: 0 1% 0 1%;">
 				<template v-for="item in $store.state.releases">
 					<v-col xs12="xs12" sm12="sm12" md6="md6" lg4="lg4" xl4="xl4" class="elem">
-						<v-card class="elem-content">
+						<v-card class="elem-content" v-ripple="true">
 							<v-card-text class="elem-card">
 								<v-container fluid style="padding: 0;">
 									<v-row>
-										<v-col class="elem-title" xs10="xs10" v-tooltip:top="{ html: item.name }">
+										<v-col class="elem-title" xs9 v-tooltip:top="{ html: item.name }">
 											<h6>{{ item.name }}</h6>
 										</v-col>
-										<v-col v-tooltip:top="{ html: 'Episode ' + item.ep }" class="elem-ep text-xs-right" xs2="xs2">
+										<v-col v-tooltip:top="{ html: 'Episode ' + item.ep }" class="elem-ep text-xs-right" xs3>
 											<h6>Ep {{ item.ep }}</h6>
 										</v-col>
 										<v-col class="elem-image" sm5="sm5" xs4="xs4">
@@ -76,18 +76,19 @@
 		<div v-else>
 			Loading...
 		</div>
-		<div class="text-xs-center">
+		<div class="text-xs-center modal-container">
 			<v-modal v-model="modal">
-				<v-card>
-					<v-card-text>
+				<v-card class="secondary white--text">
+					<v-card-text class="white--text">
 						<h2 class="title">{{ modalTitle }}</h2>
 					</v-card-text>
-					<v-card-text class="subheading grey--text">
+					<v-card-text class="subheading white--text">
 						{{ modalText }}
 					</v-card-text>
 					<v-card-row actions>
 						<v-spacer></v-spacer>
-						<v-btn flat v-on:click.native="modal = false" class="primary--text">Thanks!</v-btn>
+						<v-btn primary dark
+						       v-on:click.native="modal = false">Thanks!</v-btn>
 					</v-card-row>
 				</v-card>
 			</v-modal>
@@ -194,5 +195,10 @@
 	.download-button
 	{
 		text-decoration: none;
+	}
+
+	.modal-container .title
+	{
+		color: rgba(255, 255, 255, 0.8);
 	}
 </style>

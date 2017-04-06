@@ -1,4 +1,6 @@
+//noinspection NpmUsedModulesInstalled
 import Vue from 'vue'
+//noinspection NpmUsedModulesInstalled
 import Vuex from 'vuex'
 import axios from 'axios'
 
@@ -7,13 +9,18 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   state: {
     releases: [],
-    prefMagnets: true,
+    prefMagnets: false,
     downloaderForm: {
       name: '',
       fromEp: '',
       untilEp: '',
       quality: '720p',
       loading: false
+    },
+    downloaderModal: {
+      show: false,
+      title: '',
+      text: ''
     },
     seasons: [],
     seasonsStats: {},
@@ -35,6 +42,12 @@ const store = new Vuex.Store({
     },
     setDownloaderValues: function (state, data) {
       state.downloaderForm = data
+    },
+    setDownloaderModal: function (state, data) {
+      state.downloaderModal = data
+    },
+    showDownloaderModal: function (state, value) {
+      state.downloaderModal.show = value
     }
   },
   actions: {
@@ -59,7 +72,7 @@ const store = new Vuex.Store({
 
       console.log('Seasons refreshed.')
     },
-    async download({state}) {
+    async download({state, commit}) {
       const name = state.downloaderForm.name.replace(' ', '_')
       const fromEp = state.downloaderForm.fromEp !== ''
           ? state.downloaderForm.fromEp
@@ -69,19 +82,39 @@ const store = new Vuex.Store({
           : 20000
       const quality = state.downloaderForm.quality
 
+      const magnets = state.prefMagnets
+
       console.log(`Received a request to download ${name} from ep ${fromEp} to ep ${untilEp}. Transmitting...`)
 
-      const {data, status} = await axios.get(`download?name=${name}&fromEp=${fromEp}&untilEp=${untilEp}&quality=${quality}`)
+      const {data, status} = await axios.get(`download?name=${name}&fromEp=${fromEp}&untilEp=${untilEp}&quality=${quality}&magnets=${magnets}`)
 
       status === 404
-          ? console.log('Oops. It looks like something went wrong. Pls check your internet connection and retry.')
+          ? console.log('Oops. It looks like something went wrong. Please check your internet connection and retry.')
           : console.log('Request fulfilled!')
 
       state.downloaderForm.loading = false
 
+      let magnetLinks = []
+
       data.links.forEach((link) => {
-        window.open(link)
+        magnets
+            ? magnetLinks.push(link)
+            : window.open(link)
       })
+
+      if (magnets)
+      {
+        console.log('User says he prefers having magnets hashes.')
+        commit('setDownloaderModal', {
+          show: true,
+          title: `${name.replace('_', ' ')}\t ${fromEp} - ${untilEp}`,
+          text: magnetLinks
+        })
+      }
+      else
+      {
+        console.log('Opening torrents directly on preferred torrent client.')
+      }
     }
   }
 })

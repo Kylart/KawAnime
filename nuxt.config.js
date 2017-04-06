@@ -23,8 +23,5 @@ module.exports = {
       {rel: 'stylesheet', href: 'http://fonts.googleapis.com/css?family=Roboto'},
       {rel: 'stylesheet', href: 'http://fonts.googleapis.com/icon?family=Material+Icons'}
     ]
-  },
-  transition: {
-    mode: 'out-in'
   }
 }
