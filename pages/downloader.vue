@@ -1,5 +1,6 @@
 <template>
 	<v-container fluid class="container" id="downloader">
+		<script src="https://wzrd.in/standalone/copy-to-clipboard@latest" async></script>
 		<div class="cute-char left-pic"></div>
 		<div class="cute-char right-pic"></div>
 
@@ -89,14 +90,17 @@
 				</v-card-text>
 				<v-card-text class="subheading white--text">
 					<v-row>
-						<!-- TODO: add a 'copy to clipboard' method. important!-->
+						<v-col xs4></v-col>
+						<v-col xs6 class="modal-icon-container">
+							<v-icon class="copy-icon" @click.native="copy()">content_copy</v-icon>
+						</v-col>
+						<v-col xs2></v-col>
 						<v-col xs12 v-for="link in $store.state.downloaderModal.text"
 						       class="subheading grey--text modal-text" :key="link">{{ link }}
 						</v-col>
 					</v-row>
 				</v-card-text>
 				<v-card-row actions>
-					<v-spacer></v-spacer>
 					<v-btn primary dark
 					       v-on:click.native="$store.state.downloaderModal.show = false">
 						Thanks!
@@ -113,6 +117,15 @@
 			Please, enter a valid name (at least 3 letters...)
 			<v-btn flat class="pink--text" @click.native="snackbar = false">ok!</v-btn>
 		</v-snackbar>
+		<v-snackbar :timeout="copiedTimeout"
+		            :top="y === 'top'"
+		            :bottom="y === 'bottom'"
+		            :right="x === 'right'"
+		            :left="x === 'left'"
+		            v-model="copiedSnackbar">
+			All magnets were copied to clipboard!
+			<v-btn flat class="pink--text" @click.native="copiedSnackbar = false">Thanks!</v-btn>
+		</v-snackbar>
 	</v-container>
 </template>
 
@@ -124,7 +137,9 @@
 	      snackbar: false,
 	      timeout: 4000,
 	      x: '',
-	      y: 'top'
+	      y: 'top',
+	      copiedSnackbar: false,
+	      copiedTimeout: 2500,
       }
     },
     computed: {
@@ -187,7 +202,14 @@
           default:
             break
         }
-      }
+      },
+	    copy() {
+		    const toCopy = this.$store.state.downloaderModal.text.join('\n')
+
+				window.copyToClipboard(toCopy)
+
+        this.copiedSnackbar = true
+	    }
     }
   }
 </script>
@@ -288,8 +310,26 @@
 		padding: 0;
 	}
 
+	.magnet-modal .title h2
+	{
+		color: rgba(255, 255, 255, 0.8);
+		padding-bottom: 0;
+	}
+
 	.magnet-modal .title strong
 	{
 		color: rgba(255, 255, 255, 0.8);
+	}
+
+	.modal-icon-container
+	{
+		text-align: right;
+		width: 60%;
+	}
+
+	.copy-icon
+	{
+		display: inline-block;
+		cursor: copy;
 	}
 </style>
