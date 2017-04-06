@@ -8,7 +8,7 @@
 			<v-sidebar v-model="sidebar" height="auto" style="width: 280px" drawer class="sidebar">
 				<div class="sidebar-title-container">
 					<nuxt-link to="/">
-						<img src="~assets/images/sidebar-icon.png" height="70"/>
+						<img src="~static/images/sidebar-icon.png" height="70"/>
 					</nuxt-link>
 
 					<h1 class="title" v-bind:style="sidebarTitle">
@@ -18,16 +18,16 @@
 
 					<div class="links">
 						<a href="https://github.com/Kylart/KawAnime" class="link">
-							<img src="~assets/images/github-icon.png" height="25"/>
+							<img src="~static/images/github-icon.png" height="25"/>
 						</a>
 						<a href="#" class="link">
-							<img src="~assets/images/twitter-icon.png" height="25"/>
+							<img src="~static/images/twitter-icon.png" height="25"/>
 						</a>
 						<a href="#" class="link">
-							<img src="~assets/images/fb-icon.png" height="25"/>
+							<img src="~static/images/fb-icon.png" height="25"/>
 						</a>
 						<a href="#" class="link">
-							<img src="~assets/images/mail-icon.png" height="25"/>
+							<img src="~static/images/mail-icon.png" height="25"/>
 						</a>
 					</div>
 				</div>
@@ -151,7 +151,7 @@
 	.sidebar
 	{
 		padding-bottom: 0;
-		background-image: url('~assets/images/sidebar-background.png');
+		background-image: url('~static/images/sidebar-background.png');
 		background-position: left bottom;
 		background-size: 75%;
 	}

@@ -89,6 +89,7 @@
 				</v-card-text>
 				<v-card-text class="subheading white--text">
 					<v-row>
+						<!-- TODO: add a 'copy to clipboard' method. important!-->
 						<v-col xs12 v-for="link in $store.state.downloaderModal.text"
 						       class="subheading grey--text modal-text" :key="link">{{ link }}
 						</v-col>
@@ -206,13 +207,13 @@
 
 	.right-pic
 	{
-		content: url(~assets/images/downloader-char-right.png);
+		content: url(~static/images/downloader-char-right.png);
 		right: 2%;
 	}
 
 	.left-pic
 	{
-		content: url(~assets/images/downloader-char-left.png);
+		content: url(~static/images/downloader-char-left.png);
 		left: 2%;
 	}
 
@@ -221,7 +222,7 @@
 		height: 100%;
 		width: 100%;
 		align-content: center;
-		background-image: url('~assets/images/downloader-back.jpg');
+		background-image: url('~static/images/downloader-back.jpg');
 		background-size: cover;
 		background-repeat: no-repeat;
 		text-align: center;

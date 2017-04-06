@@ -60,6 +60,11 @@ const newWin = () => {
     titleBarStyle: 'hidden',
     show: false
   })
+
+  win.once('ready-to-show', () => {
+    win.show()
+  })
+
   if (!config.dev)
   {
     return win.loadURL(_NUXT_URL_)
@@ -70,10 +75,6 @@ const newWin = () => {
     slashes: true
   }))
   win.on('closed', () => win = null)
-
-  win.once('ready-to-show', () => {
-    win.show()
-  })
 
   pollServer()
 }

@@ -2,13 +2,14 @@
  * Created by Kylart on 05/04/2017.
  */
 
-const nyaa = require('nyaapi')
-const request = require('request')
 const fs = require('fs')
-const parseTorrent = require('parse-torrent')
-const qs = require('querystring')
 const os = require('os')
 const path = require('path')
+const qs = require('querystring')
+
+const nyaa = require('nyaapi')
+const request = require('request')  // This one should be installed with nyaapi and malScraper.
+const parseTorrent = require('parse-torrent')
 
 const DIR = path.join(os.userInfo().homedir, '.KawAnime')
 
@@ -94,6 +95,7 @@ const giveMagnetsHash = (res, items, data) => {
 
         const torrent = parseTorrent(file)
 
+        //noinspection JSUnresolvedVariable
         const torrentHash = torrent.infoHash
 
         const uri = parseTorrent.toMagnetURI({infoHash: torrentHash})
@@ -105,12 +107,18 @@ const giveMagnetsHash = (res, items, data) => {
     res.writeHead(200, {"Content-type": "application/json"})
     res.write(JSON.stringify(toReturn))
     res.end()
+
+    // Nyanpasu ~
+    player.play(path.join(__dirname, '..', '..', '..', 'static', 'sounds', 'Nyanpasu.m4a'), (err) => {
+      if (err) throw err
+    })
   }, 800 + (data.untilEp - data.fromEp) * 100)
 }
 
 exports.download = (url, res) => {
   const query = qs.parse(url.query.replace('?', ''))
 
+  //noinspection JSUnresolvedVariable
   const withMagnets = query.magnets
 
   const quality = query.quality
