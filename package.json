@@ -19,11 +19,11 @@
     "electron": "^1.6.2",
     "mal-scraper": "^1.2.3",
     "nuxt": "latest",
-    "nyaapi": "^1.0.0",
+    "nyaapi": "^1.0.1",
     "parse-torrent": "^5.8.2",
     "play-sound": "^1.1.1",
     "url-parse": "^1.1.8",
-    "vuetify": "^0.9.4"
+    "vuetify": "^0.10.0"
   },
   "devDependencies": {
     "devtron": "^1.4.0",

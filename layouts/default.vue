@@ -1,11 +1,11 @@
 <template xmlns:v-bind="http://www.w3.org/1999/xhtml">
-	<v-app id="example-3" class="grey lighten-1" top-toolbar left-sidebar>
-		<v-toolbar>
-			<v-toolbar-side-icon class="" @click.native.stop="sidebar = !sidebar"/>
+	<v-app id="app" class="grey lighten-1" top-toolbar left-sidebar>
+		<v-toolbar class="dragable">
+			<v-toolbar-side-icon class="non-dragable" @click.native.stop="sidebar = !sidebar"/>
 			<v-toolbar-logo class="text-xs-right title" v-bind:style="title">かわニメ</v-toolbar-logo>
 		</v-toolbar>
 		<main>
-			<v-sidebar v-model="sidebar" height="auto" style="width: 280px" drawer class="sidebar">
+			<v-sidebar v-model="sidebar" height="100vh" style="width: 260px" drawer class="sidebar">
 				<div class="sidebar-title-container">
 					<nuxt-link to="/">
 						<img src="~static/images/sidebar-icon.png" height="70"/>
@@ -135,7 +135,7 @@
       title: function () {
         if (this.sidebar)
           return {
-            marginLeft: '230px'
+            marginLeft: '210px'
           }
       }
     }

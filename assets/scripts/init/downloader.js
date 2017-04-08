@@ -122,7 +122,7 @@ exports.download = (url, res) => {
   const withMagnets = query.magnets
 
   const quality = query.quality
-  const name = query.name.replace('_', ' ')
+  const name = query.name.split('_').join(' ')
   const fromEp = query.fromEp
   const untilEp = query.untilEp
 
@@ -133,7 +133,7 @@ exports.download = (url, res) => {
     untilEp: untilEp
   }
 
-  const term = `[${fansub}]+${quality}+${name}`
+  const term = `[${fansub}] ${quality} ${name}`
 
   console.log(`[Downloader]: Received a request to download '${name}' from ep ${fromEp} to ep ${untilEp}. Processing...`)
 
