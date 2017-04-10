@@ -8,12 +8,14 @@ const qs = require('querystring')
 exports.getSeason = (url, res) => {
   const query = qs.parse(url.query.replace('?', ''))
 
-  let seasonalInfo = malScraper.getSeason(query.year, query.season, () => {
+  malScraper.getSeason(query.year, query.season).then((result) => {
     console.log(`Now having ${query.season} ${query.year}.`)
 
     res.writeHead(200, {"Content-Type": "application/json"})
-    res.write(JSON.stringify(seasonalInfo))
+    res.write(JSON.stringify(result))
     res.end()
+  }).catch((err) => {
+    console.log(err)
   })
 }
 

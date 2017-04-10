@@ -3,15 +3,16 @@
 		<div v-if="$store.state.releases.length">
 			<v-row style="margin: 0 1% 0 1%;">
 				<template v-for="item in $store.state.releases">
-					<v-col xs12="xs12" sm12="sm12" md6="md6" lg4="lg4" xl4="xl4" class="elem">
-						<v-card hover raised class="elem-content" v-ripple="true">
+					<v-col xs12 md6 lg4
+					       class="elem">
+						<v-card class="elem-content elevation-3" v-ripple="true">
 							<v-card-text class="elem-card">
 								<v-container fluid style="padding: 0;">
 									<v-row>
-										<v-col class="elem-title" xs9 v-tooltip:top="{ html: item.name }">
+										<v-col class="elem-title" xs9 v-tooltip:bottom="{ html: item.name }">
 											<h6>{{ item.name }}</h6>
 										</v-col>
-										<v-col v-tooltip:top="{ html: 'Episode ' + item.ep }" class="elem-ep text-xs-right" xs3>
+										<v-col v-tooltip:bottom="{ html: 'Episode ' + item.ep }" class="elem-ep text-xs-right" xs3>
 											<h6>Ep {{ item.ep }}</h6>
 										</v-col>
 										<v-col class="elem-image" sm5="sm5" xs4="xs4">
@@ -35,7 +36,7 @@
 														<v-list>
 															<v-list-item>
 																<v-list-tile>
-																	<v-list-tile-title v-on:click.stop="openModal(item.name, item.fullSynopsis)">
+																	<v-list-tile-title v-on:click.stop="openModal(item.synopsis)">
 																		Check synopsis
 																	</v-list-tile-title>
 																</v-list-tile>
@@ -152,9 +153,13 @@
 
 	.elem-content
 	{
-		box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .2), 0 1px 5px 0 rgba(0, 0, 0, .12);
 		background-color: rgb(60, 60, 60);
 		cursor: default;
+	}
+
+	.elem-content:hover
+	{
+		box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12) !important;
 	}
 
 	.elem-card
@@ -209,7 +214,7 @@
 		height: 25%;
 		position: absolute;
 		bottom: 5px;
-		right: 5px;
+		right: -2px;
 		display: flex;
 	}
 

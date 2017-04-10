@@ -59,15 +59,17 @@ const store = new Vuex.Store({
     async seasonsInit({state, commit}) {
       console.log('[INIT] Seasons')
       const {data} = await axios.get(`seasons.json?year=${state.year}&season=${state.season}`)
+
       commit('setSeasons', data)
     },
     async refreshSeasons({state, commit}) {
       console.log('Refreshing Seasons...')
 
+      commit('emptySeasons')
+
       const year = state.year
       const season = state.season
       const {data} = await axios.get(`seasons.json?year=${year}&season=${season}`)
-      commit('emptySeasons')
       commit('setSeasons', data)
 
       console.log('Seasons refreshed.')
