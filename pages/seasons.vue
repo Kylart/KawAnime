@@ -8,6 +8,28 @@
 		</div>
 
 		<v-container fluid v-else>
+			<v-row>
+				<v-col md2 xs0></v-col>
+				<v-col md3 xs12>
+					<v-select
+									v-bind:items="seasonChoices"
+									v-model="currentSeason"
+									label="Season"
+									dark
+									item-text="name"
+									item-value="value"/>
+				</v-col>
+				<v-col md3 xs12>
+					<v-text-field name="input-year"
+					              type="number" min="2000"
+					              label="Year"
+					              v-model="currentYear"
+					              dark>
+					</v-text-field>
+				</v-col>
+				<v-col md4 xs12></v-col>
+			</v-row>
+
 			<v-tabs id="tabs" grow>
 				<v-tab-item v-for="i in 3"
 				            :href="'#' + i"
@@ -66,7 +88,9 @@
 														</v-list-item>
 														<v-list-item>
 															<v-list-tile>
-																<v-list-tile-title >Download all episodes</v-list-tile-title>
+																<v-list-tile-title v-on:click.stop="downloadAll(item.title)">
+																	Download all episodes
+																</v-list-tile-title>
 															</v-list-tile>
 														</v-list-item>
 														<v-list-item>
@@ -118,12 +142,22 @@
 </template>
 
 <script>
+	import axios from 'axios'
+
   export default {
     data() {
       return {
         modalTitle: '',
 	      modalText: '',
-	      modal: false
+	      modal: false,
+	      seasonChoices: [
+		      {name: 'Winter', value: 'winter'},
+		      {name: 'Spring', value: 'spring'},
+		      {name: 'Summer', value: 'summer'},
+		      {name: 'Fall', value: 'fall'}
+		      ],
+	      currentSeason: this.getCurrentSeason(),
+	      currentYear: 1900 + (new Date()).getYear()
       }
     },
     computed: {
@@ -174,6 +208,37 @@
         this.modalText = text
 
         this.modal = true
+      },
+      getCurrentSeason() {
+        const date = new Date()
+
+        // Get current year
+        const year = 1900 + date.getYear()
+
+        // Get current month
+        const month = 1 + date.getMonth()   // I am a weak person that like 1-indexed things
+
+        if (0 < month && month < 4)  // Winter
+          return {season: 'winter', year: year}
+        else if (3 < month && month < 7)  // Spring
+          return {season: 'spring', year: year}
+        else if (6 < month && month < 10)  // Summer
+          return {season: 'summer', year: year}
+        else if (9 < month && month < 13)  // Fall
+          return {season: 'fall', year: year}
+      },
+      downloadAll(name) {
+        console.log(`Sending a request to download all episodes of ${name}`)
+
+        axios.get(`/download?name=${name}`).then((resp) => {
+          console.log('Server responded!')
+
+          const links = resp.data.links
+
+          links.forEach((link) => {
+            window.open(link)
+          })
+        })
       }
     }
   }

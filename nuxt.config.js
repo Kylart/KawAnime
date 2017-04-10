@@ -15,7 +15,7 @@ module.exports = {
         config.target = 'electron-renderer'
       }
     },
-    vendor: ['vuetify']
+    vendor: ['vuetify', 'axios']
   },
   plugins: [
       '~plugins/vuetify.js'

@@ -43,7 +43,9 @@
 															</v-list-item>
 															<v-list-item>
 																<v-list-tile>
-																	<v-list-tile-title>Download all episodes</v-list-tile-title>
+																	<v-list-tile-title v-on:click.stop="downloadAll(item.name)">
+																		Download all episodes
+																	</v-list-tile-title>
 																</v-list-tile>
 															</v-list-item>
 															<v-list-item>
@@ -102,6 +104,8 @@
 </template>
 
 <script>
+  import axios from 'axios'
+
   export default {
     data () {
       return {
@@ -118,6 +122,21 @@
         this.modalText = text
 
         this.modal = true
+      },
+      downloadAll(name) {
+	      console.log(`Sending a request to download all episodes of ${name}`)
+
+        axios.get(`/download?name=${name}`).then((resp) => {
+          console.log('Server responded!')
+
+          const links = resp.data.links
+
+          links.forEach((link) => {
+            window.open(link)
+          })
+        }).catch((err) => {
+	        console.log('An error occurred... ' + err)
+        })
       }
     }
   }

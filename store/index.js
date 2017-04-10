@@ -3,18 +3,37 @@ import Vue from 'vue'
 //noinspection NpmUsedModulesInstalled
 import Vuex from 'vuex'
 import axios from 'axios'
+import {readFileSync} from 'fs'
+import {join} from 'path'
+import {userInfo} from 'os'
+
+// Getting config.
+const configPath = join(userInfo().homedir, '.KawAnime', 'config.json')
+const configFile = readFileSync(configPath)
+
+const config = JSON.parse(configFile).config
+
+// config file looks like this
+// const config = {
+//   fansub: 'HorribleSubs',
+//   quality: '720p',
+//   sound: 'Nyanpasu',
+//   localPath: join(userInfo().homedir, '.Download'),
+//   inside: true,
+//   magnets: false
+// }
 
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
     releases: [],
-    prefMagnets: false,
+    prefMagnets: config.magnets,
     downloaderForm: {
       name: '',
       fromEp: '',
       untilEp: '',
-      quality: '720p',
+      quality: config.quality,
       loading: false
     },
     downloaderModal: {
@@ -42,6 +61,9 @@ const store = new Vuex.Store({
     },
     setDownloaderValues: function (state, data) {
       state.downloaderForm = data
+    },
+    setQuality: function (state, quality) {
+      state.downloaderForm.quality = quality
     },
     setDownloaderModal: function (state, data) {
       state.downloaderModal = data

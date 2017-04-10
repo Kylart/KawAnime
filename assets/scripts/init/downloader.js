@@ -112,19 +112,19 @@ const giveMagnetsHash = (res, items, data) => {
     player.play(path.join(__dirname, '..', '..', '..', 'static', 'sounds', 'Nyanpasu.m4a'), (err) => {
       if (err) throw err
     })
-  }, 800 + (data.untilEp - data.fromEp) * 100)
+  }, 1000 + (data.untilEp - data.fromEp) * 100)
 }
 
 exports.download = (url, res) => {
   const query = qs.parse(url.query.replace('?', ''))
 
   //noinspection JSUnresolvedVariable
-  const withMagnets = query.magnets
+  const withMagnets = query.magnets || false
 
-  const quality = query.quality
+  const quality = query.quality || '720p'
   const name = query.name.split('_').join(' ')
-  const fromEp = query.fromEp
-  const untilEp = query.untilEp
+  const fromEp = query.fromEp || 0
+  const untilEp = query.untilEp || 20000
 
   const data = {
     quality: quality,
@@ -142,7 +142,7 @@ exports.download = (url, res) => {
   nyaa.searchTerm(term).then((result) => {
     console.log(result.statMsg)
 
-    withMagnets
+    withMagnets === true
         ? giveMagnetsHash(res, result.items, data)
         : openMagnets(res, result.items, data)
 

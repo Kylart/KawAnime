@@ -2,13 +2,16 @@
  * Created by Kylart on 03/04/2017.
  */
 
-const self = this
-
 const malScraper = require('mal-scraper')
 const nyaa = require('nyaapi')
 
-const fansub = 'HorribleSubs'
-const quality = '720p'
+const {userInfo} = require('os')
+const {join} = require('path')
+
+const config = require(join(userInfo().homedir, '.KawAnime', 'config.json')).config
+
+const fansub = config.fansub
+const quality = config.quality
 
 exports.byProperty = (prop) => {
   return function (a, b) {
@@ -22,6 +25,7 @@ exports.byProperty = (prop) => {
 
 exports.getLatest = (url, res) => {
   nyaa.searchTerm(`[${fansub}] ${quality}`, 18).then((result) => {
+    console.log(`[Releases]: Fansub for research: ${fansub}. Quality is ${quality}.`)
     console.log(result.statMsg)
 
     let toReturn = []
@@ -80,7 +84,7 @@ exports.getLatest = (url, res) => {
           res.end()
         }
       }).catch((err) => {
-          console.log(`[Releases] An error occurred: ${err}.`)
+          console.log(`[Releases]: An error occurred: ${err}.`)
       })
     }
   })

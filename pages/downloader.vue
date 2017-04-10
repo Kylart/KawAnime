@@ -55,19 +55,19 @@
 				<v-col xs12 sm6 md4 class="radio-container">
 					<v-radio class="radio"
 					         label="480p"
-					         v-model="$store.state.downloaderForm.quality"
+					         v-model="quality"
 					         value="480p" primary dark/>
 				</v-col>
 				<v-col xs12 sm6 md4>
 					<v-radio class="radio"
 					         label="720p"
-					         v-model="$store.state.downloaderForm.quality"
+					         v-model="quality"
 					         value="720p" primary dark/>
 				</v-col>
 				<v-col xs12 sm6 md4>
 					<v-radio class="radio"
 					         label="1080p"
-					         v-model="$store.state.downloaderForm.quality"
+					         v-model="quality"
 					         value="1080p" primary dark/>
 				</v-col>
 			</v-row>
@@ -140,6 +140,7 @@
 	      y: 'top',
 	      copiedSnackbar: false,
 	      copiedTimeout: 2500,
+	      quality: this.$store.state.downloaderForm.quality
       }
     },
     computed: {
@@ -157,6 +158,10 @@
         }
       },
       download() {
+        const quality = this.quality
+
+	      this.$store.commit('setQuality', quality)
+
         if (this.$store.state.downloaderForm.name)
           this.$store.dispatch('download')
 
@@ -164,7 +169,7 @@
           name: '',
           fromEp: '',
           untilEp: '',
-          quality: this.$store.state.downloaderForm.quality,
+          quality: quality,
           loading: true
         })
       },
