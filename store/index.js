@@ -121,7 +121,7 @@ const store = new Vuex.Store({
   }
 })
 
-store.dispatch('releasesInit')
-store.dispatch('seasonsInit')
+store.dispatch('releasesInit').catch(err => {})
+store.dispatch('seasonsInit').catch(err => {})
 
 export default store
