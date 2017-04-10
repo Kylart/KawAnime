@@ -36,7 +36,7 @@
 														<v-list>
 															<v-list-item>
 																<v-list-tile>
-																	<v-list-tile-title v-on:click.stop="openModal(item.synopsis)">
+																	<v-list-tile-title v-on:click.stop="openModal(item.name, item.fullSynopsis)">
 																		Check synopsis
 																	</v-list-tile-title>
 																</v-list-tile>

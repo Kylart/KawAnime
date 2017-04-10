@@ -9,7 +9,7 @@ exports.getSeason = (url, res) => {
   const query = qs.parse(url.query.replace('?', ''))
 
   malScraper.getSeason(query.year, query.season).then((result) => {
-    console.log(`Now having ${query.season} ${query.year}.`)
+    console.log(`[Mal-Scraper] (Seasons): Now having ${query.season} ${query.year}.`)
 
     res.writeHead(200, {"Content-Type": "application/json"})
     res.write(JSON.stringify(result))
