@@ -44,7 +44,8 @@ const store = new Vuex.Store({
     seasons: [],
     seasonsStats: {},
     year: 2017,
-    season: 'spring'
+    season: 'spring',
+    news: []
   },
   mutations: {
     setCurrentSeason(state, data) {
@@ -62,6 +63,10 @@ const store = new Vuex.Store({
     setReleases: function (state, data) {
       state.releases = data
       console.log(`[${(new Date()).toLocaleTimeString()}]: Releases updated.`)
+    },
+    setNews: function (state, data) {
+      state.news = data
+      console.log(`[${(new Date()).toLocaleTimeString()}]: News updated.`)
     },
     setDownloaderValues: function (state, data) {
       state.downloaderForm = data
@@ -87,6 +92,12 @@ const store = new Vuex.Store({
       const {data} = await axios.get(`seasons.json?year=${state.year}&season=${state.season}`)
 
       commit('setSeasons', data)
+    },
+    async newsInit({commit}) {
+      console.log('[INIT] News')
+      const {data} = await axios.get('news.json')
+
+      commit('setNews', data)
     },
     async refreshSeasons({state, commit}) {
       console.log('Refreshing Seasons...')
@@ -149,5 +160,6 @@ const store = new Vuex.Store({
 
 store.dispatch('releasesInit').catch(err => {})
 store.dispatch('seasonsInit').catch(err => {})
+store.dispatch('newsInit').catch(err => {})
 
 export default store

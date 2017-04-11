@@ -59,6 +59,7 @@ const {openExternal} = require('./openExternal.js')
 const releases = require('./releases.js')
 const seasons = require('./seasons.js')
 const downloader = require('./downloader.js')
+const news = require('./news.js')
 
 exports.route = (nuxt) => {
   return (req, res) => {
@@ -80,6 +81,10 @@ exports.route = (nuxt) => {
 
       case '/download':
         downloader.download(url, res)
+        break
+
+      case '/news.json':
+        news.getNews(res)
         break
 
       default:
