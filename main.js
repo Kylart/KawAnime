@@ -1,3 +1,5 @@
+const path = require('path')
+
 /*
  **  Nuxt.js part
  */
@@ -15,8 +17,8 @@ config.rootDir = __dirname // for electron-packager
 // Init Nuxt.js
 const nuxt = new Nuxt(config)
 
-// Route config for malScraper and nyaapi
-const route = require('./assets/scripts/init/main.js').route(nuxt)
+// Route config and init files and directories
+const route = require(path.join(__dirname, 'assets', 'scripts', 'init', 'main.js')).route(nuxt)
 const server = http.createServer(route)
 
 // Build only in dev mode
@@ -38,7 +40,6 @@ console.log(`Nuxt working on ${_NUXT_URL_}`)
  ** Electron app
  */
 const electron = require('electron')
-const path = require('path')
 const url = require('url')
 
 const POLL_INTERVAL = 300
@@ -69,16 +70,37 @@ const newWin = () => {
   {
     return win.loadURL(_NUXT_URL_)
   }
+
   win.loadURL(url.format({
     pathname: path.join(__dirname, 'index.html'),
     protocol: 'file:',
     slashes: true
   }))
+
   win.on('closed', () => win = null)
 
   pollServer()
 }
 
-app.on('ready', newWin)
-app.on('window-all-closed', () => app.quit())
+app.on('ready', () => {
+
+  // Dev tools
+  if (config.dev)
+  {
+    require('devtron').install()
+  }
+
+  newWin()
+})
+
+// Quit when all windows are closed.
+app.on('window-all-closed', function () {
+  // On OS X it is common for applications and their menu bar
+  // to stay active until the user quits explicitly with Cmd + Q
+  if (process.platform !== 'darwin')
+  {
+    app.quit()
+  }
+})
+
 app.on('activate', () => win === null && newWin())

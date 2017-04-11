@@ -8,9 +8,9 @@
 		</div>
 
 		<v-container fluid v-else>
-			<v-row>
-				<v-col md2 xs0></v-col>
-				<v-col md3 xs12>
+			<v-row class="form-container">
+				<v-col md1 xs0></v-col>
+				<v-col md3 xs12 class="season-container">
 					<v-select
 									v-bind:items="seasonChoices"
 									v-model="currentSeason"
@@ -19,7 +19,7 @@
 									item-text="name"
 									item-value="value"/>
 				</v-col>
-				<v-col md3 xs12>
+				<v-col md3 xs12 class="year-container">
 					<v-text-field name="input-year"
 					              type="number" min="2000"
 					              label="Year"
@@ -27,7 +27,10 @@
 					              dark>
 					</v-text-field>
 				</v-col>
-				<v-col md4 xs12></v-col>
+				<v-col md4 xs12 class="refresh-button">
+					<v-btn secondary block dark @click.native="refreshSeason()">Refresh</v-btn>
+				</v-col>
+				<v-col md1 xs0></v-col>
 			</v-row>
 
 			<v-tabs id="tabs" grow>
@@ -156,7 +159,7 @@
 		      {name: 'Summer', value: 'summer'},
 		      {name: 'Fall', value: 'fall'}
 		      ],
-	      currentSeason: this.getCurrentSeason(),
+	      currentSeason: this.getCurrentSeason().season,
 	      currentYear: 1900 + (new Date()).getYear()
       }
     },
@@ -198,7 +201,17 @@
             ? 'episodes'
             : 'episode'
       },
-      refreshSeasons() {
+      refreshSeason() {
+        const year = this.currentYear
+	      const season = this.currentSeason.value
+
+	      console.log(year + season)
+
+        this.$store.commit('setCurrentSeason', {
+          year: year,
+	        season: season
+        })
+
         this.$store.dispatch('refreshSeasons')
       },
       openModal(title, text) {
@@ -264,6 +277,31 @@
 		position: absolute;
 		bottom: 0;
 		left: 37%;
+	}
+
+	/* ----------- FORM ---------- */
+	.form-container
+	{
+		padding-top: 1.5%;
+		padding-left: 40px;
+		padding-right: 10px;
+	}
+
+	.year-container
+	{
+		padding-left: 2.5%;
+	}
+
+	.season-container
+	{
+		padding-right: 1.5%;
+	}
+
+	.refresh-button
+	{
+		padding-top: 1%;
+		padding-left: 6%;
+		padding-right: 3%;
 	}
 
 	/* ----------- ELEM ---------- */

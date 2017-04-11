@@ -47,6 +47,10 @@ const store = new Vuex.Store({
     season: 'spring'
   },
   mutations: {
+    setCurrentSeason(state, data) {
+      state.year = data.year
+      state.season = data.season
+    },
     setSeasons: function (state, data) {
       state.seasons = data.info
       state.seasonsStats = data.stats
