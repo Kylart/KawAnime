@@ -50,7 +50,7 @@ const openMagnets = (res, items, data) => {
 }
 
 const giveMagnetsHash = (res, items, data) => {
-  console.log('User said he preferred having magnets hashes.')
+  console.log('[Downloader] User said he prefers having magnets hashes.')
 
   let toReturn = {
     links: []
@@ -142,7 +142,7 @@ exports.download = (url, res) => {
   nyaa.searchTerm(term).then((result) => {
     console.log(result.statMsg)
 
-    withMagnets === true
+    withMagnets === 'true'
         ? giveMagnetsHash(res, result.items, data)
         : openMagnets(res, result.items, data)
 

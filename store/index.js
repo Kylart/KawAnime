@@ -6,6 +6,7 @@ import axios from 'axios'
 import {readFileSync} from 'fs'
 import {join} from 'path'
 import {userInfo} from 'os'
+import {remote} from 'electron'
 
 // Getting config.
 const configPath = join(userInfo().homedir, '.KawAnime', 'config.json')
@@ -18,7 +19,7 @@ const config = JSON.parse(configFile).config
 //   fansub: 'HorribleSubs',
 //   quality: '720p',
 //   sound: 'Nyanpasu',
-//   localPath: join(userInfo().homedir, '.Download'),
+//   localPath: join(userInfo().homedir, '.Downloads'),
 //   inside: true,
 //   magnets: false
 // }
@@ -45,7 +46,8 @@ const store = new Vuex.Store({
     seasonsStats: {},
     year: 2017,
     season: 'spring',
-    news: []
+    news: [],
+    inside: true
   },
   mutations: {
     setCurrentSeason(state, data) {
@@ -63,6 +65,9 @@ const store = new Vuex.Store({
     setReleases: function (state, data) {
       state.releases = data
       console.log(`[${(new Date()).toLocaleTimeString()}]: Releases updated.`)
+    },
+    emptyNews: function (state) {
+      state.news = []
     },
     setNews: function (state, data) {
       state.news = data
@@ -111,6 +116,34 @@ const store = new Vuex.Store({
 
       console.log('Seasons refreshed.')
     },
+    async refreshNews({commit}) {
+      console.log('Refreshing News...')
+
+      commit('emptyNews')
+
+      const {data} = await axios.get('news.json')
+
+      commit('setNews', data)
+    },
+    async openNewsLink({state}, link) {
+      console.log('[News] Opening a link')
+
+      if (state.inside === true)
+        await axios.get(`openThis?type=link&link=${link}`)
+      else
+      {
+        let win = new remote.BrowserWindow({
+          parent: remote.getCurrentWindow(),
+          x: 50,
+          y: 50,
+          minimizable: false,
+          maximizable: false,
+          resizable: false
+        })
+
+        win.loadURL(link)
+      }
+    },
     async download({state, commit}) {
       const name = state.downloaderForm.name.replace(' ', '_')
       const fromEp = state.downloaderForm.fromEp !== ''
@@ -136,12 +169,12 @@ const store = new Vuex.Store({
       let magnetLinks = []
 
       data.links.forEach((link) => {
-        magnets
+        magnets === true
             ? magnetLinks.push(link)
             : window.open(link)
       })
 
-      if (magnets)
+      if (magnets === true)
       {
         console.log('User says he prefers having magnets hashes.')
         commit('setDownloaderModal', {

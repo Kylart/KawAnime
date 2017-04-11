@@ -283,8 +283,8 @@
 	.form-container
 	{
 		padding-top: 1.5%;
-		padding-left: 40px;
-		padding-right: 10px;
+		padding-left: 50px;
+		padding-right: 0;
 	}
 
 	.year-container

@@ -162,6 +162,8 @@
 
 	      this.$store.commit('setQuality', quality)
 
+	      console.log('Magnets is ' + this.$store.state.prefMagnets)
+
         if (this.$store.state.downloaderForm.name)
           this.$store.dispatch('download')
 
@@ -276,6 +278,7 @@
 	.form-container .card
 	{
 		background-color: rgba(0, 0, 0, 0);
+		box-shadow: none;
 	}
 
 	.radio-container

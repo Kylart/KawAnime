@@ -26,7 +26,7 @@ if (!fs.existsSync(confPath))
       fansub: 'HorribleSubs',
       quality: '720p',
       sound: 'Nyanpasu',
-      localPath: join(userInfo().homedir, '.Download'),
+      localPath: join(userInfo().homedir, 'Downloads'),
       inside: true,
       magnets: false
       }
@@ -42,7 +42,7 @@ if (!fs.existsSync(animeLocalPath))
 {
     console.log('No anime local file file detected. Creating...')
 
-    fs.writeFileSync(animeLocalPath, '', 'utf-8')
+    fs.writeFileSync(animeLocalPath, '{}', 'utf-8')
 }
 
 // List file
@@ -52,7 +52,7 @@ if (!fs.existsSync(listPath))
 {
   console.log('No anime list file detected. Creating...')
 
-  fs.writeFileSync(listPath, '', 'utf-8')
+  fs.writeFileSync(listPath, '{}', 'utf-8')
 }
 
 const {openExternal} = require('./openExternal.js')
