@@ -1,5 +1,8 @@
 const path = require('path')
 
+// Init files and directories
+const initFile = require(path.join(__dirname, 'assets', 'scripts', 'init', 'main.js'))
+
 /*
  **  Nuxt.js part
  */
@@ -17,8 +20,8 @@ config.rootDir = __dirname // for electron-packager
 // Init Nuxt.js
 const nuxt = new Nuxt(config)
 
-// Route config and init files and directories
-const route = require(path.join(__dirname, 'assets', 'scripts', 'init', 'main.js')).route(nuxt)
+// Initiate routes.
+const route = initFile.route(nuxt)
 const server = http.createServer(route)
 
 // Build only in dev mode
