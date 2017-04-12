@@ -19,13 +19,13 @@ const player = require('play-sound')(opts = {})
 const fansub = 'HorribleSubs'
 
 const deleteOldTorrents = () => {
-  console.log('Processing to purge all old torrent files.')
+  console.log('[Downloader] Processing to purge all old torrent files.')
 
   fs.readdirSync(DIR).forEach((file) => {
     if (path.extname(file) === '.torrent')
     {
       fs.unlink(path.join(DIR, file), () => {
-        console.log(`Removed ${file}...`)
+        console.log(`[Downloader] Removed ${file}...`)
       })
     }
   })
@@ -71,14 +71,12 @@ const giveMagnetsHash = (res, items, data) => {
   })
 
   files.forEach((file) => {
-    let req = request({
-      method: 'GET',
-      url: file.link
-    })
-
-    // Writing file
-    let out = fs.createWriteStream(path.join(DIR, `${file.title}.torrent`))
-    req.pipe(out)
+    request
+        .get(file.link)
+        .on('error', (err) => {
+          console.log('[Downloader] There was an error downloading torrent: ' + err)
+        })
+        .pipe(fs.createWriteStream(path.join(DIR, `${file.title}.torrent`)))
   })
 
   setTimeout(() => {
@@ -93,14 +91,22 @@ const giveMagnetsHash = (res, items, data) => {
       {
         const file = fs.readFileSync(path.join(DIR, dirFiles[i]))
 
-        const torrent = parseTorrent(file)
+        try
+        {
+          const torrent = parseTorrent(file)
 
-        //noinspection JSUnresolvedVariable
-        const torrentHash = torrent.infoHash
+          //noinspection JSUnresolvedVariable
+          const torrentHash = torrent.infoHash
 
-        const uri = parseTorrent.toMagnetURI({infoHash: torrentHash})
+          const uri = parseTorrent.toMagnetURI({infoHash: torrentHash})
 
-        toReturn.links.push(uri)
+          toReturn.links.push(uri)
+        }
+        catch (err)
+        {
+          // TODO Here we should retry to get torrent file and re-parse it.
+          console.log('[Downloader] An error occurred while parsing torrent.')
+        }
       }
     }
 

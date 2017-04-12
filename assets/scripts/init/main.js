@@ -60,6 +60,7 @@ const releases = require('./releases.js')
 const seasons = require('./seasons.js')
 const downloader = require('./downloader.js')
 const news = require('./news.js')
+const local = require('./local.js')
 
 exports.route = (nuxt) => {
   return (req, res) => {
@@ -85,6 +86,10 @@ exports.route = (nuxt) => {
 
       case '/news.json':
         news.getNews(res)
+        break
+
+      case 'local.json':
+        local.getLocalFiles(url, res)
         break
 
       default:
