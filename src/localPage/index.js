@@ -49,7 +49,7 @@ const html = `
         <div class="mdl-grid local-info">
           <div class="mdl-cell mdl-cell--6-col">
             <div class="local-title text-ellipsis">
-               <h6 class="title-text" v-bind:title="file.title">{{ file.title }}</h6>
+               <h6 class="title-text text-ellipsis" v-bind:title="file.title">{{ file.title }}</h6>
             </div>
           </div>
           <div class="mdl-cell mdl-cell--2-col">

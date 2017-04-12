@@ -348,12 +348,14 @@ body
 {
     padding-left: 0;
     padding-bottom: 0;
+    max-width: 100%;
 }
 
 #local-page .title-text
 {
     margin-top: 0;
     margin-bottom: 3px;
+    max-width: 100%;
 }
 
 #local-page .local-page-buttons
@@ -386,12 +388,13 @@ body
 #local-page .local-pic-synopsis-container
 {
     position: relative;
+    max-width: 100%;
 }
 
 #local-page img
 {
     max-height: 100%;
-    max-width: 100%;
+    max-width: 195px;
 }
 
 #local-page .local-picture

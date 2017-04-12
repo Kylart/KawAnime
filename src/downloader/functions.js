@@ -9,7 +9,6 @@
 // Those are needed to download the torrents
 const fs = require('fs')
 const path = require('path')
-const req = require('request')
 const request = require('request')
 const findRemoveSync = require('find-remove')
 const parseTorrent = require('parse-torrent')
