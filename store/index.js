@@ -62,6 +62,9 @@ const store = new Vuex.Store({
     emptySeasons: function (state) {
       state.seasons = []
     },
+    emptyReleases: function (state) {
+      state.releases = []
+    },
     setReleases: function (state, data) {
       state.releases = data
       console.log(`[${(new Date()).toLocaleTimeString()}]: Releases updated.`)
@@ -104,8 +107,17 @@ const store = new Vuex.Store({
 
       commit('setNews', data)
     },
+    async refreshReleases({commit}) {
+      console.log(`[${(new Date()).toLocaleTimeString()}]: Refreshing Releases...`)
+
+      commit('emptyReleases')
+
+      const {data} = await axios.get(`releases.json?`)
+
+      commit('setReleases', data)
+    },
     async refreshSeasons({state, commit}) {
-      console.log('Refreshing Seasons...')
+      console.log(`[${(new Date()).toLocaleTimeString()}]: Refreshing Seasons...`)
 
       commit('emptySeasons')
 
@@ -117,7 +129,7 @@ const store = new Vuex.Store({
       console.log('Seasons refreshed.')
     },
     async refreshNews({commit}) {
-      console.log('Refreshing News...')
+      console.log(`[${(new Date()).toLocaleTimeString()}]: Refreshing News...`)
 
       commit('emptyNews')
 

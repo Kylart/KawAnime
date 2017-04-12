@@ -2,6 +2,14 @@
 	<v-container fluid class="container">
 		<div v-if="$store.state.releases.length">
 			<v-row style="margin: 0 1% 0 1%;">
+				<v-col sm10 xs0></v-col>
+				<v-col sm2 xs12 class="refresh-button-container">
+					<v-btn icon
+					       class="refresh-button"
+					       @click.native="refresh()">
+						<v-icon large>refresh</v-icon>
+					</v-btn>
+				</v-col>
 				<template v-for="item in $store.state.releases">
 					<v-col xs12 md6 lg4
 					       class="elem">
@@ -137,7 +145,10 @@
         }).catch((err) => {
 	        console.log('An error occurred... ' + err)
         })
-      }
+      },
+	    refresh() {
+        this.$store.dispatch('refreshReleases')
+	    }
     }
   }
 </script>
@@ -159,9 +170,31 @@
 		left: 37%;
 	}
 
+	/* ----- Refresh button ----- */
+	.refresh-button-container
+	{
+		display: inline-block;
+		text-align: right;
+		margin-top: 5px;
+		margin-bottom: 2px;
+		padding-right: 3%;
+	}
+
+	.refresh-button
+	{
+		display: inline-block;
+	}
+
+	/* Needed */
+	/*noinspection CssUnusedSymbol*/
+	.icon--large
+	{
+		height: 2.5rem;
+	}
+
 	.container
 	{
-		padding-top: 15px;
+
 	}
 
 	.elem
