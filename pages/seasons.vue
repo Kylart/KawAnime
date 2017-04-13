@@ -1,11 +1,6 @@
 <template xmlns:v-tooltip="http://www.w3.org/1999/xhtml">
 	<v-container fluid>
-		<div class="loading" v-if="!season[1].items">
-			<div class="loading-gif">
-				<h3 class="loading-text">少々お待ち下さいね〜</h3>
-				<img src="~static/images/loading-gif.gif"/>
-			</div>
-		</div>
+		<loader v-if="!season[1].items"></loader>
 
 		<v-container fluid v-else>
 			<v-row class="form-container">
@@ -98,7 +93,7 @@
 														</v-list-item>
 														<v-list-item>
 															<v-list-tile>
-																<v-list-tile-title >Information</v-list-tile-title>
+																<v-list-tile-title>Information</v-list-tile-title>
 															</v-list-tile>
 														</v-list-item>
 														<v-list-item>
@@ -145,22 +140,23 @@
 </template>
 
 <script>
-	import axios from 'axios'
+  import axios from 'axios'
+  import Loader from '~components/loader.vue'
 
   export default {
     data() {
       return {
         modalTitle: '',
-	      modalText: '',
-	      modal: false,
-	      seasonChoices: [
-		      {name: 'Winter', value: 'winter'},
-		      {name: 'Spring', value: 'spring'},
-		      {name: 'Summer', value: 'summer'},
-		      {name: 'Fall', value: 'fall'}
-		      ],
-	      currentSeason: this.getCurrentSeason().season,
-	      currentYear: 1900 + (new Date()).getYear()
+        modalText: '',
+        modal: false,
+        seasonChoices: [
+          {name: 'Winter', value: 'winter'},
+          {name: 'Spring', value: 'spring'},
+          {name: 'Summer', value: 'summer'},
+          {name: 'Fall', value: 'fall'}
+        ],
+        currentSeason: this.getCurrentSeason().season,
+        currentYear: 1900 + (new Date()).getYear()
       }
     },
     computed: {
@@ -187,6 +183,9 @@
         ]
       }
     },
+    components: {
+      Loader
+    },
     methods: {
       reduced(text) {
         return text.length > 270
@@ -203,13 +202,13 @@
       },
       refreshSeason() {
         const year = this.currentYear
-	      const season = this.currentSeason.value
+        const season = this.currentSeason.value
 
-	      console.log(year + season)
+        console.log(year + season)
 
         this.$store.commit('setCurrentSeason', {
           year: year,
-	        season: season
+          season: season
         })
 
         this.$store.dispatch('refreshSeasons')
@@ -261,22 +260,6 @@
 	h6
 	{
 		margin: 0;
-	}
-
-	.loading-text
-	{
-		width: 100%;
-		padding: 0;
-		margin: 0 0 15px -20%;
-		color: rgba(255, 255, 255, 0.8);
-		font-family: "Hiragino Mincho Pro", serif;
-	}
-
-	.loading-gif
-	{
-		position: absolute;
-		bottom: 0;
-		left: 37%;
 	}
 
 	/* ----------- FORM ---------- */

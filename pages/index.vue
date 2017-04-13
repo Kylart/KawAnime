@@ -84,12 +84,7 @@
 				</template>
 			</v-row>
 		</div>
-		<div v-else>
-			<div class="loading-gif">
-				<h3 class="loading-text">少々お待ち下さいね〜</h3>
-				<img src="~static/images/loading-gif.gif"/>
-			</div>
-		</div>
+		<loader v-else></loader>
 		<div class="text-xs-center modal-container">
 			<v-modal v-model="modal">
 				<v-card class="secondary white--text">
@@ -113,6 +108,7 @@
 
 <script>
   import axios from 'axios'
+  import Loader from '~components/loader.vue'
 
   export default {
     data () {
@@ -122,6 +118,9 @@
         modalText: ''
       }
     },
+	  components: {
+      Loader
+	  },
     methods: {
       openModal(title, text) {
         console.log('Opening modal')
