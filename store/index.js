@@ -153,7 +153,7 @@ const store = new Vuex.Store({
     async openNewsLink({state}, link) {
       console.log('[News] Opening a link')
 
-      if (state.inside === true)
+      if (state.inside === false)
         await axios.get(`openThis?type=link&link=${link}`)
       else
       {
