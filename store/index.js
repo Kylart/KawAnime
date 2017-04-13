@@ -47,7 +47,9 @@ const store = new Vuex.Store({
     year: 2017,
     season: 'spring',
     news: [],
-    inside: true
+    inside: true,
+    localFiles: [],
+    currentDir: config.localPath
   },
   mutations: {
     setCurrentSeason(state, data) {
@@ -75,6 +77,10 @@ const store = new Vuex.Store({
     setNews: function (state, data) {
       state.news = data
       console.log(`[${(new Date()).toLocaleTimeString()}]: News updated.`)
+    },
+    setLocalFiles: function (state, data) {
+      state.localFiles = data
+      console.log(`[${(new Date()).toLocaleTimeString()}]: Local files updated.`)
     },
     setDownloaderValues: function (state, data) {
       state.downloaderForm = data
@@ -106,6 +112,13 @@ const store = new Vuex.Store({
       const {data} = await axios.get('news.json')
 
       commit('setNews', data)
+    },
+    async localInit({state, commit}) {
+      console.log('[INIT] Local Files')
+
+      const {data} = await axios.get(`local.json?dir=${state.currentDir}`)
+
+      commit('setLocalFiles', data)
     },
     async refreshReleases({commit}) {
       console.log(`[${(new Date()).toLocaleTimeString()}]: Refreshing Releases...`)
@@ -206,5 +219,6 @@ const store = new Vuex.Store({
 store.dispatch('releasesInit').catch(err => {})
 store.dispatch('seasonsInit').catch(err => {})
 store.dispatch('newsInit').catch(err => {})
+store.dispatch('localInit').catch(err => {})
 
 export default store

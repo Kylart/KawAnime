@@ -8,18 +8,33 @@ const {userInfo} = require('os')
 const {join, extname} = require('path')
 const qs = require('querystring')
 
-const animeFile = require(join(userInfo().homedir, '.KawAnime', 'anime.json'))
+const animeFile = JSON.parse(fs.readFileSync(join(userInfo().homedir, '.KawAnime', 'locals.json')))
 
 const extensions = ['.mkv', '.mp4']
 
+const sortFiles = (array, descending) => {
+  if (descending === true)
+    array.sort((a, b) => a.title === b.title ?
+        b.ep.toString().localeCompare(a.ep) :
+        a.title.toString().localeCompare(b.title))
+  else
+    array.sort((a, b) => a.title === b.title ?
+        -b.ep.toString().localeCompare(a.ep) :
+        a.title.toString().localeCompare(b.title))
+}
+
 const getNameAndEp = (raw) => {
   return {
-    name: raw.split(' ').slice(1, -3),
-    ep: parseInt(raw.split(' ').splice(-2)[0])
+    name: raw.raw.split(' ').slice(1, -3).join(' '),
+    ep: parseInt(raw.raw.split(' ').splice(-2)[0])
   }
 }
 
-const sendRes = (files, res) => {
+const sendRes = (files, res, ascending) => {
+  // sortFiles(files, ascending)
+
+  // TODO Sort files before output
+
   res.writeHead(200, {"Content-Type": "application/json"})
   res.write(JSON.stringify(files))
   res.end()
@@ -27,7 +42,8 @@ const sendRes = (files, res) => {
 
 exports.getLocalFiles = (url, res) => {
   const query = qs.parse(url.query.replace('?', ''))
-  const dir = query.parse(dir)
+  const dir = query.dir
+  const ascending = query.asc ? query.asc === 'true' : true
 
   let counter = 0
 
@@ -54,11 +70,9 @@ exports.getLocalFiles = (url, res) => {
     // Doing research on local file.
     if (animeFile[filteredFiles[i].researchName])
     {
-      console.log('[Local] Info found in local anime.json')
-
       const local = animeFile[filteredFiles[i].researchName]
       filteredFiles[i].picture = local.picture
-      filteredFiles[i].numberOfEpisodes = local.numberOfEpisodes
+      filteredFiles[i].numberOfEpisode = local.numberOfEpisode
       filteredFiles[i].status = local.status
       filteredFiles[i].year = local.year
       filteredFiles[i].genres = local.genres
@@ -67,15 +81,38 @@ exports.getLocalFiles = (url, res) => {
 
       ++counter
       if (counter === filteredFiles.length)
-        sendRes(filteredFiles, res)
+        sendRes(filteredFiles, res, ascending)
     }
     else // Research on MAL
     {
-      console.log(`[Local] Looking ${filteredFiles[i].name} on MAL.`)
+      console.log(`[Local] Looking for ${filteredFiles[i].name} on MAL.`)
 
-      console.log('Oups, mal-scraper needs some improvements before...')
+      malScraper.getInfoFromName(nameAndEp.name).then((anime) => {
+        console.log('[Local] Found!')
 
-      sendRes({}, res)
+        filteredFiles[i].picture = anime.image
+        filteredFiles[i].numberOfEpisode = anime.episodes.replace('Unknown', 'NC')
+        filteredFiles[i].status = anime.status
+        filteredFiles[i].year = anime.aired.split(' ')[2]
+        filteredFiles[i].genres = anime.genres
+        filteredFiles[i].classification = anime.classification
+        filteredFiles[i].mark = anime.statistics.score.value
+
+        // Adding this to locals.json
+        // Current file
+        const json = require(join(userInfo().homedir, '.KawAnime', 'locals.json'))
+
+        // Adding value
+        json[filteredFiles[i].researchName] = filteredFiles[i]
+
+        fs.writeFileSync(join(userInfo().homedir, '.KawAnime', 'locals.json'), JSON.stringify(json))
+
+        ++counter
+        if (counter === filteredFiles.length)
+          sendRes(filteredFiles, res, ascending)
+      }).catch((err) => {
+        console.log('[Local] ' + err)
+      })
     }
   }
 }

@@ -36,7 +36,7 @@ if (!fs.existsSync(confPath))
 }
 
 // Local file
-const animeLocalPath = join(dir, 'anime.json')
+const animeLocalPath = join(dir, 'locals.json')
 
 if (!fs.existsSync(animeLocalPath))
 {
@@ -88,7 +88,7 @@ exports.route = (nuxt) => {
         news.getNews(res)
         break
 
-      case 'local.json':
+      case '/local.json':
         local.getLocalFiles(url, res)
         break
 
