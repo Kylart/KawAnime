@@ -5,6 +5,7 @@
 const {join} = require('path')
 
 const shell = require('electron').shell
+const fs = require('fs')
 const qs = require('querystring')
 
 exports.openExternal = (url, res) => {
@@ -20,13 +21,19 @@ exports.openExternal = (url, res) => {
       break
 
     case 'video':
-      shell.openExternal(query.path)
+      shell.openItem(join(query.dir, query.path))
       break
 
     case 'link':
       shell.openExternal(query.link)
-      res.writeHead(200, {})
-      res.end()
+      break
+
+    case 'delete':
+      fs.unlink(join(query.dir, query.path), (err) => {
+        if (err) throw err
+
+        console.log('[Open-External] Deleted file successfully.')
+      })
       break
 
     default:

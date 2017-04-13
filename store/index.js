@@ -150,6 +150,13 @@ const store = new Vuex.Store({
 
       commit('setNews', data)
     },
+    async refreshLocal({commit, state}) {
+      console.log(`[${(new Date()).toLocaleTimeString()}]: Refreshing Local files...`)
+
+      const {data} = await axios.get(`local.json?dir=${state.currentDir}`)
+
+      commit('setLocalFiles', data)
+    },
     async openNewsLink({state}, link) {
       console.log('[News] Opening a link')
 

@@ -8,20 +8,7 @@ const {userInfo} = require('os')
 const {join, extname} = require('path')
 const qs = require('querystring')
 
-const animeFile = JSON.parse(fs.readFileSync(join(userInfo().homedir, '.KawAnime', 'locals.json')))
-
 const extensions = ['.mkv', '.mp4']
-
-const sortFiles = (array, descending) => {
-  if (descending === true)
-    array.sort((a, b) => a.title === b.title ?
-        b.ep.toString().localeCompare(a.ep) :
-        a.title.toString().localeCompare(b.title))
-  else
-    array.sort((a, b) => a.title === b.title ?
-        -b.ep.toString().localeCompare(a.ep) :
-        a.title.toString().localeCompare(b.title))
-}
 
 const getNameAndEp = (raw) => {
   return {
@@ -30,10 +17,9 @@ const getNameAndEp = (raw) => {
   }
 }
 
-const sendRes = (files, res, ascending) => {
-  // sortFiles(files, ascending)
-
-  // TODO Sort files before output
+const sendRes = (files, res, paths) => {
+  for (let i = 0; i <  files.length; ++i)
+    files[i].path = paths[i]
 
   res.writeHead(200, {"Content-Type": "application/json"})
   res.write(JSON.stringify(files))
@@ -41,6 +27,8 @@ const sendRes = (files, res, ascending) => {
 }
 
 exports.getLocalFiles = (url, res) => {
+  const animeFile = JSON.parse(fs.readFileSync(join(userInfo().homedir, '.KawAnime', 'locals.json')))
+
   const query = qs.parse(url.query.replace('?', ''))
   const dir = query.dir
   const ascending = query.asc ? query.asc === 'true' : true
@@ -51,6 +39,7 @@ exports.getLocalFiles = (url, res) => {
   const files = fs.readdirSync(dir)
 
   let filteredFiles = []
+  let paths = []
 
   files.forEach((file) => {
     extensions.forEach((extensions) => {
@@ -70,7 +59,10 @@ exports.getLocalFiles = (url, res) => {
     // Doing research on local file.
     if (animeFile[filteredFiles[i].researchName])
     {
+      paths[i] = filteredFiles[i].raw
+
       const local = animeFile[filteredFiles[i].researchName]
+      filteredFiles[i].raw = undefined
       filteredFiles[i].picture = local.picture
       filteredFiles[i].numberOfEpisode = local.numberOfEpisode
       filteredFiles[i].status = local.status
@@ -78,10 +70,11 @@ exports.getLocalFiles = (url, res) => {
       filteredFiles[i].genres = local.genres
       filteredFiles[i].classification = local.classification
       filteredFiles[i].mark = local.mark
+      filteredFiles[i].synopsis = local.synopsis
 
       ++counter
       if (counter === filteredFiles.length)
-        sendRes(filteredFiles, res, ascending)
+        sendRes(filteredFiles, res, paths)
     }
     else // Research on MAL
     {
@@ -90,6 +83,10 @@ exports.getLocalFiles = (url, res) => {
       malScraper.getInfoFromName(nameAndEp.name).then((anime) => {
         console.log('[Local] Found!')
 
+        // Pathname must NOT be saved!
+        paths[i] = filteredFiles[i].raw
+
+        filteredFiles[i].raw = undefined
         filteredFiles[i].picture = anime.image
         filteredFiles[i].numberOfEpisode = anime.episodes.replace('Unknown', 'NC')
         filteredFiles[i].status = anime.status
@@ -97,6 +94,7 @@ exports.getLocalFiles = (url, res) => {
         filteredFiles[i].genres = anime.genres
         filteredFiles[i].classification = anime.classification
         filteredFiles[i].mark = anime.statistics.score.value
+        filteredFiles[i].synopsis = anime.synopsis
 
         // Adding this to locals.json
         // Current file
@@ -105,11 +103,13 @@ exports.getLocalFiles = (url, res) => {
         // Adding value
         json[filteredFiles[i].researchName] = filteredFiles[i]
 
-        fs.writeFileSync(join(userInfo().homedir, '.KawAnime', 'locals.json'), JSON.stringify(json))
+        fs.writeFile(join(userInfo().homedir, '.KawAnime', 'locals.json'), JSON.stringify(json), (err) => {
+          if (err) throw err
 
-        ++counter
-        if (counter === filteredFiles.length)
-          sendRes(filteredFiles, res, ascending)
+          ++counter
+          if (counter === filteredFiles.length)
+            sendRes(filteredFiles, res, paths)
+        })
       }).catch((err) => {
         console.log('[Local] ' + err)
       })
