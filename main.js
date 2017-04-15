@@ -1,98 +1,99 @@
-const electron = require('electron')
-// Module to control application life.
-const app = electron.app
-const Menu = electron.Menu
-// Module to create native browser window.
-const BrowserWindow = electron.BrowserWindow
-
-const shell = require('electron').shell
 const path = require('path')
+
+// Init files and directories
+const initFile = require(path.join(__dirname, 'assets', 'scripts', 'init', 'main.js'))
+
+/*
+ **  Nuxt.js part
+ */
+process.env.NODE_ENV = process.env.NODE_ENV || 'production'
+let win = null // Current window
+
+const http = require('http')
+const Nuxt = require('nuxt')
+
+// Import and Set Nuxt.js options
+let config = require('./nuxt.config.js')
+config.dev = !(process.env.NODE_ENV === 'production')
+config.rootDir = __dirname // for electron-packager
+
+// Init Nuxt.js
+const nuxt = new Nuxt(config)
+
+// Initiate routes.
+const route = initFile.route(nuxt)
+const server = http.createServer(route)
+
+// Build only in dev mode
+if (config.dev)
+{
+  nuxt.build()
+      .catch((error) => {
+        console.error(error) // eslint-disable-line no-console
+        process.exit(1)
+      })
+}
+
+// Listen the server
+server.listen()
+const _NUXT_URL_ = `http://localhost:${server.address().port}`
+console.log(`Nuxt working on ${_NUXT_URL_}`)
+
+/*
+ ** Electron app
+ */
+const electron = require('electron')
 const url = require('url')
-const fs = require('fs')
-const os = require('os')
 
-const self = this
-
-// Menu
-const menuFile = require(path.join(__dirname, 'src', 'menu.js'))
-const template = menuFile.template(() => {
-  self.openPreferences()
-})
-const menu = Menu.buildFromTemplate(template)
-
-const animeLocalStoragePath = path.join(os.userInfo().homedir, '.KawAnime', 'anime.json')
-
-// Keep a global reference of the window object, if you don't, the window will
-// be closed automatically when the JavaScript object is garbage collected.
-let mainWindow
-let newsWindow
-let preferencesWindow = null
-const BASE_PATH = os.userInfo().homedir
-
-if (process.env.NODE_ENV === 'hotDevelopment')
-  require('electron-reload')(__dirname, {
-    electron: path.join(__dirname, 'node_modules', '.bin', 'electron')
+const POLL_INTERVAL = 300
+const pollServer = () => {
+  http.get(_NUXT_URL_, (res) => {
+    const SERVER_DOWN = res.statusCode !== 200
+    SERVER_DOWN ? setTimeout(pollServer, POLL_INTERVAL) : win.loadURL(_NUXT_URL_)
   })
+      .on('error', pollServer)
+}
 
-function createWindow() {
-  // Create the directory to download files
-  const dir = path.join(BASE_PATH, '.KawAnime')
+const app = electron.app
+const bw = electron.BrowserWindow
 
-  if (!fs.existsSync(dir)) fs.mkdirSync(dir)
-
-  // Create the browser window.
-  mainWindow = new BrowserWindow({
-    width: 1200,
-    height: 820,
+const newWin = () => {
+  win = new bw({
+    width: config.electron.width || 800,
+    height: config.electron.height || 600,
     titleBarStyle: 'hidden',
-    show: false,
-    title: 'KawAnime',
-    preload: 'https://unpkg.com/vue/dist/vue.js',
-    scrollBounce: true
+    show: false
   })
 
-  // and load the index.html of the src.
-  mainWindow.loadURL(url.format({
+  win.once('ready-to-show', () => {
+    win.show()
+  })
+
+  if (!config.dev)
+  {
+    return win.loadURL(_NUXT_URL_)
+  }
+
+  win.loadURL(url.format({
     pathname: path.join(__dirname, 'index.html'),
     protocol: 'file:',
     slashes: true
   }))
 
-  mainWindow.once('ready-to-show', () => {
-    mainWindow.show()
-  })
+  win.on('closed', () => win = null)
 
-  // Open the DevTools.
-  // mainWindow.webContents.openDevTools()
-
-  // Emitted when the window is closed.
-  mainWindow.on('closed', function () {
-    // Dereference the window object, usually you would store windows
-    // in an array if your src supports multi windows, this is the time
-    // when you should delete the corresponding element.
-    mainWindow = null
-  })
+  pollServer()
 }
 
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
 app.on('ready', () => {
-  createWindow()
-
-  Menu.setApplicationMenu(menu)
-
-  const animeJSONCreated = self.createJSON()
-
-  // Checking if that config file already exists
-  self.createConfig()
 
   // Dev tools
-  if (process.env.NODE_ENV === 'development')
+  if (config.dev)
   {
-    require('vue-devtools').install()
     require('devtron').install()
   }
+
+  newWin()
 })
 
 // Quit when all windows are closed.
@@ -105,118 +106,4 @@ app.on('window-all-closed', function () {
   }
 })
 
-app.on('activate', function () {
-  // On OS X it's common to re-create a window in the src when the
-  // dock icon is clicked and there are no other windows open.
-  if (mainWindow === null)
-  {
-    createWindow()
-  }
-})
-
-// In this file you can include the rest of your src's specific main process
-// code. You can also put them in separate files and require them here.
-exports.openANewsWindow = (uri) => {
-  // Create the browser window.
-  newsWindow = new BrowserWindow({
-    width: 800,
-    height: 500,
-    parent: mainWindow,
-    minimizable: false,
-    maximizable: false
-  })
-
-  // and load the index.html of the src.
-  newsWindow.loadURL(uri)
-
-  newsWindow.once('ready-to-show', () => {
-    newsWindow.show()
-  })
-
-  // Emitted when the window is closed.
-  newsWindow.on('closed', function () {
-    // Dereference the window object, usually you would store windows
-    // in an array if your src supports multi windows, this is the time
-    // when you should delete the corresponding element.
-    newsWindow = null
-  })
-}
-
-// Preferences window
-exports.openPreferences = () => {
-  // We do not want two preferencesWindows at the same time
-  if (preferencesWindow !== null) preferencesWindow.destroy()
-
-  // Create the browser window.
-  preferencesWindow = new BrowserWindow({
-    parent: mainWindow,
-    x: 50,
-    y: 50,
-    width: 800,
-    height: 500,
-    minimizable: false,
-    maximizable: false,
-    frame: false,
-    resizable: false
-  })
-
-  // and load the index.html of the src.
-  preferencesWindow.loadURL(url.format({
-    pathname: path.join(__dirname, 'src', 'preferences', 'index.html'),
-    protocol: 'file:',
-    slashes: true
-  }))
-
-  preferencesWindow.once('ready-to-show', () => {
-    preferencesWindow.show()
-  })
-
-  // Emitted when the window is closed.
-  preferencesWindow.on('closed', function () {
-    // Dereference the window object, usually you would store windows
-    // in an array if your src supports multi windows, this is the time
-    // when you should delete the corresponding element.
-    preferencesWindow = null
-  })
-}
-
-exports.createJSON = () => {
-  fs.access(animeLocalStoragePath, fs.constants.R_OK | fs.constants.W_OK, (err) => {
-    if (err)
-    {
-      fs.appendFileSync(animeLocalStoragePath, '{}')
-      console.log('Local anime JSON file was created.')
-      return true
-    }
-    else
-    {
-      console.log('Local anime JSON file already exists.')
-      return false
-    }
-  })
-}
-
-exports.createConfig = () => {
-  fs.access(path.join(os.userInfo().homedir, '.KawAnime', 'config.json'), fs.constants.R_OK | fs.constants.W_OK, (err) => {
-    if (err)  // This means the file does not exist
-    {
-      console.log('Creating initial config file.')
-
-      const initPath = path.join(os.userInfo().homedir, 'Downloads')
-
-      const initConf = {
-        config: {
-          fansub: 'HorribleSubs',
-          quality: '720p',
-          sound: 'Nyanpasu',
-          localPath: initPath,
-          inside: true,
-        }
-      }
-
-      const json = JSON.stringify(initConf)
-
-      fs.writeFileSync(path.join(os.userInfo().homedir, '.KawAnime', 'config.json'), json)
-    }
-  })
-}
+app.on('activate', () => win === null && newWin())

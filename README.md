@@ -4,10 +4,12 @@ Disclaimer : This is a software for otaku/anime-fans. Do not try if you're not p
 
 This software allows one to: 
 * Be aware of the latest anime release.
-* Download an anime via Torrent (one would need a torrent client).
+* Download an anime (from ep X to ep Y) via Torrent (one would need a torrent client atm). One can also only get a 
+list of torrent magnets to paste in a torrent client on a distant server.
 * Get information from any anime (those come from myanimelist.net).
 * Get anime-related news from MyAnimeList.net.
 * Get seasonal releases information.
+* Manage watch lists.
 * More features are to come.
 
 This is a software developed with Electron framework. It is still in development. 
@@ -26,12 +28,17 @@ git clone https://github.com/Kylart/KawAnime
 cd KawAnime/
 ```
 ```
-npm install && npm start
+npm install && npm run build
 ```
 
 ## Start
 ```
 npm start
+```
+
+## Run in dev
+```
+npm run dev
 ```
 
 
@@ -43,8 +50,13 @@ npm start
 5. Submit a pull request.
 
 ## TODOs
-* Make a better design.
-* Make _KawAnime_ completlely responsive
+* Implement torrents with WebTorrent module.
+
+## Thanks
+Many thanks to 
+* [Electron](https://electron.atom.io)
+* [Nuxt](https://nuxtjs.org)
+* [Vuetify](https://vuetifyjs.com)
 
 ## License
 MIT License

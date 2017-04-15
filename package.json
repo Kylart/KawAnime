@@ -1,62 +1,34 @@
 {
   "name": "KawAnime",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "A Software for Otaku Community.",
   "main": "main.js",
-  "scripts": {
-    "start": "cross-env NODE_ENV=production electron .",
-    "dev": "cross-env NODE_ENV=development electron .",
-    "hotDev": "cross-env NODE_ENV=hotDevelopment electron .",
-    "pack": "build --dir",
-    "dist": "build -mwl",
-    "helpBuild": "echo 'https://github.com/electron-userland/electron-builder#cli-usage'"
-  },
-  "repository": "https://github.com/Kylart/KawAnime",
-  "keywords": [
-    "Torrent",
-    "KawAnime",
-    "Otaku",
-    "Anime"
-  ],
+  "repository": "https://github.com/Kylart/NuxtKawAnime.git",
   "author": "Kylart",
   "license": "MIT",
-  "devDependencies": {
-    "devtron": "^1.4.0",
-    "electron": "^1.6.2",
-    "electron-builder": "^15.6.2",
-    "electron-reload": "^1.1.0",
-    "vue-devtools": "^3.0.8"
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development electron .",
+    "build": "nuxt build",
+    "start": "electron .",
+    "pack": "npm run build && electron-packager ./ --overwrite"
   },
   "dependencies": {
-    "cross-env": "^4.0.0",
-    "find-remove": "^1.0.0",
-    "is-online": "^5.2.0",
-    "mal-scraper": "^1.2.3",
-    "malapi": "0.0.3",
-    "material-design-lite": "^1.3.0",
-    "mdi": "^1.8.36",
-    "node-nyaa-api": "latest",
-    "parse-torrent": "^5.8.1",
+    "axios": "^0.16.0",
+    "cheerio": "^0.22.0",
+    "cross-env": "^3.1.4",
+    "electron": "^1.6.2",
+    "mal-scraper": "^1.3.2",
+    "nuxt": "latest",
+    "nyaapi": "^1.0.1",
+    "parse-torrent": "^5.8.2",
     "play-sound": "^1.1.1",
-    "request": "latest",
-    "vue-material": "^0.7.1"
+    "url-parse": "^1.1.8",
+    "vuetify": "^0.10.0"
   },
-  "build": {
-    "appId": "KawAnime",
-    "dmg": {
-      "contents": [
-        {
-          "x": 150,
-          "y": 90
-        },
-        {
-          "x": 150,
-          "y": 275,
-          "type": "link",
-          "path": "/Applications"
-        }
-      ]
-    }
-  },
-  "postinstall": "install-app-deps"
+  "devDependencies": {
+    "devtron": "^1.4.0",
+    "stylus": "^0.54.5",
+    "stylus-loader": "^3.0.1",
+    "vue-devtools": "^3.0.8"
+  }
 }
