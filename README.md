@@ -28,12 +28,17 @@ git clone https://github.com/Kylart/KawAnime
 cd KawAnime/
 ```
 ```
-npm install && npm start
+npm install && npm run build
 ```
 
 ## Start
 ```
 npm start
+```
+
+## Run in dev
+```
+npm run dev
 ```
 
 

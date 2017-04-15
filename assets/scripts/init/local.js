@@ -31,7 +31,6 @@ exports.getLocalFiles = (url, res) => {
 
   const query = qs.parse(url.query.replace('?', ''))
   const dir = query.dir
-  const ascending = query.asc ? query.asc === 'true' : true
 
   let counter = 0
 
@@ -48,6 +47,9 @@ exports.getLocalFiles = (url, res) => {
     })
   })
 
+  // TODO
+  // If a name does not exist in locals.json and there are several episodes of it
+  // It will send as many request as there are of episode. Not good
   for (let i = 0; i < filteredFiles.length; ++i)
   {
     const nameAndEp = getNameAndEp(filteredFiles[i])
