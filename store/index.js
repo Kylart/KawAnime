@@ -78,9 +78,16 @@ const store = new Vuex.Store({
       state.news = data
       console.log(`[${(new Date()).toLocaleTimeString()}]: News updated.`)
     },
+    emptyLocals: function (state) {
+      state.localFiles = []
+    },
     setLocalFiles: function (state, data) {
       state.localFiles = data
       console.log(`[${(new Date()).toLocaleTimeString()}]: Local files updated.`)
+    },
+    setCurrentDir: function (state, data) {
+      state.currentDir = data
+      console.log(`[${(new Date()).toLocaleTimeString()}]: Current directory now is ${state.currentDir}`)
     },
     setDownloaderValues: function (state, data) {
       state.downloaderForm = data
@@ -156,6 +163,16 @@ const store = new Vuex.Store({
       const {data} = await axios.get(`local.json?dir=${state.currentDir}`)
 
       commit('setLocalFiles', data)
+    },
+    async changePath({commit, dispatch}) {
+      remote.dialog.showOpenDialog({properties: ['openDirectory']}, (dirPath) => {
+        if (dirPath !== undefined)
+        {
+          commit('emptyLocals')
+          commit('setCurrentDir', dirPath)
+          dispatch('refreshLocal')
+        }
+      })
     },
     async openNewsLink({state}, link) {
       console.log('[News] Opening a link')

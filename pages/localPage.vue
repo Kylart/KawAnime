@@ -2,6 +2,26 @@
 	<v-container fluid class="container">
 		<div v-if="files.length">
 			<v-row style="margin: 0 1% 0 1%;">
+				<v-col xs12 class="menubar">
+					<v-row>
+						<v-col xs3 class="menu-eps">
+							<p class="menu-eps-text">{{ nbEps }} {{ episodeLabel }}</p>
+						</v-col>
+						<v-col xs6></v-col>
+						<v-col xs3 class="menu-buttons">
+							<v-btn icon
+							       class="refresh-button"
+							       @click.native="refresh()">
+								<v-icon large>refresh</v-icon>
+							</v-btn>
+							<v-btn flat dark
+							       @click.native="changePath()"
+							       class="change-dir-button">
+								Change dir
+							</v-btn>
+						</v-col>
+					</v-row>
+				</v-col>
 				<template v-for="item in files">
 					<v-col xs12 md6 xl4
 					       class="elem">
@@ -77,6 +97,14 @@
     computed: {
       files: function () {
         return this.$store.state.localFiles
+      },
+      nbEps: function () {
+        return this.files.length
+      },
+      episodeLabel: function () {
+        return this.nbEps === 1
+		        ? 'episode'
+		        : 'episodes'
       }
     },
     components: {},
@@ -103,8 +131,14 @@
           console.log('An error occurred while trying to delete a file:' + err)
         })
 
-	      this.$store.dispatch('refreshLocal')
-      }
+        this.$store.dispatch('refreshLocal')
+      },
+	    refresh() {
+        this.$store.dispatch('refreshLocal')
+	    },
+	    changePath() {
+        this.$store.dispatch('changePath')
+	    }
     }
   }
 </script>
@@ -129,6 +163,33 @@
 		white-space: nowrap;
 	}
 
+	/* ------------- MENUBAR ------------- */
+	.menubar
+	{
+		margin-top: 2px;
+	}
+
+	.menu-eps-text
+	{
+		color: rgba(255, 255, 255, 0.8);
+		font-size: 16px;
+		font-weight: 800;
+		margin-top: 12px;
+		padding-left: 8%;
+	}
+
+	.menu-buttons
+	{
+		display: inline-block;
+		text-align: center;
+	}
+
+	.refresh-button, .change-dir-button
+	{
+		display: inline-block;
+	}
+
+	/* -------------- ELEMS -------------- */
 	.elem
 	{
 		color: rgba(255, 255, 255, 0.8);
