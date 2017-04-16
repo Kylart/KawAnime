@@ -140,11 +140,19 @@
 								<v-card-text>
 									<h2 class="title">Which anime are you looking for?</h2>
 								</v-card-text>
+								<v-divider/>
 								<v-card-text class="subheading grey--text">
-									<v-text-field name="search-input"
-									              v-model="searchInput"
-									              label="Anime name">
-									</v-text-field>
+									<v-row>
+										<v-col xs2><!-- Dummy --></v-col>
+										<v-col xs8>
+											<v-text-field name="search-input" dark
+											              v-model="searchInput"
+											              label="Anime name">
+											</v-text-field>
+										</v-col>
+										<v-col xs2><!-- Dummy --></v-col>
+									</v-row>
+
 								</v-card-text>
 								<v-card-row actions>
 									<v-spacer></v-spacer>
@@ -165,7 +173,7 @@
 
 					<h1 class="title" v-bind:style="sidebarTitle">
 						<strong>かわニメ - </strong>
-						<a href="https://kawani.me">v0.3.0</a>
+						<a href="#">v0.3.0</a>
 					</h1>
 
 					<div class="links">
@@ -271,14 +279,15 @@
               }
             ]
           },
-          {
-            title: 'Torrenting',
-            items: [
-              {title: 'Current downloads'},
-              {title: 'Sourcing'},
-              {title: 'Create torrents'}
-            ]
-          }
+//		        Too soon...
+//          {
+//            title: 'Torrenting',
+//            items: [
+//              {title: 'Current downloads'},
+//              {title: 'Sourcing'},
+//              {title: 'Create torrents'}
+//            ]
+//          }
         ],
         sidebarTitle: {
           color: 'rgba(255, 255, 255, 0.8)'

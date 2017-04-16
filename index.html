@@ -1,28 +1,45 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <title>Electronuxt</title>
-    <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      background: #333;
-      position: relative;
-      height: 100%;
-      width: 100%;
-    }
-    h1 {
-      font-family: sans-serif;
-      color: white;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -70%);
-    }
-    </style>
-  </head>
-  <body>
-    <h1>Loading application...</h1>
-  </body>
+<head>
+	<meta charset="UTF-8">
+	<title>Electronuxt</title>
+	<style>
+		html, body
+		{
+			margin: 0;
+			padding: 0;
+			/*background: #333;*/
+			position: relative;
+			height: 100%;
+			width: 100%;
+			background-image: url("static/images/index-bg.jpg");
+			background-size: cover;
+			background-repeat: no-repeat;
+		}
+
+		.loading
+		{
+			font-family: sans-serif;
+			color: rgba(255, 255, 255, 0.9);
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -70%);
+		}
+
+		.thank
+		{
+			font-family: sans-serif;
+			color: rgba(255, 255, 255, 0.9);
+			position: absolute;
+			top: 40%;
+			left: 50%;
+			transform: translate(-50%, -70%);
+		}
+	</style>
+</head>
+<body>
+	<h2 class="thank">Thank you for contributing to KawAnime!</h2>
+	<h1 class="loading">Loading application...</h1>
+</body>
 </html>
