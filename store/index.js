@@ -234,10 +234,12 @@ const store = new Vuex.Store({
       const quality = state.downloaderForm.quality
 
       const magnets = state.config.magnets
+      const fansub = state.config.fansub
 
       console.log(`Received a request to download ${name} from ep ${fromEp} to ep ${untilEp}. Transmitting...`)
 
-      const {data, status} = await axios.get(`download?name=${name}&fromEp=${fromEp}&untilEp=${untilEp}&quality=${quality}&magnets=${magnets}`)
+      const {data, status} = await axios.get(
+          `download?name=${name}&fromEp=${fromEp}&untilEp=${untilEp}&quality=${quality}&magnets=${magnets}&fansub=${fansub}`)
 
       status === 404
           ? console.log('Oops. It looks like something went wrong. Please check your internet connection and retry.')

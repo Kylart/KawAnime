@@ -16,8 +16,6 @@ const DIR = path.join(os.userInfo().homedir, '.KawAnime')
 // Nyanpasu ~
 const player = require('play-sound')(opts = {})
 
-const fansub = 'HorribleSubs'
-
 const deleteOldTorrents = () => {
   console.log('[Downloader] Processing to purge all old torrent files.')
 
@@ -127,6 +125,7 @@ exports.download = (url, res) => {
   //noinspection JSUnresolvedVariable
   const withMagnets = query.magnets || false
 
+  const fansub = query.fansub
   const quality = query.quality || '720p'
   const name = query.name.split('_').join(' ')
   const fromEp = query.fromEp || 0
