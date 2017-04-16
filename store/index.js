@@ -29,7 +29,6 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   state: {
     releases: [],
-    prefMagnets: config.magnets,
     downloaderForm: {
       name: '',
       fromEp: '',
@@ -58,7 +57,11 @@ const store = new Vuex.Store({
     },
     configDir: config.localPath,
     currentDir: config.localPath,
-    searchInputModal: false
+    searchInputModal: false,
+    searchInput: '',
+    searchInfo: {
+
+    }
   },
   mutations: {
     setCurrentSeason(state, data) {
@@ -230,7 +233,7 @@ const store = new Vuex.Store({
           : 20000
       const quality = state.downloaderForm.quality
 
-      const magnets = state.prefMagnets
+      const magnets = state.config.magnets
 
       console.log(`Received a request to download ${name} from ep ${fromEp} to ep ${untilEp}. Transmitting...`)
 

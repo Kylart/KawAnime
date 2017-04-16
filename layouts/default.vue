@@ -1,5 +1,7 @@
 <template xmlns:v-bind="http://www.w3.org/1999/xhtml">
-	<v-app id="app" class="grey lighten-1" top-toolbar left-sidebar>
+	<v-app id="app"
+	       class="grey lighten-1"
+	       top-toolbar left-sidebar>
 		<v-toolbar class="dragable">
 			<v-toolbar-side-icon class="non-dragable" @click.native.stop="sidebar = !sidebar"/>
 			<v-toolbar-logo class="text-xs-right title" v-bind:style="title">
@@ -139,11 +141,14 @@
 									<h2 class="title">Which anime are you looking for?</h2>
 								</v-card-text>
 								<v-card-text class="subheading grey--text">
-									Blabla
+									<v-text-field name="search-input"
+									              v-model="searchInput"
+									              label="Anime name">
+									</v-text-field>
 								</v-card-text>
 								<v-card-row actions>
 									<v-spacer></v-spacer>
-									<v-btn flat v-on:click.native="searchModal = false" class="primary--text">Search!</v-btn>
+									<v-btn dark primary v-on:click.native="searchModal = false">Search!</v-btn>
 								</v-card-row>
 							</v-card>
 						</v-modal>
@@ -308,6 +313,9 @@
       },
       configDir: function () {
         return this.$store.state.configDir
+      },
+	    searchInput: function () {
+		    return this.$store.state.searchInput
       }
     },
     methods: {
@@ -326,6 +334,9 @@
 	    saveAndClose() {
         this.save()
 		    this.configModal = false
+	    },
+	    test() {
+        console.log('Hello')
 	    }
     }
   }

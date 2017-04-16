@@ -13,7 +13,7 @@
 					<div class="choose-magnets">
 						<v-card class="z-depth-0">
 							<v-card-text class="switch">
-								<v-switch label="Get Magnets" primary v-model="$store.state.prefMagnets" dark/>
+								<v-switch label="Get Magnets" primary v-model="$store.state.config.magnets" dark/>
 							</v-card-text>
 						</v-card>
 					</div>
@@ -162,7 +162,7 @@
 
 	      this.$store.commit('setQuality', quality)
 
-	      console.log('Magnets is ' + this.$store.state.prefMagnets)
+	      console.log('Magnets is ' + this.$store.state.config.magnets)
 
         if (this.$store.state.downloaderForm.name)
           this.$store.dispatch('download')
