@@ -3,7 +3,7 @@ import Vue from 'vue'
 //noinspection NpmUsedModulesInstalled
 import Vuex from 'vuex'
 import axios from 'axios'
-import {readFileSync} from 'fs'
+import {readFileSync, writeFileSync} from 'fs'
 import {join} from 'path'
 import {userInfo} from 'os'
 import {remote} from 'electron'
@@ -49,7 +49,16 @@ const store = new Vuex.Store({
     news: [],
     inside: true,
     localFiles: [],
-    currentDir: config.localPath
+    config: {
+      fansub: config.fansub,
+      quality: config.quality,
+      sound: config.sound,
+      inside: config.inside.toString(),
+      magnets: config.magnets
+    },
+    configDir: config.localPath,
+    currentDir: config.localPath,
+    searchInputModal: false
   },
   mutations: {
     setCurrentSeason(state, data) {
@@ -89,6 +98,10 @@ const store = new Vuex.Store({
       state.currentDir = data
       console.log(`[${(new Date()).toLocaleTimeString()}]: Current directory now is ${state.currentDir}`)
     },
+    setConfigDir: function (state, data) {
+      state.configDir = data
+      console.log(`[${(new Date()).toLocaleTimeString()}]: Config directory now is ${state.currentDir}`)
+    },
     setDownloaderValues: function (state, data) {
       state.downloaderForm = data
     },
@@ -100,6 +113,9 @@ const store = new Vuex.Store({
     },
     showDownloaderModal: function (state, value) {
       state.downloaderModal.show = value
+    },
+    setConfig: function (state, data) {
+      state.config = data
     }
   },
   actions: {
@@ -169,7 +185,18 @@ const store = new Vuex.Store({
         if (dirPath !== undefined)
         {
           commit('emptyLocals')
-          commit('setCurrentDir', dirPath)
+          commit('setCurrentDir', dirPath[0])
+          dispatch('refreshLocal')
+        }
+      })
+    },
+    async changePathWithConfig({commit, dispatch}) {
+      remote.dialog.showOpenDialog({properties: ['openDirectory']}, (dirPath) => {
+        if (dirPath !== undefined)
+        {
+          commit('emptyLocals')
+          commit('setCurrentDir', dirPath[0])
+          commit('setConfigDir', dirPath[0])
           dispatch('refreshLocal')
         }
       })
@@ -177,7 +204,7 @@ const store = new Vuex.Store({
     async openNewsLink({state}, link) {
       console.log('[News] Opening a link')
 
-      if (state.inside === false)
+      if ( (state.config.inside === 'true' ) === false)
         await axios.get(`openThis?type=link&link=${link}`)
       else
       {
@@ -236,6 +263,16 @@ const store = new Vuex.Store({
       {
         console.log('Opening torrents directly on preferred torrent client.')
       }
+    },
+    async saveConfig({state}, data) {
+      const toSave = JSON.stringify({
+        config: data
+      })
+
+      writeFileSync(configPath, toSave)
+      console.log(`[${(new Date()).toLocaleTimeString()}]: New config saved!`)
+
+      console.log(state.config)
     }
   }
 })

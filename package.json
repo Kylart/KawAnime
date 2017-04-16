@@ -10,6 +10,7 @@
     "dev": "cross-env NODE_ENV=development electron .",
     "build": "nuxt build",
     "start": "electron .",
+    "bstart": "nuxt build && npm start",
     "pack": "npm run build && electron-packager ./ --overwrite"
   },
   "dependencies": {

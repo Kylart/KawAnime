@@ -15,3 +15,9 @@
 {
     -webkit-app-region: no-drag;
 }
+
+.config-modal .modal
+{
+    min-height: 90%;
+    max-height: 100%;
+}

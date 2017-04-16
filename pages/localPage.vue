@@ -58,10 +58,10 @@
 											<p class="ellipsis classification">{{ item.classification.replace('None', 'No restriction')
 												}}</p>
 										</v-col>
-										<v-col xl5 lg4 md5 xs4 class="picture-container">
+										<v-col xl5 lg4 md5 sm3 xs4 class="picture-container">
 											<img :src="item.picture" class="picture" height="220">
 										</v-col>
-										<v-col xl7 lg8 md7 xs8 class="bottom-right-container">
+										<v-col xl7 lg8 md7 sm9 xs8 class="bottom-right-container">
 											<p class="synopsis">{{ reduced(item.synopsis) }}</p>
 											<v-row>
 												<v-col xs2>
@@ -122,7 +122,7 @@
         })
       },
       delThis(path) {
-        console.log(`[${(new Date()).toLocaleTimeString()}] Requested to delete ${path}. Sending...`)
+        console.log(`[${(new Date()).toLocaleTimeString()}]: Requested to delete ${path}. Sending...`)
 
         axios.get(`openThis?type=delete&path=${path}&dir=${this.$store.state.currentDir}`).then((res) => {
           if (res.status !== 200)

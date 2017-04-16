@@ -11,7 +11,7 @@
 					</v-btn>
 				</v-col>
 				<template v-for="item in $store.state.releases">
-					<v-col xs12 md6 lg4
+					<v-col xs12 md6 xl4
 					       class="elem">
 						<v-card class="elem-content elevation-3" v-ripple="true">
 							<v-card-text class="elem-card">
@@ -23,10 +23,11 @@
 										<v-col v-tooltip:top="{ html: 'Episode ' + item.ep }" class="elem-ep text-xs-right" xs3>
 											<h6>Ep {{ item.ep }}</h6>
 										</v-col>
-										<v-col class="elem-image" sm5="sm5" xs4="xs4">
+										<v-col class="elem-image"
+										       xl5 lg4 md5 sm4>
 											<img v-bind:src="item.picture" height="200" class="picture"/>
 										</v-col>
-										<v-col sm7="sm7" xs8="xs8">
+										<v-col xl7 lg8 md7 sm8>
 											<div class="elem-text-links">
 												<div class="synopsis">
 													<p>{{ item.synopsis }}</p>
@@ -153,22 +154,6 @@
 </script>
 
 <style scoped>
-	.loading-text
-	{
-		width: 100%;
-		padding: 0;
-		margin: 0 0 15px -20%;
-		color: rgba(255, 255, 255, 0.8);
-		font-family: "Hiragino Mincho Pro", serif;
-	}
-
-	.loading-gif
-	{
-		position: absolute;
-		bottom: 0;
-		left: 37%;
-	}
-
 	/* ----- Refresh button ----- */
 	.refresh-button-container
 	{
