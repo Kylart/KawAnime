@@ -154,6 +154,11 @@
 </script>
 
 <style scoped>
+	p
+	{
+		margin-bottom: 0;
+	}
+
 	/* ----- Refresh button ----- */
 	.refresh-button-container
 	{

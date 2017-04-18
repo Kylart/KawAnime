@@ -113,7 +113,7 @@
         return text.length > 220 ? text.slice(0, 217) + '...' : text
       },
       playThis(path) {
-        console.log(`[${(new Date()).toLocaleTimeString()}] Requested to play ${path}. Sending...`)
+        console.log(`[${(new Date()).toLocaleTimeString()}]: Requested to play ${path}. Sending...`)
 
         // No need to get through store.
         axios.get(`openThis?type=video&path=${path}&dir=${this.$store.state.currentDir}`).then((res) => {

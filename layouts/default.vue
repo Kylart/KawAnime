@@ -343,9 +343,6 @@
 	    saveAndClose() {
         this.save()
 		    this.configModal = false
-	    },
-	    test() {
-        console.log('Hello')
 	    }
     }
   }
