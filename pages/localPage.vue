@@ -82,7 +82,31 @@
 			</v-row>
 		</div>
 		<v-container fluid v-else>
-			Wow Such empty
+			<v-row>
+				<v-col xs12 class="menubar">
+					<v-row>
+						<v-col xs3 class="menu-eps">
+							<p class="menu-eps-text">{{ nbEps }} {{ episodeLabel }}</p>
+						</v-col>
+						<v-col xs6></v-col>
+						<v-col xs3 class="menu-buttons">
+							<v-btn icon
+							       class="refresh-button"
+							       @click.native="refresh()">
+								<v-icon large>refresh</v-icon>
+							</v-btn>
+							<v-btn flat dark
+							       @click.native="changePath()"
+							       class="change-dir-button">
+								Change dir
+							</v-btn>
+						</v-col>
+					</v-row>
+				</v-col>
+				<v-col xs12 class="empty-message">
+					<h3>Wow such empty!</h3>
+				</v-col>
+			</v-row>
 		</v-container>
 	</v-container>
 </template>
@@ -288,5 +312,16 @@
 		margin-top: -5px;
 		font-size: large;
 		font-weight: 900;
+	}
+
+	.empty-message
+	{
+		margin-top: 5%;
+		text-align: center;
+	}
+
+	.empty-message h3
+	{
+		color: rgba(255, 255, 255, 0.8);
 	}
 </style>
