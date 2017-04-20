@@ -48,6 +48,9 @@ const store = new Vuex.Store({
     news: [],
     inside: true,
     localFiles: [],
+    watchList: [],
+    seen: [],
+    watching: [],
     config: {
       fansub: config.fansub,
       quality: config.quality,
@@ -101,6 +104,15 @@ const store = new Vuex.Store({
       state.currentDir = data
       console.log(`[${(new Date()).toLocaleTimeString()}]: Current directory now is ${state.currentDir}`)
     },
+    setWatchList: function (state, data) {
+      state.watchList = data
+    },
+    setSeen: function (state, data) {
+      state.seen = data
+    },
+    setWatching: function (state, data) {
+      state.watching = data
+    },
     setConfigDir: function (state, data) {
       state.configDir = data
       console.log(`[${(new Date()).toLocaleTimeString()}]: Config directory now is ${state.currentDir}`)
@@ -145,6 +157,18 @@ const store = new Vuex.Store({
       const {data} = await axios.get(`local.json?dir=${state.currentDir}`)
 
       commit('setLocalFiles', data)
+    },
+    async listInit({commit}) {
+      console.log('[INIT] Watch List')
+
+      const {data} = await axios.get(`watchList.json?`)
+
+      console.log('Received watch list')
+      console.log(data)
+
+      commit('setWatchList', data.watchList)
+      commit('setSeen', data.seen)
+      commit('setWatching', data.watching)
     },
     async refreshReleases({commit}) {
       console.log(`[${(new Date()).toLocaleTimeString()}]: Refreshing Releases...`)
@@ -286,5 +310,6 @@ store.dispatch('releasesInit').catch(err => {})
 store.dispatch('seasonsInit').catch(err => {})
 store.dispatch('newsInit').catch(err => {})
 store.dispatch('localInit').catch(err => {})
+store.dispatch('listInit').catch(err => {})
 
 export default store

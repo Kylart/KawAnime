@@ -29,8 +29,8 @@ if (!fs.existsSync(confPath))
       localPath: join(userInfo().homedir, 'Downloads'),
       inside: true,
       magnets: false
-      }
     }
+  }
 
   fs.writeFileSync(confPath, JSON.stringify(basicConf), 'utf-8')
 }
@@ -40,7 +40,7 @@ const animeLocalPath = join(dir, 'locals.json')
 
 if (!fs.existsSync(animeLocalPath))
 {
-    console.log('No anime local file file detected. Creating...')
+  console.log('No anime local file file detected. Creating...')
 
     fs.writeFileSync(animeLocalPath, '{}', 'utf-8')
 }
@@ -52,7 +52,13 @@ if (!fs.existsSync(listPath))
 {
   console.log('No anime list file detected. Creating...')
 
-  fs.writeFileSync(listPath, '{}', 'utf-8')
+  const basicLists = {
+    watchList: [],
+    seen: [],
+    watching: []
+  }
+
+  fs.writeFileSync(listPath, JSON.stringify(basicLists), 'utf-8')
 }
 
 const {openExternal} = require('./openExternal.js')
@@ -61,6 +67,7 @@ const seasons = require('./seasons.js')
 const downloader = require('./downloader.js')
 const news = require('./news.js')
 const local = require('./local.js')
+const wl = require('./watchList.js')
 
 exports.route = (nuxt) => {
   return (req, res) => {
@@ -90,6 +97,10 @@ exports.route = (nuxt) => {
 
       case '/local.json':
         local.getLocalFiles(url, res)
+        break
+
+      case '/watchList.json':
+        wl.getLists(url, res)
         break
 
       default:
