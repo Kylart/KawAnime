@@ -163,8 +163,7 @@ const store = new Vuex.Store({
 
       const {data} = await axios.get(`watchList.json?`)
 
-      console.log('Received watch list')
-      console.log(data)
+      console.log(`[${(new Date()).toLocaleTimeString()}]: Received watch lists.`)
 
       commit('setWatchList', data.watchList)
       commit('setSeen', data.seen)

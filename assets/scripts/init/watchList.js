@@ -10,7 +10,6 @@ exports.getLists = (url, res) => {
   const wlFile = require(join(userInfo().homedir, '.KawAnime', 'lists.json'))
 
   console.log(`[WatchList] Gathered lists from local.`)
-  console.log(wlFile)
 
   res.writeHead(200, {"Content-Type": "application/json"})
   res.write(JSON.stringify(wlFile))
