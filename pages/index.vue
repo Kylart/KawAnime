@@ -142,7 +142,8 @@
         fansubList: [
           'HorribleSubs',
           'PuyaSubs',
-          'exampleSubs'
+          'BakedFish',
+          'DeadFish'
         ],
         qualityList: ['480p', '720p', '1080p']
       }
