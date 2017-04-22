@@ -57,7 +57,7 @@ const giveMagnetsHash = (res, items, data) => {
   let files = []
 
   items.forEach((item) => {
-    const ep = parseInt(item.title[0].split(' ').reverse()[1])
+    const ep = parseInt(item.title[0].replace(' VOSTFR', '').split(' ').reverse()[1])
 
     if (ep >= data.fromEp && ep <= data.untilEp)
     {
