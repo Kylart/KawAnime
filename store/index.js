@@ -28,6 +28,8 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
+    releaseFansub: config.fansub,
+    releaseQuality: config.quality,
     releases: [],
     downloaderForm: {
       name: '',
@@ -62,9 +64,7 @@ const store = new Vuex.Store({
     currentDir: config.localPath,
     searchInputModal: false,
     searchInput: '',
-    searchInfo: {
-
-    }
+    searchInfo: {}
   },
   mutations: {
     setCurrentSeason(state, data) {
@@ -134,9 +134,9 @@ const store = new Vuex.Store({
     }
   },
   actions: {
-    async releasesInit({commit}) {
+    async releasesInit({state, commit}) {
       console.log('[INIT] Releases')
-      const {data} = await axios.get(`releases.json?`)
+      const {data} = await axios.get(`releases.json?fansub=${state.releaseFansub}&quality=${state.releaseQuality}`)
       commit('setReleases', data)
     },
     async seasonsInit({state, commit}) {
@@ -169,12 +169,12 @@ const store = new Vuex.Store({
       commit('setSeen', data.seen)
       commit('setWatching', data.watching)
     },
-    async refreshReleases({commit}) {
+    async refreshReleases({state, commit}) {
       console.log(`[${(new Date()).toLocaleTimeString()}]: Refreshing Releases...`)
 
       commit('emptyReleases')
 
-      const {data} = await axios.get(`releases.json?`)
+      const {data} = await axios.get(`releases.json?fansub=${state.releaseFansub}&quality=${state.releaseQuality}`)
 
       commit('setReleases', data)
     },
@@ -230,7 +230,7 @@ const store = new Vuex.Store({
     async openNewsLink({state}, link) {
       console.log('[News] Opening a link')
 
-      if ( (state.config.inside === 'true' ) === false)
+      if ((state.config.inside === 'true' ) === false)
         await axios.get(`openThis?type=link&link=${link}`)
       else
       {

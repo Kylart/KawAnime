@@ -7,11 +7,7 @@ const nyaa = require('nyaapi')
 
 const {userInfo} = require('os')
 const {join} = require('path')
-
-const config = require(join(userInfo().homedir, '.KawAnime', 'config.json')).config
-
-const fansub = config.fansub
-const quality = config.quality
+const qs = require('querystring')
 
 exports.byProperty = (prop) => {
   return function (a, b) {
@@ -24,6 +20,11 @@ exports.byProperty = (prop) => {
 }
 
 exports.getLatest = (url, res) => {
+  const query = qs.parse(url.query.replace('?', ''))
+
+  const fansub = query.fansub
+  const quality = query.quality
+
   nyaa.searchTerm(`[${fansub}] ${quality}`, 18).then((result) => {
     console.log(`[Releases]: Fansub for research: ${fansub}. Quality is ${quality}.`)
     console.log(result.statMsg)

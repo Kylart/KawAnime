@@ -2,8 +2,30 @@
 	<v-container fluid class="container">
 		<div v-if="$store.state.releases.length">
 			<v-row style="margin: 0 1% 0 1%;">
-				<v-col sm10 xs0></v-col>
-				<v-col sm2 xs12 class="refresh-button-container">
+				<v-col md8 sm6 xs0></v-col>
+				<v-col md2 sm3 xs12>
+					<v-select
+									v-bind:items="fansubList"
+									v-model="$store.state.releaseFansub"
+									label="Fansub"
+									dark
+									single-line
+									hint="Pick a fansub"
+									persistent-hint
+					/>
+				</v-col>
+				<v-col md1 sm2 xs12>
+					<v-select
+									v-bind:items="qualityList"
+									v-model="$store.state.releaseQuality"
+									label="Quality"
+									dark
+									single-line
+									hint="Which quality ?"
+									persistent-hint
+					/>
+				</v-col>
+				<v-col md1 sm1 xs12 class="refresh-button-container">
 					<v-btn icon
 					       class="refresh-button"
 					       @click.native="refresh()">
@@ -116,12 +138,18 @@
       return {
         modal: false,
         modalTitle: '',
-        modalText: ''
+        modalText: '',
+        fansubList: [
+          'HorribleSubs',
+          'PuyaSubs',
+          'exampleSubs'
+        ],
+        qualityList: ['480p', '720p', '1080p']
       }
     },
-	  components: {
+    components: {
       Loader
-	  },
+    },
     methods: {
       openModal(title, text) {
         console.log('Opening modal')
@@ -132,7 +160,7 @@
         this.modal = true
       },
       downloadAll(name) {
-	      console.log(`Sending a request to download all episodes of ${name}`)
+        console.log(`Sending a request to download all episodes of ${name}`)
 
         axios.get(`/download?name=${name}`).then((resp) => {
           console.log('Server responded!')
@@ -143,12 +171,12 @@
             window.open(link)
           })
         }).catch((err) => {
-	        console.log('An error occurred... ' + err)
+          console.log('An error occurred... ' + err)
         })
       },
-	    refresh() {
+      refresh() {
         this.$store.dispatch('refreshReleases')
-	    }
+      }
     }
   }
 </script>
@@ -163,10 +191,11 @@
 	.refresh-button-container
 	{
 		display: inline-block;
-		text-align: right;
 		margin-top: 5px;
 		margin-bottom: 2px;
-		padding-right: 3%;
+		text-align: center;
+		padding: 0;
+		align-self: center;
 	}
 
 	.refresh-button
