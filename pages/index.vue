@@ -166,10 +166,17 @@
       downloadAll(name) {
         console.log(`Sending a request to download all episodes of ${name}`)
 
-        axios.get(`/download?name=${name}`).then((resp) => {
+        const fansub = this.$store.state.releaseFansub
+        const quality = this.$store.state.releaseQuality
+
+        console.log(fansub + ' ' + quality)
+
+        axios.get(`/download?name=${name}&fansub=${fansub}&quality=${quality}`).then((resp) => {
           console.log('Server responded!')
 
           const links = resp.data.links
+
+          console.log(links)
 
           links.forEach((link) => {
             window.open(link)

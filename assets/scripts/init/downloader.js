@@ -36,7 +36,7 @@ const openMagnets = (res, items, data) => {
   }
 
   items.forEach((item) => {
-    const ep = parseInt(item.title[0].split(' ').reverse()[1])
+    const ep = parseInt(item.title[0].replace(' VOSTFR', '').split(' ').reverse()[1])
 
     if (ep >= data.fromEp && ep <= data.untilEp)
       toReturn.links.push(item.link[0] + '&magnet=1')
