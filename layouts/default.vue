@@ -297,7 +297,10 @@
         },
         fansubChoices: [
           'HorribleSubs',
-          'exampleSubs'
+          'PuyaSubs',
+          'BakedFish',
+          'DeadFish',
+          'DefinitelyNotMe'
         ],
         soundChoices: [
           'None',

@@ -38,8 +38,8 @@ exports.getLatest = (url, res) => {
     {
       const release = releases[i]
 
-      const ep = release.title[0].split(' ').splice(-2)[0]
-      const name = release.title[0].split(' ').slice(1, -3).join(' ')
+      const ep = release.title[0].replace(' VOSTFR', '').split(' ').splice(-2)[0]
+      const name = release.title[0].replace(' VOSTFR', '').split(' ').slice(1, -3).join(' ')
       const researchName = name.split(' ').join('')
       const torrentLink = release.link[0]
       const magnetLink = torrentLink + '&magnet=1'

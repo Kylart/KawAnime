@@ -143,7 +143,8 @@
           'HorribleSubs',
           'PuyaSubs',
           'BakedFish',
-          'DeadFish'
+          'DeadFish',
+          'DefinitelyNotMe'
         ],
         qualityList: ['480p', '720p', '1080p']
       }
