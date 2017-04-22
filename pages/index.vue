@@ -5,6 +5,7 @@
 				<v-col md8 sm6 xs0></v-col>
 				<v-col md2 sm3 xs12>
 					<v-select
+									class="select"
 									v-bind:items="fansubList"
 									v-model="$store.state.releaseFansub"
 									label="Fansub"
@@ -16,6 +17,7 @@
 				</v-col>
 				<v-col md1 sm2 xs12>
 					<v-select
+									class="select"
 									v-bind:items="qualityList"
 									v-model="$store.state.releaseQuality"
 									label="Quality"
@@ -187,6 +189,11 @@
 	p
 	{
 		margin-bottom: 0;
+	}
+
+	.select
+	{
+		margin: 10px 0 5px 0;
 	}
 
 	/* ----- Refresh button ----- */
