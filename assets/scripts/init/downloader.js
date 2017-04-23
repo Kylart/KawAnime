@@ -112,11 +112,15 @@ const giveMagnetsHash = (res, items, data) => {
     res.write(JSON.stringify(toReturn))
     res.end()
 
+    console.log('[Downloader] Successfully responded to request.')
+
+    deleteOldTorrents()
+
     // Nyanpasu ~
     player.play(path.join(__dirname, '..', '..', '..', 'static', 'sounds', 'Nyanpasu.m4a'), (err) => {
       if (err) throw err
     })
-  }, 1000 + (data.untilEp - data.fromEp) * 100)
+  }, 1000 + (files.length - data.fromEp) * 100)
 }
 
 exports.download = (url, res) => {
@@ -141,8 +145,6 @@ exports.download = (url, res) => {
   const term = `[${fansub}] ${quality} ${name}`
 
   console.log(`[Downloader]: Received a request to download '${name}' from ep ${fromEp} to ep ${untilEp}. Processing...`)
-
-  deleteOldTorrents()
 
   nyaa.searchTerm(term).then((result) => {
     console.log(result.statMsg)
