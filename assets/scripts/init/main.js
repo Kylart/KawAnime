@@ -103,6 +103,10 @@ exports.route = (nuxt) => {
         wl.getLists(url, res)
         break
 
+      case '/resetLocal':
+        local.resetLocal(res)
+        break
+
       default:
         nuxt.render(req, res)
     }

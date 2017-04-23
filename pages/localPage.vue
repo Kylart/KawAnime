@@ -7,8 +7,8 @@
 						<v-col xs3 class="menu-eps">
 							<p class="menu-eps-text">{{ nbEps }} {{ episodeLabel }}</p>
 						</v-col>
-						<v-col xs6></v-col>
-						<v-col xs3 class="menu-buttons">
+						<v-col xs5></v-col>
+						<v-col xs4 class="menu-buttons">
 							<v-btn icon
 							       class="refresh-button"
 							       @click.native="refresh()">
@@ -18,6 +18,11 @@
 							       @click.native="changePath()"
 							       class="change-dir-button">
 								Change dir
+							</v-btn>
+							<v-btn secondary dark
+							       @click.native="resetLocal()"
+							       class="reset-cache-button">
+								Reset local info
 							</v-btn>
 						</v-col>
 					</v-row>
@@ -162,6 +167,9 @@
 	    },
 	    changePath() {
         this.$store.dispatch('changePath')
+      },
+      resetLocal() {
+        this.$store.dispatch('resetLocal')
 	    }
     }
   }

@@ -18,7 +18,7 @@ const getNameAndEp = (raw) => {
 }
 
 const sendRes = (files, res, paths) => {
-  for (let i = 0; i <  files.length; ++i)
+  for (let i = 0; i < files.length; ++i)
     files[i].path = paths[i]
 
   res.writeHead(200, {"Content-Type": "application/json"})
@@ -117,4 +117,22 @@ exports.getLocalFiles = (url, res) => {
       })
     }
   }
+}
+
+exports.resetLocal = (res) => {
+  const listPath = join(userInfo().homedir, '.KawAnime', 'locals.json')
+
+  const basicLists = {
+    watchList: [],
+    seen: [],
+    watching: []
+  }
+
+  console.log('[Local]: Received a request for resetting old local data.')
+
+  console.log('[Local]: Re-creating basic file.')
+  fs.writeFileSync(listPath, JSON.stringify(basicLists), 'utf-8')
+
+  res.writeHead(200, {})
+  res.end()
 }

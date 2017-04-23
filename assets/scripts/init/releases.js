@@ -2,11 +2,11 @@
  * Created by Kylart on 03/04/2017.
  */
 
+const self = this
+
 const malScraper = require('mal-scraper')
 const nyaa = require('nyaapi')
 
-const {userInfo} = require('os')
-const {join} = require('path')
 const qs = require('querystring')
 
 exports.byProperty = (prop) => {
@@ -24,6 +24,9 @@ exports.getLatest = (url, res) => {
 
   const fansub = query.fansub
   const quality = query.quality
+
+  // In case an error comes up
+  let reloading = false
 
   nyaa.searchTerm(`[${fansub}] ${quality}`, 18).then((result) => {
     console.log(`[Releases]: Fansub for research: ${fansub}. Quality is ${quality}.`)
@@ -85,7 +88,15 @@ exports.getLatest = (url, res) => {
           res.end()
         }
       }).catch((err) => {
-          console.log(`[Releases]: An error occurred: ${err}.`)
+        console.log(`[Releases]: An error occurred: ${err}.`)
+        if (!reloading)
+        {
+          reloading = true
+          console.log(`[Releases]: Retrying in 30 seconds...`)
+          setTimeout(() => {
+            self.getLatest(url, res)
+          }, 30 * 1000)
+        }
       })
     }
   })
