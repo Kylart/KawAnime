@@ -329,6 +329,12 @@
 		font-size: 120%;
 	}
 
+	.genres
+	{
+		padding-left: 5px;
+		font-weight: 600;
+	}
+
 	.image-container
 	{
 		padding: 0;
