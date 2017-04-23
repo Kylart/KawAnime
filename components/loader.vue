@@ -1,7 +1,8 @@
 <template>
 	<div class="loading-gif">
 		<h3 class="loading-text">少々お待ち下さいね〜</h3>
-		<img src="~static/images/loading-gif.gif"/>
+		<img v-if="number === 1" src="~static/images/loading-gif1.gif" height="500"/>
+		<img v-else-if="number === 2" src="~static/images/loading-gif2.gif" height="500"/>
 	</div>
 </template>
 <style scoped>
@@ -22,5 +23,19 @@
 	}
 </style>
 <script>
-  export default{}
+  export default{
+    data: function () {
+      return {
+        number: this.ran()
+      }
+    },
+    methods: {
+      ran() {
+        return parseInt(Math.random() * 2 + 1)
+      }
+    },
+    mounted() {
+      this.number = this.ran()
+    }
+  }
 </script>
