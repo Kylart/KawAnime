@@ -221,6 +221,12 @@
 		display: inline-block;
 	}
 
+	.reset-cache-button:active
+	{
+		border-color: #ff9800 !important;
+		background-color: #ff9800 !important;
+	}
+
 	/* -------------- ELEMS -------------- */
 	.elem
 	{

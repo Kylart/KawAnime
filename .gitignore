@@ -14,7 +14,7 @@ dist
 .DS_Store
 
 # Electron-packager
-electronuxt-*
+KawAnime-*
 
 # Idea directory
 .idea

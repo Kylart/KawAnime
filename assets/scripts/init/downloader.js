@@ -116,6 +116,7 @@ const giveMagnetsHash = (res, items, data) => {
 
     deleteOldTorrents()
 
+    // TODO Make sound follow config pref
     // Nyanpasu ~
     player.play(path.join(__dirname, '..', '..', '..', 'static', 'sounds', 'Nyanpasu.m4a'), (err) => {
       if (err) throw err
