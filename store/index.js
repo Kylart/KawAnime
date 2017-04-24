@@ -64,7 +64,8 @@ const store = new Vuex.Store({
     currentDir: config.localPath,
     searchInputModal: false,
     searchInput: '',
-    searchInfo: {}
+    searchInfo: {},
+    history: {}
   },
   mutations: {
     setCurrentSeason(state, data) {
@@ -131,6 +132,10 @@ const store = new Vuex.Store({
     },
     setConfig: function (state, data) {
       state.config = data
+    },
+    setHistory: function (state, data) {
+      state.history = data
+      console.log(`[${(new Date()).toLocaleTimeString()}]: History loaded.`)
     }
   },
   actions: {
@@ -320,6 +325,22 @@ const store = new Vuex.Store({
       console.log(`[${(new Date()).toLocaleTimeString()}]: New config saved!`)
 
       console.log(state.config)
+    },
+    async appendHistory({}, data) {
+      const {status} = await axios.get(`appendHistory?type=${data.type}&text=${data.text}`)
+
+      if (status !== 200)
+        console.log(`[${(new Date()).toLocaleTimeString()}]: An error occurred while appending to history.`)
+    },
+    async getHistory({commit}) {
+      const {data, status} = await axios.get('getHistory?')
+
+      console.log(data)
+
+      if (status !== 200)
+        console.log(`[${(new Date()).toLocaleTimeString()}]: An error occurred while gathering the history.`)
+
+      commit('setHistory', data)
     }
   }
 })

@@ -61,6 +61,16 @@ if (!fs.existsSync(listPath))
   fs.writeFileSync(listPath, JSON.stringify(basicLists), 'utf-8')
 }
 
+// History file
+const historyPath = join(dir, 'history.json')
+
+if (!fs.existsSync(historyPath))
+{
+  console.log('No watch history file detected. Creating...')
+
+  fs.writeFileSync(historyPath, '{}', 'utf-8')
+}
+
 const {openExternal} = require('./openExternal.js')
 const releases = require('./releases.js')
 const seasons = require('./seasons.js')
@@ -68,6 +78,7 @@ const downloader = require('./downloader.js')
 const news = require('./news.js')
 const local = require('./local.js')
 const wl = require('./watchList.js')
+const history = require('./history')
 
 exports.route = (nuxt) => {
   return (req, res) => {
@@ -105,6 +116,14 @@ exports.route = (nuxt) => {
 
       case '/resetLocal':
         local.resetLocal(res)
+        break
+
+      case '/appendHistory':
+        history.appendHistory(url, res)
+        break
+
+      case '/getHistory':
+        history.getHistory(res)
         break
 
       default:

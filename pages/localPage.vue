@@ -132,8 +132,8 @@
       },
       episodeLabel: function () {
         return this.nbEps === 1
-		        ? 'episode'
-		        : 'episodes'
+            ? 'episode'
+            : 'episodes'
       }
     },
     components: {},
@@ -148,6 +148,11 @@
         axios.get(`openThis?type=video&path=${path}&dir=${this.$store.state.currentDir}`).then((res) => {
           if (res.status !== 200)
             console.log('An error occurred: request to open file ended with a status ' + res.status + '.')
+
+          this.$store.dispatch('appendHistory', {
+            type: 'Play',
+            text: path.split(' ').slice(1, -3).join(' '),
+          }).catch(err => {})
         })
       },
       delThis(path) {
@@ -156,21 +161,26 @@
         axios.get(`openThis?type=delete&path=${path}&dir=${this.$store.state.currentDir}`).then((res) => {
           if (res.status !== 200)
             console.log('An error occurred: request to delete file ended with a status ' + res.status + '.')
+
+          this.$store.dispatch('appendHistory', {
+            type: 'Delete',
+            text: path.split(' ').slice(1, -3).join(' '),
+          }).catch(err => {})
         }).catch((err) => {
           console.log('An error occurred while trying to delete a file:' + err)
         })
 
         this.$store.dispatch('refreshLocal')
       },
-	    refresh() {
+      refresh() {
         this.$store.dispatch('refreshLocal')
-	    },
-	    changePath() {
+      },
+      changePath() {
         this.$store.dispatch('changePath')
       },
       resetLocal() {
         this.$store.dispatch('resetLocal')
-	    }
+      }
     }
   }
 </script>
