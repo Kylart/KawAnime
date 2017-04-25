@@ -156,7 +156,7 @@
     },
     methods: {
       openModal(title, text) {
-        console.log('Opening modal')
+        console.log(`[${(new Date()).toLocaleTimeString()}]: Opening modal`)
 
         this.modalTitle = title
         this.modalText = text
@@ -164,7 +164,7 @@
         this.modal = true
       },
       downloadAll(name) {
-        console.log(`Sending a request to download all episodes of ${name}`)
+        console.log(`[${(new Date()).toLocaleTimeString()}]: Sending a request to download all episodes of ${name}`)
 
         const fansub = this.$store.state.releaseFansub
         const quality = this.$store.state.releaseQuality
@@ -172,7 +172,7 @@
         console.log(fansub + ' ' + quality)
 
         axios.get(`/download?name=${name}&fansub=${fansub}&quality=${quality}`).then((resp) => {
-          console.log('Server responded!')
+          console.log(`[${(new Date()).toLocaleTimeString()}]: Server responded!`)
 
           const links = resp.data.links
 
@@ -182,7 +182,7 @@
             window.open(link)
           })
         }).catch((err) => {
-          console.log('An error occurred... ' + err)
+          console.log(`[${(new Date()).toLocaleTimeString()}]: An error occurred... ${err}`)
         })
       },
       refresh() {

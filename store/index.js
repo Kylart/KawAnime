@@ -283,14 +283,14 @@ const store = new Vuex.Store({
       const magnets = state.config.magnets
       const fansub = state.config.fansub
 
-      console.log(`Received a request to download ${name} from ep ${fromEp} to ep ${untilEp}. Transmitting...`)
+      console.log(`[${(new Date()).toLocaleTimeString()}]: Received a request to download ${name} from ep ${fromEp} to ep ${untilEp}. Transmitting...`)
 
       const {data, status} = await axios.get(
           `download?name=${name}&fromEp=${fromEp}&untilEp=${untilEp}&quality=${quality}&magnets=${magnets}&fansub=${fansub}`)
 
       status === 404
-          ? console.log('Oops. It looks like something went wrong. Please check your internet connection and retry.')
-          : console.log('Request fulfilled!')
+          ? console.log(`[${(new Date()).toLocaleTimeString()}]: Oops. It looks like something went wrong. Please check your internet connection and retry.`)
+          : console.log(`[${(new Date()).toLocaleTimeString()}]: Request fulfilled!`)
 
       state.downloaderForm.loading = false
 
@@ -304,7 +304,7 @@ const store = new Vuex.Store({
 
       if (magnets === true)
       {
-        console.log('User says he prefers having magnets hashes.')
+        console.log(`[${(new Date()).toLocaleTimeString()}]: User says he prefers having magnets hashes.`)
         commit('setDownloaderModal', {
           show: true,
           title: `${name.replace('_', ' ')}\t ${fromEp} - ${untilEp}`,
@@ -313,7 +313,7 @@ const store = new Vuex.Store({
       }
       else
       {
-        console.log('Opening torrents directly on preferred torrent client.')
+        console.log(`[${(new Date()).toLocaleTimeString()}]: Opening torrents directly on preferred torrent client.`)
       }
     },
     async saveConfig({state}, data) {

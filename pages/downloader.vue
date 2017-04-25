@@ -162,8 +162,6 @@
 
 	      this.$store.commit('setQuality', quality)
 
-	      console.log('Magnets is ' + this.$store.state.config.magnets)
-
         if (this.$store.state.downloaderForm.name)
           this.$store.dispatch('download')
 
