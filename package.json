@@ -11,7 +11,7 @@
     "build": "nuxt build",
     "start": "electron .",
     "bstart": "nuxt build && npm start",
-    "pack": "npm run build && electron-packager ./ --overwrite"
+    "dist": "nuxt build && node assets/scripts/dist.js"
   },
   "dependencies": {
     "axios": "^0.16.0",
@@ -27,7 +27,12 @@
     "vuetify": "^0.10.0"
   },
   "devDependencies": {
+    "colors": "^1.1.2",
     "devtron": "^1.4.0",
+    "electron-installer-debian": "^0.5.1",
+    "electron-installer-dmg": "^0.2.1",
+    "electron-packager": "^8.6.0",
+    "electron-winstaller": "^2.5.2",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.1",
     "vue-devtools": "^3.0.8"
