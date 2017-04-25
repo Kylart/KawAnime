@@ -13,8 +13,8 @@ dist
 # Mac OS
 .DS_Store
 
-# Electron-packager
-KawAnime-*
+# Dist
+assets/build/dists/KawAnime*
 
 # Idea directory
 .idea
