@@ -43,6 +43,7 @@ console.log(`Nuxt working on ${_NUXT_URL_}`)
  ** Electron app
  */
 const electron = require('electron')
+const Menu = electron.Menu
 const url = require('url')
 
 const POLL_INTERVAL = 300
@@ -56,6 +57,10 @@ const pollServer = () => {
 
 const app = electron.app
 const bw = electron.BrowserWindow
+
+const menuFile = require(path.join(__dirname, 'assets', 'scripts', 'menu.js'))
+const template = menuFile.menu
+const menu = Menu.buildFromTemplate(template)
 
 const newWin = () => {
   win = new bw({
@@ -86,6 +91,8 @@ const newWin = () => {
 }
 
 app.on('ready', () => {
+
+  Menu.setApplicationMenu(menu)
 
   // Dev tools
   if (config.dev)
