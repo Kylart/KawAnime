@@ -316,15 +316,13 @@ const store = new Vuex.Store({
         console.log(`[${(new Date()).toLocaleTimeString()}]: Opening torrents directly on preferred torrent client.`)
       }
     },
-    async saveConfig({state}, data) {
+    async saveConfig({}, data) {
       const toSave = JSON.stringify({
         config: data
       })
 
       writeFileSync(configPath, toSave)
       console.log(`[${(new Date()).toLocaleTimeString()}]: New config saved!`)
-
-      console.log(state.config)
     },
     async appendHistory({}, data) {
       const {status} = await axios.get(`appendHistory?type=${data.type}&text=${data.text}`)
