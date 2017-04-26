@@ -2,7 +2,10 @@
 	<v-container fluid class="container">
 		<div v-if="$store.state.releases.length">
 			<v-row style="margin: 0 1% 0 1%;">
-				<v-col md8 sm6 xs0></v-col>
+				<v-col md2 sm2 xs12 class="time-container">
+					<span class="update-time">Updated at: {{ lastUpdateTime }}</span>
+				</v-col>
+				<v-col md6 sm3 xs0></v-col>
 				<v-col md2 sm3 xs12>
 					<v-select
 									class="select"
@@ -138,6 +141,7 @@
   export default {
     data () {
       return {
+        lastUpdateTime: (new Date()).toLocaleTimeString(),
         modal: false,
         modalTitle: '',
         modalText: '',
@@ -149,6 +153,16 @@
           'DefinitelyNotMe'
         ],
         qualityList: ['480p', '720p', '1080p']
+      }
+    },
+    computed: {
+      releases: function () {
+        return this.$store.state.releases
+      }
+    },
+    watch: {
+      releases: function () {
+        this.lastUpdateTime = (new Date()).toLocaleTimeString()
       }
     },
     components: {
@@ -226,9 +240,18 @@
 		height: 2.5rem;
 	}
 
-	.container
+	.time-container
 	{
+		align-self: center;
+	}
 
+	.update-time
+	{
+		padding-left: 20px;
+		color: rgba(255, 255, 255, 0.8);
+		font-weight: 600;
+		font-size: 16px;
+		font-style: italic;
 	}
 
 	.elem
