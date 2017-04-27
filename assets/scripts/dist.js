@@ -25,6 +25,7 @@ const materialPath = join(__dirname, '..', 'build', 'material')
 // Installers
 const createDMG = require('electron-installer-dmg')
 const createDebInstaller = require('electron-installer-debian')
+const targz = require('tar.gz')
 const createWinInstaller = require('electron-winstaller').createWindowsInstaller
 
 const colors = require('colors')
@@ -98,11 +99,23 @@ const makeDebInstaller = (version) => {
   })
 }
 
+const makeTarGZ = () => {
+  console.log('[Builder]: Creating tar.gz for armv7l...'.yellow)
+  targz().compress(join(materialPath, '..', 'dists', 'KawAnime-linux-armv7l'), join(materialPath, '..', 'dists', 'KawAnime.tar.gz'))
+      .then(function () {
+        console.log('[Builder]: Successfully built armv7l tar.gz!'.green);
+      })
+      .catch(function (err) {
+        console.log('[Builder]: An error occurred while making armv7l tar.gz!'.red)
+        throw err
+      })
+}
+
 const buildDists = () => {
   makeDMG()
   makeDebInstaller('x64')
   makeDebInstaller('ia32')
-
+  makeTarGZ()
 }
 
 const pack = () => {

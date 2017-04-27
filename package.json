@@ -35,6 +35,7 @@
     "electron-winstaller": "^2.5.2",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.1",
+    "tar.gz": "^1.0.5",
     "vue-devtools": "^3.0.8"
   }
 }
