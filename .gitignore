@@ -15,6 +15,7 @@ npm-debug.log
 
 # build
 KawAnime*
+dist/win-ia32-unpacked
 dist/mac
 dist/github
 dist/linux-unpacked
