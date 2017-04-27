@@ -21,7 +21,7 @@ config.rootDir = __dirname // for electron-packager
 const nuxt = new Nuxt(config)
 
 // Initiate routes.
-const route = initFile.route(nuxt, win)
+const route = initFile.route(nuxt)
 const server = http.createServer(route)
 
 // Build only in dev mode

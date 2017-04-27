@@ -3,38 +3,20 @@ import Vue from 'vue'
 //noinspection NpmUsedModulesInstalled
 import Vuex from 'vuex'
 import axios from 'axios'
-import {readFileSync, writeFileSync} from 'fs'
-import {join} from 'path'
-import {userInfo} from 'os'
-
-// Getting config.
-const configPath = join(userInfo().homedir, '.KawAnime', 'config.json')
-const configFile = readFileSync(configPath)
-
-const config = JSON.parse(configFile).config
-
-// config file looks like this
-// const config = {
-//   fansub: 'HorribleSubs',
-//   quality: '720p',
-//   sound: 'Nyanpasu',
-//   localPath: join(userInfo().homedir, 'Downloads'),
-//   inside: true,
-//   magnets: false
-// }
+import {writeFileSync} from 'fs'
 
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
-    releaseFansub: config.fansub,
-    releaseQuality: config.quality,
+    releaseFansub: '',
+    releaseQuality: '',
     releases: [],
     downloaderForm: {
       name: '',
       fromEp: '',
       untilEp: '',
-      quality: config.quality,
+      quality: '',
       loading: false
     },
     downloaderModal: {
@@ -52,21 +34,37 @@ const store = new Vuex.Store({
     watchList: [],
     seen: [],
     watching: [],
-    config: {
-      fansub: config.fansub,
-      quality: config.quality,
-      sound: config.sound,
-      inside: config.inside.toString(),
-      magnets: config.magnets
-    },
-    configDir: config.localPath,
-    currentDir: config.localPath,
+    config: {},
+    configDir: '',
+    currentDir: '',
     searchInputModal: false,
     searchInput: '',
     searchInfo: {},
     history: {}
   },
   mutations: {
+    init(state, data) {
+      const config = data
+      // config file looks like this
+      // const config = {
+      //   fansub: 'HorribleSubs',
+      //   quality: '720p',
+      //   sound: 'Nyanpasu',
+      //   localPath: join(userInfo().homedir, 'Downloads'),
+      //   inside: true,
+      //   magnets: false
+      // }
+
+      config.inside = config.inside.toString()
+
+      state.releaseFansub = config.fansub
+      state.releaseQuality = config.quality
+      state.downloaderForm.quality = config.quality
+      state.configDir = config.localPath
+      state.currentDir = config.localPath
+
+      state.config = config
+    },
     setCurrentSeason(state, data) {
       state.year = data.year
       state.season = data.season
@@ -138,6 +136,11 @@ const store = new Vuex.Store({
     }
   },
   actions: {
+    async initConf({commit}) {
+      console.log('[INIT]')
+      const {data} = await axios.get('getConf')
+      commit('init', data)
+    },
     async releasesInit({state, commit}) {
       console.log('[INIT] Releases')
       const {data} = await axios.get(`releases.json?fansub=${state.releaseFansub}&quality=${state.releaseQuality}`)
@@ -325,10 +328,13 @@ const store = new Vuex.Store({
   }
 })
 
-store.dispatch('releasesInit').catch(err => {})
-store.dispatch('seasonsInit').catch(err => {})
-store.dispatch('newsInit').catch(err => {})
-store.dispatch('localInit').catch(err => {})
-store.dispatch('listInit').catch(err => {})
+store.dispatch('initConf').then(() => {
+  store.dispatch('releasesInit').catch(err => {})
+  store.dispatch('seasonsInit').catch(err => {})
+  store.dispatch('newsInit').catch(err => {})
+  store.dispatch('localInit').catch(err => {})
+  store.dispatch('listInit').catch(err => {})
+}).catch(err => {})
+
 
 export default store

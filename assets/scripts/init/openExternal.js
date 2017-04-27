@@ -20,7 +20,7 @@ const sendRes = (res, data) => {
   res.end()
 }
 
-exports.openExternal = (url, res, window = null) => {
+exports.openExternal = (url, res) => {
   const query = qs.parse(url.query.replace('?', ''))
 
   const type = query.type

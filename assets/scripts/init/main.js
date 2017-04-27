@@ -42,7 +42,7 @@ if (!fs.existsSync(animeLocalPath))
 {
   console.log('No anime local file file detected. Creating...')
 
-    fs.writeFileSync(animeLocalPath, '{}', 'utf-8')
+  fs.writeFileSync(animeLocalPath, '{}', 'utf-8')
 }
 
 // List file
@@ -80,14 +80,23 @@ const local = require('./local.js')
 const wl = require('./watchList.js')
 const history = require('./history')
 
-exports.route = (nuxt, window) => {
+exports.route = (nuxt) => {
   return (req, res) => {
     const url = new URL(req.url)
 
     switch (url.pathname)
     {
+      case '/getConf':
+        const configPath = join(dir, 'config.json')
+        const configFile = require(configPath).config
+
+        res.writeHead(200, {"Content-Type": "application/json"});
+        res.write(JSON.stringify(configFile));
+        res.end();
+        break
+
       case '/openThis':
-        openExternal(url, res, window)
+        openExternal(url, res)
         break
 
       case '/seasons.json':

@@ -141,20 +141,15 @@
         soundChoices: [
           'None',
           'Nyanpasu'
-        ],
-        config: {
-          fansub: this.$store.state.config.fansub,
-          quality: this.$store.state.config.quality,
-          sound: this.$store.state.config.sound,
-          localPath: this.configDir,
-          inside: this.$store.state.config.inside.toString(),
-          magnets: this.$store.state.config.magnets
-        }
+        ]
       }
     },
     computed: {
       configDir: function () {
         return this.$store.state.configDir
+      },
+      config: function () {
+        return this.$store.state.config
       }
     },
     methods: {
