@@ -6,7 +6,6 @@ import axios from 'axios'
 import {readFileSync, writeFileSync} from 'fs'
 import {join} from 'path'
 import {userInfo} from 'os'
-import {remote} from 'electron'
 
 // Getting config.
 const configPath = join(userInfo().homedir, '.KawAnime', 'config.json')
@@ -231,44 +230,27 @@ const store = new Vuex.Store({
       })
     },
     async changePath({commit, dispatch}) {
-      remote.dialog.showOpenDialog({properties: ['openDirectory']}, (dirPath) => {
-        if (dirPath !== undefined)
-        {
-          commit('emptyLocals')
-          commit('setCurrentDir', dirPath[0])
-          dispatch('refreshLocal')
-        }
-      })
+      const {data} = await axios.get('openThis?type=dialog')
+
+      commit('emptyLocals')
+      commit('setCurrentDir', data.path)
+      dispatch('refreshLocal')
     },
     async changePathWithConfig({commit, dispatch}) {
-      remote.dialog.showOpenDialog({properties: ['openDirectory']}, (dirPath) => {
-        if (dirPath !== undefined)
-        {
-          commit('emptyLocals')
-          commit('setCurrentDir', dirPath[0])
-          commit('setConfigDir', dirPath[0])
-          dispatch('refreshLocal')
-        }
-      })
+      const {data} = await axios.get('openThis?type=dialog')
+
+      commit('emptyLocals')
+      commit('setCurrentDir', data.path)
+      commit('setConfigDir', data.path)
+      dispatch('refreshLocal')
     },
     async openNewsLink({state}, link) {
-      console.log('[News] Opening a link')
+      console.log(`[${(new Date()).toLocaleTimeString()}]: Opening a link`)
 
       if ((state.config.inside === 'true' ) === false)
         await axios.get(`openThis?type=link&link=${link}`)
       else
-      {
-        let win = new remote.BrowserWindow({
-          parent: remote.getCurrentWindow(),
-          x: 50,
-          y: 50,
-          minimizable: false,
-          maximizable: false,
-          resizable: false
-        })
-
-        win.loadURL(link)
-      }
+        await axios.get(`openThis?type=insideLink&link=${link}`)
     },
     async download({state, commit}) {
       const name = state.downloaderForm.name.replace(' ', '_')

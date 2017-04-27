@@ -21,7 +21,7 @@ config.rootDir = __dirname // for electron-packager
 const nuxt = new Nuxt(config)
 
 // Initiate routes.
-const route = initFile.route(nuxt)
+const route = initFile.route(nuxt, win)
 const server = http.createServer(route)
 
 // Build only in dev mode
@@ -64,8 +64,8 @@ const menu = Menu.buildFromTemplate(template)
 
 const newWin = () => {
   win = new bw({
-    width: config.electron.width || 800,
-    height: config.electron.height || 600,
+    width: config.electron.width,
+    height: config.electron.height,
     titleBarStyle: 'hidden',
     show: false
   })
@@ -91,6 +91,11 @@ const newWin = () => {
 }
 
 app.on('ready', () => {
+  app.setAboutPanelOptions({
+    applicationName: 'KawAnime',
+    applicationVersion: '0.3.0',
+    copyright: 'Kylart 2016-2017'
+  })
 
   Menu.setApplicationMenu(menu)
 
@@ -101,6 +106,8 @@ app.on('ready', () => {
   }
 
   newWin()
+
+  process.win = win
 })
 
 // Quit when all windows are closed.

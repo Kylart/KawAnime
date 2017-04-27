@@ -80,14 +80,14 @@ const local = require('./local.js')
 const wl = require('./watchList.js')
 const history = require('./history')
 
-exports.route = (nuxt) => {
+exports.route = (nuxt, window) => {
   return (req, res) => {
     const url = new URL(req.url)
 
     switch (url.pathname)
     {
       case '/openThis':
-        openExternal(url, res)
+        openExternal(url, res, window)
         break
 
       case '/seasons.json':
