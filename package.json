@@ -4,14 +4,20 @@
   "description": "A Software for Otaku Community.",
   "main": "main.js",
   "repository": "https://github.com/Kylart/KawAnime.git",
-  "author": "Kylart",
+  "author": {
+    "name": "Kylart",
+    "email": "tempMail@mail.com"
+  },
   "license": "MIT",
   "scripts": {
     "dev": "cross-env NODE_ENV=development electron .",
     "build": "nuxt build",
     "start": "electron .",
     "bstart": "nuxt build && npm start",
-    "dist": "nuxt build && node assets/scripts/dist.js"
+    "buildLinux": "build --linux deb AppImage zip tar.gz",
+    "buildWin": "build --win nsis --ia32 x64 appx zip squirrel",
+    "buildMac": "build --mac dmg zip pkg",
+    "buildAll": "nuxt build && npm run buildMac && npm run buildWin && npm run buildLinux && build --armv7l"
   },
   "dependencies": {
     "axios": "^0.16.0",
@@ -29,12 +35,27 @@
     "cross-env": "^3.1.4",
     "devtron": "^1.4.0",
     "electron": "^1.6.2",
-    "electron-installer-debian": "^0.5.1",
-    "electron-installer-dmg": "^0.2.1",
-    "electron-packager": "^8.6.0",
+    "electron-builder": "^17.1.1",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.1",
     "tar.gz": "^1.0.5",
     "vue-devtools": "^3.0.8"
+  },
+  "build": {
+    "appId": "KawAnime",
+    "dmg": {
+      "contents": [
+        {
+          "x": 150,
+          "y": 90
+        },
+        {
+          "x": 150,
+          "y": 275,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    }
   }
 }

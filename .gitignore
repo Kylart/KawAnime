@@ -7,14 +7,15 @@ npm-debug.log
 # Nuxt build
 .nuxt
 
-# Nuxt generate
-dist
-
 # Mac OS
 .DS_Store
 
-# Dist
-assets/build/dists/KawAnime*
-
 # Idea directory
 .idea
+
+# build
+KawAnime*
+dist/mac
+dist/github
+dist/linux-unpacked
+dist/latest.yml
