@@ -87,8 +87,8 @@ exports.route = (nuxt) => {
     switch (url.pathname)
     {
       case '/getConf':
-        const configPath = join(dir, 'config.json')
-        const configFile = require(configPath).config
+        const configPath = join(dir, 'config.json');
+        const configFile = JSON.parse(fs.readFileSync(configPath));
 
         res.writeHead(200, {"Content-Type": "application/json"});
         res.write(JSON.stringify(configFile));
@@ -133,6 +133,16 @@ exports.route = (nuxt) => {
 
       case '/getHistory':
         history.getHistory(res)
+        break
+
+      case '/saveConfig':
+        req.on('data', (chunk) => {
+          const data = JSON.parse(chunk)
+          fs.writeFileSync(join(dir, 'config.json'), JSON.stringify(data))
+          console.log('[Open-External]: Successfully saved config!')
+        })
+        res.writeHead(200, {});
+        res.end();
         break
 
       default:

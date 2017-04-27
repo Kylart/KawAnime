@@ -3,7 +3,6 @@ import Vue from 'vue'
 //noinspection NpmUsedModulesInstalled
 import Vuex from 'vuex'
 import axios from 'axios'
-import {writeFileSync} from 'fs'
 
 Vue.use(Vuex)
 
@@ -297,17 +296,15 @@ const store = new Vuex.Store({
         })
       }
       else
-      {
         console.log(`[${(new Date()).toLocaleTimeString()}]: Opening torrents directly on preferred torrent client.`)
-      }
     },
-    async saveConfig({}, data) {
-      const toSave = JSON.stringify({
-        config: data
+    saveConfig({}, data) {
+      axios.post('saveConfig', JSON.stringify(data)).then((res) => {
+        if (res.status === 200)
+          console.log(`[${(new Date()).toLocaleTimeString()}]: Successfully updated config!`)
+      }).catch((err) => {
+        console.log(`[${(new Date()).toLocaleTimeString()}]: An error occurred while saving config: ${err}`)
       })
-
-      writeFileSync(configPath, toSave)
-      console.log(`[${(new Date()).toLocaleTimeString()}]: New config saved!`)
     },
     async appendHistory({}, data) {
       const {status} = await axios.get(`appendHistory?type=${data.type}&text=${data.text}`)
