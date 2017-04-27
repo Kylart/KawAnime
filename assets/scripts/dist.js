@@ -24,6 +24,8 @@ const materialPath = join(__dirname, '..', 'build', 'material')
 
 // Installers
 const createDMG = require('electron-installer-dmg')
+const createDebInstaller = require('electron-installer-debian')
+const createWinInstaller = require('electron-winstaller').createWindowsInstaller
 
 const colors = require('colors')
 
@@ -48,6 +50,27 @@ const dmgOptions = {
   "icon-size": 80
 }
 
+const debOptions = (version) => {
+  return {
+    productName: 'KawAnime',
+    src: join(materialPath, '..', 'dists', `KawAnime-linux-${version}`),
+    dest: join(materialPath, '..', 'dists'),
+    arch: version === 'x64' ? 'amd64' : 'x32',
+    icon: join(materialPath, 'icon.png')
+  }
+}
+
+const winConfig = (version) => {
+  return {
+    appDirectory: join(materialPath, '..', 'dists', `KawAnime-win32-${version}`),
+    outputDirectory: join(materialPath, '..', 'dists'),
+    authors: 'Kylart',
+    exe: 'KawAnime.exe',
+    noMsi: true,
+    setupExe: 'KawAnime.exe'
+  }
+}
+
 const makeDMG = () => {
   console.log('[Builder]: Creating DMG...'.yellow)
 
@@ -62,8 +85,24 @@ const makeDMG = () => {
   })
 }
 
+const makeDebInstaller = (version) => {
+  console.log(`[Builder]: Creating ${version} Deb package...`.yellow)
+  createDebInstaller(debOptions(version), (err) => {
+    if (err)
+    {
+      console.log(`[Builder]: An error occurred while creating ${version} Deb package!`.red)
+      throw err
+    }
+
+    console.log(`[Builder]: Successfully built ${version} Deb package!`.green)
+  })
+}
+
 const buildDists = () => {
   makeDMG()
+  makeDebInstaller('x64')
+  makeDebInstaller('ia32')
+
 }
 
 const pack = () => {
