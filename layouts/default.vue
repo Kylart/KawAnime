@@ -114,7 +114,6 @@
     data () {
       return {
         searchModal: false,
-//        configModal: false,
         sidebar: false,
         itemGroup: [
           {header: 'Core'},

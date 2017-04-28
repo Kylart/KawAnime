@@ -9,6 +9,13 @@ module.exports = {
     height: 800
   },
   build: {
+    extend (config, {isClient}) {
+      // Extend only webpack config for client-bundle
+      if (isClient)
+      {
+        config.target = 'electron-renderer'
+      }
+    },
     vendor: ['vuetify', 'axios']
   },
   plugins: [

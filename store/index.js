@@ -4,6 +4,25 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
 
+import {join} from 'path'
+import {userInfo} from 'os'
+import {readFileSync} from 'fs'
+
+const configPath = join(userInfo().homedir, '.KawAnime', 'config.json')
+const configFile = readFileSync(configPath)
+
+const config = JSON.parse(configFile).config
+
+// config file looks like this
+// const config = {
+//   fansub: 'HorribleSubs',
+//   quality: '720p',
+//   sound: 'Nyanpasu',
+//   localPath: join(userInfo().homedir, 'Downloads'),
+//   inside: true,
+//   magnets: false
+// }
+
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
@@ -42,18 +61,7 @@ const store = new Vuex.Store({
     history: {}
   },
   mutations: {
-    init(state, data) {
-      const config = data
-      // config file looks like this
-      // const config = {
-      //   fansub: 'HorribleSubs',
-      //   quality: '720p',
-      //   sound: 'Nyanpasu',
-      //   localPath: join(userInfo().homedir, 'Downloads'),
-      //   inside: true,
-      //   magnets: false
-      // }
-
+    init(state) {
       config.inside = config.inside.toString()
 
       state.releaseFansub = config.fansub
@@ -324,6 +332,8 @@ const store = new Vuex.Store({
     }
   }
 })
+
+store.commit('init')
 
 store.dispatch('initConf').then(() => {
   store.dispatch('releasesInit').catch(err => {})
