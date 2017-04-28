@@ -51,7 +51,7 @@
 
 					<h1 class="title" v-bind:style="sidebarTitle">
 						<strong>かわニメ - </strong>
-						<a href="#">v0.3.0</a>
+						<a href="#">v0.4.0</a>
 					</h1>
 
 					<div class="links">

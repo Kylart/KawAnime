@@ -91,11 +91,14 @@ const newWin = () => {
 }
 
 app.on('ready', () => {
-  app.setAboutPanelOptions({
-    applicationName: 'KawAnime',
-    applicationVersion: '0.3.0',
-    copyright: 'Kylart 2016-2017'
-  })
+  if (process.platform === 'darwin')
+  {
+    app.setAboutPanelOptions({
+      applicationName: 'KawAnime',
+      applicationVersion: '0.4.0',
+      copyright: 'Kylart 2016-2017'
+    })
+  }
 
   Menu.setApplicationMenu(menu)
 
