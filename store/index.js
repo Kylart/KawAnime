@@ -30,6 +30,10 @@ const store = new Vuex.Store({
     releaseFansub: '',
     releaseQuality: '',
     releases: [],
+    errorSnackbar: {
+      show: false,
+      text: ''
+    },
     downloaderForm: {
       name: '',
       fromEp: '',
@@ -143,16 +147,21 @@ const store = new Vuex.Store({
     }
   },
   actions: {
-    async initConf({commit}) {
-      console.log('[INIT]')
-      const {data} = await axios.get('getConf')
-      commit('init', data)
-    },
-    async releasesInit({state, commit}) {
+    async releasesInit({state, commit, dispatch}) {
       console.log('[INIT] Releases')
-      const {data} = await axios.get(`releases.json?fansub=${state.releaseFansub}&quality=${state.releaseQuality}`)
-      commit('setReleases', data)
-    },
+      const {data, status} = await axios.get(`releases.json?fansub=${state.releaseFansub}&quality=${state.releaseQuality}`)
+
+      if (status === 200) commit('setReleases', data)
+      else
+      {
+        state.errorSnackBar.text = 'An error occurred while getting the latest releases. Retrying in 30 seconds.'
+        setTimeout(() => {
+          console.log(`[${(new Date()).toLocaleTimeString()}]: Retrying to get latest releases.`)
+          dispatch('releasesInit')
+        }, 30 * 1000)
+      }
+    }
+    ,
     async seasonsInit({state, commit}) {
       console.log('[INIT] Seasons')
       const {data} = await axios.get(`seasons.json?year=${state.year}&season=${state.season}`)
@@ -314,11 +323,12 @@ const store = new Vuex.Store({
         console.log(`[${(new Date()).toLocaleTimeString()}]: An error occurred while saving config: ${err}`)
       })
     },
-    async appendHistory({}, data) {
-      const {status} = await axios.get(`appendHistory?type=${data.type}&text=${data.text}`)
-
-      if (status !== 200)
-        console.log(`[${(new Date()).toLocaleTimeString()}]: An error occurred while appending to history.`)
+    appendHistory({}, data) {
+      axios.post('appendHistory', JSON.stringify(data)).then(() => {
+        console.log(`[${(new Date()).toLocaleTimeString()}]: Successfully appended to history.`)
+      }).catch((err) => {
+        console.log(`[${(new Date()).toLocaleTimeString()}]: An error occurred while appending to history... ${err}`)
+      })
     },
     async getHistory({commit}) {
       const {data, status} = await axios.get('getHistory?')
@@ -335,13 +345,11 @@ const store = new Vuex.Store({
 
 store.commit('init')
 
-store.dispatch('initConf').then(() => {
-  store.dispatch('releasesInit').catch(err => {})
-  store.dispatch('seasonsInit').catch(err => {})
-  store.dispatch('newsInit').catch(err => {})
-  store.dispatch('localInit').catch(err => {})
-  store.dispatch('listInit').catch(err => {})
-}).catch(err => {})
+store.dispatch('releasesInit').catch(err => {})
+store.dispatch('seasonsInit').catch(err => {})
+store.dispatch('newsInit').catch(err => {})
+store.dispatch('localInit').catch(err => {})
+store.dispatch('listInit').catch(err => {})
 
 
 export default store

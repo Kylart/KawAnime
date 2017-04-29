@@ -93,9 +93,9 @@ exports.getLatest = (url, res) => {
         {
           reloading = true
           console.log(`[Releases]: Retrying in 30 seconds...`)
-          setTimeout(() => {
-            self.getLatest(url, res)
-          }, 30 * 1000)
+
+          res.writeHead(204, {})
+          res.end()
         }
       })
     }

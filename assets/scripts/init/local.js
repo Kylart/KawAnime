@@ -13,7 +13,7 @@ const extensions = ['.mkv', '.mp4']
 const getNameAndEp = (raw) => {
   return {
     name: raw.raw.split(' ').slice(1, -3).join(' '),
-    ep: parseInt(raw.raw.split(' ').splice(-2)[0])
+    ep: parseInt(raw.raw.replace(' VOSTFR', '').split(' ').splice(-2)[0])
   }
 }
 

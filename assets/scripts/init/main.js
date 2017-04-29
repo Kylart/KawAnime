@@ -128,7 +128,7 @@ exports.route = (nuxt) => {
         break
 
       case '/appendHistory':
-        history.appendHistory(url, res)
+        history.appendHistory(url, res, req)
         break
 
       case '/getHistory':

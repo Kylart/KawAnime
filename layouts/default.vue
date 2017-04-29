@@ -98,6 +98,18 @@
 			</v-sidebar>
 			<v-content class="content secondary page">
 				<nuxt/>
+				<!-- Displayed if an error occurred -->
+				<v-snackbar
+								:timeout="5000"
+								:top="true"
+								:bottom="false"
+								:right="false"
+								:left="false"
+								v-model="$store.state.errorSnackbar.show"
+				>
+					{{ $store.state.errorSnackbar.text }}
+					<v-btn flat class="pink--text" @click.native="$store.state.errorSnackbar.show = false">Close</v-btn>
+				</v-snackbar>
 			</v-content>
 		</main>
 

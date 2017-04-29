@@ -11,7 +11,7 @@ const dir = join(userInfo().homedir, '.KawAnime')
 
 const historyPath = join(dir, 'history.json')
 
-exports.appendHistory = (url, res) => {
+exports.appendHistory = (url, res, req) => {
   // Date info
   const today = new Date()
   const day = today.toDateString()
@@ -25,21 +25,27 @@ exports.appendHistory = (url, res) => {
   // Getting history
   const historyFile = require(historyPath)
 
-  // Preparing data to append to file
-  const data = {
-    time: time,
-    type: type,
-    text: text
-  }
+  req.on('data', (chunk) => {
+    chunk = JSON.parse(chunk)
 
-  // Checking if date already entered
-  if (!historyFile[day]) historyFile[day] = []
+    // Preparing data to append to file
+    const data = {
+      time: time,
+      type: chunk.type,
+      text: chunk.text
+    }
 
-  // Appending data to file
-  historyFile[day].push(data)
+    // Checking if date already entered
+    if (!historyFile[day]) historyFile[day] = []
 
-  // Writing file to history.json
-  writeFileSync(historyPath, JSON.stringify(historyFile), 'utf-8')
+    // Appending data to file
+    historyFile[day].push(data)
+
+    // Writing file to history.json
+    writeFileSync(historyPath, JSON.stringify(historyFile), 'utf-8')
+
+    console.log(`[History]: New entry appended to history.`)
+  })
 
   res.writeHead(200, {})
   res.end()

@@ -267,8 +267,8 @@
 
 	.title
 	{
-		margin-top: 10px;
 		padding-left: 10px;
+		line-height: 30px;
 	}
 
 	.ep
