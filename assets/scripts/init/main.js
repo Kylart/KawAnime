@@ -123,6 +123,18 @@ exports.route = (nuxt) => {
         wl.getLists(url, res)
         break
 
+      case 'modifyWatchList':
+        wl.modifyWatchList(req, res)
+        break
+
+      case 'modifySeen':
+        wl.modifySeen(req, res)
+        break
+
+      case 'modifyWatching':
+        wl.modifyWatching(req, res)
+        break
+
       case '/resetLocal':
         local.resetLocal(res)
         break

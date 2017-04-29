@@ -151,7 +151,7 @@ const store = new Vuex.Store({
     }
   },
   actions: {
-    async releasesInit({state, commit}) {
+    async releasesInit({state, commit, dispatch}) {
       console.log('[INIT] Releases')
       const {data, status} = await axios.get(`releases.json?fansub=${state.releaseFansub}&quality=${state.releaseQuality}`)
 
@@ -162,7 +162,7 @@ const store = new Vuex.Store({
         commit('setErrorSnackbar', 'Could not get the latest releases. Retrying in 30 seconds.')
         setTimeout(function () {
           console.log(`[${(new Date()).toLocaleTimeString()}]: Retrying to get latest releases.`)
-          store.dispatch('releasesInit')
+          dispatch('releasesInit')
         }, 30 * 1000)
       }
     }
