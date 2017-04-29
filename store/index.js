@@ -76,6 +76,10 @@ const store = new Vuex.Store({
 
       state.config = config
     },
+    setErrorSnackbar(state, data) {
+      state.errorSnackbar.text = data
+      state.errorSnackbar.show = true
+    },
     setCurrentSeason(state, data) {
       state.year = data.year
       state.season = data.season
@@ -147,17 +151,18 @@ const store = new Vuex.Store({
     }
   },
   actions: {
-    async releasesInit({state, commit, dispatch}) {
+    async releasesInit({state, commit}) {
       console.log('[INIT] Releases')
       const {data, status} = await axios.get(`releases.json?fansub=${state.releaseFansub}&quality=${state.releaseQuality}`)
 
       if (status === 200) commit('setReleases', data)
       else
       {
-        state.errorSnackBar.text = 'An error occurred while getting the latest releases. Retrying in 30 seconds.'
-        setTimeout(() => {
+        console.log(`[${(new Date()).toLocaleTimeString()}]: An error occurred while getting the latest releases. Retrying in 30 seconds.`)
+        commit('setErrorSnackbar', 'Could not get the latest releases. Retrying in 30 seconds.')
+        setTimeout(function () {
           console.log(`[${(new Date()).toLocaleTimeString()}]: Retrying to get latest releases.`)
-          dispatch('releasesInit')
+          store.dispatch('releasesInit')
         }, 30 * 1000)
       }
     }
