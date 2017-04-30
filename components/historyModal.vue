@@ -13,9 +13,13 @@
 					<v-row>
 						<v-expansion-panel expand class="secondary">
 							<v-expansion-panel-content class="item-container"
+							                           ripple
 							                           v-for="item in Object.keys(history).reverse()"
 							                           :key="item">
-								<div slot="header" class="day">{{ item }}</div>
+								<div slot="header"
+								     v-ripple="true"
+								     class="day">{{ item }}
+								</div>
 								<v-card>
 									<v-card-text class="lighten-3 info-container">
 										<v-row>
@@ -122,6 +126,7 @@
 
 	.day
 	{
+		position: relative;
 		font-size: 17px;
 		font-weight: 700;
 		padding-left: 15px;
