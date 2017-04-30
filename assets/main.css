@@ -22,3 +22,8 @@
 {
     max-height: 738px;
 }
+
+.expansion-panel__body:last-child
+{
+    border-bottom: 0 !important;
+}

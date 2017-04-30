@@ -4,10 +4,13 @@
 			<v-row style="margin: 0 1% 0 1%;">
 				<v-col xs12 class="menubar">
 					<v-row>
-						<v-col xs3 class="menu-eps">
+						<v-col xs2 class="menu-eps">
 							<p class="menu-eps-text">{{ nbEps }} {{ episodeLabel }}</p>
 						</v-col>
-						<v-col xs5></v-col>
+						<v-col xs2>
+							<history-modal></history-modal>
+						</v-col>
+						<v-col xs4></v-col>
 						<v-col xs4 class="menu-buttons">
 							<v-btn icon
 							       class="refresh-button"
@@ -117,6 +120,7 @@
 </template>
 
 <script>
+  import HistoryModal from '~components/historyModal.vue'
   import axios from 'axios'
 
   export default {
@@ -136,7 +140,9 @@
             : 'episodes'
       }
     },
-    components: {},
+    components: {
+      HistoryModal
+    },
     methods: {
       reduced(text) {
         return text.length > 220 ? text.slice(0, 217) + '...' : text
@@ -151,7 +157,7 @@
 
           this.$store.dispatch('appendHistory', {
             type: 'Play',
-            text: path.split(' ').slice(1, -3).join(' '),
+            text: path.split(' ').slice(1, -1).join(' '),
           }).catch(err => {})
         })
       },
@@ -164,7 +170,7 @@
 
           this.$store.dispatch('appendHistory', {
             type: 'Delete',
-            text: path.split(' ').slice(1, -3).join(' '),
+            text: path.split(' ').slice(1, -1).join(' '),
           }).catch(err => {})
         }).catch((err) => {
           console.log('An error occurred while trying to delete a file:' + err)

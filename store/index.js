@@ -62,7 +62,8 @@ const store = new Vuex.Store({
     searchInputModal: false,
     searchInput: '',
     searchInfo: {},
-    history: {}
+    history: {},
+    historyModal: false
   },
   mutations: {
     init(state) {
@@ -147,7 +148,10 @@ const store = new Vuex.Store({
     },
     setHistory: function (state, data) {
       state.history = data
-      console.log(`[${(new Date()).toLocaleTimeString()}]: History loaded.`)
+      console.log(`[${(new Date()).toLocaleTimeString()}]: History updated.`)
+    },
+    setHistoryModal: function (state, data) {
+      state.historyModal = data
     }
   },
   actions: {
@@ -338,8 +342,6 @@ const store = new Vuex.Store({
     async getHistory({commit}) {
       const {data, status} = await axios.get('getHistory?')
 
-      console.log(data)
-
       if (status !== 200)
         console.log(`[${(new Date()).toLocaleTimeString()}]: An error occurred while gathering the history.`)
 
@@ -355,6 +357,7 @@ store.dispatch('seasonsInit').catch(err => {})
 store.dispatch('newsInit').catch(err => {})
 store.dispatch('localInit').catch(err => {})
 store.dispatch('listInit').catch(err => {})
+store.dispatch('getHistory').catch(err => {})
 
 
 export default store

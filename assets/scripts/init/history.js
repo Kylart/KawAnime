@@ -17,11 +17,6 @@ exports.appendHistory = (url, res, req) => {
   const day = today.toDateString()
   const time = today.toLocaleTimeString()
 
-  // Info from query
-  const query = qs.parse(url.query.replace('?', ''))
-  const text = query.text
-  const type = query.type
-
   // Getting history
   const historyFile = require(historyPath)
 
@@ -39,7 +34,7 @@ exports.appendHistory = (url, res, req) => {
     if (!historyFile[day]) historyFile[day] = []
 
     // Appending data to file
-    historyFile[day].push(data)
+    historyFile[day].unshift(data)
 
     // Writing file to history.json
     writeFileSync(historyPath, JSON.stringify(historyFile), 'utf-8')
