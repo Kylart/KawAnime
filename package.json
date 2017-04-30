@@ -28,7 +28,7 @@
     "parse-torrent": "^5.8.2",
     "play-sound": "^1.1.1",
     "url-parse": "^1.1.8",
-    "vuetify": "^0.10.0"
+    "vuetify": "^0.11.1"
   },
   "devDependencies": {
     "colors": "^1.1.2",

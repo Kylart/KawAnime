@@ -61,7 +61,9 @@
 												</div>
 												<div class="links">
 													<a :href="item.magnetLink" class="download-button">
-														<v-btn dark flat class="btn--light-flat-pressed">
+														<v-btn dark flat
+														       @click.native="print(item)"
+														       class="btn--light-flat-pressed">
 															Download
 														</v-btn>
 													</a>
@@ -114,7 +116,7 @@
 		</div>
 		<loader v-else></loader>
 		<div class="text-xs-center modal-container">
-			<v-modal v-model="modal">
+			<v-dialog v-model="modal" width="70%">
 				<v-card class="secondary white--text">
 					<v-card-text class="white--text">
 						<h2 class="title">{{ modalTitle }}</h2>
@@ -125,11 +127,12 @@
 					<v-card-row actions>
 						<v-spacer></v-spacer>
 						<v-btn primary dark
+						       style="width: 100px;"
 						       v-on:click.native="modal = false">Thanks!
 						</v-btn>
 					</v-card-row>
 				</v-card>
-			</v-modal>
+			</v-dialog>
 		</div>
 	</v-container>
 </template>
@@ -201,6 +204,9 @@
       },
       refresh() {
         this.$store.dispatch('refreshReleases')
+      },
+      print(item) {
+        console.log(`[${(new Date()).toLocaleTimeString()}]: Downloading ${item.name} -- ${item.ep}`)
       }
     }
   }

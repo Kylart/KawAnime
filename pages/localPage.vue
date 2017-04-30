@@ -231,7 +231,7 @@
 		display: inline-block;
 	}
 
-	.reset-cache-button:active
+	.reset-cache-button:hover
 	{
 		border-color: #ff9800 !important;
 		background-color: #ff9800 !important;

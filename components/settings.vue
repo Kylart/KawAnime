@@ -1,6 +1,9 @@
 <template>
 	<div class="modals text-xs-center">
-		<v-modal v-model="configModal" :style="configModalStyle" class="config-modal">
+		<v-dialog v-model="configModal"
+		          width="700"
+		          :style="configModalStyle"
+		          class="config-modal">
 			<v-btn icon slot="activator">
 				<v-icon>settings</v-icon>
 			</v-btn>
@@ -107,7 +110,8 @@
 						</v-row>
 					</div>
 				</v-card-text>
-				<v-card-row actions>
+				<v-divider/>
+				<v-card-row actions style="padding: 10px 20px 20px 0">
 					<v-spacer></v-spacer>
 					<v-btn dark primary
 					       v-on:click.native="save()">
@@ -119,7 +123,7 @@
 					</v-btn>
 				</v-card-row>
 			</v-card>
-		</v-modal>
+		</v-dialog>
 	</div>
 </template>
 

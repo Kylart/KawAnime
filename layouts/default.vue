@@ -10,7 +10,7 @@
 					<settings></settings>
 
 					<div class="modals text-xs-center">
-						<v-modal v-model="searchModal">
+						<v-dialog width="450" v-model="searchModal">
 							<v-btn icon slot="activator">
 								<v-icon>search</v-icon>
 							</v-btn>
@@ -32,12 +32,16 @@
 									</v-row>
 
 								</v-card-text>
-								<v-card-row actions>
+								<v-card-row actions style="padding: 0 20px 20px 0">
 									<v-spacer></v-spacer>
-									<v-btn dark primary v-on:click.native="searchModal = false">Search!</v-btn>
+									<v-btn dark primary
+									       style="width: 100px"
+									       v-on:click.native="searchModal = false">
+										Search!
+									</v-btn>
 								</v-card-row>
 							</v-card>
-						</v-modal>
+						</v-dialog>
 					</div>
 				</div>
 			</v-toolbar-logo>

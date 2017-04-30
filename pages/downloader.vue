@@ -83,11 +83,14 @@
 				<v-btn dark block secondary loading v-else></v-btn>
 			</div>
 		</div>
-		<v-modal v-model="$store.state.downloaderModal.show" class="magnet-modal">
+		<v-dialog v-model="$store.state.downloaderModal.show"
+		          width="600"
+		          class="magnet-modal">
 			<v-card class="secondary white--text">
 				<v-card-text class="white--text">
 					<h2 class="title">Magnets for <strong>{{ $store.state.downloaderModal.title }}</strong></h2>
 				</v-card-text>
+				<v-divider/>
 				<v-card-text class="subheading white--text">
 					<v-row>
 						<v-col xs4></v-col>
@@ -102,12 +105,13 @@
 				</v-card-text>
 				<v-card-row actions>
 					<v-btn primary dark
+					       style="width: 100px"
 					       v-on:click.native="$store.state.downloaderModal.show = false">
 						Thanks!
 					</v-btn>
 				</v-card-row>
 			</v-card>
-		</v-modal>
+		</v-dialog>
 		<v-snackbar :timeout="timeout"
 								:top="y === 'top'"
 								:bottom="y === 'bottom'"
