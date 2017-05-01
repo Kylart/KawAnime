@@ -24,7 +24,7 @@
     "cheerio": "^0.22.0",
     "mal-scraper": "^1.3.4",
     "nuxt": "latest",
-    "nyaapi": "^1.0.2",
+    "nyaapi": "^1.0.3",
     "parse-torrent": "^5.8.2",
     "play-sound": "^1.1.1",
     "url-parse": "^1.1.8",
