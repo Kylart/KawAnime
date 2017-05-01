@@ -197,7 +197,7 @@
         return string.split(' ').slice(0, 3).join(' ')
       },
       episode(nbEp) {
-        return nbEp !== 1
+        return nbEp !== '1'
             ? 'episodes'
             : 'episode'
       },

@@ -157,17 +157,21 @@ const store = new Vuex.Store({
   actions: {
     async releasesInit({state, commit, dispatch}) {
       console.log('[INIT] Releases')
-      const {data, status} = await axios.get(`releases.json?fansub=${state.releaseFansub}&quality=${state.releaseQuality}`)
+      const {data, status} = await axios.get(`releases.json?fansub=${state.releaseFansub}&quality=${state.releaseQuality}`).catch(err => {})
 
       if (status === 200) commit('setReleases', data)
-      else
+      else if (status === 204)
       {
         console.log(`[${(new Date()).toLocaleTimeString()}]: An error occurred while getting the latest releases. Retrying in 30 seconds.`)
         commit('setErrorSnackbar', 'Could not get the latest releases. Retrying in 30 seconds.')
         setTimeout(function () {
           console.log(`[${(new Date()).toLocaleTimeString()}]: Retrying to get latest releases.`)
-          dispatch('releasesInit')
+          dispatch('releasesInit').catch(err => {})
         }, 30 * 1000)
+      }
+      else if (status === 226)
+      {
+        alert('Nyaa is down, KawAniem is unable to get the latest releases...')
       }
     }
     ,

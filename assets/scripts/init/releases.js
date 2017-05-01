@@ -2,8 +2,6 @@
  * Created by Kylart on 03/04/2017.
  */
 
-const self = this
-
 const malScraper = require('mal-scraper')
 const nyaa = require('nyaapi')
 
@@ -99,5 +97,10 @@ exports.getLatest = (url, res) => {
         }
       })
     }
+  }).catch((err) => {
+    console.log('[Releases]: An error occurred while getting latest releases...\n' + err)
+
+    res.writeHead(226, {})
+    res.end()
   })
 }
