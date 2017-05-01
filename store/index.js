@@ -171,7 +171,7 @@ const store = new Vuex.Store({
       }
       else if (status === 226)
       {
-        alert('Nyaa is down, KawAniem is unable to get the latest releases...')
+        alert('Nyaa is down, KawAnime is unable to get the latest releases...')
       }
     }
     ,
