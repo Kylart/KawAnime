@@ -73,7 +73,6 @@ if (!fs.existsSync(historyPath))
 
 const {openExternal} = require('./openExternal.js')
 const seasons = require('./seasons.js')
-const downloader = require('./downloader.js')
 const news = require('./news.js')
 const local = require('./local.js')
 const wl = require('./watchList.js')
