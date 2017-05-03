@@ -1,10 +1,10 @@
 # Current situation
 
 As you may know, nyaa.se is down for the moment (and maybe forever). _KawAnime_ was mostly based on nyaa so 
-at this moment two features aren't working : __Latest releases__ and __Downloader__. 
- 
-I am going to fix this in the days to come. But _KawAnime_ will then only be able to fetch torrents from horriblesubs
-.info
+its behaviour had to change a bit.
+
+_KawAnime_ is at the moment __fully based__ on HorribleSubs as for its downloading features. Some other fansub might be 
+implemented in the feature to offer more choices.
 
 # _KawAnime_
 
