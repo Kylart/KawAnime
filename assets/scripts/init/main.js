@@ -72,13 +72,13 @@ if (!fs.existsSync(historyPath))
 }
 
 const {openExternal} = require('./openExternal.js')
-const releases = require('./releases.js')
 const seasons = require('./seasons.js')
 const downloader = require('./downloader.js')
 const news = require('./news.js')
 const local = require('./local.js')
 const wl = require('./watchList.js')
 const history = require('./history')
+const horrible = require('./horrible.js')
 
 exports.route = (nuxt) => {
   return (req, res) => {
@@ -95,6 +95,14 @@ exports.route = (nuxt) => {
         res.end();
         break
 
+      case '/getLatest.json':
+        horrible.getLatest(url, res)
+        break
+
+      case '/getAllShows.json':
+        horrible.getShowsList(res)
+        break
+
       case '/openThis':
         openExternal(url, res)
         break
@@ -103,12 +111,8 @@ exports.route = (nuxt) => {
         seasons.getSeason(url, res)
         break
 
-      case '/releases.json':
-        releases.getLatest(url, res)
-        break
-
       case '/download':
-        downloader.download(url, res)
+        horrible.download(req, res)
         break
 
       case '/news.json':
@@ -123,15 +127,15 @@ exports.route = (nuxt) => {
         wl.getLists(url, res)
         break
 
-      case 'modifyWatchList':
+      case '/modifyWatchList':
         wl.modifyWatchList(req, res)
         break
 
-      case 'modifySeen':
+      case '/modifySeen':
         wl.modifySeen(req, res)
         break
 
-      case 'modifyWatching':
+      case '/modifyWatching':
         wl.modifyWatching(req, res)
         break
 

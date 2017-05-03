@@ -19,13 +19,15 @@
 					</div>
 				</v-col>
 				<v-col xs4></v-col>
-				<v-col xs4 @keydown.enter="next(1)">
-					<v-text-field name="input-1" autofocus
-					              type="text"
-					              label="Name of the anime"
-					              v-model="$store.state.downloaderForm.name"
-					              dark>
-					</v-text-field>
+				<v-col xs4>
+					<v-select name="input-1" autofocus
+					          autocomplete
+					          v-bind:items="list"
+					          type="text"
+					          label="Name of the anime"
+					          v-model="$store.state.downloaderForm.name"
+					          dark>
+					</v-select>
 				</v-col>
 				<v-col xs4></v-col>
 				<v-col xs4></v-col>
@@ -113,11 +115,11 @@
 			</v-card>
 		</v-dialog>
 		<v-snackbar :timeout="timeout"
-								:top="y === 'top'"
-								:bottom="y === 'bottom'"
-								:right="x === 'right'"
-								:left="x === 'left'"
-								v-model="snackbar">
+		            :top="y === 'top'"
+		            :bottom="y === 'bottom'"
+		            :right="x === 'right'"
+		            :left="x === 'left'"
+		            v-model="snackbar">
 			Please, enter a valid name (at least 3 letters...)
 			<v-btn flat class="pink--text" @click.native="snackbar = false">ok!</v-btn>
 		</v-snackbar>
@@ -138,18 +140,21 @@
     data() {
       return {
         modalText: '',
-	      snackbar: false,
-	      timeout: 4000,
-	      x: '',
-	      y: 'top',
-	      copiedSnackbar: false,
-	      copiedTimeout: 2500,
-	      quality: this.$store.state.downloaderForm.quality
+        snackbar: false,
+        timeout: 4000,
+        x: '',
+        y: 'top',
+        copiedSnackbar: false,
+        copiedTimeout: 2500,
+        quality: this.$store.state.downloaderForm.quality
       }
     },
     computed: {
       formValues: function () {
         return this.$store.state.downloaderForm
+      },
+      list: function () {
+        return this.$store.state.downloaderList
       }
     },
     methods: {
@@ -158,13 +163,13 @@
           this.download()
         else
         {
-					this.snackbar = true
+          this.snackbar = true
         }
       },
       download() {
         const quality = this.quality
 
-	      this.$store.commit('setQuality', quality)
+        this.$store.commit('setQuality', quality)
 
         if (this.$store.state.downloaderForm.name)
           this.$store.dispatch('download')
@@ -212,13 +217,13 @@
             break
         }
       },
-	    copy() {
-		    const toCopy = this.$store.state.downloaderModal.text.join('\n')
+      copy() {
+        const toCopy = this.$store.state.downloaderModal.text.join('\n')
 
-				window.copyToClipboard(toCopy)
+        window.copyToClipboard(toCopy)
 
         this.copiedSnackbar = true
-	    }
+      }
     }
   }
 </script>

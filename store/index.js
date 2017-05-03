@@ -30,10 +30,12 @@ const store = new Vuex.Store({
     releaseFansub: '',
     releaseQuality: '',
     releases: [],
+    releasesUpdateTime: (new Date()).toLocaleTimeString(),
     errorSnackbar: {
       show: false,
       text: ''
     },
+    downloaderList: [],
     downloaderForm: {
       name: '',
       fromEp: '',
@@ -77,6 +79,10 @@ const store = new Vuex.Store({
 
       state.config = config
     },
+    setDownloaderList(state, data) {
+      state.downloaderList = data
+      console.log(`[${(new Date()).toLocaleTimeString()}]: ${data.length} anime name loaded.`)
+    },
     setErrorSnackbar(state, data) {
       state.errorSnackbar.text = data
       state.errorSnackbar.show = true
@@ -116,7 +122,7 @@ const store = new Vuex.Store({
     },
     setCurrentDir: function (state, data) {
       state.currentDir = data
-      console.log(`[${(new Date()).toLocaleTimeString()}]: Current directory now is ${state.currentDir}`)
+      console.log(`[${(new Date()).toLocaleTimeString()}]: Current directory now is ${state.currentDir}.`)
     },
     setWatchList: function (state, data) {
       state.watchList = data
@@ -152,12 +158,21 @@ const store = new Vuex.Store({
     },
     setHistoryModal: function (state, data) {
       state.historyModal = data
+    },
+    setReleasesUpdateTime(state, data) {
+      state.releasesUpdateTime = data
     }
   },
   actions: {
+    async downloaderInit({commit}) {
+      const {data} = await axios.get('getAllShows.json')
+
+      commit('setDownloaderList', data)
+    },
     async releasesInit({state, commit, dispatch}) {
       console.log('[INIT] Releases')
-      const {data, status} = await axios.get(`releases.json?fansub=${state.releaseFansub}&quality=${state.releaseQuality}`).catch(err => {})
+
+      const {data, status} = await axios.get(`getLatest.json?quality=${state.releaseQuality}`)
 
       if (status === 200) commit('setReleases', data)
       else if (status === 204)
@@ -166,12 +181,8 @@ const store = new Vuex.Store({
         commit('setErrorSnackbar', 'Could not get the latest releases. Retrying in 30 seconds.')
         setTimeout(function () {
           console.log(`[${(new Date()).toLocaleTimeString()}]: Retrying to get latest releases.`)
-          dispatch('releasesInit').catch(err => {})
+          dispatch('refreshReleases').catch(err => {})
         }, 30 * 1000)
-      }
-      else if (status === 226)
-      {
-        alert('Nyaa is down, KawAnime is unable to get the latest releases...')
       }
     }
     ,
@@ -205,14 +216,23 @@ const store = new Vuex.Store({
       commit('setSeen', data.seen)
       commit('setWatching', data.watching)
     },
-    async refreshReleases({state, commit}) {
+    async refreshReleases({state, commit, dispatch}) {
       console.log(`[${(new Date()).toLocaleTimeString()}]: Refreshing Releases...`)
 
       commit('emptyReleases')
 
-      const {data} = await axios.get(`releases.json?fansub=${state.releaseFansub}&quality=${state.releaseQuality}`)
+      const {data, status} = await axios.get(`getLatest.json?quality=${state.releaseQuality}`)
 
-      commit('setReleases', data)
+      if (status === 200) commit('setReleases', data)
+      else if (status === 204)
+      {
+        console.log(`[${(new Date()).toLocaleTimeString()}]: An error occurred while getting the latest releases. Retrying in 30 seconds.`)
+        commit('setErrorSnackbar', 'Could not get the latest releases. Retrying in 30 seconds.')
+        setTimeout(function () {
+          console.log(`[${(new Date()).toLocaleTimeString()}]: Retrying to get latest releases.`)
+          dispatch('refreshReleases').catch(err => {})
+        }, 30 * 1000)
+      }
     },
     async refreshSeasons({state, commit}) {
       console.log(`[${(new Date()).toLocaleTimeString()}]: Refreshing Seasons...`)
@@ -295,38 +315,45 @@ const store = new Vuex.Store({
       const quality = state.downloaderForm.quality
 
       const magnets = state.config.magnets
-      const fansub = state.config.fansub
 
       console.log(`[${(new Date()).toLocaleTimeString()}]: Received a request to download ${name} from ep ${fromEp} to ep ${untilEp}. Transmitting...`)
 
-      const {data, status} = await axios.get(
-          `download?name=${name}&fromEp=${fromEp}&untilEp=${untilEp}&quality=${quality}&magnets=${magnets}&fansub=${fansub}`)
-
-      status === 404
-          ? console.log(`[${(new Date()).toLocaleTimeString()}]: Oops. It looks like something went wrong. Please check your internet connection and retry.`)
-          : console.log(`[${(new Date()).toLocaleTimeString()}]: Request fulfilled!`)
+      const {data, status} = await axios.post('download', {
+        name: name.replace('_', ' '),
+        quality: quality,
+        fromEp: fromEp,
+        untilEp: untilEp
+      })
 
       state.downloaderForm.loading = false
 
-      let magnetLinks = []
-
-      data.links.forEach((link) => {
-        magnets === true
-            ? magnetLinks.push(link)
-            : window.open(link)
-      })
-
-      if (magnets === true)
+      if (status === 200)
       {
-        console.log(`[${(new Date()).toLocaleTimeString()}]: User says he prefers having magnets hashes.`)
-        commit('setDownloaderModal', {
-          show: true,
-          title: `${name.replace('_', ' ')}\t ${fromEp} - ${untilEp}`,
-          text: magnetLinks
-        })
+        console.log(`[${(new Date()).toLocaleTimeString()}]: Request fulfilled!`)
+
+        if (magnets === true)
+        {
+          console.log(`[${(new Date()).toLocaleTimeString()}]: User says he prefers having magnets hashes.`)
+          commit('setDownloaderModal', {
+            show: true,
+            title: `${name.replace('_', ' ')}\t ${fromEp} - ${untilEp}`,
+            text: data
+          })
+
+          axios.post('notify', {
+            text: 'Successfully got your magnets!',
+            sound: state.config.sound
+          }).catch(err => {console.log(err)})
+        }
+        else
+        {
+          console.log(`[${(new Date()).toLocaleTimeString()}]: Opening torrents directly on preferred torrent client.`)
+
+          data.forEach((link) => {
+            window.open(link)
+          })
+        }
       }
-      else
-        console.log(`[${(new Date()).toLocaleTimeString()}]: Opening torrents directly on preferred torrent client.`)
     },
     saveConfig({}, data) {
       axios.post('saveConfig', JSON.stringify(data)).then((res) => {
@@ -356,6 +383,7 @@ const store = new Vuex.Store({
 
 store.commit('init')
 
+store.dispatch('downloaderInit').catch(err => {})
 store.dispatch('releasesInit').catch(err => {})
 store.dispatch('seasonsInit').catch(err => {})
 store.dispatch('newsInit').catch(err => {})

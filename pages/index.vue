@@ -144,7 +144,6 @@
   export default {
     data () {
       return {
-        lastUpdateTime: (new Date()).toLocaleTimeString(),
         modal: false,
         modalTitle: '',
         modalText: '',
@@ -161,11 +160,15 @@
     computed: {
       releases: function () {
         return this.$store.state.releases
+      },
+      lastUpdateTime: function () {
+        return this.$store.state.releasesUpdateTime
       }
     },
     watch: {
       releases: function () {
-        this.lastUpdateTime = (new Date()).toLocaleTimeString()
+        const newTime = (new Date()).toLocaleTimeString()
+        this.$store.commit('setReleasesUpdateTime', newTime)
       }
     },
     components: {
@@ -183,30 +186,30 @@
       downloadAll(name) {
         console.log(`[${(new Date()).toLocaleTimeString()}]: Sending a request to download all episodes of ${name}`)
 
-        const fansub = this.$store.state.releaseFansub
+        name = name.split(' ').slice(0, -2).join(' ')
         const quality = this.$store.state.releaseQuality
 
-        console.log(fansub + ' ' + quality)
-
-        axios.get(`/download?name=${name}&fansub=${fansub}&quality=${quality}`).then((resp) => {
+        axios.post('download', {
+          name: name,
+          quality: quality,
+          fromEp: 0,
+          untilEp: 20000
+        }).then(({data}) => {
           console.log(`[${(new Date()).toLocaleTimeString()}]: Server responded!`)
 
-          const links = resp.data.links
-
-          console.log(links)
-
-          links.forEach((link) => {
+          data.forEach((link) => {
             window.open(link)
           })
         }).catch((err) => {
           console.log(`[${(new Date()).toLocaleTimeString()}]: An error occurred... ${err}`)
+          this.$store.commit('setErrorSnackbar', `An error occurred while getting ${name}.`)
         })
       },
       refresh() {
         this.$store.dispatch('refreshReleases')
       },
       print(item) {
-        console.log(`[${(new Date()).toLocaleTimeString()}]: Downloading ${item.name} -- ${item.ep}`)
+        console.log(`[${(new Date()).toLocaleTimeString()}]: Downloading ${item.name}.`)
       }
     }
   }

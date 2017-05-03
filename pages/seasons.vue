@@ -86,13 +86,6 @@
 														</v-list-item>
 														<v-list-item>
 															<v-list-tile>
-																<v-list-tile-title v-on:click.stop="downloadAll(item.title)">
-																	Download all episodes
-																</v-list-tile-title>
-															</v-list-tile>
-														</v-list-item>
-														<v-list-item>
-															<v-list-tile>
 																<v-list-tile-title>Information</v-list-tile-title>
 															</v-list-tile>
 														</v-list-item>
@@ -197,7 +190,7 @@
         return string.split(' ').slice(0, 3).join(' ')
       },
       episode(nbEp) {
-        return nbEp !== '1'
+        return parseInt(nbEp) !== '1'
             ? 'episodes'
             : 'episode'
       },
@@ -215,7 +208,7 @@
         this.$store.dispatch('refreshSeasons')
       },
       openModal(title, text) {
-        console.log(`Opening modal for ${title}`)
+        console.log(`[${(new Date()).toLocaleTimeString()}]Opening modal for ${title}`)
 
         this.modalTitle = title
         this.modalText = text
@@ -239,19 +232,6 @@
           return {season: 'summer', year: year}
         else if (9 < month && month < 13)  // Fall
           return {season: 'fall', year: year}
-      },
-      downloadAll(name) {
-        console.log(`Sending a request to download all episodes of ${name}`)
-
-        axios.get(`/download?name=${name}`).then((resp) => {
-          console.log('Server responded!')
-
-          const links = resp.data.links
-
-          links.forEach((link) => {
-            window.open(link)
-          })
-        })
       }
     }
   }

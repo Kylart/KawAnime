@@ -14,7 +14,7 @@ const parseTorrent = require('parse-torrent')
 const DIR = path.join(os.userInfo().homedir, '.KawAnime')
 
 // Nyanpasu ~
-const player = require('play-sound')(opts = {})
+const player = require('play-sound')({})
 
 const deleteOldTorrents = () => {
   console.log('[Downloader] Processing to purge all old torrent files.')
@@ -42,7 +42,7 @@ const openMagnets = (res, items, data) => {
       toReturn.links.push(item.link[0] + '&magnet=1')
   })
 
-  res.writeHead(200, {"Content-type": "application/json"})
+  res.writeHead(200, {'Content-type': 'application/json'})
   res.write(JSON.stringify(toReturn))
   res.end()
 }
@@ -108,7 +108,7 @@ const giveMagnetsHash = (res, items, data) => {
       }
     }
 
-    res.writeHead(200, {"Content-type": "application/json"})
+    res.writeHead(200, {'Content-type': 'application/json'})
     res.write(JSON.stringify(toReturn))
     res.end()
 
