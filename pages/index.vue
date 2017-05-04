@@ -2,10 +2,10 @@
 	<v-container fluid class="container">
 		<div v-if="$store.state.releases.length">
 			<v-row style="margin: 0 1% 0 1%;">
-				<v-col md2 sm2 xs12 class="time-container">
+				<v-col md3 sm4 xs12 class="time-container">
 					<span class="update-time">Updated at: {{ lastUpdateTime }}</span>
 				</v-col>
-				<v-col md6 sm3 xs0></v-col>
+				<v-col md5 sm1 xs0></v-col>
 				<v-col md2 sm3 xs12>
 					<v-select
 									class="select"
@@ -51,10 +51,10 @@
 											<h6>Ep {{ item.ep }}</h6>
 										</v-col>
 										<v-col class="elem-image"
-										       xl5 lg4 md5 sm4>
+										       xl5 lg4 md5 sm3 xs4>
 											<img v-bind:src="item.picture" height="200" class="picture"/>
 										</v-col>
-										<v-col xl7 lg8 md7 sm8>
+										<v-col xl7 lg8 md7 sm9 xs8>
 											<div class="elem-text-links">
 												<div class="synopsis">
 													<p>{{ item.synopsis }}</p>
