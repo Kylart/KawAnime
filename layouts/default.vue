@@ -213,6 +213,12 @@
 		padding: 0;
 	}
 
+	/*noinspection CssUnusedSymbol*/
+	.sidebar .list--group__container .list__tile--active .list__tile__title
+	{
+		color: #ff9800;
+	}
+
 	.sidebar
 	{
 		padding-bottom: 0;
