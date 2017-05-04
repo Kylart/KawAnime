@@ -333,17 +333,13 @@ const store = new Vuex.Store({
 
         if (magnets === true)
         {
+          const lastEp = fromEp !== 1 ? +fromEp + +data.length : data.length
           console.log(`[${(new Date()).toLocaleTimeString()}]: User says he prefers having magnets hashes.`)
           commit('setDownloaderModal', {
             show: true,
-            title: `${name.replace('_', ' ')}\t ${fromEp} - ${untilEp}`,
+            title: `${name.replace('_', ' ')}\t ${fromEp} - ${lastEp}`,
             text: data
           })
-
-          axios.post('notify', {
-            text: 'Successfully got your magnets!',
-            sound: state.config.sound
-          }).catch(err => {console.log(err)})
         }
         else
         {

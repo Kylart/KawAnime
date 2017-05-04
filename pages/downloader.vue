@@ -86,7 +86,8 @@
 			</div>
 		</div>
 		<v-dialog v-model="$store.state.downloaderModal.show"
-		          width="600"
+		          scrollable
+		          width="800"
 		          class="magnet-modal">
 			<v-card class="secondary white--text">
 				<v-card-text class="white--text">
@@ -101,7 +102,7 @@
 						</v-col>
 						<v-col xs2></v-col>
 						<v-col xs12 v-for="link in $store.state.downloaderModal.text"
-						       class="subheading grey--text modal-text" :key="link">{{ link }}
+						       class="subheading grey--text modal-text" :key="link">{{ link.split('&')[0] }}
 						</v-col>
 					</v-row>
 				</v-card-text>
