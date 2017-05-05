@@ -1,21 +1,20 @@
-const path = require('path')
+const {join} = require('path')
 
 // Init files and directories
-const initFile = require(path.join(__dirname, 'assets', 'scripts', 'init', 'main.js'))
+const initFile = require(join(__dirname, 'assets', 'scripts', 'init', 'main.js'))
 
-/*
- **  Nuxt.js part
+/**
+ *  Nuxt.js part
  */
-process.env.NODE_ENV = process.env.NODE_ENV || 'production'
-let win = null // Current window
-
 const http = require('http')
 const Nuxt = require('nuxt')
+
+process.env.NODE_ENV = process.env.NODE_ENV || 'production'
 
 // Import and Set Nuxt.js options
 let config = require('./nuxt.config.js')
 config.dev = !(process.env.NODE_ENV === 'production')
-config.rootDir = __dirname // for electron-packager
+config.rootDir = __dirname // for electron-builder
 
 // Init Nuxt.js
 const nuxt = new Nuxt(config)
@@ -37,33 +36,32 @@ if (config.dev)
 // Listen the server
 server.listen()
 const _NUXT_URL_ = `http://localhost:${server.address().port}`
-console.log(`Nuxt working on ${_NUXT_URL_}`)
+console.log(`KawAnime is at ${_NUXT_URL_}`)
 
 /*
  ** Electron app
  */
-const electron = require('electron')
-const Menu = electron.Menu
+const {Menu, app, BrowserWindow} = require('electron')
 const url = require('url')
+
+const menuFile = require(join(__dirname, 'assets', 'scripts', 'menu.js'))
+const menu = Menu.buildFromTemplate(menuFile.menu)
+
+let win = null // Current window
 
 const POLL_INTERVAL = 300
 const pollServer = () => {
-  http.get(_NUXT_URL_, (res) => {
-    const SERVER_DOWN = res.statusCode !== 200
-    SERVER_DOWN ? setTimeout(pollServer, POLL_INTERVAL) : win.loadURL(_NUXT_URL_)
+  http.get(_NUXT_URL_, ({statusCode}) => {
+    statusCode !== 200
+        ? setTimeout(pollServer, POLL_INTERVAL)
+        : win.loadURL(_NUXT_URL_)
   })
       .on('error', pollServer)
 }
 
-const app = electron.app
-const bw = electron.BrowserWindow
-
-const menuFile = require(path.join(__dirname, 'assets', 'scripts', 'menu.js'))
-const template = menuFile.menu
-const menu = Menu.buildFromTemplate(template)
 
 const newWin = () => {
-  win = new bw({
+  win = new BrowserWindow({
     width: config.electron.width,
     height: config.electron.height,
     titleBarStyle: 'hidden',
@@ -74,13 +72,10 @@ const newWin = () => {
     win.show()
   })
 
-  if (!config.dev)
-  {
-    return win.loadURL(_NUXT_URL_)
-  }
-
-  win.loadURL(url.format({
-    pathname: path.join(__dirname, 'index.html'),
+  !config.dev
+      ? win.loadURL(_NUXT_URL_)
+      : win.loadURL(url.format({
+    pathname: join(__dirname, 'index.html'),
     protocol: 'file:',
     slashes: true
   }))
