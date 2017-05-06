@@ -21,6 +21,7 @@
 								<v-select v-bind:items="fansubChoices"
 								          v-model="config.fansub"
 								          dark
+								          disabled
 								          single-line
 								          auto/>
 							</v-col>
