@@ -4,25 +4,6 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
 
-import {join} from 'path'
-import {userInfo} from 'os'
-import {readFileSync} from 'fs'
-
-const configPath = join(userInfo().homedir, '.KawAnime', 'config.json')
-const configFile = readFileSync(configPath)
-
-const config = JSON.parse(configFile).config
-
-// config file looks like this
-// const config = {
-//   fansub: 'HorribleSubs',
-//   quality: '720p',
-//   sound: 'Nyanpasu',
-//   localPath: join(userInfo().homedir, 'Downloads'),
-//   inside: true,
-//   magnets: false
-// }
-
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
@@ -68,8 +49,19 @@ const store = new Vuex.Store({
     historyModal: false
   },
   mutations: {
-    init(state) {
+    init(state, data) {
+      const config = data
       config.inside = config.inside.toString()
+
+      // config file looks like this
+      // const config = {
+      //   fansub: 'HorribleSubs',
+      //   quality: '720p',
+      //   sound: 'Nyanpasu',
+      //   localPath: join(userInfo().homedir, 'Downloads'),
+      //   inside: true,
+      //   magnets: false
+      // }
 
       state.releaseFansub = config.fansub
       state.releaseQuality = config.quality
@@ -164,6 +156,19 @@ const store = new Vuex.Store({
     }
   },
   actions: {
+    async init({commit, dispatch}) {
+      console.log('[SERVER INIT]')
+      const {data} = await axios.get('getConfig.json')
+      commit('init', data.config)
+
+      dispatch('downloaderInit').catch(err => {})
+      dispatch('releasesInit').catch(err => {})
+      dispatch('seasonsInit').catch(err => {})
+      dispatch('newsInit').catch(err => {})
+      dispatch('localInit').catch(err => {})
+      dispatch('listInit').catch(err => {})
+      dispatch('getHistory').catch(err => {})
+    },
     async downloaderInit({commit}) {
       const {data} = await axios.get('getAllShows.json')
 
@@ -377,15 +382,6 @@ const store = new Vuex.Store({
   }
 })
 
-store.commit('init')
-
-store.dispatch('downloaderInit').catch(err => {})
-store.dispatch('releasesInit').catch(err => {})
-store.dispatch('seasonsInit').catch(err => {})
-store.dispatch('newsInit').catch(err => {})
-store.dispatch('localInit').catch(err => {})
-store.dispatch('listInit').catch(err => {})
-store.dispatch('getHistory').catch(err => {})
-
+store.dispatch('init').catch(err => {})
 
 export default store

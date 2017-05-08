@@ -79,13 +79,13 @@ const wl = require('./watchList.js')
 const history = require('./history')
 const horrible = require('./horrible.js')
 
-exports.route = (nuxt) => {
+const route = (nuxt) => {
   return (req, res) => {
     const url = new URL(req.url)
 
     switch (url.pathname)
     {
-      case '/getConf':
+      case '/getConfig.json':
         const configPath = join(dir, 'config.json');
         const configFile = JSON.parse(fs.readFileSync(configPath));
 
@@ -164,4 +164,8 @@ exports.route = (nuxt) => {
         nuxt.render(req, res)
     }
   }
+}
+
+module.exports = {
+  route
 }
