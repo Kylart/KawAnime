@@ -41,7 +41,7 @@ exports.getLocalFiles = (url, res) => {
 
   files.forEach((file) => {
     extensions.forEach((extensions) => {
-      if (extname(file) === extensions) { filteredFiles.push({raw: file}) }
+      if (extname(file) === extensions) filteredFiles.push({raw: file})
     })
   })
 

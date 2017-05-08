@@ -36,12 +36,13 @@
     "devtron": "^1.4.0",
     "electron": "^1.6.6",
     "electron-builder": "^17.1.1",
+    "pre-commit": "^1.2.2",
     "standard": "^10.0.2",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.1",
     "vue-devtools": "^3.0.8"
   },
-  "precommit": "npm run lint",
+  "precommit": "lint",
   "build": {
     "appId": "KawAnime",
     "dmg": {
