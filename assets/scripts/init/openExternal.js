@@ -81,3 +81,11 @@ exports.openExternal = (url, res) => {
       break
   }
 }
+
+exports.openInBrowser = (uri, res) => {
+  shell.openExternal(uri)
+
+  res.writeHead(200, {"Content-Type": "application/json"})
+  res.write(JSON.stringify({uri: uri}))
+  res.end()
+}

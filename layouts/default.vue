@@ -42,6 +42,13 @@
 								</v-card-row>
 							</v-card>
 						</v-dialog>
+
+						<v-btn icon
+						       class="open-in-browser"
+						       v-tooltip:left="{ html: 'Open KawAnime in your browser' }"
+						       @click.native="$store.dispatch('openInBrowser')">
+							<v-icon>open_in_new</v-icon>
+						</v-btn>
 					</div>
 				</div>
 			</v-toolbar-logo>
@@ -253,6 +260,11 @@
 		font-family: 'Roboto', sans-serif;
 		line-height: 24px;
 		color: rgba(255, 255, 255, 0.8);
+	}
+
+	.open-in-browser
+	{
+		margin-top: 6px !important;
 	}
 
 	.sidebar-title-container

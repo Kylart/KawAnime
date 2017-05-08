@@ -106,6 +106,7 @@ app.on('ready', () => {
   newWin()
 
   process.win = win
+  process.nuxtURL = _NUXT_URL_
 })
 
 // Quit when all windows are closed.

@@ -378,6 +378,10 @@ const store = new Vuex.Store({
         console.log(`[${(new Date()).toLocaleTimeString()}]: An error occurred while gathering the history.`)
 
       commit('setHistory', data)
+    },
+    async openInBrowser() {
+      const {data} = await axios.get('/_openInBrowser')
+      console.log(`[${(new Date()).toLocaleTimeString()}]: Opening KawAnime in browser at ${data.uri}.`)
     }
   }
 })

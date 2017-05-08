@@ -71,7 +71,7 @@ if (!fs.existsSync(historyPath))
   fs.writeFileSync(historyPath, '{}', 'utf-8')
 }
 
-const {openExternal} = require('./openExternal.js')
+const {openExternal, openInBrowser} = require('./openExternal.js')
 const seasons = require('./seasons.js')
 const news = require('./news.js')
 const local = require('./local.js')
@@ -158,6 +158,10 @@ const route = (nuxt) => {
         })
         res.writeHead(200, {});
         res.end();
+        break
+
+      case '/_openInBrowser':
+        openInBrowser(process.nuxtURL, res)
         break
 
       default:
