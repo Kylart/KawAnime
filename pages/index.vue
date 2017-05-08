@@ -45,7 +45,7 @@
 								<v-container fluid style="padding: 0;">
 									<v-row>
 										<v-col class="elem-title" xs9 v-tooltip:top="{ html: item.name }">
-											<h6>{{ item.name }}</h6>
+											<h6>{{ item.rawName }}</h6>
 										</v-col>
 										<v-col v-tooltip:top="{ html: 'Episode ' + item.ep }" class="elem-ep text-xs-right" xs3>
 											<h6>Ep {{ item.ep }}</h6>

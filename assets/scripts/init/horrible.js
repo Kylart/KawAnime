@@ -22,7 +22,7 @@ exports.getLatest = (url, res) => {
     {
       const realName = result[i].name
       const name = realName.split(' ').slice(1).join(' ')
-      const rawName = realName.split(' ').slice(1, -2).join(' ')
+      const rawName = name.split(' ').slice(0, -2).join(' ')
       const researchName = rawName.split(' ').join('').toLowerCase()
       const ep = name.split(' ').slice(-1)[0]
       const link = result[i].link
@@ -38,6 +38,7 @@ exports.getLatest = (url, res) => {
 
         toReturn[i] = {
           name: name,
+          rawName: rawName,
           researchName: researchName,
           ep: ep,
           magnetLink: link,
