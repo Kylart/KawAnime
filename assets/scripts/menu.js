@@ -2,10 +2,8 @@
  * Created by Kylart on 18/03/2017.
  */
 
-const path = require('path')
 const electron = require('electron')
-const app = require('electron').app
-const url = require('url')
+const app = electron.app
 
 const template = () => {
   let menu = [

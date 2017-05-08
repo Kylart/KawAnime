@@ -11,11 +11,10 @@ exports.getSeason = (url, res) => {
   malScraper.getSeason(query.year, query.season).then((result) => {
     console.log(`[Mal-Scraper] (Seasons): Now having ${query.season} ${query.year}.`)
 
-    res.writeHead(200, {"Content-Type": "application/json"})
+    res.writeHead(200, {'Content-Type': 'application/json'})
     res.write(JSON.stringify(result))
     res.end()
   }).catch((err) => {
     console.log(err)
   })
 }
-

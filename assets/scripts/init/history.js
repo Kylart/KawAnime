@@ -5,7 +5,6 @@
 const {join} = require('path')
 const {writeFileSync} = require('fs')
 const {userInfo} = require('os')
-const qs = require('querystring')
 
 const dir = join(userInfo().homedir, '.KawAnime')
 
@@ -51,7 +50,7 @@ exports.getHistory = (res) => {
   const historyFile = require(historyPath)
 
   // Sending response
-  res.writeHead(200, {"Content-Type": "application/json"})
+  res.writeHead(200, {'Content-Type': 'application/json'})
   res.write(JSON.stringify(historyFile))
   res.end()
 }

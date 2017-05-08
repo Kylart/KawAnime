@@ -86,12 +86,12 @@ const route = (nuxt) => {
     switch (url.pathname)
     {
       case '/getConfig.json':
-        const configPath = join(dir, 'config.json');
-        const configFile = JSON.parse(fs.readFileSync(configPath));
+        const configPath = join(dir, 'config.json')
+        const configFile = JSON.parse(fs.readFileSync(configPath))
 
-        res.writeHead(200, {"Content-Type": "application/json"});
-        res.write(JSON.stringify(configFile));
-        res.end();
+        res.writeHead(200, {'Content-Type': 'application/json'})
+        res.write(JSON.stringify(configFile))
+        res.end()
         break
 
       case '/getLatest.json':
@@ -156,8 +156,8 @@ const route = (nuxt) => {
           fs.writeFileSync(join(dir, 'config.json'), JSON.stringify(data))
           console.log('[Open-External]: Successfully saved config!')
         })
-        res.writeHead(200, {});
-        res.end();
+        res.writeHead(200, {})
+        res.end()
         break
 
       case '/_openInBrowser':

@@ -6,7 +6,8 @@ its behaviour had to change a bit.
 _KawAnime_ is at the moment __fully based__ on HorribleSubs as for its downloading features. Some other fansub might be 
 implemented in the feature to offer more choices.
 
-# _KawAnime_
+# _KawAnime_  
+[![JavaScript Style Guide](https://cdn.rawgit.com/feross/standard/master/badge.svg)](https://github.com/feross/standard)
 
 Disclaimer : This is a software for otaku/anime-fans. Do not try if you're not prepared.
 

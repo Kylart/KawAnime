@@ -13,7 +13,7 @@ exports.getLists = (url, res) => {
 
   console.log(`[WatchList] Gathered lists from local.`)
 
-  res.writeHead(200, {"Content-Type": "application/json"})
+  res.writeHead(200, {'Content-Type': 'application/json'})
   res.write(JSON.stringify(wlFile))
   res.end()
 }

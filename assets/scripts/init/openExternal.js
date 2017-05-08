@@ -15,7 +15,7 @@ const sendEmptyRes = (res) => {
 }
 
 const sendRes = (res, data) => {
-  res.writeHead(200, {"Content-Type": "application/json"})
+  res.writeHead(200, {'Content-Type': 'application/json'})
   res.write(JSON.stringify(data))
   res.end()
 }
@@ -33,7 +33,7 @@ exports.openExternal = (url, res) => {
       break
 
     case 'video':
-      shell.openItem(join(query.dir, query.path));
+      shell.openItem(join(query.dir, query.path))
       sendEmptyRes(res)
       break
 
@@ -85,7 +85,7 @@ exports.openExternal = (url, res) => {
 exports.openInBrowser = (uri, res) => {
   shell.openExternal(uri)
 
-  res.writeHead(200, {"Content-Type": "application/json"})
+  res.writeHead(200, {'Content-Type': 'application/json'})
   res.write(JSON.stringify({uri: uri}))
   res.end()
 }

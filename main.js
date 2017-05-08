@@ -59,7 +59,6 @@ const pollServer = () => {
       .on('error', pollServer)
 }
 
-
 const newWin = () => {
   win = new BrowserWindow({
     width: config.electron.width,
@@ -80,7 +79,9 @@ const newWin = () => {
     slashes: true
   }))
 
-  win.on('closed', () => win = null)
+  win.on('closed', () => {
+    win = null
+  })
 
   pollServer()
 }

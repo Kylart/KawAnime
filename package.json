@@ -11,9 +11,11 @@
   "license": "MIT",
   "scripts": {
     "dev": "cross-env NODE_ENV=development electron .",
+    "test": "standard --fix && echo \"No test implemented yet.\"",
     "build": "nuxt build",
     "start": "electron .",
     "bstart": "nuxt build && npm start",
+    "precommit": "standard --fix",
     "buildLinux": "build --linux deb AppImage zip tar.gz",
     "buildWin": "build --win nsis --ia32 x64 appx zip squirrel",
     "buildMac": "build --mac dmg zip pkg",
@@ -34,6 +36,7 @@
     "devtron": "^1.4.0",
     "electron": "^1.6.6",
     "electron-builder": "^17.1.1",
+    "standard": "^10.0.2",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.1",
     "vue-devtools": "^3.0.8"

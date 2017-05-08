@@ -19,9 +19,9 @@ const getNameAndEp = (raw) => {
 
 const sendRes = (files, res, paths) => {
   for (let i = 0; i < files.length; ++i)
-    files[i].path = paths[i]
+  { files[i].path = paths[i] }
 
-  res.writeHead(200, {"Content-Type": "application/json"})
+  res.writeHead(200, {'Content-Type': 'application/json'})
   res.write(JSON.stringify(files))
   res.end()
 }
@@ -43,7 +43,7 @@ exports.getLocalFiles = (url, res) => {
   files.forEach((file) => {
     extensions.forEach((extensions) => {
       if (extname(file) === extensions)
-        filteredFiles.push({raw: file})
+      { filteredFiles.push({raw: file}) }
     })
   })
 
@@ -75,11 +75,10 @@ exports.getLocalFiles = (url, res) => {
       filteredFiles[i].synopsis = local.synopsis
 
       ++counter
-      if (counter === filteredFiles.length)
-        sendRes(filteredFiles, res, paths)
+      if (counter === filteredFiles.length) sendRes(filteredFiles, res, paths)
     }
-    else // Research on MAL
-    {
+    else
+    { // Research on MAL
       console.log(`[Local] Looking for ${filteredFiles[i].name} on MAL.`)
 
       malScraper.getInfoFromName(nameAndEp.name).then((anime) => {
@@ -110,7 +109,7 @@ exports.getLocalFiles = (url, res) => {
 
           ++counter
           if (counter === filteredFiles.length)
-            sendRes(filteredFiles, res, paths)
+          { sendRes(filteredFiles, res, paths) }
         })
       }).catch((err) => {
         console.log('[Local] ' + err)
