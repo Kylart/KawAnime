@@ -90,8 +90,7 @@ const template = () => {
     }
   ]
 
-  if (process.platform === 'darwin')
-  {
+  if (process.platform === 'darwin') {
     menu.unshift({
       label: app.getName(),
       submenu: [
@@ -135,20 +134,20 @@ const template = () => {
     // Edit menu.
     menu[1].submenu.pop()   // Removing preferences from this part.
     menu[1].submenu.push(
-        {
-          type: 'separator'
-        },
-        {
-          label: 'Speech',
-          submenu: [
-            {
-              role: 'startspeaking'
-            },
-            {
-              role: 'stopspeaking'
-            }
-          ]
-        }
+      {
+        type: 'separator'
+      },
+      {
+        label: 'Speech',
+        submenu: [
+          {
+            role: 'startspeaking'
+          },
+          {
+            role: 'stopspeaking'
+          }
+        ]
+      }
     )
     // Window menu.
     menu[3].submenu = [

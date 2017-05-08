@@ -17,8 +17,7 @@ if (!fs.existsSync(dir)) fs.mkdirSync(dir)
 // Conf file
 const confPath = join(dir, 'config.json')
 
-if (!fs.existsSync(confPath))
-{
+if (!fs.existsSync(confPath)) {
   console.log('No configuration file detected. Creating...')
 
   const basicConf = {
@@ -38,8 +37,7 @@ if (!fs.existsSync(confPath))
 // Local file
 const animeLocalPath = join(dir, 'locals.json')
 
-if (!fs.existsSync(animeLocalPath))
-{
+if (!fs.existsSync(animeLocalPath)) {
   console.log('No anime local file file detected. Creating...')
 
   fs.writeFileSync(animeLocalPath, '{}', 'utf-8')
@@ -48,8 +46,7 @@ if (!fs.existsSync(animeLocalPath))
 // List file
 const listPath = join(dir, 'lists.json')
 
-if (!fs.existsSync(listPath))
-{
+if (!fs.existsSync(listPath)) {
   console.log('No anime list file detected. Creating...')
 
   const basicLists = {
@@ -64,8 +61,7 @@ if (!fs.existsSync(listPath))
 // History file
 const historyPath = join(dir, 'history.json')
 
-if (!fs.existsSync(historyPath))
-{
+if (!fs.existsSync(historyPath)) {
   console.log('No watch history file detected. Creating...')
 
   fs.writeFileSync(historyPath, '{}', 'utf-8')
@@ -83,8 +79,7 @@ const route = (nuxt) => {
   return (req, res) => {
     const url = new URL(req.url)
 
-    switch (url.pathname)
-    {
+    switch (url.pathname) {
       case '/getConfig.json':
         const configPath = join(dir, 'config.json')
         const configFile = JSON.parse(fs.readFileSync(configPath))

@@ -180,8 +180,7 @@ const store = new Vuex.Store({
       const {data, status} = await axios.get(`getLatest.json?quality=${state.releaseQuality}`)
 
       if (status === 200) commit('setReleases', data)
-      else if (status === 204)
-      {
+      else if (status === 204) {
         console.log(`[${(new Date()).toLocaleTimeString()}]: An error occurred while getting the latest releases. Retrying in 30 seconds.`)
         commit('setErrorSnackbar', 'Could not get the latest releases. Retrying in 30 seconds.')
         setTimeout(function () {
@@ -228,8 +227,7 @@ const store = new Vuex.Store({
       const {data, status} = await axios.get(`getLatest.json?quality=${state.releaseQuality}`)
 
       if (status === 200) commit('setReleases', data)
-      else if (status === 204)
-      {
+      else if (status === 204) {
         console.log(`[${(new Date()).toLocaleTimeString()}]: An error occurred while getting the latest releases. Retrying in 30 seconds.`)
         commit('setErrorSnackbar', 'Could not get the latest releases. Retrying in 30 seconds.')
         setTimeout(function () {
@@ -270,15 +268,12 @@ const store = new Vuex.Store({
       console.log(`[${(new Date()).toLocaleTimeString()}]: Resetting local information...`)
 
       axios.get('resetLocal').then(({status}) => {
-        if (status !== 200)
-        {
+        if (status !== 200) {
           console.log(`[${(new Date()).toLocaleTimeString()}]: Server failed to suppress old data with code ${status}...`)
           console.log(`[${(new Date()).toLocaleTimeString()}]: Retrying in 5 seconds...`)
 
           setTimeout(dispatch('resetLocal'), 5 * 1000)
-        }
-        else
-        {
+        } else {
           dispatch('refreshLocal').then(
               console.log(`[${(new Date()).toLocaleTimeString()}]: Reset completed.`)
           )
@@ -303,10 +298,7 @@ const store = new Vuex.Store({
     async openNewsLink ({state}, link) {
       console.log(`[${(new Date()).toLocaleTimeString()}]: Opening a link`)
 
-      if ((state.config.inside === 'true') === false)
-      { await axios.get(`openThis?type=link&link=${link}`) }
-      else
-      { await axios.get(`openThis?type=insideLink&link=${link}`) }
+      if ((state.config.inside === 'true') === false) { await axios.get(`openThis?type=link&link=${link}`) } else { await axios.get(`openThis?type=insideLink&link=${link}`) }
     },
     async download ({state, commit}) {
       const name = state.downloaderForm.name.replace(' ', '_')
@@ -331,12 +323,10 @@ const store = new Vuex.Store({
 
       state.downloaderForm.loading = false
 
-      if (status === 200)
-      {
+      if (status === 200) {
         console.log(`[${(new Date()).toLocaleTimeString()}]: Request fulfilled!`)
 
-        if (magnets === true)
-        {
+        if (magnets === true) {
           const lastEp = fromEp !== '1' ? +fromEp + +data.length : data.length
           console.log(`[${(new Date()).toLocaleTimeString()}]: User says he prefers having magnets hashes.`)
           commit('setDownloaderModal', {
@@ -344,9 +334,7 @@ const store = new Vuex.Store({
             title: `${name.replace('_', ' ')}\t ${fromEp} - ${lastEp}`,
             text: data
           })
-        }
-        else
-        {
+        } else {
           console.log(`[${(new Date()).toLocaleTimeString()}]: Opening torrents directly on preferred torrent client.`)
 
           data.forEach((link) => {
@@ -357,8 +345,7 @@ const store = new Vuex.Store({
     },
     saveConfig ({}, data) {  // eslint-disable-line
       axios.post('saveConfig', JSON.stringify(data)).then((res) => {
-        if (res.status === 200)
-        { console.log(`[${(new Date()).toLocaleTimeString()}]: Successfully updated config!`) }
+        if (res.status === 200) { console.log(`[${(new Date()).toLocaleTimeString()}]: Successfully updated config!`) }
       }).catch((err) => {
         console.log(`[${(new Date()).toLocaleTimeString()}]: An error occurred while saving config: ${err}`)
       })
@@ -373,8 +360,7 @@ const store = new Vuex.Store({
     async getHistory ({commit}) {
       const {data, status} = await axios.get('getHistory?')
 
-      if (status !== 200)
-      { console.log(`[${(new Date()).toLocaleTimeString()}]: An error occurred while gathering the history.`) }
+      if (status !== 200) { console.log(`[${(new Date()).toLocaleTimeString()}]: An error occurred while gathering the history.`) }
 
       commit('setHistory', data)
     },

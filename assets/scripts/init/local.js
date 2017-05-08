@@ -18,8 +18,7 @@ const getNameAndEp = (raw) => {
 }
 
 const sendRes = (files, res, paths) => {
-  for (let i = 0; i < files.length; ++i)
-  { files[i].path = paths[i] }
+  for (let i = 0; i < files.length; ++i) { files[i].path = paths[i] }
 
   res.writeHead(200, {'Content-Type': 'application/json'})
   res.write(JSON.stringify(files))
@@ -42,16 +41,14 @@ exports.getLocalFiles = (url, res) => {
 
   files.forEach((file) => {
     extensions.forEach((extensions) => {
-      if (extname(file) === extensions)
-      { filteredFiles.push({raw: file}) }
+      if (extname(file) === extensions) { filteredFiles.push({raw: file}) }
     })
   })
 
   // TODO
   // If a name does not exist in locals.json and there are several episodes of it
   // It will send as many request as there are of episode. Not good
-  for (let i = 0; i < filteredFiles.length; ++i)
-  {
+  for (let i = 0; i < filteredFiles.length; ++i) {
     const nameAndEp = getNameAndEp(filteredFiles[i])
 
     filteredFiles[i].name = nameAndEp.name
@@ -59,8 +56,7 @@ exports.getLocalFiles = (url, res) => {
     filteredFiles[i].researchName = nameAndEp.name.split(' ').join('').toLocaleLowerCase()
 
     // Doing research on local file.
-    if (animeFile[filteredFiles[i].researchName])
-    {
+    if (animeFile[filteredFiles[i].researchName]) {
       paths[i] = filteredFiles[i].raw
 
       const local = animeFile[filteredFiles[i].researchName]
@@ -76,9 +72,7 @@ exports.getLocalFiles = (url, res) => {
 
       ++counter
       if (counter === filteredFiles.length) sendRes(filteredFiles, res, paths)
-    }
-    else
-    { // Research on MAL
+    } else { // Research on MAL
       console.log(`[Local] Looking for ${filteredFiles[i].name} on MAL.`)
 
       malScraper.getInfoFromName(nameAndEp.name).then((anime) => {
@@ -108,8 +102,7 @@ exports.getLocalFiles = (url, res) => {
           if (err) throw err
 
           ++counter
-          if (counter === filteredFiles.length)
-          { sendRes(filteredFiles, res, paths) }
+          if (counter === filteredFiles.length) { sendRes(filteredFiles, res, paths) }
         })
       }).catch((err) => {
         console.log('[Local] ' + err)

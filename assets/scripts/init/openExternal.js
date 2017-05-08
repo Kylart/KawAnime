@@ -26,8 +26,7 @@ exports.openExternal = (url, res) => {
   const type = query.type
   console.log('[Open-External] Got a request for external open: type is ' + type)
 
-  switch (type)
-  {
+  switch (type) {
     case 'dummy':
       shell.openExternal('http://hestia.dance')
       break
@@ -66,8 +65,7 @@ exports.openExternal = (url, res) => {
 
     case 'dialog':
       dialog.showOpenDialog({properties: ['openDirectory']}, (dirPath) => {
-        if (dirPath !== undefined)
-        {
+        if (dirPath !== undefined) {
           const result = {
             path: dirPath[0]
           }

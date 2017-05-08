@@ -22,14 +22,11 @@ exports.modifyWatchList = (req, res) => {
   req.on('data', (chunk) => {
     const wlFile = require(wlPath)
 
-    if (chunk.query === 'append')
-    {
+    if (chunk.query === 'append') {
       wlFile.watchList.push(chunk)
 
       fs.writeFileSync(wlPath, JSON.stringify(wlFile), 'utf-8')
-    }
-    else if (chunk.query === 'delete')
-    {
+    } else if (chunk.query === 'delete') {
       // TODO
     }
 
@@ -42,14 +39,11 @@ exports.modifySeen = (req, res) => {
   req.on('data', (chunk) => {
     const wlFile = require(wlPath)
 
-    if (chunk.query === 'append')
-    {
+    if (chunk.query === 'append') {
       wlFile.seen.push(chunk)
 
       fs.writeFileSync(wlPath, JSON.stringify(wlFile), 'utf-8')
-    }
-    else if (chunk.query === 'delete')
-    {
+    } else if (chunk.query === 'delete') {
       // TODO
     }
 
@@ -62,14 +56,11 @@ exports.modifyWatching = (req, res) => {
   req.on('data', (chunk) => {
     const wlFile = require(wlPath)
 
-    if (chunk.query === 'append')
-    {
+    if (chunk.query === 'append') {
       wlFile.watching.push(chunk)
 
       fs.writeFileSync(wlPath, JSON.stringify(wlFile), 'utf-8')
-    }
-    else if (chunk.query === 'delete')
-    {
+    } else if (chunk.query === 'delete') {
       // TODO
     }
 

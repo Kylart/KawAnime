@@ -18,8 +18,7 @@ exports.getLatest = (url, res) => {
   let toReturn = []
 
   horribleApi.getLatest(quality.toString()).then((result) => {
-    for (let i = 0; i < result.length; ++i)
-    {
+    for (let i = 0; i < result.length; ++i) {
       const realName = result[i].name
       const name = realName.split(' ').slice(1).join(' ')
       const rawName = name.split(' ').slice(0, -2).join(' ')
@@ -33,8 +32,8 @@ exports.getLatest = (url, res) => {
         const picture = item.picture
         const fullSynopsis = item.synopsis
         const synopsis = item.synopsis.length > 170
-            ? item.synopsis.slice(0, 175) + '...'
-            : fullSynopsis
+          ? item.synopsis.slice(0, 175) + '...'
+          : fullSynopsis
 
         toReturn[i] = {
           name: name,
@@ -48,8 +47,7 @@ exports.getLatest = (url, res) => {
         }
 
         ++counter
-        if (counter === 18)
-        {
+        if (counter === 18) {
           console.log('[Horrible] (Releases): Sending Latest releases.')
           res.writeHead(200, {'Content-type': 'application/json'})
           res.write(JSON.stringify(toReturn))

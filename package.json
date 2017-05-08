@@ -15,7 +15,7 @@
     "build": "nuxt build",
     "start": "electron .",
     "bstart": "nuxt build && npm start",
-    "precommit": "standard --fix",
+    "lint": "standard --fix",
     "buildLinux": "build --linux deb AppImage zip tar.gz",
     "buildWin": "build --win nsis --ia32 x64 appx zip squirrel",
     "buildMac": "build --mac dmg zip pkg",
@@ -41,6 +41,7 @@
     "stylus-loader": "^3.0.1",
     "vue-devtools": "^3.0.8"
   },
+  "precommit": "npm run lint",
   "build": {
     "appId": "KawAnime",
     "dmg": {
