@@ -114,11 +114,7 @@ exports.getLocalFiles = (url, res) => {
 exports.resetLocal = (res) => {
   const listPath = join(userInfo().homedir, '.KawAnime', 'locals.json')
 
-  const basicLists = {
-    watchList: [],
-    seen: [],
-    watching: []
-  }
+  const basicLists = {}
 
   console.log('[Local]: Received a request for resetting old local data.')
 

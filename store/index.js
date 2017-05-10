@@ -6,6 +6,10 @@ import axios from 'axios'
 
 Vue.use(Vuex)
 
+const log = (message) => {
+  console.log(`[${(new Date()).toLocaleTimeString()}]: ${message}`)
+}
+
 const store = new Vuex.Store({
   state: {
     releaseFansub: '',
@@ -73,7 +77,7 @@ const store = new Vuex.Store({
     },
     setDownloaderList (state, data) {
       state.downloaderList = data
-      console.log(`[${(new Date()).toLocaleTimeString()}]: ${data.length} anime name loaded.`)
+      log(`${data.length} anime name loaded.`)
     },
     setErrorSnackbar (state, data) {
       state.errorSnackbar.text = data
@@ -86,7 +90,7 @@ const store = new Vuex.Store({
     setSeasons: function (state, data) {
       state.seasons = data.info
       state.seasonsStats = data.stats
-      console.log(`[${(new Date()).toLocaleTimeString()}]: Seasons set.`)
+      log(`Seasons set.`)
     },
     emptySeasons: function (state) {
       state.seasons = []
@@ -96,25 +100,25 @@ const store = new Vuex.Store({
     },
     setReleases: function (state, data) {
       state.releases = data
-      console.log(`[${(new Date()).toLocaleTimeString()}]: Releases updated.`)
+      log(`Releases updated.`)
     },
     emptyNews: function (state) {
       state.news = []
     },
     setNews: function (state, data) {
       state.news = data
-      console.log(`[${(new Date()).toLocaleTimeString()}]: News updated.`)
+      log(`News updated.`)
     },
     emptyLocals: function (state) {
       state.localFiles = []
     },
     setLocalFiles: function (state, data) {
       state.localFiles = data
-      console.log(`[${(new Date()).toLocaleTimeString()}]: Local files updated.`)
+      log(`Local files updated.`)
     },
     setCurrentDir: function (state, data) {
       state.currentDir = data
-      console.log(`[${(new Date()).toLocaleTimeString()}]: Current directory now is ${state.currentDir}.`)
+      log(`Current directory now is ${state.currentDir}.`)
     },
     setWatchList: function (state, data) {
       state.watchList = data
@@ -127,7 +131,7 @@ const store = new Vuex.Store({
     },
     setConfigDir: function (state, data) {
       state.configDir = data
-      console.log(`[${(new Date()).toLocaleTimeString()}]: Config directory now is ${state.currentDir}`)
+      log(`Config directory now is ${state.currentDir}`)
     },
     setDownloaderValues: function (state, data) {
       state.downloaderForm = data
@@ -146,7 +150,7 @@ const store = new Vuex.Store({
     },
     setHistory: function (state, data) {
       state.history = data
-      console.log(`[${(new Date()).toLocaleTimeString()}]: History updated.`)
+      log(`History updated.`)
     },
     setHistoryModal: function (state, data) {
       state.historyModal = data
@@ -181,10 +185,10 @@ const store = new Vuex.Store({
 
       if (status === 200) commit('setReleases', data)
       else if (status === 204) {
-        console.log(`[${(new Date()).toLocaleTimeString()}]: An error occurred while getting the latest releases. Retrying in 30 seconds.`)
+        log(`An error occurred while getting the latest releases. Retrying in 30 seconds.`)
         commit('setErrorSnackbar', 'Could not get the latest releases. Retrying in 30 seconds.')
         setTimeout(function () {
-          console.log(`[${(new Date()).toLocaleTimeString()}]: Retrying to get latest releases.`)
+          log(`Retrying to get latest releases.`)
           dispatch('refreshReleases').catch(err => { void (err) })
         }, 30 * 1000)
       }
@@ -213,14 +217,14 @@ const store = new Vuex.Store({
 
       const {data} = await axios.get(`watchList.json?`)
 
-      console.log(`[${(new Date()).toLocaleTimeString()}]: Received watch lists.`)
+      log(`Received watch lists.`)
 
       commit('setWatchList', data.watchList)
       commit('setSeen', data.seen)
       commit('setWatching', data.watching)
     },
     async refreshReleases ({state, commit, dispatch}) {
-      console.log(`[${(new Date()).toLocaleTimeString()}]: Refreshing Releases...`)
+      log(`Refreshing Releases...`)
 
       commit('emptyReleases')
 
@@ -228,16 +232,16 @@ const store = new Vuex.Store({
 
       if (status === 200) commit('setReleases', data)
       else if (status === 204) {
-        console.log(`[${(new Date()).toLocaleTimeString()}]: An error occurred while getting the latest releases. Retrying in 30 seconds.`)
+        log(`An error occurred while getting the latest releases. Retrying in 30 seconds.`)
         commit('setErrorSnackbar', 'Could not get the latest releases. Retrying in 30 seconds.')
         setTimeout(function () {
-          console.log(`[${(new Date()).toLocaleTimeString()}]: Retrying to get latest releases.`)
+          log(`Retrying to get latest releases.`)
           dispatch('refreshReleases').catch(err => { void (err) })
         }, 30 * 1000)
       }
     },
     async refreshSeasons ({state, commit}) {
-      console.log(`[${(new Date()).toLocaleTimeString()}]: Refreshing Seasons...`)
+      log(`Refreshing Seasons...`)
 
       commit('emptySeasons')
 
@@ -249,7 +253,7 @@ const store = new Vuex.Store({
       console.log('Seasons refreshed.')
     },
     async refreshNews ({commit}) {
-      console.log(`[${(new Date()).toLocaleTimeString()}]: Refreshing News...`)
+      log(`Refreshing News...`)
 
       commit('emptyNews')
 
@@ -258,24 +262,24 @@ const store = new Vuex.Store({
       commit('setNews', data)
     },
     async refreshLocal ({commit, state}) {
-      console.log(`[${(new Date()).toLocaleTimeString()}]: Refreshing Local files...`)
+      log(`Refreshing Local files...`)
 
       const {data} = await axios.get(`local.json?dir=${state.currentDir}`)
 
       commit('setLocalFiles', data)
     },
     async resetLocal ({dispatch}) {
-      console.log(`[${(new Date()).toLocaleTimeString()}]: Resetting local information...`)
+      log(`Resetting local information...`)
 
       axios.get('resetLocal').then(({status}) => {
         if (status !== 200) {
-          console.log(`[${(new Date()).toLocaleTimeString()}]: Server failed to suppress old data with code ${status}...`)
-          console.log(`[${(new Date()).toLocaleTimeString()}]: Retrying in 5 seconds...`)
+          log(`Server failed to suppress old data with code ${status}...`)
+          log(`Retrying in 5 seconds...`)
 
           setTimeout(dispatch('resetLocal'), 5 * 1000)
         } else {
           dispatch('refreshLocal').then(
-              console.log(`[${(new Date()).toLocaleTimeString()}]: Reset completed.`)
+              log(`Reset completed.`)
           )
         }
       })
@@ -296,9 +300,10 @@ const store = new Vuex.Store({
       dispatch('refreshLocal')
     },
     async openNewsLink ({state}, link) {
-      console.log(`[${(new Date()).toLocaleTimeString()}]: Opening a link`)
+      log(`Opening a link`)
 
-      if ((state.config.inside === 'true') === false) { await axios.get(`openThis?type=link&link=${link}`) } else { await axios.get(`openThis?type=insideLink&link=${link}`) }
+      if ((state.config.inside === 'true') === false) await axios.get(`openThis?type=link&link=${link}`)
+      else await axios.get(`openThis?type=insideLink&link=${link}`)
     },
     async download ({state, commit}) {
       const name = state.downloaderForm.name.replace(' ', '_')
@@ -312,7 +317,7 @@ const store = new Vuex.Store({
 
       const magnets = state.config.magnets
 
-      console.log(`[${(new Date()).toLocaleTimeString()}]: Received a request to download ${name} from ep ${fromEp} to ep ${untilEp}. Transmitting...`)
+      log(`Received a request to download ${name} from ep ${fromEp} to ep ${untilEp}. Transmitting...`)
 
       const {data, status} = await axios.post('download', {
         name: name.replace('_', ' '),
@@ -324,18 +329,18 @@ const store = new Vuex.Store({
       state.downloaderForm.loading = false
 
       if (status === 200) {
-        console.log(`[${(new Date()).toLocaleTimeString()}]: Request fulfilled!`)
+        log(`Request fulfilled!`)
 
         if (magnets === true) {
           const lastEp = fromEp !== '1' ? +fromEp + +data.length : data.length
-          console.log(`[${(new Date()).toLocaleTimeString()}]: User says he prefers having magnets hashes.`)
+          log(`User says he prefers having magnets hashes.`)
           commit('setDownloaderModal', {
             show: true,
             title: `${name.replace('_', ' ')}\t ${fromEp} - ${lastEp}`,
             text: data
           })
         } else {
-          console.log(`[${(new Date()).toLocaleTimeString()}]: Opening torrents directly on preferred torrent client.`)
+          log(`Opening torrents directly on preferred torrent client.`)
 
           data.forEach((link) => {
             window.open(link)
@@ -345,28 +350,28 @@ const store = new Vuex.Store({
     },
     saveConfig ({}, data) {  // eslint-disable-line
       axios.post('saveConfig', JSON.stringify(data)).then((res) => {
-        if (res.status === 200) { console.log(`[${(new Date()).toLocaleTimeString()}]: Successfully updated config!`) }
+        if (res.status === 200) { log(`Successfully updated config!`) }
       }).catch((err) => {
-        console.log(`[${(new Date()).toLocaleTimeString()}]: An error occurred while saving config: ${err}`)
+        log(`An error occurred while saving config: ${err}`)
       })
     },
     appendHistory ({}, data) {  // eslint-disable-line
       axios.post('appendHistory', JSON.stringify(data)).then(() => {
-        console.log(`[${(new Date()).toLocaleTimeString()}]: Successfully appended to history.`)
+        log(`Successfully appended to history.`)
       }).catch((err) => {
-        console.log(`[${(new Date()).toLocaleTimeString()}]: An error occurred while appending to history... ${err}`)
+        log(`An error occurred while appending to history... ${err}`)
       })
     },
     async getHistory ({commit}) {
       const {data, status} = await axios.get('getHistory?')
 
-      if (status !== 200) { console.log(`[${(new Date()).toLocaleTimeString()}]: An error occurred while gathering the history.`) }
+      if (status !== 200) { log(`An error occurred while gathering the history.`) }
 
       commit('setHistory', data)
     },
     async openInBrowser () {
       const {data} = await axios.get('/_openInBrowser')
-      console.log(`[${(new Date()).toLocaleTimeString()}]: Opening KawAnime in browser at ${data.uri}.`)
+      log(`Opening KawAnime in browser at ${data.uri}.`)
     }
   }
 })

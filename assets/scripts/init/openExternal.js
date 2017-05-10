@@ -82,6 +82,7 @@ exports.openExternal = (url, res) => {
 
 exports.openInBrowser = (uri, res) => {
   shell.openExternal(uri)
+  if (!process.win === null) process.win.close()
 
   res.writeHead(200, {'Content-Type': 'application/json'})
   res.write(JSON.stringify({uri: uri}))
