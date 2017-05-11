@@ -168,38 +168,26 @@
         }
       },
       selectAll(i) {
-        switch (i)
+        const list = this.lists[i - 1]
+
+        if (this.selected[i].length === list.length)
         {
-          case 1:
-            if (this.selected[i].length === this.watchList.length)
-            {
-	            const elems = document.getElementsByClassName('elem')
+          const elems = document.getElementsByClassName('elem')
 
-              this.selected[i] = []
+          this.selected[i] = []
 
-	            for (let j = 0, l = elems.length; j < l; ++j)
-                elems[j].children[0].classList.remove('selected')
-            }
-            else
-            {
-              this.watchList.forEach((elem) => {
-                // Color element
-                const tmpElem = document.getElementsByClassName(elem.split(' ').join('-'))[0].children[0]
-                if (!tmpElem.classList.contains('selected') === true) tmpElem.className += ' selected'
-              })
-              // Add all elements to selected
-              this.selected[i] = [...this.watchList]
-            }
-            break
-
-          case 2:
-            break
-
-          case 3:
-            break
-
-          default:
-            break
+          for (let j = 0, l = elems.length; j < l; ++j)
+            elems[j].children[0].classList.remove('selected')
+        }
+        else
+        {
+          list.forEach((elem) => {
+            // Color element
+            const tmpElem = document.getElementsByClassName(elem.split(' ').join('-'))[0].children[0]
+            if (!tmpElem.classList.contains('selected') === true) tmpElem.className += ' selected'
+          })
+          // Add all elements to selected
+          this.selected[i] = [...list]
         }
       }
     }
