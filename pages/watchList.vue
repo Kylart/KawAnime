@@ -21,10 +21,10 @@
 						<v-row>
 							<v-col xs12>
 								<v-row class="top-form">
-									<v-col xs2>
+									<v-col md3 sm5 xs12>
 										<v-btn secondary icon
 										       @click.native="selectAll(i)"
-										       v-tooltip:bottom="{ html: allSelected[i] === true ? 'Unselect all' : 'Select all' }">
+										       v-tooltip:bottom="{ html: 'Select all' }">
 											<v-icon>select_all</v-icon>
 										</v-btn>
 										<v-menu transition="v-slide-x-transition"
@@ -40,8 +40,8 @@
 											</v-list>
 										</v-menu>
 									</v-col>
-									<v-col xs6></v-col>
-									<v-col xs2 @keyup.enter="addEntry(i)">
+									<v-col md5 sm1 xs0></v-col>
+									<v-col md2 sm4 xs12 @keyup.enter="addEntry(i)">
 										<v-text-field type="text"
 										              class="entry-text"
 										              label="Add entry"
@@ -49,7 +49,7 @@
 										              dark>
 										</v-text-field>
 									</v-col>
-									<v-col xs2 class="add-button-container">
+									<v-col md2 sm2 xs12 class="add-button-container">
 										<v-btn dark secondary
 										       @click.native="addEntry(i)"
 										       class="add-button">Add
@@ -112,11 +112,6 @@
           2: [],
           3: []
         },
-        allSelected: {
-          1: false,
-          2: false,
-          3: false
-        },
         entries: {
           1: '',
           2: '',
@@ -176,7 +171,16 @@
         switch (i)
         {
           case 1:
-            if (this.allSelected[i] === false)
+            if (this.selected[i].length === this.watchList.length)
+            {
+	            const elems = document.getElementsByClassName('elem')
+
+              this.selected[i] = []
+
+	            for (let j = 0, l = elems.length; j < l; ++j)
+                elems[j].children[0].classList.remove('selected')
+            }
+            else
             {
               this.watchList.forEach((elem) => {
                 // Color element
@@ -186,21 +190,6 @@
               // Add all elements to selected
               this.selected[i] = [...this.watchList]
             }
-            else
-            {
-              this.selected[i] = []
-	            const selectedItems = document.getElementsByClassName('selected')
-
-	            for ( let j = 0, l = selectedItems.length; j < l; ++j)
-	            {
-	              console.log(selectedItems[j])
-	              if (selectedItems[j].classList.contains('selected') === true)
-	                selectedItems[j].classList.remove('selected')
-	            }
-            }
-
-            this.allSelected[i] = !this.allSelected[i]
-
             break
 
           case 2:
