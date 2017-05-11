@@ -38,7 +38,7 @@ if (!fs.existsSync(confPath)) {
 const animeLocalPath = join(dir, 'locals.json')
 
 if (!fs.existsSync(animeLocalPath)) {
-  console.log('No anime local file file detected. Creating...')
+  console.log('No anime local file detected. Creating...')
 
   fs.writeFileSync(animeLocalPath, '{}', 'utf-8')
 }
@@ -114,7 +114,8 @@ const route = (nuxt) => {
         break
 
       case '/local.json':
-        local.getLocalFiles(url, res)
+        local.searchLocalFiles(url, res)
+        // local.getLocalFiles(url, res)
         break
 
       case '/watchList.json':
