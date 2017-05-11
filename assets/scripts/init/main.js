@@ -135,7 +135,7 @@ const route = (nuxt) => {
         break
 
       case '/resetLocal':
-        local.resetLocal(res)
+        local.resetLocal(url, res)
         break
 
       case '/appendHistory':

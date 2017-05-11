@@ -268,20 +268,13 @@ const store = new Vuex.Store({
 
       commit('setLocalFiles', data)
     },
-    async resetLocal ({dispatch}) {
+    async resetLocal ({state}) {
       log(`Resetting local information...`)
 
-      axios.get('resetLocal').then(({status}) => {
-        if (status !== 200) {
-          log(`Server failed to suppress old data with code ${status}...`)
-          log(`Retrying in 5 seconds...`)
-
-          setTimeout(dispatch('resetLocal'), 5 * 1000)
-        } else {
-          dispatch('refreshLocal').then(
-              log(`Reset completed.`)
-          )
-        }
+      axios.get(`resetLocal?dir=${state.currentDir}`).then(() => {
+        log(`Reset completed.`)
+      }).catch((err) => {
+        log('An error occurred while resetting.\n' + err)
       })
     },
     async changePath ({commit, dispatch}) {

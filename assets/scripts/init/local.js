@@ -62,8 +62,7 @@ exports.searchLocalFiles = (url, res) => {
 
   uniqueNames.forEach((elem) => {
     // Search MAL for each name if not in json
-    if (!json[minifyName(elem)])
-    {
+    if (!json[minifyName(elem)]) {
       console.log(`[Local] Looking for ${elem} on MAL.`)
       malScraper.getInfoFromName(elem).then((anime) => {
         console.log('[Local] Found!')
@@ -96,4 +95,24 @@ exports.searchLocalFiles = (url, res) => {
       if (counter === uniqueNames.length) sendFiles(json, files, res)
     }
   })
+}
+
+exports.resetLocal = (url, res) => {
+  /**
+   * Here we just erase stored data about files in directory.
+   */
+  const json = require(join(userInfo().homedir, '.KawAnime', 'locals.json'))
+
+  const query = qs.parse(url.query.replace('?', ''))
+  const dir = query.dir
+
+  console.log('[Local] Received a request to reset local data for files in ' + dir)
+
+  const files = fs.readdirSync(dir).filter((file) => { return extensions.includes(extname(file)) })
+
+  files.forEach((file) => {
+    delete json[minifyName(getName(file))]
+  })
+
+  this.searchLocalFiles(url, res)
 }
