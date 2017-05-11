@@ -18,7 +18,7 @@ exports.getLatest = (url, res) => {
   let toReturn = []
 
   horribleApi.getLatest(quality.toString()).then((result) => {
-    for (let i = 0; i < result.length; ++i) {
+    for (let i = 0, l = result.length; i < l; ++i) {
       const realName = result[i].name
       const name = realName.split(' ').slice(1).join(' ')
       const rawName = name.split(' ').slice(0, -2).join(' ')

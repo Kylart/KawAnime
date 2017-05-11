@@ -27,3 +27,8 @@
 {
     border-bottom: 0 !important;
 }
+
+#watch-list .input-group__details
+{
+    display: none !important;
+}
