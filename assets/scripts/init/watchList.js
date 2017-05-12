@@ -18,51 +18,40 @@ exports.getLists = (url, res) => {
   res.end()
 }
 
-exports.modifyWatchList = (req, res) => {
+exports.saveWatchList = (req, res) => {
   req.on('data', (chunk) => {
-    const wlFile = require(wlPath)
+    // Saving list
+    fs.writeFileSync(wlPath, chunk, 'utf-8')
 
-    if (chunk.query === 'append') {
-      wlFile.watchList.push(chunk)
-
-      fs.writeFileSync(wlPath, JSON.stringify(wlFile), 'utf-8')
-    } else if (chunk.query === 'delete') {
-      // TODO
-    }
+    console.log('[WatchList] Successfully saved lists.')
 
     res.writeHead(200, {})
     res.end()
   })
 }
 
-exports.modifySeen = (req, res) => {
-  req.on('data', (chunk) => {
-    const wlFile = require(wlPath)
+const actOnList = (type, list, data) => {
+  type === 'append'
+    ? list = [...list, ...data] && list.sort()
+    : list = list.filter((x) => { return x !== data })
 
-    if (chunk.query === 'append') {
-      wlFile.seen.push(chunk)
-
-      fs.writeFileSync(wlPath, JSON.stringify(wlFile), 'utf-8')
-    } else if (chunk.query === 'delete') {
-      // TODO
-    }
-
-    res.writeHead(200, {})
-    res.end()
-  })
+  return list
 }
 
-exports.modifyWatching = (req, res) => {
+exports.modifyList = (req, res) => {
   req.on('data', (chunk) => {
+    chunk = JSON.parse(chunk)
+
     const wlFile = require(wlPath)
+    const listName = chunk.listName
 
-    if (chunk.query === 'append') {
-      wlFile.watching.push(chunk)
+    // Acting accordingly on list
+    wlFile[listName] = actOnList(chunk.query, wlFile[listName], chunk.data)
 
-      fs.writeFileSync(wlPath, JSON.stringify(wlFile), 'utf-8')
-    } else if (chunk.query === 'delete') {
-      // TODO
-    }
+    // Saving list
+    fs.writeFileSync(wlPath, JSON.stringify(wlFile), 'utf-8')
+
+    console.log('[WatchList] Successfully saved lists.')
 
     res.writeHead(200, {})
     res.end()

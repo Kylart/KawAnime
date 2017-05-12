@@ -40,9 +40,11 @@ const store = new Vuex.Store({
     news: [],
     inside: true,
     localFiles: [],
-    watchList: [],
-    seen: [],
-    watching: [],
+    watchLists: {
+      watchList: [],
+      watching: [],
+      seen: []
+    },
     config: {},
     configDir: '',
     currentDir: '',
@@ -120,14 +122,9 @@ const store = new Vuex.Store({
       state.currentDir = data
       log(`Current directory now is ${state.currentDir}.`)
     },
-    setWatchList: function (state, data) {
-      state.watchList = data
-    },
-    setSeen: function (state, data) {
-      state.seen = data
-    },
-    setWatching: function (state, data) {
-      state.watching = data
+    setWatchLists: function (state, data) {
+      state.watchLists = data
+      log('Updated watch lists.')
     },
     setConfigDir: function (state, data) {
       state.configDir = data
@@ -157,6 +154,17 @@ const store = new Vuex.Store({
     },
     setReleasesUpdateTime (state, data) {
       state.releasesUpdateTime = data
+    },
+    updateList (state, data) {
+      const listName = data.listName
+
+      console.log('received ')
+      console.log(data)
+
+      state.watchLists[listName].push(data.entry)
+      state.watchLists[listName].sort()
+
+      log(`${listName} list updated.`)
     }
   },
   actions: {
@@ -219,9 +227,7 @@ const store = new Vuex.Store({
 
       log(`Received watch lists.`)
 
-      commit('setWatchList', data.watchList)
-      commit('setSeen', data.seen)
-      commit('setWatching', data.watching)
+      commit('setWatchLists', data)
     },
     async refreshReleases ({state, commit, dispatch}) {
       log(`Refreshing Releases...`)
@@ -365,6 +371,9 @@ const store = new Vuex.Store({
     async openInBrowser () {
       const {data} = await axios.get('/_openInBrowser')
       log(`Opening KawAnime in browser at ${data.uri}.`)
+    },
+    async saveWatchList ({state}) {
+      axios.post('saveWatchList', JSON.stringify(state.watchLists))
     }
   }
 })

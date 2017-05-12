@@ -115,23 +115,18 @@ const route = (nuxt) => {
 
       case '/local.json':
         local.searchLocalFiles(url, res)
-        // local.getLocalFiles(url, res)
         break
 
       case '/watchList.json':
         wl.getLists(url, res)
         break
 
-      case '/modifyWatchList':
-        wl.modifyWatchList(req, res)
+      case '/actOnList':
+        wl.modifyList(req, res)
         break
 
-      case '/modifySeen':
-        wl.modifySeen(req, res)
-        break
-
-      case '/modifyWatching':
-        wl.modifyWatching(req, res)
+      case '/saveWatchList':
+        wl.saveWatchList(req, res)
         break
 
       case '/resetLocal':

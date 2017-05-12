@@ -24,7 +24,7 @@
 									<v-col md3 sm5 xs12>
 										<v-btn secondary icon
 										       @click.native="selectAll(i)"
-										       v-tooltip:bottom="{ html: 'Select all' }">
+										       v-tooltip:bottom="{ html: allSelected[i] ? 'Unselect all' : 'Select all' }">
 											<v-icon>select_all</v-icon>
 										</v-btn>
 										<v-menu transition="v-slide-x-transition"
@@ -32,7 +32,7 @@
 										        right>
 											<v-btn secondary dark slot="activator">Move to</v-btn>
 											<v-list>
-												<v-list-item v-for="action in actions" :key="action">
+												<v-list-item v-for="action in actions(i)" :key="action">
 													<v-list-tile>
 														<v-list-tile-title>{{ action }}</v-list-tile-title>
 													</v-list-tile>
@@ -117,22 +117,32 @@
           2: '',
           3: ''
         },
-        actions: [
+        actionsList: [
           'Watch list',
           'Watching',
           'Seen'
-        ]
+        ],
+	      allSelected: {
+          1: false,
+		      2: false,
+		      3: false
+	      },
+	      listNames: {
+          1: 'watchList',
+		      2: 'watching',
+		      3: 'seen'
+	      }
       }
     },
     computed: {
       watchList: function () {
-        return this.$store.state.watchList
+        return this.$store.state.watchLists.watchList
       },
       seen: function () {
-        return this.$store.state.seen
+        return this.$store.state.watchLists.seen
       },
       watching: function () {
-        return this.$store.state.watching
+        return this.$store.state.watchLists.watching
       },
       lists: function () {
         return [
@@ -146,12 +156,20 @@
       download(name) {
 
       },
+      actions: function (i) {
+        return this.actionsList.filter((x) => { return x !== this.actionsList[i - 1] })
+      },
       addEntry(i) {
         if (this.entries[i] !== '')
         {
+          console.log(i-1)
           console.log(`[${(new Date()).toLocaleTimeString()}]: Adding ${this.entries[i]} to list.`)
-          this.entries[i] = ''
+          this.$store.commit('updateList', {
+            entry: this.entries[i],
+            listName: this.listNames[i]
+          })
         }
+        this.entries[i] = ''
       },
       select(item, i) {
         const elem = document.getElementsByClassName(item.split(' ').join('-'))[0].children[0]
@@ -160,11 +178,15 @@
         {
           elem.classList.remove('selected')
           this.selected[i] = this.selected[i].filter((x) => { return !(x === item) })
+
+	        this.allSelected[i] = false
         }
         else
         {
           elem.className += ' selected'
           this.selected[i].push(item)
+
+	        if (this.selected[i].length === this.lists[[i - 1]]) this.allSelected[i] = true
         }
       },
       selectAll(i) {
@@ -178,6 +200,8 @@
 
           for (let j = 0, l = elems.length; j < l; ++j)
             elems[j].children[0].classList.remove('selected')
+
+          this.allSelected[i] = false
         }
         else
         {
@@ -188,6 +212,8 @@
           })
           // Add all elements to selected
           this.selected[i] = [...list]
+
+	        this.allSelected[i] = true
         }
       }
     }
