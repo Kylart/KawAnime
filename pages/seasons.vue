@@ -89,14 +89,19 @@
                                 <v-list-tile-title>Information</v-list-tile-title>
                               </v-list-tile>
                             </v-list-item>
-                            <v-list-item>
+                            <v-list-item @click.capture="addTo('watchList', item.title)">
                               <v-list-tile>
                                 <v-list-tile-title>Add to my Watch list</v-list-tile-title>
                               </v-list-tile>
                             </v-list-item>
-                            <v-list-item>
+                            <v-list-item @click.capture="addTo('watching', item.title)">
                               <v-list-tile>
                                 <v-list-tile-title>Add to &laquo;Watching&raquo;</v-list-tile-title>
+                              </v-list-tile>
+                            </v-list-item>
+                            <v-list-item @click.capture="addTo('seen', item.title)">
+                              <v-list-tile>
+                                <v-list-tile-title>Add to &laquo;Seen&raquo;</v-list-tile-title>
                               </v-list-tile>
                             </v-list-item>
                           </v-list>
@@ -232,6 +237,12 @@
         } else if (month > 9 && month < 13) {
           return {season: 'fall', year: year}
         }
+      },
+      addTo: function (listName, entry) {
+        this.$store.commit('updateList', {
+          listName: listName,
+          entry: entry
+        })
       }
     }
   }

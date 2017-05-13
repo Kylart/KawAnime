@@ -159,11 +159,14 @@ const store = new Vuex.Store({
     },
     updateList (state, data) {
       const listName = data.listName
+      const entry = data.entry
 
-      state.watchLists[listName].push(data.entry)
-      state.watchLists[listName].sort()
+      if (!state.watchLists[listName.includes(entry)]) {
+        state.watchLists[listName].push(entry)
+        state.watchLists[listName].sort()
 
-      log(`${listName} list updated.`)
+        log(`${listName} list updated.`)
+      }
     }
   },
   actions: {

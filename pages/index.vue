@@ -81,7 +81,7 @@
                               </v-list-item>
                               <v-list-item>
                                 <v-list-tile>
-                                  <v-list-tile-title v-on:click.stop="downloadAll(item.name)">
+                                  <v-list-tile-title v-on:click.stop="downloadAll(item.rawName)">
                                     Download all episodes
                                   </v-list-tile-title>
                                 </v-list-tile>
@@ -91,14 +91,19 @@
                                   <v-list-tile-title>Information</v-list-tile-title>
                                 </v-list-tile>
                               </v-list-item>
-                              <v-list-item>
+                              <v-list-item @click.capture="addTo('watchList', item.rawName)">
                                 <v-list-tile>
                                   <v-list-tile-title>Add to my Watch list</v-list-tile-title>
                                 </v-list-tile>
                               </v-list-item>
-                              <v-list-item>
+                              <v-list-item @click.capture="addTo('watching', item.rawName)">
                                 <v-list-tile>
                                   <v-list-tile-title>Add to &laquo;Watching&raquo;</v-list-tile-title>
+                                </v-list-tile>
+                              </v-list-item>
+                              <v-list-item @click.capture="addTo('seen', item.rawName)">
+                                <v-list-tile>
+                                  <v-list-tile-title>Add to &laquo;Seen&raquo;</v-list-tile-title>
                                 </v-list-tile>
                               </v-list-item>
                             </v-list>
@@ -210,6 +215,12 @@
       },
       print (item) {
         console.log(`[${(new Date()).toLocaleTimeString()}]: Downloading ${item.name}.`)
+      },
+      addTo: function (listName, entry) {
+        this.$store.commit('updateList', {
+          listName: listName,
+          entry: entry
+        })
       }
     }
   }
