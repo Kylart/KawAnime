@@ -21,7 +21,7 @@
             <v-row>
               <v-col xs12>
                 <v-row class="top-form">
-                  <v-col md3 sm5 xs12>
+                  <v-col md3 sm4 xs12>
                     <v-btn secondary icon
                            @click.native="selectAll(i)"
                            v-tooltip:bottom="{ html: allSelected[i] ? 'Unselect all' : 'Select all' }">
@@ -42,8 +42,11 @@
                       </v-list>
                     </v-menu>
                   </v-col>
-                  <v-col md5 sm1 xs0></v-col>
-                  <v-col md2 sm4 xs12 @keyup.enter="addEntry(i)">
+                  <v-col md2 sm2 xs12>
+                    <p class="elem-number">{{ lists[i - 1].length }} entries</p>
+                  </v-col>
+                  <v-col md3 sm1 xs0></v-col>
+                  <v-col md2 sm3 xs12 @keyup.enter="addEntry(i)">
                     <v-text-field type="text"
                                   class="entry-text"
                                   label="Add entry"
@@ -120,15 +123,15 @@
           3: ''
         },
         actionsList: [{
-            name: 'Watch list',
-            list: 'watchList'
-          }, {
-            name:'Watching',
-            list: 'watching'
-          }, {
-            name: 'Seen',
-            list: 'seen'
-          }
+          name: 'Watch list',
+          list: 'watchList'
+        }, {
+          name: 'Watching',
+          list: 'watching'
+        }, {
+          name: 'Seen',
+          list: 'seen'
+        }
         ],
         allSelected: {
           1: false,
@@ -251,9 +254,13 @@
     white-space: nowrap;
   }
 
-  .select-all
+  .elem-number
   {
-    display: inline-block;
+    margin: 15px 0 0 0;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 16px;
+    font-weight: 700;
+    font-style: italic;
   }
 
   .elem
