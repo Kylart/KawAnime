@@ -167,6 +167,12 @@ const store = new Vuex.Store({
 
         log(`${listName} list updated.`)
       }
+    },
+    removeFromList (state, data) {
+      const listName = data.listName
+      const index = state.watchLists[listName].indexOf(data.entry)
+
+      state.watchLists[listName].splice(index, 1)
     }
   },
   actions: {

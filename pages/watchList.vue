@@ -32,9 +32,11 @@
                             right>
                       <v-btn secondary dark slot="activator">Move to</v-btn>
                       <v-list>
-                        <v-list-item v-for="action in actions(i)" :key="action">
+                        <v-list-item @click.capture="moveTo(action.list, i)"
+                                     v-for="action in actions(i)"
+                                     :key="action">
                           <v-list-tile>
-                            <v-list-tile-title>{{ action }}</v-list-tile-title>
+                            <v-list-tile-title>{{ action.name }}</v-list-tile-title>
                           </v-list-tile>
                         </v-list-item>
                       </v-list>
@@ -117,10 +119,16 @@
           2: '',
           3: ''
         },
-        actionsList: [
-          'Watch list',
-          'Watching',
-          'Seen'
+        actionsList: [{
+            name: 'Watch list',
+            list: 'watchList'
+          }, {
+            name:'Watching',
+            list: 'watching'
+          }, {
+            name: 'Seen',
+            list: 'seen'
+          }
         ],
         allSelected: {
           1: false,
@@ -161,7 +169,6 @@
       },
       addEntry (i) {
         if (this.entries[i] !== '') {
-          console.log(i - 1)
           console.log(`[${(new Date()).toLocaleTimeString()}]: Adding ${this.entries[i]} to list.`)
           this.$store.commit('updateList', {
             entry: this.entries[i],
@@ -207,6 +214,24 @@
 
           this.allSelected[i] = true
         }
+      },
+      moveTo (name, i) {
+        this.selected[i].forEach((anime) => {
+          this.$store.commit('updateList', {
+            listName: name,
+            entry: anime
+          })
+
+          this.$store.commit('removeFromList', {
+            listName: this.actionsList[i - 1].list,
+            entry: anime
+          })
+        })
+
+        // Remove all selected class
+        const elems = document.getElementsByClassName('elem')
+
+        for (let j = 0, l = elems.length; j < l; ++j) { elems[j].children[0].classList.remove('selected') }
       }
     }
   }
