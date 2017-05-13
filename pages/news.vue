@@ -1,61 +1,61 @@
 <template>
-	<v-container fluid>
-		<loader v-if="!$store.state.news.length"></loader>
+  <v-container fluid>
+    <loader v-if="!$store.state.news.length"></loader>
 
-		<v-container fluid v-else>
-			<v-row class="news-container">
-				<v-col xs12 class="refresh-button-container">
-					<v-btn icon
-					       class="refresh-button"
-					       @click.native="refresh()">
-						<v-icon large>refresh</v-icon>
-					</v-btn>
-				</v-col>
-				<v-col xs12
-				       class="elem elevation-3"
-				       v-ripple="true"
-				       v-for="item in $store.state.news" :key="item.name">
-					<v-row>
-						<v-col xs12>
-							<h3 class="title">{{ item.title }}</h3>
-						</v-col>
-						<v-col md2 xs3 class="image">
-							<img :src="item.image" height="220" max-width="20%"/>
-						</v-col>
-						<v-col md10 xs9>
-							<v-row>
-								<v-col xs12><p class="synopsis">{{ item.text }}</p></v-col>
-							</v-row>
-							<v-row xs12 class="link">
-								<div class="button-container">
-									<v-btn secondary block @click.native="open(item.link)">Open</v-btn>
-								</div>
-							</v-row>
-						</v-col>
-					</v-row>
-				</v-col>
-			</v-row>
-		</v-container>
+    <v-container fluid v-else>
+      <v-row class="news-container">
+        <v-col xs12 class="refresh-button-container">
+          <v-btn icon
+                 class="refresh-button"
+                 @click.native="refresh()">
+            <v-icon large>refresh</v-icon>
+          </v-btn>
+        </v-col>
+        <v-col xs12
+               class="elem elevation-3"
+               v-ripple="true"
+               v-for="item in $store.state.news" :key="item.name">
+          <v-row>
+            <v-col xs12>
+              <h3 class="title">{{ item.title }}</h3>
+            </v-col>
+            <v-col md2 xs3 class="image">
+              <img :src="item.image" height="220" max-width="20%"/>
+            </v-col>
+            <v-col md10 xs9>
+              <v-row>
+                <v-col xs12><p class="synopsis">{{ item.text }}</p></v-col>
+              </v-row>
+              <v-row xs12 class="link">
+                <div class="button-container">
+                  <v-btn secondary block @click.native="open(item.link)">Open</v-btn>
+                </div>
+              </v-row>
+            </v-col>
+          </v-row>
+        </v-col>
+      </v-row>
+    </v-container>
 
-	</v-container>
+  </v-container>
 </template>
 
 <script>
-	import Loader from '~components/loader.vue'
+  import Loader from '~components/loader.vue'
 
   export default {
-    data() {
+    data () {
       return {}
     },
-	  components: {
+    components: {
       Loader
-	  },
+    },
     methods: {
-      open(link) {
+      open (link) {
         console.log('Opening ' + link)
-	      this.$store.dispatch('openNewsLink', link)
+        this.$store.dispatch('openNewsLink', link)
       },
-      refresh() {
+      refresh () {
         console.log('Ok')
         this.$store.dispatch('refreshNews')
       }
@@ -64,86 +64,86 @@
 </script>
 
 <style scoped>
-	/* ----- Refresh button ----- */
-	.refresh-button-container
-	{
-		display: inline-block;
-		text-align: right;
-		margin-top: 5px;
-		margin-bottom: 2px;
-		padding-right: 3%;
-	}
+  /* ----- Refresh button ----- */
+  .refresh-button-container
+  {
+    display: inline-block;
+    text-align: right;
+    margin-top: 5px;
+    margin-bottom: 2px;
+    padding-right: 3%;
+  }
 
-	.refresh-button
-	{
-		display: inline-block;
-	}
+  .refresh-button
+  {
+    display: inline-block;
+  }
 
-	/* Needed */
-	/*noinspection CssUnusedSymbol*/
-	.icon--large
-	{
-		height: 2.5rem;
-	}
+  /* Needed */
+  /*noinspection CssUnusedSymbol*/
+  .icon--large
+  {
+    height: 2.5rem;
+  }
 
-	/* ---------- ELEM ---------- */
-	.news-container
-	{
-		padding: 0 2% 1% 2%;
-	}
+  /* ---------- ELEM ---------- */
+  .news-container
+  {
+    padding: 0 2% 1% 2%;
+  }
 
-	.elem
-	{
-		position: relative;
-		margin-bottom: 15px;
-		padding: 0;
-		background-color: rgb(60, 60, 60);
-		color: rgba(255, 255, 255, 0.8);
-	}
+  .elem
+  {
+    position: relative;
+    margin-bottom: 15px;
+    padding: 0;
+    background-color: rgb(60, 60, 60);
+    color: rgba(255, 255, 255, 0.8);
+  }
 
-	.elem:hover
-	{
-		box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12) !important;
-	}
+  .elem:hover
+  {
+    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12) !important;
+  }
 
-	.news-container h3
-	{
-		color: rgba(255, 255, 255, 0.8);
-	}
+  .news-container h3
+  {
+    color: rgba(255, 255, 255, 0.8);
+  }
 
-	.title
-	{
-		margin-top: 10px;
-		padding-left: 2%;
-		padding-right: 2%;
-		overflow: hidden;
-		white-space: nowrap;
-		text-overflow: ellipsis;
-	}
+  .title
+  {
+    margin-top: 10px;
+    padding-left: 2%;
+    padding-right: 2%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
 
-	.image
-	{
-		height: 220px;
-	}
+  .image
+  {
+    height: 220px;
+  }
 
-	.synopsis
-	{
-		padding-top: 2%;
-		height: 150px;
-	}
+  .synopsis
+  {
+    padding-top: 2%;
+    height: 150px;
+  }
 
-	.link
-	{
-		height: 50%;
-		width: 100%;
-		text-align: right;
-		display: inline-block;
-		padding: 0 5% 0 10%;
-	}
+  .link
+  {
+    height: 50%;
+    width: 100%;
+    text-align: right;
+    display: inline-block;
+    padding: 0 5% 0 10%;
+  }
 
-	.button-container
-	{
-		display: inline-block;
-		width: 15%;
-	}
+  .button-container
+  {
+    display: inline-block;
+    width: 15%;
+  }
 </style>

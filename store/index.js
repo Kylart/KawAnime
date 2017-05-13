@@ -6,6 +6,8 @@ import axios from 'axios'
 
 Vue.use(Vuex)
 
+let started = false
+
 const log = (message) => {
   console.log(`[${(new Date()).toLocaleTimeString()}]: ${message}`)
 }
@@ -158,9 +160,6 @@ const store = new Vuex.Store({
     updateList (state, data) {
       const listName = data.listName
 
-      console.log('received ')
-      console.log(data)
-
       state.watchLists[listName].push(data.entry)
       state.watchLists[listName].sort()
 
@@ -169,17 +168,20 @@ const store = new Vuex.Store({
   },
   actions: {
     async init ({commit, dispatch}) {
-      console.log('[SERVER INIT]')
-      const {data} = await axios.get('getConfig.json')
-      commit('init', data.config)
+      if (!started) {
+        started = true
+        console.log('[SERVER INIT]')
+        const {data} = await axios.get('getConfig.json')
+        commit('init', data.config)
 
-      dispatch('downloaderInit').catch(err => { void (err) })
-      dispatch('releasesInit').catch(err => { void (err) })
-      dispatch('seasonsInit').catch(err => { void (err) })
-      dispatch('newsInit').catch(err => { void (err) })
-      dispatch('localInit').catch(err => { void (err) })
-      dispatch('listInit').catch(err => { void (err) })
-      dispatch('getHistory').catch(err => { void (err) })
+        dispatch('downloaderInit').catch(err => { void (err) })
+        dispatch('releasesInit').catch(err => { void (err) })
+        dispatch('seasonsInit').catch(err => { void (err) })
+        dispatch('newsInit').catch(err => { void (err) })
+        dispatch('localInit').catch(err => { void (err) })
+        dispatch('listInit').catch(err => { void (err) })
+        dispatch('getHistory').catch(err => { void (err) })
+      }
     },
     async downloaderInit ({commit}) {
       const {data} = await axios.get('getAllShows.json')

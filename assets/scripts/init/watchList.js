@@ -30,6 +30,7 @@ exports.saveWatchList = (req, res) => {
   })
 }
 
+// TODO implement this in store, useless here
 const actOnList = (type, list, data) => {
   type === 'append'
     ? list = [...list, ...data] && list.sort()
