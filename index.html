@@ -8,38 +8,31 @@
 		{
 			margin: 0;
 			padding: 0;
-			background: black;
-			position: relative;
 			height: 100%;
 			width: 100%;
 			background-image: url("static/images/index-bg.jpg");
+			background-size: cover;
 			background-position: bottom;
 			background-repeat: no-repeat;
 		}
 
-		.loading
+		.text
 		{
+			background-color: rgba(0, 0, 0, 0.6);
+			position: absolute;
+			top: 20%;
+			left: 8%;
+			text-align: center;
+			padding: 5px 20px 5px 20px;
 			font-family: sans-serif;
 			color: rgba(255, 255, 255, 0.9);
-			position: absolute;
-			top: 50%;
-			left: 51%;
-			transform: translate(-50%, -70%);
-		}
-
-		.thank
-		{
-			font-family: sans-serif;
-			color: rgba(255, 255, 255, 0.9);
-			position: absolute;
-			top: 40%;
-			left: 51%;
-			transform: translate(-50%, -70%);
 		}
 	</style>
 </head>
 <body>
-	<h2 class="thank">Thank you for contributing to KawAnime!</h2>
-	<h1 class="loading">Loading application...</h1>
+	<div class="text">
+		<h2 class="thank">Thank you for contributing to KawAnime!</h2>
+		<h1 class="loading">Loading application...</h1>
+	</div>
 </body>
 </html>
