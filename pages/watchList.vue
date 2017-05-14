@@ -7,7 +7,7 @@
       </v-tab-item>
       <v-tab-item href="#tabs-2" slot="activators">
         Watching
-        <v-icon>play_circle_outline</v-icon>
+        <v-icon>tv</v-icon>
       </v-tab-item>
       <v-tab-item href="#tabs-3" slot="activators">
         Seen
@@ -36,6 +36,9 @@
                                      v-for="action in actions(i)"
                                      :key="action">
                           <v-list-tile>
+                            <v-list-tile-action>
+                              <v-icon>{{ action.icon }}</v-icon>
+                            </v-list-tile-action>
                             <v-list-tile-title>{{ action.name }}</v-list-tile-title>
                           </v-list-tile>
                         </v-list-item>
@@ -123,10 +126,10 @@
 
 <script>
   const removeSelectedClasses = () => {
-      const elems = document.getElementsByClassName('elem')
+    const elems = document.getElementsByClassName('elem')
 
       // Remove all selected class
-      for (let j = 0, l = elems.length; j < l; ++j) elems[j].children[0].classList.remove('selected')
+    for (let j = 0, l = elems.length; j < l; ++j) elems[j].children[0].classList.remove('selected')
   }
 
   export default {
@@ -144,13 +147,16 @@
         },
         actionsList: [{
           name: 'Watch list',
-          list: 'watchList'
+          list: 'watchList',
+          icon: 'watch_later'
         }, {
           name: 'Watching',
-          list: 'watching'
+          list: 'watching',
+          icon: 'tv'
         }, {
           name: 'Seen',
-          list: 'seen'
+          list: 'seen',
+          icon: 'done_all'
         }
         ],
         allSelected: {
