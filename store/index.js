@@ -161,11 +161,15 @@ const store = new Vuex.Store({
       const listName = data.listName
       const entry = data.entry
 
-      if (!state.watchLists[listName.includes(entry)]) {
+      if (!state.watchLists[listName].includes(entry)) {
         state.watchLists[listName].push(entry)
         state.watchLists[listName].sort()
 
         log(`${listName} list updated.`)
+      } else {
+        // Displays error message
+        state.errorSnackbar.text = `${entry} is already in your ${listName} list.`
+        state.errorSnackbar.show = true
       }
     },
     removeFromList (state, data) {

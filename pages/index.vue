@@ -47,7 +47,8 @@
                     <v-col class="elem-title" xs9 v-tooltip:top="{ html: item.name }">
                       <h6>{{ item.rawName }}</h6>
                     </v-col>
-                    <v-col v-tooltip:top="{ html: 'Episode ' + item.ep }" class="elem-ep text-xs-right" xs3>
+                    <v-col v-tooltip:top="{ html: 'Episode ' + item.ep }"
+                           class="elem-ep text-xs-right" xs3>
                       <h6>Ep {{ item.ep }}</h6>
                     </v-col>
                     <v-col class="elem-image"
@@ -189,7 +190,7 @@
         this.modal = true
       },
       downloadAll (name) {
-        console.log(`[${(new Date()).toLocaleTimeString()}]: Sending a request to download all episodes of ${name}`)
+        console.log(`[${(new Date()).toLocaleTimeString()}]: Sending a request to download all episodes of ${name}.`)
 
         name = name.split(' ').slice(0, -2).join(' ')
         const quality = this.$store.state.releaseQuality
@@ -288,7 +289,10 @@
 
   .elem-content:hover
   {
-    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12) !important;
+    box-shadow:
+            0 5px 5px -3px rgba(0, 0, 0, 0.2),
+            0 8px 10px 1px rgba(0, 0, 0, 0.14),
+            0 3px 14px 2px rgba(0, 0, 0, 0.12) !important;
   }
 
   .elem-card

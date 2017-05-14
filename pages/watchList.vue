@@ -1,4 +1,4 @@
-<template>
+<template xmlns:v-bind="http://www.w3.org/1999/xhtml">
   <v-container fluid id="watch-list">
     <v-tabs id="tabs" grow icons>
       <v-tab-item href="#tabs-1" slot="activators">
@@ -41,6 +41,10 @@
                         </v-list-item>
                       </v-list>
                     </v-menu>
+                    <v-btn @click.native="deleteSelected(i)"
+                           icon>
+                      <v-icon>delete_sweep</v-icon>
+                    </v-btn>
                   </v-col>
                   <v-col md2 sm2 xs12>
                     <p class="elem-number">{{ lists[i - 1].length }} entries</p>
@@ -81,16 +85,25 @@
                         <v-list>
                           <v-list-item>
                             <v-list-tile>
+                              <v-list-tile-action>
+                                <v-icon>file_download</v-icon>
+                              </v-list-tile-action>
                               <v-list-tile-title>Download</v-list-tile-title>
                             </v-list-tile>
                           </v-list-item>
                           <v-list-item>
                             <v-list-tile>
+                              <v-list-tile-action>
+                                <v-icon>info_outline</v-icon>
+                              </v-list-tile-action>
                               <v-list-tile-title>Information</v-list-tile-title>
                             </v-list-tile>
                           </v-list-item>
                           <v-list-item>
-                            <v-list-tile>
+                            <v-list-tile @click.native="deleteEntry(item, i)">
+                              <v-list-tile-action>
+                                <v-icon>delete_sweep</v-icon>
+                              </v-list-tile-action>
                               <v-list-tile-title>Delete this entry</v-list-tile-title>
                             </v-list-tile>
                           </v-list-item>
@@ -109,6 +122,13 @@
 </template>
 
 <script>
+  const removeSelectedClasses = () => {
+      const elems = document.getElementsByClassName('elem')
+
+      // Remove all selected class
+      for (let j = 0, l = elems.length; j < l; ++j) elems[j].children[0].classList.remove('selected')
+  }
+
   export default {
     data () {
       return {
@@ -180,6 +200,14 @@
         }
         this.entries[i] = ''
       },
+      deleteEntry (name, i) {
+        removeSelectedClasses()
+
+        this.$store.commit('removeFromList', {
+          listName: this.actionsList[i - 1].list,
+          entry: name
+        })
+      },
       select (item, i) {
         const elem = document.getElementsByClassName(item.split(' ').join('-'))[0].children[0]
 
@@ -231,10 +259,17 @@
           })
         })
 
-        // Remove all selected class
-        const elems = document.getElementsByClassName('elem')
+        removeSelectedClasses()
+      },
+      deleteSelected (i) {
+        this.selected[i].forEach((anime) => {
+          this.$store.commit('removeFromList', {
+            listName: this.actionsList[i - 1].list,
+            entry: anime
+          })
+        })
 
-        for (let j = 0, l = elems.length; j < l; ++j) { elems[j].children[0].classList.remove('selected') }
+        removeSelectedClasses()
       }
     }
   }
@@ -278,7 +313,10 @@
 
   .elem-content:hover
   {
-    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12) !important;
+    box-shadow:
+            0 5px 5px -3px rgba(0, 0, 0, 0.2),
+            0 8px 10px 1px rgba(0, 0, 0, 0.14),
+            0 3px 14px 2px rgba(0, 0, 0, 0.12) !important;
   }
 
   /*noinspection CssUnusedSymbol*/
