@@ -239,7 +239,7 @@
         }
       },
       addTo: function (listName, entry) {
-        this.$store.commit('updateList', {
+        this.$store.dispatch('updateList', {
           listName: listName,
           entry: entry
         })

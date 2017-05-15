@@ -18,7 +18,7 @@ const store = new Vuex.Store({
     releaseQuality: '',
     releases: [],
     releasesUpdateTime: (new Date()).toLocaleTimeString(),
-    errorSnackbar: {
+    infoSnackbar: {
       show: false,
       text: ''
     },
@@ -83,9 +83,9 @@ const store = new Vuex.Store({
       state.downloaderList = data
       log(`${data.length} anime name loaded.`)
     },
-    setErrorSnackbar (state, data) {
-      state.errorSnackbar.text = data
-      state.errorSnackbar.show = true
+    setInfoSnackbar (state, data) {
+      state.infoSnackbar.text = data
+      state.infoSnackbar.show = true
     },
     setCurrentSeason (state, data) {
       state.year = data.year
@@ -166,10 +166,12 @@ const store = new Vuex.Store({
         state.watchLists[listName].sort()
 
         log(`${listName} list updated.`)
+        state.infoSnackbar.text = `${entry} was added to your «${listName}» list.`
+        state.infoSnackbar.show = true
       } else {
         // Displays error message
-        state.errorSnackbar.text = `${entry} is already in your ${listName} list.`
-        state.errorSnackbar.show = true
+        state.infoSnackbar.text = `${entry} is already in your «${listName}» list.`
+        state.infoSnackbar.show = true
       }
     },
     removeFromList (state, data) {
@@ -208,12 +210,12 @@ const store = new Vuex.Store({
 
       if (status === 200) commit('setReleases', data)
       else if (status === 204) {
-        log(`An error occurred while getting the latest releases. Retrying in 30 seconds.`)
-        commit('setErrorSnackbar', 'Could not get the latest releases. Retrying in 30 seconds.')
+        log(`An error occurred while getting the latest releases. Retrying in 45 seconds.`)
+        commit('setInfoSnackbar', 'Could not get the latest releases. Retrying in 45 seconds.')
         setTimeout(function () {
           log(`Retrying to get latest releases.`)
           dispatch('refreshReleases').catch(err => { void (err) })
-        }, 30 * 1000)
+        }, 45 * 1000)
       }
     },
     async seasonsInit ({state, commit}) {
@@ -253,12 +255,12 @@ const store = new Vuex.Store({
 
       if (status === 200) commit('setReleases', data)
       else if (status === 204) {
-        log(`An error occurred while getting the latest releases. Retrying in 30 seconds.`)
-        commit('setErrorSnackbar', 'Could not get the latest releases. Retrying in 30 seconds.')
+        log(`An error occurred while getting the latest releases. Retrying in 45 seconds.`)
+        commit('setInfoSnackbar', 'Could not get the latest releases. Retrying in 45 seconds.')
         setTimeout(function () {
           log(`Retrying to get latest releases.`)
           dispatch('refreshReleases').catch(err => { void (err) })
-        }, 30 * 1000)
+        }, 45 * 1000)
       }
     },
     async refreshSeasons ({state, commit}) {
@@ -389,6 +391,16 @@ const store = new Vuex.Store({
     },
     async saveWatchList ({state}) {
       axios.post('saveWatchList', JSON.stringify(state.watchLists))
+    },
+    async updateList ({dispatch, commit}, data) {
+      commit('updateList', data)
+
+      dispatch('saveWatchList')
+    },
+    async removeFromList ({dispatch, commit}, data) {
+      commit('removeFromList', data)
+
+      dispatch('saveWatchList')
     }
   }
 })

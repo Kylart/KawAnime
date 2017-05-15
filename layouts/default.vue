@@ -116,10 +116,10 @@
                 :bottom="false"
                 :right="false"
                 :left="false"
-                v-model="$store.state.errorSnackbar.show"
+                v-model="$store.state.infoSnackbar.show"
         >
-          {{ $store.state.errorSnackbar.text }}
-          <v-btn flat class="pink--text" @click.native="$store.state.errorSnackbar.show = false">Close</v-btn>
+          {{ $store.state.infoSnackbar.text }}
+          <v-btn flat class="pink--text" @click.native="$store.state.infoSnackbar.show = false">Close</v-btn>
         </v-snackbar>
       </v-content>
     </main>

@@ -18,7 +18,7 @@
                      slot="content">
         <v-card>
           <v-card-text>
-            <v-row>
+            <v-row class="list-container">
               <v-col xs12>
                 <v-row class="top-form">
                   <v-col md3 sm4 xs12>
@@ -45,6 +45,8 @@
                       </v-list>
                     </v-menu>
                     <v-btn @click.native="deleteSelected(i)"
+                           class="red--text"
+                           v-tooltip:bottom="{ html: 'delete all selected items from this list' }"
                            icon>
                       <v-icon>delete_sweep</v-icon>
                     </v-btn>
@@ -199,7 +201,7 @@
       addEntry (i) {
         if (this.entries[i] !== '') {
           console.log(`[${(new Date()).toLocaleTimeString()}]: Adding ${this.entries[i]} to list.`)
-          this.$store.commit('updateList', {
+          this.$store.dispatch('updateList', {
             entry: this.entries[i],
             listName: this.listNames[i]
           })
@@ -209,7 +211,7 @@
       deleteEntry (name, i) {
         removeSelectedClasses()
 
-        this.$store.commit('removeFromList', {
+        this.$store.dispatch('removeFromList', {
           listName: this.actionsList[i - 1].list,
           entry: name
         })
@@ -254,12 +256,12 @@
       },
       moveTo (name, i) {
         this.selected[i].forEach((anime) => {
-          this.$store.commit('updateList', {
+          this.$store.dispatch('updateList', {
             listName: name,
             entry: anime
           })
 
-          this.$store.commit('removeFromList', {
+          this.$store.dispatch('removeFromList', {
             listName: this.actionsList[i - 1].list,
             entry: anime
           })
@@ -269,7 +271,7 @@
       },
       deleteSelected (i) {
         this.selected[i].forEach((anime) => {
-          this.$store.commit('removeFromList', {
+          this.$store.dispatch('removeFromList', {
             listName: this.actionsList[i - 1].list,
             entry: anime
           })
@@ -365,5 +367,10 @@
   .selected
   {
     background-color: #2E7D32;
+  }
+
+  .list-container
+  {
+    margin-bottom: 85px;
   }
 </style>
