@@ -74,15 +74,15 @@
                             </v-btn>
                             <v-list>
                               <v-list-item>
-                                <v-list-tile>
-                                  <v-list-tile-title v-on:click.stop="openModal(item.name, item.fullSynopsis)">
+                                <v-list-tile v-on:click.native="openModal(item.name, item.fullSynopsis)">
+                                  <v-list-tile-title>
                                     Check synopsis
                                   </v-list-tile-title>
                                 </v-list-tile>
                               </v-list-item>
                               <v-list-item>
-                                <v-list-tile>
-                                  <v-list-tile-title v-on:click.stop="downloadAll(item.rawName)">
+                                <v-list-tile v-on:click.native="downloadAll(item.rawName)">
+                                  <v-list-tile-title>
                                     Download all episodes
                                   </v-list-tile-title>
                                 </v-list-tile>
@@ -173,6 +173,7 @@
     },
     watch: {
       releases: function () {
+        // Update time whenever KawAnime receives new releases.
         const newTime = (new Date()).toLocaleTimeString()
         this.$store.commit('setReleasesUpdateTime', newTime)
       }

@@ -14,6 +14,7 @@ const log = (message) => {
 
 const store = new Vuex.Store({
   state: {
+    autoRefreshReleases: true,
     releaseFansub: '',
     releaseQuality: '',
     releases: [],
@@ -208,8 +209,11 @@ const store = new Vuex.Store({
 
       const {data, status} = await axios.get(`getLatest.json?quality=${state.releaseQuality}`)
 
-      if (status === 200) commit('setReleases', data)
-      else if (status === 204) {
+      if (status === 200) {
+        commit('setReleases', data)
+
+        if (state.autoRefreshReleases === true) dispatch('autoRefreshReleases')
+      } else if (status === 204) {
         log(`An error occurred while getting the latest releases. Retrying in 45 seconds.`)
         commit('setInfoSnackbar', 'Could not get the latest releases. Retrying in 45 seconds.')
         setTimeout(function () {
@@ -262,6 +266,19 @@ const store = new Vuex.Store({
           dispatch('refreshReleases').catch(err => { void (err) })
         }, 45 * 1000)
       }
+    },
+    async autoRefreshReleases ({dispatch, commit, state}) {
+      // Refresh releases every 30 minutes
+      setTimeout(async () => {
+        log(`Refreshing Releases...`)
+
+        const {data} = await axios.get(`getLatest.json?quality=${state.releaseQuality}`)
+
+        if (data.length === 18) {
+          commit('setReleases', data)
+          dispatch('autoRefreshReleases')
+        }
+      }, 30 * 60 * 1000)
     },
     async refreshSeasons ({state, commit}) {
       log(`Refreshing Seasons...`)
