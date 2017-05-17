@@ -55,7 +55,9 @@ const store = new Vuex.Store({
     searchInput: '',
     searchInfo: {},
     history: {},
-    historyModal: false
+    historyModal: false,
+    infoModal: false,
+    info: {}
   },
   mutations: {
     init (state, data) {
@@ -154,6 +156,12 @@ const store = new Vuex.Store({
     },
     setHistoryModal: function (state, data) {
       state.historyModal = data
+    },
+    setInfoModal: function (state, data) {
+      state.infoModal = data
+    },
+    setInfoModalInfo: function (state, data) {
+      state.info = data
     },
     setReleasesUpdateTime (state, data) {
       state.releasesUpdateTime = data

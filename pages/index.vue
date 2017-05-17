@@ -44,7 +44,7 @@
               <v-card-text class="elem-card">
                 <v-container fluid style="padding: 0;">
                   <v-row>
-                    <v-col class="elem-title" xs9 v-tooltip:top="{ html: item.name }">
+                    <v-col class="elem-title" xs9 v-tooltip:top="{ html: item.rawName }">
                       <h6>{{ item.rawName }}</h6>
                     </v-col>
                     <v-col v-tooltip:top="{ html: 'Episode ' + item.ep }"
