@@ -32,7 +32,7 @@
   import Loader from '~components/loader.vue'
 
   export default{
-    data() {
+    data () {
       return {}
     },
     computed: {
