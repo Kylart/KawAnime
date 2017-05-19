@@ -40,7 +40,7 @@ console.log(`KawAnime is at ${_NUXT_URL_}`)
 /*
  ** Electron app
  */
-const {Menu, app, BrowserWindow} = require('electron')
+const {Menu, app, BrowserWindow, dialog} = require('electron')
 const url = require('url')
 
 const menuFile = require(join(__dirname, 'assets', 'scripts', 'menu.js'))
@@ -56,6 +56,11 @@ const pollServer = () => {
         : win.loadURL(_NUXT_URL_)
   })
       .on('error', pollServer)
+}
+
+// Disable error dialogs by overriding
+dialog.showErrorBox = (title, content) => {
+  console.log(`${title}\n${content}`)
 }
 
 const newWin = () => {

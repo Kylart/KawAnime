@@ -78,29 +78,44 @@
                           </v-btn>
                           <v-list>
                             <v-list-item>
-                              <v-list-tile>
-                                <v-list-tile-title v-on:click.stop="openModal(item.title, item.synopsis)">
+                              <v-list-tile v-on:click.native="openModal(item.title, item.synopsis)">
+                                <v-list-tile-action>
+                                  <v-icon>more</v-icon>
+                                </v-list-tile-action>
+                                <v-list-tile-title>
                                   Check synopsis
                                 </v-list-tile-title>
                               </v-list-tile>
                             </v-list-item>
                             <v-list-item>
                               <v-list-tile>
+                                <v-list-tile-action>
+                                  <v-icon>info_outline</v-icon>
+                                </v-list-tile-action>
                                 <v-list-tile-title>Information</v-list-tile-title>
                               </v-list-tile>
                             </v-list-item>
                             <v-list-item @click.capture="addTo('watchList', item.title)">
                               <v-list-tile>
+                                <v-list-tile-action>
+                                  <v-icon>watch_later</v-icon>
+                                </v-list-tile-action>
                                 <v-list-tile-title>Add to my Watch list</v-list-tile-title>
                               </v-list-tile>
                             </v-list-item>
                             <v-list-item @click.capture="addTo('watching', item.title)">
                               <v-list-tile>
+                                <v-list-tile-action>
+                                  <v-icon>tv</v-icon>
+                                </v-list-tile-action>
                                 <v-list-tile-title>Add to &laquo;Watching&raquo;</v-list-tile-title>
                               </v-list-tile>
                             </v-list-item>
                             <v-list-item @click.capture="addTo('seen', item.title)">
                               <v-list-tile>
+                                <v-list-tile-action>
+                                  <v-icon>done_all</v-icon>
+                                </v-list-tile-action>
                                 <v-list-tile-title>Add to &laquo;Seen&raquo;</v-list-tile-title>
                               </v-list-tile>
                             </v-list-item>

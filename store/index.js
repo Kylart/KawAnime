@@ -226,7 +226,7 @@ const store = new Vuex.Store({
         commit('setInfoSnackbar', 'Could not get the latest releases. Retrying in 45 seconds.')
         setTimeout(function () {
           log(`Retrying to get latest releases.`)
-          dispatch('refreshReleases').catch(err => { void (err) })
+          dispatch('releasesInit').catch(err => { void (err) })
         }, 45 * 1000)
       }
     },
