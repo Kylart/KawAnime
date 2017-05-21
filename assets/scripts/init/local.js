@@ -60,41 +60,46 @@ exports.searchLocalFiles = (url, res) => {
 
   let counter = 0
 
-  uniqueNames.forEach((elem) => {
-    // Search MAL for each name if not in json
-    if (!json[minifyName(elem)]) {
-      console.log(`[Local] Looking for ${elem} on MAL.`)
-      malScraper.getInfoFromName(elem).then((anime) => {
-        console.log('[Local] Found!')
+  if (!files.length) {
+    sendFiles(json, [], res)
+  } else {
+    uniqueNames.forEach((elem) => {
+      // Search MAL for each name if not in json
+      if (!json[minifyName(elem)]) {
+        console.log(`[Local] Looking for ${elem} on MAL.`)
+        malScraper.getInfoFromName(elem).then((anime) => {
+          console.log('[Local] Found!')
 
-        json[minifyName(elem)] = {
-          name: elem,
-          picture: anime.image,
-          numberOfEpisode: anime.episodes.replace('Unknown', 'NC'),
-          status: anime.status,
-          year: anime.aired.split(' ')[2],
-          genres: anime.genres,
-          classification: anime.classification,
-          mark: anime.statistics.score.value,
-          synopsis: anime.synopsis
-        }
+          json[minifyName(elem)] = {
+            name: elem,
+            picture: anime.image,
+            numberOfEpisode: anime.episodes.replace('Unknown', 'NC'),
+            status: anime.status,
+            year: anime.aired.split(' ')[2],
+            genres: anime.genres,
+            classification: anime.classification,
+            mark: anime.statistics.score.value,
+            synopsis: anime.synopsis
+          }
 
+          ++counter
+          if (counter === uniqueNames.length) {
+            // Saving new data
+            fs.writeFileSync(join(userInfo().homedir, '.KawAnime', 'locals.json'), JSON.stringify(json), 'utf-8')
+            console.log('[Local] Successfully saved data.')
+
+            sendFiles(json, files, res)
+          }
+        }).catch((err) => {
+          console.log('[Local] ' + err)
+        })
+      } else {
         ++counter
-        if (counter === uniqueNames.length) {
-          // Saving new data
-          fs.writeFileSync(join(userInfo().homedir, '.KawAnime', 'locals.json'), JSON.stringify(json), 'utf-8')
-          console.log('[Local] Successfully saved data.')
+        if (counter === uniqueNames.length) sendFiles(json, files, res)
+      }
+    })
+  }
 
-          sendFiles(json, files, res)
-        }
-      }).catch((err) => {
-        console.log('[Local] ' + err)
-      })
-    } else {
-      ++counter
-      if (counter === uniqueNames.length) sendFiles(json, files, res)
-    }
-  })
 }
 
 exports.resetLocal = (url, res) => {
