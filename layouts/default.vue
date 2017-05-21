@@ -2,7 +2,8 @@
   <v-app id="app"
          class="grey lighten-1"
          top-toolbar left-sidebar>
-    <v-toolbar class="dragable">
+    <div style="height: 64px;"><!-- Spacer --></div>
+    <v-toolbar class="dragable" fixed>
       <v-toolbar-side-icon class="non-dragable" @click.native.stop="sidebar = !sidebar"/>
       <v-toolbar-logo class="text-xs-right title" v-bind:style="title">
         <div style="width: 100%;">
@@ -57,12 +58,12 @@
       <v-sidebar v-model="sidebar" height="100vh" style="width: 260px" drawer class="sidebar">
         <div class="sidebar-title-container">
           <nuxt-link to="/">
-            <img src="~static/images/sidebar-icon.png" height="70"/>
+            <img src="~static/images/icon2.png" height="70"/>
           </nuxt-link>
 
           <h1 class="title" v-bind:style="sidebarTitle">
             <strong>かわニメ - </strong>
-            <a href="#">v0.4.0</a>
+            <a href="#">v0.4.1</a>
           </h1>
 
           <div class="links">

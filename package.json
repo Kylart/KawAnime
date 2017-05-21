@@ -11,7 +11,9 @@
   "license": "MIT",
   "scripts": {
     "dev": "cross-env NODE_ENV=development electron .",
-    "test": "standard --fix && echo \"No test implemented yet.\"",
+    "test:nuxt": "nyc ava --verbose test/nuxt.test.js",
+    "test:front": "nuxt build && nyc mocha test/mocha.js",
+    "test": "standard --fix && nuxt build && mocha test/mocha.js && ava test/nuxt.js",
     "build": "nuxt build",
     "start": "electron .",
     "bstart": "nuxt build && npm start",
@@ -31,13 +33,19 @@
     "vuetify": "^0.11.1"
   },
   "devDependencies": {
+    "ava": "^0.19.1",
+    "chai": "^3.5.0",
     "colors": "^1.1.2",
     "cross-env": "^3.1.4",
     "devtron": "^1.4.0",
     "electron": "^1.6.6",
     "electron-builder": "^17.1.1",
     "eslint-plugin-vue": "^2.0.1",
+    "jsdom": "^10.1.0",
+    "mocha": "^3.4.1",
+    "nyc": "^10.3.2",
     "pre-commit": "^1.2.2",
+    "spectron": "^3.6.4",
     "standard": "^10.0.2",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.1",
@@ -60,5 +68,20 @@
         }
       ]
     }
+  },
+  "standard": {
+    "ignore": [
+      "test/*.js"
+    ]
+  },
+  "ava": {
+    "require": [
+      "babel-register"
+    ]
+  },
+  "babel": {
+    "presets": [
+      "es2015"
+    ]
   }
 }

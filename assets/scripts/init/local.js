@@ -99,7 +99,6 @@ exports.searchLocalFiles = (url, res) => {
       }
     })
   }
-
 }
 
 exports.resetLocal = (url, res) => {

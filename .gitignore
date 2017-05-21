@@ -20,3 +20,6 @@ dist/mac
 dist/github
 dist/linux-unpacked
 dist/latest.yml
+
+# tests
+.nyc_output
