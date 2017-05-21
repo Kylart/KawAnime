@@ -11,7 +11,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "cross-env NODE_ENV=development electron .",
-    "test:nuxt": "nyc ava --verbose test/nuxt.test.js",
+    "test:nuxt": "ava --verbose test/nuxt.test.js",
     "test:front": "nuxt build && nyc mocha test/mocha.js",
     "test": "standard --fix && nuxt build && mocha test/mocha.js && ava test/nuxt.js",
     "build": "nuxt build",

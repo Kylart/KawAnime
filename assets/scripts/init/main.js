@@ -6,65 +6,76 @@ const fs = require('fs')
 const {join} = require('path')
 const URL = require('url-parse')
 
-// Initiating files and directory
-// Create the .KawAnime directory
 const {userInfo} = require('os')
 const BASE_PATH = userInfo().homedir
 const dir = join(BASE_PATH, '.KawAnime')
 
-if (!fs.existsSync(dir)) fs.mkdirSync(dir)
+// Initiating files and directory
+// Create the .KawAnime directory
+const createDir = () => {
+  if (!fs.existsSync(dir)) fs.mkdirSync(dir)
+}
 
-// Conf file
-const confPath = join(dir, 'config.json')
+const createConfig = () => {
+  // Conf file
+  const confPath = join(dir, 'config.json')
 
-if (!fs.existsSync(confPath)) {
-  console.log('No configuration file detected. Creating...')
+  if (!fs.existsSync(confPath)) {
+    console.log('No configuration file detected. Creating...')
 
-  const basicConf = {
-    config: {
-      fansub: 'HorribleSubs',
-      quality: '720p',
-      sound: 'Nyanpasu',
-      localPath: join(userInfo().homedir, 'Downloads'),
-      inside: true,
-      magnets: false
+    const basicConf = {
+      config: {
+        fansub: 'HorribleSubs',
+        quality: '720p',
+        sound: 'Nyanpasu',
+        localPath: join(userInfo().homedir, 'Downloads'),
+        inside: true,
+        magnets: false
+      }
     }
-  }
 
-  fs.writeFileSync(confPath, JSON.stringify(basicConf), 'utf-8')
+    fs.writeFileSync(confPath, JSON.stringify(basicConf), 'utf-8')
+  }
 }
 
 // Local file
-const animeLocalPath = join(dir, 'locals.json')
+const createLocal = () => {
+  const animeLocalPath = join(dir, 'locals.json')
 
-if (!fs.existsSync(animeLocalPath)) {
-  console.log('No anime local file detected. Creating...')
+  if (!fs.existsSync(animeLocalPath)) {
+    console.log('No anime local file detected. Creating...')
 
-  fs.writeFileSync(animeLocalPath, '{}', 'utf-8')
+    fs.writeFileSync(animeLocalPath, '{}', 'utf-8')
+  }
 }
 
 // List file
-const listPath = join(dir, 'lists.json')
+const createList = () => {
+  const listPath = join(dir, 'lists.json')
 
-if (!fs.existsSync(listPath)) {
-  console.log('No anime list file detected. Creating...')
+  if (!fs.existsSync(listPath)) {
+    console.log('No anime list file detected. Creating...')
 
-  const basicLists = {
-    watchList: [],
-    seen: [],
-    watching: []
+    const basicLists = {
+      watchList: [],
+      seen: [],
+      watching: []
+    }
+
+    fs.writeFileSync(listPath, JSON.stringify(basicLists), 'utf-8')
   }
-
-  fs.writeFileSync(listPath, JSON.stringify(basicLists), 'utf-8')
 }
 
+
 // History file
-const historyPath = join(dir, 'history.json')
+const createHistory = () => {
+  const historyPath = join(dir, 'history.json')
 
-if (!fs.existsSync(historyPath)) {
-  console.log('No watch history file detected. Creating...')
+  if (!fs.existsSync(historyPath)) {
+    console.log('No watch history file detected. Creating...')
 
-  fs.writeFileSync(historyPath, '{}', 'utf-8')
+    fs.writeFileSync(historyPath, '{}', 'utf-8')
+  }
 }
 
 const {openExternal, openInBrowser} = require('./openExternal.js')
@@ -76,6 +87,12 @@ const history = require('./history')
 const horrible = require('./horrible.js')
 
 const route = (nuxt) => {
+  createDir()
+  createConfig()
+  createLocal()
+  createHistory()
+  createList()
+
   return (req, res) => {
     const url = new URL(req.url)
 

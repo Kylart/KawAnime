@@ -25,7 +25,7 @@ let kawAnimeFilesPath = {
 }
 
 // Init Nuxt.js and create a server listening on localhost:4000
-test.before('Init Nuxt.js', async t => {
+test.before('Init Nuxt.js', async () => {
   /**
    * Nuxt config
    */
@@ -100,7 +100,7 @@ test('Route /downloader exits and renders download button', async t => {
 
 
 // Close server and ask nuxt to stop listening to file changes
-test.after('Closing server and nuxt.test.js', t => {
+test.after('Closing server and nuxt.test.js', () => {
   server.close()
   nuxt.close()
 })
