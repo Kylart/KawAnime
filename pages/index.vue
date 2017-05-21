@@ -323,6 +323,8 @@
   {
     padding-left: 10px;
     margin-top: 10px;
+    margin-bottom: 10px;
+    line-height: 26px;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;

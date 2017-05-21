@@ -26,8 +26,8 @@ exports.getLatest = (url, res) => {
       const ep = name.split(' ').slice(-1)[0]
       const link = result[i].link
 
-      malScraper.getResultsFromSearch(name).then((items) => {
-        return malScraper.getInfoFromURI(malScraper.getBestMatch(researchName, items))
+      malScraper.getResultsFromSearch(rawName).then((items) => {
+        return malScraper.getInfoFromURI(malScraper.getBestMatch(rawName, items))
       }).then((item) => {
         const picture = item.picture
         const fullSynopsis = item.synopsis

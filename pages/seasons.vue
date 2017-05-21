@@ -325,6 +325,7 @@
     margin-top: 10px;
     margin-bottom: 10px;
     padding-left: 10px;
+    line-height: 26px;
     color: rgba(255, 255, 255, 0.8);
   }
 

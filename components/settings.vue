@@ -129,7 +129,7 @@
 </template>
 
 <script>
-  export default{
+  export default {
     data () {
       return {
         configModal: false,
@@ -138,10 +138,7 @@
         },
         fansubChoices: [
           'HorribleSubs',
-          'PuyaSubs',
-          'BakedFish',
-          'DeadFish',
-          'DefinitelyNotMe'
+          'PuyaSubs'
         ],
         soundChoices: [
           'None',
