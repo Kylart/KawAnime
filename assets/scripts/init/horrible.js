@@ -53,6 +53,10 @@ exports.getLatest = (url, res) => {
           res.write(JSON.stringify(toReturn))
           res.end()
         }
+      }).catch(/* istanbul ignore next */ (err) => {
+        console.log('[MalScraper] (Releases): An error occurred...\n' + err)
+        res.writeHead(204, {})
+        res.end()
       })
     }
   }).catch((err) => {

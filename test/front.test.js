@@ -6,7 +6,6 @@ const Application = require('spectron').Application
 const assert = require('assert')
 const {join} = require('path')
 
-
 // Application is not signed yet so we have 2 windows on mac OS...
 describe('Application starting', function () {
   this.timeout(10 * 1000)
@@ -28,12 +27,7 @@ describe('Application starting', function () {
 
   it('shows an initial window', function () {
     return this.app.client.getWindowCount().then(function (count) {
-      process.platform === 'darwin'
-        ? assert.equal(count, 2)
-        : assert.equal(count, 1)
+      assert.equal(count, 1)
     })
   })
 })
-
-
-

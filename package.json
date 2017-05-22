@@ -12,7 +12,7 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development electron .",
     "test:server": "nyc ava --verbose --serial test/server.test.js",
-    "test:front": "nuxt build && nyc mocha test/mocha.js",
+    "test:front": "nuxt build && nyc mocha test/front.test.js",
     "test": "standard --fix && nuxt build && mocha test/mocha.js && ava test/nuxt.js",
     "build": "nuxt build",
     "start": "electron .",
@@ -71,7 +71,7 @@
   },
   "standard": {
     "ignore": [
-      "test/mocha.js"
+      "test/front.test.js"
     ]
   },
   "ava": {
