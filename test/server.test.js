@@ -67,6 +67,83 @@ test.cb(`KawAnime's lists file exists`, t => {
 /**
  * API test calls
  */
+test('/getConfig.json route exits and returns json with right keys', async t => {
+  const { data } = await axios.get(`${uri}/getConfig.json`)
+
+  t.not(data.config, undefined)
+  t.not(data.config.fansub, undefined)
+  t.not(data.config.quality, undefined)
+  t.not(data.config.sound, undefined)
+  t.not(data.config.localPath, undefined)
+  t.not(data.config.inside, undefined)
+  t.not(data.config.magnets, undefined)
+})
+
+test('/getAllShows.json exits and returns a list of names', async t => {
+  const { data } = await axios.get(`${uri}/getAllShows.json`)
+
+  t.true(data.length > 1)
+})
+
+test('/getLatest.json exits and returns 18 elements with right keys at 720p', async t => {
+  const { data, status } = await axios.get(`${uri}/getLatest.json?quality=720p`)
+
+  if (status === 200) {
+    t.is(data.length, 18)
+    t.not(data[0].name, undefined)
+    t.not(data[0].rawName, undefined)
+    t.not(data[0].researchName, undefined)
+    t.not(data[0].magnetLink, undefined)
+    t.not(data[0].picture, undefined)
+  } else if (status === 204) {
+    console.log('An error occurred while getting latest releases.'.yellow)
+    t.is(data.length, 0)
+  } else {
+    t.fail()
+  }
+})
+
+test('/download Mahou Shoujo Ikusei Keikaku at 720p exits and returns all magnets', async t => {
+  const { data } = await axios.post(`${uri}/download`, {
+    name: 'Mahou Shoujo Ikusei Keikaku',
+    quality: '720p',
+    fromEp: 0,
+    untilEp: 20000
+  })
+
+  t.is(data.length, 12)
+  t.not(data[0], '')
+})
+
+test('/download Akame ga Kill! at 1080p exits and returns only 4 eps', async t => {
+  const { data } = await axios.post(`${uri}/download`, {
+    name: 'Akame ga Kill!',
+    quality: '720p',
+    fromEp: 3,
+    untilEp: 6
+  })
+
+  t.is(data.length, 4)
+  t.not(data[0], '')
+})
+
+test('/download with wrong entries exits and returns 204', async t => {
+  const { status } = await axios.post(`${uri}/download`, {
+    name: 'Non-existent anime',
+    quality: '30p',
+    fromEp: 3,
+    untilEp: 6
+  })
+
+  t.is(status, 204)
+})
+
+test('/getLatest.json exits and returns 204 status at 30p', async t => {
+  const { status } = await axios.get(`${uri}/getLatest.json?quality=30p`)
+
+  t.is(status, 204)
+})
+
 test('/seasons.json route exits and returns elements on Spring 2017', async t => {
   const { data } = await axios.get(`${uri}/seasons.json?year=2017&season=spring`)
   t.true(data.info.TV.length > 1)
@@ -92,8 +169,6 @@ test('/news.json route exits and returns 200 elements', async t => {
 
   t.is(data.length, 200)
 })
-
-
 
 // Example of testing only generated html
 test('Route / exits and renders title', async t => {
@@ -131,7 +206,7 @@ test('Route /downloader exits and renders download button', async t => {
 // })
 
 // Close server and ask nuxt to stop listening to file changes
-test.after('Closing server and nuxt.test.js', () => {
+test.after('Closing server and server.test.js', () => {
   server.close()
   nuxt.close()
 })

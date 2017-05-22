@@ -347,7 +347,7 @@ const store = new Vuex.Store({
       else await axios.get(`openThis?type=insideLink&link=${link}`)
     },
     async download ({state, commit}) {
-      const name = state.downloaderForm.name.replace(' ', '_')
+      const name = state.downloaderForm.name
       const fromEp = state.downloaderForm.fromEp !== ''
           ? state.downloaderForm.fromEp
           : 0
@@ -361,7 +361,7 @@ const store = new Vuex.Store({
       log(`Received a request to download ${name} from ep ${fromEp} to ep ${untilEp}. Transmitting...`)
 
       const {data, status} = await axios.post('download', {
-        name: name.replace('_', ' '),
+        name: name,
         quality: quality,
         fromEp: fromEp,
         untilEp: untilEp

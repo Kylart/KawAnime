@@ -53,10 +53,6 @@ exports.getLatest = (url, res) => {
           res.write(JSON.stringify(toReturn))
           res.end()
         }
-      }).catch(err => {
-        console.log('[Horrible] (Releases): An error occurred...\n' + err)
-        res.writeHead(204, {})
-        res.end()
       })
     }
   }).catch((err) => {
@@ -78,6 +74,8 @@ exports.download = (req, res) => {
       fromEp: chunk.fromEp,
       untilEp: chunk.untilEp
     }
+
+    console.log(searchData)
 
     // Calling api
     horribleApi.getMagnetsFromAnimeName(searchData).then((links) => {
