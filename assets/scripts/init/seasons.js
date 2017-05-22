@@ -15,6 +15,8 @@ exports.getSeason = (url, res) => {
     res.write(JSON.stringify(result))
     res.end()
   }).catch((err) => {
-    console.log(err)
+    console.log('[MalScraper] (Seasons): ' + err.message)
+    res.writeHead(204, {})
+    res.end()
   })
 }

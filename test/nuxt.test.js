@@ -4,9 +4,10 @@
 
 import test from 'ava'
 import Nuxt from 'nuxt'
+import axios from 'axios'
 import initFile from '../assets/scripts/init/main.js'
 import http from 'http'
-import colors from 'colors'
+import colors from 'colors' // eslint-disable-line
 import {resolve, join} from 'path'
 import {readFile} from 'fs'
 import {userInfo} from 'os'
@@ -15,6 +16,7 @@ import {userInfo} from 'os'
 // So we can close them at the end of the test
 let nuxt = null
 let server = null
+const uri = 'htp://localhost:4000'
 
 const DIR = join(userInfo().homedir, '.KawAnime')
 let kawAnimeFilesPath = {
@@ -40,7 +42,7 @@ test.before('Init Nuxt.js', async () => {
    */
   nuxt = new Nuxt(config)
   const route = initFile.route(nuxt)
-  server = new http.createServer(route)
+  server = http.createServer(route)
   await nuxt.build()
   server.listen(4000)
   console.log(`KawAnime's server is at http://localhost:${server.address().port}`.green)
@@ -62,6 +64,37 @@ test.cb(`KawAnime's lists file exists`, t => {
   readFile(`${kawAnimeFilesPath.watchList}`, t.end)
 })
 
+/**
+ * API test calls
+ */
+test('/seasons.json route exits and returns elements on Spring 2017', async t => {
+  const { data } = await axios.get(`${uri}/seasons.json?year=2017&season=spring`)
+  t.true(data.info.TV.length > 1)
+  t.true(data.info.OVAs.length > 1)
+  t.true(data.info.Movies.length > 1)
+})
+
+test('/seasons.json route exits and returns elements on Fall 2016', async t => {
+  const { data } = await axios.get(`${uri}/seasons.json?year=2016&season=fall`)
+  t.true(data.info.TV.length > 1)
+  t.true(data.info.OVAs.length > 1)
+  t.true(data.info.Movies.length > 1)
+})
+
+test('/seasons.json route exits and returns and log a error message on Fall 201', async t => {
+  const { status } = await axios.get(`${uri}/seasons.json?year=201&season=fall`)
+
+  t.is(status, 204)
+})
+
+test('/news.json route exits and returns 200 elements', async t => {
+  const { data } = await axios.get(`${uri}/news.json`)
+
+  t.is(data.length, 200)
+})
+
+
+
 // Example of testing only generated html
 test('Route / exits and renders title', async t => {
   let context = {}
@@ -69,7 +102,7 @@ test('Route / exits and renders title', async t => {
   t.true(html.includes('かわニメ'))
 })
 
-test('Route / exits and render loader', async t => {
+test('Route / exits and renders loader', async t => {
   let context = {}
   const { html } = await nuxt.renderRoute('/', context)
   t.true(html.includes('少々お待ち下さいね〜'))
@@ -96,8 +129,6 @@ test('Route /downloader exits and renders download button', async t => {
 //   t.is(element.className, 'form-container')
 //   t.is(element.children[0].className, '.row')
 // })
-
-
 
 // Close server and ask nuxt to stop listening to file changes
 test.after('Closing server and nuxt.test.js', () => {

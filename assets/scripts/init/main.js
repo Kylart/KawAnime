@@ -66,7 +66,6 @@ const createList = () => {
   }
 }
 
-
 // History file
 const createHistory = () => {
   const historyPath = join(dir, 'history.json')

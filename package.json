@@ -11,7 +11,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "cross-env NODE_ENV=development electron .",
-    "test:nuxt": "ava --verbose test/nuxt.test.js",
+    "test:nuxt": "nyc ava --verbose test/nuxt.test.js",
     "test:front": "nuxt build && nyc mocha test/mocha.js",
     "test": "standard --fix && nuxt build && mocha test/mocha.js && ava test/nuxt.js",
     "build": "nuxt build",
@@ -27,7 +27,7 @@
     "axios": "^0.16.0",
     "horrible-api": "^1.0.3",
     "mal-scraper": "^1.3.4",
-    "nuxt": "latest",
+    "nuxt": "^0.10.5",
     "play-sound": "^1.1.1",
     "url-parse": "^1.1.8",
     "vuetify": "^0.11.1"
@@ -71,7 +71,7 @@
   },
   "standard": {
     "ignore": [
-      "test/*.js"
+      "test/mocha.js"
     ]
   },
   "ava": {
