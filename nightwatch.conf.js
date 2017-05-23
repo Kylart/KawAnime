@@ -1,5 +1,5 @@
 /**
- * Created by Kylart on 23/05/2017.
+ * Taken and modified from https://github.com/dwyl/learn-nightwatch
  */
 // require('env2')('.env') // optionally store your Evironment Variables in .env
 require('babel-register')()
@@ -47,7 +47,8 @@ module.exports = {
  * selenium-download does exactly what it's name suggests;
  * downloads (or updates) the version of Selenium (& chromedriver)
  * on your localhost where it will be used by Nightwatch.
- /the following code checks for the existence of `selenium.jar` before trying to run our tests.
+ * The following code checks for the existence of `selenium.jar`
+ * before trying to run our tests.
  */
 
 require('fs').stat(BINPATH + 'selenium.jar', function (err, stat) { // got it?

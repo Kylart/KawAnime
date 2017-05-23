@@ -13,7 +13,7 @@
     "dev": "cross-env NODE_ENV=development electron .",
     "test:server": "nyc ava --verbose --serial test/server.test.js",
     "test:front": "nightwatch",
-    "test": "standard --fix && nuxt build && mocha test/mocha.js && ava test/nuxt.js",
+    "test": "standard --fix && npm test:front && npm test:server",
     "build": "nuxt build",
     "start": "electron .",
     "bstart": "nuxt build && npm start",
@@ -96,6 +96,7 @@
   "nyc": {
     "exclude": [
       "test",
+      "nightwatch.conf.js",
       "**/*.test.js",
       "**/node_modules/**",
       "**/openExternal.js"

@@ -5,7 +5,7 @@
 import test from 'ava'
 import Nuxt from 'nuxt'
 import axios from 'axios'
-import initFile from '../assets/scripts/init/main.js'
+import initFile from '../assets/scripts/api/main.js'
 import http from 'http'
 import colors from 'colors' // eslint-disable-line
 import {resolve, join} from 'path'

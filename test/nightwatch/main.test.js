@@ -4,7 +4,7 @@
 
 import Nuxt from 'nuxt'
 import http from 'http'
-import initFile from '../../assets/scripts/init/main.js'
+import initFile from '../../assets/scripts/api/main.js'
 import colors from 'colors' // eslint-disable-line
 import {resolve} from 'path'
 

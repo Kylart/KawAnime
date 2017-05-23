@@ -1,7 +1,7 @@
 const {join} = require('path')
 
 // Init files and directories
-const initFile = require(join(__dirname, 'assets', 'scripts', 'init', 'main.js'))
+const initFile = require(join(__dirname, 'assets', 'scripts', 'api', 'main.js'))
 
 /**
  *  Nuxt.js part
