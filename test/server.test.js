@@ -172,7 +172,7 @@ test('/news.json route exits and returns 200 elements', async t => {
   t.is(data.length, 200)
 })
 
-test('/getHistory', async t => {
+test('/getHistory route exits and return history file', async t => {
   const { data, status } = await axios.get(`${uri}/getHistory`)
 
   t.is(status, 200)

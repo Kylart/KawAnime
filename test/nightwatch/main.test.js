@@ -37,7 +37,7 @@ module.exports = { // adapted from: https://git.io/vodU0
       done()
     })
   },
-  'Guinea Pig Assert Title': function (browser) {
+  'Getting downloader page': function (browser) {
     browser
       .url(uri)
       .waitForElementVisible('body')
