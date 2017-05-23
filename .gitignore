@@ -25,3 +25,4 @@ dist/latest.yml
 .nyc_output
 reports
 selenium-debug.log
+coverage.lcov

@@ -9,7 +9,7 @@ import initFile from '../assets/scripts/api/main.js'
 import http from 'http'
 import colors from 'colors' // eslint-disable-line
 import {resolve, join} from 'path'
-import {readFile} from 'fs'
+import {readFile, writeFileSync} from 'fs'
 import {userInfo} from 'os'
 
 // We keep the nuxt and server instance
@@ -166,21 +166,102 @@ test('/seasons.json route exits and returns and log a error message on Fall 201'
   t.is(status, 204)
 })
 
-test('/news.json route exits and returns 200 elements', async t => {
-  const { data } = await axios.get(`${uri}/news.json`)
+test('/local.json route exists and returns two files and code 200', async t => {
+  const { data, status } = await axios.get(`${uri}/local.json?dir=${join(__dirname, 'resources')}`)
 
-  t.is(data.length, 200)
+  t.is(status, 200)
+
+  t.is(data.length, 2)
+  t.is(data[0].name, 'Rewrite')
+  t.is(data[1].name, 'Rewrite')
+  t.is(data[0].ep, 1)
+  t.is(data[1].ep, 2)
 })
 
-test('/getHistory route exits and return history file', async t => {
+test('/local.json route exits and returns empty array on empty directory', async t => {
+  const { data, status } = await axios.get(`${uri}/local.json?dir=${__dirname}`)
+
+  t.is(status, 200)
+
+  t.is(data.length, 0)
+})
+
+test('/resetLocal route exits and deletes some data', async t => {
+  const { data, status } = await axios.get(`${uri}/resetLocal?dir=${join(__dirname, 'resources')}`)
+
+  t.is(status, 200)
+
+  t.is(data.length, 2)
+  t.is(data[0].name, 'Rewrite')
+  t.is(data[1].name, 'Rewrite')
+  t.is(data[0].ep, 1)
+  t.is(data[1].ep, 2)
+})
+
+test('/getHistory route exits and returns history file', async t => {
   const { data, status } = await axios.get(`${uri}/getHistory`)
 
   t.is(status, 200)
   t.not(data, undefined)
 })
 
+test('/news.json route exits and returns 200 elements', async t => {
+  const { data } = await axios.get(`${uri}/news.json`)
+
+  t.is(data.length, 200)
+})
+
+test('/appendHistory route exits and returns code 200 on play', async t => {
+  const { status } = await axios.post(`${uri}/appendHistory`, {
+    type: 'Play',
+    text: 'Test'
+  })
+
+  t.is(status, 200)
+
+  const day = (new Date()).toDateString()
+  const json = require(join(userInfo().homedir, '.KawAnime', 'history.json'))
+
+  t.pass(json[day][0])
+
+  const entry = json[day][0]
+
+  t.is(entry.text, 'Test')
+  t.is(entry.type, 'Play')
+})
+
+test('/appendHistory route exits and returns code 200 on delete', async t => {
+  const { status } = await axios.post(`${uri}/appendHistory`, {
+    type: 'Delete',
+    text: 'Test'
+  })
+
+  t.is(status, 200)
+
+  const day = (new Date()).toDateString()
+  const json = require(join(userInfo().homedir, '.KawAnime', 'history.json'))
+
+  t.pass(json[day][0])
+
+  const entry = json[day][0]
+
+  t.is(entry.text, 'Test')
+  t.is(entry.type, 'Delete')
+})
+
 // Close server and ask nuxt to stop listening to file changes
 test.after('Closing server and server.test.js', () => {
   server.close()
   nuxt.close()
+
+  console.info('Cleaning history'.yellow)
+  // Cleaning local history
+  const day = (new Date()).toDateString()
+  const json = require(join(userInfo().homedir, '.KawAnime', 'history.json'))
+
+  json[day].shift()
+  json[day].shift()
+
+  writeFileSync(join(userInfo().homedir, '.KawAnime', 'history.json'), JSON.stringify(json), 'utf-8')
+
 })

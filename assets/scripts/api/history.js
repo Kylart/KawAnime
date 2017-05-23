@@ -29,6 +29,7 @@ exports.appendHistory = (url, res, req) => {
       text: chunk.text
     }
 
+    /* istanbul ignore next */
     // Checking if date already entered
     if (!historyFile[day]) historyFile[day] = []
 

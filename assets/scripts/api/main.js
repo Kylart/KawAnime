@@ -113,6 +113,7 @@ const route = (nuxt) => {
         horrible.getShowsList(res)
         break
 
+      /* istanbul ignore next */
       case '/openThis':
         openExternal(url, res)
         break
@@ -167,6 +168,7 @@ const route = (nuxt) => {
         res.end()
         break
 
+      /* istanbul ignore next */
       case '/_openInBrowser':
         openInBrowser(process.nuxtURL, res)
         break

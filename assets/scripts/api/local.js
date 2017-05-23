@@ -49,7 +49,7 @@ const sendFiles = (json, files, res) => {
   res.end()
 }
 
-exports.searchLocalFiles = (url, res) => {
+const searchLocalFiles = (url, res) => {
   const json = require(join(userInfo().homedir, '.KawAnime', 'locals.json'))
 
   const query = qs.parse(url.query.replace('?', ''))
@@ -83,6 +83,7 @@ exports.searchLocalFiles = (url, res) => {
           }
 
           ++counter
+          /* istanbul ignore next */
           if (counter === uniqueNames.length) {
             // Saving new data
             fs.writeFileSync(join(userInfo().homedir, '.KawAnime', 'locals.json'), JSON.stringify(json), 'utf-8')
@@ -90,18 +91,19 @@ exports.searchLocalFiles = (url, res) => {
 
             sendFiles(json, files, res)
           }
-        }).catch((err) => {
+        }).catch(/* istanbul ignore next */(err) => {
           console.log('[Local] ' + err)
         })
       } else {
         ++counter
+        /* istanbul ignore next */
         if (counter === uniqueNames.length) sendFiles(json, files, res)
       }
     })
   }
 }
 
-exports.resetLocal = (url, res) => {
+const resetLocal = (url, res) => {
   /**
    * Here we just erase stored data about files in directory.
    */
@@ -118,5 +120,10 @@ exports.resetLocal = (url, res) => {
     delete json[minifyName(getName(file))]
   })
 
-  this.searchLocalFiles(url, res)
+  searchLocalFiles(url, res)
+}
+
+module.exports = {
+  searchLocalFiles,
+  resetLocal
 }
