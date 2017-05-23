@@ -135,11 +135,7 @@ const route = (nuxt) => {
         break
 
       case '/watchList.json':
-        wl.getLists(url, res)
-        break
-
-      case '/actOnList':
-        wl.modifyList(req, res)
+        wl.getLists(res)
         break
 
       case '/saveWatchList':

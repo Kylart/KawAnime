@@ -249,6 +249,36 @@ test('/appendHistory route exits and returns code 200 on delete', async t => {
   t.is(entry.type, 'Delete')
 })
 
+test('/watchList route exits with actual file and returns code 200', async t => {
+  const { data, status } = await axios.get(`${uri}/watchList.json`)
+
+  const trueList = require(join(userInfo().homedir, '.KawAnime', 'lists.json'))
+
+  t.is(status, 200)
+
+  t.not(data, undefined)
+  t.true(data.seen.length >= 0)
+
+  t.is(data.watchList.length, trueList.watchList.length)
+  t.is(data.watching.length, trueList.watching.length)
+  t.is(data.seen.length, trueList.seen.length)
+})
+
+test('/saveWatchList exits and returns 200', async t => {
+  let trueList = require(join(userInfo().homedir, '.KawAnime', 'lists.json'))
+
+  trueList.watching.push('Test')
+
+  const { status } = await axios.post(`${uri}/saveWatchList`, JSON.stringify(trueList))
+
+  t.is(status, 200)
+
+  trueList = require(join(userInfo().homedir, '.KawAnime', 'lists.json'))
+
+  t.is(trueList.watching.slice(-1)[0], 'Test')
+})
+
+
 // Close server and ask nuxt to stop listening to file changes
 test.after('Closing server and server.test.js', () => {
   server.close()
@@ -264,4 +294,12 @@ test.after('Closing server and server.test.js', () => {
 
   writeFileSync(join(userInfo().homedir, '.KawAnime', 'history.json'), JSON.stringify(json), 'utf-8')
 
+  console.info('Cleaning watchlists'.yellow)
+  const wl = require(join(userInfo().homedir, '.KawAnime', 'lists.json'))
+
+  wl.watching.pop()
+
+  writeFileSync(join(userInfo().homedir, '.KawAnime', 'lists.json'), JSON.stringify(wl), 'utf-8')
+
+  console.info('All clear!'.green)
 })
