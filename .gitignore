@@ -23,3 +23,5 @@ dist/latest.yml
 
 # tests
 .nyc_output
+reports
+selenium-debug.log

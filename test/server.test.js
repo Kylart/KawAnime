@@ -16,7 +16,7 @@ import {userInfo} from 'os'
 // So we can close them at the end of the test
 let nuxt = null
 let server = null
-const uri = 'htp://localhost:4000'
+const uri = 'http://localhost:4000'
 
 const DIR = join(userInfo().homedir, '.KawAnime')
 let kawAnimeFilesPath = {
@@ -46,6 +46,8 @@ test.before('Init Nuxt.js', async () => {
   await nuxt.build()
   server.listen(4000)
   console.log(`KawAnime's server is at http://localhost:${server.address().port}`.green)
+
+  console.log = (msg) => { void (msg) }
 })
 
 test.cb(`KawAnime's local file exists`, t => {
@@ -170,40 +172,12 @@ test('/news.json route exits and returns 200 elements', async t => {
   t.is(data.length, 200)
 })
 
-// Example of testing only generated html
-test('Route / exits and renders title', async t => {
-  let context = {}
-  const { html } = await nuxt.renderRoute('/', context)
-  t.true(html.includes('かわニメ'))
-})
+test('/getHistory', async t => {
+  const { data, status } = await axios.get(`${uri}/getHistory`)
 
-test('Route / exits and renders loader', async t => {
-  let context = {}
-  const { html } = await nuxt.renderRoute('/', context)
-  t.true(html.includes('少々お待ち下さいね〜'))
+  t.is(status, 200)
+  t.not(data, undefined)
 })
-
-// Might be temporary only
-test('Route /downloader exits and renders magnet switch', async t => {
-  let context = {}
-  const { html } = await nuxt.renderRoute('/downloader', context)
-  t.true(html.includes('Get Magnets'))
-})
-
-test('Route /downloader exits and renders download button', async t => {
-  let context = {}
-  const { html } = await nuxt.renderRoute('/downloader', context)
-  t.true(html.includes('Download!'))
-})
-
-// Needs fix from nuxt
-// test('Route /downloader', async t => {
-//   const window = await nuxt.renderAndGetWindow()
-//   let element = window.document.querySelector('div.form-container')
-//   t.not(element, null)
-//   t.is(element.className, 'form-container')
-//   t.is(element.children[0].className, '.row')
-// })
 
 // Close server and ask nuxt to stop listening to file changes
 test.after('Closing server and server.test.js', () => {
