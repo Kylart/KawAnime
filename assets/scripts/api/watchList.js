@@ -6,7 +6,10 @@ const fs = require('fs')
 const {userInfo} = require('os')
 const {join} = require('path')
 
-const wlPath = join(userInfo().homedir, '.KawAnime', 'lists.json')
+/* istanbul ignore next */
+const wlPath = process.env.NODE_ENV !== 'KawAnime-test'
+  ? join(userInfo().homedir, '.KawAnime', 'lists.json')
+  : join(userInfo().homedir, '.KawAnime-test', 'lists.json')
 
 exports.getLists = (res) => {
   const wlFile = require(wlPath)

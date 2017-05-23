@@ -8,11 +8,15 @@ const URL = require('url-parse')
 
 const {userInfo} = require('os')
 const BASE_PATH = userInfo().homedir
-const dir = join(BASE_PATH, '.KawAnime')
+/* istanbul ignore next */
+const dir = process.env.NODE_ENV !== 'KawAnime-test'
+  ? join(BASE_PATH, '.KawAnime')
+  : join(BASE_PATH, '.KawAnime-test')
 
 // Initiating files and directory
 // Create the .KawAnime directory
 const createDir = () => {
+  /* istanbul ignore next */
   if (!fs.existsSync(dir)) fs.mkdirSync(dir)
 }
 
@@ -20,6 +24,7 @@ const createConfig = () => {
   // Conf file
   const confPath = join(dir, 'config.json')
 
+  /* istanbul ignore next */
   if (!fs.existsSync(confPath)) {
     console.log('No configuration file detected. Creating...')
 
@@ -42,6 +47,7 @@ const createConfig = () => {
 const createLocal = () => {
   const animeLocalPath = join(dir, 'locals.json')
 
+  /* istanbul ignore next */
   if (!fs.existsSync(animeLocalPath)) {
     console.log('No anime local file detected. Creating...')
 
@@ -53,6 +59,7 @@ const createLocal = () => {
 const createList = () => {
   const listPath = join(dir, 'lists.json')
 
+  /* istanbul ignore next */
   if (!fs.existsSync(listPath)) {
     console.log('No anime list file detected. Creating...')
 
@@ -70,6 +77,7 @@ const createList = () => {
 const createHistory = () => {
   const historyPath = join(dir, 'history.json')
 
+  /* istanbul ignore next */
   if (!fs.existsSync(historyPath)) {
     console.log('No watch history file detected. Creating...')
 
@@ -169,8 +177,10 @@ const route = (nuxt) => {
         openInBrowser(process.nuxtURL, res)
         break
 
+      /* istanbul ignore next */
       default:
         nuxt.render(req, res)
+        break
     }
   }
 }

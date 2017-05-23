@@ -50,7 +50,10 @@ const sendFiles = (json, files, res) => {
 }
 
 const searchLocalFiles = (url, res) => {
-  const json = require(join(userInfo().homedir, '.KawAnime', 'locals.json'))
+  /* istanbul ignore next */
+  const json = process.env.NODE_ENV !== 'KawAnime-test'
+    ? require(join(userInfo().homedir, '.KawAnime', 'locals.json'))
+    : require(join(userInfo().homedir, '.KawAnime-test', 'locals.json'))
 
   const query = qs.parse(url.query.replace('?', ''))
   const dir = query.dir
@@ -107,7 +110,10 @@ const resetLocal = (url, res) => {
   /**
    * Here we just erase stored data about files in directory.
    */
-  const json = require(join(userInfo().homedir, '.KawAnime', 'locals.json'))
+  /* istanbul ignore next */
+  const json = process.env.NODE_ENV !== 'KawAnime-test'
+    ? require(join(userInfo().homedir, '.KawAnime', 'locals.json'))
+    : require(join(userInfo().homedir, '.KawAnime-test', 'locals.json'))
 
   const query = qs.parse(url.query.replace('?', ''))
   const dir = query.dir

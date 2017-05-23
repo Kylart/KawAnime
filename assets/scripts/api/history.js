@@ -6,7 +6,10 @@ const {join} = require('path')
 const {writeFileSync} = require('fs')
 const {userInfo} = require('os')
 
-const dir = join(userInfo().homedir, '.KawAnime')
+/* istanbul ignore next */
+const dir = process.env.NODE_ENV !== 'KawAnime-test'
+  ? join(userInfo().homedir, '.KawAnime')
+  : join(userInfo().homedir, '.KawAnime-test')
 
 const historyPath = join(dir, 'history.json')
 

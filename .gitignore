@@ -26,3 +26,4 @@ dist/latest.yml
 reports
 selenium-debug.log
 coverage.lcov
+/coverage/

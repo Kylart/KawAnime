@@ -5,12 +5,13 @@
 import test from 'ava'
 import Nuxt from 'nuxt'
 import axios from 'axios'
-import initFile from '../assets/scripts/api/main.js'
 import http from 'http'
 import colors from 'colors' // eslint-disable-line
 import {resolve, join} from 'path'
-import {readFile, writeFileSync} from 'fs'
+import {readFile, writeFileSync, rmdirSync, unlinkSync, readdirSync} from 'fs'
 import {userInfo} from 'os'
+
+process.env.NODE_ENV = 'KawAnime-test'
 
 // We keep the nuxt and server instance
 // So we can close them at the end of the test
@@ -18,7 +19,7 @@ let nuxt = null
 let server = null
 const uri = 'http://localhost:4000'
 
-const DIR = join(userInfo().homedir, '.KawAnime')
+const DIR = join(userInfo().homedir, '.KawAnime-test')
 let kawAnimeFilesPath = {
   local: join(DIR, 'locals.json'),
   history: join(DIR, 'history.json'),
@@ -28,6 +29,11 @@ let kawAnimeFilesPath = {
 
 // Init Nuxt.js and create a server listening on localhost:4000
 test.before('Init Nuxt.js', async () => {
+  /**
+   * Removing potentially existing .KawAnime directory
+   */
+  const initFile = require(join(__dirname, '..', 'assets', 'scripts', 'api', 'main.js'))
+
   /**
    * Nuxt config
    */
@@ -46,6 +52,19 @@ test.before('Init Nuxt.js', async () => {
   await nuxt.build()
   server.listen(4000)
   console.log(`KawAnime's server is at http://localhost:${server.address().port}`.green)
+
+  const local = require(join(DIR, 'locals.json'))
+  local['sakuratrick'] = {
+    name: 'Sakura Trick',
+    picture: 'Some/link',
+    numberOfEpisode: '1',
+    status: 'status',
+    genres: ['One', 'Or', 'Two', 'Genres'],
+    classification: 'PG-13 - Teens 13 or older',
+    mark: '7.33',
+    synopsis: 'Story blablabla'
+  }
+  writeFileSync(join(DIR, 'locals.json'), JSON.stringify(local), 'utf-8')
 
   console.log = (msg) => { void (msg) }
 })
@@ -79,6 +98,23 @@ test('/getConfig.json route exits and returns json with right keys', async t => 
   t.not(data.config.localPath, undefined)
   t.not(data.config.inside, undefined)
   t.not(data.config.magnets, undefined)
+})
+
+test('/saveConfig.json route exits and saves config and return 200', async t => {
+  let config = require(join(DIR, 'config.json'))
+  const saved = config.sound
+  config.sound = 'Test'
+
+  const { status } = await axios.post(`${uri}/saveConfig`, JSON.stringify(config))
+
+  t.is(status, 200)
+
+  config = require(join(DIR, 'config.json'))
+  t.is(config.sound, 'Test')
+
+  config.sound = saved
+
+  writeFileSync(join(DIR, 'config.json'), JSON.stringify(config), 'utf-8')
 })
 
 test('/getAllShows.json exits and returns a list of names', async t => {
@@ -171,11 +207,14 @@ test('/local.json route exists and returns two files and code 200', async t => {
 
   t.is(status, 200)
 
-  t.is(data.length, 2)
+  t.is(data.length, 3)
+
+  t.is(data[1].name, 'Sakura Trick')
+  t.is(data[1].ep, 1)
   t.is(data[0].name, 'Rewrite')
-  t.is(data[1].name, 'Rewrite')
+  t.is(data[2].name, 'Rewrite')
   t.is(data[0].ep, 1)
-  t.is(data[1].ep, 2)
+  t.is(data[2].ep, 2)
 })
 
 test('/local.json route exits and returns empty array on empty directory', async t => {
@@ -191,11 +230,12 @@ test('/resetLocal route exits and deletes some data', async t => {
 
   t.is(status, 200)
 
-  t.is(data.length, 2)
+  t.is(data[1].name, 'Sakura Trick')
+  t.is(data[1].ep, 1)
   t.is(data[0].name, 'Rewrite')
-  t.is(data[1].name, 'Rewrite')
+  t.is(data[2].name, 'Rewrite')
   t.is(data[0].ep, 1)
-  t.is(data[1].ep, 2)
+  t.is(data[2].ep, 2)
 })
 
 test('/getHistory route exits and returns history file', async t => {
@@ -203,12 +243,6 @@ test('/getHistory route exits and returns history file', async t => {
 
   t.is(status, 200)
   t.not(data, undefined)
-})
-
-test('/news.json route exits and returns 200 elements', async t => {
-  const { data } = await axios.get(`${uri}/news.json`)
-
-  t.is(data.length, 200)
 })
 
 test('/appendHistory route exits and returns code 200 on play', async t => {
@@ -220,7 +254,7 @@ test('/appendHistory route exits and returns code 200 on play', async t => {
   t.is(status, 200)
 
   const day = (new Date()).toDateString()
-  const json = require(join(userInfo().homedir, '.KawAnime', 'history.json'))
+  const json = require(join(DIR, 'history.json'))
 
   t.pass(json[day][0])
 
@@ -239,7 +273,7 @@ test('/appendHistory route exits and returns code 200 on delete', async t => {
   t.is(status, 200)
 
   const day = (new Date()).toDateString()
-  const json = require(join(userInfo().homedir, '.KawAnime', 'history.json'))
+  const json = require(join(DIR, 'history.json'))
 
   t.pass(json[day][0])
 
@@ -252,20 +286,16 @@ test('/appendHistory route exits and returns code 200 on delete', async t => {
 test('/watchList route exits with actual file and returns code 200', async t => {
   const { data, status } = await axios.get(`${uri}/watchList.json`)
 
-  const trueList = require(join(userInfo().homedir, '.KawAnime', 'lists.json'))
-
   t.is(status, 200)
 
   t.not(data, undefined)
+  t.true(data.watchList.length >= 0)
+  t.true(data.watching.length >= 0)
   t.true(data.seen.length >= 0)
-
-  t.is(data.watchList.length, trueList.watchList.length)
-  t.is(data.watching.length, trueList.watching.length)
-  t.is(data.seen.length, trueList.seen.length)
 })
 
 test('/saveWatchList exits and returns 200', async t => {
-  let trueList = require(join(userInfo().homedir, '.KawAnime', 'lists.json'))
+  let trueList = require(join(DIR, 'lists.json'))
 
   trueList.watching.push('Test')
 
@@ -273,33 +303,87 @@ test('/saveWatchList exits and returns 200', async t => {
 
   t.is(status, 200)
 
-  trueList = require(join(userInfo().homedir, '.KawAnime', 'lists.json'))
+  trueList = require(join(DIR, 'lists.json'))
 
   t.is(trueList.watching.slice(-1)[0], 'Test')
 })
 
+test('/news.json route exits and returns 200 elements', async t => {
+  const { data } = await axios.get(`${uri}/news.json`)
+
+  t.is(data.length, 200)
+})
+
+/**
+ * Front test calls
+ *
+ * Very basic tests. Front is tested with nightwatch anyway
+ */
+
+test('/downloader exits and render HTML', async t => {
+  let context = {}
+  const { html } = await nuxt.renderRoute('/downloader', context)
+
+  t.true(html.includes('Download!'))
+})
+
+test('/index exits and render HTML', async t => {
+  let context = {}
+  const { html } = await nuxt.renderRoute('/', context)
+
+  t.true(html.includes('少々お待ち下さいね〜'))
+})
+
+test('/seasons exits and render HTML', async t => {
+  let context = {}
+  const { html } = await nuxt.renderRoute('/seasons', context)
+
+  t.true(html.includes('かわニメ'))
+  t.true(html.includes('少々お待ち下さいね〜'))
+})
+
+test('/news exits and render HTML', async t => {
+  let context = {}
+  const { html } = await nuxt.renderRoute('/news', context)
+
+  t.true(html.includes('かわニメ'))
+  t.true(html.includes('少々お待ち下さいね〜'))
+})
+
+test('/localPage exits and render HTML', async t => {
+  let context = {}
+  const { html } = await nuxt.renderRoute('/news', context)
+
+  t.true(html.includes('refresh'))
+})
+
+test('/watchList exits and render HTML', async t => {
+  let context = {}
+  const { html } = await nuxt.renderRoute('/watchList', context)
+
+  t.true(html.includes('Move to'))
+})
 
 // Close server and ask nuxt to stop listening to file changes
 test.after('Closing server and server.test.js', () => {
   server.close()
   nuxt.close()
 
-  console.info('Cleaning history'.yellow)
-  // Cleaning local history
-  const day = (new Date()).toDateString()
-  const json = require(join(userInfo().homedir, '.KawAnime', 'history.json'))
+  /**
+   * Removing temporary .KawAnime directory
+   */
+  console.info('Removing temporary info'.yellow)
+  const files = readdirSync(DIR)
 
-  json[day].shift()
-  json[day].shift()
+  files.forEach((file) => {
+    unlinkSync(`${DIR}/${file}`)
+  })
 
-  writeFileSync(join(userInfo().homedir, '.KawAnime', 'history.json'), JSON.stringify(json), 'utf-8')
-
-  console.info('Cleaning watchlists'.yellow)
-  const wl = require(join(userInfo().homedir, '.KawAnime', 'lists.json'))
-
-  wl.watching.pop()
-
-  writeFileSync(join(userInfo().homedir, '.KawAnime', 'lists.json'), JSON.stringify(wl), 'utf-8')
+  try {
+    rmdirSync(DIR)
+  } catch (err) {
+    throw err
+  }
 
   console.info('All clear!'.green)
 })
