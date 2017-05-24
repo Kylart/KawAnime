@@ -2,10 +2,10 @@
  * Created by Kylart on 23/05/2017.
  */
 
+import 'colors'
 import Nuxt from 'nuxt'
 import http from 'http'
 import initFile from '../../assets/scripts/api/main.js'
-import colors from 'colors' // eslint-disable-line
 import {resolve} from 'path'
 
 // We keep the nuxt and server instance

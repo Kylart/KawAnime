@@ -2,11 +2,11 @@
  * Created by Kylart on 21/05/2017.
  */
 
+import 'colors'
 import test from 'ava'
 import Nuxt from 'nuxt'
 import axios from 'axios'
 import http from 'http'
-import colors from 'colors' // eslint-disable-line
 import {resolve, join} from 'path'
 import {readFile, writeFileSync, rmdirSync, unlinkSync, readdirSync} from 'fs'
 import {userInfo} from 'os'
@@ -327,7 +327,7 @@ test('/downloader exits and render HTML', async t => {
   t.true(html.includes('Download!'))
 })
 
-test('/ route exits and returns HTML (axios)', async t => {
+test('/ exits and returns HTML (axios)', async t => {
   const { data, status } = await axios.get(`${uri}/`)
 
   t.is(status, 200)

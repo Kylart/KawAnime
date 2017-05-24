@@ -1,11 +1,15 @@
 <h1 align="center">KawAnime</h1>
 
 <p align="center">
-  <a><img src="http://forthebadge.com/images/badges/built-with-love.svg"/></a>
+  <a href="http://forthebadge.com/">
+    <img src="http://forthebadge.com/images/badges/built-with-love.svg"/>
+  </a>
 </p>
 
 <p align="center">
-  <a><img src="https://cdn.rawgit.com/feross/standard/master/badge.svg" /></a>
+  <a href="https://standardjs.com/">
+    <img src="https://cdn.rawgit.com/feross/standard/master/badge.svg" />
+  </a>
 </p>
 
 <p align="center">
