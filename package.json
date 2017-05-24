@@ -40,6 +40,7 @@
     "babel-plugin-add-module-exports": "^0.2.1",
     "babel-preset-es2015": "^6.24.1",
     "chai": "^3.5.0",
+    "cloc": "^2.2.0",
     "codecov": "^2.2.0",
     "colors": "^1.1.2",
     "cross-env": "^3.1.4",
@@ -105,10 +106,22 @@
       "**/openExternal.js"
     ],
     "watermarks": {
-      "lines": [80, 95],
-      "functions": [80, 95],
-      "branches": [80, 95],
-      "statements": [80, 95]
+      "lines": [
+        80,
+        95
+      ],
+      "functions": [
+        80,
+        95
+      ],
+      "branches": [
+        80,
+        95
+      ],
+      "statements": [
+        80,
+        95
+      ]
     }
   }
 }
