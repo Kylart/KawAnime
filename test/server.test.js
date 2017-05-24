@@ -20,7 +20,7 @@ let server = null
 const uri = 'http://localhost:4000'
 
 const DIR = join(userInfo().homedir, '.KawAnime-test')
-let kawAnimeFilesPath = {
+const kawAnimeFilesPath = {
   local: join(DIR, 'locals.json'),
   history: join(DIR, 'history.json'),
   watchList: join(DIR, 'lists.json'),
@@ -30,7 +30,7 @@ let kawAnimeFilesPath = {
 // Init Nuxt.js and create a server listening on localhost:4000
 test.before('Init Nuxt.js', async () => {
   /**
-   * Removing potentially existing .KawAnime directory
+   * Creating .KawAnime-test directory and necessary files
    */
   const initFile = require(join(__dirname, '..', 'assets', 'scripts', 'api', 'main.js'))
 
@@ -327,11 +327,13 @@ test('/downloader exits and render HTML', async t => {
   t.true(html.includes('Download!'))
 })
 
-test('/index exits and render HTML', async t => {
-  let context = {}
-  const { html } = await nuxt.renderRoute('/', context)
+test('/ route exits and returns HTML (axios)', async t => {
+  const { data, status } = await axios.get(`${uri}/`)
 
-  t.true(html.includes('少々お待ち下さいね〜'))
+  t.is(status, 200)
+
+  t.true(data.includes('かわニメ'))
+  t.true(data.includes('少々お待ち下さいね〜'))
 })
 
 test('/seasons exits and render HTML', async t => {

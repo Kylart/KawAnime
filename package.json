@@ -11,6 +11,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "cross-env NODE_ENV=development electron .",
+    "cloc": "cloc $(git ls-files | grep -vE \".mkv|mp4\")",
     "test:server": "nyc ava --verbose --serial test/server.test.js",
     "test:front": "nightwatch",
     "test": "standard --fix && npm test:front && npm test:server",
@@ -102,6 +103,12 @@
       "**/*.test.js",
       "**/node_modules/**",
       "**/openExternal.js"
-    ]
+    ],
+    "watermarks": {
+      "lines": [80, 95],
+      "functions": [80, 95],
+      "branches": [80, 95],
+      "statements": [80, 95]
+    }
   }
 }

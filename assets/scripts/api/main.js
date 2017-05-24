@@ -177,7 +177,6 @@ const route = (nuxt) => {
         openInBrowser(process.nuxtURL, res)
         break
 
-      /* istanbul ignore next */
       default:
         nuxt.render(req, res)
         break

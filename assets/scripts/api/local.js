@@ -88,8 +88,11 @@ const searchLocalFiles = (url, res) => {
           ++counter
           /* istanbul ignore next */
           if (counter === uniqueNames.length) {
+            /* istanbul ignore next */
             // Saving new data
-            fs.writeFileSync(join(userInfo().homedir, '.KawAnime', 'locals.json'), JSON.stringify(json), 'utf-8')
+            process.env.NODE_ENV !== 'KawAnime-test'
+              ? fs.writeFileSync(join(userInfo().homedir, '.KawAnime', 'locals.json'), JSON.stringify(json), 'utf-8')
+              : fs.writeFileSync(join(userInfo().homedir, '.KawAnime-test', 'locals.json'), JSON.stringify(json), 'utf-8')
             console.log('[Local] Successfully saved data.')
 
             sendFiles(json, files, res)
