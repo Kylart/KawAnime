@@ -1,3 +1,25 @@
+<h1 align="center">KawAnime</h1>
+
+<p align="center">
+  <a><img src="http://forthebadge.com/images/badges/built-with-love.svg"/></a>
+</p>
+
+<p align="center">
+  <a><img src="https://cdn.rawgit.com/feross/standard/master/badge.svg" /></a>
+</p>
+
+<p align="center">
+  <a href="https://travis-ci.org/Kylart/KawAnime">
+    <img src="https://travis-ci.org/Kylart/KawAnime.svg?branch=master" alt="Build Status">
+  </a>
+  <a href="https://codecov.io/gh/Kylart/KawAnime">
+    <img src="https://codecov.io/gh/Kylart/KawAnime/branch/master/graph/badge.svg" alt="Codecov" />
+  </a>
+  <a href="https://opensource.org/licenses/MIT">
+    <img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License">
+  </a>
+</p>
+
 # Current situation
 
 As you may know, nyaa.se is down for the moment (and maybe forever). _KawAnime_ was mostly based on nyaa so 
@@ -6,9 +28,7 @@ its behaviour had to change a bit.
 _KawAnime_ is at the moment __fully based__ on HorribleSubs as for its downloading features. Some other fansub might be 
 implemented in the feature to offer more choices.
 
-# _KawAnime_  
-[![JavaScript Style Guide](https://cdn.rawgit.com/feross/standard/master/badge.svg)](https://github.com/feross/standard)
-
+# Features
 Disclaimer : This is a software for otaku/anime-fans. Do not try if you're not prepared.
 
 This software allows one to: 
