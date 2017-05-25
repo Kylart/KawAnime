@@ -90,6 +90,7 @@
       </v-row>
     </div>
     <v-container fluid v-else>
+      <img class="empty-bg" height="400" src="~static/images/empty-bg.png"/>
       <v-row>
         <v-col xs12 class="menubar">
           <v-row>
@@ -113,6 +114,10 @@
         </v-col>
         <v-col xs12 class="empty-message">
           <h3>Wow such empty!</h3>
+          <h4>Start downloading anime
+            <nuxt-link to="/downloader" class="green--text">here</nuxt-link>
+            or <nuxt-link to="/" class="cyan--text">here!</nuxt-link>
+          </h4>
         </v-col>
       </v-row>
     </v-container>
@@ -348,8 +353,15 @@
     text-align: center;
   }
 
-  .empty-message h3
+  .empty-message h3,h4
   {
     color: rgba(255, 255, 255, 0.8);
+  }
+
+  .empty-bg
+  {
+    position: absolute;
+    bottom: 0;
+    left: 5%;
   }
 </style>
