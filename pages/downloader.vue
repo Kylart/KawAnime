@@ -13,14 +13,15 @@
           <div class="choose-magnets">
             <v-card class="z-depth-0">
               <v-card-text class="switch">
-                <v-switch label="Get Magnets" primary v-model="$store.state.config.magnets" dark/>
+                <v-switch id="magnets-switch" label="Get Magnets" primary v-model="$store.state.config.magnets" dark/>
               </v-card-text>
             </v-card>
           </div>
         </v-col>
         <v-col xs4></v-col>
         <v-col xs4>
-          <v-select name="input-1" autofocus
+          <v-select name="name-input"
+                    id="name-input"
                     autocomplete
                     v-bind:items="list"
                     type="text"
@@ -34,7 +35,7 @@
         <v-col xs4
                @keydown.enter="next(2)"
                @keydown.delete="previous(2)">
-          <v-text-field name="input-2"
+          <v-text-field name="from-ep-input"
                         type="number" min="0"
                         label="From episode..."
                         v-model="$store.state.downloaderForm.fromEp"
@@ -46,7 +47,7 @@
         <v-col xs4
                @keydown.enter="next(3)"
                @keydown.delete="previous(3)">
-          <v-text-field name="input-3"
+          <v-text-field name="until-ep-input"
                         type="number"
                         label="Until episode.."
                         v-model="$store.state.downloaderForm.untilEp"
