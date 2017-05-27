@@ -283,6 +283,10 @@ const store = new Vuex.Store({
         const {data} = await axios.get(`getLatest.json?quality=${state.releaseQuality}`)
 
         if (data.length === 18) {
+          // Update time whenever KawAnime receives new releases.
+          const newTime = (new Date()).toLocaleTimeString()
+          this.$store.commit('setReleasesUpdateTime', newTime)
+
           commit('setReleases', data)
           dispatch('autoRefreshReleases')
         }

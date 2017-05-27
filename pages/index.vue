@@ -189,13 +189,6 @@
         return this.$store.state.releasesUpdateTime
       }
     },
-    watch: {
-      releases: function () {
-        // Update time whenever KawAnime receives new releases.
-        const newTime = (new Date()).toLocaleTimeString()
-        this.$store.commit('setReleasesUpdateTime', newTime)
-      }
-    },
     components: {
       Loader
     },

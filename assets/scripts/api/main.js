@@ -92,6 +92,7 @@ const local = require('./local.js')
 const wl = require('./watchList.js')
 const history = require('./history')
 const horrible = require('./horrible.js')
+const nyaa = require('./nyaa.js')
 
 const route = (nuxt) => {
   createDir()
@@ -111,6 +112,14 @@ const route = (nuxt) => {
         res.writeHead(200, {'Content-Type': 'application/json'})
         res.write(JSON.stringify(configFile))
         res.end()
+        break
+
+      case '/getLatestNyaa':
+        nyaa.getLatest(url, res)
+        break
+
+      case '/downloadNyaa':
+        nyaa.download(url, res)
         break
 
       case '/getLatest.json':
