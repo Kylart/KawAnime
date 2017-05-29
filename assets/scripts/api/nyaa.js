@@ -12,87 +12,71 @@ const sendRes = (object, res) => {
   res.end()
 }
 
-const download = (url, res) => {
-  const query = qs.parse(url.replace('?', ''))
-  const term = query.term
-  const n = query.n || null
-  const choice = query.site || 'si'
+const download = (req, res) => {
+  req.on('data', (chunk) => {
+    console.log('[Nyaa] (Download): Received a download request.')
 
-  if (!term) {
-    res.writeHead(204, {})
-    res.end()
-  } else {
+    chunk = JSON.parse(chunk)
+
+    const choice = chunk.choice
+
+    const searchData = {
+      quality: chunk.quality,
+      name: chunk.name,
+      fansub: chunk.fansub,
+      fromEp: chunk.fromEp,
+      untilEp: chunk.untilEp
+    }
+
+    const term = `[${searchData.fansub}]+${searchData.quality}+${searchData.name}`
+
     if (choice === 'si') {
-      nyaa.searchSi(term, n).then((data) => {
-        const magnets = data.map((elem) => {
-          return `magnet:?xt=urn:btih:${elem.infoHash[0]}`
+      nyaa.searchSi(term).then((data) => {
+        const magnets = []
+
+        data.forEach((elem) => {
+          const ep = elem.title[0].split(' ').splice(-2, 1)[0]
+
+          if (ep <= searchData.untilEp && ep >= searchData.fromEp) {
+            magnets.push(`magnet:?xt=urn:btih:${elem['nyaa:infoHash'][0]}`)
+          }
         })
 
         sendRes(magnets, res)
-      }) /* istanbul ignore next */
-        .catch((err) => {
-          console.log('[Nyaa]: An error occurred...\n' + err)
-          res.writeHead(204, {})
-          res.end()
-        })
+      }).catch(/* istanbul ignore next */(err) => {
+        console.log('[Nyaa]: An error occurred...\n' + err)
+        res.writeHead(204, {})
+        res.end()
+      })
     } else {
-      nyaa.searchPantsu(term, n).then((data) => {
-        const magnets = data.map((elem) => {
-          return elem.link[0].split('&')[0]
+      nyaa.searchPantsu(term).then((data) => {
+        const magnets = []
+
+        data.forEach((elem) => {
+          const ep = parseInt(elem.title[0].split(' ').splice(-2, 1)[0])
+
+          if (ep <= searchData.untilEp && ep >= searchData.fromEp) {
+            magnets.push(elem.link[0].split('&')[0])
+          }
         })
 
         sendRes(magnets, res)
-      }) /* istanbul ignore next */
-        .catch((err) => {
-          console.log('[Nyaa]: An error occurred...\n' + err)
-          res.writeHead(204, {})
-          res.end()
-        })
+      }).catch(/* istanbul ignore next */(err) => {
+        console.log('[Nyaa]: An error occurred...\n' + err)
+        res.writeHead(204, {})
+        res.end()
+      })
     }
-  }
+  })
 }
 
-const searchOnMal = (i, counter, toReturn, object, res) => {
-  malScraper.getResultsFromSearch(object.rawName).then((items) => {
-    return malScraper.getInfoFromURI(malScraper.getBestMatch(object.rawName, items))
-  }).then((item) => {
-    const picture = item.picture
-    const fullSynopsis = item.synopsis
-    const synopsis = item.synopsis.length > 170
-      ? item.synopsis.slice(0, 175) + '...'
-      : fullSynopsis
-
-    toReturn[i] = {
-      name: object.name,
-      rawName: object.rawName,
-      researchName: object.researchName,
-      ep: object.ep,
-      magnetLink: object.link,
-      picture: picture,
-      synopsis: synopsis,
-      fullSynopsis: fullSynopsis
-    }
-
-    ++counter
-    if (counter === 18) {
-      console.log('[Nyaa] (Releases): Sending Latest releases.')
-      res.writeHead(200, {'Content-type': 'application/json'})
-      res.write(JSON.stringify(toReturn))
-      res.end()
-    }
-  }) /* istanbul ignore next */
-    .catch((err) => {
-      console.log('[MalScraper] (Releases): An error occurred...\n' + err)
-      res.writeHead(204, {})
-      res.end()
-    })
-}
-
+// TODO remove this wtf ?
+/* istanbul ignore next */
 const getLatest = (url, res) => {
-  const query = qs.parse(url.replace('?', ''))
+  const query = qs.parse(url.query.replace('?', ''))
   const fansub = query.fansub
-  const choice = query.choice || 'si'
-  const quality = query.quality || '720p'
+  const choice = query.choice
+  const quality = query.quality
 
   let counter = 0
   let toReturn = []
@@ -102,55 +86,97 @@ const getLatest = (url, res) => {
       for (let i = 0; i < 18; ++i) {
         const realName = data[i].title[0]
         const name = realName.split(' ').slice(1).join(' ')
-        const rawName = name.split(' ').slice(0, -2).join(' ')
+        const rawName = name.split(' ').slice(0, -3).join(' ')
         const researchName = rawName.split(' ').join('').toLowerCase()
-        const ep = name.split(' ').slice(-1)[0]
-        const link = `magnet:?xt=urn:btih:${data[i].infoHash[0]}`
+        const ep = name.split(' ').splice(-2, 1)[0]
+        const link = `magnet:?xt=urn:btih:${data[i]['nyaa:infoHash'][0]}`
 
-        const toSearch = {
-          realName: realName,
-          name: name,
-          rawName: rawName,
-          researchName: researchName,
-          ep: ep,
-          link: link
-        }
+        malScraper.getResultsFromSearch(rawName).then((items) => {
+          return malScraper.getInfoFromURI(malScraper.getBestMatch(rawName, items))
+        }).then((item) => {
+          const picture = item.picture
+          const fullSynopsis = item.synopsis
+          const synopsis = item.synopsis.length > 170
+            ? item.synopsis.slice(0, 175) + '...'
+            : fullSynopsis
 
-        searchOnMal(i, counter, toReturn, toSearch, res)
+          toReturn[i] = {
+            name: name,
+            rawName: rawName,
+            researchName: researchName,
+            ep: ep,
+            magnetLink: link,
+            picture: picture,
+            synopsis: synopsis,
+            fullSynopsis: fullSynopsis
+          }
+
+          ++counter
+          if (counter === 18) {
+            console.log('[Nyaa] (Releases): Sending Latest releases.')
+            res.writeHead(200, {'Content-type': 'application/json'})
+            res.write(JSON.stringify(toReturn))
+            res.end()
+          }
+        }).catch(/* istanbul ignore next */(err) => {
+          console.log('[MalScraper] (Releases): An error occurred...\n' + err)
+          res.writeHead(204, {})
+          res.end()
+        })
       }
-    }) /* istanbul ignore next */
-      .catch((err) => {
-        console.log('[MalScraper] (Releases): An error occurred...\n' + err)
-        res.writeHead(204, {})
-        res.end()
-      })
+    }).catch(/* istanbul ignore next */(err) => {
+      console.log('[MalScraper] (Releases): An error occurred...\n' + err)
+      res.writeHead(204, {})
+      res.end()
+    })
   } else if (choice === 'pantsu') {
     nyaa.searchPantsu(`[${fansub}] ${quality}`, 18).then((data) => {
       for (let i = 0; i < 18; ++i) {
         const realName = data[i].title[0]
         const name = realName.split(' ').slice(1).join(' ')
-        const rawName = name.split(' ').slice(0, -2).join(' ')
+        const rawName = name.split(' ').slice(0, -3).join(' ')
         const researchName = rawName.split(' ').join('').toLowerCase()
         const ep = name.split(' ').slice(-1)[0]
         const link = `${data[i].link[0]}`
 
-        const toSearch = {
-          realName: realName,
-          name: name,
-          rawName: rawName,
-          researchName: researchName,
-          ep: ep,
-          link: link
-        }
+        malScraper.getResultsFromSearch(rawName).then((items) => {
+          return malScraper.getInfoFromURI(malScraper.getBestMatch(rawName, items))
+        }).then((item) => {
+          const picture = item.picture
+          const fullSynopsis = item.synopsis
+          const synopsis = item.synopsis.length > 170
+            ? item.synopsis.slice(0, 175) + '...'
+            : fullSynopsis
 
-        searchOnMal(i, counter, toReturn, toSearch, res)
+          toReturn[i] = {
+            name: name,
+            rawName: rawName,
+            researchName: researchName,
+            ep: ep,
+            magnetLink: link,
+            picture: picture,
+            synopsis: synopsis,
+            fullSynopsis: fullSynopsis
+          }
+
+          ++counter
+          if (counter === 18) {
+            console.log('[Nyaa] (Releases): Sending Latest releases.')
+            res.writeHead(200, {'Content-type': 'application/json'})
+            res.write(JSON.stringify(toReturn))
+            res.end()
+          }
+        }).catch(/* istanbul ignore next */(err) => {
+          console.log('[MalScraper] (Releases): An error occurred...\n' + err)
+          res.writeHead(204, {})
+          res.end()
+        })
       }
-    }) /* istanbul ignore next */
-      .catch((err) => {
-        console.log('[MalScraper] (Releases): An error occurred...\n' + err)
-        res.writeHead(204, {})
-        res.end()
-      })
+    }).catch(/* istanbul ignore next */(err) => {
+      console.log('[MalScraper] (Releases): An error occurred...\n' + err)
+      res.writeHead(204, {})
+      res.end()
+    })
   }
 }
 

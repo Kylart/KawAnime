@@ -119,7 +119,7 @@ const route = (nuxt) => {
         break
 
       case '/downloadNyaa':
-        nyaa.download(url, res)
+        nyaa.download(req, res)
         break
 
       case '/getLatest.json':

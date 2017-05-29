@@ -153,6 +153,86 @@ test('/download Mahou Shoujo Ikusei Keikaku at 720p exits and returns all magnet
   t.not(data[0], '')
 })
 
+test('/downloadNyaa Mahou Shoujo Ikusei Keikaku with HorribleSubs at 720p on nyaa.si exits and returns all' +
+  ' magnets', async t => {
+  const { data } = await axios.post(`${uri}/downloadNyaa`, {
+    name: 'Mahou Shoujo Ikusei Keikaku',
+    quality: '720p',
+    fromEp: 0,
+    untilEp: 20000,
+    fansub: 'HorribleSubs',
+    choice: 'si'
+  })
+
+  t.is(data.length, 12)
+  t.not(data[0], '')
+})
+
+test('/downloadNyaa Mahou Shoujo Ikusei Keikaku with HorribleSubs at 720p on nyaa.pantsu.cat exits and returns' +
+  ' all magnets', async t => {
+  const { data } = await axios.post(`${uri}/downloadNyaa`, {
+    name: 'Mahou Shoujo Ikusei Keikaku',
+    quality: '720p',
+    fromEp: 0,
+    untilEp: 20000,
+    fansub: 'HorribleSubs',
+    choice: 'pantsu'
+  })
+
+  t.is(data.length, 12)
+  t.not(data[0], '')
+})
+
+test('/getLatestNyaa exits and returns 18 elements with right keys at 720p on nyaa.pantsu.cat', async t => {
+  const { data, status } = await axios.get(`${uri}/getLatestNyaa?quality=720p&choice=pantsu&fansub=HorribleSubs`)
+
+  if (status === 200) {
+    t.is(data.length, 18)
+    t.not(data[0].name, undefined)
+    t.not(data[0].rawName, undefined)
+    t.not(data[0].researchName, undefined)
+    t.not(data[0].magnetLink, undefined)
+    t.not(data[0].picture, undefined)
+  } else if (status === 204) {
+    console.log('An error occurred while getting latest releases.'.yellow)
+    t.is(data.length, 0)
+  } else {
+    t.fail()
+  }
+})
+
+test('/downloadNyaa Mahou Shoujo Ikusei Keikaku with HorribleSubs at 720p from ep 3 to 9 on nyaa.si exits and' +
+  ' returns' +
+  ' all magnets', async t => {
+  const { data } = await axios.post(`${uri}/downloadNyaa`, {
+    name: 'Mahou Shoujo Ikusei Keikaku',
+    quality: '720p',
+    fromEp: 3,
+    untilEp: 9,
+    fansub: 'HorribleSubs',
+    choice: 'si'
+  })
+
+  t.is(data.length, 7)
+  t.not(data[0], '')
+})
+
+test('/downloadNyaa Mahou Shoujo Ikusei Keikaku with HorribleSubs at 720p from ep 3 to 9 on nyaa.pantsu.cat' +
+  ' exits and returns' +
+  ' all magnets', async t => {
+  const { data } = await axios.post(`${uri}/downloadNyaa`, {
+    name: 'Mahou Shoujo Ikusei Keikaku',
+    quality: '720p',
+    fromEp: 3,
+    untilEp: 9,
+    fansub: 'HorribleSubs',
+    choice: 'pantsu'
+  })
+
+  t.is(data.length, 7)
+  t.not(data[0], '')
+})
+
 test('/download Akame ga Kill! at 1080p exits and returns only 4 eps', async t => {
   const { data } = await axios.post(`${uri}/download`, {
     name: 'Akame ga Kill!',
@@ -180,6 +260,24 @@ test('/getLatest.json exits and returns 204 status at 30p', async t => {
   const { status } = await axios.get(`${uri}/getLatest.json?quality=30p`)
 
   t.is(status, 204)
+})
+
+test('/getLatestNyaa exits and returns 18 elements with right keys at 720p on nyaa.si', async t => {
+  const { data, status } = await axios.get(`${uri}/getLatestNyaa?quality=720p&choice=si&fansub=HorribleSubs`)
+
+  if (status === 200) {
+    t.is(data.length, 18)
+    t.not(data[0].name, undefined)
+    t.not(data[0].rawName, undefined)
+    t.not(data[0].researchName, undefined)
+    t.not(data[0].magnetLink, undefined)
+    t.not(data[0].picture, undefined)
+  } else if (status === 204) {
+    console.log('An error occurred while getting latest releases.'.yellow)
+    t.is(data.length, 0)
+  } else {
+    t.fail()
+  }
 })
 
 test('/seasons.json route exits and returns elements on Spring 2017', async t => {
