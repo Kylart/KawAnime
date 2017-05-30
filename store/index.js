@@ -346,7 +346,7 @@ const store = new Vuex.Store({
         if (data.length === 18) {
           // Update time whenever KawAnime receives new releases.
           const newTime = (new Date()).toLocaleTimeString()
-          this.$store.commit('setReleasesUpdateTime', newTime)
+          commit('setReleasesUpdateTime', newTime)
 
           commit('setReleases', data)
           dispatch('autoRefreshReleases')
@@ -356,7 +356,7 @@ const store = new Vuex.Store({
           if (data.length === 18) {
             // Update time whenever KawAnime receives new releases.
             const newTime = (new Date()).toLocaleTimeString()
-            this.$store.commit('setReleasesUpdateTime', newTime)
+            commit('setReleasesUpdateTime', newTime)
 
             commit('setReleases', data)
             dispatch('autoRefreshReleases')
