@@ -32,7 +32,7 @@ test.before('Init Nuxt.js', async () => {
   /**
    * Creating .KawAnime-test directory and necessary files
    */
-  const initFile = require(join(__dirname, '..', 'assets', 'scripts', 'api', 'main.js'))
+  const initFile = require(join(__dirname, '..', 'assets', 'api', 'main.js'))
 
   /**
    * Nuxt config

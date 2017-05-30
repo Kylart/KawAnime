@@ -16,7 +16,7 @@ module.exports = {
   ],
   css: [
     {src: join(__dirname, 'css/app.styl'), lang: 'styl'},
-    'assets/main.css'
+    {src: join(__dirname, 'css/main.css'), lang: 'css'}
   ],
   head: {
     title: 'KawAnime',

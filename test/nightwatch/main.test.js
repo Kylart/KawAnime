@@ -24,7 +24,7 @@ module.exports = { // adapted from: https://git.io/vodU0
     /**
      * Creating .KawAnime-test directory and necessary files
      */
-    const initFile = require(join(__dirname, '..', '..', 'assets', 'scripts', 'api', 'main.js'))
+    const initFile = require(join(__dirname, '..', '..', 'assets', 'api', 'main.js'))
 
     /**
      * Nuxt config

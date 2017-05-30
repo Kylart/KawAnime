@@ -18,11 +18,6 @@
     -webkit-app-region: no-drag;
 }
 
-.config-modal .modal
-{
-    max-height: 738px;
-}
-
 .expansion-panel__body:last-child
 {
     border-bottom: 0 !important;

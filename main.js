@@ -3,7 +3,7 @@ require('babel-register')()
 const {join} = require('path')
 
 // Init files and directories
-const initFile = require(join(__dirname, 'assets', 'scripts', 'api', 'main.js'))
+const initFile = require(join(__dirname, 'assets', 'api', 'main.js'))
 
 /**
  *  Nuxt.js part
@@ -45,7 +45,7 @@ console.log(`KawAnime is at ${_NUXT_URL_}`)
 const {Menu, app, BrowserWindow, dialog} = require('electron')
 const url = require('url')
 
-const menuFile = require(join(__dirname, 'assets', 'scripts', 'menu.js'))
+const menuFile = require(join(__dirname, 'assets', 'menu.js'))
 const menu = Menu.buildFromTemplate(menuFile.menu)
 
 let win = null // Current window

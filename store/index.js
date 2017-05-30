@@ -352,7 +352,7 @@ const store = new Vuex.Store({
       setTimeout(async () => {
         log(`Refreshing Releases...`)
 
-        const {data} = await axios.get('getLatestNyaa', { params : state.releaseParams })
+        const {data} = await axios.get('getLatestNyaa', { params: state.releaseParams })
 
         if (data.length === 18) {
           // Update time whenever KawAnime receives new releases.
