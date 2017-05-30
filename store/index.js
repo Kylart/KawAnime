@@ -28,7 +28,6 @@ const store = new Vuex.Store({
       show: false,
       text: ''
     },
-    downloaderList: [],
     downloaderForm: {
       name: '',
       fromEp: '',
@@ -92,10 +91,6 @@ const store = new Vuex.Store({
     },
     setReleaseParams (state, data) {
       state.releaseParams = data
-    },
-    setDownloaderList (state, data) {
-      state.downloaderList = data
-      log(`${data.length} anime name loaded.`)
     },
     setInfoSnackbar (state, data) {
       state.infoSnackbar.text = data
@@ -209,19 +204,13 @@ const store = new Vuex.Store({
         const {data} = await axios.get('getConfig.json')
         commit('init', data.config)
 
-        dispatch('downloaderInit').catch(err => { void (err) })
         dispatch('releasesInit').catch(err => { void (err) })
         dispatch('seasonsInit').catch(err => { void (err) })
-        dispatch('newsInit').catch(err => { void (err) })
+        // dispatch('newsInit').catch(err => { void (err) })
         dispatch('localInit').catch(err => { void (err) })
         dispatch('listInit').catch(err => { void (err) })
         dispatch('getHistory').catch(err => { void (err) })
       }
-    },
-    async downloaderInit ({commit}) {
-      const {data} = await axios.get('getAllShows.json')
-
-      commit('setDownloaderList', data)
     },
     async releasesInit ({state, commit, dispatch}) {
       // TODO refactor this since it is a bit hard coded
@@ -447,14 +436,16 @@ const store = new Vuex.Store({
 
       log(`Received a request to download ${name} from ep ${fromEp} to ep ${untilEp}. Transmitting...`)
 
-      const {data, status} = await axios.post('download', {
+      const infos = {
         name: name,
         quality: quality,
-        fromEp: fromEp,
-        untilEp: untilEp
-      })
+        fromEp: +fromEp,
+        untilEp: +untilEp,
+        fansub: state.config.fansub,
+        choice: 'si'
+      }
 
-      state.downloaderForm.loading = false
+      const {data, status} = await axios.post('download', infos)
 
       if (status === 200) {
         log(`Request fulfilled!`)
@@ -474,10 +465,52 @@ const store = new Vuex.Store({
             window.open(link)
           })
         }
+      } else if (status === 204) {
+        log('nyaa.si is down, trying with nyaa.pantsu.cat')
+
+        const {data, status} = await axios.post('download', {
+          name: name,
+          quality: quality,
+          fromEp: fromEp,
+          untilEp: untilEp,
+          fansub: state.config.fansub,
+          choice: 'pantsu'
+        })
+
+        if (status === 200) {
+          log(`Request fulfilled!`)
+
+          if (magnets === true)
+          {
+            const lastEp = fromEp !== '1' ? +fromEp + +data.length : data.length
+            log(`User says he prefers having magnets hashes.`)
+            commit('setDownloaderModal', {
+              show: true,
+              title: `${name.replace('_', ' ')}\t ${fromEp} - ${lastEp}`,
+              text: data
+            })
+          }
+          else
+          {
+            log(`Opening torrents directly on preferred torrent client.`)
+
+            data.forEach((link) => {
+              window.open(link)
+            })
+          }
+        } else {
+          log('Unknown error occurred. nyaa.si and nyaa.pantsu.cat seems both down.')
+
+          commit('setInfoSnackbar', 'Sorry. KawAnime was not able to get your torrents...')
+        }
       }
+
+      state.downloaderForm.loading = false
     },
     saveConfig ({}, data) {  // eslint-disable-line
-      axios.post('saveConfig', JSON.stringify(data)).then((res) => {
+      axios.post('saveConfig', JSON.stringify({
+        config: data
+      })).then((res) => {
         if (res.status === 200) { log(`Successfully updated config!`) }
       }).catch((err) => {
         log(`An error occurred while saving config: ${err}`)

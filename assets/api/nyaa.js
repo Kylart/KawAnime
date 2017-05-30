@@ -14,11 +14,11 @@ const sendRes = (object, res) => {
 
 const download = (req, res) => {
   req.on('data', (chunk) => {
-    console.log('[Nyaa] (Download): Received a download request.')
-
     chunk = JSON.parse(chunk)
 
     const choice = chunk.choice
+
+    console.log('[Nyaa] (Download): Received a download request. Choice is ' + choice)
 
     const searchData = {
       quality: chunk.quality,
@@ -27,6 +27,8 @@ const download = (req, res) => {
       fromEp: chunk.fromEp,
       untilEp: chunk.untilEp
     }
+
+    console.log(searchData)
 
     const term = `[${searchData.fansub}]+${searchData.quality}+${searchData.name}`
 
@@ -37,7 +39,9 @@ const download = (req, res) => {
         data.forEach((elem) => {
           const ep = elem.title[0].split(' ').splice(-2, 1)[0]
 
+
           if (ep <= searchData.untilEp && ep >= searchData.fromEp) {
+            console.log(ep)
             magnets.push(`magnet:?xt=urn:btih:${elem['nyaa:infoHash'][0]}`)
           }
         })

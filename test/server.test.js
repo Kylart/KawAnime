@@ -117,12 +117,6 @@ test('/saveConfig.json route exits and saves config and return 200', async t => 
   writeFileSync(join(DIR, 'config.json'), JSON.stringify(config), 'utf-8')
 })
 
-test('/getAllShows.json exits and returns a list of names', async t => {
-  const { data } = await axios.get(`${uri}/getAllShows.json`)
-
-  t.true(data.length > 1)
-})
-
 test('/getLatest.json exits and returns 18 elements with right keys at 720p', async t => {
   const { data, status } = await axios.get(`${uri}/getLatest.json?quality=720p`)
 
@@ -141,21 +135,9 @@ test('/getLatest.json exits and returns 18 elements with right keys at 720p', as
   }
 })
 
-test('/download Mahou Shoujo Ikusei Keikaku at 720p exits and returns all magnets', async t => {
-  const { data } = await axios.post(`${uri}/download`, {
-    name: 'Mahou Shoujo Ikusei Keikaku',
-    quality: '720p',
-    fromEp: 0,
-    untilEp: 20000
-  })
-
-  t.is(data.length, 12)
-  t.not(data[0], '')
-})
-
-test('/downloadNyaa Mahou Shoujo Ikusei Keikaku with HorribleSubs at 720p on nyaa.si exits and returns all' +
+test('/download Mahou Shoujo Ikusei Keikaku with HorribleSubs at 720p on nyaa.si exits and returns all' +
   ' magnets', async t => {
-  const { data } = await axios.post(`${uri}/downloadNyaa`, {
+  const { data } = await axios.post(`${uri}/download`, {
     name: 'Mahou Shoujo Ikusei Keikaku',
     quality: '720p',
     fromEp: 0,
@@ -168,9 +150,9 @@ test('/downloadNyaa Mahou Shoujo Ikusei Keikaku with HorribleSubs at 720p on nya
   t.not(data[0], '')
 })
 
-test('/downloadNyaa Mahou Shoujo Ikusei Keikaku with HorribleSubs at 720p on nyaa.pantsu.cat exits and returns' +
+test('/download Mahou Shoujo Ikusei Keikaku with HorribleSubs at 720p on nyaa.pantsu.cat exits and returns' +
   ' all magnets', async t => {
-  const { data } = await axios.post(`${uri}/downloadNyaa`, {
+  const { data } = await axios.post(`${uri}/download`, {
     name: 'Mahou Shoujo Ikusei Keikaku',
     quality: '720p',
     fromEp: 0,
@@ -201,10 +183,9 @@ test('/getLatestNyaa exits and returns 18 elements with right keys at 720p on ny
   }
 })
 
-test('/downloadNyaa Mahou Shoujo Ikusei Keikaku with HorribleSubs at 720p from ep 3 to 9 on nyaa.si exits and' +
-  ' returns' +
-  ' all magnets', async t => {
-  const { data } = await axios.post(`${uri}/downloadNyaa`, {
+test('/download Mahou Shoujo Ikusei Keikaku with HorribleSubs at 720p from ep 3 to 9 on nyaa.si exits and' +
+  ' returns 7 magnets', async t => {
+  const { data } = await axios.post(`${uri}/download`, {
     name: 'Mahou Shoujo Ikusei Keikaku',
     quality: '720p',
     fromEp: 3,
@@ -217,10 +198,10 @@ test('/downloadNyaa Mahou Shoujo Ikusei Keikaku with HorribleSubs at 720p from e
   t.not(data[0], '')
 })
 
-test('/downloadNyaa Mahou Shoujo Ikusei Keikaku with HorribleSubs at 720p from ep 3 to 9 on nyaa.pantsu.cat' +
+test('/download Mahou Shoujo Ikusei Keikaku with HorribleSubs at 720p from ep 3 to 9 on nyaa.pantsu.cat' +
   ' exits and returns' +
   ' all magnets', async t => {
-  const { data } = await axios.post(`${uri}/downloadNyaa`, {
+  const { data } = await axios.post(`${uri}/download`, {
     name: 'Mahou Shoujo Ikusei Keikaku',
     quality: '720p',
     fromEp: 3,
@@ -231,29 +212,6 @@ test('/downloadNyaa Mahou Shoujo Ikusei Keikaku with HorribleSubs at 720p from e
 
   t.is(data.length, 7)
   t.not(data[0], '')
-})
-
-test('/download Akame ga Kill! at 1080p exits and returns only 4 eps', async t => {
-  const { data } = await axios.post(`${uri}/download`, {
-    name: 'Akame ga Kill!',
-    quality: '720p',
-    fromEp: 3,
-    untilEp: 6
-  })
-
-  t.is(data.length, 4)
-  t.not(data[0], '')
-})
-
-test('/download with wrong entries exits and returns 204', async t => {
-  const { status } = await axios.post(`${uri}/download`, {
-    name: 'Non-existent anime',
-    quality: '30p',
-    fromEp: 3,
-    untilEp: 6
-  })
-
-  t.is(status, 204)
 })
 
 test('/getLatest.json exits and returns 204 status at 30p', async t => {

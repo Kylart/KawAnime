@@ -118,16 +118,8 @@ const route = (nuxt) => {
         nyaa.getLatest(url, res)
         break
 
-      case '/downloadNyaa':
-        nyaa.download(req, res)
-        break
-
       case '/getLatest.json':
         horrible.getLatest(url, res)
-        break
-
-      case '/getAllShows.json':
-        horrible.getShowsList(res)
         break
 
       /* istanbul ignore next */
@@ -140,7 +132,7 @@ const route = (nuxt) => {
         break
 
       case '/download':
-        horrible.download(req, res)
+        nyaa.download(req, res)
         break
 
       case '/news.json':

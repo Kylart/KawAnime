@@ -19,16 +19,15 @@
           </div>
         </v-col>
         <v-col xs4></v-col>
-        <v-col xs4>
-          <v-select name="name-input"
-                    id="name-input"
-                    autocomplete
-                    v-bind:items="list"
-                    type="text"
-                    label="Name of the anime"
-                    v-model="$store.state.downloaderForm.name"
-                    dark>
-          </v-select>
+        <v-col xs4
+               @keydown.enter="next(1)">
+          <v-text-field name="name-input"
+                        type="text"
+                        id="name-input"
+                        label="Name of the anime"
+                        v-model="$store.state.downloaderForm.name"
+                        dark>
+          </v-text-field>
         </v-col>
         <v-col xs4></v-col>
         <v-col xs4></v-col>
@@ -154,9 +153,6 @@
     computed: {
       formValues: function () {
         return this.$store.state.downloaderForm
-      },
-      list: function () {
-        return this.$store.state.downloaderList
       }
     },
     methods: {
@@ -183,16 +179,16 @@
       next (number) {
         switch (number) {
           case 1:
-            document.getElementsByName('input-2')[0].focus()
+            document.getElementsByName('from-ep-input')[0].focus()
             break
 
           case 2:
-            document.getElementsByName('input-3')[0].focus()
+            document.getElementsByName('until-ep-input')[0].focus()
             break
 
           case 3:
             document.getElementById('download-btn').click()
-            document.getElementsByName('input-1')[0].focus()
+            document.getElementsByName('name-input')[0].focus()
             break
 
           default:
@@ -202,11 +198,11 @@
       previous (number) {
         switch (number) {
           case 2:
-            if (!this.formValues.fromEp) document.getElementsByName('input-1')[0].focus()
+            if (!this.formValues.fromEp) document.getElementsByName('name-input')[0].focus()
             break
 
           case 3:
-            if (!this.formValues.untilEp) document.getElementsByName('input-2')[0].focus()
+            if (!this.formValues.untilEp) document.getElementsByName('from-ep-input')[0].focus()
             break
 
           default:
