@@ -55,7 +55,7 @@ exports.getLatest = (url, res) => {
         }
       }).catch(/* istanbul ignore next */ (err) => {
         console.log('[MalScraper] (Releases): An error occurred...\n' + err)
-        res.writeHead(204, {})
+        res.writeHead(202, {})
         res.end()
       })
     }

@@ -5,20 +5,20 @@
         <v-col md3 sm4 xs12 class="time-container">
           <span class="update-time">Updated at: {{ lastUpdateTime }}</span>
         </v-col>
-        <v-col md6 sm3 xs0></v-col>
-        <!--<v-col md2 sm3 xs12>-->
-        <!--<v-select-->
-        <!--class="select"-->
-        <!--v-bind:items="fansubList"-->
-        <!--v-model="$store.state.releaseFansub"-->
-        <!--label="Fansub"-->
-        <!--dark-->
-        <!--single-line-->
-        <!--hint="Pick a fansub"-->
-        <!--persistent-hint-->
-        <!--/>-->
-        <!--</v-col>-->
+        <v-col md5 sm1 xs0></v-col>
         <v-col md2 sm3 xs12>
+          <v-select
+                  class="select"
+                  v-bind:items="fansubList"
+                  v-model="$store.state.releaseFansub"
+                  label="Fansub"
+                  dark
+                  single-line
+                  hint="Pick a fansub"
+                  persistent-hint
+          />
+        </v-col>
+        <v-col md1 sm2 xs12>
           <v-select
                   class="select"
                   v-bind:items="qualityList"
@@ -174,8 +174,7 @@
         fansubList: [
           'HorribleSubs',
           'PuyaSubs',
-          'BakedFish',
-          'DeadFish',
+          'DurandalSubs',
           'DefinitelyNotMe'
         ],
         qualityList: ['480p', '720p', '1080p']

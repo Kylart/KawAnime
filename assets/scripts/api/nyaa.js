@@ -84,7 +84,7 @@ const getLatest = (url, res) => {
   if (choice === 'si') {
     nyaa.searchSi(`[${fansub}] ${quality}`, 18).then((data) => {
       for (let i = 0; i < 18; ++i) {
-        const realName = data[i].title[0]
+        const realName = data[i].title[0].replace(' VOSTFR', '')
         const name = realName.split(' ').slice(1).join(' ')
         const rawName = name.split(' ').slice(0, -3).join(' ')
         const researchName = rawName.split(' ').join('').toLowerCase()
@@ -120,19 +120,19 @@ const getLatest = (url, res) => {
           }
         }).catch(/* istanbul ignore next */(err) => {
           console.log('[MalScraper] (Releases): An error occurred...\n' + err)
-          res.writeHead(204, {})
+          res.writeHead(202, {})
           res.end()
         })
       }
     }).catch(/* istanbul ignore next */(err) => {
-      console.log('[MalScraper] (Releases): An error occurred...\n' + err)
+      console.log('[Nyaa] (Releases): An error occurred...\n' + err)
       res.writeHead(204, {})
       res.end()
     })
   } else if (choice === 'pantsu') {
     nyaa.searchPantsu(`[${fansub}] ${quality}`, 18).then((data) => {
       for (let i = 0; i < 18; ++i) {
-        const realName = data[i].title[0]
+        const realName = data[i].title[0].replace(' VOSTFR', '')
         const name = realName.split(' ').slice(1).join(' ')
         const rawName = name.split(' ').slice(0, -3).join(' ')
         const researchName = rawName.split(' ').join('').toLowerCase()
@@ -168,12 +168,12 @@ const getLatest = (url, res) => {
           }
         }).catch(/* istanbul ignore next */(err) => {
           console.log('[MalScraper] (Releases): An error occurred...\n' + err)
-          res.writeHead(204, {})
+          res.writeHead(202, {})
           res.end()
         })
       }
     }).catch(/* istanbul ignore next */(err) => {
-      console.log('[MalScraper] (Releases): An error occurred...\n' + err)
+      console.log('[Nyaa] (Releases): An error occurred...\n' + err)
       res.writeHead(204, {})
       res.end()
     })

@@ -21,7 +21,6 @@
                 <v-select v-bind:items="fansubChoices"
                           v-model="config.fansub"
                           dark
-                          disabled
                           single-line
                           auto/>
               </v-col>
@@ -138,7 +137,9 @@
         },
         fansubChoices: [
           'HorribleSubs',
-          'PuyaSubs'
+          'PuyaSubs',
+          'DurandalSubs',
+          'DefinitelyNotMe'
         ],
         soundChoices: [
           'None',

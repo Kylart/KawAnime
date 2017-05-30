@@ -19,6 +19,11 @@ const store = new Vuex.Store({
     releaseQuality: '',
     releases: [],
     releasesUpdateTime: (new Date()).toLocaleTimeString(),
+    releaseParams: {
+      fansub: '',
+      quality: '',
+      choice: 'si'
+    },
     infoSnackbar: {
       show: false,
       text: ''
@@ -80,7 +85,13 @@ const store = new Vuex.Store({
       state.configDir = config.localPath
       state.currentDir = config.localPath
 
+      state.releaseParams.fansub = config.fansub
+      state.releaseParams.quality = config.quality
+
       state.config = config
+    },
+    setReleaseParams (state, data) {
+      state.releaseParams = data
     },
     setDownloaderList (state, data) {
       state.downloaderList = data
@@ -213,21 +224,64 @@ const store = new Vuex.Store({
       commit('setDownloaderList', data)
     },
     async releasesInit ({state, commit, dispatch}) {
+      // TODO refactor this since it is a bit hard coded
       console.log('[INIT] Releases')
 
-      const {data, status} = await axios.get(`getLatest.json?quality=${state.releaseQuality}`)
+      const {data, status} = await axios.get('getLatestNyaa', { params: state.releaseParams })
 
       if (status === 200) {
         commit('setReleases', data)
 
         if (state.autoRefreshReleases === true) dispatch('autoRefreshReleases')
-      } else if (status === 204) {
+      } else if (status === 202) {
         log(`An error occurred while getting the latest releases. Retrying in 45 seconds.`)
         commit('setInfoSnackbar', 'Could not get the latest releases. Retrying in 45 seconds.')
         setTimeout(function () {
           log(`Retrying to get latest releases.`)
           dispatch('releasesInit').catch(err => { void (err) })
         }, 45 * 1000)
+      } else if (status === 204) {
+        commit('setReleaseParams', {
+          fansub: state.config.fansub,
+          quality: state.config.quality,
+          choice: 'pantsu'
+        })
+
+        const {data, status} = await axios.get('getLatestNyaa', { params: state.releaseParams })
+
+        if (status === 200) {
+          commit('setReleases', data)
+
+          if (state.autoRefreshReleases === true) dispatch('autoRefreshReleases')
+        } else if (status === 202) {
+          log(`An error occurred while getting the latest releases. Retrying in 45 seconds.`)
+          commit('setInfoSnackbar', 'Could not get the latest releases. Retrying in 45 seconds.')
+          setTimeout(function () {
+            log(`Retrying to get latest releases.`)
+            dispatch('releasesInit').catch(err => { void (err) })
+          }, 45 * 1000)
+        } else if (status === 204) {
+          commit('setReleaseParams', {
+            fansub: state.config.fansub,
+            quality: state.config.quality,
+            choice: 'si'
+          })
+
+          const {data, status} = await axios.get(`getLatest.json?quality=${state.config.quality}`)
+
+          if (status === 200) {
+            commit('setReleases', data)
+
+            if (state.autoRefreshReleases === true) dispatch('autoRefreshReleases')
+          } else if (status === 202 || status === 204) {
+            log(`An error occurred while getting the latest releases. Retrying in 45 seconds.`)
+            commit('setInfoSnackbar', 'Could not get the latest releases. Retrying in 45 seconds.')
+            setTimeout(function () {
+              log(`Retrying to get latest releases.`)
+              dispatch('releasesInit').catch(err => { void (err) })
+            }, 45 * 1000)
+          }
+        }
       }
     },
     async seasonsInit ({state, commit}) {
@@ -263,16 +317,34 @@ const store = new Vuex.Store({
 
       commit('emptyReleases')
 
-      const {data, status} = await axios.get(`getLatest.json?quality=${state.releaseQuality}`)
+      commit('setReleaseParams', {
+        fansub: state.releaseFansub,
+        quality: state.releaseQuality,
+        choice: state.releaseParams.choice
+      })
+
+      const {data, status} = await axios.get('getLatestNyaa', { params: state.releaseParams })
 
       if (status === 200) commit('setReleases', data)
-      else if (status === 204) {
+      else if (status === 202) {
         log(`An error occurred while getting the latest releases. Retrying in 45 seconds.`)
         commit('setInfoSnackbar', 'Could not get the latest releases. Retrying in 45 seconds.')
         setTimeout(function () {
           log(`Retrying to get latest releases.`)
           dispatch('refreshReleases').catch(err => { void (err) })
         }, 45 * 1000)
+      } else if (status === 204) {
+        const {data, status} = await axios.get(`getLatest.json?quality=${state.releaseQuality}`)
+
+        if (status === 200) commit('setReleases', data)
+        else if (status === 202 || status === 204) {
+          log(`An error occurred while getting the latest releases. Retrying in 45 seconds.`)
+          commit('setInfoSnackbar', 'Could not get the latest releases. Retrying in 45 seconds.')
+          setTimeout(function () {
+            log(`Retrying to get latest releases.`)
+            dispatch('refreshReleases').catch(err => { void (err) })
+          }, 45 * 1000)
+        }
       }
     },
     async autoRefreshReleases ({dispatch, commit, state}) {
@@ -280,7 +352,7 @@ const store = new Vuex.Store({
       setTimeout(async () => {
         log(`Refreshing Releases...`)
 
-        const {data} = await axios.get(`getLatest.json?quality=${state.releaseQuality}`)
+        const {data} = await axios.get('getLatestNyaa', { params : state.releaseParams })
 
         if (data.length === 18) {
           // Update time whenever KawAnime receives new releases.
@@ -289,6 +361,17 @@ const store = new Vuex.Store({
 
           commit('setReleases', data)
           dispatch('autoRefreshReleases')
+        } else {
+          const {data} = await axios.get(`getLatest.json?quality=${state.releaseQuality}`)
+
+          if (data.length === 18) {
+            // Update time whenever KawAnime receives new releases.
+            const newTime = (new Date()).toLocaleTimeString()
+            this.$store.commit('setReleasesUpdateTime', newTime)
+
+            commit('setReleases', data)
+            dispatch('autoRefreshReleases')
+          }
         }
       }, 30 * 60 * 1000)
     },
