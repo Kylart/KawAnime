@@ -173,7 +173,8 @@
         modalText: '',
         fansubList: [
           'HorribleSubs',
-          'PuyaSubs',
+          'PuyaSubs!',
+          'Fuyu',
           'DurandalSubs',
           'DefinitelyNotMe'
         ],

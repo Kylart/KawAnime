@@ -137,8 +137,9 @@
         },
         fansubChoices: [
           'HorribleSubs',
-          'PuyaSubs',
+          'PuyaSubs!',
           'DurandalSubs',
+          'Fuyu',
           'DefinitelyNotMe'
         ],
         soundChoices: [
