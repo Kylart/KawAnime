@@ -2,9 +2,9 @@
  * Created by Kylart on 27/05/2017.
  */
 
-import nyaa from 'nyaapi'
-import malScraper from 'mal-scraper'
-import qs from 'querystring'
+const nyaa = require('nyaapi')
+const malScraper = require('mal-scraper')
+const qs = require('querystring')
 
 const sendRes = (object, res) => {
   res.writeHead(200, {'Content-Type': 'application/json'})
@@ -38,7 +38,6 @@ const download = (req, res) => {
 
         data.forEach((elem) => {
           const ep = elem.title[0].split(' ').splice(-2, 1)[0]
-
 
           if (ep <= searchData.untilEp && ep >= searchData.fromEp) {
             console.log(ep)

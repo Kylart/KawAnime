@@ -480,8 +480,7 @@ const store = new Vuex.Store({
         if (status === 200) {
           log(`Request fulfilled!`)
 
-          if (magnets === true)
-          {
+          if (magnets === true) {
             const lastEp = fromEp !== '1' ? +fromEp + +data.length : data.length
             log(`User says he prefers having magnets hashes.`)
             commit('setDownloaderModal', {
@@ -489,9 +488,7 @@ const store = new Vuex.Store({
               title: `${name.replace('_', ' ')}\t ${fromEp} - ${lastEp}`,
               text: data
             })
-          }
-          else
-          {
+          } else {
             log(`Opening torrents directly on preferred torrent client.`)
 
             data.forEach((link) => {

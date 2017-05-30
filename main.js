@@ -1,5 +1,3 @@
-require('babel-register')()
-
 const {join} = require('path')
 
 // Init files and directories
