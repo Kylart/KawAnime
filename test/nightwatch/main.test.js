@@ -56,7 +56,9 @@ module.exports = { // adapted from: https://git.io/vodU0
       .assert.visible('div.form-container')
       .assert.visible('div.choose-magnets .input-group__input')
       .click('div.choose-magnets .input-group__input')
-      .assert.visible('#name-input')
+      .assert.visible('input[name="name-input"]')
+      .click('input[name="name-input"]')
+      .setValue('input[name="name-input"]', 'rewrite')
       .assert.visible('input[name="from-ep-input"]')
       .click('input[name="from-ep-input"]')
       .setValue('input[name="from-ep-input"]', '3')
@@ -66,6 +68,7 @@ module.exports = { // adapted from: https://git.io/vodU0
       .assert.visible('#download-btn')
       .click('#download-btn')
       .waitForElementVisible('div.modal-text')
+      .pause(3000)
       .end()
   },
   after: function () {

@@ -33,7 +33,7 @@ if (config.dev) {
 }
 
 // Listen the server
-server.listen()
+server.listen(12345)
 const _NUXT_URL_ = `http://localhost:${server.address().port}`
 console.log(`KawAnime is at ${_NUXT_URL_}`)
 
@@ -63,6 +63,10 @@ dialog.showErrorBox = (title, content) => {
   console.log(`${title}\n${content}`)
 }
 
+process.on('uncaughtException', function (err) {
+  console.error('Uncaught exception occurred in main process.\n' + err)
+})
+
 const newWin = () => {
   win = new BrowserWindow({
     width: config.electron.width,
@@ -85,6 +89,19 @@ const newWin = () => {
 
   win.on('closed', () => {
     win = null
+  })
+
+  win.webContents.on('crashed', (event) => {
+    console.error('Main window crashed')
+    console.error('Event is ' + event)
+  })
+
+  win.on('unresponsive', () => {
+    console.warn('Main window is unresponsive...')
+  })
+
+  win.on('session-end', () => {
+    console.info('Session logged off.')
   })
 
   pollServer()

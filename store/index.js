@@ -113,6 +113,10 @@ const store = new Vuex.Store({
     },
     setReleases: function (state, data) {
       state.releases = data
+
+      // Update time whenever KawAnime receives new releases.
+      state.releasesUpdateTime = (new Date()).toLocaleTimeString()
+
       log(`Releases updated.`)
     },
     emptyNews: function (state) {
@@ -168,9 +172,6 @@ const store = new Vuex.Store({
     },
     setInfoModalInfo: function (state, data) {
       state.info = data
-    },
-    setReleasesUpdateTime (state, data) {
-      state.releasesUpdateTime = data
     },
     updateList (state, data) {
       const listName = data.listName
@@ -344,20 +345,12 @@ const store = new Vuex.Store({
         const {data} = await axios.get('getLatestNyaa', { params: state.releaseParams })
 
         if (data.length === 18) {
-          // Update time whenever KawAnime receives new releases.
-          const newTime = (new Date()).toLocaleTimeString()
-          commit('setReleasesUpdateTime', newTime)
-
           commit('setReleases', data)
           dispatch('autoRefreshReleases')
         } else {
           const {data} = await axios.get(`getLatest.json?quality=${state.releaseQuality}`)
 
           if (data.length === 18) {
-            // Update time whenever KawAnime receives new releases.
-            const newTime = (new Date()).toLocaleTimeString()
-            commit('setReleasesUpdateTime', newTime)
-
             commit('setReleases', data)
             dispatch('autoRefreshReleases')
           }
@@ -417,7 +410,7 @@ const store = new Vuex.Store({
       dispatch('refreshLocal')
     },
     async openNewsLink ({state}, link) {
-      log(`Opening a link`)
+      log(`Opening ${link}`)
 
       if ((state.config.inside === 'true') === false) await axios.get(`openThis?type=link&link=${link}`)
       else await axios.get(`openThis?type=insideLink&link=${link}`)

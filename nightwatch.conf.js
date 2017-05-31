@@ -28,7 +28,7 @@ module.exports = {
         'path': './screenshots' // save screenshots here
       },
       'globals': {
-        'waitForConditionTimeout': 5000, // sometimes internet is slow so wait.
+        'waitForConditionTimeout': 10000, // sometimes internet is slow so wait.
         'asyncHookTimeout': 60000
       },
       'desiredCapabilities': { // use Chrome as the default browser for tests

@@ -40,7 +40,6 @@ const download = (req, res) => {
           const ep = elem.title[0].split(' ').splice(-2, 1)[0]
 
           if (ep <= searchData.untilEp && ep >= searchData.fromEp) {
-            console.log(ep)
             magnets.push(`magnet:?xt=urn:btih:${elem['nyaa:infoHash'][0]}`)
           }
         })

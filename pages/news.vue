@@ -52,7 +52,6 @@
     },
     methods: {
       open (link) {
-        console.log('Opening ' + link)
         this.$store.dispatch('openNewsLink', link)
       },
       refresh () {
