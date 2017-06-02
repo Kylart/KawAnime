@@ -33,7 +33,7 @@ if (config.dev) {
 }
 
 // Listen the server
-server.listen(12345)
+server.listen()
 const _NUXT_URL_ = `http://localhost:${server.address().port}`
 console.log(`KawAnime is at ${_NUXT_URL_}`)
 
@@ -63,7 +63,7 @@ dialog.showErrorBox = (title, content) => {
   console.log(`${title}\n${content}`)
 }
 
-process.on('uncaughtException', function (err) {
+process.on('uncaughtException', (err) => {
   console.error('Uncaught exception occurred in main process.\n' + err)
 })
 
@@ -121,6 +121,8 @@ app.on('ready', () => {
   // Dev tools
   if (config.dev) {
     require('devtron').install()
+  } else {
+    require('devtron').uninstall()
   }
 
   newWin()

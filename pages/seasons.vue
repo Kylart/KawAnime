@@ -119,6 +119,13 @@
                                 <v-list-tile-title>Add to &laquo;Seen&raquo;</v-list-tile-title>
                               </v-list-tile>
                             </v-list-item>
+                            <v-list-item>
+                              <v-list-tile @click.native="showChoices(item.title)">
+                                <v-list-tile-title>
+                                  Add to
+                                </v-list-tile-title>
+                              </v-list-tile>
+                            </v-list-item>
                           </v-list>
                         </v-menu>
                       </v-col>
@@ -149,6 +156,21 @@
           </v-card>
         </v-dialog>
       </div>
+      <v-dialog v-model="choiceDialog" width="650">
+        <v-card>
+          <v-card-row>
+            <v-card-title>Add {{ choiceTitle }} to</v-card-title>
+          </v-card-row>
+          <v-card-row>
+            <v-card-text>
+              To do
+            </v-card-text>
+          </v-card-row>
+          <v-card-row actions>
+            <v-btn class="green--text darken-1" flat="flat" @click.native="choiceDialog = false">Add</v-btn>
+          </v-card-row>
+        </v-card>
+      </v-dialog>
     </v-container>
   </v-container>
 </template>
@@ -159,6 +181,9 @@
   export default {
     data () {
       return {
+        choiceDialog: false,
+        choiceTitle: '',
+        choices: [],
         modalTitle: '',
         modalText: '',
         modal: false,
@@ -258,6 +283,10 @@
           listName: listName,
           entry: entry
         })
+      },
+      showChoices (name) {
+        this.choiceTitle = name
+        this.choiceDialog = true
       }
     }
   }

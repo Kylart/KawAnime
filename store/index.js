@@ -113,8 +113,6 @@ const store = new Vuex.Store({
     },
     setReleases: function (state, data) {
       state.releases = data
-
-      // Update time whenever KawAnime receives new releases.
       state.releasesUpdateTime = (new Date()).toLocaleTimeString()
 
       log(`Releases updated.`)
@@ -231,6 +229,8 @@ const store = new Vuex.Store({
           dispatch('releasesInit').catch(err => { void (err) })
         }, 45 * 1000)
       } else if (status === 204) {
+        log('nyaa.si does not respond... Switching to nyaa.pantsu.cat.')
+
         commit('setReleaseParams', {
           fansub: state.config.fansub,
           quality: state.config.quality,
@@ -251,6 +251,8 @@ const store = new Vuex.Store({
             dispatch('releasesInit').catch(err => { void (err) })
           }, 45 * 1000)
         } else if (status === 204) {
+          log('nyaa.pantsu.cat does not respond... Switching to HorribleSubs.')
+
           commit('setReleaseParams', {
             fansub: state.config.fansub,
             quality: state.config.quality,
@@ -263,13 +265,17 @@ const store = new Vuex.Store({
             commit('setReleases', data)
 
             if (state.autoRefreshReleases === true) dispatch('autoRefreshReleases')
-          } else if (status === 202 || status === 204) {
+          } else if (status === 202) {
             log(`An error occurred while getting the latest releases. Retrying in 45 seconds.`)
             commit('setInfoSnackbar', 'Could not get the latest releases. Retrying in 45 seconds.')
             setTimeout(function () {
               log(`Retrying to get latest releases.`)
               dispatch('releasesInit').catch(err => { void (err) })
             }, 45 * 1000)
+          } else if (status === 204) {
+            log('HorribleSubs does not respond. Retrying with nyaa.si.')
+
+            dispatch('releasesInit')
           }
         }
       }

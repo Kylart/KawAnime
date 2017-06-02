@@ -47,8 +47,8 @@ module.exports = { // adapted from: https://git.io/vodU0
       done()
     })
   },
-  'Getting downloader page': function (browser) {
-    browser
+  'Getting downloader page and downloading some anime': function (client) {
+    client
       .url(`${uri}/downloader`)
       .waitForElementVisible('body')
       .assert.title('KawAnime')
@@ -68,7 +68,13 @@ module.exports = { // adapted from: https://git.io/vodU0
       .assert.visible('#download-btn')
       .click('#download-btn')
       .waitForElementVisible('div.modal-text')
-      .pause(3000)
+      .end()
+  },
+  'Getting season page': function (client) {
+    client
+      .url(`${uri}/seasons`)
+      .waitForElementVisible('body')
+      .assert.title('KawAnime')
       .end()
   },
   after: function () {
