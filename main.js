@@ -26,10 +26,10 @@ const server = http.createServer(route)
 // Build only in dev mode
 if (config.dev) {
   nuxt.build()
-      .catch((error) => {
-        console.error(error) // eslint-disable-line no-console
-        process.exit(1)
-      })
+    .catch((error) => {
+      console.error(error)
+      process.exit(1)
+    })
 }
 
 // Listen the server

@@ -198,6 +198,8 @@
   h6
   {
     color: rgba(255, 255, 255, 0.8);
+    margin-top: 0.4rem;
+    margin-bottom: 0;
   }
 
   /* Needed */
