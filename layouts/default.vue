@@ -86,6 +86,9 @@
             <v-list-group v-if="item.items">
               <v-list-item slot="item">
                 <v-list-tile ripple>
+                  <v-list-tile-action>
+                    <v-icon>{{ item.action }}</v-icon>
+                  </v-list-tile-action>
                   <v-list-tile-title v-text="item.title"></v-list-tile-title>
                   <v-list-tile-action>
                     <v-icon>keyboard_arrow_down</v-icon>
@@ -94,6 +97,9 @@
               </v-list-item>
               <v-list-item v-for="subItem in item.items" :key="subItem.href">
                 <v-list-tile ripple router nuxt v-bind:href="subItem.href">
+                  <v-list-tile-action>
+                    <v-icon>{{ subItem.action }}</v-icon>
+                  </v-list-tile-action>
                   <v-list-tile-title v-text="subItem.title"></v-list-tile-title>
                 </v-list-tile>
               </v-list-item>
@@ -143,26 +149,32 @@
           {header: 'Core'},
           {
             title: 'Downloading',
+            action: 'file_download',
             items: [
               {
                 title: 'Downloader',
+                action: 'file_download',
                 href: '/downloader'
               },
               {
                 title: 'Latest releases',
+                action: 'access_time',
                 href: '/'
               }
             ]
           },
           {
             title: 'News',
+            action: 'info_outline',
             items: [
               {
                 title: 'Seasons',
+                action: 'hourglass_empty',
                 href: '/seasons'
               },
               {
                 title: 'News',
+                action: 'more',
                 href: '/news'
               }
             ]
@@ -171,13 +183,16 @@
           {header: 'Local'},
           {
             title: 'Anime related',
+            action: 'folder_open',
             items: [
               {
                 title: 'Animes',
+                action: 'tv',
                 href: '/localPage'
               },
               {
                 title: 'Watch list',
+                action: 'sort_by_alpha',
                 href: '/watchList'
               }
             ]
@@ -223,9 +238,11 @@
   }
 
   /*noinspection CssUnusedSymbol*/
-  .sidebar .list--group__container .list__tile--active .list__tile__title
+  .sidebar .list--group__container .list__tile--active .list__tile__title,
+  .sidebar .list__tile--active:first-child .icon,
+  .sidebar .list--group__header--active:first-child .list__tile__action:first-child .icon
   {
-    color: #ff9800;
+    color: #ff9800 !important;
   }
 
   .sidebar
