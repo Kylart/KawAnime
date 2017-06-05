@@ -4,8 +4,8 @@
          top-toolbar left-sidebar>
     <div style="height: 64px;"><!-- Spacer --></div>
     <v-toolbar class="dragable" fixed>
-      <v-toolbar-side-icon class="non-dragable" @click.native.stop="sidebar = !sidebar"/>
-      <v-toolbar-logo class="text-xs-right title" v-bind:style="title">
+      <v-toolbar-side-icon class="non-dragable" v-bind:style="title" @click.native.stop="sidebar = !sidebar"/>
+      <v-toolbar-logo class="text-xs-right title">
         <div style="width: 100%;">
           <div class="title-text">かわニメ</div>
           <settings></settings>
@@ -67,7 +67,7 @@
           </h1>
 
           <div class="links">
-            <a href="https://github.com/Kylart/KawAnime" class="link">
+            <a href="https://github.com/Kylart/KawAnime" target="_blank" class="link">
               <img src="~static/images/github-icon.png" height="25"/>
             </a>
             <a href="#" class="link">
@@ -219,7 +219,7 @@
       title: function () {
         if (this.sidebar) {
           return {
-            marginLeft: '210px'
+            marginLeft: '270px'
           }
         }
       },
