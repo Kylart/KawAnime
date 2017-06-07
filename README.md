@@ -110,7 +110,7 @@ npm run build npm run buildAll
 
 #### For Mac OS only
 ```
-npm run build && npm run buildAll
+npm run build && npm run buildMac
 ```
 
 #### For Linux platforms only
@@ -143,7 +143,7 @@ This software is being developped with the following technologies, many thanks t
 * [Nuxt](https://nuxtjs.org)
 * [Vuetify](https://vuetifyjs.com)
 
-_It is still in development_
+_It is still in development_.
 
 ## License
 MIT License
