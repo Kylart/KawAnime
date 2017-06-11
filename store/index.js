@@ -42,7 +42,7 @@ const store = new Vuex.Store({
     },
     seasons: [],
     seasonsStats: {},
-    year: (new Date).getFullYear(),
+    year: (new Date()).getFullYear(),
     season: 'spring', // TODO
     news: [],
     inside: true,
@@ -371,7 +371,7 @@ const store = new Vuex.Store({
       const year = state.year
       const season = state.season
 
-      if (year >= 2010  && (year <= (new Date).getYear() + 1901)) {
+      if (year >= 2010 && (year <= (new Date()).getYear() + 1901)) {
         commit('emptySeasons')
 
         const {data, status} = await axios.get(`seasons.json?year=${year}&season=${season}`)
@@ -382,7 +382,7 @@ const store = new Vuex.Store({
 
         log('Seasons refreshed.')
       } else {
-        commit('setInfoSnackbar', `Year must be between 2010 and ${(new Date).getYear() + 1901}`)
+        commit('setInfoSnackbar', `Year must be between 2010 and ${(new Date()).getYear() + 1901}`)
       }
     },
     async refreshNews ({commit, dispatch}) {

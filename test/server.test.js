@@ -146,7 +146,6 @@ test('/download Mahou Shoujo Ikusei Keikaku with HorribleSubs at 720p on nyaa.si
     choice: 'si'
   })
 
-
   if (status === 200) {
     t.is(data.length, 12)
     t.not(data[0], '')
