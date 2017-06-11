@@ -11,7 +11,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "cross-env NODE_ENV=development electron .",
-    "cloc": "cloc --exclude-list-file==package-lock.json $(git ls-files | grep -vE \".mkv|mp4\")",
+    "cloc": "cloc $(git ls-files | grep -vE \".mkv|mp4|lock\")",
     "test:server": "nyc ava --verbose --serial test/server.test.js",
     "test:front": "nightwatch",
     "test": "standard --fix && npm test:front && npm test:server",
@@ -29,7 +29,7 @@
   "dependencies": {
     "axios": "^0.16.0",
     "horrible-api": "^1.0.5",
-    "mal-scraper": "^1.3.4",
+    "mal-scraper": "^1.4.1",
     "nuxt": "^0.10.5",
     "nyaapi": "^1.2.2",
     "play-sound": "^1.1.1",

@@ -286,11 +286,13 @@ const store = new Vuex.Store({
 
       commit('setSeasons', data)
     },
-    async newsInit ({commit}) {
+    async newsInit ({commit, dispatch}) {
       console.log('[INIT] News')
-      const {data} = await axios.get('news.json')
+      const {data, status} = await axios.get('news.json')
 
-      commit('setNews', data)
+      status === 200
+        ? commit('setNews', data)
+        : log('A problem occurred while gathering the news') && dispatch('newsInit')
     },
     async localInit ({state, commit}) {
       console.log('[INIT] Local Files')
@@ -375,14 +377,16 @@ const store = new Vuex.Store({
 
       console.log('Seasons refreshed.')
     },
-    async refreshNews ({commit}) {
+    async refreshNews ({commit, dispatch}) {
       log(`Refreshing News...`)
 
       commit('emptyNews')
 
-      const {data} = await axios.get('news.json')
+      const {data, status} = await axios.get('news.json')
 
-      commit('setNews', data)
+      status === 200
+        ? commit('setNews', data)
+        : log('A problem occurred while gathering the news') && dispatch('refreshNews')
     },
     async refreshLocal ({commit, state}) {
       log(`Refreshing Local files...`)

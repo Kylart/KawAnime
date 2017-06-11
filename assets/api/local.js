@@ -74,7 +74,7 @@ const searchLocalFiles = (url, res) => {
           console.log('[Local] Found!')
 
           json[minifyName(elem)] = {
-            name: elem,
+            name: elem.replace(' VOSTFR', ''),
             picture: anime.image,
             numberOfEpisode: anime.episodes.replace('Unknown', 'NC'),
             status: anime.status,
