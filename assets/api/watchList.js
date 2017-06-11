@@ -8,6 +8,7 @@ const {join} = require('path')
 
 /* istanbul ignore next */
 const wlPath = process.env.NODE_ENV !== 'KawAnime-test'
+  /* istanbul ignore next */
   ? join(userInfo().homedir, '.KawAnime', 'lists.json')
   : join(userInfo().homedir, '.KawAnime-test', 'lists.json')
 

@@ -127,7 +127,7 @@ test('/getLatest.json exits and returns 18 elements with right keys at 720p', as
     t.not(data[0].researchName, undefined)
     t.not(data[0].magnetLink, undefined)
     t.not(data[0].picture, undefined)
-  } else if (status === 204) {
+  } else if (status === 204 || status === 202) {
     console.log('An error occurred while getting latest releases.'.yellow)
     t.is(data.length, 0)
   } else {
@@ -137,7 +137,7 @@ test('/getLatest.json exits and returns 18 elements with right keys at 720p', as
 
 test('/download Mahou Shoujo Ikusei Keikaku with HorribleSubs at 720p on nyaa.si exits and returns all' +
   ' magnets', async t => {
-  const { data } = await axios.post(`${uri}/download`, {
+  const { data, status } = await axios.post(`${uri}/download`, {
     name: 'Mahou Shoujo Ikusei Keikaku',
     quality: '720p',
     fromEp: 0,
@@ -146,13 +146,20 @@ test('/download Mahou Shoujo Ikusei Keikaku with HorribleSubs at 720p on nyaa.si
     choice: 'si'
   })
 
-  t.is(data.length, 12)
-  t.not(data[0], '')
+
+  if (status === 200) {
+    t.is(data.length, 12)
+    t.not(data[0], '')
+  } else if (status === 204) {
+    t.is(data.length, 0)
+  } else {
+    t.fail()
+  }
 })
 
 test('/download Mahou Shoujo Ikusei Keikaku with HorribleSubs at 720p on nyaa.pantsu.cat exits and returns' +
   ' all magnets', async t => {
-  const { data } = await axios.post(`${uri}/download`, {
+  const { data, status } = await axios.post(`${uri}/download`, {
     name: 'Mahou Shoujo Ikusei Keikaku',
     quality: '720p',
     fromEp: 0,
@@ -161,8 +168,14 @@ test('/download Mahou Shoujo Ikusei Keikaku with HorribleSubs at 720p on nyaa.pa
     choice: 'pantsu'
   })
 
-  t.is(data.length, 12)
-  t.not(data[0], '')
+  if (status === 200) {
+    t.is(data.length, 12)
+    t.not(data[0], '')
+  } else if (status === 204) {
+    t.is(data.length, 0)
+  } else {
+    t.fail()
+  }
 })
 
 test('/getLatestNyaa exits and returns 18 elements with right keys at 720p on nyaa.pantsu.cat', async t => {
@@ -175,7 +188,7 @@ test('/getLatestNyaa exits and returns 18 elements with right keys at 720p on ny
     t.not(data[0].researchName, undefined)
     t.not(data[0].magnetLink, undefined)
     t.not(data[0].picture, undefined)
-  } else if (status === 204) {
+  } else if (status === 204 || status === 202) {
     console.log('An error occurred while getting latest releases.'.yellow)
     t.is(data.length, 0)
   } else {
@@ -185,7 +198,7 @@ test('/getLatestNyaa exits and returns 18 elements with right keys at 720p on ny
 
 test('/download Mahou Shoujo Ikusei Keikaku with HorribleSubs at 720p from ep 3 to 9 on nyaa.si exits and' +
   ' returns 7 magnets', async t => {
-  const { data } = await axios.post(`${uri}/download`, {
+  const { data, status } = await axios.post(`${uri}/download`, {
     name: 'Mahou Shoujo Ikusei Keikaku',
     quality: '720p',
     fromEp: 3,
@@ -194,14 +207,20 @@ test('/download Mahou Shoujo Ikusei Keikaku with HorribleSubs at 720p from ep 3 
     choice: 'si'
   })
 
-  t.is(data.length, 7)
-  t.not(data[0], '')
+  if (status === 200) {
+    t.is(data.length, 7)
+    t.not(data[0], '')
+  } else if (status === 204) {
+    t.is(data.length, 0)
+  } else {
+    t.fail()
+  }
 })
 
 test('/download Mahou Shoujo Ikusei Keikaku with HorribleSubs at 720p from ep 3 to 9 on nyaa.pantsu.cat' +
   ' exits and returns' +
   ' all magnets', async t => {
-  const { data } = await axios.post(`${uri}/download`, {
+  const { data, status } = await axios.post(`${uri}/download`, {
     name: 'Mahou Shoujo Ikusei Keikaku',
     quality: '720p',
     fromEp: 3,
@@ -210,8 +229,14 @@ test('/download Mahou Shoujo Ikusei Keikaku with HorribleSubs at 720p from ep 3 
     choice: 'pantsu'
   })
 
-  t.is(data.length, 7)
-  t.not(data[0], '')
+  if (status === 200) {
+    t.is(data.length, 7)
+    t.not(data[0], '')
+  } else if (status === 204) {
+    t.is(data.length, 0)
+  } else {
+    t.fail()
+  }
 })
 
 test('/getLatest.json exits and returns 204 status at 30p', async t => {
@@ -230,7 +255,7 @@ test('/getLatestNyaa exits and returns 18 elements with right keys at 720p on ny
     t.not(data[0].researchName, undefined)
     t.not(data[0].magnetLink, undefined)
     t.not(data[0].picture, undefined)
-  } else if (status === 204) {
+  } else if (status === 204 || status === 202) {
     console.log('An error occurred while getting latest releases.'.yellow)
     t.is(data.length, 0)
   } else {
@@ -258,7 +283,7 @@ test('/seasons.json route exits and returns and log a error message on Fall 201'
   t.is(status, 204)
 })
 
-test('/local.json route exists and returns two files and code 200', async t => {
+test('/local.json route exists and returns three files and code 200', async t => {
   const { data, status } = await axios.get(`${uri}/local.json?dir=${join(__dirname, 'resources')}`)
 
   t.is(status, 200)
@@ -364,10 +389,14 @@ test('/saveWatchList exits and returns 200', async t => {
   t.is(trueList.watching.slice(-1)[0], 'Test')
 })
 
-test('/news.json route exits and returns 200 elements', async t => {
-  const { data } = await axios.get(`${uri}/news.json`)
+test('/news.json route exits and returns 160 elements', async t => {
+  const { data, status } = await axios.get(`${uri}/news.json`)
 
-  t.is(data.length, 200)
+  status === 200
+    ? t.is(data.length, 160)
+    : status === 204
+      ? t.is(data.length, 0)
+      : t.fail()
 })
 
 /**

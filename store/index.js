@@ -42,8 +42,8 @@ const store = new Vuex.Store({
     },
     seasons: [],
     seasonsStats: {},
-    year: 2017,
-    season: 'spring',
+    year: (new Date).getFullYear(),
+    season: 'spring', // TODO
     news: [],
     inside: true,
     localFiles: [],
@@ -292,7 +292,7 @@ const store = new Vuex.Store({
 
       status === 200
         ? commit('setNews', data)
-        : log('A problem occurred while gathering the news') && dispatch('newsInit')
+        : log('A problem occurred while gathering the news.') && dispatch('newsInit')
     },
     async localInit ({state, commit}) {
       console.log('[INIT] Local Files')
@@ -365,17 +365,25 @@ const store = new Vuex.Store({
         }
       }, 30 * 60 * 1000)
     },
-    async refreshSeasons ({state, commit}) {
+    async refreshSeasons ({state, commit, dispatch}) {
       log(`Refreshing Seasons...`)
-
-      commit('emptySeasons')
 
       const year = state.year
       const season = state.season
-      const {data} = await axios.get(`seasons.json?year=${year}&season=${season}`)
-      commit('setSeasons', data)
 
-      console.log('Seasons refreshed.')
+      if (year >= 2010  && (year <= (new Date).getYear() + 1901)) {
+        commit('emptySeasons')
+
+        const {data, status} = await axios.get(`seasons.json?year=${year}&season=${season}`)
+
+        status === 200
+          ? commit('setSeasons', data)
+          : dispatch('refreshSeasons')
+
+        log('Seasons refreshed.')
+      } else {
+        commit('setInfoSnackbar', `Year must be between 2010 and ${(new Date).getYear() + 1901}`)
+      }
     },
     async refreshNews ({commit, dispatch}) {
       log(`Refreshing News...`)
@@ -386,7 +394,7 @@ const store = new Vuex.Store({
 
       status === 200
         ? commit('setNews', data)
-        : log('A problem occurred while gathering the news') && dispatch('refreshNews')
+        : log('A problem occurred while gathering the news.') && dispatch('refreshNews')
     },
     async refreshLocal ({commit, state}) {
       log(`Refreshing Local files...`)

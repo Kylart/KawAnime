@@ -15,7 +15,8 @@ exports.getNews = (res) => {
     console.log('[Mal-Scraper] (News): A problem occurred while gathering news.')
     console.error(err.message)
 
-    res.writeHead(204, {})
+    res.writeHead(204, {'Content-Type' : 'application/json'})
+    res.write(JSON.stringify([]))
     res.end()
   })
 }

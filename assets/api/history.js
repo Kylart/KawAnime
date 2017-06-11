@@ -6,8 +6,8 @@ const {join} = require('path')
 const {writeFileSync} = require('fs')
 const {userInfo} = require('os')
 
-/* istanbul ignore next */
 const dir = process.env.NODE_ENV !== 'KawAnime-test'
+  /* istanbul ignore next */
   ? join(userInfo().homedir, '.KawAnime')
   : join(userInfo().homedir, '.KawAnime-test')
 
@@ -32,8 +32,8 @@ exports.appendHistory = (url, res, req) => {
       text: chunk.text
     }
 
-    /* istanbul ignore next */
     // Checking if date already entered
+    /* istanbul ignore next */
     if (!historyFile[day]) historyFile[day] = []
 
     // Appending data to file

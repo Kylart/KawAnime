@@ -16,7 +16,7 @@
         </v-col>
         <v-col md3 xs12 class="year-container">
           <v-text-field name="input-year"
-                        type="number" min="2000"
+                        type="number" min="2010"
                         label="Year"
                         v-model="currentYear"
                         dark>
