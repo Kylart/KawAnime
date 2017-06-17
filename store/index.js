@@ -45,7 +45,6 @@ const store = new Vuex.Store({
     year: (new Date()).getFullYear(),
     season: 'spring', // TODO
     news: [],
-    inside: true,
     localFiles: [],
     watchLists: {
       watchList: [],

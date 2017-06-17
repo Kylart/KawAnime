@@ -23,22 +23,26 @@ const minifyName = (name) => {
 }
 
 const getUniques = (files) => {
-  let result = []
+  const result = []
 
   files.forEach((file) => {
-    if (!result.includes(file.split(' ').slice(1, -3).join(' '))) result.push(file.split(' ').slice(1, -3).join(' '))
+    const toAdd = getName(file)
+
+    if (!result.includes(toAdd)) {
+      result.push(toAdd)
+    }
   })
 
   return result
 }
 
 const sendFiles = (json, files, res) => {
-  let result = []
+  const result = []
 
-  console.log('[Local] Sending files.')
+  console.log('[Local]: Sending files.')
 
   files.forEach((file) => {
-    let tmp = JSON.parse(JSON.stringify(json[minifyName(getName(file))]))
+    const tmp = JSON.parse(JSON.stringify(json[minifyName(getName(file))]))
     tmp.ep = getEp(file)
     tmp.path = file
     result.push(tmp)
@@ -58,7 +62,9 @@ const searchLocalFiles = (url, res) => {
   const query = qs.parse(url.query.replace('?', ''))
   const dir = query.dir
 
-  const files = fs.readdirSync(dir).filter((file) => { return extensions.includes(extname(file)) })
+  const files = fs.readdirSync(dir).filter((file) => { return extensions.includes(extname(file)) }).map((file) => {
+    return file.replace(' VOSTFR', '')
+  })
   const uniqueNames = getUniques(files)
 
   let counter = 0
@@ -69,12 +75,12 @@ const searchLocalFiles = (url, res) => {
     uniqueNames.forEach((elem) => {
       // Search MAL for each name if not in json
       if (!json[minifyName(elem)]) {
-        console.log(`[Local] Looking for ${elem} on MAL.`)
+        console.log(`[Local]: Looking for ${elem} on MAL.`)
         malScraper.getInfoFromName(elem).then((anime) => {
-          console.log('[Local] Found!')
+          console.log('[Local]: Found!')
 
           json[minifyName(elem)] = {
-            name: elem.replace(' VOSTFR', ''),
+            name: elem,
             picture: anime.image,
             numberOfEpisode: anime.episodes.replace('Unknown', 'NC'),
             status: anime.status,
@@ -93,12 +99,14 @@ const searchLocalFiles = (url, res) => {
             process.env.NODE_ENV !== 'KawAnime-test'
               ? fs.writeFileSync(join(userInfo().homedir, '.KawAnime', 'locals.json'), JSON.stringify(json), 'utf-8')
               : fs.writeFileSync(join(userInfo().homedir, '.KawAnime-test', 'locals.json'), JSON.stringify(json), 'utf-8')
-            console.log('[Local] Successfully saved data.')
+            console.log('[Local]: Successfully saved data.')
 
             sendFiles(json, files, res)
           }
         }).catch(/* istanbul ignore next */(err) => {
-          console.log('[Local] ' + err)
+          console.log('[Local]: ' + err)
+          res.writeHead(204, {})
+          res.end()
         })
       } else {
         ++counter
@@ -121,7 +129,7 @@ const resetLocal = (url, res) => {
   const query = qs.parse(url.query.replace('?', ''))
   const dir = query.dir
 
-  console.log('[Local] Received a request to reset local data for files in ' + dir)
+  console.log('[Local]: Received a request to reset local data for files in ' + dir)
 
   const files = fs.readdirSync(dir).filter((file) => { return extensions.includes(extname(file)) })
 

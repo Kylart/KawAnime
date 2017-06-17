@@ -50,17 +50,14 @@
     "electron-builder": "^17.1.1",
     "env2": "^2.2.0",
     "eslint-plugin-vue": "^2.0.1",
-    "jsdom": "^10.1.0",
-    "mocha": "^3.4.1",
     "nightwatch": "^0.9.15",
     "nyc": "^10.3.2",
     "pre-commit": "^1.2.2",
     "selenium-download": "^2.0.10",
-    "spectron": "^3.6.4",
     "standard": "^10.0.2",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.1",
-    "vue-devtools": "^3.0.8"
+    "vue-devtools": "^3.1.2"
   },
   "precommit": "lint",
   "build": {

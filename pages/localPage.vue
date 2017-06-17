@@ -94,10 +94,7 @@
       <v-row>
         <v-col xs12 class="menubar">
           <v-row>
-            <v-col xs3 class="menu-eps">
-              <p class="menu-eps-text">{{ nbEps }} {{ episodeLabel }}</p>
-            </v-col>
-            <v-col xs6></v-col>
+            <v-col xs9></v-col>
             <v-col xs3 class="menu-buttons">
               <v-btn icon
                      class="refresh-button"

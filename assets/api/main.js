@@ -2,6 +2,8 @@
  * Created by Kylart on 03/04/2017.
  */
 
+'use strict'
+
 const fs = require('fs')
 const {join} = require('path')
 const URL = require('url-parse')
@@ -66,7 +68,9 @@ const createList = () => {
     const basicLists = {
       watchList: [],
       seen: [],
-      watching: []
+      watching: [],
+      dropped: [],
+      onHold: []
     }
 
     fs.writeFileSync(listPath, JSON.stringify(basicLists), 'utf-8')
