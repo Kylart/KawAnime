@@ -10,12 +10,17 @@ const qs = require('querystring')
 
 const extensions = ['.mkv', '.mp4']
 
+const removeUnwanted = (rawName) => {
+  return rawName
+    .replace(' VOSTFR', '')
+}
+
 const getName = (rawName) => {
-  return rawName.split(' ').slice(1, -3).join(' ')
+  return removeUnwanted(rawName).split(' ').slice(1, -3).join(' ')
 }
 
 const getEp = (rawName) => {
-  return parseInt(rawName.split(' ').splice(-2)[0])
+  return parseInt(removeUnwanted(rawName).split(' ').splice(-2)[0])
 }
 
 const minifyName = (name) => {
@@ -62,9 +67,7 @@ const searchLocalFiles = (url, res) => {
   const query = qs.parse(url.query.replace('?', ''))
   const dir = query.dir
 
-  const files = fs.readdirSync(dir).filter((file) => { return extensions.includes(extname(file)) }).map((file) => {
-    return file.replace(' VOSTFR', '')
-  })
+  const files = fs.readdirSync(dir).filter((file) => { return extensions.includes(extname(file)) })
   const uniqueNames = getUniques(files)
 
   let counter = 0
