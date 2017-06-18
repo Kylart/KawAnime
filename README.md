@@ -66,9 +66,15 @@ npm run bstart
 
 ## Run in dev
 
-##### Start
+##### Start all app
 ```
 npm run dev
+```
+
+#### Start only server with hot reloading
+_using this with a REST api client is kinda useful_.
+```
+npm run dev:server
 ```
 
 ##### Lint
