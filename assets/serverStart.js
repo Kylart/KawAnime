@@ -15,7 +15,7 @@ let nuxt = null
 let server = null
 
 const initServer = async () => {
-  const initFile = require(join(__dirname, '..', 'assets', 'api', 'main.js'))
+  const initFile = require(join(__dirname, 'api', 'main.js'))
 
   /**
    * Nuxt config
@@ -29,13 +29,20 @@ const initServer = async () => {
   const route = initFile.route(nuxt)
   server = http.createServer(route)
 
-  await nuxt.build()
+  try {
+    await nuxt.build()
+  } catch (e) {
+    void e
+
+    setTimeout(initServer.catch(e => void e), 300)
+  }
+
   server.listen(3000)
 }
 
-initServer()
+initServer().catch((err) => { void err })
 
-chokidar.watch(join(__dirname), {ignored: './menu.js'}).on('all', (event, path) => {
+chokidar.watch(__dirname, {ignored: './menu.js'}).on('all', (event, path) => {
   console.info(`${path}: ${event}`)
 
   server.close()

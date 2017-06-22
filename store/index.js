@@ -46,6 +46,8 @@ const store = new Vuex.Store({
     season: 'spring', // TODO
     news: [],
     localFiles: [],
+    resettingLocal: false,
+    refreshingLocal: false,
     watchLists: {
       watchList: [],
       watching: [],
@@ -133,6 +135,12 @@ const store = new Vuex.Store({
     setCurrentDir: function (state, data) {
       state.currentDir = data
       log(`Current directory now is ${state.currentDir}.`)
+    },
+    setResettingLocal: function (state) {
+      state.resettingLocal = !state.resettingLocal
+    },
+    setRefreshingLocal: function (state) {
+      state.refreshingLocal = !state.refreshingLocal
     },
     setWatchLists: function (state, data) {
       state.watchLists = data
@@ -398,18 +406,23 @@ const store = new Vuex.Store({
     async refreshLocal ({commit, state}) {
       log(`Refreshing Local files...`)
 
+      commit('setRefreshingLocal')
+
       const {data} = await axios.get(`local.json?dir=${state.currentDir}`)
 
+      commit('setRefreshingLocal')
       commit('setLocalFiles', data)
     },
-    async resetLocal ({state}) {
+    async resetLocal ({state, commit}) {
       log(`Resetting local information...`)
+
+      commit('setResettingLocal')
 
       axios.get(`resetLocal?dir=${state.currentDir}`).then(() => {
         log(`Reset completed.`)
       }).catch((err) => {
         log('An error occurred while resetting.\n' + err)
-      })
+      }).then(() => { commit('setResettingLocal') })
     },
     async changePath ({commit, dispatch}) {
       const {data} = await axios.get('openThis?type=dialog')

@@ -234,15 +234,13 @@
         return string.split(' ').slice(0, 3).join(' ')
       },
       episode (nbEp) {
-        return parseInt(nbEp) !== '1'
+        return parseInt(nbEp) !== 1
           ? 'episodes'
           : 'episode'
       },
       refreshSeason () {
         const year = this.currentYear
         const season = this.currentSeason.value
-
-        console.log(year + season)
 
         this.$store.commit('setCurrentSeason', {
           year: year,

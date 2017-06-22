@@ -14,8 +14,12 @@
             <v-col xs4 class="menu-buttons">
               <v-btn icon
                      class="refresh-button"
+                     v-if="!this.$store.state.refreshingLocal"
                      @click.native="refresh()">
                 <v-icon large>refresh</v-icon>
+              </v-btn>
+              <v-btn v-else icon loading
+                     class="refresh-button">
               </v-btn>
               <v-btn flat dark
                      @click.native="changePath()"
@@ -24,9 +28,11 @@
               </v-btn>
               <v-btn secondary dark
                      @click.native="resetLocal()"
+                     v-if="!this.$store.state.resettingLocal"
                      class="reset-cache-button">
                 Reset local info
               </v-btn>
+              <v-btn secondary dark v-else class="reset-cache-button" loading></v-btn>
             </v-col>
           </v-row>
         </v-col>
@@ -126,6 +132,9 @@
   import axios from 'axios'
 
   export default {
+    mounted () {
+      this.refresh()
+    },
     data () {
       return {}
     },
