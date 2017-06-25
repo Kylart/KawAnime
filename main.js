@@ -79,14 +79,6 @@ const newWin = () => {
     win.show()
   })
 
-  !config.dev
-      ? win.loadURL(_NUXT_URL_)
-      : win.loadURL(url.format({
-        pathname: join(__dirname, 'index.html'),
-        protocol: 'file:',
-        slashes: true
-      }))
-
   win.on('closed', () => {
     win = null
   })
@@ -104,6 +96,16 @@ const newWin = () => {
     console.info('Session logged off.')
   })
 
+  if (!config.dev) {
+    return win.loadURL(_NUXT_URL_)
+  } else {
+    win.loadURL(url.format({
+      pathname: join(__dirname, 'index.html'),
+      protocol: 'file:',
+      slashes: true
+    }))
+  }
+
   pollServer()
 }
 
@@ -111,19 +113,12 @@ app.on('ready', () => {
   if (process.platform === 'darwin') {
     app.setAboutPanelOptions({
       applicationName: 'KawAnime',
-      applicationVersion: '0.4.0',
+      applicationVersion: '0.4.1',
       copyright: 'Kylart 2016-2017'
     })
   }
 
   Menu.setApplicationMenu(menu)
-
-  // Dev tools
-  if (config.dev) {
-    require('devtron').install()
-  } else {
-    require('devtron').uninstall()
-  }
 
   newWin()
 

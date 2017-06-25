@@ -132,6 +132,14 @@
   import axios from 'axios'
 
   export default {
+    head() {
+      return {
+        title: 'Local page',
+        meta: [
+          { hid: 'description', name: 'description', content: 'Your local animes' }
+        ]
+      }
+    },
     mounted () {
       this.refresh()
     },

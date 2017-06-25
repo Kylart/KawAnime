@@ -166,6 +166,14 @@
   import Loader from '~components/loader.vue'
 
   export default {
+    head() {
+      return {
+        title: 'Releases',
+        meta: [
+          { hid: 'description', name: 'description', content: 'Latest downloadable anime releases' }
+        ]
+      }
+    },
     data () {
       return {
         modal: false,

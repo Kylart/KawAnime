@@ -19,7 +19,7 @@ module.exports = {
     {src: join(__dirname, 'css/main.css'), lang: 'css'}
   ],
   head: {
-    title: 'KawAnime',
+    titleTemplate: '%s - KawAnime',
     meta: [
       {charset: 'utf-8'},
       {name: 'viewport', content: 'width=device-width, initial-scale=1'}

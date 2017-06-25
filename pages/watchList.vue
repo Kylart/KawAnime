@@ -135,6 +135,14 @@
   }
 
   export default {
+    head() {
+      return {
+        title: 'Watch lists',
+        meta: [
+          { hid: 'description', name: 'description', content: 'Watch lists' }
+        ]
+      }
+    },
     data () {
       return {
         selected: {

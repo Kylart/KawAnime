@@ -179,6 +179,14 @@
   import Loader from '~components/loader.vue'
 
   export default {
+    head() {
+      return {
+        title: 'Seasons',
+        meta: [
+          { hid: 'description', name: 'description', content: 'Browse the anime seasons' }
+        ]
+      }
+    },
     data () {
       return {
         choiceDialog: false,

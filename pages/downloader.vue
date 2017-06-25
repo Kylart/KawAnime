@@ -138,6 +138,14 @@
 
 <script>
   export default {
+    head() {
+      return {
+        title: 'Downloader',
+        meta: [
+          { hid: 'description', name: 'description', content: 'Download animes!' }
+        ]
+      }
+    },
     data () {
       return {
         modalText: '',

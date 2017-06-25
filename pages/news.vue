@@ -44,6 +44,14 @@
   import Loader from '~components/loader.vue'
 
   export default {
+    head() {
+      return {
+        title: 'News',
+        meta: [
+          { hid: 'description', name: 'description', content: 'Anime world news' }
+        ]
+      }
+    },
     data () {
       return {}
     },
