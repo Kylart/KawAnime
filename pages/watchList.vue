@@ -13,7 +13,15 @@
         Seen
         <v-icon>done_all</v-icon>
       </v-tab-item>
-      <v-tab-content v-for="i in 3" :key="i"
+      <v-tab-item href="#tabs-4" slot="activators">
+        On Hold
+        <v-icon>av_timer</v-icon>
+      </v-tab-item>
+      <v-tab-item href="#tabs-5" slot="activators">
+        Dropped
+        <v-icon>visibility_off</v-icon>
+      </v-tab-item>
+      <v-tab-content v-for="i in 5" :key="i"
                      v-bind:id="'tabs-' + i"
                      slot="content">
         <v-card>
@@ -135,7 +143,7 @@
   }
 
   export default {
-    head() {
+    head () {
       return {
         title: 'Watch lists',
         meta: [
@@ -148,12 +156,16 @@
         selected: {
           1: [],
           2: [],
-          3: []
+          3: [],
+          4: [],
+          5: []
         },
         entries: {
           1: '',
           2: '',
-          3: ''
+          3: '',
+          4: '',
+          5: ''
         },
         actionsList: [{
           name: 'Watch list',
@@ -167,17 +179,28 @@
           name: 'Seen',
           list: 'seen',
           icon: 'done_all'
-        }
-        ],
+        }, {
+          name: 'On hold',
+          list: 'onHold',
+          icon: 'av_timer'
+        }, {
+          name: 'Dropped',
+          list: 'dropped',
+          icon: 'visibility_off'
+        }],
         allSelected: {
           1: false,
           2: false,
-          3: false
+          3: false,
+          4: false,
+          5: false
         },
         listNames: {
           1: 'watchList',
           2: 'watching',
-          3: 'seen'
+          3: 'seen',
+          4: 'onHold',
+          5: 'dropped'
         }
       }
     },
@@ -191,11 +214,19 @@
       watching: function () {
         return this.$store.state.watchLists.watching
       },
+      onHold: function () {
+        return this.$store.state.watchLists.onHold
+      },
+      dropped: function () {
+        return this.$store.state.watchLists.dropped
+      },
       lists: function () {
         return [
           this.watchList,
           this.watching,
-          this.seen
+          this.seen,
+          this.onHold,
+          this.dropped
         ]
       }
     },

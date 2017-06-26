@@ -138,7 +138,7 @@
 
 <script>
   export default {
-    head() {
+    head () {
       return {
         title: 'Downloader',
         meta: [

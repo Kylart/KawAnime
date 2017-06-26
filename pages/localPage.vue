@@ -132,7 +132,7 @@
   import axios from 'axios'
 
   export default {
-    head() {
+    head () {
       return {
         title: 'Local page',
         meta: [

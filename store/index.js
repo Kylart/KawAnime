@@ -51,7 +51,9 @@ const store = new Vuex.Store({
     watchLists: {
       watchList: [],
       watching: [],
-      seen: []
+      seen: [],
+      onHold: [],
+      dropped: []
     },
     config: {},
     configDir: '',

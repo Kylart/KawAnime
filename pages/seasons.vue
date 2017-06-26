@@ -179,7 +179,7 @@
   import Loader from '~components/loader.vue'
 
   export default {
-    head() {
+    head () {
       return {
         title: 'Seasons',
         meta: [
