@@ -101,28 +101,14 @@
                                   <v-list-tile-title>Information</v-list-tile-title>
                                 </v-list-tile>
                               </v-list-item>
-                              <v-list-item @click.capture="addTo('watchList', item.rawName)">
-                                <v-list-tile>
+                              <v-list-item>
+                                <v-list-tile @click.native="showChoices(item.rawName)">
                                   <v-list-tile-action>
-                                    <v-icon>watch_later</v-icon>
+                                    <v-icon>add_box</v-icon>
                                   </v-list-tile-action>
-                                  <v-list-tile-title>Add to my Watch list</v-list-tile-title>
-                                </v-list-tile>
-                              </v-list-item>
-                              <v-list-item @click.capture="addTo('watching', item.rawName)">
-                                <v-list-tile>
-                                  <v-list-tile-action>
-                                    <v-icon>tv</v-icon>
-                                  </v-list-tile-action>
-                                  <v-list-tile-title>Add to &laquo;Watching&raquo;</v-list-tile-title>
-                                </v-list-tile>
-                              </v-list-item>
-                              <v-list-item @click.capture="addTo('seen', item.rawName)">
-                                <v-list-tile>
-                                  <v-list-tile-action>
-                                    <v-icon>done_all</v-icon>
-                                  </v-list-tile-action>
-                                  <v-list-tile-title>Add to &laquo;Seen&raquo;</v-list-tile-title>
+                                  <v-list-tile-title>
+                                    Add to
+                                  </v-list-tile-title>
                                 </v-list-tile>
                               </v-list-item>
                             </v-list>
@@ -158,12 +144,14 @@
         </v-card>
       </v-dialog>
     </div>
+    <choice-window :entry="choiceTitle"></choice-window>
   </v-container>
 </template>
 
 <script>
   import axios from 'axios'
   import Loader from '~components/loader.vue'
+  import ChoiceWindow from '~components/choiceWindow.vue'
 
   export default {
     head () {
@@ -176,6 +164,7 @@
     },
     data () {
       return {
+        choiceTitle: '',
         modal: false,
         modalTitle: '',
         modalText: '',
@@ -198,7 +187,8 @@
       }
     },
     components: {
-      Loader
+      Loader,
+      ChoiceWindow
     },
     methods: {
       openModal (title, text) {
@@ -237,11 +227,9 @@
       print (item) {
         console.log(`[${(new Date()).toLocaleTimeString()}]: Downloading ${item.name}.`)
       },
-      addTo: function (listName, entry) {
-        this.$store.dispatch('updateList', {
-          listName: listName,
-          entry: entry
-        })
+      showChoices (name) {
+        this.choiceTitle = name
+        this.$store.commit('setAddToChoice', true)
       }
     }
   }

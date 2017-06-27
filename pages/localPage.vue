@@ -30,7 +30,7 @@
                      @click.native="resetLocal()"
                      v-if="!this.$store.state.resettingLocal"
                      class="reset-cache-button">
-                Reset local info
+                Refresh local info
               </v-btn>
               <v-btn secondary dark v-else class="reset-cache-button" loading></v-btn>
             </v-col>
@@ -69,8 +69,9 @@
                       <p class="ellipsis genres">{{ item.genres.join(', ') }}</p>
                     </v-col>
                     <v-col xs4 v-tooltip:top="{ html: item.classification.replace('None', 'No restriction') }">
-                      <p class="ellipsis classification">{{ item.classification.replace('None', 'No restriction')
-                        }}</p>
+                      <p class="ellipsis classification">
+                        {{ item.classification.replace('None', 'No restriction') }}
+                      </p>
                     </v-col>
                     <v-col xl5 lg4 md5 sm3 xs4 class="picture-container">
                       <img :src="item.picture" class="picture" height="220">

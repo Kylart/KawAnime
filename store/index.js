@@ -42,8 +42,8 @@ const store = new Vuex.Store({
     },
     seasons: [],
     seasonsStats: {},
-    year: (new Date()).getFullYear(),
-    season: 'spring', // TODO
+    year: 0,
+    season: '',
     news: [],
     localFiles: [],
     resettingLocal: false,
@@ -64,7 +64,8 @@ const store = new Vuex.Store({
     history: {},
     historyModal: false,
     infoModal: false,
-    info: {}
+    info: {},
+    addToChoice: false
   },
   mutations: {
     init (state, data) {
@@ -202,9 +203,25 @@ const store = new Vuex.Store({
       const index = state.watchLists[listName].indexOf(data.entry)
 
       state.watchLists[listName].splice(index, 1)
+    },
+    setAddToChoice (state, data) {
+      state.addToChoice = data
     }
   },
   actions: {
+    nuxtServerInit ({commit}) {
+      const now = new Date()
+      const year = now.getFullYear()
+      const month = now.getMonth()
+      let season
+
+      if (month > 0 && month < 4) season = 'winter'
+      else if (month > 3 && month < 7) season = 'spring'
+      else if (month > 6 && month < 10) season = 'summer'
+      else if (month > 9 && month < 13) season = 'fall'
+
+      commit('setCurrentSeason', {year, season})
+    },
     async init ({commit, dispatch}) {
       if (!started) {
         started = true

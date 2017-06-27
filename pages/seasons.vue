@@ -95,32 +95,11 @@
                                 <v-list-tile-title>Information</v-list-tile-title>
                               </v-list-tile>
                             </v-list-item>
-                            <v-list-item @click.capture="addTo('watchList', item.title)">
-                              <v-list-tile>
-                                <v-list-tile-action>
-                                  <v-icon>watch_later</v-icon>
-                                </v-list-tile-action>
-                                <v-list-tile-title>Add to my Watch list</v-list-tile-title>
-                              </v-list-tile>
-                            </v-list-item>
-                            <v-list-item @click.capture="addTo('watching', item.title)">
-                              <v-list-tile>
-                                <v-list-tile-action>
-                                  <v-icon>tv</v-icon>
-                                </v-list-tile-action>
-                                <v-list-tile-title>Add to &laquo;Watching&raquo;</v-list-tile-title>
-                              </v-list-tile>
-                            </v-list-item>
-                            <v-list-item @click.capture="addTo('seen', item.title)">
-                              <v-list-tile>
-                                <v-list-tile-action>
-                                  <v-icon>done_all</v-icon>
-                                </v-list-tile-action>
-                                <v-list-tile-title>Add to &laquo;Seen&raquo;</v-list-tile-title>
-                              </v-list-tile>
-                            </v-list-item>
                             <v-list-item>
                               <v-list-tile @click.native="showChoices(item.title)">
+                                <v-list-tile-action>
+                                  <v-icon>add_box</v-icon>
+                                </v-list-tile-action>
                                 <v-list-tile-title>
                                   Add to
                                 </v-list-tile-title>
@@ -156,27 +135,14 @@
           </v-card>
         </v-dialog>
       </div>
-      <v-dialog v-model="choiceDialog" width="650">
-        <v-card>
-          <v-card-row>
-            <v-card-title>Add {{ choiceTitle }} to</v-card-title>
-          </v-card-row>
-          <v-card-row>
-            <v-card-text>
-              To do
-            </v-card-text>
-          </v-card-row>
-          <v-card-row actions>
-            <v-btn class="green--text darken-1" flat="flat" @click.native="choiceDialog = false">Add</v-btn>
-          </v-card-row>
-        </v-card>
-      </v-dialog>
+      <choice-window :entry="choiceTitle"></choice-window>
     </v-container>
   </v-container>
 </template>
 
 <script>
   import Loader from '~components/loader.vue'
+  import ChoiceWindow from '~components/choiceWindow.vue'
 
   export default {
     head () {
@@ -189,7 +155,6 @@
     },
     data () {
       return {
-        choiceDialog: false,
         choiceTitle: '',
         choices: [],
         modalTitle: '',
@@ -222,7 +187,8 @@
         return this.seasons.Movies
       },
       season: function () {
-        return ['',
+        return [
+          '',
           {name: 'TV', items: this.TVs},
           {name: 'OVA', items: this.OVAs},
           {name: 'Movies', items: this.Movies}
@@ -230,7 +196,8 @@
       }
     },
     components: {
-      Loader
+      Loader,
+      ChoiceWindow
     },
     methods: {
       reduced (text) {
@@ -284,15 +251,9 @@
           return {season: 'fall', year: year}
         }
       },
-      addTo: function (listName, entry) {
-        this.$store.dispatch('updateList', {
-          listName: listName,
-          entry: entry
-        })
-      },
       showChoices (name) {
         this.choiceTitle = name
-        this.choiceDialog = true
+        this.$store.commit('setAddToChoice', true)
       }
     }
   }

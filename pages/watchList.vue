@@ -1,26 +1,13 @@
 <template xmlns:v-bind="http://www.w3.org/1999/xhtml">
   <v-container fluid id="watch-list">
     <v-tabs id="tabs" grow icons>
-      <v-tab-item href="#tabs-1" slot="activators">
-        Watch list
-        <v-icon>watch_later</v-icon>
-      </v-tab-item>
-      <v-tab-item href="#tabs-2" slot="activators">
-        Watching
-        <v-icon>tv</v-icon>
-      </v-tab-item>
-      <v-tab-item href="#tabs-3" slot="activators">
-        Seen
-        <v-icon>done_all</v-icon>
-      </v-tab-item>
-      <v-tab-item href="#tabs-4" slot="activators">
-        On Hold
-        <v-icon>av_timer</v-icon>
-      </v-tab-item>
-      <v-tab-item href="#tabs-5" slot="activators">
-        Dropped
-        <v-icon>visibility_off</v-icon>
-      </v-tab-item>
+      <template v-for="i in 5">
+        <v-tab-item :href="'#tabs-' + i"
+                    slot="activators">
+          {{ actionsList[i - 1].name }}
+          <v-icon>{{ actionsList[i - 1].icon }}</v-icon>
+        </v-tab-item>
+      </template>
       <v-tab-content v-for="i in 5" :key="i"
                      v-bind:id="'tabs-' + i"
                      slot="content">
@@ -60,7 +47,9 @@
                     </v-btn>
                   </v-col>
                   <v-col md2 sm2 xs12>
-                    <p class="elem-number">{{ lists[i - 1].length }} entries</p>
+                    <p class="elem-number">
+                      {{ lists[i - 1].length }} {{ lists[i - 1].length === 1 ? 'entry' : 'entries' }}
+                    </p>
                   </v-col>
                   <v-col md3 sm1 xs0></v-col>
                   <v-col md2 sm3 xs12 @keyup.enter="addEntry(i)">
