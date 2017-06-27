@@ -1,9 +1,10 @@
 <template>
   <v-dialog v-model="show"
+            persistent
             width="650">
     <v-card>
       <v-card-row>
-        <v-card-title>Add {{ entry }} to</v-card-title>
+        <v-card-title>Add «{{ entry }}» to</v-card-title>
       </v-card-row>
       <v-card-row>
         <v-card-text>
@@ -31,6 +32,7 @@
       </v-card-row>
       <v-card-row actions>
         <v-btn class="blue--text darken-1" flat="flat" @click.native="add()">Add</v-btn>
+        <v-btn class="blue--text darken-1" flat="flat" @click.native="hide()">Close</v-btn>
       </v-card-row>
     </v-card>
   </v-dialog>
@@ -68,6 +70,9 @@
       }
     },
     methods: {
+      hide () {
+        this.$store.commit('setAddToChoice', false)
+      },
       add () {
         this.selected.forEach((listName) => {
           const entry = this.entry
@@ -77,7 +82,7 @@
           })
         })
 
-        this.$store.commit('setAddToChoice', false)
+        this.hide()
       }
     },
     computed: {
