@@ -97,6 +97,7 @@ const wl = require('./watchList.js')
 const history = require('./history')
 const horrible = require('./horrible.js')
 const nyaa = require('./nyaa.js')
+const search = require('./search.js')
 
 const route = (nuxt) => {
   createDir()
@@ -175,6 +176,10 @@ const route = (nuxt) => {
         })
         res.writeHead(200, {})
         res.end()
+        break
+
+      case '/searchTermOnMal':
+        search.searchTerm(url, res)
         break
 
       /* istanbul ignore next */

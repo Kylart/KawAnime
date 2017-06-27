@@ -9,41 +9,7 @@
         <div style="width: 100%;">
           <div class="title-text">かわニメ</div>
           <settings></settings>
-
           <div class="modals text-xs-center">
-            <v-dialog width="450" v-model="searchModal">
-              <v-btn icon slot="activator">
-                <v-icon>search</v-icon>
-              </v-btn>
-              <v-card class="secondary">
-                <v-card-text>
-                  <h2 class="title">Which anime are you looking for?</h2>
-                </v-card-text>
-                <v-divider/>
-                <v-card-text class="subheading grey--text">
-                  <v-row>
-                    <v-col xs2><!-- Dummy --></v-col>
-                    <v-col xs8>
-                      <v-text-field name="search-input" dark
-                                    v-model="searchInput"
-                                    label="Anime name">
-                      </v-text-field>
-                    </v-col>
-                    <v-col xs2><!-- Dummy --></v-col>
-                  </v-row>
-
-                </v-card-text>
-                <v-card-row actions style="padding: 0 20px 20px 0">
-                  <v-spacer></v-spacer>
-                  <v-btn dark primary
-                         style="width: 100px"
-                         v-on:click.native="searchModal = false">
-                    Search!
-                  </v-btn>
-                </v-card-row>
-              </v-card>
-            </v-dialog>
-
             <v-btn icon
                    class="open-in-browser"
                    v-tooltip:left="{ html: 'Open KawAnime in your browser' }"
@@ -51,6 +17,7 @@
               <v-icon>open_in_new</v-icon>
             </v-btn>
           </div>
+          <info-modal></info-modal>
         </div>
       </v-toolbar-logo>
     </v-toolbar>
@@ -118,12 +85,12 @@
         <nuxt/>
         <!-- Displayed if an error occurred -->
         <v-snackbar
-                :timeout="5000"
-                :top="true"
-                :bottom="false"
-                :right="false"
-                :left="false"
-                v-model="$store.state.infoSnackbar.show"
+            :timeout="5000"
+            :top="true"
+            :bottom="false"
+            :right="false"
+            :left="false"
+            v-model="$store.state.infoSnackbar.show"
         >
           {{ $store.state.infoSnackbar.text }}
           <v-btn flat class="pink--text" @click.native="$store.state.infoSnackbar.show = false">Close</v-btn>
@@ -139,6 +106,7 @@
 
 <script>
   import Settings from '~components/settings.vue'
+  import infoModal from '~components/infoModal.vue'
 
   export default {
     data () {
@@ -213,7 +181,8 @@
       }
     },
     components: {
-      Settings
+      Settings,
+      infoModal
     },
     computed: {
       title: function () {
