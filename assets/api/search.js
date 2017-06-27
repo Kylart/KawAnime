@@ -20,7 +20,7 @@ const searchTerm = (url, res) => {
     res.writeHead(200, {'Content-Type': 'application/json'})
     res.write(JSON.stringify(data))
     res.end()
-  }).catch((e) => {
+  }).catch(/* istanbul ignore next */(e) => {
     console.log('[Search] (Term):' + e.message)
     res.writeHead(204, {})
     res.end()

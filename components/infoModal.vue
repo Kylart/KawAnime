@@ -102,7 +102,7 @@
               this.results = data.categories[0].items
             }
           } catch (e) {
-            console.log((new Date).toLocaleTimeString() + e.message)
+            console.log((new Date()).toLocaleTimeString() + e.message)
             this.$store.commit('setInfoSnackbar', 'You type too much, too fast!')
           }
         } else {

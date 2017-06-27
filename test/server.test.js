@@ -398,6 +398,13 @@ test('/news.json route exits and returns 160 elements', async t => {
       : t.fail()
 })
 
+test.only('/searchTermOnMal route exits and return 10 elements', async t => {
+  const { data, status } = await axios.get(`${uri}/searchTermOnMal?term=sakura trick`)
+
+  t.is(status, 200)
+  t.is(data.categories[0].items.length, 10)
+})
+
 /**
  * Front test calls
  *
