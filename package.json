@@ -30,6 +30,7 @@
   "dependencies": {
     "axios": "^0.16.0",
     "horrible-api": "^1.0.5",
+    "lodash": "^4.17.4",
     "mal-scraper": "^1.4.1",
     "nuxt": "^0.10.5",
     "nyaapi": "^1.2.2",

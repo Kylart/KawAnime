@@ -182,7 +182,13 @@ const store = new Vuex.Store({
       state.info = data
     },
     updateList (state, data) {
+      const lists = {
+        watchList: 'Watch list',
+        onHold: 'On Hold'
+      }
+
       const listName = data.listName
+      const logListName = lists[data.listName] || listName
       const entry = data.entry
 
       if (!state.watchLists[listName].includes(entry)) {
@@ -190,11 +196,11 @@ const store = new Vuex.Store({
         state.watchLists[listName].sort()
 
         log(`${listName} list updated.`)
-        state.infoSnackbar.text = `${entry} was added to your «${listName}» list.`
+        state.infoSnackbar.text = `${entry} was added to your «${logListName}» list.`
         state.infoSnackbar.show = true
       } else {
         // Displays error message
-        state.infoSnackbar.text = `${entry} is already in your «${listName}» list.`
+        state.infoSnackbar.text = `${entry} is already in your «${logListName}» list.`
         state.infoSnackbar.show = true
       }
     },

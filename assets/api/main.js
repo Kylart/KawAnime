@@ -182,6 +182,10 @@ const route = (nuxt) => {
         search.searchTerm(url, res)
         break
 
+      case '/getInfoFromMal':
+        search.searchOnMal(url, res)
+        break
+
       /* istanbul ignore next */
       case '/_openInBrowser':
         openInBrowser(process.nuxtURL, res)

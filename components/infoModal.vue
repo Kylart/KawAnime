@@ -11,7 +11,7 @@
         <v-card-row>
           <v-card-text>
             <v-row>
-              <v-col xs7 offset-xs2 @keydown.enter="search()">
+              <v-col xs7 offset-xs2>
                 <v-text-field
                     name="search-name"
                     label="Anime name"
@@ -29,7 +29,7 @@
                              @click.all="search(item.name)"
                              v-ripple>
                         <v-col xs12>
-                          <img :src="item.image_url" height="140" max-width="100%">
+                          <img :src="item.image_url" height="140" class="elem-picture">
                         </v-col>
                         <v-col xs12 class="elem-name">{{ item.name }}</v-col>
                       </v-row>
@@ -52,11 +52,18 @@
         </v-card-row>
         <v-card-row>
           <v-card-text>
-            hello world
+            <h4 v-if="error">{{ error }}</h4>
+            <div v-else-if="loading">
+              <h5 class="loading-text">Info should be displayed in a few seconds</h5>
+              <h5 class="loading-text">Gathering data...</h5>
+            </div>
+            <v-row v-else>
+              {{ info.title }}
+            </v-row>
           </v-card-text>
         </v-card-row>
         <v-card-row actions>
-          <v-btn class="blue--text darken-1 close-button" flat @click.native="resultShow = false">Thanks!</v-btn>
+          <v-btn class="blue--text darken-1 close-button" flat @click.native="closeResults()">Thanks!</v-btn>
         </v-card-row>
       </v-card>
     </v-dialog>
@@ -65,6 +72,7 @@
 
 <script>
   import axios from 'axios'
+  import _ from 'lodash'
   import Loader from '~components/loader.vue'
 
   export default {
@@ -74,46 +82,77 @@
         resultShow: false,
         searchTerm: '',
         results: [],
-        info: {}
+        info: {},
+        error: '',
+        loading: true
       }
     },
     components: {
       Loader
     },
     methods: {
-      search: function (name) {
-        if (this.searchTerm.length > 2) {
+      async search (name) {
+        this.searchTerm = name
+
+        if (this.info.title === name) {
           this.resultShow = true
           this.searchShow = false
         } else {
-          this.$store.commit('setInfoSnackbar', 'Please enter a valid name.')
+          this.loading = true
+          this.resultShow = true
+          this.searchShow = false
+
+          const {data, status} = await axios.get(`getInfoFromMal?term=${name}`)
+
+          console.log(data)
+
+          this.loading = false
+
+          status === 200
+            ? this.info = data
+            : this.error = `An error occurred while retrieving information of ${name}..`
         }
+      },
+      quickSearch: _.debounce(
+        async function () {
+          const term = this.searchTerm
+
+          if (term.length > 2) {
+            try {
+              const {data, status} = await axios.get(`searchTermOnMal?term=${term}`)
+
+              if (status === 200) {
+                this.results = data.categories[0].items
+              }
+            } catch (e) {
+              console.log((new Date()).toLocaleTimeString() + e.message)
+              this.$store.commit('setInfoSnackbar', e.message)
+            }
+          } else {
+            this.results = []
+          }
+        },
+        300),
+      closeResults () {
+        this.searchTerm = ''
+        this.resultShow = false
       }
     },
     watch: {
       async searchTerm () {
-        const term = this.searchTerm
-
-        if (term.length > 2) {
-          try {
-            const {data, status} = await axios.get(`searchTermOnMal?term=${term}`)
-
-            if (status === 200) {
-              this.results = data.categories[0].items
-            }
-          } catch (e) {
-            console.log((new Date()).toLocaleTimeString() + e.message)
-            this.$store.commit('setInfoSnackbar', 'You type too much, too fast!')
-          }
-        } else {
-          this.results = []
-        }
+        this.quickSearch()
       }
     }
   }
 </script>
 
 <style scoped>
+  .loading-text
+  {
+    position: relative;
+    color: rgba(255, 255, 255, 0.8);
+  }
+
   .close-button
   {
     margin-right: 10px !important;
@@ -129,7 +168,7 @@
     height: 100%;
     position: relative;
     margin-left: 10%;
-    width: 99%;
+    width: 100%;
     background-color: rgb(60, 60, 60);
     padding-bottom: 5px;
   }
@@ -137,5 +176,10 @@
   .elem-name
   {
     font-size: 16px;
+  }
+
+  .elem-picture
+  {
+    max-width: 90%;
   }
 </style>
