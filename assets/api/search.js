@@ -34,7 +34,7 @@ const searchOnMal = (url, res) => {
     res.writeHead(200, {'Content-Type': 'application/json'})
     res.write(JSON.stringify(data))
     res.end()
-  }).catch((err) => {
+  }).catch(/* istanbul ignore next */(err) => {
     console.log(err.message)
     res.writeHead(204, {})
     res.end()

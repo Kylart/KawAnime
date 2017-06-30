@@ -3,6 +3,7 @@ import Vue from 'vue'
 // noinspection NpmUsedModulesInstalled
 import Vuex from 'vuex'
 import axios from 'axios'
+import moment from 'moment'
 
 Vue.use(Vuex)
 
@@ -117,7 +118,7 @@ const store = new Vuex.Store({
     },
     setReleases: function (state, data) {
       state.releases = data
-      state.releasesUpdateTime = (new Date()).toLocaleTimeString()
+      state.releasesUpdateTime = moment()
 
       log(`Releases updated.`)
     },

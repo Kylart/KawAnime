@@ -2,10 +2,10 @@
   <v-container fluid class="container">
     <div v-if="$store.state.releases.length">
       <v-row style="margin: 0 1% 0 1%;">
-        <v-col md3 sm4 xs12 class="time-container">
-          <span class="update-time">Updated at: {{ lastUpdateTime }}</span>
+        <v-col md4 sm4 xs12 class="time-container">
+          <span class="update-time">Updated {{ lastUpdateTime }}</span>
         </v-col>
-        <v-col md5 sm1 xs0></v-col>
+        <v-col md4 sm1 xs0></v-col>
         <v-col md2 sm3 xs12>
           <v-select
                   class="select"
@@ -162,6 +162,13 @@
         ]
       }
     },
+    mounted () {
+      setInterval(() => {
+        if (this.releases.length) {
+          this.updateTime(this.$store)
+        }
+      }, 60 * 1000)
+    },
     data () {
       return {
         choiceTitle: '',
@@ -175,15 +182,13 @@
           'DurandalSubs',
           'DefinitelyNotMe'
         ],
-        qualityList: ['480p', '720p', '1080p']
+        qualityList: ['480p', '720p', '1080p'],
+        lastUpdateTime: 'a few seconds ago'
       }
     },
     computed: {
       releases: function () {
         return this.$store.state.releases
-      },
-      lastUpdateTime: function () {
-        return this.$store.state.releasesUpdateTime
       }
     },
     components: {
@@ -230,6 +235,12 @@
       showChoices (name) {
         this.choiceTitle = name
         this.$store.commit('setAddToChoice', true)
+      },
+      updateTime (store) {
+        const updated = store.state.releasesUpdateTime
+        if (updated) {
+          this.lastUpdateTime = updated.fromNow()
+        }
       }
     }
   }
