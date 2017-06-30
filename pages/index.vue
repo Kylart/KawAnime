@@ -3,7 +3,7 @@
     <div v-if="$store.state.releases.length">
       <v-row style="margin: 0 1% 0 1%;">
         <v-col md4 sm4 xs12 class="time-container">
-          <span class="update-time">Updated {{ lastUpdateTime }}</span>
+          <span class="update-time">Updated {{ lastUpdateTime }}.</span>
         </v-col>
         <v-col md4 sm1 xs0></v-col>
         <v-col md2 sm3 xs12>
@@ -163,6 +163,10 @@
       }
     },
     mounted () {
+      if (this.releases.length) {
+        this.updateTime(this.$store)
+      }
+
       setInterval(() => {
         if (this.releases.length) {
           this.updateTime(this.$store)
