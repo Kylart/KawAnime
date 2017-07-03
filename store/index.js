@@ -216,19 +216,6 @@ const store = new Vuex.Store({
     }
   },
   actions: {
-    nuxtServerInit ({commit}) {
-      const now = new Date()
-      const year = now.getFullYear()
-      const month = now.getMonth()
-      let season
-
-      if (month > 0 && month < 4) season = 'winter'
-      else if (month > 3 && month < 7) season = 'spring'
-      else if (month > 6 && month < 10) season = 'summer'
-      else if (month > 9 && month < 13) season = 'fall'
-
-      commit('setCurrentSeason', {year, season})
-    },
     async init ({commit, dispatch}) {
       if (!started) {
         started = true
@@ -313,9 +300,22 @@ const store = new Vuex.Store({
         }
       }
     },
-    async seasonsInit ({state, commit}) {
+    async seasonsInit ({commit}) {
       console.log('[INIT] Seasons')
-      const {data} = await axios.get(`seasons.json?year=${state.year}&season=${state.season}`)
+
+      const now = new Date()
+      const year = now.getFullYear()
+      const month = now.getMonth() + 1
+      let season
+
+      if (month > 0 && month < 4) season = 'winter'
+      else if (month > 3 && month < 7) season = 'spring'
+      else if (month > 6 && month < 10) season = 'summer'
+      else if (month > 9 && month < 13) season = 'fall'
+
+      commit('setCurrentSeason', {year, season})
+
+      const {data} = await axios.get(`seasons.json?year=${year}&season=${season}`)
 
       commit('setSeasons', data)
     },
@@ -402,7 +402,7 @@ const store = new Vuex.Store({
       log(`Refreshing Seasons...`)
 
       const year = state.year
-      const season = state.season
+      const season = state.season.value || state.season
 
       if (year >= 2010 && (year <= (new Date()).getYear() + 1901)) {
         commit('emptySeasons')

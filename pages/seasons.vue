@@ -8,7 +8,7 @@
         <v-col md3 xs12 class="season-container">
           <v-select
                   v-bind:items="seasonChoices"
-                  v-model="currentSeason"
+                  v-model="$store.state.season"
                   label="Season"
                   dark
                   item-text="name"
@@ -18,7 +18,7 @@
           <v-text-field name="input-year"
                         type="number" min="2010"
                         label="Year"
-                        v-model="currentYear"
+                        v-model="$store.state.year"
                         dark>
           </v-text-field>
         </v-col>
@@ -165,9 +165,7 @@
           {name: 'Spring', value: 'spring'},
           {name: 'Summer', value: 'summer'},
           {name: 'Fall', value: 'fall'}
-        ],
-        currentSeason: this.getCurrentSeason().season,
-        currentYear: 1900 + (new Date()).getYear()
+        ]
       }
     },
     computed: {
@@ -214,14 +212,6 @@
           : 'episode'
       },
       refreshSeason () {
-        const year = this.currentYear
-        const season = this.currentSeason.value
-
-        this.$store.commit('setCurrentSeason', {
-          year: year,
-          season: season
-        })
-
         this.$store.dispatch('refreshSeasons')
       },
       openModal (title, text) {
@@ -231,25 +221,6 @@
         this.modalText = text
 
         this.modal = true
-      },
-      getCurrentSeason () {
-        const date = new Date()
-
-        // Get current year
-        const year = 1900 + date.getYear()
-
-        // Get current month
-        const month = 1 + date.getMonth()   // I am a weak person that like 1-indexed things
-
-        if (month > 0 && month < 4) {
-          return {season: 'winter', year: year}
-        } else if (month > 3 && month < 7) {
-          return {season: 'spring', year: year}
-        } else if (month > 6 && month < 10) {
-          return {season: 'summer', year: year}
-        } else if (month > 9 && month < 13) {
-          return {season: 'fall', year: year}
-        }
       },
       showChoices (name) {
         this.choiceTitle = name
