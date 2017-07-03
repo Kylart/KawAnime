@@ -30,7 +30,7 @@ const download = (req, res) => {
 
     console.log(searchData)
 
-    const term = `[${searchData.fansub}]+${searchData.quality}+${searchData.name}`
+    const term = `[${searchData.fansub}]+${searchData.quality}+${searchData.name}+-unofficial`
 
     if (choice === 'si') {
       nyaa.searchSi(term).then((data) => {
@@ -84,7 +84,7 @@ const getLatest = (url, res) => {
   let toReturn = []
 
   if (choice === 'si') {
-    nyaa.searchSi(`[${fansub}] ${quality}`, 18).then((data) => {
+    nyaa.searchSi(`[${fansub}] ${quality} -unofficial`, 18).then((data) => {
       for (let i = 0; i < 18; ++i) {
         const realName = data[i].title[0].replace(' VOSTFR', '')
         const name = realName.split(' ').slice(1).join(' ')

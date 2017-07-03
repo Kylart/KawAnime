@@ -74,7 +74,7 @@
                             </v-btn>
                             <v-list>
                               <v-list-item>
-                                <v-list-tile v-on:click.native="openModal(item.name, item.fullSynopsis)">
+                                <v-list-tile v-on:click.native="openModal(item.rawName, item.fullSynopsis)">
                                   <v-list-tile-action>
                                     <v-icon>more</v-icon>
                                   </v-list-tile-action>

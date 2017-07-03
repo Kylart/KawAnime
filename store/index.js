@@ -439,12 +439,13 @@ const store = new Vuex.Store({
       commit('setRefreshingLocal')
       commit('setLocalFiles', data)
     },
-    async resetLocal ({state, commit}) {
+    async resetLocal ({state, commit, dispatch}) {
       log(`Resetting local information...`)
 
       commit('setResettingLocal')
 
       axios.get(`resetLocal?dir=${state.currentDir}`).then(() => {
+        dispatch('refreshLocal')
         log(`Reset completed.`)
       }).catch((err) => {
         log('An error occurred while resetting.\n' + err)

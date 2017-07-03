@@ -45,7 +45,7 @@
         </v-card-row>
       </v-card>
     </v-dialog>
-    <v-dialog width="650" v-model="resultShow" persistent scrollable>
+    <v-dialog width="800" v-model="resultShow" persistent scrollable>
       <v-card class="secondary">
         <v-card-row>
           <v-card-title>Result for «{{ searchTerm }}»</v-card-title>
@@ -54,8 +54,8 @@
           <v-card-text>
             <h4 v-if="error">{{ error }}</h4>
             <div v-else-if="loading">
-              <h5 class="loading-text">Info should be displayed in a few seconds</h5>
               <h5 class="loading-text">Gathering data...</h5>
+              <h5 class="loading-text">Info should be displayed in a few seconds</h5>
             </div>
             <v-row v-else>
               {{ info.title }}

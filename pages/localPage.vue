@@ -171,7 +171,13 @@
         console.log(`[${(new Date()).toLocaleTimeString()}]: Requested to play ${path}. Sending...`)
 
         // No need to get through store.
-        axios.get(`openThis?type=video&path=${path}&dir=${this.$store.state.currentDir}`).then((res) => {
+        axios.get(`openThis`, {
+          params: {
+            type: 'video',
+            path: path,
+            dir: this.$store.state.currentDir
+          }
+        }).then((res) => {
           if (res.status !== 200) { console.log('An error occurred: request to open file ended with a status ' + res.status + '.') }
 
           this.$store.dispatch('appendHistory', {
@@ -183,7 +189,13 @@
       delThis (path) {
         console.log(`[${(new Date()).toLocaleTimeString()}]: Requested to delete ${path}. Sending...`)
 
-        axios.get(`openThis?type=delete&path=${path}&dir=${this.$store.state.currentDir}`).then((res) => {
+        axios.get(`openThis`, {
+          params: {
+            type: 'delete',
+            path: path,
+            dir: this.$store.state.currentDir
+          }
+        }).then((res) => {
           if (res.status !== 200) { console.log('An error occurred: request to delete file ended with a status ' + res.status + '.') }
 
           this.$store.dispatch('appendHistory', {
