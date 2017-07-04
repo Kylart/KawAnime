@@ -191,7 +191,7 @@
       }
     },
     computed: {
-      releases: function () {
+      releases () {
         return this.$store.state.releases
       }
     },
@@ -230,8 +230,9 @@
           this.$store.commit('setErrorSnackbar', `An error occurred while getting ${name}.`)
         })
       },
-      refresh () {
-        this.$store.dispatch('refreshReleases')
+      async refresh () {
+        await this.$store.dispatch('refreshReleases')
+        this.updateTime()
       },
       print (item) {
         console.log(`[${(new Date()).toLocaleTimeString()}]: Downloading ${item.name}.`)
@@ -240,7 +241,7 @@
         this.choiceTitle = name
         this.$store.commit('setAddToChoice', true)
       },
-      updateTime (store) {
+      updateTime (store=this.$store) {
         const updated = store.state.releasesUpdateTime
         if (updated) {
           this.lastUpdateTime = updated.fromNow()
