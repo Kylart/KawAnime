@@ -241,7 +241,7 @@
         this.choiceTitle = name
         this.$store.commit('setAddToChoice', true)
       },
-      updateTime (store=this.$store) {
+      updateTime (store = this.$store) {
         const updated = store.state.releasesUpdateTime
         if (updated) {
           this.lastUpdateTime = updated.fromNow()

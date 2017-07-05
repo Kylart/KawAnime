@@ -577,6 +577,11 @@ const store = new Vuex.Store({
 
       commit('setHistory', data)
     },
+    async removeFromHistory ({dispatch}, data) {
+      await axios.post('removeFromHistory', JSON.stringify(data))
+
+      dispatch('getHistory')
+    },
     async openInBrowser () {
       const {data} = await axios.get('/_openInBrowser')
       log(`Opening KawAnime in browser at ${data.uri}.`)

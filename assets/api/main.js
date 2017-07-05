@@ -168,6 +168,10 @@ const route = (nuxt) => {
         history.getHistory(res)
         break
 
+      case '/removeFromHistory':
+        history.removeFromHistory(req, res)
+        break
+
       case '/saveConfig':
         req.on('data', (chunk) => {
           const data = JSON.parse(chunk)

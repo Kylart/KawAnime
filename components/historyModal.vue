@@ -24,16 +24,26 @@
                   <v-card-text class="lighten-3 info-container">
                     <v-row>
                       <template v-for="info in history[item]">
-                        <v-col xs2 class="time" :class="isDelete(info.type)">
+                        <v-col xs2 class="time entry"
+                               :class="isDelete(info.type)">
                           {{ info.time }}
                         </v-col>
-                        <v-col xs2 class="type" :class="isDelete(info.type)">
+                        <v-col xs2 class="type entry" :class="isDelete(info.type)">
                           {{ info.type }}
                         </v-col>
-                        <v-col xs8
-                               class="ellipsis text"
+                        <v-col xs7
+                               class="ellipsis text entry"
                                :class="isDelete(info.type)">
                           {{ info.text }}
+                        </v-col>
+                        <v-col xs1
+                               class="entry"
+                               :class="isDelete(info.type)">
+                          <v-icon class="delete-entry"
+                                  v-ripple="true"
+                                  @click.native="clearEntry(info, item)">
+                            clear
+                          </v-icon>
                         </v-col>
                       </template>
                     </v-row>
@@ -78,9 +88,15 @@
     },
     methods: {
       isDelete (type) {
-        if (type === 'Delete') { return 'delete' }
-
-        return 'not-delete'
+        return type === 'Delete'
+          ? 'delete'
+          : 'not-delete'
+      },
+      clearEntry (info, item) {
+        this.$store.dispatch('removeFromHistory', {
+          date: item,
+          info
+        })
       }
     }
   }
@@ -129,6 +145,12 @@
     padding-left: 15px;
   }
 
+  .entry
+  {
+    height: 27px;
+    padding-top: 1px;
+  }
+
   /*noinspection CssUnusedSymbol*/
   .not-delete
   {
@@ -161,5 +183,11 @@
   {
     font-size: 16px;
     font-weight: 700;
+  }
+
+  .delete-entry
+  {
+    cursor: pointer;
+    position: relative;
   }
 </style>

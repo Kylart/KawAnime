@@ -363,6 +363,24 @@ test('/appendHistory route exits and returns code 200 on delete', async t => {
   t.is(entry.type, 'Delete')
 })
 
+test('/removeFromHistory route exits and returns code 200', async t => {
+  const { data } = await axios.get(`${uri}/getHistory`)
+
+  const date = (new Date()).toDateString()
+  const time = data[date].time
+
+  const { status } = await axios.post(`${uri}/removeFromHistory`, {
+    date: date,
+    info: {
+      time: time,
+      text: 'Test',
+      type: 'Delete'
+    }
+  })
+
+  t.is(status, 200)
+})
+
 test('/watchList route exits with actual file and returns code 200', async t => {
   const { data, status } = await axios.get(`${uri}/watchList.json`)
 

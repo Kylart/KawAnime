@@ -58,3 +58,27 @@ exports.getHistory = (res) => {
   res.write(JSON.stringify(historyFile))
   res.end()
 }
+
+exports.removeFromHistory = (req, res) => {
+  req.on('data', (chunk) => {
+    chunk = JSON.parse(chunk)
+
+    // Getting history
+    const historyFile = require(historyPath)
+
+    const date = chunk.date
+    const info = chunk.info
+
+    historyFile[date] = historyFile[date].filter((elem) => {
+      return elem.time !== info.time
+    })
+
+    // Writing file to history.json
+    writeFileSync(historyPath, JSON.stringify(historyFile), 'utf-8')
+
+    console.log(`[History]: Removed an entry from the ${date}:`, info)
+  })
+
+  res.writeHead(200)
+  res.end()
+}
