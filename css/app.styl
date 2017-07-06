@@ -1,1 +1,35 @@
 @require './vendor/vuetify.styl'
+
+.page-enter-active, .page-leave-active
+  transition: all 1s
+
+.page-enter
+  opacity: 0
+  transform: translateX(30px)
+
+.page-leave-active
+  opacity: 0
+  transform: translateY(30px)
+
+.list-enter-active, .list-leave-active
+  transition: all 1s
+
+.list-enter
+  opacity: 0
+  transform: translateX(30px)
+
+.list-leave-to
+  opacity: 0
+  transform: translateY(30px)
+
+.list-move
+  transition: transform 1s
+
+.dragable
+  -webkit-app-region: drag
+
+.non-dragable
+  -webkit-app-region: no-drag
+
+.expansion-panel__body:last-child
+  border-bottom: 0 !important

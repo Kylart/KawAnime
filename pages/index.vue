@@ -1,6 +1,6 @@
 <template xmlns:v-tooltip="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml">
   <v-container fluid class="container">
-    <div v-if="$store.state.releases.length">
+    <transition name="fade" v-if="$store.state.releases.length">
       <v-row style="margin: 0 1% 0 1%;">
         <v-col md4 sm4 xs12 class="time-container">
           <span class="update-time">Updated {{ lastUpdateTime }}.</span>
@@ -39,6 +39,7 @@
         </v-col>
         <template v-for="item in $store.state.releases">
           <v-col xs12 md6 xl4
+                 :key="item.name"
                  class="elem">
             <v-card class="elem-content elevation-3" v-ripple="true">
               <v-card-text class="elem-card">
@@ -123,7 +124,7 @@
           </v-col>
         </template>
       </v-row>
-    </div>
+    </transition>
     <loader v-else></loader>
     <div class="text-xs-center modal-container">
       <v-dialog v-model="modal" width="70%">
@@ -303,6 +304,7 @@
   {
     color: rgba(255, 255, 255, 0.8);
     margin-bottom: 10px;
+    display: inline-block;
   }
 
   .elem-content

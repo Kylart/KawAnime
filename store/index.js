@@ -146,6 +146,13 @@ const store = new Vuex.Store({
     setRefreshingLocal: function (state) {
       state.refreshingLocal = !state.refreshingLocal
     },
+    updateLocalFiles: function (state, data) {
+      if (data.type === 'delete') {
+        const index = state.localFiles.findIndex((file) => file.path === data.path)
+
+        state.localFiles.splice(index, 1)
+      }
+    },
     setWatchLists: function (state, data) {
       state.watchLists = data
       log('Updated watch lists.')

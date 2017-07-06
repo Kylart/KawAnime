@@ -48,7 +48,7 @@
     <v-dialog width="800" v-model="resultShow" persistent scrollable>
       <v-card class="secondary">
         <v-card-row>
-          <v-card-title>Result for «{{ searchTerm }}»</v-card-title>
+          <v-card-title primary-title>Result for «{{ searchTerm }}»</v-card-title>
         </v-card-row>
         <v-card-row>
           <v-card-text>
@@ -57,9 +57,39 @@
               <h5 class="loading-text">Gathering data...</h5>
               <h5 class="loading-text">Info should be displayed in a few seconds</h5>
             </div>
-            <v-row v-else>
-              {{ info.title }}
-            </v-row>
+            <v-card v-else class="secondary">
+              <v-card-row>
+                <v-row>
+                  <v-col xs9>
+                    <v-card-title class="info-title">{{ info.alternativeTitles.japanese[0].replace('Japanese: ', '') }} [{{ info.type }}]</v-card-title>
+                  </v-col>
+                  <v-col xs3>
+                    <v-card-title>{{ info.statistics.score.value }} ({{ info.statistics.score.count }})</v-card-title>
+                  </v-col>
+                </v-row>
+              </v-card-row>
+              <v-card-row>
+                <v-card-column class="info-pic-container">
+                  <img :src="info.image" class="info-pic"/>
+                </v-card-column>
+                <v-card-column class="info-synopsis-container">
+                  <p class="info-synopsis">{{ info.synopsis }}</p>
+                </v-card-column>
+              </v-card-row>
+              <v-card-row class="top-info">
+                <v-row>
+                  <v-col xs9 class="info-text">{{ info.genres.join(', ') }}</v-col>
+                  <v-col xs3 class="info-text">{{ info.episodes }} {{ episodeLabel }}</v-col>
+                </v-row>
+              </v-card-row>
+              <v-card-row class="bottom-info">
+                <v-row>
+                  <v-col xs5 class="info-text">{{ info.studios.join(', ') }}</v-col>
+                  <v-col xs4 class="info-text">{{ info.classification }}</v-col>
+                  <v-col xs3 class="info-text">{{ info.status }} ({{ info.aired.split(' ')[2] }})</v-col>
+                </v-row>
+              </v-card-row>
+            </v-card>
           </v-card-text>
         </v-card-row>
         <v-card-row actions>
@@ -87,6 +117,13 @@
         loading: true
       }
     },
+    computed: {
+      episodeLabel () {
+        return this.info.episodes !== 1
+          ? 'episodes'
+          : 'episode'
+      }
+    },
     components: {
       Loader
     },
@@ -103,8 +140,6 @@
           this.searchShow = false
 
           const {data, status} = await axios.get(`getInfoFromMal?term=${name}`)
-
-          console.log(data)
 
           this.loading = false
 
@@ -181,5 +216,52 @@
   .elem-picture
   {
     max-width: 90%;
+  }
+
+  /*noinspection CssUnusedSymbol*/
+  .row
+  {
+    width: 100%;
+  }
+
+  .info-title
+  {
+    padding-left: 15% !important;
+  }
+
+  .info-pic-container
+  {
+    max-width: 200px;
+  }
+
+  .info-pic
+  {
+    max-width: 200px;
+    max-height: 400px;
+  }
+
+  .info-synopsis-container
+  {
+    padding: 15px;
+  }
+
+  .info-synopsis
+  {
+    text-align: justify;
+    font-size: 16px;
+    line-height: 22px;
+    white-space: pre-wrap;
+  }
+
+  .bottom-info
+  {
+    margin-top: 15px;
+    padding-bottom: 15px;
+  }
+
+  .info-text
+  {
+    font-weight: 100;
+    font-size: 16px;
   }
 </style>

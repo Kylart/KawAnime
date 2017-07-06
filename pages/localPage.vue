@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="container">
+  <v-container fluid class="page-container">
     <div v-if="files.length">
       <v-row style="margin: 0 1% 0 1%;">
         <v-col xs12 class="menubar">
@@ -36,72 +36,79 @@
             </v-col>
           </v-row>
         </v-col>
-        <template v-for="item in files">
-          <v-col xs12 md6 xl4
-                 class="elem">
-            <v-card class="elem-content elevation-3" v-ripple="true">
-              <v-card-text class="elem-card">
-                <v-container fluid style="padding: 0;">
-                  <v-row class="elem-container">
-                    <v-col xs7
-                           v-tooltip:top="{ html: item.name }"
-                           class="elem-title">
-                      <h6 class="title ellipsis">{{ item.name }}</h6>
-                    </v-col>
-                    <v-col xs2
-                           v-tooltip:top="{ html: 'Episode ' + item.ep }"
-                           class="elem-ep text-xs-right">
-                      <p class="ellipsis ep">{{ item.ep }} / {{ item.numberOfEpisode }}</p>
-                    </v-col>
-                    <v-col xs3>
-                      <v-btn large icon
-                             class="play-button"
-                             @click.native="playThis(item.path)">
-                        <v-icon large>play_circle_outline</v-icon>
-                      </v-btn>
-                      <v-btn medium icon
-                             class="delete-button"
-                             @click.native="delThis(item.path)">
-                        <v-icon medium>delete_forever</v-icon>
-                      </v-btn>
-                    </v-col>
-                    <v-col xs8 v-tooltip:top="{ html: item.genres.join(', ') }">
-                      <p class="ellipsis genres">{{ item.genres.join(', ') }}</p>
-                    </v-col>
-                    <v-col xs4 v-tooltip:top="{ html: item.classification.replace('None', 'No restriction') }">
-                      <p class="ellipsis classification">
-                        {{ item.classification.replace('None', 'No restriction') }}
-                      </p>
-                    </v-col>
-                    <v-col xl5 lg4 md5 sm3 xs4 class="picture-container">
-                      <img :src="item.picture" class="picture" height="220">
-                    </v-col>
-                    <v-col xl7 lg8 md7 sm9 xs8 class="bottom-right-container">
-                      <p class="synopsis">{{ reduced(item.synopsis) }}</p>
-                      <v-row>
-                        <v-col xs2>
-                          <p class="year">{{ item.year }}</p>
-                        </v-col>
-                        <v-col xs7>
-                          <p class="status">{{ item.status }}</p>
-                        </v-col>
-                        <v-col xs3><p class="mark">{{ item.mark }}</p></v-col>
-                      </v-row>
-                    </v-col>
-                  </v-row>
-                </v-container>
-              </v-card-text>
-            </v-card>
-          </v-col>
-        </template>
+        <transition-group name="list">
+          <template v-for="item in files">
+            <v-col :key="item.name" xs12 md6 xl4
+                   class="elem">
+              <v-card class="elem-content elevation-3" v-ripple="true">
+                <v-card-text class="elem-card">
+                  <v-container fluid style="padding: 0;">
+                    <v-row class="elem-container">
+                      <v-col xs7
+                             v-tooltip:top="{ html: item.name }"
+                             class="elem-title">
+                        <h6 class="title ellipsis">{{ item.name }}</h6>
+                      </v-col>
+                      <v-col xs2
+                             v-tooltip:top="{ html: 'Episode ' + item.ep }"
+                             class="elem-ep text-xs-right">
+                        <p class="ellipsis ep">{{ item.ep }} / {{ item.numberOfEpisode }}</p>
+                      </v-col>
+                      <v-col xs3>
+                        <v-btn large icon
+                               class="play-button"
+                               @click.native="playThis(item.path)">
+                          <v-icon large>play_circle_outline</v-icon>
+                        </v-btn>
+                        <v-btn medium icon
+                               class="delete-button"
+                               @click.native="delThis(item.path)">
+                          <v-icon medium>delete_forever</v-icon>
+                        </v-btn>
+                      </v-col>
+                      <v-col xs8 v-tooltip:top="{ html: item.genres.join(', ') }">
+                        <p class="ellipsis genres">{{ item.genres.join(', ') }}</p>
+                      </v-col>
+                      <v-col xs4 v-tooltip:top="{ html: item.classification.replace('None', 'No restriction') }">
+                        <p class="ellipsis classification">
+                          {{ item.classification.replace('None', 'No restriction') }}
+                        </p>
+                      </v-col>
+                      <v-col xl5 lg4 md5 sm3 xs4 class="picture-container">
+                        <img :src="item.picture" class="picture" height="220">
+                      </v-col>
+                      <v-col xl7 lg8 md7 sm9 xs8 class="bottom-right-container">
+                        <p class="synopsis">{{ reduced(item.synopsis) }}</p>
+                        <v-row>
+                          <v-col xs2>
+                            <p class="year">{{ item.year }}</p>
+                          </v-col>
+                          <v-col xs7>
+                            <p class="status">{{ item.status }}</p>
+                          </v-col>
+                          <v-col xs3><p class="mark">{{ item.mark }}</p></v-col>
+                        </v-row>
+                      </v-col>
+                    </v-row>
+                  </v-container>
+                </v-card-text>
+              </v-card>
+            </v-col>
+          </template>
+        </transition-group>
       </v-row>
     </div>
     <v-container fluid v-else>
-      <img class="empty-bg" height="400" src="~static/images/empty-bg.png"/>
+      <transition name="fade">
+        <img v-if="emptyBg" class="empty-bg" height="400" src="~static/images/empty-bg.png"/>
+      </transition>
       <v-row>
         <v-col xs12 class="menubar">
           <v-row>
-            <v-col xs9></v-col>
+            <v-col offset-xs2 xs2>
+              <history-modal></history-modal>
+            </v-col>
+            <v-col xs5></v-col>
             <v-col xs3 class="menu-buttons">
               <v-btn icon
                      class="refresh-button"
@@ -142,10 +149,17 @@
       }
     },
     mounted () {
+      setTimeout(this.emptyBg = true, 1000)
+
       this.refresh()
     },
+    beforeDestroy () {
+      this.emptyBg = false
+    },
     data () {
-      return {}
+      return {
+        emptyBg: false
+      }
     },
     computed: {
       files: function () {
@@ -189,6 +203,11 @@
       delThis (path) {
         console.log(`[${(new Date()).toLocaleTimeString()}]: Requested to delete ${path}. Sending...`)
 
+        this.$store.commit('updateLocalFiles', {
+          type: 'delete',
+          path
+        })
+
         axios.get(`openThis`, {
           params: {
             type: 'delete',
@@ -205,8 +224,6 @@
         }).catch((err) => {
           console.log('An error occurred while trying to delete a file:' + err)
         })
-
-        this.$store.dispatch('refreshLocal')
       },
       refresh () {
         this.$store.dispatch('refreshLocal')
@@ -222,6 +239,16 @@
 </script>
 
 <style scoped>
+  .fade-enter-active, .fade-leave-active
+  {
+    transition: opacity .5s
+  }
+
+  .fade-enter, .fade-leave-to
+  {
+    opacity: 0
+  }
+
   h6
   {
     color: rgba(255, 255, 255, 0.8);
@@ -241,6 +268,11 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+
+  .page-container
+  {
+    height: 90vh;
   }
 
   /* ------------- MENUBAR ------------- */
@@ -280,6 +312,7 @@
   {
     color: rgba(255, 255, 255, 0.8);
     margin-bottom: 10px;
+    display: inline-block;
   }
 
   .elem-content

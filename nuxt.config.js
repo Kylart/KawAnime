@@ -15,8 +15,7 @@ module.exports = {
     '~plugins/vuetify.js'
   ],
   css: [
-    {src: join(__dirname, 'css/app.styl'), lang: 'styl'},
-    {src: join(__dirname, 'css/main.css'), lang: 'css'}
+    {src: join(__dirname, 'css/app.styl'), lang: 'styl'}
   ],
   head: {
     titleTemplate: '%s - KawAnime',
