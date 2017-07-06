@@ -68,53 +68,58 @@
                   </v-col>
                 </v-row>
               </v-col>
-              <template v-for="item in lists[i - 1]">
-                <v-col lg4 sm6 xs12
-                       class="elem" :class="item.split(' ').join('-')">
-                  <v-row class="elem-content elevation-3"
-                         v-ripple="true">
-                    <v-col xs1 class="box" @click.capture="select(item, i)">
-                      <v-checkbox label="" accent v-model="selected[i]" disabled :value="item" dark/>
-                    </v-col>
-                    <v-col xs9 v-tooltip:top="{ html: item }" @click.capture="select(item, i)">
-                      <h6 class="ellipsis elem-title">{{ item }}</h6>
-                    </v-col>
-                    <v-col xs2>
-                      <v-menu bottom right>
-                        <v-btn icon="icon" slot="activator" dark>
-                          <v-icon>more_vert</v-icon>
-                        </v-btn>
-                        <v-list>
-                          <v-list-item>
-                            <v-list-tile>
-                              <v-list-tile-action>
-                                <v-icon>file_download</v-icon>
-                              </v-list-tile-action>
-                              <v-list-tile-title>Download</v-list-tile-title>
-                            </v-list-tile>
-                          </v-list-item>
-                          <v-list-item>
-                            <v-list-tile>
-                              <v-list-tile-action>
-                                <v-icon>info_outline</v-icon>
-                              </v-list-tile-action>
-                              <v-list-tile-title>Information</v-list-tile-title>
-                            </v-list-tile>
-                          </v-list-item>
-                          <v-list-item>
-                            <v-list-tile @click.native="deleteEntry(item, i)">
-                              <v-list-tile-action>
-                                <v-icon>delete_sweep</v-icon>
-                              </v-list-tile-action>
-                              <v-list-tile-title>Delete this entry</v-list-tile-title>
-                            </v-list-tile>
-                          </v-list-item>
-                        </v-list>
-                      </v-menu>
-                    </v-col>
-                  </v-row>
-                </v-col>
-              </template>
+              <transition-group name="list">
+                <template v-for="item in lists[i - 1]">
+                  <v-col lg4 sm6 xs12
+                         :key="item"
+                         class="elem"
+                         :class="item.split(' ').join('-')">
+                    <v-card class="elem-content elevation-3" v-ripple="true">
+                      <v-row>
+                        <v-col xs1 class="box" @click.capture="select(item, i)">
+                          <v-checkbox label="" accent v-model="selected[i]" disabled :value="item" dark/>
+                        </v-col>
+                        <v-col xs9 v-tooltip:top="{ html: item }" @click.capture="select(item, i)">
+                          <h6 class="ellipsis elem-title">{{ item }}</h6>
+                        </v-col>
+                        <v-col xs2>
+                          <v-menu bottom right>
+                            <v-btn icon="icon" slot="activator" dark>
+                              <v-icon>more_vert</v-icon>
+                            </v-btn>
+                            <v-list>
+                              <v-list-item>
+                                <v-list-tile>
+                                  <v-list-tile-action>
+                                    <v-icon>file_download</v-icon>
+                                  </v-list-tile-action>
+                                  <v-list-tile-title>Download</v-list-tile-title>
+                                </v-list-tile>
+                              </v-list-item>
+                              <v-list-item>
+                                <v-list-tile>
+                                  <v-list-tile-action>
+                                    <v-icon>info_outline</v-icon>
+                                  </v-list-tile-action>
+                                  <v-list-tile-title>Information</v-list-tile-title>
+                                </v-list-tile>
+                              </v-list-item>
+                              <v-list-item>
+                                <v-list-tile @click.native="deleteEntry(item, i)">
+                                  <v-list-tile-action>
+                                    <v-icon>delete_sweep</v-icon>
+                                  </v-list-tile-action>
+                                  <v-list-tile-title>Delete this entry</v-list-tile-title>
+                                </v-list-tile>
+                              </v-list-item>
+                            </v-list>
+                          </v-menu>
+                        </v-col>
+                      </v-row>
+                    </v-card>
+                  </v-col>
+                </template>
+              </transition-group>
             </v-row>
           </v-card-text>
         </v-card>
@@ -127,7 +132,7 @@
   const removeSelectedClasses = () => {
     const elems = document.getElementsByClassName('elem')
 
-      // Remove all selected class
+    // Remove all selected class
     for (let j = 0, l = elems.length; j < l; ++j) elems[j].children[0].classList.remove('selected')
   }
 
@@ -136,7 +141,7 @@
       return {
         title: 'Watch lists',
         meta: [
-          { hid: 'description', name: 'description', content: 'Watch lists' }
+          {hid: 'description', name: 'description', content: 'Watch lists'}
         ]
       }
     },
@@ -338,6 +343,8 @@
   {
     padding: 5px 5px 5px 5px;
     color: rgba(255, 255, 255, 0.8);
+    display: inline-block;
+    width: 100%;
   }
 
   .elem-content
@@ -345,14 +352,14 @@
     margin-left: 5px;
     position: relative;
     background-color: rgb(60, 60, 60);
+    height: 45px !important;
   }
 
   .elem-content:hover
   {
-    box-shadow:
-            0 5px 5px -3px rgba(0, 0, 0, 0.2),
-            0 8px 10px 1px rgba(0, 0, 0, 0.14),
-            0 3px 14px 2px rgba(0, 0, 0, 0.12) !important;
+    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+    0 8px 10px 1px rgba(0, 0, 0, 0.14),
+    0 3px 14px 2px rgba(0, 0, 0, 0.12) !important;
   }
 
   /*noinspection CssUnusedSymbol*/

@@ -8,26 +8,26 @@
         <v-col md4 sm1 xs0></v-col>
         <v-col md2 sm3 xs12>
           <v-select
-                  class="select"
-                  v-bind:items="fansubList"
-                  v-model="$store.state.releaseFansub"
-                  label="Fansub"
-                  dark
-                  single-line
-                  hint="Pick a fansub"
-                  persistent-hint
+              class="select"
+              v-bind:items="fansubList"
+              v-model="$store.state.releaseFansub"
+              label="Fansub"
+              dark
+              single-line
+              hint="Pick a fansub"
+              persistent-hint
           />
         </v-col>
         <v-col md1 sm2 xs12>
           <v-select
-                  class="select"
-                  v-bind:items="qualityList"
-                  v-model="$store.state.releaseQuality"
-                  label="Quality"
-                  dark
-                  single-line
-                  hint="Which quality ?"
-                  persistent-hint
+              class="select"
+              v-bind:items="qualityList"
+              v-model="$store.state.releaseQuality"
+              label="Quality"
+              dark
+              single-line
+              hint="Which quality ?"
+              persistent-hint
           />
         </v-col>
         <v-col md1 sm1 xs12 class="refresh-button-container">
@@ -159,7 +159,7 @@
       return {
         title: 'Releases',
         meta: [
-          { hid: 'description', name: 'description', content: 'Latest downloadable anime releases' }
+          {hid: 'description', name: 'description', content: 'Latest downloadable anime releases'}
         ]
       }
     },
@@ -315,10 +315,9 @@
 
   .elem-content:hover
   {
-    box-shadow:
-            0 5px 5px -3px rgba(0, 0, 0, 0.2),
-            0 8px 10px 1px rgba(0, 0, 0, 0.14),
-            0 3px 14px 2px rgba(0, 0, 0, 0.12) !important;
+    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+    0 8px 10px 1px rgba(0, 0, 0, 0.14),
+    0 3px 14px 2px rgba(0, 0, 0, 0.12) !important;
   }
 
   .elem-card

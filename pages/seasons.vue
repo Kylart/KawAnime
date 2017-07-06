@@ -7,12 +7,12 @@
         <v-col md1 xs0></v-col>
         <v-col md3 xs12 class="season-container">
           <v-select
-                  v-bind:items="seasonChoices"
-                  v-model="$store.state.season"
-                  label="Season"
-                  dark
-                  item-text="name"
-                  item-value="value"/>
+              v-bind:items="seasonChoices"
+              v-model="$store.state.season"
+              label="Season"
+              dark
+              item-text="name"
+              item-value="value"/>
         </v-col>
         <v-col md3 xs12 class="year-container">
           <v-text-field name="input-year"
@@ -149,7 +149,7 @@
       return {
         title: 'Seasons',
         meta: [
-          { hid: 'description', name: 'description', content: 'Browse the anime seasons' }
+          {hid: 'description', name: 'description', content: 'Browse the anime seasons'}
         ]
       }
     },

@@ -142,7 +142,7 @@
       return {
         title: 'Downloader',
         meta: [
-          { hid: 'description', name: 'description', content: 'Download animes!' }
+          {hid: 'description', name: 'description', content: 'Download animes!'}
         ]
       }
     },
