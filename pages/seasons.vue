@@ -48,7 +48,7 @@
               <transition-group name="list">
                 <v-col md6 xs12 v-for="item in computedSeason[i].items"
                        style="display: inline-block"
-                       :key="item.title + item.synopsis + item.releaseDate">
+                       :key="item.key">
                 <v-row class="elem elevation-3" v-ripple="true">
                   <!-- Header of elem -->
                   <v-col xs12 v-tooltip:bottom="{ html: item.title }">
@@ -214,7 +214,7 @@
                 })
               }
             } else return ''
-        })
+          })
       }
     },
     components: {
