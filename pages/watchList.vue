@@ -323,6 +323,11 @@
     color: rgba(255, 255, 255, 0.8);
   }
 
+  span
+  {
+    width: 100%;
+  }
+
   .ellipsis
   {
     overflow: hidden;
