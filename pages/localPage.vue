@@ -273,7 +273,7 @@
 
   .page-container
   {
-    height: 90vh;
+    height: 91.5vh;
   }
 
   /* ------------- MENUBAR ------------- */

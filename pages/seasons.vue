@@ -40,8 +40,15 @@
                        :key="i"
                        slot="content">
           <v-card>
+            <v-text-field class="query"
+                          v-model="query"
+                          label="Search entry" dark>
+            </v-text-field>
             <v-row class="elems">
-              <v-col md6 xs12 v-for="item in season[i].items" :key="item.title">
+              <transition-group name="list">
+                <v-col md6 xs12 v-for="item in computedSeason[i].items"
+                       style="display: inline-block"
+                       :key="item.title + item.synopsis + item.releaseDate">
                 <v-row class="elem elevation-3" v-ripple="true">
                   <!-- Header of elem -->
                   <v-col xs12 v-tooltip:bottom="{ html: item.title }">
@@ -112,6 +119,7 @@
                   </v-col>
                 </v-row>
               </v-col>
+              </transition-group>
             </v-row>
           </v-card>
         </v-tab-content>
@@ -155,6 +163,7 @@
     },
     data () {
       return {
+        query: '',
         choiceTitle: '',
         choices: [],
         modalTitle: '',
@@ -191,6 +200,21 @@
           {name: 'OVA', items: this.OVAs},
           {name: 'Movies', items: this.Movies}
         ]
+      },
+      computedSeason: function () {
+        const query = this.query.toLowerCase()
+        return query === ''
+          ? this.season
+          : this.season.map((list) => {
+            if (list.items) {
+              return {
+                name: list.name,
+                items: list.items.filter((elem) => {
+                  return elem.title.toLowerCase().indexOf(query) !== -1
+                })
+              }
+            } else return ''
+        })
       }
     },
     components: {
@@ -236,7 +260,7 @@
     margin: 0;
   }
 
-  /* ----------- FORM ---------- */
+    /* ----------- FORM ---------- */
   .form-container
   {
     padding-top: 1.5%;
@@ -261,6 +285,13 @@
     padding-right: 3%;
   }
 
+  .query
+  {
+    margin: 30px 0 0;
+    margin-left: 10%;
+    width: 25%;
+  }
+
   /* ----------- ELEM ---------- */
   .ellipsis
   {
@@ -271,13 +302,13 @@
 
   .elems
   {
-    padding: 1% 1% 2% 1%;
+    padding: 0 1% 2% 1%;
   }
 
   .elem
   {
     position: relative;
-    margin: 5px 0 10px 0;
+    margin: 5px 0 10px;
     background-color: rgb(60, 60, 60);
     color: rgba(255, 255, 255, 0.8);
   }

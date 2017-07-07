@@ -1,9 +1,11 @@
 <template>
-  <div class="loading-gif">
-    <h3 class="loading-text">少々お待ち下さいね〜</h3>
-    <img v-if="number === 1" src="~static/images/loading-gif1.gif" height="500"/>
-    <img v-else-if="number === 2" src="~static/images/loading-gif2.gif" height="500"/>
-  </div>
+  <transition name="fade">
+    <div class="loading-gif">
+      <h3 class="loading-text">少々お待ち下さいね〜</h3>
+      <img v-if="number === 1" src="~static/images/loading-gif1.gif" height="500"/>
+      <img v-else-if="number === 2" src="~static/images/loading-gif2.gif" height="500"/>
+    </div>
+  </transition>
 </template>
 <style scoped>
   .loading-text
