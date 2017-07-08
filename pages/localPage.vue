@@ -38,7 +38,7 @@
         </v-col>
         <transition-group name="list">
           <template v-for="item in files">
-            <v-col :key="item.name" xs12 md6 xl4
+            <v-col :key="item.name + item.ep" xs12 md6 xl4
                    class="elem">
               <v-card class="elem-content elevation-3" v-ripple="true">
                 <v-card-text class="elem-card">

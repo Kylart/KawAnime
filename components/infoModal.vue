@@ -1,7 +1,7 @@
 <template>
   <div class="modals text-xs-center">
     <v-dialog v-model="searchShow" width="650" scrollable>
-      <v-btn icon primary slot="activator">
+      <v-btn icon slot="activator">
         <v-icon>search</v-icon>
       </v-btn>
       <v-card class="secondary">
