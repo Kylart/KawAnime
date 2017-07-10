@@ -230,9 +230,9 @@ const store = new Vuex.Store({
         const {data} = await axios.get('getConfig.json')
         commit('init', data.config)
 
-        dispatch('releasesInit').catch(err => { void (err) })
-        dispatch('seasonsInit').catch(err => { void (err) })
-        dispatch('newsInit').catch(err => { void (err) })
+        // dispatch('releasesInit').catch(err => { void (err) })
+        // dispatch('seasonsInit').catch(err => { void (err) })
+        // dispatch('newsInit').catch(err => { void (err) })
         dispatch('localInit').catch(err => { void (err) })
         dispatch('listInit').catch(err => { void (err) })
         dispatch('getHistory').catch(err => { void (err) })

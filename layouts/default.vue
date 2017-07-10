@@ -1,107 +1,186 @@
 <template xmlns:v-bind="http://www.w3.org/1999/xhtml">
-  <v-app id="app"
-         class="grey lighten-1"
-         top-toolbar left-sidebar>
-    <div style="height: 64px;"><!-- Spacer --></div>
-    <v-toolbar class="dragable" fixed>
-      <v-toolbar-side-icon class="non-dragable" v-bind:style="title" @click.native.stop="sidebar = !sidebar"/>
-      <v-toolbar-logo class="text-xs-right title">
-        <div style="width: 100%;">
-          <div class="title-text">かわニメ</div>
-          <settings></settings>
-          <div class="modals text-xs-center">
-            <v-btn icon
-                   class="open-in-browser"
-                   v-tooltip:left="{ html: 'Open KawAnime in your browser' }"
-                   @click.native="$store.dispatch('openInBrowser')">
-              <v-icon>open_in_new</v-icon>
-            </v-btn>
-          </div>
-          <info-modal></info-modal>
-        </div>
-      </v-toolbar-logo>
+  <v-app dark>
+    <v-system-bar dark
+                  lights-out
+                  status
+                  v-if="!browser">
+      <v-spacer></v-spacer>
+      <v-icon class="window-icon">remove</v-icon>
+      <v-icon class="window-icon">check_box_outline_blank</v-icon>
+      <v-icon class="window-icon">close</v-icon>
+    </v-system-bar>
+
+    <v-navigation-drawer class="pb-0"
+                         persistent
+                         enable-resize-watcher
+                         v-model="drawer"
+    >
+      <v-list>
+        <template v-for="item in itemGroup">
+          <v-list-group v-if="item.items"
+                        :value="item.active"
+                        :key="item.title">
+            <v-list-tile slot="item" class="ripple" ripple>
+              <v-list-tile-action>
+                <v-icon>{{ item.action }}</v-icon>
+              </v-list-tile-action>
+              <v-list-tile-title>
+                {{ item.title }}
+              </v-list-tile-title>
+              <v-list-tile-action>
+                <v-icon>
+                  keyboard_arrow_down
+                </v-icon>
+              </v-list-tile-action>
+            </v-list-tile>
+            <v-list-tile v-for="subItem in item.items"
+                         :value="subItem.active"
+                         class="ripple"
+                         ripple
+                         key="subItem.title">
+              <v-list-tile-action>
+                <v-icon>{{ subItem.action }}</v-icon>
+              </v-list-tile-action>
+              <v-list-tile-content>
+                <v-list-tile-title>{{ subItem.title }}</v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
+            <v-divider></v-divider>
+          </v-list-group>
+          <v-subheader v-else-if="item.header">{{ item.header }}</v-subheader>
+        </template>
+      </v-list>
+    </v-navigation-drawer>
+
+    <v-toolbar dark class="primary">
+      <v-toolbar-side-icon @click.native="drawer = !drawer"></v-toolbar-side-icon>
+      <v-toolbar-title class="white--text title">かわニメ</v-toolbar-title>
+      <v-spacer></v-spacer>
+      <info-modal></info-modal>
+      <v-btn icon
+             class="open-in-browser"
+             v-tooltip:left="{ html: 'Open KawAnime in your browser' }"
+             @click.native="openInBrowser()">
+        <v-icon>open_in_new</v-icon>
+      </v-btn>
+      <v-btn icon>
+        <v-icon>settings</v-icon>
+      </v-btn>
     </v-toolbar>
+
     <main>
-      <v-sidebar v-model="sidebar" height="100vh" style="width: 260px" drawer class="sidebar">
-        <div class="sidebar-title-container">
-          <nuxt-link to="/">
-            <img src="~static/images/icon2.png" height="70"/>
-          </nuxt-link>
-
-          <h1 class="title" v-bind:style="sidebarTitle">
-            <strong>かわニメ - </strong>
-            <a href="#">v0.4.1</a>
-          </h1>
-
-          <div class="links">
-            <a href="https://github.com/Kylart/KawAnime" target="_blank" class="link">
-              <img src="~static/images/github-icon.png" height="25"/>
-            </a>
-            <a href="#" class="link">
-              <img src="~static/images/twitter-icon.png" height="25"/>
-            </a>
-            <a href="#" class="link">
-              <img src="~static/images/fb-icon.png" height="25"/>
-            </a>
-            <a href="#" class="link">
-              <img src="~static/images/mail-icon.png" height="25"/>
-            </a>
-          </div>
-        </div>
-        <v-list dense>
-          <template v-for="item in itemGroup">
-            <v-list-group v-if="item.items">
-              <v-list-item slot="item">
-                <v-list-tile ripple>
-                  <v-list-tile-action>
-                    <v-icon>{{ item.action }}</v-icon>
-                  </v-list-tile-action>
-                  <v-list-tile-title v-text="item.title"></v-list-tile-title>
-                  <v-list-tile-action>
-                    <v-icon>keyboard_arrow_down</v-icon>
-                  </v-list-tile-action>
-                </v-list-tile>
-              </v-list-item>
-              <v-list-item v-for="subItem in item.items" :key="subItem.href">
-                <v-list-tile ripple router nuxt v-bind:href="subItem.href">
-                  <v-list-tile-action>
-                    <v-icon>{{ subItem.action }}</v-icon>
-                  </v-list-tile-action>
-                  <v-list-tile-title v-text="subItem.title"></v-list-tile-title>
-                </v-list-tile>
-              </v-list-item>
-            </v-list-group>
-            <v-subheader v-else-if="item.header" v-text="item.header"></v-subheader>
-            <v-divider v-else-if="item.divider" light/>
-            <v-list-item v-else>
-              <v-list-tile ripple>
-                <v-list-tile-title v-text="item.title"/>
-              </v-list-tile>
-            </v-list-item>
-          </template>
-        </v-list>
-      </v-sidebar>
-      <v-content class="content secondary page">
-        <nuxt/>
-        <!-- Displayed if an error occurred -->
-        <v-snackbar
-            :timeout="5000"
-            :top="true"
-            :bottom="false"
-            :right="false"
-            :left="false"
-            v-model="$store.state.infoSnackbar.show"
-        >
-          {{ $store.state.infoSnackbar.text }}
-          <v-btn flat class="pink--text" @click.native="$store.state.infoSnackbar.show = false">Close</v-btn>
-        </v-snackbar>
-      </v-content>
+      <v-container fluid>
+        <h1>Hello</h1>
+      </v-container>
     </main>
-
     <v-footer class="grey darken-4">
-      <div class="text-xs-right">© 2016 - {{ (new Date()).getYear() + 1900 }} Kylart</div>
+      <v-spacer></v-spacer>
+      <div class="white--text">&copy; 2016 - 2017 Kylart</div>
     </v-footer>
   </v-app>
+  <!--<v-app id="app"-->
+         <!--class="grey lighten-1"-->
+         <!--top-toolbar left-sidebar>-->
+    <!--<div style="height: 64px;">&lt;!&ndash; Spacer &ndash;&gt;</div>-->
+    <!--<v-toolbar class="dragable" fixed>-->
+      <!--<v-toolbar-side-icon class="non-dragable" v-bind:style="title" @click.native.stop="sidebar = !sidebar"/>-->
+      <!--<v-toolbar-logo class="text-xs-right title">-->
+        <!--<div style="width: 100%;">-->
+          <!--<div class="title-text">かわニメ</div>-->
+          <!--<settings></settings>-->
+          <!--<div class="modals text-xs-center">-->
+            <!--<v-btn icon-->
+                   <!--class="open-in-browser"-->
+                   <!--v-tooltip:left="{ html: 'Open KawAnime in your browser' }"-->
+                   <!--@click.native="$store.dispatch('openInBrowser')">-->
+              <!--<v-icon>open_in_new</v-icon>-->
+            <!--</v-btn>-->
+          <!--</div>-->
+          <!--<info-modal></info-modal>-->
+        <!--</div>-->
+      <!--</v-toolbar-logo>-->
+    <!--</v-toolbar>-->
+    <!--<main>-->
+      <!--<v-sidebar v-model="sidebar" height="100vh" style="width: 260px" drawer class="sidebar">-->
+        <!--<div class="sidebar-title-container">-->
+          <!--<nuxt-link to="/">-->
+            <!--<img src="~static/images/icon2.png" height="70"/>-->
+          <!--</nuxt-link>-->
+
+          <!--<h1 class="title" v-bind:style="sidebarTitle">-->
+            <!--<strong>かわニメ - </strong>-->
+            <!--<a href="#">v0.4.1</a>-->
+          <!--</h1>-->
+
+          <!--<div class="links">-->
+            <!--<a href="https://github.com/Kylart/KawAnime" target="_blank" class="link">-->
+              <!--<img src="~static/images/github-icon.png" height="25"/>-->
+            <!--</a>-->
+            <!--<a href="#" class="link">-->
+              <!--<img src="~static/images/twitter-icon.png" height="25"/>-->
+            <!--</a>-->
+            <!--<a href="#" class="link">-->
+              <!--<img src="~static/images/fb-icon.png" height="25"/>-->
+            <!--</a>-->
+            <!--<a href="#" class="link">-->
+              <!--<img src="~static/images/mail-icon.png" height="25"/>-->
+            <!--</a>-->
+          <!--</div>-->
+        <!--</div>-->
+        <!--<v-list dense>-->
+          <!--<template v-for="item in itemGroup">-->
+            <!--<v-list-group v-if="item.items">-->
+              <!--<v-list-item slot="item">-->
+                <!--<v-list-tile ripple>-->
+                  <!--<v-list-tile-action>-->
+                    <!--<v-icon>{{ item.action }}</v-icon>-->
+                  <!--</v-list-tile-action>-->
+                  <!--<v-list-tile-title v-text="item.title"></v-list-tile-title>-->
+                  <!--<v-list-tile-action>-->
+                    <!--<v-icon>keyboard_arrow_down</v-icon>-->
+                  <!--</v-list-tile-action>-->
+                <!--</v-list-tile>-->
+              <!--</v-list-item>-->
+              <!--<v-list-item v-for="subItem in item.items" :key="subItem.href">-->
+                <!--<v-list-tile ripple router nuxt v-bind:href="subItem.href">-->
+                  <!--<v-list-tile-action>-->
+                    <!--<v-icon>{{ subItem.action }}</v-icon>-->
+                  <!--</v-list-tile-action>-->
+                  <!--<v-list-tile-title v-text="subItem.title"></v-list-tile-title>-->
+                <!--</v-list-tile>-->
+              <!--</v-list-item>-->
+            <!--</v-list-group>-->
+            <!--<v-subheader v-else-if="item.header" v-text="item.header"></v-subheader>-->
+            <!--<v-divider v-else-if="item.divider" light/>-->
+            <!--<v-list-item v-else>-->
+              <!--<v-list-tile ripple>-->
+                <!--<v-list-tile-title v-text="item.title"/>-->
+              <!--</v-list-tile>-->
+            <!--</v-list-item>-->
+          <!--</template>-->
+        <!--</v-list>-->
+      <!--</v-sidebar>-->
+      <!--<v-content class="content secondary page">-->
+        <!--<nuxt/>-->
+        <!--&lt;!&ndash; Displayed if an error occurred &ndash;&gt;-->
+        <!--<v-snackbar-->
+            <!--:timeout="5000"-->
+            <!--:top="true"-->
+            <!--:bottom="false"-->
+            <!--:right="false"-->
+            <!--:left="false"-->
+            <!--v-model="$store.state.infoSnackbar.show"-->
+        <!--&gt;-->
+          <!--{{ $store.state.infoSnackbar.text }}-->
+          <!--<v-btn flat class="pink&#45;&#45;text" @click.native="$store.state.infoSnackbar.show = false">Close</v-btn>-->
+        <!--</v-snackbar>-->
+      <!--</v-content>-->
+    <!--</main>-->
+
+    <!--<v-footer class="grey darken-4">-->
+      <!--<div class="text-xs-right">© 2016 - {{ (new Date()).getYear() + 1900 }} Kylart</div>-->
+    <!--</v-footer>-->
+  <!--</v-app>-->
 </template>
 
 <script>
@@ -112,55 +191,63 @@
     data () {
       return {
         searchModal: false,
-        sidebar: false,
+        drawer: false,
+        browser: false,
         itemGroup: [
           {header: 'Core'},
           {
             title: 'Downloading',
             action: 'file_download',
+            active: true,
             items: [
               {
                 title: 'Downloader',
                 action: 'file_download',
+                active: false,
                 href: '/downloader'
               },
               {
                 title: 'Latest releases',
                 action: 'access_time',
+                active: true,
                 href: '/'
               }
             ]
-          },
-          {
+          }, {
             title: 'News',
             action: 'info_outline',
+            active: false,
             items: [
               {
                 title: 'Seasons',
                 action: 'hourglass_empty',
+                active: false,
                 href: '/seasons'
               },
               {
                 title: 'News',
                 action: 'more',
+                active: false,
                 href: '/news'
               }
             ]
           },
-          {divider: true},
           {header: 'Local'},
           {
             title: 'Anime related',
+            active: false,
             action: 'folder_open',
             items: [
               {
                 title: 'Animes',
                 action: 'tv',
+                active: false,
                 href: '/localPage'
               },
               {
                 title: 'Watch list',
                 action: 'sort_by_alpha',
+                active: false,
                 href: '/watchList'
               }
             ]
@@ -185,31 +272,51 @@
       infoModal
     },
     computed: {
-      title: function () {
+      title () {
         if (this.sidebar) {
           return {
             marginLeft: '270px'
           }
         }
       },
-      searchInput: function () {
+      searchInput () {
         return this.$store.state.searchInput
+      },
+      openInBrowser () {
+        this.browser = true
+        this.$store.dispatch('openInBrowser')
       }
     }
   }
 </script>
 
 <style scoped>
-  /*noinspection ALL*/
+  .ripple
+  {
+    position: relative;
+  }
+
+  .window-icon
+  {
+    cursor: pointer;
+  }
+
+  .title
+  {
+    overflow: auto;
+    padding-left: 20px;
+    font-family: "Hiragino Mincho Pro", serif;
+    font-size: 30px !important;
+  }
+
   .with.top-toolbar main > .content
   {
     padding: 0;
   }
 
-  /*noinspection CssUnusedSymbol*/
-  .sidebar .list--group__container .list__tile--active .list__tile__title,
-  .sidebar .list__tile--active:first-child .icon,
-  .sidebar .list--group__header--active:first-child .list__tile__action:first-child .icon
+  .navigation-drawer .list--group__container .list__tile--active .list__tile__title,
+  .navigation-drawer .list__tile--active:first-child .icon,
+  .navigation-drawer .list--group__header--active:first-child .list__tile__action:first-child .icon
   {
     color: #ff9800 !important;
   }
@@ -222,18 +329,6 @@
     background-size: 75%;
   }
 
-  .title
-  {
-    overflow: auto;
-    padding-left: 20px;
-    font-family: "Hiragino Mincho Pro", serif;
-  }
-
-  .title-text
-  {
-    text-align: left;
-    float: left;
-  }
 
   .modals
   {

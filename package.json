@@ -37,7 +37,7 @@
     "nyaapi": "^1.2.2",
     "play-sound": "^1.1.1",
     "url-parse": "^1.1.8",
-    "vuetify": "^0.11.1"
+    "vuetify": "^0.13.1"
   },
   "devDependencies": {
     "ava": "^0.19.1",
