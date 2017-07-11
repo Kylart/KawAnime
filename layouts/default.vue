@@ -1,4 +1,4 @@
-<template xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<template>
   <v-app dark>
     <v-system-bar dark
                   lights-out
@@ -16,6 +16,33 @@
                          v-model="drawer"
     >
       <v-list>
+        <v-list-tile id="title">
+          <v-list-tile-action>
+            <img src="~static/images/icon2.png" height="55"/>
+          </v-list-tile-action>
+          <v-list-tile-title class="title">
+            かわニメ
+          </v-list-tile-title>
+          <v-list-tile-action>
+            <v-menu origin="center center"
+                    transition="scale-transition"
+                    bottom>
+              <v-btn icon slot="activator">
+                <v-icon>expand_more</v-icon>
+              </v-btn>
+              <v-list>
+                <template v-for="item in links">
+                  <v-list-tile>
+                    <v-list-tile-action>
+                      <v-icon mdi>{{ item.icon }}</v-icon>
+                    </v-list-tile-action>
+                    <v-list-tile-title>{{ item.link }}</v-list-tile-title>
+                  </v-list-tile>
+                </template>
+              </v-list>
+            </v-menu>
+          </v-list-tile-action>
+        </v-list-tile>
         <template v-for="item in itemGroup">
           <v-list-group v-if="item.items"
                         :value="item.active"
@@ -37,6 +64,7 @@
                          :value="subItem.active"
                          class="ripple"
                          ripple
+                         to="subItem.href"
                          key="subItem.title">
               <v-list-tile-action>
                 <v-icon>{{ subItem.action }}</v-icon>
@@ -48,6 +76,7 @@
             <v-divider></v-divider>
           </v-list-group>
           <v-subheader v-else-if="item.header">{{ item.header }}</v-subheader>
+          <v-divider v-else-if="item.divider"></v-divider>
         </template>
       </v-list>
     </v-navigation-drawer>
@@ -70,7 +99,7 @@
 
     <main>
       <v-container fluid>
-        <h1>Hello</h1>
+        <nuxt></nuxt>
       </v-container>
     </main>
     <v-footer class="grey darken-4">
@@ -78,109 +107,6 @@
       <div class="white--text">&copy; 2016 - 2017 Kylart</div>
     </v-footer>
   </v-app>
-  <!--<v-app id="app"-->
-         <!--class="grey lighten-1"-->
-         <!--top-toolbar left-sidebar>-->
-    <!--<div style="height: 64px;">&lt;!&ndash; Spacer &ndash;&gt;</div>-->
-    <!--<v-toolbar class="dragable" fixed>-->
-      <!--<v-toolbar-side-icon class="non-dragable" v-bind:style="title" @click.native.stop="sidebar = !sidebar"/>-->
-      <!--<v-toolbar-logo class="text-xs-right title">-->
-        <!--<div style="width: 100%;">-->
-          <!--<div class="title-text">かわニメ</div>-->
-          <!--<settings></settings>-->
-          <!--<div class="modals text-xs-center">-->
-            <!--<v-btn icon-->
-                   <!--class="open-in-browser"-->
-                   <!--v-tooltip:left="{ html: 'Open KawAnime in your browser' }"-->
-                   <!--@click.native="$store.dispatch('openInBrowser')">-->
-              <!--<v-icon>open_in_new</v-icon>-->
-            <!--</v-btn>-->
-          <!--</div>-->
-          <!--<info-modal></info-modal>-->
-        <!--</div>-->
-      <!--</v-toolbar-logo>-->
-    <!--</v-toolbar>-->
-    <!--<main>-->
-      <!--<v-sidebar v-model="sidebar" height="100vh" style="width: 260px" drawer class="sidebar">-->
-        <!--<div class="sidebar-title-container">-->
-          <!--<nuxt-link to="/">-->
-            <!--<img src="~static/images/icon2.png" height="70"/>-->
-          <!--</nuxt-link>-->
-
-          <!--<h1 class="title" v-bind:style="sidebarTitle">-->
-            <!--<strong>かわニメ - </strong>-->
-            <!--<a href="#">v0.4.1</a>-->
-          <!--</h1>-->
-
-          <!--<div class="links">-->
-            <!--<a href="https://github.com/Kylart/KawAnime" target="_blank" class="link">-->
-              <!--<img src="~static/images/github-icon.png" height="25"/>-->
-            <!--</a>-->
-            <!--<a href="#" class="link">-->
-              <!--<img src="~static/images/twitter-icon.png" height="25"/>-->
-            <!--</a>-->
-            <!--<a href="#" class="link">-->
-              <!--<img src="~static/images/fb-icon.png" height="25"/>-->
-            <!--</a>-->
-            <!--<a href="#" class="link">-->
-              <!--<img src="~static/images/mail-icon.png" height="25"/>-->
-            <!--</a>-->
-          <!--</div>-->
-        <!--</div>-->
-        <!--<v-list dense>-->
-          <!--<template v-for="item in itemGroup">-->
-            <!--<v-list-group v-if="item.items">-->
-              <!--<v-list-item slot="item">-->
-                <!--<v-list-tile ripple>-->
-                  <!--<v-list-tile-action>-->
-                    <!--<v-icon>{{ item.action }}</v-icon>-->
-                  <!--</v-list-tile-action>-->
-                  <!--<v-list-tile-title v-text="item.title"></v-list-tile-title>-->
-                  <!--<v-list-tile-action>-->
-                    <!--<v-icon>keyboard_arrow_down</v-icon>-->
-                  <!--</v-list-tile-action>-->
-                <!--</v-list-tile>-->
-              <!--</v-list-item>-->
-              <!--<v-list-item v-for="subItem in item.items" :key="subItem.href">-->
-                <!--<v-list-tile ripple router nuxt v-bind:href="subItem.href">-->
-                  <!--<v-list-tile-action>-->
-                    <!--<v-icon>{{ subItem.action }}</v-icon>-->
-                  <!--</v-list-tile-action>-->
-                  <!--<v-list-tile-title v-text="subItem.title"></v-list-tile-title>-->
-                <!--</v-list-tile>-->
-              <!--</v-list-item>-->
-            <!--</v-list-group>-->
-            <!--<v-subheader v-else-if="item.header" v-text="item.header"></v-subheader>-->
-            <!--<v-divider v-else-if="item.divider" light/>-->
-            <!--<v-list-item v-else>-->
-              <!--<v-list-tile ripple>-->
-                <!--<v-list-tile-title v-text="item.title"/>-->
-              <!--</v-list-tile>-->
-            <!--</v-list-item>-->
-          <!--</template>-->
-        <!--</v-list>-->
-      <!--</v-sidebar>-->
-      <!--<v-content class="content secondary page">-->
-        <!--<nuxt/>-->
-        <!--&lt;!&ndash; Displayed if an error occurred &ndash;&gt;-->
-        <!--<v-snackbar-->
-            <!--:timeout="5000"-->
-            <!--:top="true"-->
-            <!--:bottom="false"-->
-            <!--:right="false"-->
-            <!--:left="false"-->
-            <!--v-model="$store.state.infoSnackbar.show"-->
-        <!--&gt;-->
-          <!--{{ $store.state.infoSnackbar.text }}-->
-          <!--<v-btn flat class="pink&#45;&#45;text" @click.native="$store.state.infoSnackbar.show = false">Close</v-btn>-->
-        <!--</v-snackbar>-->
-      <!--</v-content>-->
-    <!--</main>-->
-
-    <!--<v-footer class="grey darken-4">-->
-      <!--<div class="text-xs-right">© 2016 - {{ (new Date()).getYear() + 1900 }} Kylart</div>-->
-    <!--</v-footer>-->
-  <!--</v-app>-->
 </template>
 
 <script>
@@ -193,7 +119,12 @@
         searchModal: false,
         drawer: false,
         browser: false,
+        links: [
+          {link: 'Github', to: 'https://github.com/Kylart/KawAnime', icon: 'github-circle'},
+          {link: 'Updates', to: '', icon: ''}
+        ],
         itemGroup: [
+          {divider: true},
           {header: 'Core'},
           {
             title: 'Downloading',
@@ -205,8 +136,7 @@
                 action: 'file_download',
                 active: false,
                 href: '/downloader'
-              },
-              {
+              }, {
                 title: 'Latest releases',
                 action: 'access_time',
                 active: true,
@@ -232,6 +162,7 @@
               }
             ]
           },
+          {divider: true},
           {header: 'Local'},
           {
             title: 'Anime related',
@@ -243,8 +174,7 @@
                 action: 'tv',
                 active: false,
                 href: '/localPage'
-              },
-              {
+              }, {
                 title: 'Watch list',
                 action: 'sort_by_alpha',
                 active: false,
@@ -261,10 +191,7 @@
 //              {title: 'Create torrents'}
 //            ]
 //          }
-        ],
-        sidebarTitle: {
-          color: 'rgba(255, 255, 255, 0.8)'
-        }
+        ]
       }
     },
     components: {
@@ -272,13 +199,6 @@
       infoModal
     },
     computed: {
-      title () {
-        if (this.sidebar) {
-          return {
-            marginLeft: '270px'
-          }
-        }
-      },
       searchInput () {
         return this.$store.state.searchInput
       },
@@ -309,11 +229,6 @@
     font-size: 30px !important;
   }
 
-  .with.top-toolbar main > .content
-  {
-    padding: 0;
-  }
-
   .navigation-drawer .list--group__container .list__tile--active .list__tile__title,
   .navigation-drawer .list__tile--active:first-child .icon,
   .navigation-drawer .list--group__header--active:first-child .list__tile__action:first-child .icon
@@ -321,63 +236,9 @@
     color: #ff9800 !important;
   }
 
-  .sidebar
-  {
-    padding-bottom: 0;
-    background-image: url('~static/images/sidebar-background.png');
-    background-position: left bottom;
-    background-size: 75%;
-  }
-
-
-  .modals
-  {
-    float: right;
-    padding-right: 15px;
-    padding-bottom: 5px;
-    font-family: 'Roboto', sans-serif;
-  }
-
-  .modals h2
-  {
-    font-family: 'Roboto', sans-serif;
-    line-height: 24px;
-    color: rgba(255, 255, 255, 0.8);
-  }
-
   .open-in-browser
   {
     margin-top: 6px !important;
-  }
-
-  .sidebar-title-container
-  {
-    margin-top: 20px;
-    height: 150px;
-    text-align: center;
-    color: rgba(255, 255, 255, 0.8);
-  }
-
-  .sidebar-title-container h1
-  {
-    margin: 10px;
-    padding: 0;
-  }
-
-  .sidebar-title-container a
-  {
-    color: rgba(255, 255, 255, 0.8);
-    font-family: Roboto, serif;
-  }
-
-  .links
-  {
-    margin-top: 20px;
-  }
-
-  .link
-  {
-    margin: 0 3% 0 3%;
   }
 
   .modal-container .title

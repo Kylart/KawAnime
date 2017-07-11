@@ -15,6 +15,7 @@ module.exports = {
     '~plugins/vuetify.js'
   ],
   css: [
+    {src: join(__dirname, 'css/mdi.css'), lang: 'css'},
     {src: join(__dirname, 'css/app.styl'), lang: 'styl'}
   ],
   head: {
