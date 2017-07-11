@@ -1,17 +1,9 @@
 <template>
-  <v-app dark>
-    <!--<v-system-bar dark-->
-                  <!--lights-out-->
-                  <!--status-->
-                  <!--v-if="!browser">-->
-      <!--<v-spacer></v-spacer>-->
-      <!--<v-icon class="window-icon">remove</v-icon>-->
-      <!--<v-icon class="window-icon">check_box_outline_blank</v-icon>-->
-      <!--<v-icon class="window-icon">close</v-icon>-->
-    <!--</v-system-bar>-->
-
+  <v-app dark footer toolbar>
     <v-navigation-drawer class="pb-0"
-                         persistent
+                         temporary
+                         overflow
+                         absolute
                          v-model="$store.state.drawer"
     >
       <v-list>
@@ -59,8 +51,18 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-toolbar fixed dark class="mablue">
-      <v-toolbar-side-icon @click.native="toggleDrawer()"></v-toolbar-side-icon>
+    <v-system-bar dark
+                  status
+                  class="wb dragable"
+                  v-if="!browser">
+      <v-spacer></v-spacer>
+      <v-icon class="window-icon">remove</v-icon>
+      <v-icon class="window-icon">check_box_outline_blank</v-icon>
+      <v-icon class="window-icon">close</v-icon>
+    </v-system-bar>
+
+    <v-toolbar fixed dark class="mablue tb dragable">
+      <v-toolbar-side-icon @click.native.stop="toggleDrawer()"></v-toolbar-side-icon>
       <v-toolbar-title class="white--text title">かわニメ</v-toolbar-title>
       <v-spacer></v-spacer>
       <info-modal></info-modal>
@@ -78,6 +80,19 @@
     <main class="m">
       <nuxt></nuxt>
     </main>
+
+    <!-- Displayed if an error occurred -->
+    <v-snackbar
+        :timeout="5000"
+        :top="true"
+        :bottom="false"
+        :right="false"
+        :left="false"
+        v-model="$store.state.infoSnackbar.show"
+    >
+      {{ $store.state.infoSnackbar.text }}
+      <v-btn flat class="pink--text" @click.native="$store.state.infoSnackbar.show = false">Close</v-btn>
+    </v-snackbar>
 
     <v-footer class="grey darken-4">
       <v-spacer></v-spacer>
@@ -186,8 +201,28 @@
 <style scoped>
   .m
   {
-    min-height: 91vh;
-    padding: 48px 0 0;
+    min-width: 100%;
+  }
+
+  .wb
+  {
+    position: fixed;
+    width: 100%;
+    z-index: 20;
+    background-color: #303030 !important;
+  }
+
+  .tb
+  {
+    margin-top: 24px;
+  }
+
+  .navigation-drawer
+  {
+    padding-top: 24px;
+    background-image: url('~static/images/sidebar-background.png');
+    background-position: left bottom;
+    background-size: 75%;
   }
 
   .ripple

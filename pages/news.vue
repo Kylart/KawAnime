@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-container fluid style="padding: 0; min-height: 92vh;">
     <loader v-if="!$store.state.news.length"></loader>
 
     <v-container fluid v-else>
@@ -36,7 +36,7 @@
         </v-flex>
       </v-layout>
     </v-container>
-  </div>
+  </v-container>
 </template>
 
 <script>

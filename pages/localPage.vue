@@ -75,13 +75,13 @@
                         </p>
                       </v-flex>
                       <v-flex xl5 lg4 md5 sm3 xs4 class="picture-container">
-                        <img :src="item.picture" class="picture" height="220">
+                        <img :src="item.picture" class="picture">
                       </v-flex>
                       <v-flex xl7 lg8 md7 sm9 xs8 class="bottom-right-container">
                         <v-layout row wrap justify-space-between>
                           <v-flex xs12><div class="synopsis">{{ reduced(item.synopsis) }}</div></v-flex>
-                          <v-flex xs12>
-                            <v-layout row wrap justify-space-between>
+                          <v-flex xs12 style="display: flex">
+                            <v-layout align-center justify-space-between style="min-width: 100%">
                               <v-flex xs2>
                                 <p class="year">{{ item.year }}</p>
                               </v-flex>
@@ -277,7 +277,7 @@
 
   .page-container
   {
-    height: 94vh;
+    min-height: 92vh !important;
   }
 
   /* ------------- MENUBAR ------------- */
@@ -333,7 +333,7 @@
 
   .elem-card
   {
-    padding: 0 10px 0 0;
+    padding: 0 5px 0 0;
   }
 
   .elem-container
@@ -381,6 +381,7 @@
   .picture
   {
     max-width: 100%;
+    height: 220px;
   }
 
   .bottom-right-container
@@ -397,7 +398,7 @@
     text-overflow: ellipsis;
     word-wrap: break-word;
     overflow: hidden;
-    min-height: 10em;
+    height: 9em;
     line-height: 1.5em;
   }
 

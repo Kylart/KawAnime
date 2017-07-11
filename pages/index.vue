@@ -64,14 +64,6 @@
                         <div class="links">
                           <a :href="item.magnetLink" class="download-button">
                             <v-btn dark flat
-                                   icon
-                                   v-if="$store.state.drawer"
-                                   @click.native="print(item)"
-                                   class="btn--light-flat-pressed">
-                              <v-icon>file_download</v-icon>
-                            </v-btn>
-                            <v-btn dark flat
-                                   v-else
                                    @click.native="print(item)"
                                    class="btn--light-flat-pressed">
                               Download
@@ -79,11 +71,7 @@
                           </a>
                           <v-menu open-on-hover
                                   transition="slide-x-transition">
-                            <v-btn flat dark icon slot="activator"
-                                   v-if="$store.state.drawer">
-                              <v-icon>more_horiz</v-icon>
-                            </v-btn>
-                            <v-btn flat dark slot="activator" v-else>
+                            <v-btn flat dark slot="activator">
                               More
                             </v-btn>
                             <v-list>
