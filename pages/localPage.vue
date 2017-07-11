@@ -1,17 +1,17 @@
 <template>
   <v-container fluid class="page-container">
     <div v-if="files.length">
-      <v-row style="margin: 0 1% 0 1%;">
-        <v-col xs12 class="menubar">
-          <v-row>
-            <v-col xs2 class="menu-eps">
+      <v-layout row wrap style="margin: 0 1% 0 1%;">
+        <v-flex xs12 class="menubar">
+          <v-layout row wrap>
+            <v-flex xs2 class="menu-eps">
               <p class="menu-eps-text">{{ nbEps }} {{ episodeLabel }}</p>
-            </v-col>
-            <v-col xs2>
+            </v-flex>
+            <v-flex xs2>
               <history-modal></history-modal>
-            </v-col>
-            <v-col xs4></v-col>
-            <v-col xs4 class="menu-buttons">
+            </v-flex>
+            <v-flex xs3></v-flex>
+            <v-flex xs5 class="menu-buttons">
               <v-btn icon
                      class="refresh-button"
                      v-if="!this.$store.state.refreshingLocal"
@@ -33,28 +33,28 @@
                 Refresh local info
               </v-btn>
               <v-btn secondary dark v-else class="reset-cache-button" loading></v-btn>
-            </v-col>
-          </v-row>
-        </v-col>
+            </v-flex>
+          </v-layout>
+        </v-flex>
         <transition-group name="list">
           <template v-for="item in files">
-            <v-col :key="item.name + item.ep" xs12 md6 xl4
+            <v-flex :key="item.name + item.ep" xs12 sm6 md4 xl3
                    class="elem">
               <v-card class="elem-content elevation-3" v-ripple="true">
                 <v-card-text class="elem-card">
                   <v-container fluid style="padding: 0;">
-                    <v-row class="elem-container">
-                      <v-col xs7
+                    <v-layout row wrap class="elem-container">
+                      <v-flex xs6 sm5
                              v-tooltip:top="{ html: item.name }"
                              class="elem-title">
                         <h6 class="title ellipsis">{{ item.name }}</h6>
-                      </v-col>
-                      <v-col xs2
+                      </v-flex>
+                      <v-flex xs2
                              v-tooltip:top="{ html: 'Episode ' + item.ep }"
                              class="elem-ep text-xs-right">
                         <p class="ellipsis ep">{{ item.ep }} / {{ item.numberOfEpisode }}</p>
-                      </v-col>
-                      <v-col xs3>
+                      </v-flex>
+                      <v-flex offset-xs1 xs3 sm4>
                         <v-btn large icon
                                class="play-button"
                                @click.native="playThis(item.path)">
@@ -65,51 +65,55 @@
                                @click.native="delThis(item.path)">
                           <v-icon medium>delete_forever</v-icon>
                         </v-btn>
-                      </v-col>
-                      <v-col xs8 v-tooltip:top="{ html: item.genres.join(', ') }">
+                      </v-flex>
+                      <v-flex xs8 v-tooltip:top="{ html: item.genres.join(', ') }">
                         <p class="ellipsis genres">{{ item.genres.join(', ') }}</p>
-                      </v-col>
-                      <v-col xs4 v-tooltip:top="{ html: item.classification.replace('None', 'No restriction') }">
+                      </v-flex>
+                      <v-flex xs4 v-tooltip:top="{ html: item.classification.replace('None', 'No restriction') }">
                         <p class="ellipsis classification">
                           {{ item.classification.replace('None', 'No restriction') }}
                         </p>
-                      </v-col>
-                      <v-col xl5 lg4 md5 sm3 xs4 class="picture-container">
+                      </v-flex>
+                      <v-flex xl5 lg4 md5 sm3 xs4 class="picture-container">
                         <img :src="item.picture" class="picture" height="220">
-                      </v-col>
-                      <v-col xl7 lg8 md7 sm9 xs8 class="bottom-right-container">
-                        <p class="synopsis">{{ reduced(item.synopsis) }}</p>
-                        <v-row>
-                          <v-col xs2>
-                            <p class="year">{{ item.year }}</p>
-                          </v-col>
-                          <v-col xs7>
-                            <p class="status">{{ item.status }}</p>
-                          </v-col>
-                          <v-col xs3><p class="mark">{{ item.mark }}</p></v-col>
-                        </v-row>
-                      </v-col>
-                    </v-row>
+                      </v-flex>
+                      <v-flex xl7 lg8 md7 sm9 xs8 class="bottom-right-container">
+                        <v-layout row wrap justify-space-between>
+                          <v-flex xs12><div class="synopsis">{{ reduced(item.synopsis) }}</div></v-flex>
+                          <v-flex xs12>
+                            <v-layout row wrap justify-space-between>
+                              <v-flex xs2>
+                                <p class="year">{{ item.year }}</p>
+                              </v-flex>
+                              <v-flex xs7>
+                                <p class="status">{{ item.status }}</p>
+                              </v-flex>
+                              <v-flex xs3><p class="mark">{{ item.mark }}</p></v-flex>
+                            </v-layout>
+                          </v-flex>
+                        </v-layout>
+                      </v-flex>
+                    </v-layout>
                   </v-container>
                 </v-card-text>
               </v-card>
-            </v-col>
+            </v-flex>
           </template>
         </transition-group>
-      </v-row>
+      </v-layout>
     </div>
     <v-container fluid v-else>
       <transition name="fade">
         <img v-if="emptyBg" class="empty-bg" height="400" src="~static/images/empty-bg.png"/>
       </transition>
-      <v-row>
-        <v-col xs12 class="menubar">
-          <v-row>
-            <v-col offset-xs2 xs2>
+      <v-layout row wrap>
+        <v-flex xs12 class="menubar">
+          <v-layout row wrap>
+            <v-flex offset-xs2 xs2>
               <history-modal></history-modal>
-            </v-col>
-            <v-col xs5></v-col>
-            <v-col xs3 class="menu-buttons">
+            </v-flex>
+            <v-flex xs5></v-flex>
+            <v-flex xs3 class="menu-buttons">
               <v-btn icon
                      class="refresh-button"
                      @click.native="refresh()">
@@ -120,18 +124,18 @@
                      class="change-dir-button">
                 Change dir
               </v-btn>
-            </v-col>
-          </v-row>
-        </v-col>
-        <v-col xs12 class="empty-message">
+            </v-flex>
+          </v-layout>
+        </v-flex>
+        <v-flex xs12 class="empty-message">
           <h3>Wow such empty!</h3>
           <h4>Start downloading anime
             <nuxt-link to="/downloader" class="green--text">here</nuxt-link>
             or
             <nuxt-link to="/" class="cyan--text">here!</nuxt-link>
           </h4>
-        </v-col>
-      </v-row>
+        </v-flex>
+      </v-layout>
     </v-container>
   </v-container>
 </template>
@@ -273,7 +277,7 @@
 
   .page-container
   {
-    height: 91.5vh;
+    height: 94vh;
   }
 
   /* ------------- MENUBAR ------------- */
@@ -379,11 +383,22 @@
     max-width: 100%;
   }
 
+  .bottom-right-container
+  {
+    position: relative;
+    display: flex;
+  }
+
   .synopsis
   {
     padding: 2px 5px 5px 5px;
     text-align: justify;
-    height: 175px;
+    display: block;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+    overflow: hidden;
+    min-height: 10em;
+    line-height: 1.5em;
   }
 
   p.year, p.status, p.mark

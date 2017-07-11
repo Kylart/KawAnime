@@ -15,7 +15,7 @@
                          v-model="$store.state.drawer"
     >
       <v-list>
-        <v-list-tile id="title">
+        <v-list-tile id="title" to="/">
           <v-list-tile-action>
             <img src="~static/images/icon2.png" height="55"/>
           </v-list-tile-action>
@@ -187,8 +187,7 @@
   .m
   {
     min-height: 91vh;
-    margin: 48px 0 0;
-    padding: 0;
+    padding: 48px 0 0;
   }
 
   .ripple

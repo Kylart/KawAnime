@@ -8,9 +8,8 @@
     <v-card class="secondary">
       <v-card-title>History</v-card-title>
       <v-divider></v-divider>
-      <v-card-row height="70%">
         <v-card-text>
-          <v-row>
+          <v-layout row wrap>
             <v-expansion-panel expand class="secondary">
               <v-expansion-panel-content class="item-container"
                                          ripple
@@ -22,21 +21,21 @@
                 </div>
                 <v-card>
                   <v-card-text class="lighten-3 info-container">
-                    <v-row>
+                    <v-layout row wrap>
                       <template v-for="info in history[item]">
-                        <v-col xs2 class="time entry"
+                        <v-flex xs2 class="time entry"
                                :class="isDelete(info.type)">
                           {{ info.time }}
-                        </v-col>
-                        <v-col xs2 class="type entry" :class="isDelete(info.type)">
+                        </v-flex>
+                        <v-flex xs2 class="type entry" :class="isDelete(info.type)">
                           {{ info.type }}
-                        </v-col>
-                        <v-col xs7
+                        </v-flex>
+                        <v-flex xs7
                                class="ellipsis text entry"
                                :class="isDelete(info.type)">
                           {{ info.text }}
-                        </v-col>
-                        <v-col xs1
+                        </v-flex>
+                        <v-flex xs1
                                class="entry"
                                :class="isDelete(info.type)">
                           <v-icon class="delete-entry"
@@ -44,25 +43,24 @@
                                   @click.native="clearEntry(info, item)">
                             clear
                           </v-icon>
-                        </v-col>
+                        </v-flex>
                       </template>
-                    </v-row>
+                    </v-layout>
                   </v-card-text>
                 </v-card>
               </v-expansion-panel-content>
             </v-expansion-panel>
-          </v-row>
+          </v-layout>
         </v-card-text>
-      </v-card-row>
       <v-divider></v-divider>
-      <v-card-row actions style=" padding-right: 20px;">
-        <v-btn class="white--text darken-1"
+      <v-card-actions style=" padding-right: 20px;">
+        <v-spacer></v-spacer>
+        <v-btn class="blue--text darken-1"
                style="width: 100px;"
-               primary
                @click.native="$store.commit('setHistoryModal', false)">
           Close
         </v-btn>
-      </v-card-row>
+      </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
