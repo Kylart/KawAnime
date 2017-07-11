@@ -1,19 +1,18 @@
 <template>
   <v-app dark>
-    <v-system-bar dark
-                  lights-out
-                  status
-                  v-if="!browser">
-      <v-spacer></v-spacer>
-      <v-icon class="window-icon">remove</v-icon>
-      <v-icon class="window-icon">check_box_outline_blank</v-icon>
-      <v-icon class="window-icon">close</v-icon>
-    </v-system-bar>
+    <!--<v-system-bar dark-->
+                  <!--lights-out-->
+                  <!--status-->
+                  <!--v-if="!browser">-->
+      <!--<v-spacer></v-spacer>-->
+      <!--<v-icon class="window-icon">remove</v-icon>-->
+      <!--<v-icon class="window-icon">check_box_outline_blank</v-icon>-->
+      <!--<v-icon class="window-icon">close</v-icon>-->
+    <!--</v-system-bar>-->
 
     <v-navigation-drawer class="pb-0"
                          persistent
-                         enable-resize-watcher
-                         v-model="drawer"
+                         v-model="$store.state.drawer"
     >
       <v-list>
         <v-list-tile id="title">
@@ -23,29 +22,9 @@
           <v-list-tile-title class="title">
             かわニメ
           </v-list-tile-title>
-          <v-list-tile-action>
-            <v-menu origin="center center"
-                    transition="scale-transition"
-                    bottom>
-              <v-btn icon slot="activator">
-                <v-icon>expand_more</v-icon>
-              </v-btn>
-              <v-list>
-                <template v-for="item in links">
-                  <v-list-tile>
-                    <v-list-tile-action>
-                      <v-icon mdi>{{ item.icon }}</v-icon>
-                    </v-list-tile-action>
-                    <v-list-tile-title>{{ item.link }}</v-list-tile-title>
-                  </v-list-tile>
-                </template>
-              </v-list>
-            </v-menu>
-          </v-list-tile-action>
         </v-list-tile>
         <template v-for="item in itemGroup">
           <v-list-group v-if="item.items"
-                        :value="item.active"
                         :key="item.title">
             <v-list-tile slot="item" class="ripple" ripple>
               <v-list-tile-action>
@@ -61,10 +40,9 @@
               </v-list-tile-action>
             </v-list-tile>
             <v-list-tile v-for="subItem in item.items"
-                         :value="subItem.active"
                          class="ripple"
                          ripple
-                         to="subItem.href"
+                         :to="subItem.href"
                          key="subItem.title">
               <v-list-tile-action>
                 <v-icon>{{ subItem.action }}</v-icon>
@@ -81,8 +59,8 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-toolbar dark class="primary">
-      <v-toolbar-side-icon @click.native="drawer = !drawer"></v-toolbar-side-icon>
+    <v-toolbar fixed dark class="mablue">
+      <v-toolbar-side-icon @click.native="toggleDrawer()"></v-toolbar-side-icon>
       <v-toolbar-title class="white--text title">かわニメ</v-toolbar-title>
       <v-spacer></v-spacer>
       <info-modal></info-modal>
@@ -97,11 +75,10 @@
       </v-btn>
     </v-toolbar>
 
-    <main>
-      <v-container fluid>
-        <nuxt></nuxt>
-      </v-container>
+    <main style="min-height: 91vh; padding-top: 48px;">
+      <nuxt></nuxt>
     </main>
+
     <v-footer class="grey darken-4">
       <v-spacer></v-spacer>
       <div class="white--text">&copy; 2016 - 2017 Kylart</div>
@@ -129,35 +106,29 @@
           {
             title: 'Downloading',
             action: 'file_download',
-            active: true,
             items: [
               {
                 title: 'Downloader',
                 action: 'file_download',
-                active: false,
                 href: '/downloader'
               }, {
                 title: 'Latest releases',
                 action: 'access_time',
-                active: true,
                 href: '/'
               }
             ]
           }, {
             title: 'News',
             action: 'info_outline',
-            active: false,
             items: [
               {
                 title: 'Seasons',
                 action: 'hourglass_empty',
-                active: false,
                 href: '/seasons'
               },
               {
                 title: 'News',
                 action: 'more',
-                active: false,
                 href: '/news'
               }
             ]
@@ -166,18 +137,15 @@
           {header: 'Local'},
           {
             title: 'Anime related',
-            active: false,
             action: 'folder_open',
             items: [
               {
                 title: 'Animes',
                 action: 'tv',
-                active: false,
                 href: '/localPage'
               }, {
                 title: 'Watch list',
                 action: 'sort_by_alpha',
-                active: false,
                 href: '/watchList'
               }
             ]
@@ -206,6 +174,11 @@
         this.browser = true
         this.$store.dispatch('openInBrowser')
       }
+    },
+    methods: {
+      toggleDrawer () {
+        this.$store.commit('toggleDrawer')
+      }
     }
   }
 </script>
@@ -227,13 +200,6 @@
     padding-left: 20px;
     font-family: "Hiragino Mincho Pro", serif;
     font-size: 30px !important;
-  }
-
-  .navigation-drawer .list--group__container .list__tile--active .list__tile__title,
-  .navigation-drawer .list__tile--active:first-child .icon,
-  .navigation-drawer .list--group__header--active:first-child .list__tile__action:first-child .icon
-  {
-    color: #ff9800 !important;
   }
 
   .open-in-browser

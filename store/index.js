@@ -15,11 +15,12 @@ const log = (message) => {
 
 const store = new Vuex.Store({
   state: {
+    drawer: false,
     autoRefreshReleases: true,
     releaseFansub: '',
     releaseQuality: '',
     releases: [],
-    releasesUpdateTime: (new Date()).toLocaleTimeString(),
+    releasesUpdateTime: moment(),
     releaseParams: {
       fansub: '',
       quality: '',
@@ -93,6 +94,9 @@ const store = new Vuex.Store({
       state.releaseParams.quality = config.quality
 
       state.config = config
+    },
+    toggleDrawer (state) {
+      state.drawer = !state.drawer
     },
     setReleaseParams (state, data) {
       state.releaseParams = data
@@ -230,8 +234,8 @@ const store = new Vuex.Store({
         const {data} = await axios.get('getConfig.json')
         commit('init', data.config)
 
-        // dispatch('releasesInit').catch(err => { void (err) })
-        // dispatch('seasonsInit').catch(err => { void (err) })
+        dispatch('releasesInit').catch(err => { void (err) })
+        dispatch('seasonsInit').catch(err => { void (err) })
         // dispatch('newsInit').catch(err => { void (err) })
         dispatch('localInit').catch(err => { void (err) })
         dispatch('listInit').catch(err => { void (err) })

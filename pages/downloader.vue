@@ -5,11 +5,11 @@
     <div class="cute-char right-pic"></div>
 
     <div class="form-container">
-      <v-row>
-        <v-col xs2 sm7 md9>
+      <v-layout row wrap justify-center>
+        <v-flex xs2 sm7 md9>
           <!-- Dummy cell -->
-        </v-col>
-        <v-col xs10 sm5 md3>
+        </v-flex>
+        <v-flex xs10 sm5 md3>
           <div class="choose-magnets">
             <v-card class="z-depth-0">
               <v-card-text class="switch">
@@ -17,9 +17,9 @@
               </v-card-text>
             </v-card>
           </div>
-        </v-col>
-        <v-col xs4></v-col>
-        <v-col xs4
+        </v-flex>
+        <v-flex xs4></v-flex>
+        <v-flex xs4
                @keydown.enter="next(1)">
           <v-text-field name="name-input"
                         type="text"
@@ -28,10 +28,10 @@
                         v-model="$store.state.downloaderForm.name"
                         dark>
           </v-text-field>
-        </v-col>
-        <v-col xs4></v-col>
-        <v-col xs4></v-col>
-        <v-col xs4
+        </v-flex>
+        <v-flex xs4></v-flex>
+        <v-flex xs4></v-flex>
+        <v-flex xs4
                @keydown.enter="next(2)"
                @keydown.delete="previous(2)">
           <v-text-field name="from-ep-input"
@@ -40,10 +40,10 @@
                         v-model="$store.state.downloaderForm.fromEp"
                         dark>
           </v-text-field>
-        </v-col>
-        <v-col xs4></v-col>
-        <v-col xs4></v-col>
-        <v-col xs4
+        </v-flex>
+        <v-flex xs4></v-flex>
+        <v-flex xs4></v-flex>
+        <v-flex xs4
                @keydown.enter="next(3)"
                @keydown.delete="previous(3)">
           <v-text-field name="until-ep-input"
@@ -52,27 +52,27 @@
                         v-model="$store.state.downloaderForm.untilEp"
                         dark>
           </v-text-field>
-        </v-col>
-        <v-col xs4></v-col>
-        <v-col xs12 sm6 md4 class="radio-container">
+        </v-flex>
+        <v-flex xs4></v-flex>
+        <v-flex xs12 sm6 md4 class="radio-container">
           <v-radio class="radio"
                    label="480p"
                    v-model="quality"
-                   value="480p" primary dark/>
-        </v-col>
-        <v-col xs12 sm6 md4>
+                   value="480p" dark/>
+        </v-flex>
+        <v-flex xs12 sm6 md4>
           <v-radio class="radio"
                    label="720p"
                    v-model="quality"
-                   value="720p" primary dark/>
-        </v-col>
-        <v-col xs12 sm6 md4>
+                   value="720p" dark/>
+        </v-flex>
+        <v-flex xs12 sm6 md4>
           <v-radio class="radio"
                    label="1080p"
                    v-model="quality"
-                   value="1080p" primary dark/>
-        </v-col>
-      </v-row>
+                   value="1080p" dark/>
+        </v-flex>
+      </v-layout>
     </div>
     <div class="download-button-container">
       <div class="download-button">
@@ -95,16 +95,16 @@
         </v-card-text>
         <v-divider/>
         <v-card-text class="subheading white--text">
-          <v-row>
-            <v-col xs4></v-col>
-            <v-col xs6 class="modal-icon-container">
+          <v-layout row wrap>
+            <v-flex xs4></v-flex>
+            <v-flex xs6 class="modal-icon-container">
               <v-icon class="copy-icon" @click.native="copy()">content_copy</v-icon>
-            </v-col>
-            <v-col xs2></v-col>
-            <v-col xs12 v-for="link in $store.state.downloaderModal.text"
+            </v-flex>
+            <v-flex xs2></v-flex>
+            <v-flex xs12 v-for="link in $store.state.downloaderModal.text"
                    class="subheading grey--text modal-text" :key="link">{{ link.split('&')[0] }}
-            </v-col>
-          </v-row>
+            </v-flex>
+          </v-layout>
         </v-card-text>
         <v-card-row actions>
           <v-btn primary dark
@@ -232,6 +232,12 @@
   *
   {
     color: rgba(255, 255, 255, 0.8);
+  }
+
+  div.container
+  {
+    position: relative;
+    height: 91vh;
   }
 
   .cute-char

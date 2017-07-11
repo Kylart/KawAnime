@@ -1,12 +1,12 @@
 <template xmlns:v-tooltip="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml">
   <v-container fluid class="container">
-    <transition name="fade" v-if="$store.state.releases.length">
-      <v-row style="margin: 0 1% 0 1%;">
-        <v-col md4 sm4 xs12 class="time-container">
+    <transition name="fade" v-if="releases.length">
+      <v-layout row wrap style="margin: 0 1% 0 1%;">
+        <v-flex md4 sm4 xs12 class="time-container">
           <span class="update-time">Updated {{ lastUpdateTime }}.</span>
-        </v-col>
-        <v-col md4 sm1 xs0></v-col>
-        <v-col md2 sm3 xs12>
+        </v-flex>
+        <v-flex md4 sm1 xs0></v-flex>
+        <v-flex md2 sm3 xs12>
           <v-select
               class="select"
               v-bind:items="fansubList"
@@ -17,8 +17,8 @@
               hint="Pick a fansub"
               persistent-hint
           />
-        </v-col>
-        <v-col md1 sm2 xs12>
+        </v-flex>
+        <v-flex md1 sm2 xs12>
           <v-select
               class="select"
               v-bind:items="qualityList"
@@ -29,119 +29,123 @@
               hint="Which quality ?"
               persistent-hint
           />
-        </v-col>
-        <v-col md1 sm1 xs12 class="refresh-button-container">
+        </v-flex>
+        <v-flex md1 sm1 xs12 class="refresh-button-container">
           <v-btn icon
                  class="refresh-button"
                  @click.native="refresh()">
             <v-icon large>refresh</v-icon>
           </v-btn>
-        </v-col>
-        <template v-for="item in $store.state.releases">
-          <v-col xs12 md6 xl4
-                 :key="item.name"
-                 class="elem">
+        </v-flex>
+        <template v-for="item in releases">
+          <v-flex xs12 sm6 md4
+                  :key="item.name"
+                  class="elem">
             <v-card class="elem-content elevation-3" v-ripple="true">
               <v-card-text class="elem-card">
                 <v-container fluid style="padding: 0;">
-                  <v-row>
-                    <v-col class="elem-title" xs9 v-tooltip:top="{ html: item.rawName }">
+                  <v-layout row wrap>
+                    <v-flex class="elem-title" xs9 v-tooltip:top="{ html: item.rawName }">
                       <h6>{{ item.rawName }}</h6>
-                    </v-col>
-                    <v-col v-tooltip:top="{ html: 'Episode ' + item.ep }"
-                           class="elem-ep text-xs-right" xs3>
+                    </v-flex>
+                    <v-flex v-tooltip:top="{ html: 'Episode ' + item.ep }"
+                            class="elem-ep text-xs-right" xs3>
                       <h6>Ep {{ item.ep }}</h6>
-                    </v-col>
-                    <v-col class="elem-image"
-                           xl5 lg4 md5 sm3 xs4>
+                    </v-flex>
+                    <v-flex class="elem-image"
+                            xl5 lg4 md5 sm3 xs4>
                       <img v-bind:src="item.picture" height="200" class="picture"/>
-                    </v-col>
-                    <v-col xl7 lg8 md7 sm9 xs8>
+                    </v-flex>
+                    <v-flex xl7 lg8 md7 sm9 xs8>
                       <div class="elem-text-links">
                         <div class="synopsis">
-                          <p>{{ item.synopsis }}</p>
+                          {{ item.synopsis }}
                         </div>
                         <div class="links">
                           <a :href="item.magnetLink" class="download-button">
                             <v-btn dark flat
+                                   icon
+                                   v-if="$store.state.drawer"
+                                   @click.native="print(item)"
+                                   class="btn--light-flat-pressed">
+                              <v-icon>file_download</v-icon>
+                            </v-btn>
+                            <v-btn dark flat
+                                   v-else
                                    @click.native="print(item)"
                                    class="btn--light-flat-pressed">
                               Download
                             </v-btn>
                           </a>
-                          <v-menu transition="v-slide-x-transition">
-                            <v-btn flat dark slot="activator">
+                          <v-menu open-on-hover
+                                  transition="slide-x-transition">
+                            <v-btn flat dark icon slot="activator"
+                                   v-if="$store.state.drawer">
+                              <v-icon>more_horiz</v-icon>
+                            </v-btn>
+                            <v-btn flat dark slot="activator" v-else>
                               More
                             </v-btn>
                             <v-list>
-                              <v-list-item>
-                                <v-list-tile v-on:click.native="openModal(item.rawName, item.fullSynopsis)">
-                                  <v-list-tile-action>
-                                    <v-icon>more</v-icon>
-                                  </v-list-tile-action>
-                                  <v-list-tile-title>
-                                    Check synopsis
-                                  </v-list-tile-title>
-                                </v-list-tile>
-                              </v-list-item>
-                              <v-list-item>
-                                <v-list-tile v-on:click.native="downloadAll(item.rawName)">
-                                  <v-list-tile-action>
-                                    <v-icon>file_download</v-icon>
-                                  </v-list-tile-action>
-                                  <v-list-tile-title>
-                                    Download all episodes
-                                  </v-list-tile-title>
-                                </v-list-tile>
-                              </v-list-item>
-                              <v-list-item>
-                                <v-list-tile>
-                                  <v-list-tile-action>
-                                    <v-icon>info_outline</v-icon>
-                                  </v-list-tile-action>
-                                  <v-list-tile-title>Information</v-list-tile-title>
-                                </v-list-tile>
-                              </v-list-item>
-                              <v-list-item>
-                                <v-list-tile @click.native="showChoices(item.rawName)">
-                                  <v-list-tile-action>
-                                    <v-icon>add_box</v-icon>
-                                  </v-list-tile-action>
-                                  <v-list-tile-title>
-                                    Add to
-                                  </v-list-tile-title>
-                                </v-list-tile>
-                              </v-list-item>
+                              <v-list-tile v-on:click.native="openModal(item.rawName, item.fullSynopsis)">
+                                <v-list-tile-action>
+                                  <v-icon>more</v-icon>
+                                </v-list-tile-action>
+                                <v-list-tile-title>
+                                  Check synopsis
+                                </v-list-tile-title>
+                              </v-list-tile>
+                              <v-list-tile v-on:click.native="downloadAll(item.rawName)">
+                                <v-list-tile-action>
+                                  <v-icon>file_download</v-icon>
+                                </v-list-tile-action>
+                                <v-list-tile-title>
+                                  Download all episodes
+                                </v-list-tile-title>
+                              </v-list-tile>
+                              <v-list-tile>
+                                <v-list-tile-action>
+                                  <v-icon>info_outline</v-icon>
+                                </v-list-tile-action>
+                                <v-list-tile-title>Information</v-list-tile-title>
+                              </v-list-tile>
+                              <v-list-tile @click.native="showChoices(item.rawName)">
+                                <v-list-tile-action>
+                                  <v-icon>add_box</v-icon>
+                                </v-list-tile-action>
+                                <v-list-tile-title>
+                                  Add to
+                                </v-list-tile-title>
+                              </v-list-tile>
                             </v-list>
                           </v-menu>
                         </div>
                       </div>
-                    </v-col>
-                  </v-row>
+                    </v-flex>
+                  </v-layout>
                 </v-container>
               </v-card-text>
             </v-card>
-          </v-col>
+          </v-flex>
         </template>
-      </v-row>
+      </v-layout>
     </transition>
     <loader v-else></loader>
     <div class="text-xs-center modal-container">
       <v-dialog v-model="modal" width="70%">
-        <v-card class="secondary white--text">
+        <v-card class="white--text">
           <v-card-text class="white--text">
-            <h2 class="title">{{ modalTitle }}</h2>
+            <h2 class="white--text headline">{{ modalTitle }}</h2>
           </v-card-text>
           <v-card-text class="subheading white--text">
             {{ modalText }}
           </v-card-text>
-          <v-card-row actions>
+          <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn primary dark
-                   style="width: 100px;"
+            <v-btn class="blue--text darken-1" flat
                    v-on:click.native="modal = false">Thanks!
             </v-btn>
-          </v-card-row>
+          </v-card-actions>
         </v-card>
       </v-dialog>
     </div>
@@ -253,6 +257,11 @@
 </script>
 
 <style scoped>
+  div.container
+  {
+    padding: 0;
+  }
+
   p
   {
     margin-bottom: 0;
@@ -353,7 +362,7 @@
 
   .picture
   {
-    max-width: 140px;
+    max-width: 100%;
   }
 
   .elem-text-links
@@ -364,9 +373,13 @@
 
   .synopsis
   {
-    height: 75%;
     text-align: justify;
-    padding-right: 10px;
+    display: block;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+    overflow: hidden;
+    max-height: 9em;
+    line-height: 1.5em;
   }
 
   .links
@@ -384,8 +397,10 @@
     margin-right: 0;
   }
 
-  .modal-container .title
+  .subheading
   {
-    color: rgba(255, 255, 255, 0.8);
+    padding: 30px;
+    text-align: justify;
+    text-align-last: center;
   }
 </style>
