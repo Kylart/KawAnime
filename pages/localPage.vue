@@ -261,13 +261,6 @@
     margin-bottom: 0;
   }
 
-  /* Needed */
-  /*noinspection CssUnusedSymbol*/
-  .icon--large, .icon--medium
-  {
-    height: 2.5rem;
-  }
-
   .ellipsis
   {
     overflow: hidden;

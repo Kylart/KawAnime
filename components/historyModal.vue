@@ -1,5 +1,5 @@
 <template>
-  <v-dialog scrollable width="75%"
+  <v-dialog lazy absolute width="75%"
             v-model="$store.state.historyModal">
     <v-btn secondary dark
            @click.mative="refresh()"
@@ -149,7 +149,6 @@
     padding-top: 1px;
   }
 
-  /*noinspection CssUnusedSymbol*/
   .not-delete
   {
     background-color: rgba(119, 221, 119, 0.62);
@@ -157,7 +156,6 @@
     border-top: 1px solid rgba(119, 221, 119, 0.62);
   }
 
-  /*noinspection CssUnusedSymbol*/
   .delete
   {
     background-color: rgba(216, 24, 24, 0.55);

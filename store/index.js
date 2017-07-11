@@ -15,6 +15,7 @@ const log = (message) => {
 
 const store = new Vuex.Store({
   state: {
+    platform: '',
     drawer: false,
     autoRefreshReleases: true,
     releaseFansub: '',
@@ -70,6 +71,9 @@ const store = new Vuex.Store({
     addToChoice: false
   },
   mutations: {
+    setPlatform (state, data) {
+      state.platform = data
+    },
     init (state, data) {
       const config = data
       config.inside = config.inside.toString()
@@ -227,6 +231,9 @@ const store = new Vuex.Store({
     }
   },
   actions: {
+    nuxtServerInit ({commit}, {env}) {
+      commit('setPlatform', env.platform)
+    },
     async init ({commit, dispatch}) {
       if (!started) {
         started = true

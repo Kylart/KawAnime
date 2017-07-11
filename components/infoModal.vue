@@ -215,12 +215,6 @@
     max-width: 90%;
   }
 
-  /*noinspection CssUnusedSymbol*/
-  .row
-  {
-    width: 100%;
-  }
-
   .info-title
   {
     padding-left: 15% !important;

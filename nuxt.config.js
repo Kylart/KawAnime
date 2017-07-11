@@ -8,6 +8,9 @@ module.exports = {
     width: 1200,
     height: 800
   },
+  env: {
+    platform: process.platform
+  },
   build: {
     vendor: ['vuetify', 'axios']
   },

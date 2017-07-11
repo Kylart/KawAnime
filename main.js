@@ -71,7 +71,7 @@ const newWin = () => {
   win = new BrowserWindow({
     width: config.electron.width,
     height: config.electron.height,
-    titleBarStyle: 'hidden',
+    titleBarStyle: process.platform === 'darwin' ? 'hidden' : 'none',
     show: false
   })
 

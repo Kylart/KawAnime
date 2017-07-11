@@ -1,5 +1,5 @@
 <template xmlns:v-tooltip="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml">
-  <v-container fluid class="container">
+  <v-container fluid class="container pa-0" style="min-height: 91vh">
     <transition name="fade" v-if="releases.length">
       <v-layout row wrap style="margin: 0 1% 0 1%;">
         <v-flex md4 sm4 xs12 class="time-container">
@@ -245,11 +245,6 @@
 </script>
 
 <style scoped>
-  div.container
-  {
-    padding: 0;
-  }
-
   p
   {
     margin-bottom: 0;

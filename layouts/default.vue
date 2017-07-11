@@ -55,10 +55,13 @@
                   status
                   class="wb dragable"
                   v-if="!browser">
-      <v-spacer></v-spacer>
-      <v-icon class="window-icon">remove</v-icon>
-      <v-icon class="window-icon">check_box_outline_blank</v-icon>
-      <v-icon class="window-icon">close</v-icon>
+      <div v-if="$store.state.platform !== 'darwin'">
+        <v-spacer></v-spacer>
+        <v-icon class="window-icon">remove</v-icon>
+        <v-icon class="window-icon">check_box_outline_blank</v-icon>
+        <v-icon class="window-icon">close</v-icon>
+      </div>
+
     </v-system-bar>
 
     <v-toolbar fixed dark class="mablue tb dragable">
