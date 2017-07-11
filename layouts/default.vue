@@ -75,7 +75,7 @@
       </v-btn>
     </v-toolbar>
 
-    <main style="min-height: 91vh; padding-top: 48px;">
+    <main class="m">
       <nuxt></nuxt>
     </main>
 
@@ -184,6 +184,13 @@
 </script>
 
 <style scoped>
+  .m
+  {
+    min-height: 91vh;
+    margin: 48px 0 0;
+    padding: 0;
+  }
+
   .ripple
   {
     position: relative;
