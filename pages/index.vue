@@ -53,10 +53,10 @@
                       <h6>Ep {{ item.ep }}</h6>
                     </v-flex>
                     <v-flex class="elem-image"
-                            xl5 lg4 md5 sm3 xs4>
+                            xl6 lg4 md5 sm3 xs4>
                       <img v-bind:src="item.picture" height="200" class="picture"/>
                     </v-flex>
-                    <v-flex xl7 lg8 md7 sm9 xs8>
+                    <v-flex xl6 lg8 md7 sm9 xs8>
                       <div class="elem-text-links">
                         <div class="synopsis">
                           {{ item.synopsis }}

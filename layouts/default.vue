@@ -55,8 +55,8 @@
                   status
                   class="wb dragable"
                   v-if="!browser">
+      <v-spacer></v-spacer>
       <div v-if="$store.state.platform !== 'darwin'">
-        <v-spacer></v-spacer>
         <v-icon class="window-icon">remove</v-icon>
         <v-icon class="window-icon">check_box_outline_blank</v-icon>
         <v-icon class="window-icon">close</v-icon>
@@ -64,9 +64,9 @@
 
     </v-system-bar>
 
-    <v-toolbar fixed dark class="mablue tb dragable">
+    <v-toolbar fixed dark class="mablue tb">
       <v-toolbar-side-icon @click.native.stop="toggleDrawer()"></v-toolbar-side-icon>
-      <v-toolbar-title class="white--text title">かわニメ</v-toolbar-title>
+      <v-toolbar-title class="white--text title hidden-xs-only">かわニメ</v-toolbar-title>
       <v-spacer></v-spacer>
       <info-modal></info-modal>
       <v-btn icon
@@ -241,7 +241,7 @@
 
   .title
   {
-    overflow: auto;
+    overflow: hidden;
     padding-left: 20px;
     font-family: "Hiragino Mincho Pro", serif;
     font-size: 30px !important;
