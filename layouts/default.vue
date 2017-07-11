@@ -215,6 +215,7 @@
   .tb
   {
     margin-top: 24px;
+    max-height: 48px;
   }
 
   .navigation-drawer

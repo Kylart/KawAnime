@@ -1,7 +1,5 @@
 @require './vendor/vuetify.styl'
 
-$inputColor := #7f90ab
-
 .page-enter-active, .page-leave-active
   transition: all 1s
 
@@ -39,18 +37,14 @@ $inputColor := #7f90ab
 .non-dragable
   -webkit-app-region: no-drag
 
+.toolbar__content
+  max-height: 48px
+
 .expansion-panel__body:last-child
   border-bottom: 0 !important
 
-//.input-group--text-field.input-group--focused label
-//  color: $inputColor
-//
-//.input-group__details:after
-//  background-color: $inputColor
-
 #title a.list__tile
   height: 60px
-
 
 div.tabs__items
   border-width: 0
