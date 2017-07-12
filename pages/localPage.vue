@@ -257,7 +257,7 @@
   h6
   {
     color: rgba(255, 255, 255, 0.8);
-    margin-top: 0.4rem;
+    margin-top: 0.7rem;
     margin-bottom: 0;
   }
 
@@ -414,7 +414,6 @@
 
   .mark
   {
-    margin-top: -5px;
     font-size: large;
     font-weight: 900;
   }

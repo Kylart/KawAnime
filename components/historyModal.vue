@@ -6,7 +6,7 @@
            slot="activator">History
     </v-btn>
     <v-card class="secondary">
-      <v-card-title>History</v-card-title>
+      <v-card-title class="headline">History</v-card-title>
       <v-divider></v-divider>
         <v-card-text>
           <v-layout row wrap>
@@ -40,7 +40,7 @@
                                :class="isDelete(info.type)">
                           <v-icon class="delete-entry"
                                   v-ripple="true"
-                                  @click.native="clearEntry(info, item)">
+                                  @click.stop="clearEntry(info, item)">
                             clear
                           </v-icon>
                         </v-flex>
@@ -56,6 +56,7 @@
       <v-card-actions style=" padding-right: 20px;">
         <v-spacer></v-spacer>
         <v-btn class="blue--text darken-1"
+               flat
                style="width: 100px;"
                @click.native="$store.commit('setHistoryModal', false)">
           Close
@@ -101,12 +102,6 @@
 </script>
 
 <style scoped>
-  /*noinspection CssUnusedSymbol*/
-  .card__title, .card__row, h6
-  {
-    color: rgba(255, 255, 255, 0.8);
-  }
-
   h6, p
   {
     margin: 0;
