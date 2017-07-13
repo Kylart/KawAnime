@@ -1,9 +1,9 @@
 <template>
   <v-app dark footer toolbar>
     <v-navigation-drawer class="pb-0"
+                         style="width: 280px"
                          temporary
                          overflow
-                         absolute
                          v-model="$store.state.drawer"
     >
       <v-list>
@@ -75,9 +75,7 @@
              @click.native="openInBrowser()">
         <v-icon>open_in_new</v-icon>
       </v-btn>
-      <v-btn icon>
-        <v-icon>settings</v-icon>
-      </v-btn>
+      <settings></settings>
     </v-toolbar>
 
     <main class="m">

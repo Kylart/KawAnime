@@ -95,7 +95,7 @@
         </v-card-text>
         <v-divider/>
         <v-card-text class="subheading white--text">
-          <v-layout row wrap>
+          <v-layout row wrap justify-center>
             <v-flex xs4></v-flex>
             <v-flex xs6 class="modal-icon-container">
               <v-icon class="copy-icon" @click.native="copy()">content_copy</v-icon>
@@ -106,13 +106,14 @@
             </v-flex>
           </v-layout>
         </v-card-text>
-        <v-card-row actions>
-          <v-btn primary dark
-                 style="width: 100px"
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn flat
+                 class="blue--text darken-1"
                  v-on:click.native="$store.state.downloaderModal.show = false">
             Thanks!
           </v-btn>
-        </v-card-row>
+        </v-card-actions>
       </v-card>
     </v-dialog>
     <v-snackbar :timeout="timeout"

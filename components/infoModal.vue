@@ -5,38 +5,38 @@
         <v-icon>search</v-icon>
       </v-btn>
       <v-card class="secondary">
-          <v-card-title class="headline">Which anime are you looking for?</v-card-title>
-          <v-card-text>
-            <v-layout wrap justify-center>
-              <v-flex xs6>
-                <v-text-field
-                    name="search-name"
-                    label="Anime name"
-                    v-model="searchTerm"
-                    dark
-                ></v-text-field>
-              </v-flex>
-              <v-flex xs12>
-                <v-layout row wrap justify-center>
-                  <template v-if="results.length"
-                            v-for="item in results">
-                    <v-flex xs3 class="elem"
-                           @click.native="search(item.name)">
-                      <v-layout wrap justify-center
-                                class="elem-content elevation-3"
-                                @click.all="search(item.name)"
-                                ripple>
-                        <v-flex xs8>
-                          <img :src="item.image_url" height="140" class="elem-picture">
-                        </v-flex>
-                        <v-flex xs10 class="elem-name">{{ item.name }}</v-flex>
-                      </v-layout>
-                    </v-flex>
-                  </template>
-                </v-layout>
-              </v-flex>
-            </v-layout>
-          </v-card-text>
+        <v-card-title class="headline">Which anime are you looking for?</v-card-title>
+        <v-card-text>
+          <v-layout wrap justify-center>
+            <v-flex xs6>
+              <v-text-field
+                  name="search-name"
+                  label="Anime name"
+                  v-model="searchTerm"
+                  dark
+              ></v-text-field>
+            </v-flex>
+            <v-flex xs12>
+              <v-layout row wrap justify-center>
+                <template v-if="results.length"
+                          v-for="item in results">
+                  <v-flex xs3 class="elem"
+                          @click.native="search(item.name)">
+                    <v-layout wrap justify-center
+                              class="elem-content elevation-3"
+                              @click.all="search(item.name)"
+                              ripple>
+                      <v-flex xs8>
+                        <img :src="item.image_url" height="140" class="elem-picture">
+                      </v-flex>
+                      <v-flex xs10 class="elem-name">{{ item.name }}</v-flex>
+                    </v-layout>
+                  </v-flex>
+                </template>
+              </v-layout>
+            </v-flex>
+          </v-layout>
+        </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn class="blue--text darken-1 close-button" flat @click.native="searchShow = false">Close</v-btn>
@@ -45,47 +45,43 @@
     </v-dialog>
     <v-dialog width="800" v-model="resultShow" persistent lazy absolute>
       <v-card class="secondary">
-          <v-card-title class="headline">Result for «{{ searchTerm }}»</v-card-title>
-          <v-card-text>
-            <h4 v-if="error">{{ error }}</h4>
-            <div v-else-if="loading">
-              <h5 class="loading-text">Gathering data...</h5>
-              <h5 class="loading-text">Info should be displayed in a few seconds</h5>
-            </div>
-            <v-card v-else class="secondary">
-              <v-card-content>
-                <v-layout row wrap>
-                  <v-flex xs9>
-                    <v-card-title class="info-title">{{ info.alternativeTitles.japanese[0].replace('Japanese: ', '') }} [{{ info.type }}]</v-card-title>
-                  </v-flex>
-                  <v-flex xs3>
-                    <v-card-title>{{ info.statistics.score.value }} ({{ info.statistics.score.count }})</v-card-title>
-                  </v-flex>
-                </v-layout>
-              </v-card-content>
-              <v-layout row wrap>
-                <v-flex xs3 class="info-pic-container">
-                  <img :src="info.image" class="info-pic"/>
-                </v-flex>
-                <v-flex xs9 class="info-synopsis-container">
-                  <p class="info-synopsis">{{ info.synopsis }}</p>
-                </v-flex>
-              </v-layout>
-              <v-card-content class="top-info">
-                <v-layout>
-                  <v-flex xs9 class="info-text">{{ info.genres.join(', ') }}</v-flex>
-                  <v-flex xs3 class="info-text">{{ info.episodes }} {{ episodeLabel }}</v-flex>
-                </v-layout>
-              </v-card-content>
-              <v-card-content class="bottom-info">
-                <v-layout>
-                  <v-flex xs5 class="info-text">{{ info.studios.join(', ') }}</v-flex>
-                  <v-flex xs4 class="info-text">{{ info.classification }}</v-flex>
-                  <v-flex xs3 class="info-text">{{ info.status }} ({{ info.aired.split(' ')[2] }})</v-flex>
-                </v-layout>
-              </v-card-content>
-            </v-card>
-          </v-card-text>
+        <v-card-title class="headline">Result for «{{ searchTerm }}»</v-card-title>
+        <v-card-text>
+          <h4 v-if="error">{{ error }}</h4>
+          <div v-else-if="loading">
+            <h5 class="loading-text white--text">Gathering data...</h5>
+            <h5 class="loading-text white--text">Info should be displayed in a few seconds</h5>
+          </div>
+          <v-card v-else class="secondary">
+            <v-layout row wrap>
+              <v-flex xs9>
+                <v-card-title class="info-title">{{ info.alternativeTitles.japanese[0].replace('Japanese: ', '') }} [{{
+                  info.type }}]
+                </v-card-title>
+              </v-flex>
+              <v-flex xs3>
+                <v-card-title>{{ info.statistics.score.value }} ({{ info.statistics.score.count }})</v-card-title>
+              </v-flex>
+            </v-layout>
+            <v-layout row wrap>
+              <v-flex xs3 class="info-pic-container">
+                <img :src="info.image" class="info-pic"/>
+              </v-flex>
+              <v-flex xs9 class="info-synopsis-container">
+                <p class="info-synopsis">{{ info.synopsis }}</p>
+              </v-flex>
+            </v-layout>
+            <v-layout class="top-info">
+              <v-flex xs9 class="info-text">{{ info.genres.join(', ') }}</v-flex>
+              <v-flex xs3 class="info-text">{{ info.episodes }} {{ episodeLabel }}</v-flex>
+            </v-layout>
+            <v-layout class="bottom-info">
+              <v-flex xs5 class="info-text">{{ info.studios.join(', ') }}</v-flex>
+              <v-flex xs4 class="info-text">{{ info.classification }}</v-flex>
+              <v-flex xs3 class="info-text">{{ info.status }} ({{ info.aired.split(' ')[2] }})</v-flex>
+            </v-layout>
+          </v-card>
+        </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn class="blue--text darken-1 close-button" flat @click.native="closeResults()">Thanks!</v-btn>
@@ -181,7 +177,6 @@
   {
     text-align: center;
     position: relative;
-    color: rgba(255, 255, 255, 0.8);
   }
 
   .close-button

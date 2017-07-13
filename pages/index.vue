@@ -204,14 +204,16 @@
       downloadAll (name) {
         console.log(`[${(new Date()).toLocaleTimeString()}]: Sending a request to download all episodes of ${name}.`)
 
-        name = name.split(' ').slice(0, -2).join(' ')
         const quality = this.$store.state.releaseQuality
+        const fansub = this.$store.state.releaseFansub
 
         axios.post('download', {
           name: name,
           quality: quality,
-          fromEp: 0,
-          untilEp: 20000
+          fromEp: -Infinity,
+          untilEp: Infinity,
+          fansub: fansub,
+          choice: 'si'
         }).then(({data}) => {
           console.log(`[${(new Date()).toLocaleTimeString()}]: Server responded!`)
 
@@ -220,7 +222,7 @@
           })
         }).catch((err) => {
           console.log(`[${(new Date()).toLocaleTimeString()}]: An error occurred... ${err}`)
-          this.$store.commit('setErrorSnackbar', `An error occurred while getting ${name}.`)
+          this.$store.commit('setInfoSnackbar', `An error occurred while getting ${name}.`)
         })
       },
       async refresh () {
@@ -271,13 +273,6 @@
     display: inline-block;
   }
 
-  /* Needed */
-  /*noinspection CssUnusedSymbol*/
-  .icon--large
-  {
-    height: 2.5rem;
-  }
-
   .time-container
   {
     align-self: center;
@@ -307,6 +302,7 @@
 
   .elem-content:hover
   {
+    transition: all 0.4s;
     box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
     0 8px 10px 1px rgba(0, 0, 0, 0.14),
     0 3px 14px 2px rgba(0, 0, 0, 0.12) !important;

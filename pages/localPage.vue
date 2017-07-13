@@ -4,14 +4,14 @@
       <v-layout row wrap style="margin: 0 1% 0 1%;">
         <v-flex xs12 class="menubar">
           <v-layout row wrap>
-            <v-flex xs2 class="menu-eps">
+            <v-flex hidden-sm-and-up xs2></v-flex>
+            <v-flex xs4 sm3 md2 class="menu-eps">
               <p class="menu-eps-text">{{ nbEps }} {{ episodeLabel }}</p>
             </v-flex>
-            <v-flex xs2>
+            <v-flex xs4 sm2 md2>
               <history-modal></history-modal>
             </v-flex>
-            <v-flex xs3></v-flex>
-            <v-flex xs5 class="menu-buttons">
+            <v-flex xs12 sm7 offset-md3 md5 offset-lg4 lg4 offset-xl5 xl3 class="menu-buttons">
               <v-btn icon
                      class="refresh-button"
                      v-if="!this.$store.state.refreshingLocal"
@@ -38,15 +38,14 @@
         </v-flex>
         <transition-group name="list">
           <template v-for="item in files">
-            <v-flex :key="item.name + item.ep" xs12 sm6 md4 xl3
+            <v-flex :key="item.path" xs12 sm6 md4 xl3
                    class="elem">
               <v-card class="elem-content elevation-3" v-ripple="true">
                 <v-card-text class="elem-card">
                   <v-container fluid style="padding: 0;">
                     <v-layout row wrap class="elem-container">
-                      <v-flex xs6 sm5
-                             v-tooltip:top="{ html: item.name }"
-                             class="elem-title">
+                      <v-flex xs7
+                             v-tooltip:top="{ html: item.name }">
                         <h6 class="title ellipsis">{{ item.name }}</h6>
                       </v-flex>
                       <v-flex xs2
@@ -54,7 +53,7 @@
                              class="elem-ep text-xs-right">
                         <p class="ellipsis ep">{{ item.ep }} / {{ item.numberOfEpisode }}</p>
                       </v-flex>
-                      <v-flex offset-xs1 xs3 sm4>
+                      <v-flex xs3 class="buttons-container">
                         <v-btn large icon
                                class="play-button"
                                @click.native="playThis(item.path)">
@@ -66,8 +65,8 @@
                           <v-icon medium>delete_forever</v-icon>
                         </v-btn>
                       </v-flex>
-                      <v-flex xs8 v-tooltip:top="{ html: item.genres.join(', ') }">
-                        <p class="ellipsis genres">{{ item.genres.join(', ') }}</p>
+                      <v-flex xs8 v-tooltip:top="{ html: item.genres.length ? item.genres.join(', ') : 'No specified genre' }">
+                        <p class="ellipsis genres">{{ item.genres.length ? item.genres.join(', ') : 'No specified genre' }}</p>
                       </v-flex>
                       <v-flex xs4 v-tooltip:top="{ html: item.classification.replace('None', 'No restriction') }">
                         <p class="ellipsis classification">
@@ -116,8 +115,12 @@
             <v-flex xs3 class="menu-buttons">
               <v-btn icon
                      class="refresh-button"
+                     v-if="!this.$store.state.refreshingLocal"
                      @click.native="refresh()">
                 <v-icon large>refresh</v-icon>
+              </v-btn>
+              <v-btn v-else icon loading
+                     class="refresh-button">
               </v-btn>
               <v-btn flat dark
                      @click.native="changePath()"
@@ -261,6 +264,12 @@
     margin-bottom: 0;
   }
 
+  span
+  {
+    max-width: 100%;
+    width: 100%;
+  }
+
   .ellipsis
   {
     overflow: hidden;
@@ -288,12 +297,6 @@
     padding-left: 8%;
   }
 
-  .menu-buttons
-  {
-    display: inline-block;
-    text-align: center;
-  }
-
   .refresh-button, .change-dir-button
   {
     display: inline-block;
@@ -303,6 +306,12 @@
   {
     border-color: #ff9800 !important;
     background-color: #ff9800 !important;
+  }
+
+  .menu-buttons
+  {
+    display: flex;
+    justify-content: center;
   }
 
   /* -------------- ELEMS -------------- */
@@ -321,6 +330,7 @@
 
   .elem-content:hover
   {
+    transition: all 0.25s;
     box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12) !important;
   }
 
@@ -340,11 +350,25 @@
     line-height: 30px;
   }
 
+  .elem-ep
+  {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
   .ep
   {
-    margin-top: 10px;
+    margin: 0;
     font-size: 15px;
     font-weight: 800;
+  }
+
+  .buttons-container
+  {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
   }
 
   .play-button
@@ -363,6 +387,11 @@
   {
     padding-left: 15px;
     font-weight: 600;
+  }
+
+  .classification
+  {
+    padding-right: 10px;
   }
 
   .picture-container
