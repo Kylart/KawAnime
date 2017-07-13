@@ -138,10 +138,6 @@
           'Fuyu',
           'DefinitelyNotMe'
         ],
-        soundChoices: [
-          'None',
-          'Nyanpasu'
-        ],
         itemGroup: [
           {
             title: 'Download',
