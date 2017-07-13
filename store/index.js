@@ -1,6 +1,4 @@
-// noinspection NpmUsedModulesInstalled
 import Vue from 'vue'
-// noinspection NpmUsedModulesInstalled
 import Vuex from 'vuex'
 import axios from 'axios'
 import moment from 'moment'
@@ -15,11 +13,13 @@ const log = (message) => {
 
 const store = new Vuex.Store({
   state: {
+    platform: '',
+    drawer: false,
     autoRefreshReleases: true,
     releaseFansub: '',
     releaseQuality: '',
     releases: [],
-    releasesUpdateTime: (new Date()).toLocaleTimeString(),
+    releasesUpdateTime: moment(),
     releaseParams: {
       fansub: '',
       quality: '',
@@ -58,7 +58,6 @@ const store = new Vuex.Store({
     },
     config: {},
     configDir: '',
-    currentDir: '',
     searchInputModal: false,
     searchInput: '',
     searchInfo: {},
@@ -69,6 +68,9 @@ const store = new Vuex.Store({
     addToChoice: false
   },
   mutations: {
+    setPlatform (state, data) {
+      state.platform = data
+    },
     init (state, data) {
       const config = data
       config.inside = config.inside.toString()
@@ -77,7 +79,6 @@ const store = new Vuex.Store({
       // const config = {
       //   fansub: 'HorribleSubs',
       //   quality: '720p',
-      //   sound: 'Nyanpasu',
       //   localPath: join(userInfo().homedir, 'Downloads'),
       //   inside: true,
       //   magnets: false
@@ -86,13 +87,15 @@ const store = new Vuex.Store({
       state.releaseFansub = config.fansub
       state.releaseQuality = config.quality
       state.downloaderForm.quality = config.quality
-      state.configDir = config.localPath
       state.currentDir = config.localPath
 
       state.releaseParams.fansub = config.fansub
       state.releaseParams.quality = config.quality
 
       state.config = config
+    },
+    toggleDrawer (state) {
+      state.drawer = !state.drawer
     },
     setReleaseParams (state, data) {
       state.releaseParams = data
@@ -157,10 +160,6 @@ const store = new Vuex.Store({
       state.watchLists = data
       log('Updated watch lists.')
     },
-    setConfigDir: function (state, data) {
-      state.configDir = data
-      log(`Config directory now is ${state.currentDir}`)
-    },
     setDownloaderValues: function (state, data) {
       state.downloaderForm = data
     },
@@ -172,6 +171,10 @@ const store = new Vuex.Store({
     },
     showDownloaderModal: function (state, value) {
       state.downloaderModal.show = value
+    },
+    setConfigDir: function (state, data) {
+      state.config.localPath = data
+      log(`Config directory now is ${state.currentDir}`)
     },
     setConfig: function (state, data) {
       state.config = data
@@ -223,6 +226,9 @@ const store = new Vuex.Store({
     }
   },
   actions: {
+    nuxtServerInit ({commit}, {env}) {
+      commit('setPlatform', env.platform)
+    },
     async init ({commit, dispatch}) {
       if (!started) {
         started = true
@@ -561,13 +567,20 @@ const store = new Vuex.Store({
 
       state.downloaderForm.loading = false
     },
-    saveConfig ({}, data) {  // eslint-disable-line
+    saveConfig ({commit}, data) {  // eslint-disable-line
       axios.post('saveConfig', JSON.stringify({
         config: data
       })).then((res) => {
-        if (res.status === 200) { log(`Successfully updated config!`) }
+        if (res.status === 200) {
+          log(`Successfully updated config!`)
+          commit('setInfoSnackbar', 'Config saved successfully.')
+        }
       }).catch((err) => {
         log(`An error occurred while saving config: ${err}`)
+        commit(
+          'setInfoSnackbar',
+          'An error occurred while saving config. If the problem continues to occur, please restart KawAnime and try again.'
+        )
       })
     },
     appendHistory ({}, data) {  // eslint-disable-line

@@ -1,42 +1,41 @@
 <template>
-  <v-container fluid>
+  <v-container fluid style="padding: 0; min-height: 92vh;">
     <loader v-if="!$store.state.news.length"></loader>
 
     <v-container fluid v-else>
-      <v-row class="news-container">
-        <v-col xs12 class="refresh-button-container">
+      <v-layout row wrap class="news-container">
+        <v-flex xs12 class="refresh-button-container">
           <v-btn icon
                  class="refresh-button"
                  @click.native="refresh()">
             <v-icon large>refresh</v-icon>
           </v-btn>
-        </v-col>
-        <v-col xs12
+        </v-flex>
+        <v-flex xs12
                class="elem elevation-3"
                v-ripple="true"
                v-for="item in $store.state.news" :key="item.name">
-          <v-row>
-            <v-col xs12>
+          <v-layout row wrap>
+            <v-flex xs12>
               <h3 class="title">{{ item.title }}</h3>
-            </v-col>
-            <v-col md2 xs3 class="image">
-              <img :src="item.image" height="220" max-width="20%"/>
-            </v-col>
-            <v-col md10 xs9>
-              <v-row>
-                <v-col xs12><p class="synopsis">{{ item.text }}</p></v-col>
-              </v-row>
+            </v-flex>
+            <v-flex md2 xs3 >
+              <img :src="item.image" class="image"/>
+            </v-flex>
+            <v-flex md10 xs9>
+              <v-layout row wrap>
+                <v-flex xs12><p class="synopsis">{{ item.text }}</p></v-flex>
+              </v-layout>
               <v-row xs12 class="link">
                 <div class="button-container">
                   <v-btn secondary block @click.native="open(item.link)">Open</v-btn>
                 </div>
               </v-row>
-            </v-col>
-          </v-row>
-        </v-col>
-      </v-row>
+            </v-flex>
+          </v-layout>
+        </v-flex>
+      </v-layout>
     </v-container>
-
   </v-container>
 </template>
 
@@ -110,6 +109,7 @@
 
   .elem:hover
   {
+    transition: all 0.25s;
     box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
     0 8px 10px 1px rgba(0, 0, 0, 0.14),
     0 3px 14px 2px rgba(0, 0, 0, 0.12) !important;
@@ -134,6 +134,7 @@
   .image
   {
     height: 220px;
+    max-width: 100%;
   }
 
   .synopsis

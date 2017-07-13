@@ -1,129 +1,123 @@
 <template xmlns:v-bind="http://www.w3.org/1999/xhtml">
-  <v-container fluid id="watch-list">
+  <v-container fluid id="watch-list" class="pa-0">
     <v-tabs id="tabs" grow icons>
-      <template v-for="i in 5">
-        <v-tab-item :href="'#tabs-' + i"
-                    slot="activators">
-          {{ actionsList[i - 1].name }}
-          <v-icon>{{ actionsList[i - 1].icon }}</v-icon>
-        </v-tab-item>
-      </template>
-      <v-tab-content v-for="i in 5" :key="i"
-                     v-bind:id="'tabs-' + i"
-                     slot="content">
-        <v-card>
+      <v-tabs-bar slot="activators" class="mablue">
+        <v-tabs-slider class="primary"></v-tabs-slider>
+        <template v-for="i in 5">
+          <v-tabs-item :href="'#tabs-' + i">
+            {{ actionsList[i - 1].name }}
+            <v-icon>{{ actionsList[i - 1].icon }}</v-icon>
+          </v-tabs-item>
+        </template>
+      </v-tabs-bar>
+      <v-tabs-content v-for="i in 5" :key="i"
+                      v-bind:id="'tabs-' + i">
+        <v-card style="background-color: #303030">
           <v-card-text>
-            <v-row class="list-container">
-              <v-col xs12>
-                <v-row class="top-form">
-                  <v-col md3 sm4 xs12>
-                    <v-btn secondary icon
+            <v-layout row wrap class="list-container">
+              <v-flex xs12>
+                <v-layout row wrap justify-center class="top-form">
+                  <v-flex md3 sm4 xs9>
+                    <v-btn icon flat
                            @click.native="selectAll(i)"
                            v-tooltip:bottom="{ html: allSelected[i] ? 'Unselect all' : 'Select all' }">
                       <v-icon>select_all</v-icon>
                     </v-btn>
-                    <v-menu transition="v-slide-x-transition"
-                            bottom
-                            right>
+                    <v-menu open-on-hover
+                            transition="slide-x-transition">
                       <v-btn secondary dark slot="activator">Move to</v-btn>
                       <v-list>
-                        <v-list-item @click.capture="moveTo(action.list, i)"
+                        <v-list-tile @click.capture="moveTo(action.list, i)"
                                      v-for="action in actions(i)"
                                      :key="action">
-                          <v-list-tile>
-                            <v-list-tile-action>
-                              <v-icon>{{ action.icon }}</v-icon>
-                            </v-list-tile-action>
-                            <v-list-tile-title>{{ action.name }}</v-list-tile-title>
-                          </v-list-tile>
-                        </v-list-item>
+                          <v-list-tile-action>
+                            <v-icon>{{ action.icon }}</v-icon>
+                          </v-list-tile-action>
+                          <v-list-tile-title>{{ action.name }}</v-list-tile-title>
+                        </v-list-tile>
                       </v-list>
                     </v-menu>
                     <v-btn @click.native="deleteSelected(i)"
                            class="red--text"
-                           v-tooltip:bottom="{ html: 'delete all selected items from this list' }"
+                           v-tooltip:bottom="{ html: 'Delete all selected items from this list' }"
                            icon>
                       <v-icon>delete_sweep</v-icon>
                     </v-btn>
-                  </v-col>
-                  <v-col md2 sm2 xs12>
+                  </v-flex>
+                  <v-flex md2 sm2 xs3>
                     <p class="elem-number">
                       {{ lists[i - 1].length }} {{ lists[i - 1].length === 1 ? 'entry' : 'entries' }}
                     </p>
-                  </v-col>
-                  <v-col md3 sm1 xs0></v-col>
-                  <v-col md2 sm3 xs12 @keyup.enter="addEntry(i)">
+                  </v-flex>
+                  <v-flex md3 sm1 hidden-xs-only></v-flex>
+                  <v-flex md2 sm3 xs4 @keyup.enter="addEntry(i)">
                     <v-text-field type="text"
                                   class="entry-text"
                                   label="Add entry"
                                   v-model="entries[i]"
                                   dark>
                     </v-text-field>
-                  </v-col>
-                  <v-col md2 sm2 xs12 class="add-button-container">
+                  </v-flex>
+                  <v-flex hidden-sm-and-up xs1></v-flex>
+                  <v-flex md2 sm2 xs4 class="add-button-container">
                     <v-btn dark secondary
                            @click.native="addEntry(i)"
-                           class="add-button">Add
+                           class="add-button">
+                      Add
                     </v-btn>
-                  </v-col>
-                </v-row>
-              </v-col>
+                  </v-flex>
+                </v-layout>
+              </v-flex>
               <transition-group name="list">
                 <template v-for="item in lists[i - 1]">
-                  <v-col lg4 sm6 xs12
-                         :key="item"
-                         class="elem"
-                         :class="item.split(' ').join('-')">
+                  <v-flex xs12 sm6 md4
+                          :key="item"
+                          class="elem"
+                          :class="item.split(' ').join('-')">
                     <v-card class="elem-content elevation-3" v-ripple="true">
-                      <v-row>
-                        <v-col xs1 class="box" @click.capture="select(item, i)">
+                      <v-layout row wrap>
+                        <v-flex xs1 class="box" @click.capture="select(item, i)">
                           <v-checkbox label="" accent v-model="selected[i]" disabled :value="item" dark/>
-                        </v-col>
-                        <v-col xs9 v-tooltip:top="{ html: item }" @click.capture="select(item, i)">
+                        </v-flex>
+                        <v-flex xs9 v-tooltip:top="{ html: item }" @click.capture="select(item, i)">
                           <h6 class="ellipsis elem-title">{{ item }}</h6>
-                        </v-col>
-                        <v-col xs2>
+                        </v-flex>
+                        <v-flex xs2>
                           <v-menu bottom right>
                             <v-btn icon="icon" slot="activator" dark>
                               <v-icon>more_vert</v-icon>
                             </v-btn>
                             <v-list>
-                              <v-list-item>
-                                <v-list-tile>
-                                  <v-list-tile-action>
-                                    <v-icon>file_download</v-icon>
-                                  </v-list-tile-action>
-                                  <v-list-tile-title>Download</v-list-tile-title>
-                                </v-list-tile>
-                              </v-list-item>
-                              <v-list-item>
-                                <v-list-tile>
-                                  <v-list-tile-action>
-                                    <v-icon>info_outline</v-icon>
-                                  </v-list-tile-action>
-                                  <v-list-tile-title>Information</v-list-tile-title>
-                                </v-list-tile>
-                              </v-list-item>
-                              <v-list-item>
-                                <v-list-tile @click.native="deleteEntry(item, i)">
-                                  <v-list-tile-action>
-                                    <v-icon>delete_sweep</v-icon>
-                                  </v-list-tile-action>
-                                  <v-list-tile-title>Delete this entry</v-list-tile-title>
-                                </v-list-tile>
-                              </v-list-item>
+                              <v-list-tile>
+                                <v-list-tile-action>
+                                  <v-icon>file_download</v-icon>
+                                </v-list-tile-action>
+                                <v-list-tile-title>Download</v-list-tile-title>
+                              </v-list-tile>
+                              <v-list-tile>
+                                <v-list-tile-action>
+                                  <v-icon>info_outline</v-icon>
+                                </v-list-tile-action>
+                                <v-list-tile-title>Information</v-list-tile-title>
+                              </v-list-tile>
+                              <v-list-tile @click.native="deleteEntry(item, i)">
+                                <v-list-tile-action>
+                                  <v-icon>delete_sweep</v-icon>
+                                </v-list-tile-action>
+                                <v-list-tile-title>Delete this entry</v-list-tile-title>
+                              </v-list-tile>
                             </v-list>
                           </v-menu>
-                        </v-col>
-                      </v-row>
+                        </v-flex>
+                      </v-layout>
                     </v-card>
-                  </v-col>
+                  </v-flex>
                 </template>
               </transition-group>
-            </v-row>
+            </v-layout>
           </v-card-text>
         </v-card>
-      </v-tab-content>
+      </v-tabs-content>
     </v-tabs>
   </v-container>
 </template>
@@ -362,6 +356,7 @@
 
   .elem-content:hover
   {
+    transition: all 0.25s;
     box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
     0 8px 10px 1px rgba(0, 0, 0, 0.14),
     0 3px 14px 2px rgba(0, 0, 0, 0.12) !important;
