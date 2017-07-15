@@ -1,17 +1,17 @@
 <template>
   <v-container fluid class="page-container">
     <div v-if="files.length">
-      <v-row style="margin: 0 1% 0 1%;">
-        <v-col xs12 class="menubar">
-          <v-row>
-            <v-col xs2 class="menu-eps">
+      <v-layout row wrap style="margin: 0 1% 0 1%;">
+        <v-flex xs12 class="menubar">
+          <v-layout row wrap>
+            <v-flex hidden-sm-and-up xs2></v-flex>
+            <v-flex xs4 sm3 md2 class="menu-eps">
               <p class="menu-eps-text">{{ nbEps }} {{ episodeLabel }}</p>
-            </v-col>
-            <v-col xs2>
+            </v-flex>
+            <v-flex xs4 sm2 md2>
               <history-modal></history-modal>
-            </v-col>
-            <v-col xs4></v-col>
-            <v-col xs4 class="menu-buttons">
+            </v-flex>
+            <v-flex xs12 sm7 offset-md3 md5 offset-lg4 lg4 offset-xl5 xl3 class="menu-buttons">
               <v-btn icon
                      class="refresh-button"
                      v-if="!this.$store.state.refreshingLocal"
@@ -33,28 +33,27 @@
                 Refresh local info
               </v-btn>
               <v-btn secondary dark v-else class="reset-cache-button" loading></v-btn>
-            </v-col>
-          </v-row>
-        </v-col>
+            </v-flex>
+          </v-layout>
+        </v-flex>
         <transition-group name="list">
           <template v-for="item in files">
-            <v-col :key="item.name + item.ep" xs12 md6 xl4
+            <v-flex :key="item.path" xs12 sm6 md4 xl3
                    class="elem">
               <v-card class="elem-content elevation-3" v-ripple="true">
                 <v-card-text class="elem-card">
                   <v-container fluid style="padding: 0;">
-                    <v-row class="elem-container">
-                      <v-col xs7
-                             v-tooltip:top="{ html: item.name }"
-                             class="elem-title">
+                    <v-layout row wrap class="elem-container">
+                      <v-flex xs7
+                             v-tooltip:top="{ html: item.name }">
                         <h6 class="title ellipsis">{{ item.name }}</h6>
-                      </v-col>
-                      <v-col xs2
+                      </v-flex>
+                      <v-flex xs2
                              v-tooltip:top="{ html: 'Episode ' + item.ep }"
                              class="elem-ep text-xs-right">
                         <p class="ellipsis ep">{{ item.ep }} / {{ item.numberOfEpisode }}</p>
-                      </v-col>
-                      <v-col xs3>
+                      </v-flex>
+                      <v-flex xs3 class="buttons-container">
                         <v-btn large icon
                                class="play-button"
                                @click.native="playThis(item.path)">
@@ -65,73 +64,81 @@
                                @click.native="delThis(item.path)">
                           <v-icon medium>delete_forever</v-icon>
                         </v-btn>
-                      </v-col>
-                      <v-col xs8 v-tooltip:top="{ html: item.genres.join(', ') }">
-                        <p class="ellipsis genres">{{ item.genres.join(', ') }}</p>
-                      </v-col>
-                      <v-col xs4 v-tooltip:top="{ html: item.classification.replace('None', 'No restriction') }">
+                      </v-flex>
+                      <v-flex xs8 v-tooltip:top="{ html: item.genres.length ? item.genres.join(', ') : 'No specified genre' }">
+                        <p class="ellipsis genres">{{ item.genres.length ? item.genres.join(', ') : 'No specified genre' }}</p>
+                      </v-flex>
+                      <v-flex xs4 v-tooltip:top="{ html: item.classification.replace('None', 'No restriction') }">
                         <p class="ellipsis classification">
                           {{ item.classification.replace('None', 'No restriction') }}
                         </p>
-                      </v-col>
-                      <v-col xl5 lg4 md5 sm3 xs4 class="picture-container">
-                        <img :src="item.picture" class="picture" height="220">
-                      </v-col>
-                      <v-col xl7 lg8 md7 sm9 xs8 class="bottom-right-container">
-                        <p class="synopsis">{{ reduced(item.synopsis) }}</p>
-                        <v-row>
-                          <v-col xs2>
-                            <p class="year">{{ item.year }}</p>
-                          </v-col>
-                          <v-col xs7>
-                            <p class="status">{{ item.status }}</p>
-                          </v-col>
-                          <v-col xs3><p class="mark">{{ item.mark }}</p></v-col>
-                        </v-row>
-                      </v-col>
-                    </v-row>
+                      </v-flex>
+                      <v-flex xl5 lg4 md5 sm3 xs4 class="picture-container">
+                        <img :src="item.picture" class="picture">
+                      </v-flex>
+                      <v-flex xl7 lg8 md7 sm9 xs8 class="bottom-right-container">
+                        <v-layout row wrap justify-space-between>
+                          <v-flex xs12><div class="synopsis">{{ reduced(item.synopsis) }}</div></v-flex>
+                          <v-flex xs12 style="display: flex">
+                            <v-layout align-center justify-space-between style="min-width: 100%">
+                              <v-flex xs2>
+                                <p class="year">{{ item.year }}</p>
+                              </v-flex>
+                              <v-flex xs7>
+                                <p class="status">{{ item.status }}</p>
+                              </v-flex>
+                              <v-flex xs3><p class="mark">{{ item.mark }}</p></v-flex>
+                            </v-layout>
+                          </v-flex>
+                        </v-layout>
+                      </v-flex>
+                    </v-layout>
                   </v-container>
                 </v-card-text>
               </v-card>
-            </v-col>
+            </v-flex>
           </template>
         </transition-group>
-      </v-row>
+      </v-layout>
     </div>
     <v-container fluid v-else>
       <transition name="fade">
         <img v-if="emptyBg" class="empty-bg" height="400" src="~static/images/empty-bg.png"/>
       </transition>
-      <v-row>
-        <v-col xs12 class="menubar">
-          <v-row>
-            <v-col offset-xs2 xs2>
+      <v-layout row wrap>
+        <v-flex xs12 class="menubar">
+          <v-layout row wrap>
+            <v-flex offset-xs2 xs2>
               <history-modal></history-modal>
-            </v-col>
-            <v-col xs5></v-col>
-            <v-col xs3 class="menu-buttons">
+            </v-flex>
+            <v-flex xs5></v-flex>
+            <v-flex xs3 class="menu-buttons">
               <v-btn icon
                      class="refresh-button"
+                     v-if="!this.$store.state.refreshingLocal"
                      @click.native="refresh()">
                 <v-icon large>refresh</v-icon>
+              </v-btn>
+              <v-btn v-else icon loading
+                     class="refresh-button">
               </v-btn>
               <v-btn flat dark
                      @click.native="changePath()"
                      class="change-dir-button">
                 Change dir
               </v-btn>
-            </v-col>
-          </v-row>
-        </v-col>
-        <v-col xs12 class="empty-message">
+            </v-flex>
+          </v-layout>
+        </v-flex>
+        <v-flex xs12 class="empty-message">
           <h3>Wow such empty!</h3>
           <h4>Start downloading anime
             <nuxt-link to="/downloader" class="green--text">here</nuxt-link>
             or
             <nuxt-link to="/" class="cyan--text">here!</nuxt-link>
           </h4>
-        </v-col>
-      </v-row>
+        </v-flex>
+      </v-layout>
     </v-container>
   </v-container>
 </template>
@@ -253,15 +260,14 @@
   h6
   {
     color: rgba(255, 255, 255, 0.8);
-    margin-top: 0.4rem;
+    margin-top: 0.7rem;
     margin-bottom: 0;
   }
 
-  /* Needed */
-  /*noinspection CssUnusedSymbol*/
-  .icon--large, .icon--medium
+  span
   {
-    height: 2.5rem;
+    max-width: 100%;
+    width: 100%;
   }
 
   .ellipsis
@@ -273,7 +279,7 @@
 
   .page-container
   {
-    height: 91.5vh;
+    min-height: 92vh !important;
   }
 
   /* ------------- MENUBAR ------------- */
@@ -291,12 +297,6 @@
     padding-left: 8%;
   }
 
-  .menu-buttons
-  {
-    display: inline-block;
-    text-align: center;
-  }
-
   .refresh-button, .change-dir-button
   {
     display: inline-block;
@@ -306,6 +306,12 @@
   {
     border-color: #ff9800 !important;
     background-color: #ff9800 !important;
+  }
+
+  .menu-buttons
+  {
+    display: flex;
+    justify-content: center;
   }
 
   /* -------------- ELEMS -------------- */
@@ -324,12 +330,13 @@
 
   .elem-content:hover
   {
+    transition: all 0.25s;
     box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12) !important;
   }
 
   .elem-card
   {
-    padding: 0 10px 0 0;
+    padding: 0 5px 0 0;
   }
 
   .elem-container
@@ -343,11 +350,25 @@
     line-height: 30px;
   }
 
+  .elem-ep
+  {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
   .ep
   {
-    margin-top: 10px;
+    margin: 0;
     font-size: 15px;
     font-weight: 800;
+  }
+
+  .buttons-container
+  {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
   }
 
   .play-button
@@ -368,6 +389,11 @@
     font-weight: 600;
   }
 
+  .classification
+  {
+    padding-right: 10px;
+  }
+
   .picture-container
   {
     height: 220px;
@@ -377,13 +403,25 @@
   .picture
   {
     max-width: 100%;
+    height: 220px;
+  }
+
+  .bottom-right-container
+  {
+    position: relative;
+    display: flex;
   }
 
   .synopsis
   {
     padding: 2px 5px 5px 5px;
     text-align: justify;
-    height: 175px;
+    display: block;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+    overflow: hidden;
+    height: 9em;
+    line-height: 1.5em;
   }
 
   p.year, p.status, p.mark
@@ -405,7 +443,6 @@
 
   .mark
   {
-    margin-top: -5px;
     font-size: large;
     font-weight: 900;
   }
