@@ -3,32 +3,37 @@
             persistent
             width="650">
     <v-card>
-        <v-card-title class="headline">Add «{{ entry }}» to</v-card-title>
+      <v-card-row>
+        <v-card-title>Add «{{ entry }}» to</v-card-title>
+      </v-card-row>
+      <v-card-row>
         <v-card-text>
-          <v-layout row wrap>
+          <v-row>
             <template v-for="i in 5">
-              <v-flex v-if="!options[i - 1].half" xs4 class="checkbox-container">
+              <v-col v-if="!options[i - 1].half" xs4 class="checkbox-container">
                 <v-checkbox v-model="selected"
                             :value="options[i - 1].value"
                             :label="options[i - 1].label"
-                            class="option">
+                            class="option"
+                            light>
                 </v-checkbox>
-              </v-flex>
-              <v-flex v-else xs6 class="checkbox-container">
+              </v-col>
+              <v-col v-else xs6 class="checkbox-container">
                 <v-checkbox v-model="selected"
                             :value="options[i - 1].value"
                             :label="options[i - 1].label"
-                            class="option">
+                            class="option"
+                            light>
                 </v-checkbox>
-              </v-flex>
+              </v-col>
             </template>
-          </v-layout>
+          </v-row>
         </v-card-text>
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn class="blue--text darken-1" flat @click.native="add()">Add</v-btn>
-        <v-btn class="blue--text darken-1" flat @click.native="hide()">Close</v-btn>
-      </v-card-actions>
+      </v-card-row>
+      <v-card-row actions>
+        <v-btn class="blue--text darken-1" flat="flat" @click.native="add()">Add</v-btn>
+        <v-btn class="blue--text darken-1" flat="flat" @click.native="hide()">Close</v-btn>
+      </v-card-row>
     </v-card>
   </v-dialog>
 </template>

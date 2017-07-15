@@ -34,6 +34,7 @@ const createConfig = () => {
       config: {
         fansub: 'HorribleSubs',
         quality: '720p',
+        sound: 'Nyanpasu',
         localPath: join(userInfo().homedir, 'Downloads'),
         inside: true,
         magnets: false

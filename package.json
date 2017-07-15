@@ -32,13 +32,12 @@
     "horrible-api": "^1.0.5",
     "lodash": "^4.17.4",
     "mal-scraper": "^1.4.1",
-    "mdi": "^1.9.33",
     "moment": "^2.18.1",
     "nuxt": "^0.10.5",
     "nyaapi": "^1.2.2",
     "play-sound": "^1.1.1",
     "url-parse": "^1.1.8",
-    "vuetify": "^0.13.1"
+    "vuetify": "^0.11.1"
   },
   "devDependencies": {
     "ava": "^0.19.1",
