@@ -8,9 +8,6 @@ module.exports = {
     width: 1200,
     height: 800
   },
-  env: {
-    platform: process.platform
-  },
   build: {
     vendor: ['vuetify', 'axios']
   },
@@ -18,7 +15,6 @@ module.exports = {
     '~plugins/vuetify.js'
   ],
   css: [
-    {src: join(__dirname, 'css/mdi.css'), lang: 'css'},
     {src: join(__dirname, 'css/app.styl'), lang: 'styl'}
   ],
   head: {
@@ -29,7 +25,8 @@ module.exports = {
     ],
     link: [
       {rel: 'icon', type: 'image/x-icon', href: '/favicon.ico'},
-      {rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons'}
+      {rel: 'stylesheet', href: 'http://fonts.googleapis.com/css?family=Roboto'},
+      {rel: 'stylesheet', href: 'http://fonts.googleapis.com/icon?family=Material+Icons'}
     ]
   }
 }

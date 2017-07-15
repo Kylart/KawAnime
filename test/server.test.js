@@ -94,6 +94,7 @@ test('/getConfig.json route exits and returns json with right keys', async t => 
   t.not(data.config, undefined)
   t.not(data.config.fansub, undefined)
   t.not(data.config.quality, undefined)
+  t.not(data.config.sound, undefined)
   t.not(data.config.localPath, undefined)
   t.not(data.config.inside, undefined)
   t.not(data.config.magnets, undefined)
@@ -101,12 +102,17 @@ test('/getConfig.json route exits and returns json with right keys', async t => 
 
 test('/saveConfig.json route exits and saves config and return 200', async t => {
   let config = require(join(DIR, 'config.json'))
+  const saved = config.sound
+  config.sound = 'Test'
 
   const { status } = await axios.post(`${uri}/saveConfig`, JSON.stringify(config))
 
   t.is(status, 200)
 
   config = require(join(DIR, 'config.json'))
+  t.is(config.sound, 'Test')
+
+  config.sound = saved
 
   writeFileSync(join(DIR, 'config.json'), JSON.stringify(config), 'utf-8')
 })

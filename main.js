@@ -52,10 +52,10 @@ const POLL_INTERVAL = 300
 const pollServer = () => {
   http.get(_NUXT_URL_, ({statusCode}) => {
     statusCode !== 200
-      ? setTimeout(pollServer, POLL_INTERVAL)
-      : win.loadURL(_NUXT_URL_)
+        ? setTimeout(pollServer, POLL_INTERVAL)
+        : win.loadURL(_NUXT_URL_)
   })
-    .on('error', pollServer)
+      .on('error', pollServer)
 }
 
 // Disable error dialogs by overriding
@@ -72,7 +72,6 @@ const newWin = () => {
     width: config.electron.width,
     height: config.electron.height,
     titleBarStyle: 'hidden',
-    frame: process.platform === 'darwin',
     show: false
   })
 

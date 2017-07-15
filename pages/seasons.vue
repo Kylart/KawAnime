@@ -1,10 +1,11 @@
 <template xmlns:v-tooltip="http://www.w3.org/1999/xhtml">
-  <div style="min-height: 95vh">
+  <v-container fluid>
     <loader v-if="!season[1].items"></loader>
 
-    <v-container fluid v-else style="padding: 20px 0 0">
-      <v-layout row wrap justify-center class="form-container">
-        <v-flex sm3 xs8 class="season-container">
+    <v-container fluid v-else>
+      <v-row class="form-container">
+        <v-col md1 xs0></v-col>
+        <v-col md3 xs12 class="season-container">
           <v-select
               v-bind:items="seasonChoices"
               v-model="$store.state.season"
@@ -12,139 +13,139 @@
               dark
               item-text="name"
               item-value="value"/>
-        </v-flex>
-        <v-flex offset-sm1 sm3 xs8 class="year-container">
+        </v-col>
+        <v-col md3 xs12 class="year-container">
           <v-text-field name="input-year"
                         type="number" min="2010"
                         label="Year"
                         v-model="$store.state.year"
                         dark>
           </v-text-field>
-        </v-flex>
-        <v-flex offset-sm1 sm2 xs8 class="refresh-button">
+        </v-col>
+        <v-col md4 xs12 class="refresh-button">
           <v-btn secondary block dark @click.native="refreshSeason()">Refresh</v-btn>
-        </v-flex>
-      </v-layout>
+        </v-col>
+        <v-col md1 xs0></v-col>
+      </v-row>
 
-      <v-tabs id="tabs" dark fixed centered>
-        <v-tabs-bar slot="activators" class="mablue">
-          <v-tabs-slider class="primary"></v-tabs-slider>
-          <v-tabs-item v-for="i in 3"
-                       :href="'#' + i"
-                       :key="i">
-            {{ season[i].name }}
-          </v-tabs-item>
-        </v-tabs-bar>
-        <v-tabs-content v-for="i in 3"
-                        v-bind:id="`${i}`"
-                        :key="i">
-          <v-text-field class="query"
-                        v-model="query"
-                        label="Search entry" dark>
-          </v-text-field>
-          <v-layout row wrap class="elems">
-            <transition-group name="list">
-              <v-flex md6 xs12 v-for="item in computedSeason[i].items"
-                      style="display: inline-block"
-                      :key="item.key">
-                <v-layout row wrap class="elem elevation-3" v-ripple="true">
+      <v-tabs id="tabs" grow>
+        <v-tab-item v-for="i in 3"
+                    :href="'#' + i"
+                    :key="i"
+                    slot="activators">
+          {{ season[i].name }}
+        </v-tab-item>
+        <v-tab-content v-for="i in 3"
+                       v-bind:id="`${i}`"
+                       :key="i"
+                       slot="content">
+          <v-card>
+            <v-text-field class="query"
+                          v-model="query"
+                          label="Search entry" dark>
+            </v-text-field>
+            <v-row class="elems">
+              <transition-group name="list">
+                <v-col md6 xs12 v-for="item in computedSeason[i].items"
+                       style="display: inline-block"
+                       :key="item.key">
+                <v-row class="elem elevation-3" v-ripple="true">
                   <!-- Header of elem -->
-                  <v-flex xs12 v-tooltip:bottom="{ html: item.title }">
+                  <v-col xs12 v-tooltip:bottom="{ html: item.title }">
                     <h6 class="title ellipsis">
                       {{ item.title }}
                     </h6>
-                  </v-flex>
-                  <v-flex xs8 v-tooltip:bottom="{ html: item.genres.join(' ') }">
+                  </v-col>
+                  <v-col xs9 v-tooltip:bottom="{ html: item.genres.join(' ') }">
                     <p class="genres ellipsis">{{ item.genres.join(' ') }}</p>
-                  </v-flex>
-                  <v-flex xs3 v-tooltip:bottom="{ html: item.fromType }">
+                  </v-col>
+                  <v-col xs3 v-tooltip:bottom="{ html: item.fromType }">
                     <p class="from-type ellipsis">
                       {{ item.fromType }}
                     </p>
-                  </v-flex>
-                  <v-flex xs1></v-flex>
+                  </v-col>
                   <!-- Picture of elem -->
-                  <v-flex xs4 class="image-container">
-                    <img :src="item.picture" class="image"/>
-                  </v-flex>
-                  <v-flex xs8 class="bottom-right">
-                    <v-layout wrap justify-space-between align-center>
-                      <v-flex xs12>
-                        <div class="synopsis">
-                          {{ reduced(item.synopsis) }}
-                        </div>
-                      </v-flex>
-                      <v-flex xs12>
-                        <v-layout wrap justify-space-between>
-                          <v-flex xs3 class="date">{{ getDate(item.releaseDate) }}</v-flex>
-                          <v-flex xs4 class="nb-ep">{{ item.nbEp }} {{ episode(item.npEp) }}</v-flex>
-                        </v-layout>
-                        <v-layout wrap justify-space-between>
-                          <v-flex xs8 class="producers"><strong>{{ item.producers.join(' ') }}</strong></v-flex>
-                          <v-flex xs4 class="dropdown-container">
-                            <v-menu open-on-hover
-                                    transition="slide-x-transition">
-                              <v-btn flat dark slot="activator">
-                                More
-                              </v-btn>
-                              <v-list>
-                                <v-list-tile v-on:click.native="openModal(item.title, item.synopsis)">
-                                  <v-list-tile-action>
-                                    <v-icon>more</v-icon>
-                                  </v-list-tile-action>
-                                  <v-list-tile-title>
-                                    Check synopsis
-                                  </v-list-tile-title>
-                                </v-list-tile>
-                                <v-list-tile>
-                                  <v-list-tile-action>
-                                    <v-icon>info_outline</v-icon>
-                                  </v-list-tile-action>
-                                  <v-list-tile-title>Information</v-list-tile-title>
-                                </v-list-tile>
-                                <v-list-tile @click.native="showChoices(item.title)">
-                                  <v-list-tile-action>
-                                    <v-icon>add_box</v-icon>
-                                  </v-list-tile-action>
-                                  <v-list-tile-title>
-                                    Add to
-                                  </v-list-tile-title>
-                                </v-list-tile>
-                              </v-list>
-                            </v-menu>
-                          </v-flex>
-                        </v-layout>
-                      </v-flex>
-                    </v-layout>
-                  </v-flex>
-                </v-layout>
-              </v-flex>
-            </transition-group>
-          </v-layout>
-        </v-tabs-content>
+                  <v-col xs4 class="image-container">
+                    <div class="image">
+                      <img :src="item.picture" height="220" max-width="170"/>
+                    </div>
+                  </v-col>
+                  <v-col xs8 class="bottom-right">
+                    <v-row>
+                      <v-col xs12 class="synopsis">
+                        {{ reduced(item.synopsis) }}
+                      </v-col>
+                      <v-col xs7 class="date">{{ getDate(item.releaseDate) }}</v-col>
+                      <v-col xs5 class="nb-ep">{{ item.nbEp }} {{ episode(item.npEp) }}</v-col>
+                      <v-col xs8 class="producers"><strong>{{ item.producers.join(' ') }}</strong></v-col>
+                      <v-col xs4 class="dropdown-container">
+                        <v-menu transition="v-slide-x-transition">
+                          <v-btn flat dark slot="activator">
+                            More
+                          </v-btn>
+                          <v-list>
+                            <v-list-item>
+                              <v-list-tile v-on:click.native="openModal(item.title, item.synopsis)">
+                                <v-list-tile-action>
+                                  <v-icon>more</v-icon>
+                                </v-list-tile-action>
+                                <v-list-tile-title>
+                                  Check synopsis
+                                </v-list-tile-title>
+                              </v-list-tile>
+                            </v-list-item>
+                            <v-list-item>
+                              <v-list-tile>
+                                <v-list-tile-action>
+                                  <v-icon>info_outline</v-icon>
+                                </v-list-tile-action>
+                                <v-list-tile-title>Information</v-list-tile-title>
+                              </v-list-tile>
+                            </v-list-item>
+                            <v-list-item>
+                              <v-list-tile @click.native="showChoices(item.title)">
+                                <v-list-tile-action>
+                                  <v-icon>add_box</v-icon>
+                                </v-list-tile-action>
+                                <v-list-tile-title>
+                                  Add to
+                                </v-list-tile-title>
+                              </v-list-tile>
+                            </v-list-item>
+                          </v-list>
+                        </v-menu>
+                      </v-col>
+                    </v-row>
+                  </v-col>
+                </v-row>
+              </v-col>
+              </transition-group>
+            </v-row>
+          </v-card>
+        </v-tab-content>
       </v-tabs>
       <div class="text-xs-center modal-container">
         <v-dialog v-model="modal" width="70%">
           <v-card class="secondary white--text">
             <v-card-text class="white--text">
-              <h2 class="headline white--text">{{ modalTitle }}</h2>
+              <h2 class="title">{{ modalTitle }}</h2>
             </v-card-text>
-            <v-card-text class="text white--text">
+            <v-card-text class="subheading white--text">
               {{ modalText }}
             </v-card-text>
-            <v-card-actions>
+            <v-card-row actions>
               <v-spacer></v-spacer>
-              <v-btn class="blue--text darken-1" flat
+              <v-btn primary dark
                      style="width: 100px"
                      v-on:click.native="modal = false">Thanks!
               </v-btn>
-            </v-card-actions>
+            </v-card-row>
           </v-card>
         </v-dialog>
       </div>
       <choice-window :entry="choiceTitle"></choice-window>
     </v-container>
-  </div>
+  </v-container>
 </template>
 
 <script>
@@ -259,12 +260,29 @@
     margin: 0;
   }
 
-  .text
+    /* ----------- FORM ---------- */
+  .form-container
   {
-    text-align: justify;
-    text-align-last: center;
-    padding: 20px;
-    font-size: 16px;
+    padding-top: 1.5%;
+    padding-left: 50px;
+    padding-right: 0;
+  }
+
+  .year-container
+  {
+    padding-left: 2.5%;
+  }
+
+  .season-container
+  {
+    padding-right: 1.5%;
+  }
+
+  .refresh-button
+  {
+    padding-top: 1%;
+    padding-left: 6%;
+    padding-right: 3%;
   }
 
   .query
@@ -297,7 +315,6 @@
 
   .elem:hover
   {
-    transition: all 0.25s;
     box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12) !important;
   }
 
@@ -327,19 +344,17 @@
   .image-container
   {
     padding: 0;
-    max-height: 220px;
   }
 
   .image
   {
-    max-height: 220px;
-    max-width: 100%;
+    height: 220px;
+    max-width: 170px;
   }
 
   .bottom-right
   {
     position: relative;
-    display: flex;
   }
 
   .synopsis
@@ -347,12 +362,7 @@
     padding-left: 15px;
     padding-right: 15px;
     text-align: justify;
-    display: block;
-    text-overflow: ellipsis;
-    word-wrap: break-word;
-    overflow: hidden;
-    height: 7.5em;
-    line-height: 1.5em;
+    min-height: 130px;
   }
 
   .date
