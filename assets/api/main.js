@@ -7,6 +7,7 @@
 const fs = require('fs')
 const {join} = require('path')
 const URL = require('url-parse')
+const qs = require('querystring')
 
 const {userInfo} = require('os')
 const BASE_PATH = userInfo().homedir
@@ -192,6 +193,19 @@ const route = (nuxt) => {
       /* istanbul ignore next */
       case '/_openInBrowser':
         openInBrowser(process.nuxtURL, res)
+        break
+
+      /* istanbul ignore next */
+      case '/_win':
+        const query = qs.parse(url.query.replace('?', ''))
+        const action = query.action
+        const actions = {
+          minimize: process.win.minimize,
+          maximize: process.win.maximize,
+          close: process.win.close
+        }
+
+        actions[action]()
         break
 
       default:

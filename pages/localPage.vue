@@ -39,18 +39,18 @@
         <transition-group name="list">
           <template v-for="item in files">
             <v-flex :key="item.path" xs12 sm6 md4 xl3
-                   class="elem">
+                    class="elem">
               <v-card class="elem-content elevation-3" v-ripple="true">
                 <v-card-text class="elem-card">
                   <v-container fluid style="padding: 0;">
                     <v-layout row wrap class="elem-container">
                       <v-flex xs7
-                             v-tooltip:top="{ html: item.name }">
+                              v-tooltip:top="{ html: item.name }">
                         <h6 class="title ellipsis">{{ item.name }}</h6>
                       </v-flex>
                       <v-flex xs2
-                             v-tooltip:top="{ html: 'Episode ' + item.ep }"
-                             class="elem-ep text-xs-right">
+                              v-tooltip:top="{ html: 'Episode ' + item.ep }"
+                              class="elem-ep text-xs-right">
                         <p class="ellipsis ep">{{ item.ep }} / {{ item.numberOfEpisode }}</p>
                       </v-flex>
                       <v-flex xs3 class="buttons-container">
@@ -59,14 +59,34 @@
                                @click.native="playThis(item.path)">
                           <v-icon large>play_circle_outline</v-icon>
                         </v-btn>
-                        <v-btn medium icon
-                               class="delete-button"
-                               @click.native="delThis(item.path)">
-                          <v-icon medium>delete_forever</v-icon>
-                        </v-btn>
+                        <v-menu open-on-hover
+                                transition="slide-x-transition">
+                          <v-btn icon medium slot="activator">
+                            <v-icon>more_vert</v-icon>
+                          </v-btn>
+                          <v-list>
+                            <v-list-tile @click.native="showChoices(item.name)">
+                              <v-list-tile-action>
+                                <v-icon>add_box</v-icon>
+                              </v-list-tile-action>
+                              <v-list-tile-title>
+                                Add to
+                              </v-list-tile-title>
+                            </v-list-tile>
+                            <v-list-tile @click.native="delThis(item.path)">
+                              <v-list-tile-action>
+                                <v-icon medium class="primary--text">delete_forever</v-icon>
+                              </v-list-tile-action>
+                              <v-list-tile-title class="primary--text">Delete</v-list-tile-title>
+                            </v-list-tile>
+                          </v-list>
+                        </v-menu>
                       </v-flex>
-                      <v-flex xs8 v-tooltip:top="{ html: item.genres.length ? item.genres.join(', ') : 'No specified genre' }">
-                        <p class="ellipsis genres">{{ item.genres.length ? item.genres.join(', ') : 'No specified genre' }}</p>
+                      <v-flex xs8
+                              v-tooltip:top="{ html: item.genres.length ? item.genres.join(', ') : 'No specified genre' }">
+                        <p class="ellipsis genres">
+                          {{ item.genres.length ? item.genres.join(', ') : 'No specified genre' }}
+                        </p>
                       </v-flex>
                       <v-flex xs4 v-tooltip:top="{ html: item.classification.replace('None', 'No restriction') }">
                         <p class="ellipsis classification">
@@ -78,7 +98,9 @@
                       </v-flex>
                       <v-flex xl7 lg8 md7 sm9 xs8 class="bottom-right-container">
                         <v-layout row wrap justify-space-between>
-                          <v-flex xs12><div class="synopsis">{{ reduced(item.synopsis) }}</div></v-flex>
+                          <v-flex xs12>
+                            <div class="synopsis">{{ reduced(item.synopsis) }}</div>
+                          </v-flex>
                           <v-flex xs12 style="display: flex">
                             <v-layout align-center justify-space-between style="min-width: 100%">
                               <v-flex xs2>
@@ -140,11 +162,13 @@
         </v-flex>
       </v-layout>
     </v-container>
+    <choice-window :entry="choiceTitle"></choice-window>
   </v-container>
 </template>
 
 <script>
   import HistoryModal from '~components/historyModal.vue'
+  import ChoiceWindow from '~components/choiceWindow.vue'
   import axios from 'axios'
 
   export default {
@@ -157,7 +181,7 @@
       }
     },
     mounted () {
-      setTimeout(this.emptyBg = true, 1000)
+      setTimeout(() => { this.emptyBg = true }, 1000)
 
       this.refresh()
     },
@@ -166,7 +190,8 @@
     },
     data () {
       return {
-        emptyBg: false
+        emptyBg: false,
+        choiceTitle: ''
       }
     },
     computed: {
@@ -183,7 +208,8 @@
       }
     },
     components: {
-      HistoryModal
+      HistoryModal,
+      ChoiceWindow
     },
     methods: {
       reduced (text) {
@@ -241,7 +267,11 @@
       },
       resetLocal () {
         this.$store.dispatch('resetLocal')
-      }
+      },
+      showChoices (name) {
+        this.choiceTitle = name
+        this.$store.commit('setAddToChoice', true)
+      },
     }
   }
 </script>
@@ -280,6 +310,8 @@
   .page-container
   {
     min-height: 92vh !important;
+    padding-left: 0;
+    padding-right: 0;
   }
 
   /* ------------- MENUBAR ------------- */
@@ -372,12 +404,6 @@
   }
 
   .play-button
-  {
-    display: inline;
-    margin: 0;
-  }
-
-  .delete-button
   {
     display: inline;
     margin: 0;

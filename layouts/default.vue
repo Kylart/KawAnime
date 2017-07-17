@@ -57,9 +57,9 @@
                   v-if="!browser">
       <v-spacer></v-spacer>
       <div v-if="$store.state.platform !== 'darwin'">
-        <v-icon class="window-icon">remove</v-icon>
-        <v-icon class="window-icon">check_box_outline_blank</v-icon>
-        <v-icon class="window-icon">close</v-icon>
+        <v-icon class="window-icon" ripple @click.native="actOnWindow('minimize')">remove</v-icon>
+        <v-icon class="window-icon" @click.native="actOnWindow('maximize')">check_box_outline_blank</v-icon>
+        <v-icon class="window-icon" @click.native="actOnWindow('close')">close</v-icon>
       </div>
 
     </v-system-bar>
@@ -103,6 +103,7 @@
 </template>
 
 <script>
+  import axios from 'axios'
   import Settings from '~components/settings.vue'
   import infoModal from '~components/infoModal.vue'
 
@@ -194,6 +195,13 @@
     methods: {
       toggleDrawer () {
         this.$store.commit('toggleDrawer')
+      },
+      actOnWindow (action) {
+        axios.get('/_win', {
+          params: {
+            action
+          }
+        })
       }
     }
   }
@@ -217,6 +225,7 @@
   {
     margin-top: 24px;
     max-height: 48px;
+    padding-left: 2%;
   }
 
   .navigation-drawer

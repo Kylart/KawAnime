@@ -113,7 +113,9 @@
                 </v-flex>
                 <v-flex xs3 class="section-title">News</v-flex>
                 <v-flex xs9>
-                  <v-switch :label="config.inside ? 'Inside' : 'Outside'" v-model="config.inside" dark></v-switch>
+                  <v-switch :label="config.inside ? 'Inside' : 'Outside'"
+                            v-model="config.inside" dark>
+                  </v-switch>
                 </v-flex>
               </v-layout>
             </v-card>

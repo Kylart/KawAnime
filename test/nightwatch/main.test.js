@@ -51,7 +51,7 @@ module.exports = { // adapted from: https://git.io/vodU0
     client
       .url(`${uri}/downloader`)
       .waitForElementVisible('body')
-      .assert.title('KawAnime')
+      .assert.title('Downloader - KawAnime')
       .assert.visible('div.config-modal')
       .assert.visible('div.form-container')
       .assert.visible('div.choose-magnets .input-group__input')
@@ -74,7 +74,7 @@ module.exports = { // adapted from: https://git.io/vodU0
     client
       .url(`${uri}/seasons`)
       .waitForElementVisible('body')
-      .assert.title('KawAnime')
+      .assert.title('Seasons - KawAnime')
       .end()
   },
   after: function () {

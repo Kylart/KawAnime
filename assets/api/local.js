@@ -16,7 +16,11 @@ const removeUnwanted = (rawName) => {
 }
 
 const getName = (rawName) => {
-  return removeUnwanted(rawName).split(' ').slice(1, -3).join(' ')
+  try {
+    return removeUnwanted(rawName).split(' ').slice(1, -3).join(' ')
+  } catch (e) {
+    return null
+  }
 }
 
 const getEp = (rawName) => {
@@ -31,9 +35,9 @@ const getUniques = (files) => {
   const result = []
 
   files.forEach((file) => {
-    const toAdd = getName(file)
+    const toAdd = getName(file) || null
 
-    if (!result.includes(toAdd)) {
+    if (toAdd && !result.includes(toAdd)) {
       result.push(toAdd)
     }
   })
@@ -47,10 +51,13 @@ const sendFiles = (json, files, res) => {
   console.log('[Local]: Sending files.')
 
   files.forEach((file) => {
-    const tmp = JSON.parse(JSON.stringify(json[minifyName(getName(file))]))
-    tmp.ep = getEp(file)
-    tmp.path = file
-    result.push(tmp)
+    const name = getName(file)
+    if (name) {
+      const tmp = JSON.parse(JSON.stringify(json[minifyName(name)]))
+      tmp.ep = getEp(file)
+      tmp.path = file
+      result.push(tmp)
+    }
   })
 
   res.writeHead(200, {'Content-Type': 'application/json'})
