@@ -9,7 +9,7 @@
       <v-list>
         <v-list-tile id="title" to="/">
           <v-list-tile-action>
-            <img src="~static/images/icon2.png" height="60"/>
+            <img src="~static/images/icon2.png" height="50"/>
           </v-list-tile-action>
           <v-list-tile-title class="title">
             かわニメ
