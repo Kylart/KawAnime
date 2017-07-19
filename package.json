@@ -37,7 +37,7 @@
     "nuxt": "^0.10.7",
     "nyaapi": "^1.2.2",
     "url-parse": "^1.1.8",
-    "vuetify": "^0.14.4"
+    "vuetify": "^0.14.5"
   },
   "devDependencies": {
     "ava": "^0.19.1",

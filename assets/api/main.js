@@ -206,7 +206,7 @@ const route = (nuxt) => {
           process.win.maximize()
         } else if (action === 'close') {
           process.win.close()
-          }
+        }
         break
 
       default:
