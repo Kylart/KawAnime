@@ -33,7 +33,7 @@
         <v-flex md1 sm1 xs12 class="refresh-button-container">
           <v-btn icon
                  class="refresh-button"
-                 @click.native="refresh()">
+                 @click="refresh()">
             <v-icon large>refresh</v-icon>
           </v-btn>
         </v-flex>
@@ -64,7 +64,7 @@
                         <div class="links">
                           <a :href="item.magnetLink" class="download-button">
                             <v-btn dark flat
-                                   @click.native="print(item)"
+                                   @click="print(item)"
                                    class="btn--light-flat-pressed">
                               Download
                             </v-btn>
@@ -97,7 +97,7 @@
                                 </v-list-tile-action>
                                 <v-list-tile-title>Information</v-list-tile-title>
                               </v-list-tile>
-                              <v-list-tile @click.native="showChoices(item.rawName)">
+                              <v-list-tile @click="showChoices(item.rawName)">
                                 <v-list-tile-action>
                                   <v-icon>add_box</v-icon>
                                 </v-list-tile-action>

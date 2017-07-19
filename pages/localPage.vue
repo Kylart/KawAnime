@@ -15,24 +15,24 @@
               <v-btn icon
                      class="refresh-button"
                      v-if="!this.$store.state.refreshingLocal"
-                     @click.native="refresh()">
+                     @click="refresh()">
                 <v-icon large>refresh</v-icon>
               </v-btn>
               <v-btn v-else icon loading
                      class="refresh-button">
               </v-btn>
               <v-btn flat dark
-                     @click.native="changePath()"
+                     @click="changePath()"
                      class="change-dir-button">
                 Change dir
               </v-btn>
               <v-btn secondary dark
-                     @click.native="resetLocal()"
+                     @click="resetLocal()"
                      v-if="!this.$store.state.resettingLocal"
                      class="reset-cache-button">
                 Refresh local info
               </v-btn>
-              <v-btn secondary dark v-else class="reset-cache-button" loading></v-btn>
+              <v-btn secondary dark loading v-else class="reset-cache-button"></v-btn>
             </v-flex>
           </v-layout>
         </v-flex>
@@ -56,7 +56,7 @@
                       <v-flex xs3 class="buttons-container">
                         <v-btn large icon
                                class="play-button"
-                               @click.native="playThis(item.path)">
+                               @click="playThis(item.path)">
                           <v-icon large>play_circle_outline</v-icon>
                         </v-btn>
                         <v-menu open-on-hover
@@ -65,7 +65,7 @@
                             <v-icon>more_vert</v-icon>
                           </v-btn>
                           <v-list>
-                            <v-list-tile @click.native="showChoices(item.name)">
+                            <v-list-tile @click="showChoices(item.name)">
                               <v-list-tile-action>
                                 <v-icon>add_box</v-icon>
                               </v-list-tile-action>
@@ -73,7 +73,7 @@
                                 Add to
                               </v-list-tile-title>
                             </v-list-tile>
-                            <v-list-tile @click.native="delThis(item.path)">
+                            <v-list-tile @click="delThis(item.path)">
                               <v-list-tile-action>
                                 <v-icon medium class="primary--text">delete_forever</v-icon>
                               </v-list-tile-action>
@@ -138,14 +138,14 @@
               <v-btn icon
                      class="refresh-button"
                      v-if="!this.$store.state.refreshingLocal"
-                     @click.native="refresh()">
+                     @click="refresh()">
                 <v-icon large>refresh</v-icon>
               </v-btn>
               <v-btn v-else icon loading
                      class="refresh-button">
               </v-btn>
               <v-btn flat dark
-                     @click.native="changePath()"
+                     @click="changePath()"
                      class="change-dir-button">
                 Change dir
               </v-btn>
@@ -271,7 +271,7 @@
       showChoices (name) {
         this.choiceTitle = name
         this.$store.commit('setAddToChoice', true)
-      },
+      }
     }
   }
 </script>
@@ -401,6 +401,7 @@
     display: flex;
     justify-content: flex-end;
     align-items: center;
+    padding: 0;
   }
 
   .play-button

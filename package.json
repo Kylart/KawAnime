@@ -37,7 +37,7 @@
     "nuxt": "^0.10.7",
     "nyaapi": "^1.2.2",
     "url-parse": "^1.1.8",
-    "vuetify": "^0.14.2"
+    "vuetify": "^0.14.4"
   },
   "devDependencies": {
     "ava": "^0.19.1",
@@ -49,7 +49,7 @@
     "colors": "^1.1.2",
     "cross-env": "^3.1.4",
     "devtron": "^1.4.0",
-    "electron": "^1.6.6",
+    "electron": "^1.7.5",
     "electron-builder": "^17.1.1",
     "env2": "^2.2.0",
     "eslint-plugin-vue": "^2.0.1",
@@ -60,7 +60,10 @@
     "standard": "^10.0.2",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.1",
-    "vue-devtools": "^3.1.2"
+    "vue": "^2.4.1",
+    "vue-devtools": "^3.1.2",
+    "vue-server-renderer": "^2.4.1",
+    "vue-template-compiler": "^2.4.1"
   },
   "precommit": "lint",
   "build": {

@@ -20,7 +20,7 @@
         </v-flex>
         <v-flex xs4></v-flex>
         <v-flex xs4
-               @keydown.enter="next(1)">
+                @keydown.enter="next(1)">
           <v-text-field name="name-input"
                         type="text"
                         id="name-input"
@@ -78,7 +78,7 @@
       <div class="download-button">
         <v-btn dark block secondary
                id="download-btn"
-               @click.native="isDownloadable()"
+               @click="isDownloadable()"
                v-if="!$store.state.downloaderForm.loading">
           Download!
         </v-btn>
@@ -86,7 +86,7 @@
       </div>
     </div>
     <v-dialog v-model="$store.state.downloaderModal.show"
-              scrollable
+              lazy absolute
               width="800"
               class="magnet-modal">
       <v-card class="secondary white--text">
@@ -95,12 +95,10 @@
         </v-card-text>
         <v-divider/>
         <v-card-text class="subheading white--text">
-          <v-layout row wrap justify-center>
-            <v-flex xs4></v-flex>
-            <v-flex xs6 class="modal-icon-container">
-              <v-icon class="copy-icon" @click.native="copy()">content_copy</v-icon>
+          <v-layout row wrap justify-center align-center>
+            <v-flex xs4 offset-xs6 class="modal-icon-container">
+              <v-icon class="copy-icon" @click="copy()">content_copy</v-icon>
             </v-flex>
-            <v-flex xs2></v-flex>
             <v-flex xs12 v-for="link in $store.state.downloaderModal.text"
                    class="subheading grey--text modal-text" :key="link">{{ link.split('&')[0] }}
             </v-flex>
@@ -123,7 +121,7 @@
                 :left="x === 'left'"
                 v-model="snackbar">
       Please, enter a valid name (at least 3 letters...)
-      <v-btn flat class="pink--text" @click.native="snackbar = false">ok!</v-btn>
+      <v-btn flat class="pink--text" @click="snackbar = false">ok!</v-btn>
     </v-snackbar>
     <v-snackbar :timeout="copiedTimeout"
                 :top="y === 'top'"
@@ -132,7 +130,7 @@
                 :left="x === 'left'"
                 v-model="copiedSnackbar">
       All magnets were copied to clipboard!
-      <v-btn flat class="pink--text" @click.native="copiedSnackbar = false">Thanks!</v-btn>
+      <v-btn flat class="pink--text" @click="copiedSnackbar = false">Thanks!</v-btn>
     </v-snackbar>
   </v-container>
 </template>
@@ -324,6 +322,9 @@
     margin: 0;
     padding: 0;
     height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .magnet-modal .title
@@ -346,7 +347,6 @@
   .modal-icon-container
   {
     text-align: right;
-    width: 60%;
   }
 
   .copy-icon

@@ -22,7 +22,7 @@
           </v-text-field>
         </v-flex>
         <v-flex offset-sm1 sm2 xs8 class="refresh-button">
-          <v-btn secondary block dark @click.native="refreshSeason()">Refresh</v-btn>
+          <v-btn secondary block dark @click="refreshSeason()">Refresh</v-btn>
         </v-flex>
       </v-layout>
 
@@ -102,7 +102,7 @@
                                   </v-list-tile-action>
                                   <v-list-tile-title>Information</v-list-tile-title>
                                 </v-list-tile>
-                                <v-list-tile @click.native="showChoices(item.title)">
+                                <v-list-tile @click="showChoices(item.title)">
                                   <v-list-tile-action>
                                     <v-icon>add_box</v-icon>
                                   </v-list-tile-action>

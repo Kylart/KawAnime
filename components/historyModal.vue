@@ -58,7 +58,7 @@
         <v-btn class="blue--text darken-1"
                flat
                style="width: 100px;"
-               @click.native="$store.commit('setHistoryModal', false)">
+               @click="$store.commit('setHistoryModal', false)">
           Close
         </v-btn>
       </v-card-actions>

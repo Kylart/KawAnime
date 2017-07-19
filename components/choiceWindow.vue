@@ -26,8 +26,8 @@
         </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn class="blue--text darken-1" flat @click.native="add()">Add</v-btn>
-        <v-btn class="blue--text darken-1" flat @click.native="hide()">Close</v-btn>
+        <v-btn class="blue--text darken-1" flat @click="add()">Add</v-btn>
+        <v-btn class="blue--text darken-1" flat @click="hide()">Close</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>

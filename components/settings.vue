@@ -9,7 +9,7 @@
 
     <v-card class="white--text main">
       <v-toolbar dark class="mablue">
-        <v-btn icon @click.native="configModal = false" dark>
+        <v-btn icon @click="configModal = false" dark>
           <v-icon>close</v-icon>
         </v-btn>
         <v-toolbar-title class="headline">Settings</v-toolbar-title>
@@ -109,7 +109,7 @@
                 <v-flex xs4 class="section-title">Preferred local path</v-flex>
                 <v-flex xs6 class="local-path">{{ config.localPath }}</v-flex>
                 <v-flex xs2>
-                  <v-btn accent @click.native="$store.dispatch('changePathWithConfig')">Choose</v-btn>
+                  <v-btn accent @click="$store.dispatch('changePathWithConfig')">Choose</v-btn>
                 </v-flex>
                 <v-flex xs3 class="section-title">News</v-flex>
                 <v-flex xs9>

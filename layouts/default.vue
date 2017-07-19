@@ -57,22 +57,22 @@
                   v-if="!browser">
       <v-spacer></v-spacer>
       <div v-if="$store.state.platform !== 'darwin'">
-        <v-icon class="window-icon" ripple @click.native="actOnWindow('minimize')">remove</v-icon>
-        <v-icon class="window-icon" @click.native="actOnWindow('maximize')">check_box_outline_blank</v-icon>
-        <v-icon class="window-icon" @click.native="actOnWindow('close')">close</v-icon>
+        <v-icon class="window-icon" ripple @click="actOnWindow('minimize')">remove</v-icon>
+        <v-icon class="window-icon" @click="actOnWindow('maximize')">check_box_outline_blank</v-icon>
+        <v-icon class="window-icon" @click="actOnWindow('close')">close</v-icon>
       </div>
 
     </v-system-bar>
 
     <v-toolbar fixed dark class="mablue tb">
-      <v-toolbar-side-icon @click.native.stop="toggleDrawer()"></v-toolbar-side-icon>
+      <v-toolbar-side-icon @click.stop="toggleDrawer()"></v-toolbar-side-icon>
       <v-toolbar-title class="white--text title hidden-xs-only">かわニメ</v-toolbar-title>
       <v-spacer></v-spacer>
       <info-modal></info-modal>
       <v-btn icon
              class="open-in-browser"
              v-tooltip:left="{ html: 'Open KawAnime in your browser' }"
-             @click.native="openInBrowser()">
+             @click="openInBrowser()">
         <v-icon>open_in_new</v-icon>
       </v-btn>
       <settings></settings>
@@ -92,7 +92,7 @@
         v-model="$store.state.infoSnackbar.show"
     >
       {{ $store.state.infoSnackbar.text }}
-      <v-btn flat class="pink--text" @click.native="$store.state.infoSnackbar.show = false">Close</v-btn>
+      <v-btn flat class="pink--text" @click="$store.state.infoSnackbar.show = false">Close</v-btn>
     </v-snackbar>
 
     <v-footer class="grey darken-4">
@@ -225,7 +225,7 @@
   {
     margin-top: 24px;
     max-height: 48px;
-    padding-left: 2%;
+    padding-left: 1%;
   }
 
   .navigation-drawer

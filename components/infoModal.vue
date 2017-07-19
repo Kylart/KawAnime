@@ -21,7 +21,7 @@
                 <template v-if="results.length"
                           v-for="item in results">
                   <v-flex xs3 class="elem"
-                          @click.native="search(item.name)">
+                          @click="search(item.name)">
                     <v-layout wrap justify-center
                               class="elem-content elevation-3"
                               @click.all="search(item.name)"
@@ -39,7 +39,7 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn class="blue--text darken-1 close-button" flat @click.native="searchShow = false">Close</v-btn>
+          <v-btn class="blue--text darken-1 close-button" flat @click="searchShow = false">Close</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -84,7 +84,7 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn class="blue--text darken-1 close-button" flat @click.native="closeResults()">Thanks!</v-btn>
+          <v-btn class="blue--text darken-1 close-button" flat @click="closeResults()">Thanks!</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>

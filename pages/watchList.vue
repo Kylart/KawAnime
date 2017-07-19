@@ -19,7 +19,7 @@
                 <v-layout row wrap justify-center class="top-form">
                   <v-flex md3 sm4 xs9>
                     <v-btn icon flat
-                           @click.native="selectAll(i)"
+                           @click="selectAll(i)"
                            v-tooltip:bottom="{ html: allSelected[i] ? 'Unselect all' : 'Select all' }">
                       <v-icon>select_all</v-icon>
                     </v-btn>
@@ -29,7 +29,7 @@
                       <v-list>
                         <v-list-tile @click.capture="moveTo(action.list, i)"
                                      v-for="action in actions(i)"
-                                     :key="action">
+                                     :key="action.name">
                           <v-list-tile-action>
                             <v-icon>{{ action.icon }}</v-icon>
                           </v-list-tile-action>
@@ -37,7 +37,7 @@
                         </v-list-tile>
                       </v-list>
                     </v-menu>
-                    <v-btn @click.native="deleteSelected(i)"
+                    <v-btn @click="deleteSelected(i)"
                            class="red--text"
                            v-tooltip:bottom="{ html: 'Delete all selected items from this list' }"
                            icon>
@@ -61,7 +61,7 @@
                   <v-flex hidden-sm-and-up xs1></v-flex>
                   <v-flex md2 sm2 xs4 class="add-button-container">
                     <v-btn dark secondary
-                           @click.native="addEntry(i)"
+                           @click="addEntry(i)"
                            class="add-button">
                       Add
                     </v-btn>
@@ -100,7 +100,7 @@
                                 </v-list-tile-action>
                                 <v-list-tile-title>Information</v-list-tile-title>
                               </v-list-tile>
-                              <v-list-tile @click.native="deleteEntry(item, i)">
+                              <v-list-tile @click="deleteEntry(item, i)">
                                 <v-list-tile-action>
                                   <v-icon>delete_sweep</v-icon>
                                 </v-list-tile-action>

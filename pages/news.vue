@@ -7,7 +7,7 @@
         <v-flex xs12 class="refresh-button-container">
           <v-btn icon
                  class="refresh-button"
-                 @click.native="refresh()">
+                 @click="refresh()">
             <v-icon large>refresh</v-icon>
           </v-btn>
         </v-flex>
@@ -26,11 +26,11 @@
               <v-layout row wrap>
                 <v-flex xs12><p class="synopsis">{{ item.text }}</p></v-flex>
               </v-layout>
-              <v-row xs12 class="link">
+              <v-layout row wrap xs12 class="link">
                 <div class="button-container">
-                  <v-btn secondary block @click.native="open(item.link)">Open</v-btn>
+                  <v-btn secondary block @click="open(item.link)">Open</v-btn>
                 </div>
-              </v-row>
+              </v-layout>
             </v-flex>
           </v-layout>
         </v-flex>
