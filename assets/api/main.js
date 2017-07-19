@@ -199,13 +199,14 @@ const route = (nuxt) => {
       case '/_win':
         const query = qs.parse(url.query.replace('?', ''))
         const action = query.action
-        const actions = {
-          minimize: process.win.minimize,
-          maximize: process.win.maximize,
-          close: process.win.close
-        }
 
-        actions[action]()
+        if (action === 'minimize') {
+          process.win.minimize()
+        } else if (action === 'maximize') {
+          process.win.maximize()
+        } else if (action === 'close') {
+          process.win.close()
+          }
         break
 
       default:
