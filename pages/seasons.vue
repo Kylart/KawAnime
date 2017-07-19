@@ -88,7 +88,7 @@
                                 More
                               </v-btn>
                               <v-list>
-                                <v-list-tile v-on:click.native="openModal(item.title, item.synopsis)">
+                                <v-list-tile @click="openModal(item.title, item.synopsis)">
                                   <v-list-tile-action>
                                     <v-icon>more</v-icon>
                                   </v-list-tile-action>

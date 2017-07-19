@@ -75,7 +75,7 @@
                               More
                             </v-btn>
                             <v-list>
-                              <v-list-tile v-on:click.native="openModal(item.rawName, item.fullSynopsis)">
+                              <v-list-tile @click="openModal(item.rawName, item.fullSynopsis)">
                                 <v-list-tile-action>
                                   <v-icon>more</v-icon>
                                 </v-list-tile-action>
@@ -83,7 +83,7 @@
                                   Check synopsis
                                 </v-list-tile-title>
                               </v-list-tile>
-                              <v-list-tile v-on:click.native="downloadAll(item.rawName)">
+                              <v-list-tile @click="downloadAll(item.rawName)">
                                 <v-list-tile-action>
                                   <v-icon>file_download</v-icon>
                                 </v-list-tile-action>
