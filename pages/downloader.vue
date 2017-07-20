@@ -13,7 +13,11 @@
           <div class="choose-magnets">
             <v-card class="z-depth-0">
               <v-card-text class="switch">
-                <v-switch id="magnets-switch" label="Get Magnets" primary v-model="$store.state.config.magnets" dark/>
+                <v-switch id="magnets-switch"
+                          label="Get Magnets"
+                          color="primary"
+                          v-model="$store.state.config.magnets"
+                          dark/>
               </v-card-text>
             </v-card>
           </div>
@@ -55,19 +59,19 @@
         </v-flex>
         <v-flex xs4></v-flex>
         <v-flex xs12 sm6 md4 class="radio-container">
-          <v-radio class="radio"
+          <v-radio class="radio primary--text"
                    label="480p"
                    v-model="quality"
                    value="480p" dark/>
         </v-flex>
         <v-flex xs12 sm6 md4>
-          <v-radio class="radio"
+          <v-radio class="radio primary--text"
                    label="720p"
                    v-model="quality"
                    value="720p" dark/>
         </v-flex>
         <v-flex xs12 sm6 md4>
-          <v-radio class="radio"
+          <v-radio class="radio primary--text"
                    label="1080p"
                    v-model="quality"
                    value="1080p" dark/>

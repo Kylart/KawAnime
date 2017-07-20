@@ -18,7 +18,8 @@ const removeUnwanted = (rawName) => {
 const getName = (rawName) => {
   try {
     return removeUnwanted(rawName).split(' ').slice(1, -3).join(' ')
-  } catch (e) {
+  }  catch (e) {
+    /* istanbul ignore next */
     return null
   }
 }

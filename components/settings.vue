@@ -93,12 +93,12 @@
                 <v-flex xs1></v-flex>
                 <template v-for="radio in radios">
                   <v-flex xs2>
-                    <v-radio :label="radio" :value="radio" v-model="config.quality"></v-radio>
+                    <v-radio :label="radio" :value="radio" class="primary--text" v-model="config.quality"></v-radio>
                   </v-flex>
                 </template>
                 <v-flex offset-xs1 xs3 class="section-title">Magnets</v-flex>
                 <v-flex xs8>
-                  <v-switch label="Activate" v-model="config.magnets" dark></v-switch>
+                  <v-switch label="Activate" color="primary" v-model="config.magnets" dark></v-switch>
                 </v-flex>
               </v-layout>
             </v-card>
@@ -114,6 +114,7 @@
                 <v-flex xs3 class="section-title">News</v-flex>
                 <v-flex xs9>
                   <v-switch :label="config.inside ? 'Inside' : 'Outside'"
+                            color="primary"
                             v-model="config.inside" dark>
                   </v-switch>
                 </v-flex>
