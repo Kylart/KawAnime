@@ -4,7 +4,7 @@
       <v-btn icon slot="activator">
         <v-icon>search</v-icon>
       </v-btn>
-      <v-card class="secondary">
+      <v-card>
         <v-card-title class="headline">Which anime are you looking for?</v-card-title>
         <v-card-text>
           <v-layout wrap justify-center>
@@ -94,7 +94,6 @@
 <script>
   import axios from 'axios'
   import _ from 'lodash'
-  import Loader from '~components/loader.vue'
 
   export default {
     data () {
@@ -114,9 +113,6 @@
           ? 'episodes'
           : 'episode'
       }
-    },
-    components: {
-      Loader
     },
     methods: {
       async search (name) {

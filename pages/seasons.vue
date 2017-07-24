@@ -148,18 +148,7 @@
 </template>
 
 <script>
-  import Loader from '~components/loader.vue'
-  import ChoiceWindow from '~components/choiceWindow.vue'
-
   export default {
-    head () {
-      return {
-        title: 'Seasons',
-        meta: [
-          {hid: 'description', name: 'description', content: 'Browse the anime seasons'}
-        ]
-      }
-    },
     data () {
       return {
         query: '',
@@ -215,10 +204,6 @@
             } else return ''
           })
       }
-    },
-    components: {
-      Loader,
-      ChoiceWindow
     },
     methods: {
       reduced (text) {

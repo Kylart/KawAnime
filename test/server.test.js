@@ -28,7 +28,7 @@ const kawAnimeFilesPath = {
 }
 
 // Init Nuxt.js and create a server listening on localhost:4000
-test.before('Init Nuxt.js', async () => {
+test.before('Init server', async () => {
   /**
    * Creating .KawAnime-test directory and necessary files
    */
@@ -479,7 +479,6 @@ test('/watchList exits and render HTML', async t => {
 // Close server and ask nuxt to stop listening to file changes
 test.after('Closing server and server.test.js', () => {
   server.close()
-  nuxt.close()
 
   /**
    * Removing temporary .KawAnime directory

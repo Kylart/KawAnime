@@ -8,26 +8,26 @@
         <v-flex md4 sm1 xs0></v-flex>
         <v-flex md2 sm3 xs12>
           <v-select
-              class="select"
-              v-bind:items="fansubList"
-              v-model="$store.state.releaseFansub"
-              label="Fansub"
-              dark
-              single-line
-              hint="Pick a fansub"
-              persistent-hint
+            class="select"
+            v-bind:items="fansubList"
+            v-model="$store.state.releaseFansub"
+            label="Fansub"
+            dark
+            single-line
+            hint="Pick a fansub"
+            persistent-hint
           />
         </v-flex>
         <v-flex md1 sm2 xs12>
           <v-select
-              class="select"
-              v-bind:items="qualityList"
-              v-model="$store.state.releaseQuality"
-              label="Quality"
-              dark
-              single-line
-              hint="Which quality ?"
-              persistent-hint
+            class="select"
+            v-bind:items="qualityList"
+            v-model="$store.state.releaseQuality"
+            label="Quality"
+            dark
+            single-line
+            hint="Which quality ?"
+            persistent-hint
           />
         </v-flex>
         <v-flex md1 sm1 xs12 class="refresh-button-container">
@@ -143,8 +143,6 @@
 
 <script>
   import axios from 'axios'
-  import Loader from '~components/loader.vue'
-  import ChoiceWindow from '~components/choiceWindow.vue'
 
   export default {
     head () {
@@ -187,10 +185,6 @@
       releases () {
         return this.$store.state.releases
       }
-    },
-    components: {
-      Loader,
-      ChoiceWindow
     },
     methods: {
       openModal (title, text) {

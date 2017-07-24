@@ -40,8 +40,6 @@
 </template>
 
 <script>
-  import Loader from '~components/loader.vue'
-
   export default {
     head () {
       return {
@@ -53,9 +51,6 @@
     },
     data () {
       return {}
-    },
-    components: {
-      Loader
     },
     methods: {
       open (link) {

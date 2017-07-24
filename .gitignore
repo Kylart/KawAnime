@@ -5,7 +5,7 @@ package-lock.json
 # logs
 npm-debug.log
 
-# Nuxt build
+# Nuxt webpack
 .nuxt
 
 # Mac OS
@@ -14,13 +14,14 @@ npm-debug.log
 # Idea directory
 .idea
 
-# build
+# webpack
 KawAnime*
 dist/win-ia32-unpacked
 dist/mac
 dist/github
 dist/linux-unpacked
 dist/latest.yml
+public
 
 # tests
 .nyc_output

@@ -1,0 +1,79 @@
+// Available variables https://github.com/vuetifyjs/vuetify/blob/master/src/stylus/settings/_variables.styl
+
+// Specify overrides (theme and/or base variables etc.)
+// See https://vuetifyjs.com/quick-start
+$theme := {
+  primary: #ff9800
+  accent: #ce93d8
+  secondary: #505050
+  info: #9c27b0
+  warning: #0D47A1
+  error: #B71C1C
+  success: #2E7D32
+  mablue: #0D47A1
+}
+
+@import '../../node_modules/vuetify/src/stylus/main'
+
+/**
+  Transitions
+ */
+.page-enter-active, .page-leave-active
+  transition all 1s
+
+.page-enter
+  opacity 0
+  transform translateX(30px)
+
+.page-leave-active
+  opacity 0
+  transform translateY(30px)
+
+.list-enter-active
+  transition all 1s
+
+.list-enter
+  opacity 0
+  transform translateX(30px)
+  transition transform 1s
+
+.list-leave-to
+  opacity 0
+  transform translateY(30px)
+  transition transform 1s
+
+.list-move
+  transition transform 1s
+
+.list-leave-active
+  transition all 1s
+  position absolute
+
+
+/**
+  Electron
+ */
+.dragable
+  -webkit-app-region drag
+
+.non-dragable
+  -webkit-app-region no-drag
+
+/**
+  Custom rules which will be applied globally, allows overriding
+ */
+.toolbar__content
+  max-height 48px
+
+div.dialog--fullscreen
+  margin 24px 0 0
+
+.expansion-panel__bodylast-child
+  border-bottom 0 !important
+
+#title a.list__tile
+  height 60px
+
+div.tabs__items
+  border-width 0
+  border-style none

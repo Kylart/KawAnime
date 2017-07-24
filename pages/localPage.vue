@@ -167,8 +167,6 @@
 </template>
 
 <script>
-  import HistoryModal from '~components/historyModal.vue'
-  import ChoiceWindow from '~components/choiceWindow.vue'
   import axios from 'axios'
 
   export default {
@@ -206,10 +204,6 @@
           ? 'episode'
           : 'episodes'
       }
-    },
-    components: {
-      HistoryModal,
-      ChoiceWindow
     },
     methods: {
       reduced (text) {
