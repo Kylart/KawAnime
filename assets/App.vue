@@ -183,10 +183,6 @@
     computed: {
       searchInput () {
         return this.$store.state.searchInput
-      },
-      openInBrowser () {
-        this.browser = true
-        this.$store.dispatch('openInBrowser')
       }
     },
     methods: {
@@ -199,6 +195,10 @@
             action
           }
         })
+      },
+      openInBrowser () {
+        this.browser = true
+        this.$store.dispatch('openInBrowser')
       }
     }
   }

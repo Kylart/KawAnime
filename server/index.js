@@ -6,8 +6,6 @@
 
 const fs = require('fs')
 const {join} = require('path')
-// const URL = require('url-parse')
-// const qs = require('querystring')
 const _ = require('lodash')
 
 const {userInfo} = require('os')
@@ -120,8 +118,7 @@ const routes = {
       horrible.getLatest(query, res)
     })
   },
-  /* istanbul ignore next */
-  'openThis': (app) => {
+  'openThis': /* istanbul ignore next */ (app) => {
     app.get('/openThis', ({query}, res) => {
       openExternal(query, res)
     })
@@ -196,14 +193,12 @@ const routes = {
       search.searchOnMal(query, res)
     })
   },
-  /* istanbul ignore next */
-  '_openInBrowser': (app) => {
-    app.get('/_openInBrowser', ({query}, res) => {
-      openInBrowser(query, res)
+  '_openInBrowser': /* istanbul ignore next */ (app) => {
+    app.get('/_openInBrowser', (req, res) => {
+      openInBrowser(res)
     })
   },
-  /* istanbul ignore next */
-  '_win': (app) => {
+  '_win': /* istanbul ignore next */ (app) => {
     app.get('/_win', ({query}, res) => {
       const action = query.action
 
@@ -218,7 +213,6 @@ const routes = {
       res.status(200).send()
     })
   },
-  /* istanbul ignore next */
   '_getPlatform': (app) => {
     app.get('/_platform', (req, res) => {
       res.status(200).send(process.platform)

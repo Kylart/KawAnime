@@ -4,13 +4,12 @@ const path = require('path')
 const http = require('http')
 const LRU = require('lru-cache')
 const express = require('express')
-const favicon = require('serve-favicon')
 const compression = require('compression')
 const resolve = file => path.resolve(__dirname, file)
 const { createBundleRenderer } = require('vue-server-renderer')
 const redirects = require('./router/301.json')
 
-const isProd = process.env.NODE_ENV === 'production'
+const isDev = process.env.NODE_ENV === 'development'
 const useMicroCache = process.env.MICRO_CACHE !== 'false'
 const serverInfo =
   `express/${require('express/package.json').version} ` +
@@ -38,7 +37,7 @@ function createRenderer (bundle, options) {
 
 let renderer
 let readyPromise
-if (isProd) {
+if (!isDev) {
   const bundle = require('./public/vue-ssr-server-bundle.json')
   const clientManifest = require('./public/vue-ssr-client-manifest.json')
   renderer = createRenderer(bundle, {
@@ -52,11 +51,10 @@ if (isProd) {
 }
 
 const serve = (path, cache) => express.static(resolve(path), {
-  maxAge: cache && isProd ? 60 * 60 * 24 * 30 : 0
+  maxAge: cache && !isDev ? 60 * 60 * 24 * 30 : 0
 })
 
 app.use(compression({ threshold: 0 }))
-app.use(favicon('./static/favicon.ico'))
 app.use('/static', serve('./static', true))
 app.use('/public', serve('./public', true))
 app.use('/static/robots.txt', serve('./robots.txt'))
@@ -104,7 +102,7 @@ function render ({url}, res) {
   if (cacheable) {
     const hit = microCache.get(url)
     if (hit) {
-      !isProd && console.log(`> cache hit!`.green)
+      isDev && console.log(`> cache hit!`.green)
       return res.end(hit)
     }
   }
@@ -121,13 +119,11 @@ function render ({url}, res) {
     if (cacheable) {
       microCache.set(url, html)
     }
-    if (!isProd) {
-      console.log(`> whole request: ${Date.now() - s}ms`.green)
-    }
+    isDev && console.log(`> whole request: ${Date.now() - s}ms`.green)
   })
 }
 
-app.get('*', isProd ? render : (req, res) => {
+app.get('*', !isDev ? render : (req, res) => {
   readyPromise.then(() => {
     render(req, res)
   })
@@ -199,7 +195,7 @@ const newWin = () => {
     console.info('Session logged off.')
   })
 
-  if (isProd) {
+  if (!isDev) {
     return win.loadURL(_APP_URL_)
   } else {
     win.loadURL(url.format({

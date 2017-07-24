@@ -70,10 +70,9 @@ exports.openExternal = (query, res) => {
   }
 }
 
-exports.openInBrowser = (uri, res) => {
-  shell.openExternal(uri)
+exports.openInBrowser = (res) => {
+  shell.openExternal(process.appURL)
   if (process.win) process.win.close()
 
-  res.type('application/json')
-  res.status(200).send(JSON.stringify({uri: uri}))
+  res.status(200).send()
 }

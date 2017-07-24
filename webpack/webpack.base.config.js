@@ -4,11 +4,11 @@ const vueConfig = require('./vue-loader.config')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 
-const isProd = process.env.NODE_ENV === 'production'
+const isDev = process.env.NODE_ENV === 'development'
 const resolve = (file) => path.resolve(__dirname, file)
 
 module.exports = {
-  devtool: isProd
+  devtool: !isDev
     ? false
     : '#cheap-module-source-map',
   output: {
@@ -61,9 +61,9 @@ module.exports = {
   },
   performance: {
     maxEntrypointSize: 300000,
-    hints: isProd ? 'warning' : false
+    hints: !isDev ? 'warning' : false
   },
-  plugins: isProd
+  plugins: !isDev
     ? [
       new webpack.optimize.UglifyJsPlugin({
         compress: { warnings: false }

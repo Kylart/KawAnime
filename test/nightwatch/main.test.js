@@ -2,18 +2,13 @@
  * Created by Kylart on 23/05/2017.
  */
 
-import 'colors'
-import Nuxt from 'nuxt'
-import http from 'http'
-import {readdirSync, unlinkSync, rmdirSync} from 'fs'
-import {resolve, join} from 'path'
-import {userInfo} from 'os'
-
-process.env.NODE_ENV = 'KawAnime-test'
+require('colors')
+const {readdirSync, unlinkSync, rmdirSync} = require('fs')
+const {join} = require('path')
+const {userInfo} = require('os')
 
 // We keep the nuxt and server instance
 // So we can close them at the end of the test
-let nuxt = null
 let server = null
 const uri = 'http://localhost:4000'
 
@@ -22,30 +17,11 @@ const DIR = join(userInfo().homedir, '.KawAnime-test')
 module.exports = { // adapted from: https://git.io/vodU0
   before: function (browser, done) {
     /**
-     * Creating .KawAnime-test directory and necessary files
-     */
-    const initFile = require(join(__dirname, '..', '..', 'assets', 'api', 'main.js'))
-
-    /**
-     * Nuxt config
-     */
-    const rootDir = resolve(__dirname, '..', '..')
-    let config = {}
-    try { config = require(resolve(rootDir, 'nuxt.config.js')) } catch (e) {}
-    config.rootDir = rootDir // project folder
-    config.dev = false // production build
-
-    /**
      * Server config
      */
-    nuxt = new Nuxt(config)
-    const route = initFile.route(nuxt)
-    server = http.createServer(route)
-    nuxt.build().then(() => {
-      server.listen(4000)
-      console.log(`KawAnime's server is at http://localhost:${server.address().port}`.green)
-      done()
-    })
+    done()
+
+    console.log(`KawAnime's server is at http://localhost:${uri}`.green)
   },
   'Getting downloader page and downloading some anime': function (client) {
     client
@@ -79,7 +55,6 @@ module.exports = { // adapted from: https://git.io/vodU0
   },
   after: function () {
     server.close()
-    nuxt.close()
 
     /**
      * Removing temporary .KawAnime directory

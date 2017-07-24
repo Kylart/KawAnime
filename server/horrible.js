@@ -44,6 +44,7 @@ exports.getLatest = (query, res) => {
         }
 
         ++counter
+        /* istanbul ignore next */
         if (counter === 18) {
           console.log('[Horrible] (Releases): Sending Latest releases.')
           res.type('application/json')

@@ -447,8 +447,7 @@ export function createStore () {
         dispatch('getHistory')
       },
       async openInBrowser () {
-        const {data} = await axios.get('/_openInBrowser')
-        log(`Opening KawAnime in browser at ${data.uri}.`)
+        await axios.get('/_openInBrowser')
       },
       async saveWatchList ({state}) {
         axios.post('saveWatchList', JSON.stringify(state.watchLists))

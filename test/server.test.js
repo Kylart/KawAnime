@@ -2,20 +2,18 @@
  * Created by Kylart on 21/05/2017.
  */
 
-import 'colors'
-import test from 'ava'
-import Nuxt from 'nuxt'
-import axios from 'axios'
-import http from 'http'
-import {resolve, join} from 'path'
-import {readFile, writeFileSync, rmdirSync, unlinkSync, readdirSync} from 'fs'
-import {userInfo} from 'os'
+require('colors')
+const test = require('ava')
+const axios = require('axios')
+const express = require('express')
+const {join} = require('path')
+const {readFile, writeFileSync, rmdirSync, unlinkSync, readdirSync} = require('fs')
+const {userInfo} = require('os')
 
 process.env.NODE_ENV = 'KawAnime-test'
 
-// We keep the nuxt and server instance
-// So we can close them at the end of the test
-let nuxt = null
+// We keep the server instance
+// So we can close it at the end of the test
 let server = null
 const uri = 'http://localhost:4000'
 
@@ -27,31 +25,19 @@ const kawAnimeFilesPath = {
   config: join(DIR, 'config.json')
 }
 
-// Init Nuxt.js and create a server listening on localhost:4000
+// Init server listening on localhost:4000
 test.before('Init server', async () => {
   /**
    * Creating .KawAnime-test directory and necessary files
    */
-  const initFile = require(join(__dirname, '..', 'assets', 'api', 'main.js'))
-
-  /**
-   * Nuxt config
-   */
-  const rootDir = resolve(__dirname, '..')
-  let config = {}
-  try { config = require(resolve(rootDir, 'nuxt.config.js')) } catch (e) {}
-  config.rootDir = rootDir // project folder
-  config.dev = false // production build
+  const app = express()
+  require('../server')(app)
 
   /**
    * Server config
    */
-  nuxt = new Nuxt(config)
-  const route = initFile.route(nuxt)
-  server = http.createServer(route)
-  await nuxt.build()
-  server.listen(4000)
-  console.log(`KawAnime's server is at http://localhost:${server.address().port}`.green)
+  server = app.listen(4000)
+  console.log(`KawAnime's server is at ${uri}`.green)
 
   const local = require(join(DIR, 'locals.json'))
   local['sakuratrick'] = {
@@ -424,59 +410,14 @@ test('/getInfoFromMal route exits and return an object with name', async t => {
   t.is(data.title, 'Sakura Trick')
 })
 
-/**
- * Front test calls
- *
- * Very basic tests. Front is tested with nightwatch anyway
- */
-
-test('/downloader exits and render HTML', async t => {
-  let context = {}
-  const { html } = await nuxt.renderRoute('/downloader', context)
-
-  t.true(html.includes('Download!'))
-})
-
-test('/ exits and returns HTML (axios)', async t => {
-  const { data, status } = await axios.get(`${uri}/`)
+test('/_platform route exits and return string containing platform\'s name', async t => {
+  const { data, status } = await axios.get(`${uri}/_platform`)
 
   t.is(status, 200)
-
-  t.true(data.includes('かわニメ'))
-  t.true(data.includes('少々お待ち下さいね〜'))
+  t.is(typeof data, 'string')
 })
 
-test('/seasons exits and render HTML', async t => {
-  let context = {}
-  const { html } = await nuxt.renderRoute('/seasons', context)
-
-  t.true(html.includes('かわニメ'))
-  t.true(html.includes('少々お待ち下さいね〜'))
-})
-
-test('/news exits and render HTML', async t => {
-  let context = {}
-  const { html } = await nuxt.renderRoute('/news', context)
-
-  t.true(html.includes('かわニメ'))
-  t.true(html.includes('少々お待ち下さいね〜'))
-})
-
-test('/localPage exits and render HTML', async t => {
-  let context = {}
-  const { html } = await nuxt.renderRoute('/news', context)
-
-  t.true(html.includes('refresh'))
-})
-
-test('/watchList exits and render HTML', async t => {
-  let context = {}
-  const { html } = await nuxt.renderRoute('/watchList', context)
-
-  t.true(html.includes('Move to'))
-})
-
-// Close server and ask nuxt to stop listening to file changes
+// Close server
 test.after('Closing server and server.test.js', () => {
   server.close()
 
