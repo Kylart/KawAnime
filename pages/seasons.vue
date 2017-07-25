@@ -244,12 +244,25 @@
     margin: 0;
   }
 
+  div.input-group
+  {
+    padding-bottom: 5px !important;
+    margin-top: 8px !important;
+  }
+
   .text
   {
     text-align: justify;
     text-align-last: center;
     padding: 20px;
     font-size: 16px;
+  }
+
+
+  .refresh-button
+  {
+    display: flex;
+    align-items: center;
   }
 
   .query

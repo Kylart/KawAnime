@@ -12,6 +12,7 @@ const log = (message) => {
 export function createStore () {
   return new Vuex.Store({
     state: {
+      NODE_ENV: '',
       platform: '',
       drawer: false,
       autoRefreshReleases: true,
@@ -75,7 +76,7 @@ export function createStore () {
           commit('init', data.config)
         } catch (e) { void e }
 
-        dispatch('getPlatform').catch(err => { void err })
+        dispatch('getEnv').catch(err => { void err })
         dispatch('releasesInit').catch(err => { void (err) })
         dispatch('seasonsInit').catch(err => { void (err) })
         dispatch('newsInit').catch(err => { void (err) })
@@ -83,10 +84,10 @@ export function createStore () {
         dispatch('listInit').catch(err => { void (err) })
         dispatch('getHistory').catch(err => { void (err) })
       },
-      async getPlatform ({commit}) {
-        const {data} = await axios.get('_platform')
+      async getEnv ({commit}) {
+        const {data} = await axios.get('_env')
 
-        commit('setPlatform', data)
+        commit('setEnv', data)
       },
       async releasesInit ({state, commit, dispatch}) {
         // TODO refactor this since it is a bit hard coded
@@ -465,8 +466,9 @@ export function createStore () {
     },
 
     mutations: {
-      setPlatform (state, data) {
-        state.platform = data
+      setEnv (state, data) {
+        state.platform = data.platform
+        state.NODE_ENV = data.NODE_ENV
       },
       init (state, data) {
         const config = data
@@ -623,6 +625,10 @@ export function createStore () {
       }
     },
 
-    getters: {}
+    getters: {
+      env (state) {
+        return state.NODE_ENV
+      }
+    }
   })
 }

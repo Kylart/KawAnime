@@ -213,9 +213,12 @@ const routes = {
       res.status(200).send()
     })
   },
-  '_getPlatform': (app) => {
-    app.get('/_platform', (req, res) => {
-      res.status(200).send(process.platform)
+  '_getEnv': (app) => {
+    app.get('/_env', (req, res) => {
+      res.status(200).send({
+        platform: process.platform,
+        NODE_ENV: process.env.NODE_ENV
+      })
     })
   }
 }

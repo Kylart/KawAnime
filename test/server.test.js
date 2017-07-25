@@ -410,11 +410,11 @@ test('/getInfoFromMal route exits and return an object with name', async t => {
   t.is(data.title, 'Sakura Trick')
 })
 
-test('/_platform route exits and return string containing platform\'s name', async t => {
-  const { data, status } = await axios.get(`${uri}/_platform`)
+test('/_env route exits and return string containing platform\'s name', async t => {
+  const { data, status } = await axios.get(`${uri}/_env`)
 
   t.is(status, 200)
-  t.is(typeof data, 'string')
+  t.is(typeof data.platform, 'string')
 })
 
 // Close server

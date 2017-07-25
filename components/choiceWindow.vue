@@ -11,14 +11,14 @@
                 <v-checkbox v-model="selected"
                             :value="options[i - 1].value"
                             :label="options[i - 1].label"
-                            class="option">
+                            class="option primary--text">
                 </v-checkbox>
               </v-flex>
               <v-flex v-else xs6 class="checkbox-container">
                 <v-checkbox v-model="selected"
                             :value="options[i - 1].value"
                             :label="options[i - 1].label"
-                            class="option">
+                            class="option primary--text">
                 </v-checkbox>
               </v-flex>
             </template>

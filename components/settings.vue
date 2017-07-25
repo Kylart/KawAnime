@@ -45,7 +45,7 @@
                            class="ripple"
                            ripple
                            :to="subItem.href"
-                           key="subItem.title">
+                           :key="subItem.title">
                 <v-list-tile-action>
                   <v-icon>{{ subItem.action }}</v-icon>
                 </v-list-tile-action>

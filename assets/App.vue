@@ -82,6 +82,8 @@
       </transition>
     </main>
 
+    <env v-if="$store.getters.env"></env>
+
     <!-- Displayed if an error occurred -->
     <v-snackbar
       :timeout="5000"
@@ -248,16 +250,6 @@
     padding-left: 20px;
     font-family: "Hiragino Mincho Pro", serif;
     font-size: 30px !important;
-  }
-
-  .open-in-browser
-  {
-    margin-top: 6px !important;
-  }
-
-  .modal-container .title
-  {
-    line-height: 25px;
   }
 </style>
 

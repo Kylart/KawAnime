@@ -46,7 +46,7 @@
                     <v-layout row wrap class="elem-container">
                       <v-flex xs7
                               v-tooltip:top="{ html: item.name }">
-                        <h6 class="title ellipsis">{{ item.name }}</h6>
+                        <h6 class="elem-title ellipsis white--text">{{ item.name }}</h6>
                       </v-flex>
                       <v-flex xs2
                               v-tooltip:top="{ html: 'Episode ' + item.ep }"
@@ -153,8 +153,8 @@
           </v-layout>
         </v-flex>
         <v-flex xs12 class="empty-message">
-          <h3>Wow such empty!</h3>
-          <h4>Start downloading anime
+          <h3 class="white--text">Wow such empty!</h3>
+          <h4 class="white--text">Start downloading anime
             <nuxt-link to="/downloader" class="green--text">here</nuxt-link>
             or
             <nuxt-link to="/" class="cyan--text">here!</nuxt-link>
@@ -283,7 +283,6 @@
 
   h6
   {
-    color: rgba(255, 255, 255, 0.8);
     margin-top: 0.7rem;
     margin-bottom: 0;
   }
@@ -303,7 +302,7 @@
 
   .page-container
   {
-    min-height: 92vh !important;
+    padding-top: 0;
     padding-left: 0;
     padding-right: 0;
   }
@@ -316,7 +315,6 @@
 
   .menu-eps-text
   {
-    color: rgba(255, 255, 255, 0.8);
     font-size: 16px;
     font-weight: 800;
     margin-top: 12px;
@@ -343,7 +341,6 @@
   /* -------------- ELEMS -------------- */
   .elem
   {
-    color: rgba(255, 255, 255, 0.8);
     margin-bottom: 10px;
     display: inline-block;
   }
@@ -370,7 +367,7 @@
     padding-top: 5px;
   }
 
-  .title
+  .elem-title
   {
     padding-left: 10px;
     line-height: 30px;
@@ -472,11 +469,6 @@
   {
     margin-top: 5%;
     text-align: center;
-  }
-
-  .empty-message h3, h4
-  {
-    color: rgba(255, 255, 255, 0.8);
   }
 
   .empty-bg

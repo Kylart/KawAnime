@@ -16,7 +16,7 @@
           <v-card-text>
             <v-layout row wrap class="list-container">
               <v-flex xs12>
-                <v-layout row wrap justify-center class="top-form">
+                <v-layout row wrap align-center justify-center class="top-form">
                   <v-flex md3 sm4 xs9>
                     <v-btn icon flat
                            @click="selectAll(i)"
@@ -76,11 +76,11 @@
                           :class="item.split(' ').join('-')">
                     <v-card class="elem-content elevation-3" v-ripple="true">
                       <v-layout row wrap>
-                        <v-flex xs1 class="box" @click.capture="select(item, i)">
+                        <v-flex xs2 class="box" @click.capture="select(item, i)">
                           <v-checkbox label="" accent v-model="selected[i]" disabled :value="item" dark/>
                         </v-flex>
-                        <v-flex xs9 v-tooltip:top="{ html: item }" @click.capture="select(item, i)">
-                          <h6 class="ellipsis elem-title">{{ item }}</h6>
+                        <v-flex xs8 v-tooltip:top="{ html: item }" @click.capture="select(item, i)">
+                          <h6 class="ellipsis elem-title white--text">{{ item }}</h6>
                         </v-flex>
                         <v-flex xs2>
                           <v-menu bottom right>
@@ -314,12 +314,16 @@
   h6
   {
     margin: 0;
-    color: rgba(255, 255, 255, 0.8);
   }
 
   span
   {
     width: 100%;
+  }
+
+  .card__text
+  {
+    padding-top: 0;
   }
 
   .ellipsis
@@ -362,15 +366,14 @@
     0 3px 14px 2px rgba(0, 0, 0, 0.12) !important;
   }
 
-  /*noinspection CssUnusedSymbol*/
-  .input-group
+  .elem .input-group
   {
     margin: 0;
+    padding: 0;
   }
 
   .top-form
   {
-    margin-bottom: 10px;
     padding-left: 15px;
   }
 
@@ -382,6 +385,8 @@
   .add-button-container
   {
     padding-right: 2%;
+    display: flex;
+    align-items: center;
   }
 
   .box
@@ -398,7 +403,6 @@
     padding-left: 10px;
   }
 
-  /*noinspection CssUnusedSymbol*/
   .selected
   {
     background-color: #2E7D32;

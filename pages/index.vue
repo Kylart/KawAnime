@@ -1,5 +1,5 @@
 <template xmlns:v-tooltip="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml">
-  <v-container fluid class="container pa-0" style="min-height: 92vh">
+  <v-container fluid class="container pa-0">
     <transition name="fade" v-if="releases.length">
       <v-layout row wrap style="margin: 0 1% 0 1%;">
         <v-flex md4 sm4 xs12 class="time-container">
@@ -246,30 +246,26 @@
     margin-bottom: 0;
   }
 
-  .select
+  div.input-group
   {
-    margin: 10px 0 5px 0;
+    padding-bottom: 5px !important;
+    padding-top: 8px !important;
   }
 
   /* ----- Refresh button ----- */
   .refresh-button-container
   {
     display: inline-block;
-    margin-top: 5px;
-    margin-bottom: 2px;
     text-align: center;
     padding: 0;
     align-self: center;
   }
 
-  .refresh-button
-  {
-    display: inline-block;
-  }
-
   .time-container
   {
-    align-self: center;
+    height: 70px;
+    display: flex;
+    align-items: center;
   }
 
   .update-time

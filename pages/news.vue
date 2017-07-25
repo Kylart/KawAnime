@@ -81,7 +81,6 @@
   }
 
   /* Needed */
-  /*noinspection CssUnusedSymbol*/
   .icon--large
   {
     height: 2.5rem;
