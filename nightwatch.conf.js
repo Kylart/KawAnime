@@ -2,7 +2,6 @@
  * Taken and modified from https://github.com/dwyl/learn-nightwatch
  */
 // require('env2')('.env') // optionally store your Evironment Variables in .env
-process.NODE_ENV = 'KawAnime-test'
 const SCREENSHOT_PATH = './screenshots/'
 const BINPATH = './node_modules/nightwatch/bin/'
 

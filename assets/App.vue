@@ -3,7 +3,6 @@
     <v-navigation-drawer class="pb-0"
                          style="width: 280px"
                          temporary
-                         overflow
                          v-model="$store.state.drawer"
     >
       <v-list>
@@ -35,7 +34,7 @@
                          class="ripple"
                          ripple
                          :to="subItem.href"
-                         key="subItem.title">
+                         :key="subItem.title">
               <v-list-tile-action>
                 <v-icon>{{ subItem.action }}</v-icon>
               </v-list-tile-action>
@@ -45,7 +44,7 @@
             </v-list-tile>
             <v-divider></v-divider>
           </v-list-group>
-          <v-subheader v-else-if="item.header">{{ item.header }}</v-subheader>
+          <v-subheader v-else-if="item.header" class="white--text">{{ item.header }}</v-subheader>
           <v-divider v-else-if="item.divider"></v-divider>
         </template>
       </v-list>

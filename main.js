@@ -7,7 +7,7 @@ const express = require('express')
 const compression = require('compression')
 const resolve = file => path.resolve(__dirname, file)
 const { createBundleRenderer } = require('vue-server-renderer')
-const redirects = require('./router/301.json')
+const redirects = require(path.join(__dirname, '/router/301.json'))
 
 const isDev = process.env.NODE_ENV === 'development'
 const useMicroCache = process.env.MICRO_CACHE !== 'false'
@@ -17,7 +17,7 @@ const serverInfo =
 
 const app = express()
 
-const template = fs.readFileSync(resolve('./assets/index.template.html'), 'utf-8')
+const template = fs.readFileSync(path.join(__dirname, 'assets/index.template.html'), 'utf-8')
 
 function createRenderer (bundle, options) {
   // https://github.com/vuejs/vue/blob/dev/packages/vue-server-renderer/README.md#why-use-bundlerenderer
@@ -29,7 +29,7 @@ function createRenderer (bundle, options) {
       maxAge: 1000 * 60 * 15
     }),
     // this is only needed when vue-server-renderer is npm-linked
-    basedir: resolve('./public'),
+    basedir: resolve(__dirname, 'public'),
     // performance
     runInNewContext: false
   }))
@@ -38,14 +38,14 @@ function createRenderer (bundle, options) {
 let renderer
 let readyPromise
 if (!isDev) {
-  const bundle = require('./public/vue-ssr-server-bundle.json')
-  const clientManifest = require('./public/vue-ssr-client-manifest.json')
+  const bundle = require(path.join(__dirname, 'public', 'vue-ssr-server-bundle.json'))
+  const clientManifest = require(path.join(__dirname, 'public', 'vue-ssr-client-manifest.json'))
   renderer = createRenderer(bundle, {
     clientManifest
   })
 } else {
   // hot reload
-  readyPromise = require('./webpack/setup-dev-server')(app, (bundle, options) => {
+  readyPromise = require(path.join(__dirname, 'webpack', 'setup-dev-server.js'))(app, (bundle, options) => {
     renderer = createRenderer(bundle, options)
   })
 }
@@ -55,17 +55,11 @@ const serve = (path, cache) => express.static(resolve(path), {
 })
 
 app.use(compression({ threshold: 0 }))
-app.use('/static', serve('./static', true))
-app.use('/public', serve('./public', true))
-app.use('/static/robots.txt', serve('./robots.txt'))
-
-app.get('/sitemap.xml', (req, res) => {
-  res.setHeader('Content-Type', 'text/xml')
-  res.sendFile(resolve('./static/sitemap.xml'))
-})
+app.use('/static', serve(path.join(__dirname, 'static'), true))
+app.use('/public', serve(path.join(__dirname, 'public'), true))
 
 // Setup the api
-require('./server')(app)
+require(path.join(__dirname, 'server'))(app)
 
 // 301 redirect for changed routes
 Object.keys(redirects).forEach((k) => {
@@ -92,7 +86,7 @@ function render ({url}, res) {
       res.status(404).end('404 | Page Not Found')
     } else {
       // Render Error Page or Redirect
-      res.status(500).end('500 | Internal Server Error')
+      res.status(500).end('500 | Internal Server Error\n' + err.stack)
       console.error(`error during render : ${url}`)
       console.error(err.stack)
     }
@@ -129,11 +123,9 @@ app.get('*', !isDev ? render : (req, res) => {
   })
 })
 
-const port = process.env.PORT || 9200
-const _APP_URL_ = `http://localhost:${port}`
-app.listen(port, '0.0.0.0', () => {
-  console.log(`> server started at localhost:${port}`.green)
-})
+const server = http.createServer(app).listen()
+const _APP_URL_ = 'http://localhost:' + server.address().port
+console.log(`> server started at ${_APP_URL_}`.green)
 
 /*
  ** Electron app
@@ -162,7 +154,7 @@ dialog.showErrorBox = (title, content) => {
 }
 
 process.on('uncaughtException', (err) => {
-  console.error('Uncaught exception occurred in main process.\n' + err.message)
+  console.error('Uncaught exception occurred in main process.\n', err)
 })
 
 const newWin = () => {
@@ -223,6 +215,7 @@ Electron.on('window-all-closed', function () {
   // to stay active until the user quits explicitly with Cmd + Q
   if (process.platform !== 'darwin') {
     app.quit()
+    Electron.quit()
   }
 })
 

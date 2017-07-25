@@ -191,7 +191,7 @@
         console.log(`[${(new Date()).toLocaleTimeString()}]: Opening modal`)
 
         this.modalTitle = title
-        this.modalText = text
+        this.modalText = text + 'Blabla'
 
         this.modal = true
       },
@@ -204,8 +204,8 @@
         axios.post('download', {
           name: name,
           quality: quality,
-          fromEp: -Infinity,
-          untilEp: Infinity,
+          fromEp: 0,
+          untilEp: 20000,
           fansub: fansub,
           choice: 'si'
         }).then(({data}) => {
