@@ -11,7 +11,6 @@
   "license": "MIT",
   "scripts": {
     "dev": "NODE_ENV=development electron main.js",
-    "dev:server": "node assets/serverStart.js",
     "start": "NODE_ENV=production electron main.js",
     "bstart": "npm run build && npm start",
     "build": "rimraf public && npm run build:client && npm run build:server",
@@ -19,14 +18,14 @@
     "build:server": "NODE_ENV=production webpack --config webpack/webpack.server.config.js --hide-modules",
     "cloc": "cloc $(git ls-files | grep -vE \".mkv|mp4|lock\")",
     "test:server": "nyc ava --verbose --serial test/server.test.js",
-    "test:front": "NODE_ENV=KawAnime-test nightwatch",
+    "test:front": "npm run build && NODE_ENV=KawAnime-test nightwatch",
     "test": "standard --fix && npm test:front && npm test:server",
     "coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
     "lint": "standard --fix --plugin vue '**/*.{js,vue}'",
-    "buildLinux": "build --linux deb AppImage zip tar.gz",
-    "build:win": "build --win nsis --ia32 x64 appx zip squirrel",
-    "build:mac": "build --mac dmg zip pkg",
-    "build:all": "nuxt build && npm run buildMac && npm run buildWin && npm run buildLinux && build --armv7l",
+    "distLinux": "build --linux deb AppImage",
+    "dist:win": "build --win nsis --ia32 x64 appx zip squirrel",
+    "dist:mac": "build --mac dmg zip",
+    "dist:all": "npm run build && npm run dist:mac && npm run dist:win && npm run dist:linux && build --armv7l",
     "postinstall": "node nightwatch.conf.js"
   },
   "engines": {

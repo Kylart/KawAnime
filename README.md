@@ -36,7 +36,7 @@ list of torrent magnets to paste in a torrent client on a distant server.
 * Get seasonal releases information (from [www.livechart.me](https://www.livechart.me)).
 * Manage your anime files (watch and delete on click)
 * Manage watch lists.
-* Browse nyaa (si and pantsu).
+* Browse nyaa ([si](www.nyaa.si) and [pantsu](www.nyaa.pantsu.cat)).
 * More features are to come. 
 
 ## About OS
@@ -70,12 +70,6 @@ npm run bstart
 ##### Start all app
 ```
 npm run dev
-```
-
-#### Start only server with hot reloading
-_using this with a REST api client is kinda useful_.
-```
-npm run dev:server
 ```
 
 ##### Lint
@@ -112,22 +106,22 @@ You can find help to use it on your platform
 
 #### For every OS
 ```
-npm run build npm run buildAll
+npm run build npm run dist:all
 ```
 
 #### For Mac OS only
 ```
-npm run build && npm run buildMac
+npm run build && npm run dist:mac
 ```
 
 #### For Linux platforms only
 ```
-npm run build && npm run buildLinux
+npm run build && npm run dist:linux
 ```
 
 #### For Windows platforms
 ```
-npm run build && npm run buildWin
+npm run build && npm run dist:win
 ```
 
 Distributable will then be in the `dist` folder.
@@ -141,9 +135,6 @@ Any contribution is appreciated.
 4. Push to the branch: `git push origin my-new-feature`
 5. Submit a pull request.
 
-## TODOs
-* Implement torrents with WebTorrent module.
-
 ## Thanks
 This software is being developped with the following technologies, many thanks to 
 * [Electron](https://electron.atom.io)
@@ -155,4 +146,3 @@ _It is still in development_.
 MIT License
 
 Copyright (c) Kylart
-
