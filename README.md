@@ -31,11 +31,12 @@ This software allows one to:
 * Be aware of the latest anime release.
 * Download an anime (from ep X to ep Y) via Torrent (one would need a torrent client atm). One can also only get a 
 list of torrent magnets to paste in a torrent client on a distant server.
-* Get information from any anime (those come from myanimelist.net) __COMMING SOON__.
+* Get information from any anime (those come from myanimelist.net).
 * Get anime-related news from MyAnimeList.net.
 * Get seasonal releases information (from [www.livechart.me](https://www.livechart.me)).
 * Manage your anime files (watch and delete on click)
 * Manage watch lists.
+* Browse nyaa (si and pantsu).
 * More features are to come. 
 
 ## About OS
@@ -146,7 +147,6 @@ Any contribution is appreciated.
 ## Thanks
 This software is being developped with the following technologies, many thanks to 
 * [Electron](https://electron.atom.io)
-* [Nuxt](https://nuxtjs.org)
 * [Vuetify](https://vuetifyjs.com)
 
 _It is still in development_.
