@@ -302,7 +302,7 @@
 
   .page-container
   {
-    padding-top: 0;
+    padding-top: 10px;
     padding-left: 0;
     padding-right: 0;
   }

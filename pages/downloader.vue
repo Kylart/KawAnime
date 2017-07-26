@@ -1,6 +1,5 @@
 <template>
   <v-container fluid class="container" id="downloader">
-    <script src="https://wzrd.in/standalone/copy-to-clipboard@latest" async></script>
     <div class="cute-char left-pic"></div>
     <div class="cute-char right-pic"></div>
 
@@ -101,7 +100,13 @@
         <v-card-text class="subheading white--text">
           <v-layout row wrap justify-center align-center>
             <v-flex xs4 offset-xs6 class="modal-icon-container">
-              <v-icon class="copy-icon" @click="copy()">content_copy</v-icon>
+              <v-btn flat icon
+                     v-if="links"
+                     v-clipboard="links.join('\n')"
+                     @success="copiedSnackbar = true">
+                <v-icon class="copy-icon">content_copy</v-icon>
+              </v-btn>
+
             </v-flex>
             <v-flex xs12 v-for="link in $store.state.downloaderModal.text"
                    class="subheading grey--text modal-text" :key="link">{{ link.split('&')[0] }}
@@ -154,8 +159,11 @@
       }
     },
     computed: {
-      formValues: function () {
+      formValues () {
         return this.$store.state.downloaderForm
+      },
+      links () {
+        return this.$store.state.downloaderModal.text
       }
     },
     methods: {
@@ -211,13 +219,6 @@
           default:
             break
         }
-      },
-      copy () {
-        const toCopy = this.$store.state.downloaderModal.text.join('\n')
-
-        window.copyToClipboard(toCopy)
-
-        this.copiedSnackbar = true
       }
     }
   }

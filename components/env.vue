@@ -1,7 +1,6 @@
-<template>
-  <div id="container">
-    <span class="text white--text">Development mode</span>
-  </div>
+<template lang="pug">
+  div#container
+    span.text.white--text Development mode
 </template>
 
 <style scoped>
