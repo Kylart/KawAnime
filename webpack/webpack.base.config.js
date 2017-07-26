@@ -1,8 +1,10 @@
 const path = require('path')
+const chalk = require('chalk')
 const webpack = require('webpack')
 const vueConfig = require('./vue-loader.config')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
+const ProgressBarPlugin = require('progress-bar-webpack-plugin')
 
 const isDev = process.env.NODE_ENV === 'development'
 const resolve = (file) => path.resolve(__dirname, file)
@@ -70,6 +72,10 @@ module.exports = {
       }),
       new ExtractTextPlugin({
         filename: 'common.[chunkhash].css'
+      }),
+      new ProgressBarPlugin({
+        format: chalk.cyan('> build') + ' [:bar] ' + chalk.green.bold(':percent') + ' (:elapsed seconds)',
+        clear: true
       })
     ]
     : [

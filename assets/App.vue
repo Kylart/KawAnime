@@ -82,7 +82,7 @@
       </transition>
     </main>
 
-    <env v-if="$store.getters.env"></env>
+    <env v-if="$store.state.NODE_ENV"></env>
 
     <!-- Displayed if an error occurred -->
     <v-snackbar
@@ -127,6 +127,10 @@
             action: 'file_download',
             items: [
               {
+                title: 'Browse Nyaa',
+                action: 'public',
+                href: '/nyaa'
+              }, {
                 title: 'Downloader',
                 action: 'file_download',
                 href: '/downloader'
@@ -179,11 +183,6 @@
 //            ]
 //          }
         ]
-      }
-    },
-    computed: {
-      searchInput () {
-        return this.$store.state.searchInput
       }
     },
     methods: {
@@ -248,7 +247,7 @@
   {
     overflow: hidden;
     padding-left: 20px;
-    font-family: "Hiragino Mincho Pro", serif;
+    font-family: 'Hiragino Mincho Pro', 'MS PMincho', serif;
     font-size: 30px !important;
   }
 </style>

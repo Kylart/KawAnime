@@ -50,7 +50,7 @@
                 <v-layout row wrap class="elem elevation-3" v-ripple="true">
                   <!-- Header of elem -->
                   <v-flex xs12 v-tooltip:bottom="{ html: item.title }">
-                    <h6 class="title ellipsis">
+                    <h6 class="title ellipsis white--text">
                       {{ item.title }}
                     </h6>
                   </v-flex>
@@ -290,7 +290,6 @@
     position: relative;
     margin: 5px 0 10px;
     background-color: rgb(60, 60, 60);
-    color: rgba(255, 255, 255, 0.8);
   }
 
   .elem:hover
@@ -305,7 +304,6 @@
     margin-bottom: 10px;
     padding-left: 10px;
     line-height: 26px;
-    color: rgba(255, 255, 255, 0.8);
   }
 
   .from-type

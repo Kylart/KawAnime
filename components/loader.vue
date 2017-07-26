@@ -1,29 +1,33 @@
-<template>
-  <transition name="fade">
-    <div class="loading-gif">
-      <h3 class="loading-text">少々お待ち下さいね〜</h3>
-      <img v-if="number === 1" src="~static/images/loading-gif1.gif" height="500"/>
-      <img v-else-if="number === 2" src="~static/images/loading-gif2.gif" height="500"/>
-    </div>
-  </transition>
+<template lang="pug">
+  transition(name="fade" mode="out-in")
+    v-layout(row wrap justify-center align-end).loader-container
+      v-flex(xs12).flex-centered
+        h3.loading-text.white--text 少々お待ち下さいね〜
+      v-flex(xs12).flex-centered
+        img(v-if="number === 1" src="~static/images/loading-gif1.gif" height="500")
+        img(v-if="number === 2" src="~static/images/loading-gif2.gif" height="500")
 </template>
+
 <style scoped>
   .loading-text
   {
-    width: 100%;
     padding: 0;
-    margin: 0 0 15px -20%;
-    color: rgba(255, 255, 255, 0.8);
-    font-family: "Hiragino Mincho Pro", serif;
+    margin: 0;
+    font-family: 'Hiragino Mincho Pro', 'MS PMincho', serif;
   }
 
-  .loading-gif
+  .loader-container
   {
-    position: absolute;
-    bottom: 0;
-    left: 37%;
+    min-height: 92vh;
+  }
+
+  .flex-centered
+  {
+    display: flex;
+    justify-content: center;
   }
 </style>
+
 <script>
   export default{
     data: function () {

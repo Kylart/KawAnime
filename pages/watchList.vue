@@ -336,7 +336,6 @@
   .elem-number
   {
     margin: 15px 0 0 0;
-    color: rgba(255, 255, 255, 0.8);
     font-size: 16px;
     font-weight: 700;
     font-style: italic;
@@ -345,7 +344,6 @@
   .elem
   {
     padding: 5px 5px 5px 5px;
-    color: rgba(255, 255, 255, 0.8);
     display: inline-block;
     width: 100%;
   }

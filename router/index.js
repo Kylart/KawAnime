@@ -23,6 +23,7 @@ export function createRouter () {
     scrollBehavior: () => ({ y: 0 }),
     routes: [
       route('/', 'index'),
+      route('/nyaa', 'nyaa'),
       route('/downloader', 'downloader'),
       route('/seasons', 'seasons'),
       route('/news', 'news'),

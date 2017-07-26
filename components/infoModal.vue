@@ -23,9 +23,9 @@
                   <v-flex xs3 class="elem"
                           @click="search(item.name)">
                     <v-layout wrap justify-center
+                              v-ripple="true"
                               class="elem-content elevation-3"
-                              @click.all="search(item.name)"
-                              ripple>
+                              @click.all="search(item.name)">
                       <v-flex xs8>
                         <img :src="item.image_url" height="140" class="elem-picture">
                       </v-flex>
@@ -183,10 +183,12 @@
   .elem
   {
     margin-top: 10px;
+    padding-left: 10px;
   }
 
   .elem-content
   {
+    margin: 0;
     height: 100%;
     position: relative;
     margin-left: 10%;

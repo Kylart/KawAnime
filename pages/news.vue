@@ -17,7 +17,7 @@
                v-for="item in $store.state.news" :key="item.name">
           <v-layout row wrap>
             <v-flex xs12>
-              <h3 class="title">{{ item.title }}</h3>
+              <h3 class="title white--text">{{ item.title }}</h3>
             </v-flex>
             <v-flex md2 xs3 >
               <img :src="item.image" class="image"/>
@@ -98,7 +98,6 @@
     margin-bottom: 15px;
     padding: 0;
     background-color: rgb(60, 60, 60);
-    color: rgba(255, 255, 255, 0.8);
   }
 
   .elem:hover
@@ -107,11 +106,6 @@
     box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
     0 8px 10px 1px rgba(0, 0, 0, 0.14),
     0 3px 14px 2px rgba(0, 0, 0, 0.12) !important;
-  }
-
-  .news-container h3
-  {
-    color: rgba(255, 255, 255, 0.8);
   }
 
   .title

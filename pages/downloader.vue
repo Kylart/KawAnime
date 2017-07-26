@@ -225,11 +225,6 @@
 </script>
 
 <style scoped>
-  *
-  {
-    color: rgba(255, 255, 255, 0.8);
-  }
-
   div.container
   {
     position: relative;
@@ -283,7 +278,6 @@
   }
 
   /* Needed! */
-  /*noinspection CssUnusedSymbol*/
   .form-container .card
   {
     background-color: rgba(0, 0, 0, 0);
@@ -326,19 +320,12 @@
 
   .magnet-modal .title
   {
-    color: rgba(255, 255, 255, 0.8);
     padding: 0;
   }
 
   .magnet-modal .title h2
   {
-    color: rgba(255, 255, 255, 0.8);
     padding-bottom: 0;
-  }
-
-  .magnet-modal .title strong
-  {
-    color: rgba(255, 255, 255, 0.8);
   }
 
   .modal-icon-container

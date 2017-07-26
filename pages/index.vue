@@ -46,11 +46,11 @@
                 <v-container fluid style="padding: 0;">
                   <v-layout row wrap>
                     <v-flex class="elem-title" xs9 v-tooltip:top="{ html: item.rawName }">
-                      <h6>{{ item.rawName }}</h6>
+                      <h6 class="white--text">{{ item.rawName }}</h6>
                     </v-flex>
                     <v-flex v-tooltip:top="{ html: 'Episode ' + item.ep }"
                             class="elem-ep text-xs-right" xs3>
-                      <h6>Ep {{ item.ep }}</h6>
+                      <h6 class="white--text">Ep {{ item.ep }}</h6>
                     </v-flex>
                     <v-flex class="elem-image"
                             xl6 lg4 md5 sm3 xs4>
@@ -191,7 +191,7 @@
         console.log(`[${(new Date()).toLocaleTimeString()}]: Opening modal`)
 
         this.modalTitle = title
-        this.modalText = text + 'Blabla'
+        this.modalText = text
 
         this.modal = true
       },
@@ -271,7 +271,6 @@
   .update-time
   {
     padding-left: 20px;
-    color: rgba(255, 255, 255, 0.8);
     font-weight: 600;
     font-size: 16px;
     font-style: italic;
@@ -279,7 +278,6 @@
 
   .elem
   {
-    color: rgba(255, 255, 255, 0.8);
     margin-bottom: 10px;
     display: inline-block;
   }
@@ -312,13 +310,11 @@
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
-    color: rgba(255, 255, 255, 0.8);
   }
 
   .elem-ep h6
   {
     margin-top: 10px;
-    color: rgba(255, 255, 255, 0.8);
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
