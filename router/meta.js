@@ -4,11 +4,6 @@ module.exports = {
     'description': 'Latest anime releases.',
     'keywords': 'download, releases, animes'
   },
-  '/nyaa': {
-    'title': 'Nyaa - KawAnime',
-    'description': 'Browse nyaa from KawAnime!',
-    'keywords': 'download, animes, nyaa'
-  },
   '/downloader': {
     'title': 'Downloader - KawAnime',
     'description': 'Download animes!',

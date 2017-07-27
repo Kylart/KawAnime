@@ -264,8 +264,11 @@ export default {
   async openNewsLink ({state}, link) {
     log(`Opening ${link}`)
 
-    if ((state.config.inside === 'true') === false) await axios.get(`openThis?type=link&link=${link}`)
-    else await axios.get(`openThis?type=insideLink&link=${link}`)
+    await axios.get(
+      state.config.inside
+        ? `openThis?type=insideLink&link=${link}`
+        : `openThis?type=link&link=${link}`
+    )
   },
   async download ({state, commit}) {
     const name = state.downloaderForm.name

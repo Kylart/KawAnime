@@ -12,7 +12,6 @@ export default {
   },
   init (state, data) {
     const config = data
-    config.inside = config.inside.toString()
 
     // config file looks like this
     // const config = {

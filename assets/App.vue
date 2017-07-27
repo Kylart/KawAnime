@@ -127,10 +127,6 @@
             action: 'file_download',
             items: [
               {
-                title: 'Browse Nyaa',
-                action: 'public',
-                href: '/nyaa'
-              }, {
                 title: 'Downloader',
                 action: 'file_download',
                 href: '/downloader'

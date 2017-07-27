@@ -19,7 +19,7 @@
             <v-flex xs12>
               <h3 class="title white--text">{{ item.title }}</h3>
             </v-flex>
-            <v-flex md2 xs3 >
+            <v-flex md2 xs3 style="height: 220px;">
               <img :src="item.image" class="image"/>
             </v-flex>
             <v-flex md10 xs9>
@@ -57,7 +57,6 @@
         this.$store.dispatch('openNewsLink', link)
       },
       refresh () {
-        console.log('Ok')
         this.$store.dispatch('refreshNews')
       }
     }

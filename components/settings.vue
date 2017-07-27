@@ -166,7 +166,6 @@
       save () {
         this.$store.commit('setConfig', this.config)
         const toSave = {...this.config}
-        toSave.inside = this.config.inside === 'true'
 
         this.$store.dispatch('saveConfig', toSave)
       },

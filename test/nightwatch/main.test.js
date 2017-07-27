@@ -84,10 +84,10 @@ module.exports = { // adapted from: https://git.io/vodU0
       app.get(k, (req, res) => res.redirect(301, redirects[k]))
     })
 
-    server = app.listen(9200, '0.0.0.0', () => {
+    server = app.listen(9200, () => {
       console.log(`> server started at ${uri}`.green)
-      done()
     })
+    done()
   },
   'Getting downloader page and downloading some anime': function (client) {
     client
