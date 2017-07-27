@@ -36,7 +36,6 @@ list of torrent magnets to paste in a torrent client on a distant server.
 * Get seasonal releases information (from [www.livechart.me](https://www.livechart.me)).
 * Manage your anime files (watch and delete on click)
 * Manage watch lists.
-* Browse nyaa ([si](www.nyaa.si) and [pantsu](www.nyaa.pantsu.cat)).
 * More features are to come. 
 
 ## About OS
