@@ -17,10 +17,10 @@ function route (path, view) {
 Vue.use(Router)
 
 export function createRouter () {
-  const router = new Router({
+  return new Router({
     base: __dirname,
     mode: 'history',
-    scrollBehavior: () => ({ y: 0 }),
+    scrollBehavior: () => ({y: 0}),
     routes: [
       route('/', 'index'),
       route('/downloader', 'downloader'),
@@ -29,18 +29,7 @@ export function createRouter () {
       route('/localPage', 'localPage'),
       route('/watchList', 'watchList'),
       // Global redirect for 404
-      { path: '*', redirect: '/' }  // TODO: make a custom 404 page
+      {path: '*', redirect: '/'}  // TODO: make a custom 404 page
     ]
   })
-
-  // Send a pageview to Google Analytics
-  router.beforeEach((to, from, next) => {
-      if (typeof ga !== 'undefined') {
-          ga('set', 'page', to.path)
-          ga('send', 'pageview')
-      }
-      next()
-  })
-
-  return router
 }
