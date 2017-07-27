@@ -5,7 +5,7 @@
         h3.loading-text.white--text 少々お待ち下さいね〜
       v-flex(xs12).flex-centered
         img(v-if="number === 1" src="~static/images/loading-gif1.gif" height="500")
-        img(v-if="number === 2" src="~static/images/loading-gif2.gif" height="500")
+        img(v-else-if="number === 2" src="~static/images/loading-gif2.gif" height="500")
 </template>
 
 <style scoped>
