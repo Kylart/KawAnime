@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="configModal"
             fullscreen
-            transition="dialog-bottom-transition"
+            transition="config"
             :overlay=false>
     <v-btn icon slot="activator">
       <v-icon>settings</v-icon>
@@ -124,7 +124,7 @@
         </v-layout>
       </v-container>
     </v-card>
-  </v-dialog>
+</v-dialog>
 </template>
 
 <script>

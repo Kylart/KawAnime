@@ -251,3 +251,7 @@
 <style lang="stylus">
   @import './stylus/main'
 </style>
+
+<style>
+  @import '../node_modules/animate.css/animate.min.css';
+</style>
