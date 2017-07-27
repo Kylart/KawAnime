@@ -108,7 +108,7 @@ test('/getLatest.json exits and returns 18 elements with right keys at 720p', as
     t.not(data[0].magnetLink, undefined)
     t.not(data[0].picture, undefined)
   } else if (status === 204 || status === 202) {
-    console.log('An error occurred while getting latest releases.'.yellow)
+    console.info('An error occurred while getting latest releases.'.yellow)
     t.is(data.length, 0)
   } else {
     t.fail()
@@ -129,8 +129,6 @@ test('/download Mahou Shoujo Ikusei Keikaku with HorribleSubs at 720p on nyaa.si
   if (status === 200) {
     t.is(data.length, 12)
     t.not(data[0], '')
-  } else if (status === 204) {
-    t.is(data.length, 0)
   } else {
     t.fail()
   }
@@ -150,8 +148,6 @@ test('/download Mahou Shoujo Ikusei Keikaku with HorribleSubs at 720p on nyaa.pa
   if (status === 200) {
     t.is(data.length, 12)
     t.not(data[0], '')
-  } else if (status === 204) {
-    t.is(data.length, 0)
   } else {
     t.fail()
   }
@@ -168,7 +164,7 @@ test('/getLatestNyaa exits and returns 18 elements with right keys at 720p on ny
     t.not(data[0].magnetLink, undefined)
     t.not(data[0].picture, undefined)
   } else if (status === 204 || status === 202) {
-    console.log('An error occurred while getting latest releases.'.yellow)
+    console.info('An error occurred while getting latest releases.'.yellow)
     t.is(data.length, 0)
   } else {
     t.fail()

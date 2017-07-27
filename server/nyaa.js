@@ -27,7 +27,7 @@ const download = (req, res) => {
 
     console.log(searchData)
 
-    const term = `[${searchData.fansub}]+${searchData.quality}+${searchData.name}+-unofficial`
+    const term = `[${searchData.fansub}]+${searchData.quality}+${searchData.name}+` + (choice === 'si' ? '-unofficial' : '')
 
     if (choice === 'si') {
       nyaa.searchSi(term).then((data) => {
@@ -60,7 +60,7 @@ const download = (req, res) => {
 
         sendRes(magnets, res)
       }).catch(/* istanbul ignore next */(err) => {
-        console.log('[Nyaa]: An error occurred...\n' + err)
+        console.log(err.message)
         res.status(204).send()
       })
     }
