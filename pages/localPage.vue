@@ -56,7 +56,7 @@
                       <v-flex xs3 class="buttons-container">
                         <v-btn large icon
                                class="play-button"
-                               @click="playThis(item.path)">
+                               @click="playThis(item)">
                           <v-icon large>play_circle_outline</v-icon>
                         </v-btn>
                         <v-menu open-on-hover
@@ -73,7 +73,7 @@
                                 Add to
                               </v-list-tile-title>
                             </v-list-tile>
-                            <v-list-tile @click="delThis(item.path)">
+                            <v-list-tile @click="delThis(item)">
                               <v-list-tile-action>
                                 <v-icon medium class="primary--text">delete_forever</v-icon>
                               </v-list-tile-action>
@@ -209,14 +209,14 @@
       reduced (text) {
         return text.length > 220 ? text.slice(0, 217) + '...' : text
       },
-      playThis (path) {
-        console.log(`[${(new Date()).toLocaleTimeString()}]: Requested to play ${path}. Sending...`)
+      playThis (item) {
+        console.log(`[${(new Date()).toLocaleTimeString()}]: Requested to play ${item.name} - ${item.ep}. Sending...`)
 
         // No need to get through store.
         axios.get(`openThis`, {
           params: {
             type: 'video',
-            path: path,
+            path: item.path,
             dir: this.$store.state.currentDir
           }
         }).then((res) => {
@@ -224,22 +224,22 @@
 
           this.$store.dispatch('appendHistory', {
             type: 'Play',
-            text: path.split(' ').slice(1, -1).join(' ')
+            text: item.name
           }).catch(err => { void (err) })
         })
       },
-      delThis (path) {
-        console.log(`[${(new Date()).toLocaleTimeString()}]: Requested to delete ${path}. Sending...`)
+      delThis (item) {
+        console.log(`[${(new Date()).toLocaleTimeString()}]: Requested to delete ${item.path} - ${item.ep}. Sending...`)
 
         this.$store.commit('updateLocalFiles', {
           type: 'delete',
-          path
+          path: item.path
         })
 
         axios.get(`openThis`, {
           params: {
             type: 'delete',
-            path: path,
+            path: item.path,
             dir: this.$store.state.currentDir
           }
         }).then((res) => {
@@ -247,7 +247,7 @@
 
           this.$store.dispatch('appendHistory', {
             type: 'Delete',
-            text: path.split(' ').slice(1, -1).join(' ')
+            text: item.name
           }).catch(err => { void (err) })
         }).catch((err) => {
           console.log('An error occurred while trying to delete a file:' + err)

@@ -119,6 +119,7 @@
                   </v-flex>
                 </v-layout>
               </v-flex>
+              </lazy-component>
             </transition-group>
           </v-layout>
         </v-tabs-content>

@@ -1,4 +1,4 @@
-<template xmlns:v-tooltip="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<template xmlns:v-tooltip="http://www.w3.org/1999/xhtml">
   <v-container fluid class="container pa-0">
     <transition name="fade" v-if="releases.length">
       <v-layout row wrap style="margin: 0 1% 0 1%;">
@@ -9,7 +9,7 @@
         <v-flex md2 sm3 xs12>
           <v-select
             class="select"
-            v-bind:items="fansubList"
+            :items="fansubList"
             v-model="$store.state.releaseFansub"
             label="Fansub"
             dark
@@ -21,7 +21,7 @@
         <v-flex md1 sm2 xs12>
           <v-select
             class="select"
-            v-bind:items="qualityList"
+            :items="qualityList"
             v-model="$store.state.releaseQuality"
             label="Quality"
             dark
@@ -54,7 +54,7 @@
                     </v-flex>
                     <v-flex class="elem-image"
                             xl6 lg4 md5 sm3 xs4>
-                      <img v-bind:src="item.picture" height="200" class="picture"/>
+                      <img :src="item.picture" height="200" class="picture"/>
                     </v-flex>
                     <v-flex xl6 lg8 md7 sm9 xs8>
                       <div class="elem-text-links">
@@ -188,8 +188,6 @@
     },
     methods: {
       openModal (title, text) {
-        console.log(`[${(new Date()).toLocaleTimeString()}]: Opening modal`)
-
         this.modalTitle = title
         this.modalText = text
 

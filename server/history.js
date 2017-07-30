@@ -73,7 +73,7 @@ exports.removeFromHistory = (req, res) => {
     // Writing file to history.json
     writeFileSync(historyPath, JSON.stringify(historyFile), 'utf-8')
 
-    console.log(`[History]: Removed an entry from the ${date}:`, info)
+    console.log(`[History]: Removed an entry from the ${date}:\n`, info)
   })
 
   res.status(200).send()
