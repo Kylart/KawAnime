@@ -24,20 +24,20 @@
                     <v-layout row wrap>
                       <template v-for="info in history[item]">
                         <v-flex xs2 class="time entry"
-                               :class="isDelete(info.type)">
+                                :class="isDelete(info.type)">
                           {{ info.time }}
                         </v-flex>
                         <v-flex xs2 class="type entry" :class="isDelete(info.type)">
                           {{ info.type }}
                         </v-flex>
                         <v-flex xs7
-                               class="ellipsis text entry"
-                               :class="isDelete(info.type)">
+                                class="ellipsis text entry"
+                                :class="isDelete(info.type)">
                           {{ info.text }}
                         </v-flex>
                         <v-flex xs1
-                               class="entry"
-                               :class="isDelete(info.type)">
+                                class="entry"
+                                :class="isDelete(info.type)">
                           <v-icon class="delete-entry"
                                   v-ripple="true"
                                   @click.stop="clearEntry(info, item)">

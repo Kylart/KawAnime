@@ -1,5 +1,5 @@
 <template xmlns:v-tooltip="http://www.w3.org/1999/xhtml">
-  <v-container fluid class="container pa-0">
+  <v-container id="container" fluid class="container pa-0">
     <transition name="fade" v-if="releases.length">
       <v-layout row wrap style="margin: 0 1% 0 1%;">
         <v-flex md4 sm4 xs12 class="time-container">
@@ -248,6 +248,11 @@
   {
     padding-bottom: 5px !important;
     padding-top: 8px !important;
+  }
+
+  #container
+  {
+    margin-top: 8px;
   }
 
   /* ----- Refresh button ----- */

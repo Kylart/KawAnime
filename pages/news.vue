@@ -41,14 +41,6 @@
 
 <script>
   export default {
-    head () {
-      return {
-        title: 'News',
-        meta: [
-          {hid: 'description', name: 'description', content: 'Anime world news'}
-        ]
-      }
-    },
     data () {
       return {}
     },
