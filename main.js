@@ -125,7 +125,7 @@ app.get('*', !isDev ? render : (req, res) => {
 
 const server = http.createServer(app).listen()
 const _APP_URL_ = 'http://localhost:' + server.address().port
-console.log(`> server started at ${_APP_URL_}`.green)
+console.log(`> KawAnime is at ${_APP_URL_}`.green)
 
 /*
  ** Electron app

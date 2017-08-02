@@ -83,6 +83,7 @@
     </main>
 
     <env v-if="$store.state.NODE_ENV"></env>
+    <info-results v-show="$store.state.info.show"></info-results>
 
     <!-- Displayed if an error occurred -->
     <v-snackbar
@@ -96,6 +97,7 @@
       {{ $store.state.infoSnackbar.text }}
       <v-btn flat class="pink--text" @click="$store.state.infoSnackbar.show = false">Close</v-btn>
     </v-snackbar>
+
 
     <v-footer class="grey darken-4">
       <v-spacer></v-spacer>

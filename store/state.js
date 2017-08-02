@@ -53,6 +53,12 @@ export default {
   history: {},
   historyModal: false,
   infoModal: false,
-  info: {},
+  info: {
+    info: {},
+    error: '',
+    loading: true,
+    show: false,
+    term: ''
+  },
   addToChoice: false
 }
