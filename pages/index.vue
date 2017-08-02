@@ -91,7 +91,7 @@
                                   Download all episodes
                                 </v-list-tile-title>
                               </v-list-tile>
-                              <v-list-tile>
+                              <v-list-tile @click="searchThis(item.rawName)">
                                 <v-list-tile-action>
                                   <v-icon>info_outline</v-icon>
                                 </v-list-tile-action>
@@ -233,6 +233,9 @@
         if (updated) {
           this.lastUpdateTime = updated.fromNow()
         }
+      },
+      searchThis (name) {
+        this.$store.dispatch('searchInfoFromName', name)
       }
     }
   }

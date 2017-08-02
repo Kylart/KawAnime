@@ -40,7 +40,7 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn class="blue--text darken-1 close-button" flat @click="closeResults()">Thanks!</v-btn>
+        <v-btn class="blue--text darken-1 close-button" flat @click="$store.commit('showInfo', false)">Thanks!</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -60,6 +60,11 @@
       },
       searchTerm () {
         return this.$store.state.info.term
+      },
+      episodeLabel () {
+        return this.info.episodes !== 1
+          ? 'episodes'
+          : 'episode'
       }
     }
   }

@@ -96,7 +96,7 @@
                                     Check synopsis
                                   </v-list-tile-title>
                                 </v-list-tile>
-                                <v-list-tile>
+                                <v-list-tile @click="$store.dispatch('searchInfoFromName', item.title)">
                                   <v-list-tile-action>
                                     <v-icon>info_outline</v-icon>
                                   </v-list-tile-action>
@@ -119,7 +119,6 @@
                   </v-flex>
                 </v-layout>
               </v-flex>
-              </lazy-component>
             </transition-group>
           </v-layout>
         </v-tabs-content>

@@ -58,13 +58,6 @@
         results: []
       }
     },
-    computed: {
-      episodeLabel () {
-        return this.info.episodes !== 1
-          ? 'episodes'
-          : 'episode'
-      }
-    },
     methods: {
       async search (name) {
         this.searchTerm = name
@@ -97,11 +90,7 @@
             this.results = []
           }
         },
-        300),
-      closeResults () {
-        this.searchTerm = ''
-        this.$store.commit('showInfo', false)
-      }
+        300)
     },
     watch: {
       async searchTerm () {

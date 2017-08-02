@@ -87,14 +87,14 @@
                             <v-btn icon="icon" slot="activator" dark>
                               <v-icon>more_vert</v-icon>
                             </v-btn>
-                            <v-list>
+                            <v-list @click="download(item)">
                               <v-list-tile>
                                 <v-list-tile-action>
                                   <v-icon>file_download</v-icon>
                                 </v-list-tile-action>
                                 <v-list-tile-title>Download</v-list-tile-title>
                               </v-list-tile>
-                              <v-list-tile>
+                              <v-list-tile @click="$store.dispatch('searchInfoFromName', item)">
                                 <v-list-tile-action>
                                   <v-icon>info_outline</v-icon>
                                 </v-list-tile-action>
