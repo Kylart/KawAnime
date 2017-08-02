@@ -87,8 +87,8 @@
                             <v-btn icon="icon" slot="activator" dark>
                               <v-icon>more_vert</v-icon>
                             </v-btn>
-                            <v-list @click="download(item)">
-                              <v-list-tile>
+                            <v-list>
+                              <v-list-tile @click="download(item)">
                                 <v-list-tile-action>
                                   <v-icon>file_download</v-icon>
                                 </v-list-tile-action>
@@ -212,7 +212,10 @@
     },
     methods: {
       download (name) {
-
+        this.$store.dispatch('download', {
+          name,
+          isDownloader: false
+        })
       },
       actions: function (i) {
         return this.actionsList.filter((x) => { return x !== this.actionsList[i - 1] })

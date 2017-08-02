@@ -94,7 +94,7 @@
               class="magnet-modal">
       <v-card class="secondary white--text">
         <v-card-text class="white--text">
-          <h2 class="title">Magnets for <strong>{{ $store.state.downloaderModal.title }}</strong></h2>
+          <h2 class="title white--text">Magnets for <strong>{{ $store.state.downloaderModal.title }}</strong></h2>
         </v-card-text>
         <v-divider/>
         <v-card-text class="subheading white--text">

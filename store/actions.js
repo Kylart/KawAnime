@@ -270,15 +270,16 @@ export default {
         : `openThis?type=link&link=${link}`
     )
   },
-  async download ({state, commit}) {
-    const name = state.downloaderForm.name
+  async download ({state, commit}, obj = {}) {
+    const isDownloader = obj.isDownloader || true
+    const name = obj.name || state.downloaderForm.name
     const fromEp = state.downloaderForm.fromEp !== ''
       ? state.downloaderForm.fromEp
       : 0
     const untilEp = state.downloaderForm.untilEp !== ''
       ? state.downloaderForm.untilEp
       : 20000
-    const quality = state.downloaderForm.quality
+    const quality = isDownloader ? state.downloaderForm.quality : state.config.quality
 
     const magnets = state.config.magnets
 
