@@ -85,7 +85,7 @@
     <env v-if="$store.state.NODE_ENV"></env>
     <info-results v-show="$store.state.info.show"></info-results>
 
-    <!-- Displayed if an error occurred -->
+    <!-- Displayed for displaying any info -->
     <v-snackbar
       :timeout="5000"
       :top="true"
