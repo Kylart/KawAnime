@@ -1,16 +1,24 @@
 <template lang="pug">
-  div#container
-    span.text.white--text Development mode
+  div.c
+    div#container
+      span.text.white--text Development mode
 </template>
 
 <style scoped>
+  .c
+  {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
   #container
   {
     height: 24px;
-    width: 100%;
+    width: 50%;
     position: fixed;
     top: 0;
-    z-index: 90;
+    z-index: 110;
     display: flex;
     justify-content: center;
     align-items: center;
