@@ -64,7 +64,7 @@
                           <v-btn icon medium slot="activator">
                             <v-icon>more_vert</v-icon>
                           </v-btn>
-                          <v-list>
+                          <v-list class="dark">
                             <v-list-tile @click="showChoices(item.name)">
                               <v-list-tile-action>
                                 <v-icon>add_box</v-icon>

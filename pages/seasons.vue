@@ -87,7 +87,7 @@
                               <v-btn flat dark slot="activator">
                                 More
                               </v-btn>
-                              <v-list>
+                              <v-list class="dark">
                                 <v-list-tile @click="openModal(item.title, item.synopsis)">
                                   <v-list-tile-action>
                                     <v-icon>more</v-icon>

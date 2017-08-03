@@ -87,7 +87,7 @@
                             <v-btn icon="icon" slot="activator" dark>
                               <v-icon>more_vert</v-icon>
                             </v-btn>
-                            <v-list>
+                            <v-list class="dark">
                               <v-list-tile @click="download(item)">
                                 <v-list-tile-action>
                                   <v-icon>file_download</v-icon>
