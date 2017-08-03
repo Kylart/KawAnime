@@ -18,13 +18,6 @@ const template = () => {
         },
         {
           role: 'delete'
-        },
-        {
-          type: 'separator'
-        },
-        {
-          label: 'Preferences',
-          accelerator: 'Ctrl+,'
         }
       ]
     },
@@ -96,13 +89,6 @@ const template = () => {
       submenu: [
         {
           role: 'about'
-        },
-        {
-          type: 'separator'
-        },
-        {
-          label: 'Preferences',
-          accelerator: 'Cmd+,'
         },
         {
           type: 'separator'

@@ -294,7 +294,6 @@
 
   .page-container
   {
-    padding-top: 10px;
     padding-left: 0;
     padding-right: 0;
   }
