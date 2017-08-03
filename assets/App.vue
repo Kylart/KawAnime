@@ -56,9 +56,9 @@
                   v-if="!browser">
       <v-spacer></v-spacer>
       <div v-if="$store.state.platform !== 'darwin'">
-        <v-icon class="window-icon" @click="actOnWindow('minimize')">remove</v-icon>
-        <v-icon class="window-icon" @click="actOnWindow('maximize')">check_box_outline_blank</v-icon>
-        <v-icon class="window-icon" @click="actOnWindow('close')">close</v-icon>
+        <v-icon class="window-icon non-dragable" @click="actOnWindow('minimize')">remove</v-icon>
+        <v-icon class="window-icon non-dragable" @click="actOnWindow('maximize')">check_box_outline_blank</v-icon>
+        <v-icon class="window-icon non-dragable" @click="actOnWindow('close')">close</v-icon>
       </div>
     </v-system-bar>
 
@@ -213,7 +213,7 @@
   {
     position: fixed;
     width: 100%;
-    z-index: 20;
+    z-index: 100;
     background-color: #303030 !important;
   }
 
