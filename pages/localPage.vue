@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="page-container">
+  <v-container fluid class="pa-0">
     <div v-if="files.length">
       <v-layout row wrap style="margin: 0 1% 0 1%;">
         <v-flex xs12 class="menubar">
@@ -290,12 +290,6 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-  }
-
-  .page-container
-  {
-    padding-left: 0;
-    padding-right: 0;
   }
 
   /* ------------- MENUBAR ------------- */

@@ -18,7 +18,7 @@
 
   .loader-container
   {
-    min-height: 92vh;
+    min-height: calc(100vh - (48px + 24px));
   }
 
   .flex-centered
