@@ -1,4 +1,4 @@
-<template xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<template>
   <v-container fluid id="watch-list" class="pa-0">
     <v-tabs id="tabs" grow icons>
       <v-tabs-bar slot="activators" class="mablue">
@@ -25,8 +25,8 @@
                     </v-btn>
                     <v-menu open-on-hover
                             transition="slide-x-transition">
-                      <v-btn secondary dark slot="activator">Move to</v-btn>
-                      <v-list>
+                      <v-btn secondary slot="activator">Move to</v-btn>
+                      <v-list class="dark">
                         <v-list-tile @click.capture="moveTo(action.list, i)"
                                      v-for="action in actions(i)"
                                      :key="action.name">
@@ -70,48 +70,13 @@
               </v-flex>
               <transition-group name="list">
                 <template v-for="item in lists[i - 1]">
-                  <v-flex xs12 sm6 md4
-                          :key="item"
-                          class="elem"
-                          :class="item.split(' ').join('-')">
-                    <v-card class="elem-content elevation-3" v-ripple="true">
-                      <v-layout row wrap>
-                        <v-flex xs2 class="box" @click.capture="select(item, i)">
-                          <v-checkbox label="" accent v-model="selected[i]" disabled :value="item" dark/>
-                        </v-flex>
-                        <v-flex xs8 v-tooltip:top="{ html: item }" @click.capture="select(item, i)">
-                          <h6 class="ellipsis elem-title white--text">{{ item }}</h6>
-                        </v-flex>
-                        <v-flex xs2>
-                          <v-menu bottom right>
-                            <v-btn icon="icon" slot="activator" dark>
-                              <v-icon>more_vert</v-icon>
-                            </v-btn>
-                            <v-list class="dark">
-                              <v-list-tile @click="download(item)">
-                                <v-list-tile-action>
-                                  <v-icon>file_download</v-icon>
-                                </v-list-tile-action>
-                                <v-list-tile-title>Download</v-list-tile-title>
-                              </v-list-tile>
-                              <v-list-tile @click="$store.dispatch('searchInfoFromName', item)">
-                                <v-list-tile-action>
-                                  <v-icon>info_outline</v-icon>
-                                </v-list-tile-action>
-                                <v-list-tile-title>Information</v-list-tile-title>
-                              </v-list-tile>
-                              <v-list-tile @click="deleteEntry(item, i)">
-                                <v-list-tile-action>
-                                  <v-icon>delete_sweep</v-icon>
-                                </v-list-tile-action>
-                                <v-list-tile-title>Delete this entry</v-list-tile-title>
-                              </v-list-tile>
-                            </v-list>
-                          </v-menu>
-                        </v-flex>
-                      </v-layout>
-                    </v-card>
-                  </v-flex>
+                  <list-entry
+                      :item="item"
+                      :deleteEntry="deleteEntry"
+                      :key="item"
+                      :index="i"
+                      :select="select"
+                      :selected="selected"></list-entry>
                 </template>
               </transition-group>
             </v-layout>
@@ -131,6 +96,9 @@
   }
 
   export default {
+    components: {
+      'list-entry': () => import('components/listEntry.vue')
+    },
     data () {
       return {
         selected: {
@@ -211,12 +179,6 @@
       }
     },
     methods: {
-      download (name) {
-        this.$store.dispatch('download', {
-          name,
-          isDownloader: false
-        })
-      },
       actions: function (i) {
         return this.actionsList.filter((x) => { return x !== this.actionsList[i - 1] })
       },
@@ -336,35 +298,6 @@
     font-style: italic;
   }
 
-  .elem
-  {
-    padding: 5px 5px 5px 5px;
-    display: inline-block;
-    width: 100%;
-  }
-
-  .elem-content
-  {
-    margin-left: 5px;
-    position: relative;
-    background-color: rgb(60, 60, 60);
-    height: 45px !important;
-  }
-
-  .elem-content:hover
-  {
-    transition: all 0.25s;
-    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
-    0 8px 10px 1px rgba(0, 0, 0, 0.14),
-    0 3px 14px 2px rgba(0, 0, 0, 0.12) !important;
-  }
-
-  .elem .input-group
-  {
-    margin: 0;
-    padding: 0;
-  }
-
   .top-form
   {
     padding-left: 15px;
@@ -380,25 +313,6 @@
     padding-right: 2%;
     display: flex;
     align-items: center;
-  }
-
-  .box
-  {
-    padding-top: 7px;
-    padding-left: 13px;
-  }
-
-  .elem-title
-  {
-    line-height: 24px;
-    font-size: 20px;
-    padding-top: 10px;
-    padding-left: 10px;
-  }
-
-  .selected
-  {
-    background-color: #2E7D32;
   }
 
   .list-container

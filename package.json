@@ -21,7 +21,7 @@
     "test:front": "npm run build && cross-env NODE_ENV=KawAnime-test nightwatch",
     "test": "standard --fix && npm test:front && npm test:server",
     "coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
-    "lint": "standard --fix --verbose --plugin vue '**/*.{js,vue}' | snazzy -- -s",
+    "lint": "standard --fix --verbose --plugin vue '**/*.{js,vue}' | snazzy",
     "dist:linux": "build --linux deb AppImage",
     "dist:win": "build --win nsis --ia32 x64 appx zip squirrel",
     "dist:mac": "build --mac dmg zip",
