@@ -220,3 +220,8 @@ Electron.on('window-all-closed', function () {
 })
 
 Electron.on('activate', () => win === null && newWin())
+
+// TODO
+// Implement autoUpdate
+// One example here https://github.com/avocode/electron-windows-autoupdate/blob/master/index.html
+// Or check electron-builder wiki

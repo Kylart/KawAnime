@@ -6,15 +6,9 @@ const malScraper = require('mal-scraper')
 const fs = require('fs')
 const {userInfo} = require('os')
 const {join, extname} = require('path')
+const {removeUnwanted} = require('./utils')
 
 const extensions = ['.mkv', '.mp4']
-
-const removeUnwanted = (rawName) => {
-  return rawName
-    .replace(' VOSTFR', '')
-    .replace(' English Subbed', '')
-    .replace(' Episode', '')
-}
 
 const getName = (rawName) => {
   try {

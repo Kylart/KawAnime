@@ -4,6 +4,7 @@
 
 const nyaa = require('nyaapi')
 const malScraper = require('mal-scraper')
+const {removeUnwanted} = require('./utils')
 
 const sendRes = (object, res) => {
   res.status(200).send(JSON.stringify(object))
@@ -34,6 +35,7 @@ const download = (req, res) => {
         const magnets = []
 
         data.forEach((elem) => {
+          elem.title[0] = removeUnwanted(elem.title[0])
           const ep = elem.title[0].split(' ').splice(-2, 1)[0]
 
           if (ep <= searchData.untilEp && ep >= searchData.fromEp) {
@@ -51,6 +53,7 @@ const download = (req, res) => {
         const magnets = []
 
         data.forEach((elem) => {
+          elem.title[0] = removeUnwanted(elem.title[0])
           const ep = parseInt(elem.title[0].split(' ').splice(-2, 1)[0])
 
           if (ep <= searchData.untilEp && ep >= searchData.fromEp) {
@@ -80,7 +83,7 @@ const getLatest = (query, res) => {
   if (choice === 'si') {
     nyaa.searchSi(`[${fansub}] ${quality} -unofficial`, 18).then((data) => {
       for (let i = 0; i < 18; ++i) {
-        const realName = data[i].title[0].replace(' VOSTFR', '')
+        const realName = removeUnwanted(data[i].title[0])
         const name = realName.split(' ').slice(1).join(' ')
         const rawName = name.split(' ').slice(0, -3).join(' ')
         const researchName = rawName.split(' ').join('').toLowerCase()
@@ -126,7 +129,7 @@ const getLatest = (query, res) => {
   } else if (choice === 'pantsu') {
     nyaa.searchPantsu(`[${fansub}] ${quality}`, 18).then((data) => {
       for (let i = 0; i < 18; ++i) {
-        const realName = data[i].title[0].replace(' VOSTFR', '')
+        const realName = removeUnwanted(data[i].title[0])
         const name = realName.split(' ').slice(1).join(' ')
         const rawName = name.split(' ').slice(0, -3).join(' ')
         const researchName = rawName.split(' ').join('').toLowerCase()

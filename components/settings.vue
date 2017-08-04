@@ -134,13 +134,6 @@
         drawer: true,
         configModal: false,
         radios: ['480p', '720p', '1080p'],
-        fansubChoices: [
-          'HorribleSubs',
-          'PuyaSubs!',
-          'DurandalSubs',
-          'Fuyu',
-          'DefinitelyNotMe'
-        ],
         itemGroup: [
           {
             title: 'Download',
@@ -157,6 +150,9 @@
     computed: {
       config: function () {
         return this.$store.state.config
+      },
+      fansubChoices () {
+        return this.$store.state.fansubList
       }
     },
     methods: {

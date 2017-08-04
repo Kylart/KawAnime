@@ -170,13 +170,6 @@
         modal: false,
         modalTitle: '',
         modalText: '',
-        fansubList: [
-          'HorribleSubs',
-          'PuyaSubs!',
-          'Fuyu',
-          'DurandalSubs',
-          'DefinitelyNotMe'
-        ],
         qualityList: ['480p', '720p', '1080p'],
         lastUpdateTime: 'a few seconds ago'
       }
@@ -184,6 +177,9 @@
     computed: {
       releases () {
         return this.$store.state.releases
+      },
+      fansubList () {
+        return this.$store.state.fansubList
       }
     },
     methods: {

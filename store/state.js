@@ -9,6 +9,14 @@ export default {
   platform: '',
   drawer: false,
   autoRefreshReleases: true,
+  fansubList: [
+    'HorribleSubs',
+    'Erai-raws',
+    'PuyaSubs!',
+    'Fuyu',
+    'DurandalSubs',
+    'DefinitelyNotMe'
+  ],
   releaseFansub: '',
   releaseQuality: '',
   releases: [],
