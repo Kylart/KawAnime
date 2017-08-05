@@ -7,19 +7,22 @@ import {log} from './utils'
 
 export default {
   async init ({commit, dispatch}) {
-    console.log('[INIT]')
+    // Offline
     try {
       const {data} = await axios.get('getConfig.json')
       commit('init', data.config)
     } catch (e) { void e }
 
     dispatch('getEnv').catch(err => { void err })
-    dispatch('releasesInit').catch(err => { void (err) })
-    dispatch('seasonsInit').catch(err => { void (err) })
-    dispatch('newsInit').catch(err => { void (err) })
     dispatch('localInit').catch(err => { void (err) })
     dispatch('listInit').catch(err => { void (err) })
     dispatch('getHistory').catch(err => { void (err) })
+
+    // Online
+    // TODO check if online before launching the requests that need the Internet
+    dispatch('releasesInit').catch(err => { void (err) })
+    dispatch('seasonsInit').catch(err => { void (err) })
+    dispatch('newsInit').catch(err => { void (err) })
   },
   async getEnv ({commit}) {
     const {data} = await axios.get('_env')
@@ -411,7 +414,6 @@ export default {
       commit('setInfoTerm', name)
       commit('setInfoLoading', true)
       commit('showInfo', true)
-      console.log('waiting...')
       const {data, status} = await axios.get(`getInfoFromMal?term=${name}`)
 
       commit('setInfoLoading', false)

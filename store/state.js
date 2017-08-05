@@ -7,6 +7,7 @@ import moment from 'moment'
 export default {
   NODE_ENV: '',
   platform: '',
+  isConnected: false,
   drawer: false,
   autoRefreshReleases: true,
   fansubList: [

@@ -1,7 +1,7 @@
 <template>
   <v-container fluid class="pa-0">
     <div v-if="files.length">
-      <v-layout row wrap style="margin: 0 1% 0 1%;">
+      <v-layout row wrap style="margin: 0 1%;">
         <v-flex xs12 class="menubar">
           <v-layout row wrap>
             <v-flex hidden-sm-and-up xs2></v-flex>
@@ -93,10 +93,10 @@
                           {{ item.classification.replace('None', 'No restriction') }}
                         </p>
                       </v-flex>
-                      <v-flex xl5 lg4 md5 sm3 xs4 class="picture-container">
+                      <v-flex xl5 lg4 md5 xs4 class="picture-container">
                         <img :src="item.picture" class="picture">
                       </v-flex>
-                      <v-flex xl7 lg8 md7 sm9 xs8 class="bottom-right-container">
+                      <v-flex xl7 lg8 md7 xs8 class="bottom-right-container">
                         <v-layout row wrap justify-space-between>
                           <v-flex xs12>
                             <div class="synopsis">{{ reduced(item.synopsis) }}</div>
@@ -155,9 +155,9 @@
         <v-flex xs12 class="empty-message">
           <h3 class="white--text">Wow such empty!</h3>
           <h4 class="white--text">Start downloading anime
-            <nuxt-link to="/downloader" class="green--text">here</nuxt-link>
+            <router-link to="/downloader" class="green--text">here</router-link>
             or
-            <nuxt-link to="/" class="cyan--text">here!</nuxt-link>
+            <router-link to="/" class="cyan--text">here!</router-link>
           </h4>
         </v-flex>
       </v-layout>

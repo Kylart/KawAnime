@@ -29,7 +29,7 @@
                         id="name-input"
                         label="Name of the anime"
                         v-model="$store.state.downloaderForm.name"
-                        dark>
+                        autofocus dark>
           </v-text-field>
         </v-flex>
         <v-flex xs4></v-flex>

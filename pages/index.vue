@@ -1,12 +1,12 @@
 <template xmlns:v-tooltip="http://www.w3.org/1999/xhtml">
   <v-container id="container" fluid class="container pa-0">
     <transition name="fade" v-if="releases.length">
-      <v-layout row wrap style="margin: 0 1% 0 1%;">
-        <v-flex md4 sm4 xs12 class="time-container">
+      <v-layout row wrap justify-center style="margin: 0 1% 0 1%;">
+        <v-flex md4 sm4 xs8 class="time-container">
           <span class="update-time">Updated {{ lastUpdateTime }}.</span>
         </v-flex>
-        <v-flex md4 sm1 xs0></v-flex>
-        <v-flex md2 sm3 xs12>
+        <v-flex md4 sm1 hidden-xs-only></v-flex>
+        <v-flex md2 sm3 xs10>
           <v-select
             class="select"
             :items="fansubList"
@@ -18,7 +18,7 @@
             persistent-hint
           />
         </v-flex>
-        <v-flex md1 sm2 xs12>
+        <v-flex md1 sm2 xs10>
           <v-select
             class="select"
             :items="qualityList"
