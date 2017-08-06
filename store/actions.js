@@ -20,13 +20,13 @@ export default {
     dispatch('getHistory').catch(err => { void (err) })
 
     // Online
-    const online = await isOnline().catch((err) => void err)
+    const online = await isOnline()
     if (online) {
       commit('setConnected', true)
       dispatch('online')
     } else {
       commit('setInfoSnackbar', 'No internet access. Retrying in 1 minutes.')
-      setTimeout(dispatch('online'), 60 * 1000)
+      setTimeout(() => { dispatch('online') }, 60 * 1000)
     }
   },
   async online ({dispatch}) {
