@@ -8,8 +8,8 @@ const fs = require('fs')
 const {join} = require('path')
 const _ = require('lodash')
 
-const {userInfo} = require('os')
-const BASE_PATH = userInfo().homedir
+const {homedir} = require('os')
+const BASE_PATH = homedir()
 /* istanbul ignore next */
 const dir = process.env.NODE_ENV !== 'KawAnime-test'
   ? join(BASE_PATH, '.KawAnime')
@@ -34,7 +34,7 @@ const createConfig = () => {
       config: {
         fansub: 'HorribleSubs',
         quality: '720p',
-        localPath: join(userInfo().homedir, 'Downloads'),
+        localPath: join(BASE_PATH, 'Downloads'),
         inside: true,
         magnets: false
       }
@@ -98,8 +98,8 @@ const horrible = require('./horrible.js')
 const nyaa = require('./nyaa.js')
 const search = require('./search.js')
 
-const routes = {
-  'getConfig.json': (app) => {
+const routes = [
+  (app) => {
     app.get('/getConfig.json', (req, res) => {
       const configPath = join(dir, 'config.json')
       const configFile = JSON.parse(fs.readFileSync(configPath))
@@ -108,72 +108,72 @@ const routes = {
       res.send(configFile)
     })
   },
-  'getLatestNyaa': (app) => {
+  (app) => {
     app.get('/getLatestNyaa', ({query}, res) => {
       nyaa.getLatest(query, res)
     })
   },
-  'getLatest.json': (app) => {
+  (app) => {
     app.get('/getLatest.json', ({query}, res) => {
       horrible.getLatest(query, res)
     })
   },
-  'openThis': /* istanbul ignore next */ (app) => {
+  /* istanbul ignore next */ (app) => {
     app.get('/openThis', ({query}, res) => {
       openExternal(query, res)
     })
   },
-  'seasons.json': (app) => {
+  (app) => {
     app.get('/seasons.json', ({query}, res) => {
       seasons.getSeason(query, res)
     })
   },
-  'download': (app) => {
+  (app) => {
     app.post('/download', (req, res) => {
       nyaa.download(req, res)
     })
   },
-  'news.json': (app) => {
+  (app) => {
     app.get('/news.json', (req, res) => {
       news.getNews(res)
     })
   },
-  'local.json': (app) => {
+  (app) => {
     app.get('/local.json', ({query}, res) => {
       local.searchLocalFiles(query, res)
     })
   },
-  'watchList.json': (app) => {
+  (app) => {
     app.get('/watchList.json', (req, res) => {
       wl.getLists(res)
     })
   },
-  'saveWatchList': (app) => {
+  (app) => {
     app.post('/saveWatchList', (req, res) => {
       wl.saveWatchList(req, res)
     })
   },
-  'resetLocal': (app) => {
+  (app) => {
     app.get('/resetLocal', ({query}, res) => {
       local.resetLocal(query, res)
     })
   },
-  'appendHistory': (app) => {
+  (app) => {
     app.post('/appendHistory', (req, res) => {
       history.appendHistory(req, res)
     })
   },
-  'getHistory': (app) => {
+  (app) => {
     app.get('/getHistory', (req, res) => {
       history.getHistory(res)
     })
   },
-  'removeFromHistory': (app) => {
+  (app) => {
     app.post('/removeFromHistory', (req, res) => {
       history.removeFromHistory(req, res)
     })
   },
-  'saveConfig': (app) => {
+  (app) => {
     app.post('/saveConfig', (req, res) => {
       req.on('data', (chunk) => {
         const data = JSON.parse(chunk)
@@ -183,22 +183,22 @@ const routes = {
       res.status(200).send()
     })
   },
-  'searchTermOnMal': (app) => {
+  (app) => {
     app.get('/searchTermOnMal', ({query}, res) => {
       search.searchTerm(query, res)
     })
   },
-  'getInfoFromMal': (app) => {
+  (app) => {
     app.get('/getInfoFromMal', ({query}, res) => {
       search.searchOnMal(query, res)
     })
   },
-  '_openInBrowser': /* istanbul ignore next */ (app) => {
+  /* istanbul ignore next */ (app) => {
     app.get('/_openInBrowser', (req, res) => {
       openInBrowser(res)
     })
   },
-  '_win': /* istanbul ignore next */ (app) => {
+  /* istanbul ignore next */ (app) => {
     app.get('/_win', ({query}, res) => {
       const action = query.action
 
@@ -213,15 +213,26 @@ const routes = {
       res.status(200).send()
     })
   },
-  '_getEnv': (app) => {
+  (app) => {
     app.get('/_env', (req, res) => {
       res.status(200).send({
         platform: process.platform,
         NODE_ENV: process.env.NODE_ENV
       })
     })
+  },
+  (app) => {
+    app.get('/_isOnline', async (req, res) => {
+      try {
+        const {status} = await require('axios').get('https://myanimelist.net')
+
+        res.status(status === 200 ? 200 : 204).send()
+      } catch (e) {
+        res.status(204).send()
+      }
+    })
   }
-}
+]
 
 const setup = (app) => {
   createDir()
@@ -230,9 +241,7 @@ const setup = (app) => {
   createHistory()
   createList()
 
-  _.each(_.keys(routes), (route) => {
-    routes[route](app)
-  })
+  _.each(routes, (route) => route(app))
 }
 
 module.exports = setup

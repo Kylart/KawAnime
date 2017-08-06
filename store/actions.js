@@ -4,6 +4,7 @@
 
 import axios from 'axios'
 import {log} from './utils'
+import isOnline from 'is-online'
 
 export default {
   async init ({commit, dispatch}) {
@@ -19,7 +20,16 @@ export default {
     dispatch('getHistory').catch(err => { void (err) })
 
     // Online
-    // TODO check if online before launching the requests that need the Internet
+    const online = await isOnline().catch((err) => void err)
+    if (online) {
+      commit('setConnected', true)
+      dispatch('online')
+    } else {
+      commit('setInfoSnackbar', 'No internet access. Retrying in 1 minutes.')
+      setTimeout(dispatch('online'), 60 * 1000)
+    }
+  },
+  async online ({dispatch}) {
     dispatch('releasesInit').catch(err => { void (err) })
     dispatch('seasonsInit').catch(err => { void (err) })
     dispatch('newsInit').catch(err => { void (err) })
@@ -30,7 +40,6 @@ export default {
     commit('setEnv', data)
   },
   async releasesInit ({state, commit, dispatch}) {
-    // TODO refactor this since it is a bit hard coded
     console.log('[INIT] Releases')
 
     const {data, status} = await axios.get('getLatestNyaa', { params: state.releaseParams })

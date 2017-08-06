@@ -22,7 +22,7 @@
               v-icon more_vert
             v-list.dark
               template(v-for="(button, i) in buttons")
-                v-list-tile(@click="button.method(item, i, index)")
+                v-list-tile(@click="button.method(item)")
                   v-list-tile-action
                     v-icon {{ button.action }}
                   v-list-tile-title.white--text {{ button.text }}
@@ -52,7 +52,7 @@
           }, {
             action: 'delete_sweep',
             text: 'Delete this entry',
-            method: (item, i, index) => vm.deleteEntry(item, index)
+            method: (item) => vm.deleteEntry(item, vm.index)
           }
         ]
       }

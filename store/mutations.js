@@ -10,6 +10,9 @@ export default {
     state.platform = data.platform
     state.NODE_ENV = data.NODE_ENV
   },
+  setConnected (state, bool) {
+    state.isConnected = bool
+  },
   init (state, data) {
     const config = data
 
@@ -140,7 +143,11 @@ export default {
     const logListName = lists[data.listName] || listName
     const entry = data.entry
 
-    if (!state.watchLists[listName].includes(entry)) {
+    const isAlreadyThere = state.watchLists[listName].filter((elem) => {
+      return elem.split(' ').join('').toLowerCase() === entry.split(' ').join('').toLowerCase()
+    }).length
+
+    if (!isAlreadyThere) {
       state.watchLists[listName].push(entry)
       state.watchLists[listName].sort()
 
