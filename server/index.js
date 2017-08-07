@@ -7,6 +7,7 @@
 const fs = require('fs')
 const {join} = require('path')
 const _ = require('lodash')
+const axios = require('axios')
 
 const {homedir} = require('os')
 const BASE_PATH = homedir()
@@ -221,10 +222,10 @@ const routes = [
       })
     })
   },
-  (app) => {
+  /* istanbul ignore next */ (app) => {
     app.get('/_isOnline', async (req, res) => {
       try {
-        const {status} = await require('axios').get('https://myanimelist.net')
+        const {status} = await axios.get('https://myanimelist.net')
 
         res.status(status === 200 ? 200 : 204).send()
       } catch (e) {

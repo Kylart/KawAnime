@@ -4,7 +4,6 @@
 
 import axios from 'axios'
 import {log} from './utils'
-import isOnline from 'is-online'
 
 export default {
   async init ({commit, dispatch}) {
@@ -20,14 +19,16 @@ export default {
     dispatch('getHistory').catch(err => { void (err) })
 
     // Online
-    const online = await isOnline()
-    if (online) {
-      commit('setConnected', true)
-      dispatch('online')
-    } else {
-      commit('setInfoSnackbar', 'No internet access. Retrying in 1 minutes.')
-      setTimeout(() => { dispatch('online') }, 60 * 1000)
-    }
+    try {
+      const {status} = await axios.get('_isOnline')
+      if (status === 200) {
+        commit('setConnected', true)
+        dispatch('online')
+      } else {
+        commit('setInfoSnackbar', 'No internet access. Retrying in 1 minutes.')
+        setTimeout(() => { dispatch('online') }, 60 * 1000)
+      }
+    } catch (e) { void e }
   },
   async online ({dispatch}) {
     dispatch('releasesInit').catch(err => { void (err) })

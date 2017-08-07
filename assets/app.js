@@ -2,6 +2,8 @@ import Vue from 'vue'
 import App from './App.vue'
 import Vuetify from 'vuetify'
 import VueClipboards from 'vue-clipboards'
+import VueLazyload from 'vue-lazyload'
+
 import Components from 'components/_index'
 
 import { createStore } from 'store/index'
@@ -10,6 +12,13 @@ import { sync } from 'vuex-router-sync'
 
 Vue.use(Vuetify)
 Vue.use(VueClipboards)
+Vue.use(VueLazyload, {
+  preLoad: 1.3,
+  loading: 'static/Hestia.gif',
+  error: 'static/error.jpg',
+  attempt: 1,
+  lazyComponent: true
+})
 
 Object.keys(Components).forEach(key => {
   Vue.component(key, Components[key])

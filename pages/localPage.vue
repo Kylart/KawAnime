@@ -94,7 +94,9 @@
                         </p>
                       </v-flex>
                       <v-flex xl5 lg4 md5 xs4 class="picture-container">
-                        <img :src="item.picture" class="picture">
+                        <lazy-component>
+                          <img :src="item.picture" onerror="this.src='static/images/error.jpg'" class="picture">
+                        </lazy-component>
                       </v-flex>
                       <v-flex xl7 lg8 md7 xs8 class="bottom-right-container">
                         <v-layout row wrap justify-space-between>

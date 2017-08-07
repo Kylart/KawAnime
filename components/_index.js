@@ -5,7 +5,6 @@ import InfoModal from './infoModal.vue'
 import InfoResults from './infoResults.vue'
 import Loader from './loader.vue'
 import News from './news.vue'
-import VirtualList from 'vue-virtual-scroll-list'
 import Settings from './settings.vue'
 
 export default {
@@ -16,6 +15,5 @@ export default {
   InfoResults,
   Loader,
   News,
-  VirtualList,
   Settings
 }

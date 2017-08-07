@@ -7,7 +7,7 @@
         v-flex(xs12).refresh-button-container
           v-btn(icon @click="refresh()").refresh-button
             v-icon(large) refresh
-        virtual-list(:size="220", :remain="4").list-container
+        v-flex(xs12).pr-3
           news(v-for="item in $store.state.news", :item="item", :key="item.title")
 </template>
 
@@ -41,10 +41,5 @@
   .news-container
   {
     padding: 0 0 1% 1%;
-  }
-
-  .list-container
-  {
-    padding-right: 10px;
   }
 </style>

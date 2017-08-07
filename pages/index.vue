@@ -54,7 +54,7 @@
                     </v-flex>
                     <v-flex class="elem-image"
                             xl6 lg4 md5 xs4>
-                      <img :src="item.picture" height="200" class="picture"/>
+                      <img :src="item.picture" onerror="this.src='static/images/error.jpg'" height="200" class="picture"/>
                     </v-flex>
                     <v-flex xl6 lg8 md7 xs8>
                       <div class="elem-text-links">

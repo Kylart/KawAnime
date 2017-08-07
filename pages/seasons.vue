@@ -65,7 +65,9 @@
                   <v-flex xs1></v-flex>
                   <!-- Picture of elem -->
                   <v-flex xs4 class="image-container">
-                    <img :src="item.picture" class="image"/>
+                    <lazy-component>
+                      <img :src="item.picture" onerror="this.src='static/images/error.jpg'" class="image"/>
+                    </lazy-component>
                   </v-flex>
                   <v-flex xs8 class="bottom-right">
                     <v-layout wrap justify-space-between align-center>

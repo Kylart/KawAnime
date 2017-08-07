@@ -4,7 +4,8 @@
       v-flex(xs12)
         h3.white--text.title {{ item.title }}
       v-flex(md2 xs3 style="height: 220px;")
-        img(:src="item.image").image
+        lazy-component
+          img(:src="item.image" onerror="this.src='static/images/error.jpg'").image
       v-flex(md10 xs9)
         v-layout(row wrap)
           v-flex(xs12)
