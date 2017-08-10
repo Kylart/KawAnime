@@ -7,7 +7,7 @@
         <v-card-text>
           <v-layout row wrap>
             <template v-for="i in 5">
-              <v-flex v-if="!options[i - 1].half" xs4 class="checkbox-container">
+              <v-flex v-if="!options[i - 1].half" xs4>
                 <v-checkbox v-model="selected"
                             :value="options[i - 1].value"
                             :label="options[i - 1].label"
