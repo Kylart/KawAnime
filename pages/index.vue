@@ -69,8 +69,8 @@
                               Download
                             </v-btn>
                           </a>
-                          <v-menu open-on-hover
-                                  transition="slide-x-transition">
+                          <!-- Add open-on-hover when vuetify repaired it -->
+                          <v-menu transition="slide-x-transition">
                             <v-btn flat dark slot="activator">
                               More
                             </v-btn>

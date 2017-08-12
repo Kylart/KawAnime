@@ -59,8 +59,8 @@
                                @click="playThis(item)">
                           <v-icon large>play_circle_outline</v-icon>
                         </v-btn>
-                        <v-menu open-on-hover
-                                transition="slide-x-transition">
+                        <!-- Add open-on-hover when vuetify repaired it -->
+                        <v-menu transition="slide-x-transition">
                           <v-btn icon medium slot="activator">
                             <v-icon>more_vert</v-icon>
                           </v-btn>

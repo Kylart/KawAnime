@@ -218,7 +218,7 @@
 
   .tb
   {
-    margin-top: 24px;
+    margin-top: 24px !important;
     max-height: 48px;
     padding-left: 1%;
   }

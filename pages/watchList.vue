@@ -11,6 +11,7 @@
         </template>
       </v-tabs-bar>
       <v-tabs-content v-for="i in 5" :key="i"
+                      lazy
                       v-bind:id="'tabs-' + i">
         <v-card style="background-color: #303030">
           <v-card-text>
@@ -23,8 +24,8 @@
                            v-tooltip:bottom="{ html: allSelected[i] ? 'Unselect all' : 'Select all' }">
                       <v-icon>select_all</v-icon>
                     </v-btn>
-                    <v-menu open-on-hover
-                            transition="slide-x-transition">
+                    <!-- Add open-on-hover when vuetify repaired it -->
+                    <v-menu transition="slide-x-transition">
                       <v-btn secondary slot="activator">Move to</v-btn>
                       <v-list class="dark">
                         <v-list-tile @click.capture="moveTo(action.list, i)"

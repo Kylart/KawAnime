@@ -36,6 +36,7 @@
           </v-tabs-item>
         </v-tabs-bar>
         <v-tabs-content v-for="i in 3"
+                        lazy
                         v-bind:id="`${i}`"
                         :key="i">
           <v-text-field class="query"
@@ -84,8 +85,8 @@
                         <v-layout wrap justify-space-between>
                           <v-flex xs8 class="producers"><strong>{{ item.producers.join(' ') }}</strong></v-flex>
                           <v-flex xs4 class="dropdown-container">
-                            <v-menu open-on-hover
-                                    transition="slide-x-transition">
+                            <!-- Add open-on-hover when vuetify repaired it -->
+                            <v-menu transition="slide-x-transition">
                               <v-btn flat dark slot="activator">
                                 More
                               </v-btn>
