@@ -1,153 +1,89 @@
-<template xmlns:v-tooltip="http://www.w3.org/1999/xhtml">
-  <div style="min-height: 95vh">
-    <loader v-if="!season[1].items"></loader>
-
-    <v-container fluid v-else style="padding: 20px 0 0">
-      <v-layout row wrap justify-center class="form-container">
-        <v-flex sm3 xs8 class="season-container">
-          <v-select
-              v-bind:items="seasonChoices"
-              v-model="$store.state.season"
-              label="Season"
-              dark
-              item-text="name"
-              item-value="value"/>
-        </v-flex>
-        <v-flex offset-sm1 sm3 xs8 class="year-container">
-          <v-text-field name="input-year"
-                        type="number" min="2010"
-                        label="Year"
-                        v-model="$store.state.year"
-                        dark>
-          </v-text-field>
-        </v-flex>
-        <v-flex offset-sm1 sm2 xs8 class="refresh-button">
-          <v-btn secondary block dark @click="refreshSeason()">Refresh</v-btn>
-        </v-flex>
-      </v-layout>
-
-      <v-tabs id="tabs" dark fixed centered>
-        <v-tabs-bar slot="activators" class="mablue">
-          <v-tabs-slider class="primary"></v-tabs-slider>
-          <v-tabs-item v-for="i in 3"
-                       :href="'#' + i"
-                       :key="i">
-            {{ season[i].name }}
-          </v-tabs-item>
-        </v-tabs-bar>
-        <v-tabs-content v-for="i in 3"
-                        lazy
-                        v-bind:id="`${i}`"
-                        :key="i">
-          <v-text-field class="query"
-                        v-model="query"
-                        label="Search entry" dark>
-          </v-text-field>
-          <v-layout row wrap class="elems">
-            <transition-group name="list">
-              <v-flex md6 xs12 v-for="item in computedSeason[i].items"
-                      style="display: inline-block"
-                      :key="item.key">
-                <v-layout row wrap class="elem elevation-3" v-ripple="true">
-                  <!-- Header of elem -->
-                  <v-flex xs12 v-tooltip:bottom="{ html: item.title }">
-                    <h6 class="title ellipsis white--text">
-                      {{ item.title }}
-                    </h6>
-                  </v-flex>
-                  <v-flex xs8 v-tooltip:bottom="{ html: item.genres.join(' ') }">
-                    <p class="genres ellipsis">{{ item.genres.join(' ') }}</p>
-                  </v-flex>
-                  <v-flex xs3 v-tooltip:bottom="{ html: item.fromType }">
-                    <p class="from-type ellipsis">
-                      {{ item.fromType }}
-                    </p>
-                  </v-flex>
-                  <v-flex xs1></v-flex>
-                  <!-- Picture of elem -->
-                  <v-flex xs4 class="image-container">
-                    <lazy-component>
-                      <img :src="item.picture" onerror="this.src='static/images/error.jpg'" class="image"/>
-                    </lazy-component>
-                  </v-flex>
-                  <v-flex xs8 class="bottom-right">
-                    <v-layout wrap justify-space-between align-center>
-                      <v-flex xs12>
-                        <div class="synopsis">
-                          {{ reduced(item.synopsis) }}
-                        </div>
-                      </v-flex>
-                      <v-flex xs12>
-                        <v-layout wrap justify-space-between>
-                          <v-flex xs3 class="date">{{ getDate(item.releaseDate) }}</v-flex>
-                          <v-flex xs4 class="nb-ep">{{ item.nbEp }} {{ episode(item.npEp) }}</v-flex>
-                        </v-layout>
-                        <v-layout wrap justify-space-between>
-                          <v-flex xs8 class="producers"><strong>{{ item.producers.join(' ') }}</strong></v-flex>
-                          <v-flex xs4 class="dropdown-container">
-                            <!-- Add open-on-hover when vuetify repaired it -->
-                            <v-menu transition="slide-x-transition">
-                              <v-btn flat dark slot="activator">
-                                More
-                              </v-btn>
-                              <v-list class="dark">
-                                <v-list-tile @click="openModal(item.title, item.synopsis)">
-                                  <v-list-tile-action>
-                                    <v-icon>more</v-icon>
-                                  </v-list-tile-action>
-                                  <v-list-tile-title>
-                                    Check synopsis
-                                  </v-list-tile-title>
-                                </v-list-tile>
-                                <v-list-tile @click="$store.dispatch('searchInfoFromName', item.title)">
-                                  <v-list-tile-action>
-                                    <v-icon>info_outline</v-icon>
-                                  </v-list-tile-action>
-                                  <v-list-tile-title>Information</v-list-tile-title>
-                                </v-list-tile>
-                                <v-list-tile @click="showChoices(item.title)">
-                                  <v-list-tile-action>
-                                    <v-icon>add_box</v-icon>
-                                  </v-list-tile-action>
-                                  <v-list-tile-title>
-                                    Add to
-                                  </v-list-tile-title>
-                                </v-list-tile>
-                              </v-list>
-                            </v-menu>
-                          </v-flex>
-                        </v-layout>
-                      </v-flex>
-                    </v-layout>
-                  </v-flex>
-                </v-layout>
-              </v-flex>
-            </transition-group>
-          </v-layout>
-        </v-tabs-content>
-      </v-tabs>
-      <div class="text-xs-center modal-container">
-        <v-dialog v-model="modal" width="70%">
-          <v-card class="secondary white--text">
-            <v-card-text class="white--text">
-              <h2 class="headline white--text">{{ modalTitle }}</h2>
-            </v-card-text>
-            <v-card-text class="text white--text">
-              {{ modalText }}
-            </v-card-text>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn class="blue--text darken-1" flat
-                     style="width: 100px"
-                     v-on:click.native="modal = false">Thanks!
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-      </div>
-      <choice-window :entry="choiceTitle"></choice-window>
-    </v-container>
-  </div>
+<template lang="pug" xmlns:v-tooltip="http://www.w3.org/1999/xhtml">
+  div(style='min-height: 95vh')
+    loader(v-if='!season[1].items')
+    v-container(fluid, v-else, style='padding: 20px 0 0')
+      v-layout.form-container(row, wrap, justify-center)
+        v-flex.season-container(sm3, xs8)
+          v-select(
+            v-bind:items='seasonChoices',
+            v-model='$store.state.season',
+            label='Season',
+            dark, item-text='name',
+            item-value='value'
+          )
+        v-flex.year-container(offset-sm1, sm3, xs8)
+          v-text-field(name='input-year', type='number', min='2010', label='Year', v-model='$store.state.year', dark)
+        v-flex.refresh-button(offset-sm1, sm2, xs8)
+          v-btn(secondary, block, dark, @click='refreshSeason()') Refresh
+      v-tabs#tabs(dark, fixed, centered)
+        v-tabs-bar.mablue(slot='activators')
+          v-tabs-slider.primary
+          v-tabs-item(v-for='i in 3', :href="'#' + i", :key='i')
+            | {{ season[i].name }}
+        v-tabs-content(v-for='i in 3', lazy, v-bind:id='`${i}`', :key='i')
+          v-text-field.query(v-model='query', label='Search entry', dark)
+          v-layout.elems(row, wrap)
+            transition-group(name='list')
+              v-flex(
+                md6, xs12,
+                v-for='item in computedSeason[i].items',
+                style='display: inline-block',
+                :key='item.key'
+              )
+                v-layout.elem.elevation-3(row, wrap, v-ripple='true')
+                  // Header of elem
+                  v-flex(xs12, v-tooltip:bottom='{ html: item.title }')
+                    h6.title.ellipsis.white--text
+                      | {{ item.title }}
+                  v-flex(xs8, v-tooltip:bottom="{ html: item.genres.join(' ') }")
+                    p.genres.ellipsis {{ item.genres.join(' ') }}
+                  v-flex(xs3, v-tooltip:bottom='{ html: item.fromType }')
+                    p.from-type.ellipsis
+                      | {{ item.fromType }}
+                  v-flex(xs1)
+                  // Picture of elem
+                  v-flex.image-container(xs4)
+                    lazy-component
+                      img.image(:src='item.picture', onerror="this.src='static/images/error.jpg'")
+                  v-flex.bottom-right(xs8)
+                    v-layout(wrap, justify-space-between, align-center)
+                      v-flex(xs12)
+                        .synopsis {{ reduced(item.synopsis) }}
+                      v-flex(xs12)
+                        v-layout(wrap, justify-space-between)
+                          v-flex.date(xs3) {{ getDate(item.releaseDate) }}
+                          v-flex.nb-ep(xs4) {{ item.nbEp }} {{ episode(item.npEp) }}
+                        v-layout(wrap, justify-space-between)
+                          v-flex.producers(xs8)
+                            strong {{ item.producers.join(' ') }}
+                          v-flex.dropdown-container(xs4)
+                            v-menu(open-on-hover, transition='slide-x-transition')
+                              v-btn(flat, dark, slot='activator') More
+                              v-list.dark
+                                v-list-tile(@click='openModal(item.title, item.synopsis)')
+                                  v-list-tile-action
+                                    v-icon more
+                                  v-list-tile-title Check synopsis
+                                v-list-tile(@click="$store.dispatch('searchInfoFromName', item.title)")
+                                  v-list-tile-action
+                                    v-icon info_outline
+                                  v-list-tile-title Information
+                                v-list-tile(@click='showChoices(item.title)')
+                                  v-list-tile-action
+                                    v-icon add_box
+                                  v-list-tile-title Add to
+      .text-xs-center.modal-container
+        v-dialog(v-model='modal', width='70%')
+          v-card.secondary.white--text
+            v-card-text.white--text
+              h2.headline.white--text {{ modalTitle }}
+            v-card-text.text.white--text
+              | {{ modalText }}
+            v-card-actions
+              v-spacer
+              v-btn.blue--text.darken-1(flat, style='width: 100px', v-on:click.native='modal = false')
+                | Thanks!
+      choice-window(:entry='choiceTitle')
 </template>
 
 <script>

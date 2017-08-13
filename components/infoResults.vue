@@ -1,49 +1,34 @@
-<template>
-  <v-dialog width="800" v-model="$store.state.info.show" persistent lazy absolute>
-    <v-card class="secondary">
-      <v-card-title class="headline">Result for «{{ searchTerm }}»</v-card-title>
-      <v-card-text>
-        <h4 v-if="error">{{ error }}</h4>
-        <div v-else-if="loading">
-          <h5 class="loading-text white--text">Gathering data...</h5>
-          <h5 class="loading-text white--text">Info should be displayed in a few seconds</h5>
-        </div>
-        <v-card v-else class="secondary">
-          <v-layout row wrap>
-            <v-flex xs9>
-              <v-card-title class="info-title">
-                {{ info.alternativeTitles.japanese[0].replace('Japanese: ', '') }} [{{info.type }}]
-              </v-card-title>
-            </v-flex>
-            <v-flex xs3>
-              <v-card-title>{{ info.statistics.score.value }} ({{ info.statistics.score.count }})</v-card-title>
-            </v-flex>
-          </v-layout>
-          <v-layout row wrap>
-            <v-flex xs3 class="info-pic-container">
-              <img :src="info.image" class="info-pic"/>
-            </v-flex>
-            <v-flex xs9 class="info-synopsis-container">
-              <p class="info-synopsis">{{ info.synopsis }}</p>
-            </v-flex>
-          </v-layout>
-          <v-layout class="top-info">
-            <v-flex xs9 class="info-text">{{ info.genres.join(', ') }}</v-flex>
-            <v-flex xs3 class="info-text">{{ info.episodes }} {{ episodeLabel }}</v-flex>
-          </v-layout>
-          <v-layout class="bottom-info">
-            <v-flex xs5 class="info-text">{{ info.studios.join(', ') }}</v-flex>
-            <v-flex xs4 class="info-text">{{ info.classification }}</v-flex>
-            <v-flex xs3 class="info-text">{{ info.status }} ({{ info.aired.split(' ')[2] }})</v-flex>
-          </v-layout>
-        </v-card>
-      </v-card-text>
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn class="blue--text darken-1 close-button" flat @click="$store.commit('showInfo', false)">Thanks!</v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+<template lang="pug">
+  v-dialog(width='800', v-model='$store.state.info.show', persistent, lazy, absolute)
+    v-card.secondary
+      v-card-title.headline Result for «{{ searchTerm }}»
+      v-card-text
+        h4(v-if='error') {{ error }}
+        div(v-else-if='loading')
+          h5.loading-text.white--text Gathering data...
+          h5.loading-text.white--text Info should be displayed in a few seconds
+        v-card.secondary(v-else)
+          v-layout(row, wrap)
+            v-flex(xs9)
+              v-card-title.info-title
+                | {{ info.alternativeTitles.japanese[0].replace('Japanese: ', '') }} [{{info.type }}]
+            v-flex(xs3)
+              v-card-title {{ info.statistics.score.value }} ({{ info.statistics.score.count }})
+          v-layout(row, wrap)
+            v-flex.info-pic-container(xs3)
+              img.info-pic(:src='info.image')
+            v-flex.info-synopsis-container(xs9)
+              p.info-synopsis {{ info.synopsis }}
+          v-layout.top-info
+            v-flex.info-text(xs9) {{ info.genres.join(', ') }}
+            v-flex.info-text(xs3) {{ info.episodes }} {{ episodeLabel }}
+          v-layout.bottom-info
+            v-flex.info-text(xs5) {{ info.studios.join(', ') }}
+            v-flex.info-text(xs4) {{ info.classification }}
+            v-flex.info-text(xs3) {{ info.status }} ({{ info.aired.split(' ')[2] }})
+      v-card-actions
+        v-spacer
+        v-btn.blue--text.darken-1.close-button(flat, @click="$store.commit('showInfo', false)") Thanks!
 </template>
 
 <script>

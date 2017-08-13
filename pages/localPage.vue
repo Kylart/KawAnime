@@ -1,171 +1,97 @@
-<template>
-  <v-container fluid class="pa-0">
-    <div v-if="files.length">
-      <v-layout row wrap style="margin: 0 1%;">
-        <v-flex xs12 class="menubar">
-          <v-layout row wrap>
-            <v-flex hidden-sm-and-up xs2></v-flex>
-            <v-flex xs4 sm3 md2 class="menu-eps">
-              <p class="menu-eps-text">{{ nbEps }} {{ episodeLabel }}</p>
-            </v-flex>
-            <v-flex xs4 sm2 md2>
-              <history-modal></history-modal>
-            </v-flex>
-            <v-flex xs12 sm7 offset-md3 md5 offset-lg4 lg4 offset-xl5 xl3 class="menu-buttons">
-              <v-btn icon
-                     class="refresh-button"
-                     v-if="!this.$store.state.refreshingLocal"
-                     @click="refresh()">
-                <v-icon large>refresh</v-icon>
-              </v-btn>
-              <v-btn v-else icon loading
-                     class="refresh-button">
-              </v-btn>
-              <v-btn flat dark
-                     @click="changePath()"
-                     class="change-dir-button">
-                Change dir
-              </v-btn>
-              <v-btn secondary dark
-                     @click="resetLocal()"
-                     v-if="!this.$store.state.resettingLocal"
-                     class="reset-cache-button">
-                Refresh local info
-              </v-btn>
-              <v-btn secondary dark loading v-else class="reset-cache-button"></v-btn>
-            </v-flex>
-          </v-layout>
-        </v-flex>
-        <transition-group name="list">
-          <template v-for="item in files">
-            <v-flex :key="item.path" xs12 sm6 md4 xl3
-                    class="elem">
-              <v-card class="elem-content elevation-3" v-ripple="true">
-                <v-card-text class="elem-card">
-                  <v-container fluid style="padding: 0;">
-                    <v-layout row wrap class="elem-container">
-                      <v-flex xs7
-                              v-tooltip:top="{ html: item.name }">
-                        <h6 class="elem-title ellipsis white--text">{{ item.name }}</h6>
-                      </v-flex>
-                      <v-flex xs2
-                              v-tooltip:top="{ html: 'Episode ' + item.ep }"
-                              class="elem-ep text-xs-right">
-                        <p class="ellipsis ep">{{ item.ep }} / {{ item.numberOfEpisode }}</p>
-                      </v-flex>
-                      <v-flex xs3 class="buttons-container">
-                        <v-btn large icon
-                               class="play-button"
-                               @click="playThis(item)">
-                          <v-icon large>play_circle_outline</v-icon>
-                        </v-btn>
-                        <!-- Add open-on-hover when vuetify repaired it -->
-                        <v-menu transition="slide-x-transition">
-                          <v-btn icon medium slot="activator">
-                            <v-icon>more_vert</v-icon>
-                          </v-btn>
-                          <v-list class="dark">
-                            <v-list-tile @click="showChoices(item.name)">
-                              <v-list-tile-action>
-                                <v-icon>add_box</v-icon>
-                              </v-list-tile-action>
-                              <v-list-tile-title>
-                                Add to
-                              </v-list-tile-title>
-                            </v-list-tile>
-                            <v-list-tile @click="delThis(item)">
-                              <v-list-tile-action>
-                                <v-icon medium class="primary--text">delete_forever</v-icon>
-                              </v-list-tile-action>
-                              <v-list-tile-title class="primary--text">Delete</v-list-tile-title>
-                            </v-list-tile>
-                          </v-list>
-                        </v-menu>
-                      </v-flex>
-                      <v-flex xs8
-                              v-tooltip:top="{ html: item.genres.length ? item.genres.join(', ') : 'No specified genre' }">
-                        <p class="ellipsis genres">
-                          {{ item.genres.length ? item.genres.join(', ') : 'No specified genre' }}
-                        </p>
-                      </v-flex>
-                      <v-flex xs4 v-tooltip:top="{ html: item.classification.replace('None', 'No restriction') }">
-                        <p class="ellipsis classification">
-                          {{ item.classification.replace('None', 'No restriction') }}
-                        </p>
-                      </v-flex>
-                      <v-flex xl5 lg4 md5 xs4 class="picture-container">
-                        <lazy-component>
-                          <img :src="item.picture" onerror="this.src='static/images/error.jpg'" class="picture">
-                        </lazy-component>
-                      </v-flex>
-                      <v-flex xl7 lg8 md7 xs8 class="bottom-right-container">
-                        <v-layout row wrap justify-space-between>
-                          <v-flex xs12>
-                            <div class="synopsis">{{ reduced(item.synopsis) }}</div>
-                          </v-flex>
-                          <v-flex xs12 style="display: flex">
-                            <v-layout align-center justify-space-between style="min-width: 100%">
-                              <v-flex xs2>
-                                <p class="year">{{ item.year }}</p>
-                              </v-flex>
-                              <v-flex xs7>
-                                <p class="status">{{ item.status }}</p>
-                              </v-flex>
-                              <v-flex xs3><p class="mark">{{ item.mark }}</p></v-flex>
-                            </v-layout>
-                          </v-flex>
-                        </v-layout>
-                      </v-flex>
-                    </v-layout>
-                  </v-container>
-                </v-card-text>
-              </v-card>
-            </v-flex>
-          </template>
-        </transition-group>
-      </v-layout>
-    </div>
-    <v-container fluid v-else>
-      <transition name="fade">
-        <img v-if="emptyBg" class="empty-bg" height="400" src="~static/images/empty-bg.png"/>
-      </transition>
-      <v-layout row wrap>
-        <v-flex xs12 class="menubar">
-          <v-layout row wrap>
-            <v-flex offset-xs2 xs2>
-              <history-modal></history-modal>
-            </v-flex>
-            <v-flex xs5></v-flex>
-            <v-flex xs3 class="menu-buttons">
-              <v-btn icon
-                     class="refresh-button"
-                     v-if="!this.$store.state.refreshingLocal"
-                     @click="refresh()">
-                <v-icon large>refresh</v-icon>
-              </v-btn>
-              <v-btn v-else icon loading
-                     class="refresh-button">
-              </v-btn>
-              <v-btn flat dark
-                     @click="changePath()"
-                     class="change-dir-button">
-                Change dir
-              </v-btn>
-            </v-flex>
-          </v-layout>
-        </v-flex>
-        <v-flex xs12 class="empty-message">
-          <h3 class="white--text">Wow such empty!</h3>
-          <h4 class="white--text">Start downloading anime
-            <router-link to="/downloader" class="green--text">here</router-link>
-            or
-            <router-link to="/" class="cyan--text">here!</router-link>
-          </h4>
-        </v-flex>
-      </v-layout>
-    </v-container>
-    <choice-window :entry="choiceTitle"></choice-window>
-  </v-container>
+<template lang="pug">
+  v-container.pa-0(fluid)
+    div(v-if='files.length')
+      v-layout(row, wrap, style='margin: 0 1%;')
+        v-flex.menubar(xs12)
+          v-layout(row, wrap)
+            v-flex(hidden-sm-and-up, xs2)
+            v-flex.menu-eps(xs4, sm3, md2)
+              p.menu-eps-text {{ nbEps }} {{ episodeLabel }}
+            v-flex(xs4, sm2, md2)
+              history-modal
+            v-flex.menu-buttons(xs12, sm7, offset-md3, md5, offset-lg4, lg4, offset-xl5, xl3)
+              v-btn.refresh-button(icon, v-if='!this.$store.state.refreshingLocal', @click='refresh()')
+                v-icon(large) refresh
+              v-btn.refresh-button(v-else, icon, loading)
+              v-btn.change-dir-button(flat, dark, @click='changePath()')
+                | Change dir
+              v-btn.reset-cache-button(secondary, dark, @click='resetLocal()', v-if='!this.$store.state.resettingLocal')
+                | Refresh local info
+              v-btn.reset-cache-button(secondary, dark, loading, v-else)
+        transition-group(name='list')
+          template(v-for='item in files')
+            v-flex.elem(:key='item.path', xs12, sm6, md4, xl3)
+              v-card.elem-content.elevation-3(v-ripple='true')
+                v-card-text.elem-card
+                  v-container(fluid, style='padding: 0;')
+                    v-layout.elem-container(row, wrap)
+                      v-flex(xs7, v-tooltip:top='{ html: item.name }')
+                        h6.elem-title.ellipsis.white--text {{ item.name }}
+                      v-flex.elem-ep.text-xs-right(xs2, v-tooltip:top="{ html: 'Episode ' + item.ep }")
+                        p.ellipsis.ep {{ item.ep }} / {{ item.numberOfEpisode }}
+                      v-flex.buttons-container(xs3)
+                        v-btn.play-button(large, icon, @click='playThis(item)')
+                          v-icon(large) play_circle_outline
+                        v-menu(open-on-hover, transition='slide-x-transition')
+                          v-btn(icon, medium, slot='activator')
+                            v-icon more_vert
+                          v-list.dark
+                            v-list-tile(@click='showChoices(item.name)')
+                              v-list-tile-action
+                                v-icon add_box
+                              v-list-tile-title
+                                | Add to
+                            v-list-tile(@click='delThis(item)')
+                              v-list-tile-action
+                                v-icon.primary--text(medium) delete_forever
+                              v-list-tile-title.primary--text Delete
+                      v-flex(
+                        xs8,
+                        v-tooltip:top="{ html: item.genres.length ? item.genres.join(', ') : 'No specified genre' }"
+                      )
+                        p.ellipsis.genres
+                          | {{ item.genres.length ? item.genres.join(', ') : 'No specified genre' }}
+                      v-flex(xs4, v-tooltip:top="{ html: item.classification.replace('None', 'No restriction') }")
+                        p.ellipsis.classification
+                          | {{ item.classification.replace('None', 'No restriction') }}
+                      v-flex.picture-container(xl5, lg4, md5, xs4)
+                        lazy-component
+                          img.picture(:src='item.picture', onerror="this.src='static/images/error.jpg'")
+                      v-flex.bottom-right-container(xl7, lg8, md7, xs8)
+                        v-layout(row, wrap, justify-space-between)
+                          v-flex(xs12)
+                            .synopsis {{ reduced(item.synopsis) }}
+                          v-flex(xs12, style='display: flex')
+                            v-layout(align-center, justify-space-between, style='min-width: 100%')
+                              v-flex(xs2)
+                                p.year {{ item.year }}
+                              v-flex(xs7)
+                                p.status {{ item.status }}
+                              v-flex(xs3)
+                                p.mark {{ item.mark }}
+    v-container(fluid, v-else)
+      transition(name='fade')
+        img.empty-bg(v-if='emptyBg', height='400', src='~static/images/empty-bg.png')
+      v-layout(row, wrap)
+        v-flex.menubar(xs12)
+          v-layout(row, wrap)
+            v-flex(offset-xs2, xs2)
+              history-modal
+            v-flex(xs5)
+            v-flex.menu-buttons(xs3)
+              v-btn.refresh-button(icon, v-if='!this.$store.state.refreshingLocal', @click='refresh()')
+                v-icon(large) refresh
+              v-btn.refresh-button(v-else, icon, loading)
+              v-btn.change-dir-button(flat, dark, @click='changePath()')
+                | Change dir
+        v-flex.empty-message(xs12)
+          h3.white--text Wow such empty!
+          h4.white--text
+            | Start downloading anime
+            router-link.green--text(to='/downloader') here
+            | or
+            router-link.cyan--text(to='/') here!
+    choice-window(:entry='choiceTitle')
 </template>
 
 <script>
@@ -218,7 +144,7 @@
 
           this.$store.dispatch('appendHistory', {
             type: 'Play',
-            text: item.name
+            text: `${item.name} - ${item.ep}`
           }).catch(err => { void (err) })
         })
       },
@@ -241,7 +167,7 @@
 
           this.$store.dispatch('appendHistory', {
             type: 'Delete',
-            text: item.name
+            text: `${item.name} - ${item.ep}`
           }).catch(err => { void (err) })
         }).catch((err) => {
           console.log('An error occurred while trying to delete a file:' + err)

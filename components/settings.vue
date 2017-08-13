@@ -1,130 +1,91 @@
-<template>
-  <v-dialog v-model="configModal"
-            fullscreen
-            transition="config"
-            :overlay=false>
-    <v-btn icon slot="activator">
-      <v-icon>settings</v-icon>
-    </v-btn>
-
-    <v-card class="white--text main">
-      <v-toolbar dark class="mablue">
-        <v-btn icon @click="configModal = false" dark>
-          <v-icon>close</v-icon>
-        </v-btn>
-        <v-toolbar-title class="headline">Settings</v-toolbar-title>
-        <v-spacer></v-spacer>
-        <v-toolbar-items>
-          <v-btn dark flat
-                 v-on:click.native="save()">
-            Save
-          </v-btn>
-        </v-toolbar-items>
-      </v-toolbar>
-
-      <v-navigation-drawer class="pb-0 drawer"
-                           v-model="drawer">
-        <v-list>
-          <template v-for="item in itemGroup">
-            <v-list-group v-if="item.items"
-                          :key="item.title">
-              <v-list-tile slot="item" class="ripple" ripple>
-                <v-list-tile-action>
-                  <v-icon>{{ item.action }}</v-icon>
-                </v-list-tile-action>
-                <v-list-tile-title>
-                  {{ item.title }}
-                </v-list-tile-title>
-                <v-list-tile-action>
-                  <v-icon>
-                    keyboard_arrow_down
-                  </v-icon>
-                </v-list-tile-action>
-              </v-list-tile>
-              <v-list-tile v-for="subItem in item.items"
-                           class="ripple"
-                           ripple
-                           :to="subItem.href"
-                           :key="subItem.title">
-                <v-list-tile-action>
-                  <v-icon>{{ subItem.action }}</v-icon>
-                </v-list-tile-action>
-                <v-list-tile-content>
-                  <v-list-tile-title>{{ subItem.title }}</v-list-tile-title>
-                </v-list-tile-content>
-              </v-list-tile>
-              <v-divider></v-divider>
-            </v-list-group>
-            <v-subheader v-else-if="item.header">{{ item.header }}</v-subheader>
-            <v-divider v-else-if="item.divider"></v-divider>
-            <v-list-tile v-else ripple style="position: relative">
-              <v-list-tile-action>
-                <v-icon>{{ item.action }}</v-icon>
-              </v-list-tile-action>
-              <v-list-tile-title>
-                {{ item.title }}
-              </v-list-tile-title>
-            </v-list-tile>
-          </template>
-        </v-list>
-      </v-navigation-drawer>
-
-      <v-container fluid class="container">
-        <v-layout row wrap justify-center>
-          <v-flex xs11>
-            <v-card>
-              <v-card-title class="headline" id="download">
-                Download
-              </v-card-title>
-              <v-divider></v-divider>
-              <v-layout row wrap justify-center>
-                <v-flex xs6 class="section-title">Preferred fansub</v-flex>
-                <v-flex xs6 class="section-title">Quality</v-flex>
-                <v-flex offset-xs1 xs4>
-                  <v-select
-                      v-bind:items="fansubChoices"
-                      v-model="config.fansub"
-                      hint="The fansub you want to check first!"
-                      persistent-hint
-                      dark
-                      item-value="text"
-                  ></v-select>
-                </v-flex>
-                <v-flex xs1></v-flex>
-                <template v-for="radio in radios">
-                  <v-flex xs2>
-                    <v-radio :label="radio" :value="radio" class="primary--text" v-model="config.quality"></v-radio>
-                  </v-flex>
-                </template>
-                <v-flex offset-xs1 xs3 class="section-title">Magnets</v-flex>
-                <v-flex xs8>
-                  <v-switch label="Activate" color="primary" v-model="config.magnets" dark></v-switch>
-                </v-flex>
-              </v-layout>
-            </v-card>
-            <v-card class="section">
-              <v-card-title class="headline" id="local">Local</v-card-title>
-              <v-divider></v-divider>
-              <v-layout row wrap justify-center>
-                <v-flex xs4 class="section-title">Preferred local path</v-flex>
-                <v-flex xs6 class="local-path">{{ config.localPath }}</v-flex>
-                <v-flex xs2>
-                  <v-btn accent @click="$store.dispatch('changePathWithConfig')">Choose</v-btn>
-                </v-flex>
-                <v-flex xs3 class="section-title">News</v-flex>
-                <v-flex xs9>
-                  <v-switch :label="config.inside ? 'Inside' : 'Outside'"
-                            color="primary"
-                            v-model="config.inside" dark>
-                  </v-switch>
-                </v-flex>
-              </v-layout>
-            </v-card>
-          </v-flex>
-        </v-layout>
-      </v-container>
-    </v-card>
-</v-dialog>
+<template lang="pug">
+  v-dialog(v-model='configModal', fullscreen, transition='config', :overlay='false')
+    v-btn(icon, slot='activator')
+      v-icon settings
+    v-card.white--text.main
+      v-toolbar.mablue(dark)
+        v-btn(icon, @click='configModal = false', dark)
+          v-icon close
+        v-toolbar-title.headline Settings
+        v-spacer
+        v-toolbar-items
+          v-btn(dark, flat, v-on:click.native='save()')
+            | Save
+      v-navigation-drawer.pb-0.drawer(v-model='drawer')
+        v-list
+          template(v-for='item in itemGroup')
+            v-list-group(v-if='item.items', :key='item.title')
+              v-list-tile.ripple(slot='item', ripple)
+                v-list-tile-action
+                  v-icon {{ item.action }}
+                v-list-tile-title
+                  | {{ item.title }}
+                v-list-tile-action
+                  v-icon
+                    | keyboard_arrow_down
+              v-list-tile.ripple(
+                v-for='subItem in item.items',
+                ripple, :to='subItem.href',
+                :key='subItem.title'
+              )
+                v-list-tile-action
+                  v-icon {{ subItem.action }}
+                v-list-tile-content
+                  v-list-tile-title {{ subItem.title }}
+              v-divider
+            v-subheader(v-else-if='item.header') {{ item.header }}
+            v-divider(v-else-if='item.divider')
+            v-list-tile(v-else, ripple, style='position: relative')
+              v-list-tile-action
+                v-icon {{ item.action }}
+              v-list-tile-title
+                | {{ item.title }}
+      v-container.container(fluid)
+        v-layout(row, wrap, justify-center)
+          v-flex(xs11)
+            v-card
+              v-card-title#download.headline
+                | Download
+              v-divider
+              v-layout(row, wrap, justify-center)
+                v-flex.section-title(xs6) Preferred fansub
+                v-flex.section-title(xs6) Quality
+                v-flex(offset-xs1, xs4)
+                  v-select(
+                    v-bind:items='fansubChoices',
+                    v-model='config.fansub',
+                    hint='The fansub you want to check first!',
+                    persistent-hint,
+                    dark,
+                    item-value='text'
+                  )
+                v-flex(xs1)
+                template(v-for='radio in radios')
+                  v-flex(xs2)
+                    v-radio.primary--text(
+                      :label='radio',
+                      :value='radio',
+                      v-model='config.quality'
+                    )
+                v-flex.section-title(offset-xs1, xs3) Magnets
+                v-flex(xs8)
+                  v-switch(label='Activate', color='primary', v-model='config.magnets', dark)
+            v-card.section
+              v-card-title#local.headline Local
+              v-divider
+              v-layout(row, wrap, justify-center)
+                v-flex.section-title(xs4) Preferred local path
+                v-flex.local-path(xs6) {{ config.localPath }}
+                v-flex(xs2)
+                  v-btn(accent, @click="$store.dispatch('changePathWithConfig')") Choose
+                v-flex.section-title(xs3) News
+                v-flex(xs9)
+                  v-switch(
+                    :label="config.inside ? 'Inside' : 'Outside'",
+                    color='primary',
+                    v-model='config.inside',
+                    dark
+                  )
 </template>
 
 <script>

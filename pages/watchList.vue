@@ -1,91 +1,62 @@
-<template>
-  <v-container fluid id="watch-list" class="pa-0">
-    <v-tabs id="tabs" grow icons>
-      <v-tabs-bar slot="activators" class="mablue">
-        <v-tabs-slider class="primary"></v-tabs-slider>
-        <template v-for="i in 5">
-          <v-tabs-item :href="'#tabs-' + i">
-            {{ actionsList[i - 1].name }}
-            <v-icon>{{ actionsList[i - 1].icon }}</v-icon>
-          </v-tabs-item>
-        </template>
-      </v-tabs-bar>
-      <v-tabs-content v-for="i in 5" :key="i"
-                      lazy
-                      v-bind:id="'tabs-' + i">
-        <v-card style="background-color: #303030">
-          <v-card-text>
-            <v-layout row wrap class="list-container">
-              <v-flex xs12>
-                <v-layout row wrap align-center justify-center class="top-form">
-                  <v-flex md3 sm4 xs9>
-                    <v-btn icon flat
-                           @click="selectAll(i)"
-                           v-tooltip:bottom="{ html: allSelected[i] ? 'Unselect all' : 'Select all' }">
-                      <v-icon>select_all</v-icon>
-                    </v-btn>
-                    <!-- Add open-on-hover when vuetify repaired it -->
-                    <v-menu transition="slide-x-transition">
-                      <v-btn secondary slot="activator">Move to</v-btn>
-                      <v-list class="dark">
-                        <v-list-tile @click.capture="moveTo(action.list, i)"
-                                     v-for="action in actions(i)"
-                                     :key="action.name">
-                          <v-list-tile-action>
-                            <v-icon>{{ action.icon }}</v-icon>
-                          </v-list-tile-action>
-                          <v-list-tile-title>{{ action.name }}</v-list-tile-title>
-                        </v-list-tile>
-                      </v-list>
-                    </v-menu>
-                    <v-btn @click="deleteSelected(i)"
-                           class="red--text"
-                           v-tooltip:bottom="{ html: 'Delete all selected items from this list' }"
-                           icon>
-                      <v-icon>delete_sweep</v-icon>
-                    </v-btn>
-                  </v-flex>
-                  <v-flex md2 sm2 xs3>
-                    <p class="elem-number">
-                      {{ lists[i - 1].length }} {{ lists[i - 1].length === 1 ? 'entry' : 'entries' }}
-                    </p>
-                  </v-flex>
-                  <v-flex md3 sm1 hidden-xs-only></v-flex>
-                  <v-flex md2 sm3 xs4 @keyup.enter="addEntry(i)">
-                    <v-text-field type="text"
-                                  class="entry-text"
-                                  label="Add entry"
-                                  v-model="entries[i]"
-                                  dark>
-                    </v-text-field>
-                  </v-flex>
-                  <v-flex hidden-sm-and-up xs1></v-flex>
-                  <v-flex md2 sm2 xs4 class="add-button-container">
-                    <v-btn dark secondary
-                           @click="addEntry(i)"
-                           class="add-button">
-                      Add
-                    </v-btn>
-                  </v-flex>
-                </v-layout>
-              </v-flex>
-              <transition-group name="list">
-                <template v-for="item in lists[i - 1]">
-                  <list-entry
-                      :item="item"
-                      :deleteEntry="deleteEntry"
-                      :key="item"
-                      :index="i"
-                      :select="select"
-                      :selected="selected"></list-entry>
-                </template>
-              </transition-group>
-            </v-layout>
-          </v-card-text>
-        </v-card>
-      </v-tabs-content>
-    </v-tabs>
-  </v-container>
+<template lang="pug">
+  v-container#watch-list.pa-0(fluid)
+    v-tabs#tabs(grow, icons)
+      v-tabs-bar.mablue(slot='activators')
+        v-tabs-slider.primary
+        template(v-for='i in 5')
+          v-tabs-item(:href="'#tabs-' + i")
+            | {{ actionsList[i - 1].name }}
+            v-icon {{ actionsList[i - 1].icon }}
+      v-tabs-content(v-for='i in 5', :key='i', lazy, v-bind:id="'tabs-' + i")
+        v-card(style='background-color: #303030')
+          v-card-text
+            v-layout.list-container(row, wrap)
+              v-flex(xs12)
+                v-layout.top-form(row, wrap, align-center, justify-center)
+                  v-flex(md3, sm4, xs9)
+                    v-btn(
+                      icon, flat,
+                      @click='selectAll(i)',
+                      v-tooltip:bottom="{ html: allSelected[i] ? 'Unselect all' : 'Select all' }"
+                    )
+                      v-icon select_all
+                    v-menu(open-on-hover, transition='slide-x-transition')
+                      v-btn(secondary, slot='activator') Move to
+                      v-list.dark
+                        v-list-tile(
+                          @click.capture='moveTo(action.list, i)',
+                          v-for='action in actions(i)',
+                          :key='action.name'
+                        )
+                          v-list-tile-action
+                            v-icon {{ action.icon }}
+                          v-list-tile-title {{ action.name }}
+                    v-btn.red--text(
+                      @click='deleteSelected(i)',
+                      v-tooltip:bottom="{ html: 'Delete all selected items from this list' }",
+                      icon
+                    )
+                      v-icon delete_sweep
+                  v-flex(md2, sm2, xs3)
+                    p.elem-number
+                      | {{ lists[i - 1].length }} {{ lists[i - 1].length === 1 ? 'entry' : 'entries' }}
+                  v-flex(md3, sm1, hidden-xs-only)
+                  v-flex(md2, sm3, xs4, @keyup.enter='addEntry(i)')
+                    v-text-field.entry-text(type='text', label='Add entry', v-model='entries[i]', dark)
+                  v-flex(hidden-sm-and-up, xs1)
+                  v-flex.add-button-container(md2, sm2, xs4)
+                    v-btn.add-button(dark, secondary, @click='addEntry(i)')
+                      | Add
+              transition-group(name='list')
+                template(v-for='item in lists[i - 1]')
+                  list-entry(
+                    :item='item',
+                    :deleteentry='deleteEntry',
+                    :key='item',
+                    :index='i',
+                    :select='select',
+                    :selected='selected'
+                  )
 </template>
 
 <script>

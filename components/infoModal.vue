@@ -1,49 +1,34 @@
-<template>
-  <div>
-    <v-dialog v-model="searchShow" width="650" lazy absolute>
-      <v-btn icon slot="activator">
-        <v-icon>search</v-icon>
-      </v-btn>
-      <v-card class="pr-4">
-        <v-card-title class="headline">Which anime are you looking for?</v-card-title>
-        <v-card-text>
-          <v-layout wrap justify-center>
-            <v-flex xs6>
-              <v-text-field
-                  name="search-name"
-                  label="Anime name"
-                  v-model="searchTerm"
-                  dark
-              ></v-text-field>
-            </v-flex>
-            <v-flex xs12>
-              <v-layout row wrap justify-center>
-                <template v-if="results.length"
-                          v-for="item in results">
-                  <v-flex xs3 class="elem"
-                          @click="search(item.name)">
-                    <v-layout wrap justify-center
-                              v-ripple="true"
-                              class="elem-content elevation-3"
-                              @click.all="search(item.name)">
-                      <v-flex xs8>
-                        <img :src="item.image_url" height="140" class="elem-picture">
-                      </v-flex>
-                      <v-flex xs10 class="elem-name">{{ item.name }}</v-flex>
-                    </v-layout>
-                  </v-flex>
-                </template>
-              </v-layout>
-            </v-flex>
-          </v-layout>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn class="blue--text darken-1 close-button" flat @click="searchShow = false">Close</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-  </div>
+<template lang="pug">
+  v-dialog(v-model='searchShow', width='650', lazy, absolute)
+    v-btn(icon, slot='activator')
+      v-icon search
+    v-card.pr-4
+      v-card-title.headline Which anime are you looking for?
+      v-card-text
+        v-layout(wrap, justify-center)
+          v-flex(xs6)
+            v-text-field(
+              name='search-name',
+              label='Anime name',
+              v-model='searchTerm',
+              dark
+            )
+          v-flex(xs12)
+            v-layout(row, wrap, justify-center)
+              template(v-if='results.length', v-for='item in results')
+                v-flex.elem(xs3, @click='search(item.name)')
+                  v-layout.elem-content.elevation-3(
+                    wrap,
+                    justify-center,
+                    v-ripple='true',
+                    @click.all='search(item.name)'
+                  )
+                    v-flex(xs8)
+                      img.elem-picture(:src='item.image_url', height='140')
+                    v-flex.elem-name(xs10) {{ item.name }}
+      v-card-actions
+        v-spacer
+        v-btn.blue--text.darken-1.close-button(flat, @click='searchShow = false') Close
 </template>
 
 <script>

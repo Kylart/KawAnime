@@ -1,147 +1,105 @@
-<template>
-  <v-container fluid class="container" id="downloader">
-    <div class="cute-char left-pic"></div>
-    <div class="cute-char right-pic"></div>
-
-    <div class="form-container">
-      <v-layout row wrap justify-center>
-        <v-flex xs2 sm7 md9>
-          <!-- Dummy cell -->
-        </v-flex>
-        <v-flex xs10 sm5 md3>
-          <div class="choose-magnets">
-            <v-card class="z-depth-0">
-              <v-card-text class="switch">
-                <v-switch id="magnets-switch"
-                          label="Get Magnets"
-                          color="primary"
-                          v-model="$store.state.config.magnets"
-                          dark/>
-              </v-card-text>
-            </v-card>
-          </div>
-        </v-flex>
-        <v-flex xs4></v-flex>
-        <v-flex xs4
-                @keydown.enter="next(1)">
-          <v-text-field name="name-input"
-                        type="text"
-                        id="name-input"
-                        label="Name of the anime"
-                        v-model="$store.state.downloaderForm.name"
-                        autofocus dark>
-          </v-text-field>
-        </v-flex>
-        <v-flex xs4></v-flex>
-        <v-flex xs4></v-flex>
-        <v-flex xs4
-               @keydown.enter="next(2)"
-               @keydown.delete="previous(2)">
-          <v-text-field name="from-ep-input"
-                        type="number" min="0"
-                        label="From episode..."
-                        v-model="$store.state.downloaderForm.fromEp"
-                        dark>
-          </v-text-field>
-        </v-flex>
-        <v-flex xs4></v-flex>
-        <v-flex xs4></v-flex>
-        <v-flex xs4
-               @keydown.enter="next(3)"
-               @keydown.delete="previous(3)">
-          <v-text-field name="until-ep-input"
-                        type="number"
-                        label="Until episode.."
-                        v-model="$store.state.downloaderForm.untilEp"
-                        dark>
-          </v-text-field>
-        </v-flex>
-        <v-flex xs4></v-flex>
-        <v-flex xs12 sm6 md4 class="radio-container">
-          <v-radio class="radio primary--text"
-                   label="480p"
-                   v-model="quality"
-                   value="480p" dark/>
-        </v-flex>
-        <v-flex xs12 sm6 md4>
-          <v-radio class="radio primary--text"
-                   label="720p"
-                   v-model="quality"
-                   value="720p" dark/>
-        </v-flex>
-        <v-flex xs12 sm6 md4>
-          <v-radio class="radio primary--text"
-                   label="1080p"
-                   v-model="quality"
-                   value="1080p" dark/>
-        </v-flex>
-      </v-layout>
-    </div>
-    <div class="download-button-container">
-      <div class="download-button">
-        <v-btn dark block secondary
-               id="download-btn"
-               @click="isDownloadable()"
-               v-if="!$store.state.downloaderForm.loading">
-          Download!
-        </v-btn>
-        <v-btn dark block secondary loading v-else></v-btn>
-      </div>
-    </div>
-    <v-dialog v-model="$store.state.downloaderModal.show"
-              lazy absolute
-              width="800"
-              class="magnet-modal">
-      <v-card class="secondary white--text">
-        <v-card-text class="white--text">
-          <h2 class="title white--text">Magnets for <strong>{{ $store.state.downloaderModal.title }}</strong></h2>
-        </v-card-text>
-        <v-divider/>
-        <v-card-text class="subheading white--text">
-          <v-layout row wrap justify-center align-center>
-            <v-flex xs4 offset-xs6 class="modal-icon-container">
-              <v-btn flat icon
-                     v-if="links"
-                     v-clipboard="links.join('\n')"
-                     @success="copiedSnackbar = true">
-                <v-icon class="copy-icon">content_copy</v-icon>
-              </v-btn>
-
-            </v-flex>
-            <v-flex xs12 v-for="link in $store.state.downloaderModal.text"
-                   class="subheading grey--text modal-text" :key="link">{{ link.split('&')[0] }}
-            </v-flex>
-          </v-layout>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn flat
-                 class="blue--text darken-1"
-                 v-on:click.native="$store.state.downloaderModal.show = false">
-            Thanks!
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-    <v-snackbar :timeout="timeout"
-                :top="y === 'top'"
-                :bottom="y === 'bottom'"
-                :right="x === 'right'"
-                :left="x === 'left'"
-                v-model="snackbar">
-      Please, enter a valid name (at least 3 letters...)
-      <v-btn flat class="pink--text" @click="snackbar = false">ok!</v-btn>
-    </v-snackbar>
-    <v-snackbar :timeout="copiedTimeout"
-                :top="y === 'top'"
-                :bottom="y === 'bottom'"
-                :right="x === 'right'"
-                :left="x === 'left'"
-                v-model="copiedSnackbar">
-      All magnets were copied to clipboard!
-      <v-btn flat class="pink--text" @click="copiedSnackbar = false">Thanks!</v-btn>
-    </v-snackbar>
-  </v-container>
+<template lang="pug">
+  v-container#downloader.container(fluid)
+    .cute-char.left-pic
+    .cute-char.right-pic
+    .form-container
+      v-layout(row, wrap, justify-center)
+        v-flex(xs2, sm7, md9)
+          // Dummy cell
+        v-flex(xs10, sm5, md3)
+          .choose-magnets
+            v-card.z-depth-0
+              v-card-text.switch
+                v-switch#magnets-switch(
+                  label='Get Magnets',
+                  color='primary',
+                  v-model='$store.state.config.magnets',
+                  dark
+                )
+        v-flex(xs4)
+        v-flex(xs4, @keydown.enter='next(1)')
+          v-text-field#name-input(
+            name='name-input',
+            type='text',
+            label='Name of the anime',
+            v-model='$store.state.downloaderForm.name',
+            autofocus,
+            dark
+          )
+        v-flex(xs4)
+        v-flex(xs4)
+        v-flex(xs4, @keydown.enter='next(2)', @keydown.delete='previous(2)')
+          v-text-field(
+            name='from-ep-input',
+            type='number',
+            min='0',
+            label='From episode...',
+            v-model='$store.state.downloaderForm.fromEp',
+            dark
+          )
+        v-flex(xs4)
+        v-flex(xs4)
+        v-flex(xs4, @keydown.enter='next(3)', @keydown.delete='previous(3)')
+          v-text-field(
+            name='until-ep-input',
+            type='number',
+            label='Until episode..',
+            v-model='$store.state.downloaderForm.untilEp',
+            dark
+          )
+        v-flex(xs4)
+        v-flex.radio-container(xs12, sm6, md4)
+          v-radio.radio.primary--text(label='480p', v-model='quality', value='480p', dark)
+        v-flex(xs12, sm6, md4)
+          v-radio.radio.primary--text(label='720p', v-model='quality', value='720p', dark)
+        v-flex(xs12, sm6, md4)
+          v-radio.radio.primary--text(label='1080p', v-model='quality', value='1080p', dark)
+    .download-button-container
+      .download-button
+        v-btn#download-btn(
+          dark, block, secondary,
+          @click='isDownloadable()',
+          v-if='!$store.state.downloaderForm.loading'
+        ) Download!
+        v-btn(dark, block, secondary, loading, v-else)
+    v-dialog.magnet-modal(v-model='$store.state.downloaderModal.show', lazy, absolute, width='800')
+      v-card.secondary.white--text
+        v-card-text.white--text
+          h2.title.white--text
+            | Magnets for #[strong {{ $store.state.downloaderModal.title }}]
+        v-divider
+        v-card-text.subheading.white--text
+          v-layout(row, wrap, justify-center, align-center)
+            v-flex.modal-icon-container(xs4, offset-xs6)
+              v-btn(flat, icon, v-if='links', v-clipboard="links.join('')", @success='copiedSnackbar = true')
+                v-icon.copy-icon content_copy
+            v-flex.subheading.grey--text.modal-text(
+              xs12,
+              v-for='link in $store.state.downloaderModal.text',
+              :key='link'
+            ) {{ link.split('&')[0] }}
+        v-card-actions
+          v-spacer
+          v-btn.blue--text.darken-1(flat, v-on:click.native='$store.state.downloaderModal.show = false')
+            | Thanks!
+    v-snackbar(
+      :timeout='timeout',
+      :top="y === 'top'",
+      :bottom="y === 'bottom'",
+      :right="x === 'right'",
+      :left="x === 'left'",
+      v-model='snackbar'
+    ) Please, enter a valid name (at least 3 letters...)
+      v-btn.pink--text(flat, @click='snackbar = false') ok!
+    v-snackbar(
+      :timeout='copiedTimeout',
+      :top="y === 'top'",
+      :bottom="y === 'bottom'",
+      :right="x === 'right'",
+      :left="x === 'left'",
+      v-model='copiedSnackbar'
+    ) All magnets were copied to clipboard!
+      v-btn.pink--text(flat, @click='copiedSnackbar = false') Thanks!
 </template>
 
 <script>

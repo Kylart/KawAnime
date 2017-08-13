@@ -1,5 +1,5 @@
 <template lang="pug">
-  div.c
+  .c
     div#container
       span.text.white--text Development mode
 </template>

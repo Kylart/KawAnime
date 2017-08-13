@@ -1,69 +1,41 @@
-<template>
-  <v-dialog lazy absolute width="75%"
-            v-model="$store.state.historyModal">
-    <v-btn secondary dark
-           @click.mative="refresh()"
-           slot="activator">History
-    </v-btn>
-    <v-card class="secondary">
-      <v-card-title class="headline">History</v-card-title>
-      <v-divider></v-divider>
-        <v-card-text>
-          <v-layout row wrap>
-            <v-expansion-panel expand class="secondary">
-              <v-expansion-panel-content class="item-container"
-                                         ripple
-                                         v-for="item in Object.keys(history).reverse()"
-                                         :key="item">
-                <div slot="header"
-                     v-ripple="true"
-                     class="day">{{ item }}
-                </div>
-                <v-card>
-                  <v-card-text class="lighten-3 info-container">
-                    <v-layout row wrap>
-                      <template v-for="info in history[item]">
-                        <v-flex xs2 class="time entry"
-                                :class="isDelete(info.type)">
-                          {{ info.time }}
-                        </v-flex>
-                        <v-flex xs2 class="type entry" :class="isDelete(info.type)">
-                          {{ info.type }}
-                        </v-flex>
-                        <v-flex xs7
-                                class="ellipsis text entry"
-                                :class="isDelete(info.type)">
-                          {{ info.text }}
-                        </v-flex>
-                        <v-flex xs1
-                                class="entry"
-                                :class="isDelete(info.type)">
-                          <v-icon class="delete-entry"
-                                  v-ripple="true"
-                                  @click.stop="clearEntry(info, item)">
-                            clear
-                          </v-icon>
-                        </v-flex>
-                      </template>
-                    </v-layout>
-                  </v-card-text>
-                </v-card>
-              </v-expansion-panel-content>
-            </v-expansion-panel>
-          </v-layout>
-        </v-card-text>
-      <v-divider></v-divider>
-      <v-card-actions style=" padding-right: 20px;">
-        <v-spacer></v-spacer>
-        <v-btn class="blue--text darken-1"
-               flat
-               style="width: 100px;"
-               @click="$store.commit('setHistoryModal', false)">
-          Close
-        </v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+<template lang="pug">
+  v-dialog(lazy, absolute, width='75%', v-model='$store.state.historyModal')
+    v-btn(secondary, dark, @click.mative='refresh()', slot='activator')
+      | History
+    v-card.secondary
+      v-card-title.headline History
+      v-divider
+      v-card-text
+        v-layout(row, wrap)
+          v-expansion-panel.secondary(expand)
+            v-expansion-panel-content.item-container(
+              ripple,
+              v-for='item in Object.keys(history).reverse()',
+              :key='item'
+            )
+              .day(slot='header', v-ripple='true')
+                | {{ item }}
+              v-card
+                v-card-text.lighten-3.info-container
+                  v-layout(row, wrap)
+                    template(v-for='info in history[item]')
+                      v-flex.time.entry(xs2, :class='isDelete(info.type)')
+                        | {{ info.time }}
+                      v-flex.type.entry(xs2, :class='isDelete(info.type)')
+                        | {{ info.type }}
+                      v-flex.ellipsis.text.entry(xs7, :class='isDelete(info.type)')
+                        | {{ info.text }}
+                      v-flex.entry(xs1, :class='isDelete(info.type)')
+                        v-icon.delete-entry(v-ripple='true', @click.stop='clearEntry(info, item)')
+                          | clear
+      v-divider
+      v-card-actions(style=' padding-right: 20px;')
+        v-spacer
+        v-btn.blue--text.darken-1(
+          flat,
+          style='width: 100px;',
+          @click="$store.commit('setHistoryModal', false)"
+        ) Close
 </template>
 
 <script>

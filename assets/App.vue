@@ -1,108 +1,67 @@
-<template>
-  <v-app dark footer toolbar>
-    <v-navigation-drawer class="pb-0"
-                         style="width: 280px"
-                         temporary
-                         v-model="$store.state.drawer"
-    >
-      <v-list>
-        <v-list-tile id="title" to="/">
-          <v-list-tile-action>
-            <img src="static/images/icon2.png" height="50"/>
-          </v-list-tile-action>
-          <v-list-tile-title class="title">
-            かわニメ
-          </v-list-tile-title>
-        </v-list-tile>
-        <template v-for="item in itemGroup">
-          <v-list-group v-if="item.items"
-                        :key="item.title">
-            <v-list-tile slot="item" class="ripple" ripple>
-              <v-list-tile-action>
-                <v-icon>{{ item.action }}</v-icon>
-              </v-list-tile-action>
-              <v-list-tile-title>
-                {{ item.title }}
-              </v-list-tile-title>
-              <v-list-tile-action>
-                <v-icon>
-                  keyboard_arrow_down
-                </v-icon>
-              </v-list-tile-action>
-            </v-list-tile>
-            <v-list-tile v-for="subItem in item.items"
-                         class="ripple"
-                         ripple
-                         :to="subItem.href"
-                         :key="subItem.title">
-              <v-list-tile-action>
-                <v-icon>{{ subItem.action }}</v-icon>
-              </v-list-tile-action>
-              <v-list-tile-content>
-                <v-list-tile-title>{{ subItem.title }}</v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
-            <v-divider></v-divider>
-          </v-list-group>
-          <v-subheader v-else-if="item.header" class="white--text">{{ item.header }}</v-subheader>
-          <v-divider v-else-if="item.divider"></v-divider>
-        </template>
-      </v-list>
-    </v-navigation-drawer>
-
-    <v-system-bar dark
-                  status
-                  class="wb dragable"
-                  v-if="!browser">
-      <v-spacer></v-spacer>
-      <div v-if="$store.state.platform !== 'darwin'">
-        <v-icon class="window-icon non-dragable" @click="actOnWindow('minimize')">remove</v-icon>
-        <v-icon class="window-icon non-dragable" @click="actOnWindow('maximize')">check_box_outline_blank</v-icon>
-        <v-icon class="window-icon non-dragable" @click="actOnWindow('close')">close</v-icon>
-      </div>
-    </v-system-bar>
-
-    <v-toolbar fixed dark class="mablue tb">
-      <v-toolbar-side-icon @click.stop="toggleDrawer()"></v-toolbar-side-icon>
-      <v-toolbar-title class="white--text title hidden-xs-only">かわニメ</v-toolbar-title>
-      <v-spacer></v-spacer>
-      <info-modal></info-modal>
-      <v-btn icon
-             class="open-in-browser"
-             v-tooltip:left="{ html: 'Open KawAnime in your browser' }"
-             @click="openInBrowser()">
-        <v-icon>open_in_new</v-icon>
-      </v-btn>
-      <settings></settings>
-    </v-toolbar>
-
-    <main class="m">
-      <transition name="page" mode="out-in">
-        <router-view></router-view>
-      </transition>
-    </main>
-
-    <env v-if="$store.state.NODE_ENV"></env>
-    <info-results v-show="$store.state.info.show"></info-results>
-
-    <!-- Used for displaying any info -->
-    <v-snackbar
-      :timeout="5000"
-      :top="true"
-      :bottom="false"
-      :right="false"
-      :left="false"
-      v-model="$store.state.infoSnackbar.show"
-    >
-      {{ $store.state.infoSnackbar.text }}
-      <v-btn flat class="pink--text" @click="$store.state.infoSnackbar.show = false">Close</v-btn>
-    </v-snackbar>
-
-    <v-footer class="grey darken-4">
-      <v-spacer></v-spacer>
-      <div class="white--text">&copy; 2016 - 2017 Kylart</div>
-    </v-footer>
-  </v-app>
+<template lang="pug">
+  v-app(dark, footer, toolbar)
+    v-navigation-drawer.pb-0(style='width: 280px', temporary, v-model='$store.state.drawer')
+      v-list
+        v-list-tile#title(to='/')
+          v-list-tile-action
+            img(src='static/images/icon2.png', height='50')
+          v-list-tile-title.title
+            | かわニメ
+        template(v-for='item in itemGroup')
+          v-list-group(v-if='item.items', :key='item.title')
+            v-list-tile.ripple(slot='item', ripple)
+              v-list-tile-action
+                v-icon {{ item.action }}
+              v-list-tile-title {{ item.title }}
+              v-list-tile-action
+                v-icon keyboard_arrow_down
+            v-list-tile.ripple(v-for='subItem in item.items', ripple, :to='subItem.href', :key='subItem.title')
+              v-list-tile-action
+                v-icon {{ subItem.action }}
+              v-list-tile-content
+                v-list-tile-title {{ subItem.title }}
+            v-divider
+          v-subheader.white--text(v-else-if='item.header') {{ item.header }}
+          v-divider(v-else-if='item.divider')
+    
+    v-system-bar.wb.dragable(dark, status, v-if='!browser')
+      v-spacer
+      div(v-if="$store.state.platform !== 'darwin'")
+        v-icon.window-icon.non-dragable(@click="actOnWindow('minimize')") remove
+        v-icon.window-icon.non-dragable(@click="actOnWindow('maximize')") check_box_outline_blank
+        v-icon.window-icon.non-dragable(@click="actOnWindow('close')") close
+    
+    v-toolbar.mablue.tb(fixed, dark)
+      v-toolbar-side-icon(@click.stop='toggleDrawer()')
+      v-toolbar-title.white--text.title.hidden-xs-only かわニメ
+      v-spacer
+      info-modal
+      v-btn.open-in-browser(icon, v-tooltip:left="{ html: 'Open KawAnime in your browser' }", @click='openInBrowser()')
+        v-icon open_in_new
+      settings
+    
+    main.m
+      transition(name='page', mode='out-in')
+        router-view
+    
+    env(v-show='$store.state.NODE_ENV')
+    
+    info-results(v-show='$store.state.info.show')
+    
+    // Used for displaying any info
+    v-snackbar(
+      :timeout='5000',
+      :top='true',
+      :bottom='false',
+      :right='false',
+      :left='false',
+      v-model='$store.state.infoSnackbar.show'
+    ) {{ $store.state.infoSnackbar.text }}
+      v-btn.pink--text(flat, @click='$store.state.infoSnackbar.show = false') Close
+    
+    v-footer.grey.darken-4
+      v-spacer
+      .white--text © 2016 - 2017 Kylart
 </template>
 
 <script>

@@ -1,158 +1,90 @@
-<template xmlns:v-tooltip="http://www.w3.org/1999/xhtml">
-  <v-container id="container" fluid class="container pa-0">
-    <transition name="fade" v-if="releases.length">
-      <v-layout row wrap justify-center style="margin: 0 1% 0 1%;">
-        <v-flex md4 sm4 xs8 class="time-container">
-          <span class="update-time">Updated {{ lastUpdateTime }}.</span>
-        </v-flex>
-        <v-flex md4 sm1 hidden-xs-only></v-flex>
-        <v-flex md2 sm3 xs10>
-          <v-select
-            class="select"
-            :items="fansubList"
-            v-model="$store.state.releaseFansub"
-            label="Fansub"
-            dark
-            single-line
-            hint="Pick a fansub"
+<template lang="pug" xmlns:v-tooltip="http://www.w3.org/1999/xhtml">
+  v-container#container.container.pa-0(fluid)
+    transition(name='fade', v-if='releases.length')
+      v-layout(row, wrap, justify-center, style='margin: 0 1% 0 1%;')
+        v-flex.time-container(md4, sm4, xs8)
+          span.update-time Updated {{ lastUpdateTime }}.
+        v-flex(md4, sm1, hidden-xs-only)
+        v-flex(md2, sm3, xs10)
+          v-select.select(
+            :items='fansubList',
+            v-model='$store.state.releaseFansub',
+            label='Fansub',
+            dark, single-line,
+            hint='Pick a fansub',
             persistent-hint
-          />
-        </v-flex>
-        <v-flex md1 sm2 xs10>
-          <v-select
-            class="select"
-            :items="qualityList"
-            v-model="$store.state.releaseQuality"
-            label="Quality"
-            dark
-            single-line
-            hint="Which quality ?"
+          )
+        v-flex(md1, sm2, xs10)
+          v-select.select(
+            :items='qualityList',
+            v-model='$store.state.releaseQuality',
+            label='Quality',
+            dark,
+            single-line,
+            hint='Which quality ?',
             persistent-hint
-          />
-        </v-flex>
-        <v-flex md1 sm1 xs12 class="refresh-button-container">
-          <v-btn icon
-                 class="refresh-button"
-                 @click="refresh()">
-            <v-icon large>refresh</v-icon>
-          </v-btn>
-        </v-flex>
-        <template v-for="item in releases">
-          <v-flex xs12 sm6 md4
-                  :key="item.name"
-                  class="elem">
-            <v-card class="elem-content elevation-3" v-ripple="true">
-              <v-card-text class="elem-card">
-                <v-container fluid style="padding: 0;">
-                  <v-layout row wrap>
-                    <v-flex class="elem-title" xs9 v-tooltip:top="{ html: item.rawName }">
-                      <h6 class="white--text">{{ item.rawName }}</h6>
-                    </v-flex>
-                    <v-flex v-tooltip:top="{ html: 'Episode ' + item.ep }"
-                            class="elem-ep text-xs-right" xs3>
-                      <h6 class="white--text">Ep {{ item.ep }}</h6>
-                    </v-flex>
-                    <v-flex class="elem-image"
-                            xl6 lg4 md5 xs4>
-                      <img :src="item.picture" onerror="this.src='static/images/error.jpg'" height="200" class="picture"/>
-                    </v-flex>
-                    <v-flex xl6 lg8 md7 xs8>
-                      <div class="elem-text-links">
-                        <div class="synopsis">
-                          {{ item.synopsis }}
-                        </div>
-                        <div class="links">
-                          <a :href="item.magnetLink" class="download-button">
-                            <v-btn dark flat
-                                   @click="print(item)"
-                                   class="btn--light-flat-pressed">
-                              Download
-                            </v-btn>
-                          </a>
-                          <!-- Add open-on-hover when vuetify repaired it -->
-                          <v-menu transition="slide-x-transition">
-                            <v-btn flat dark slot="activator">
-                              More
-                            </v-btn>
-                            <v-list class="dark">
-                              <v-list-tile @click="openModal(item.rawName, item.fullSynopsis)">
-                                <v-list-tile-action>
-                                  <v-icon>more</v-icon>
-                                </v-list-tile-action>
-                                <v-list-tile-title>
-                                  Check synopsis
-                                </v-list-tile-title>
-                              </v-list-tile>
-                              <v-list-tile @click="downloadAll(item.rawName)">
-                                <v-list-tile-action>
-                                  <v-icon>file_download</v-icon>
-                                </v-list-tile-action>
-                                <v-list-tile-title>
-                                  Download all episodes
-                                </v-list-tile-title>
-                              </v-list-tile>
-                              <v-list-tile @click="searchThis(item.rawName)">
-                                <v-list-tile-action>
-                                  <v-icon>info_outline</v-icon>
-                                </v-list-tile-action>
-                                <v-list-tile-title>Information</v-list-tile-title>
-                              </v-list-tile>
-                              <v-list-tile @click="showChoices(item.rawName)">
-                                <v-list-tile-action>
-                                  <v-icon>add_box</v-icon>
-                                </v-list-tile-action>
-                                <v-list-tile-title>
-                                  Add to
-                                </v-list-tile-title>
-                              </v-list-tile>
-                            </v-list>
-                          </v-menu>
-                        </div>
-                      </div>
-                    </v-flex>
-                  </v-layout>
-                </v-container>
-              </v-card-text>
-            </v-card>
-          </v-flex>
-        </template>
-      </v-layout>
-    </transition>
-    <loader v-else></loader>
-    <div class="text-xs-center modal-container">
-      <v-dialog v-model="modal" width="70%">
-        <v-card class="white--text">
-          <v-card-text class="white--text">
-            <h2 class="white--text headline">{{ modalTitle }}</h2>
-          </v-card-text>
-          <v-card-text class="subheading white--text">
-            {{ modalText }}
-          </v-card-text>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn class="blue--text darken-1" flat
-                   v-on:click.native="modal = false">Thanks!
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-    </div>
-    <choice-window :entry="choiceTitle"></choice-window>
-  </v-container>
+          )
+        v-flex.refresh-button-container(md1, sm1, xs12)
+          v-btn.refresh-button(icon, @click='refresh()')
+            v-icon(large) refresh
+        template(v-for='item in releases')
+          v-flex.elem(xs12, sm6, md4, :key='item.name')
+            v-card.elem-content.elevation-3(v-ripple='true')
+              v-card-text.elem-card
+                v-container(fluid, style='padding: 0;')
+                  v-layout(row, wrap)
+                    v-flex.elem-title(xs9, v-tooltip:top='{ html: item.rawName }')
+                      h6.white--text {{ item.rawName }}
+                    v-flex.elem-ep.text-xs-right(v-tooltip:top="{ html: 'Episode ' + item.ep }", xs3)
+                      h6.white--text Ep {{ item.ep }}
+                    v-flex.elem-image(xl6, lg4, md5, xs4)
+                      img.picture(
+                        :src='item.picture',
+                        onerror="this.src='static/images/error.jpg'",
+                        height='200'
+                      )
+                    v-flex(xl6, lg8, md7, xs8)
+                      .elem-text-links
+                        .synopsis {{ item.synopsis }}
+                        .links
+                          a.download-button(:href='item.magnetLink')
+                            v-btn.btn--light-flat-pressed(dark, flat, @click='print(item)') Download
+                          v-menu(open-on-hover, transition='slide-x-transition')
+                            v-btn(flat, dark, slot='activator') More
+                            v-list.dark
+                              v-list-tile(@click='openModal(item.rawName, item.fullSynopsis)')
+                                v-list-tile-action
+                                  v-icon more
+                                v-list-tile-title Check synopsis
+                              v-list-tile(@click='downloadAll(item.rawName)')
+                                v-list-tile-action
+                                  v-icon file_download
+                                v-list-tile-title Download all episodes
+                              v-list-tile(@click='searchThis(item.rawName)')
+                                v-list-tile-action
+                                  v-icon info_outline
+                                v-list-tile-title Information
+                              v-list-tile(@click='showChoices(item.rawName)')
+                                v-list-tile-action
+                                  v-icon add_box
+                                v-list-tile-title Add to
+    loader(v-else)
+    .text-xs-center.modal-container
+      v-dialog(v-model='modal', width='70%')
+        v-card.white--text
+          v-card-text.white--text
+            h2.white--text.headline {{ modalTitle }}
+          v-card-text.subheading.white--text {{ modalText }}
+          v-card-actions
+            v-spacer
+            v-btn.blue--text.darken-1(flat, v-on:click.native='modal = false') Thanks!
+    choice-window(:entry='choiceTitle')
 </template>
 
 <script>
   import axios from 'axios'
 
   export default {
-    head () {
-      return {
-        title: 'Releases',
-        meta: [
-          {hid: 'description', name: 'description', content: 'Latest downloadable anime releases'}
-        ]
-      }
-    },
     mounted () {
       if (this.releases.length) {
         this.updateTime(this.$store)
