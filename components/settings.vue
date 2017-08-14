@@ -3,7 +3,7 @@
     v-btn(icon, slot='activator')
       v-icon settings
     v-card.white--text.main
-      v-toolbar.mablue(dark)
+      v-toolbar.mablue.tb(fixed dark)
         v-btn(icon, @click='configModal = false', dark)
           v-icon close
         v-toolbar-title.headline Settings
@@ -18,11 +18,9 @@
               v-list-tile.ripple(slot='item', ripple)
                 v-list-tile-action
                   v-icon {{ item.action }}
-                v-list-tile-title
-                  | {{ item.title }}
+                v-list-tile-title {{ item.title }}
                 v-list-tile-action
-                  v-icon
-                    | keyboard_arrow_down
+                  v-icon keyboard_arrow_down
               v-list-tile.ripple(
                 v-for='subItem in item.items',
                 ripple, :to='subItem.href',
@@ -40,6 +38,7 @@
                 v-icon {{ item.action }}
               v-list-tile-title
                 | {{ item.title }}
+
       v-container.container(fluid)
         v-layout(row, wrap, justify-center)
           v-flex(xs11)
@@ -86,6 +85,23 @@
                     v-model='config.inside',
                     dark
                   )
+            v-card.section
+              v-card-title#local.headline Notification
+              v-divider
+              v-layout(row, wrap, justify-center)
+                v-flex.section-title(xs12) Sound
+                v-flex(xs4)
+                  v-select(
+                    v-bind:items='soundChoices',
+                    v-model='config.sound',
+                    hint='The sound you want KawAnime to use when notifying you!',
+                    persistent-hint,
+                    dark,
+                    item-value='text'
+                  )
+                v-flex(xs5)
+                  v-btn(icon large @click="play()")
+                    v-icon(large) play_circle_outline
 </template>
 
 <script>
@@ -104,6 +120,10 @@
             title: 'Local',
             action: 'folder',
             to: '#local'
+          }, {
+            title: 'Notification',
+            action: 'play_circle_outline',
+            to: '#notification'
           }
         ]
       }
@@ -114,6 +134,9 @@
       },
       fansubChoices () {
         return this.$store.state.fansubList
+      },
+      soundChoices () {
+        return this.$store.state.soundList
       }
     },
     methods: {
@@ -129,6 +152,10 @@
       saveAndClose () {
         this.save()
         this.configModal = false
+      },
+      play () {
+        this.$store.dispatch('setUpPlayer')
+        this.$store.dispatch('playSound')
       }
     }
   }
@@ -141,14 +168,15 @@
     width: 23%;
   }
 
-  .main
+  .tb
   {
-    padding-left: 23%;
+    top: 24px;
   }
 
   .container
   {
     padding-left: 23%;
+    padding-top: calc(24px + 48px);
   }
 
   .section

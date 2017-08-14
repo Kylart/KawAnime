@@ -23,14 +23,14 @@
             v-divider
           v-subheader.white--text(v-else-if='item.header') {{ item.header }}
           v-divider(v-else-if='item.divider')
-    
+
     v-system-bar.wb.dragable(dark, status, v-if='!browser')
       v-spacer
       div(v-if="$store.state.platform !== 'darwin'")
         v-icon.window-icon.non-dragable(@click="actOnWindow('minimize')") remove
         v-icon.window-icon.non-dragable(@click="actOnWindow('maximize')") check_box_outline_blank
         v-icon.window-icon.non-dragable(@click="actOnWindow('close')") close
-    
+
     v-toolbar.mablue.tb(fixed, dark)
       v-toolbar-side-icon(@click.stop='toggleDrawer()')
       v-toolbar-title.white--text.title.hidden-xs-only かわニメ
@@ -39,15 +39,15 @@
       v-btn.open-in-browser(icon, v-tooltip:left="{ html: 'Open KawAnime in your browser' }", @click='openInBrowser()')
         v-icon open_in_new
       settings
-    
+
     main.m
       transition(name='page', mode='out-in')
         router-view
-    
+
     env(v-show='$store.state.NODE_ENV')
-    
+
     info-results(v-show='$store.state.info.show')
-    
+
     // Used for displaying any info
     v-snackbar(
       :timeout='5000',
@@ -58,7 +58,7 @@
       v-model='$store.state.infoSnackbar.show'
     ) {{ $store.state.infoSnackbar.text }}
       v-btn.pink--text(flat, @click='$store.state.infoSnackbar.show = false') Close
-    
+
     v-footer.grey.darken-4
       v-spacer
       .white--text © 2016 - 2017 Kylart

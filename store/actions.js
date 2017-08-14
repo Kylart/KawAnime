@@ -17,6 +17,7 @@ export default {
     dispatch('localInit').catch(err => { void (err) })
     dispatch('listInit').catch(err => { void (err) })
     dispatch('getHistory').catch(err => { void (err) })
+    dispatch('setUpPlayer').catch(err => { void (err) })
 
     // Online
     try {
@@ -39,6 +40,20 @@ export default {
     const {data} = await axios.get('_env')
 
     commit('setEnv', data)
+  },
+  setUpPlayer ({state}) {
+    try {
+      const sound = state.config.sound
+      document.player = new window.Audio()
+      document.player.src = `static/sounds/${sound}.m4a`
+      document.player.volume = 0.5
+    } catch (e) { void e }
+  },
+  playSound () {
+    if (!document.player.src.includes('sounds/None.m4a')) {
+      document.player.currentTime = 0
+      document.player.play()
+    }
   },
   async releasesInit ({state, commit, dispatch}) {
     console.log('[INIT] Releases')

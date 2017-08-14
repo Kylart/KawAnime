@@ -21,6 +21,7 @@ export default {
     //   fansub: 'HorribleSubs',
     //   quality: '720p',
     //   localPath: join(userInfo().homedir, 'Downloads'),
+    //   sound: 'Nyanpasu',
     //   inside: true,
     //   magnets: false
     // }

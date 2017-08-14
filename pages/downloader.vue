@@ -62,7 +62,7 @@
           v-if='!$store.state.downloaderForm.loading'
         ) Download!
         v-btn(dark, block, secondary, loading, v-else)
-    v-dialog.magnet-modal(v-model='$store.state.downloaderModal.show', lazy, absolute, width='800')
+    v-dialog.magnet-modal(v-model='magnetModal', lazy, absolute, width='800')
       v-card.secondary.white--text
         v-card-text.white--text
           h2.title.white--text
@@ -122,6 +122,14 @@
       },
       links () {
         return this.$store.state.downloaderModal.text
+      },
+      magnetModal () {
+        return this.$store.state.downloaderModal.show
+      }
+    },
+    watch: {
+      magnetModal () {
+        this.magnetModal && this.$store.dispatch('playSound')
       }
     },
     methods: {

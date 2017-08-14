@@ -18,6 +18,11 @@ export default {
     'DurandalSubs',
     'DefinitelyNotMe'
   ],
+  soundList: [
+    'Nyanpasu',
+    'Nico Nico Nii',
+    'None'
+  ],
   releaseFansub: '',
   releaseQuality: '',
   releases: [],

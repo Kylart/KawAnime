@@ -87,12 +87,12 @@
   export default {
     mounted () {
       if (this.releases.length) {
-        this.updateTime(this.$store)
+        this.updateTime()
       }
 
       setInterval(() => {
         if (this.releases.length) {
-          this.updateTime(this.$store)
+          this.updateTime()
         }
       }, 60 * 1000)
     },
@@ -156,8 +156,8 @@
         this.choiceTitle = name
         this.$store.commit('setAddToChoice', true)
       },
-      updateTime (store = this.$store) {
-        const updated = store.state.releasesUpdateTime
+      updateTime () {
+        const updated = this.$store.state.releasesUpdateTime
         if (updated) {
           this.lastUpdateTime = updated.fromNow()
         }
