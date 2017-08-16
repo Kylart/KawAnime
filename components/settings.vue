@@ -41,7 +41,7 @@
 
       v-container.container(fluid)
         v-layout(row, wrap, justify-center)
-          v-flex(xs11)
+          v-flex.pb-4(xs11)
             v-card
               v-card-title#download.headline
                 | Download
@@ -129,7 +129,7 @@
       }
     },
     computed: {
-      config: function () {
+      config () {
         return this.$store.state.config
       },
       fansubChoices () {
