@@ -35,8 +35,8 @@
                   v-layout(row, wrap)
                     v-flex.elem-title(xs9, v-tooltip:top='{ html: item.rawName }')
                       h6.white--text {{ item.rawName }}
-                    v-flex.elem-ep.text-xs-right(v-tooltip:top="{ html: 'Episode ' + item.ep }", xs3)
-                      h6.white--text Ep {{ item.ep }}
+                    v-flex.elem-ep.text-xs-right(v-tooltip:top="{ html: epLabel(item.ep) }", xs3)
+                      h6.white--text {{ epLabel(item.ep) }}
                     v-flex.elem-image(xl6, lg4, md5, xs4)
                       img.picture(
                         :src='item.picture',
@@ -115,6 +115,12 @@
       }
     },
     methods: {
+      epLabel (ep) {
+        // HorribleSubs specific atm
+        return /\[[0-9]{3,4}p\]/.test(ep)
+          ? 'Batch'
+          : `Ep ${ep}`
+      },
       openModal (title, text) {
         this.modalTitle = title
         this.modalText = text

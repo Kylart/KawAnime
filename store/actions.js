@@ -123,7 +123,7 @@ export default {
       }
     }
   },
-  async seasonsInit ({commit}) {
+  async seasonsInit ({commit, dispatch}) {
     console.log('[INIT] Seasons')
 
     const now = new Date()
@@ -138,9 +138,16 @@ export default {
 
     commit('setCurrentSeason', {year, season})
 
-    const {data} = await axios.get(`seasons.json?year=${year}&season=${season}`)
+    try {
+      const {data} = await axios.get(`seasons.json?year=${year}&season=${season}`)
+      commit('setSeasons', data)
+    } catch (e) {
+      const msg = 'Error while getting this season data. Retrying in 10 seconds...'
+      log(msg)
+      commit('setInfoSnackbar', msg)
 
-    commit('setSeasons', data)
+      setTimeout(() => dispatch('seasonsInit'), 10 * 1000)
+    }
   },
   async newsInit ({commit, dispatch}) {
     console.log('[INIT] News')

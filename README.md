@@ -24,19 +24,21 @@
   </a>
 </p>
 
+<p align="center"><img src="./static/screenshot.png"/></p>
+
 # Features
 Disclaimer : This is a software for otaku/anime-fans. Do not try if you're not prepared.
 
-This software allows one to: 
+This software allows one to:
 * Be aware of the latest anime release.
-* Download an anime (from ep X to ep Y) via Torrent (one would need a torrent client atm). One can also only get a 
+* Download an anime (from ep X to ep Y) via Torrent (one would need a torrent client atm). One can also only get a
 list of torrent magnets to paste in a torrent client on a distant server.
 * Get information from any anime (those come from myanimelist.net).
 * Get anime-related news from MyAnimeList.net.
 * Get seasonal releases information (from [www.livechart.me](https://www.livechart.me)).
 * Manage your anime files (watch and delete on click)
 * Manage watch lists.
-* More features are to come. 
+* More features are to come.
 
 ## About OS
 _KawAnime_ is completely cross-platform.
@@ -100,7 +102,7 @@ npm run cloc
 ## Generating distributable apps
 This feature uses [electron-builder](https://github.com/electron-userland/electron-builder).
 
-You can find help to use it on your platform 
+You can find help to use it on your platform
 [here](https://github.com/electron-userland/electron-builder/wiki/Multi-Platform-Build).
 
 #### For every OS
@@ -135,7 +137,7 @@ Any contribution is appreciated.
 5. Submit a pull request.
 
 ## Thanks
-This software is being developped with the following technologies, many thanks to 
+This software is being developped with the following technologies, many thanks to
 * [Electron](https://electron.atom.io)
 * [Vuetify](https://vuetifyjs.com)
 
