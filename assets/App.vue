@@ -5,8 +5,7 @@
         v-list-tile#title(to='/')
           v-list-tile-action
             img(src='static/images/icon2.png', height='50')
-          v-list-tile-title.title
-            | かわニメ
+          v-list-tile-title.title かわニメ
         template(v-for='item in itemGroup')
           v-list-group(v-if='item.items', :key='item.title')
             v-list-tile.ripple(slot='item', ripple)
@@ -24,7 +23,7 @@
           v-subheader.white--text(v-else-if='item.header') {{ item.header }}
           v-divider(v-else-if='item.divider')
 
-    v-system-bar.wb.dragable(dark, status, v-if='!browser')
+    v-system-bar.wb.dragable(dark, status, v-if='!isBrowser')
       v-spacer
       div(v-if="$store.state.platform !== 'darwin'")
         v-icon.window-icon.non-dragable(@click="actOnWindow('minimize')") remove
@@ -74,7 +73,7 @@
       return {
         searchModal: false,
         drawer: false,
-        browser: false,
+        isBrowser: !window.process,
         links: [
           {link: 'Github', to: 'https://github.com/Kylart/KawAnime', icon: 'github-circle'},
           {link: 'Updates', to: '', icon: ''}
@@ -153,7 +152,6 @@
         })
       },
       openInBrowser () {
-        this.browser = true
         this.$store.dispatch('openInBrowser')
       }
     }
