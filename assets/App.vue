@@ -47,7 +47,7 @@
 
     info-results(v-show='$store.state.info.show')
 
-    // Used for displaying any info
+    //- Used for displaying any info
     v-snackbar(
       :timeout='5000',
       :top='true',
@@ -69,11 +69,14 @@
 
   export default {
     mixins: [Meta],
+    mounted () {
+      this.isBrowser = window.process ? false : true
+    },
     data () {
       return {
         searchModal: false,
         drawer: false,
-        isBrowser: !window.process,
+        isBrowser: false,
         links: [
           {link: 'Github', to: 'https://github.com/Kylart/KawAnime', icon: 'github-circle'},
           {link: 'Updates', to: '', icon: ''}
