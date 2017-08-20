@@ -52,7 +52,7 @@
                       v-flex(xs12)
                         v-layout(wrap, justify-space-between)
                           v-flex.date(xs3) {{ getDate(item.releaseDate) }}
-                          v-flex.nb-ep(xs4) {{ item.nbEp }} {{ episode(item.npEp) }}
+                          v-flex.nb-ep(xs4) {{ episode(item) }}
                         v-layout(wrap, justify-space-between)
                           v-flex.producers(xs8)
                             strong {{ item.producers.join(' ') }}
@@ -153,10 +153,12 @@
       getDate (string) {
         return string.split(' ').slice(0, 3).join(' ')
       },
-      episode (nbEp) {
-        return parseInt(nbEp) !== 1
-          ? 'episodes'
-          : 'episode'
+      episode (item) {
+        const nbEp = parseInt(item.nbEp)
+        if (nbEp > 0) {
+          if (nbEp === 1) return '1 episode'
+          else return `${nbEp} episodes`
+        } else return ''
       },
       refreshSeason () {
         this.$store.dispatch('refreshSeasons')

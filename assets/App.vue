@@ -70,7 +70,7 @@
   export default {
     mixins: [Meta],
     mounted () {
-      this.isBrowser = window.process ? false : true
+      this.isBrowser = !window.process
     },
     data () {
       return {
