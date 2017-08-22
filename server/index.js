@@ -245,7 +245,7 @@ const setup = (app) => {
 
   // auto update
   /* istanbul ignore next */
-  if (process.env.NODE_ENV !== 'KawAnime-test') {
+  if (!['KawAnime-test', 'development'].includes(process.env.NODE_ENV)) {
     routes = require('./updater.js')(app, routes)
   }
 
