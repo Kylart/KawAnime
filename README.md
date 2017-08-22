@@ -1,30 +1,30 @@
 <h1 align="center">KawAnime</h1>
 
 <p align="center">
-  <a href="http://forthebadge.com/">
+  <a href="http://forthebadge.com/" target="_blank">
     <img src="http://forthebadge.com/images/badges/built-with-love.svg"/>
   </a>
 </p>
 
 <p align="center">
-  <a href="https://standardjs.com/">
+  <a href="https://standardjs.com/" target="_blank">
     <img src="https://cdn.rawgit.com/feross/standard/master/badge.svg" />
   </a>
 </p>
 
 <p align="center">
-  <a href="https://travis-ci.org/Kylart/KawAnime">
+  <a href="https://travis-ci.org/Kylart/KawAnime" target="_blank">
     <img src="https://travis-ci.org/Kylart/KawAnime.svg?branch=master" alt="Build Status">
   </a>
-  <a href="https://codecov.io/gh/Kylart/KawAnime">
+  <a href="https://codecov.io/gh/Kylart/KawAnime" target="_blank">
     <img src="https://codecov.io/gh/Kylart/KawAnime/branch/master/graph/badge.svg" alt="Codecov" />
   </a>
-  <a href="https://opensource.org/licenses/MIT">
+  <a href="https://opensource.org/licenses/MIT" target="_blank">
     <img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License">
   </a>
 </p>
 
-<p align="center"><img src="./static/screenshot.png"/></p>
+<p align="center"><img src="https://i.imgur.com/TQAyUlD.png"/></p>
 
 # Features
 Disclaimer : This is a software for otaku/anime-fans. Do not try if you're not prepared.
