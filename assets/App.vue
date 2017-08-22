@@ -34,8 +34,10 @@
       v-toolbar-side-icon(@click.stop='toggleDrawer()')
       v-toolbar-title.white--text.title.hidden-xs-only かわニメ
       v-spacer
+      v-btn(icon, v-show="$store.state.updateAvailable",v-tooltip:left="{ html: 'Update KawAnime' }", @click='restartAndUpdate()')
+        v-icon.green--text file_download
       info-modal
-      v-btn.open-in-browser(icon, v-tooltip:left="{ html: 'Open KawAnime in your browser' }", @click='openInBrowser()')
+      v-btn(icon, v-tooltip:left="{ html: 'Open KawAnime in your browser' }", @click='openInBrowser()')
         v-icon open_in_new
       settings
 
@@ -156,6 +158,9 @@
       },
       openInBrowser () {
         this.$store.dispatch('openInBrowser')
+      },
+      restartAndUpdate () {
+        this.$store.dispatch('restartAndUpdate')
       }
     }
   }
@@ -216,41 +221,5 @@
 
 <style>
   @import '../node_modules/animate.css/animate.min.css';
-
-  @font-face {
-    font-family: 'Material Icons';
-    font-style: normal;
-    font-weight: 400;
-    src: url(../node_modules/material-design-icons/iconfont/MaterialIcons-Regular.eot); /* For IE6-8 */
-    src: local('Material Icons'),
-      local('MaterialIcons-Regular'),
-      url(../node_modules/material-design-icons/iconfont/MaterialIcons-Regular.woff2) format('woff2'),
-      url(../node_modules/material-design-icons/iconfont/MaterialIcons-Regular.woff) format('woff'),
-      url(../node_modules/material-design-icons/iconfont/MaterialIcons-Regular.ttf) format('truetype');
-  }
-
-  .material-icons {
-    font-family: 'Material Icons';
-    font-weight: normal;
-    font-style: normal;
-    font-size: 24px;  /* Preferred icon size */
-    display: inline-block;
-    line-height: 1;
-    text-transform: none;
-    letter-spacing: normal;
-    word-wrap: normal;
-    white-space: nowrap;
-    direction: ltr;
-
-    /* Support for all WebKit browsers. */
-    -webkit-font-smoothing: antialiased;
-    /* Support for Safari and Chrome. */
-    text-rendering: optimizeLegibility;
-
-    /* Support for Firefox. */
-    -moz-osx-font-smoothing: grayscale;
-
-    /* Support for IE. */
-    font-feature-settings: 'liga';
-  }
+  @import './iconfont/material-icons.css';
 </style>

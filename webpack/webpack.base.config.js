@@ -52,7 +52,7 @@ module.exports = {
         loader: ['style-loader', 'css-loader', 'stylus-loader']
       },
       {
-        test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+        test: /\.(woff|woff2|eot|ttf|png|jpe?g|gif|svg)(\?.*)?$/,
         loader: 'url-loader',
         query: {
           limit: 10000,
