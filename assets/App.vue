@@ -45,7 +45,7 @@
       transition(name='page', mode='out-in')
         router-view
 
-    env(v-show='$store.state.NODE_ENV')
+    env(v-show='$store.state.NODE_ENV === "development"')
 
     info-results(v-show='$store.state.info.show')
 
@@ -160,7 +160,7 @@
         this.$store.dispatch('openInBrowser')
       },
       restartAndUpdate () {
-        this.$store.dispatch('restartAndUpdate')
+        this.$store.dispatch('updateApp')
       }
     }
   }

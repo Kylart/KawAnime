@@ -5,22 +5,21 @@ package-lock.json
 # logs
 npm-debug.log
 
-# Nuxt webpack
-.nuxt
-
 # Mac OS
 .DS_Store
 
 # Idea directory
 .idea
 
-# webpack
+#dist
 KawAnime*
-dist/win-ia32-unpacked
 dist/mac
 dist/github
 dist/linux-unpacked
-dist/latest.yml
+dist/win-unpacked
+dist/latest*
+
+# webpack
 public
 
 # tests

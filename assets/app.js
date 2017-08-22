@@ -33,6 +33,7 @@ export function createApp (ssrContext) {
 
   // App initialization
   store.dispatch('init')
+  process.env.NODE_ENV !== 'development' && store.dispatch('checkUpdate')
 
   // sync the router with the vuex store.
   // this registers `store.state.route`

@@ -36,6 +36,22 @@ export default {
     dispatch('seasonsInit').catch(err => { void (err) })
     dispatch('newsInit').catch(err => { void (err) })
   },
+  async checkUpdate ({commit}) {
+    try {
+      const {data} = await axios.get('_isUpdateAvailable')
+      if (data.ok) {
+        commit('setUpdateStatus')
+        commit('setInfoSnackbar', 'Update available. Think about installing it~')
+      }
+    } catch (e) {}
+  },
+  async updateApp ({commit}) {
+    try {
+      await axios.get('_quitAndInstall')
+    } catch (e) {
+      commit('setInfoSnackbar', 'An error occurred, please try again later or try restarting KawAnime and retry.')
+    }
+  },
   async getEnv ({commit}) {
     const {data} = await axios.get('_env')
 

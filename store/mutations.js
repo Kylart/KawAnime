@@ -13,6 +13,9 @@ export default {
   setConnected (state, bool) {
     state.isConnected = bool
   },
+  setUpdateStatus (state) {
+    state.isUpdateAvailable = true
+  },
   init (state, data) {
     const config = data
 

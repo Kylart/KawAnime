@@ -100,7 +100,7 @@ const horrible = require('./horrible.js')
 const nyaa = require('./nyaa.js')
 const search = require('./search.js')
 
-const routes = [
+let routes = [
   (app) => {
     app.get('/getConfig.json', (req, res) => {
       const configPath = join(dir, 'config.json')
@@ -242,6 +242,12 @@ const setup = (app) => {
   createLocal()
   createHistory()
   createList()
+
+  // auto update
+  /* istanbul ignore next */
+  if (process.env.NODE_ENV !== 'KawAnime-test') {
+    routes = require('./updater.js')(app, routes)
+  }
 
   _.each(routes, (route) => route(app))
 }
