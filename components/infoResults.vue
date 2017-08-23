@@ -9,7 +9,17 @@
           h5.loading-text.white--text Info should be displayed in a few seconds
         v-card.secondary.pb-3(v-else)
           v-layout(row, wrap)
-            v-flex.flex-v-centered(xs9)
+            v-flex.flex-v-centered.pl-3(xs2)
+              v-menu(bottom, transition="slide-y-transition")
+                v-btn(flat, slot="activator")
+                  v-icon(left) add_box
+                  | Add to
+                v-list
+                  v-list-tile(v-for="list in lists", :key="list.text", @click="addTo(list.listName)")
+                    v-list-tile-action
+                      v-icon {{ list.action }}
+                    v-list-tile-title {{ list.text }}
+            v-flex.flex-v-centered(xs7)
               v-card-title.info-title
                 | 「{{ info.alternativeTitles.japanese[0].replace('Japanese: ', '') }}」ー {{ info.type }}
             v-flex(xs3)
@@ -38,7 +48,26 @@
 </template>
 
 <script>
-  export default{
+  export default {
+    data () {
+      return {
+        lists: [
+          {text: 'Watch List', listName: 'watchList', action: 'watch_later'},
+          {text: 'Watching', listName: 'watching', action: 'tv'},
+          {text: 'Seen', listName: 'seen', action: 'done_all'},
+          {text: 'On Hold', listName: 'onHold', action: 'av_timer'},
+          {text: 'Dropped', listName: 'dropped', action: 'visibility_off'}
+        ]
+      }
+    },
+    methods: {
+      addTo (listName) {
+        this.$store.dispatch('updateList', {
+          listName,
+          entry: this.info.title
+        })
+      }
+    },
     computed: {
       info () {
         return this.$store.state.info.info
@@ -91,6 +120,8 @@
   .score-container
   {
     justify-content: center;
+    display: inline-block;
+    text-align: center;
   }
 
   .info-score

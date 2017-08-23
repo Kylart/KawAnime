@@ -51,7 +51,7 @@
                 template(v-for='item in lists[i - 1]')
                   list-entry(
                     :item='item',
-                    :deleteentry='deleteEntry',
+                    :deleteEntry='deleteEntry',
                     :key='item',
                     :index='i',
                     :select='select',
