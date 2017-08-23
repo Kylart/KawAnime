@@ -36,7 +36,7 @@ export default {
     dispatch('seasonsInit').catch(err => { void (err) })
     dispatch('newsInit').catch(err => { void (err) })
   },
-  async checkUpdate ({commit}) {
+  async checkUpdate ({commit, dispatch}) {
     try {
       const {data} = await axios.get('_isUpdateAvailable')
       if (data.ok) {
@@ -44,6 +44,8 @@ export default {
         commit('setInfoSnackbar', 'Update available. Think about installing it~')
       }
     } catch (e) {}
+
+    setTimeout(() => { dispatch('checkUpdate') }, 15 * 60 * 1000)
   },
   async updateApp ({commit}) {
     try {

@@ -133,7 +133,7 @@ const getLatest = (query, res) => {
         const name = realName.split(' ').slice(1).join(' ')
         const rawName = name.split(' ').slice(0, -3).join(' ')
         const researchName = rawName.split(' ').join('').toLowerCase()
-        const ep = name.split(' ').slice(-1)[0]
+        const ep = name.split(' ').splice(-2, 1)
         const link = `${data[i].link[0]}`
 
         malScraper.getResultsFromSearch(rawName).then((items) => {
