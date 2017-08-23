@@ -87,9 +87,9 @@
         v-flex.empty-message(xs12)
           h3.white--text Wow such empty!
           h4.white--text
-            | Start downloading anime
+            | Start downloading anime&nbsp;
             router-link.green--text(to='/downloader') here
-            | or
+            | &nbsp;or&nbsp;
             router-link.cyan--text(to='/') here!
     choice-window(:entry='choiceTitle')
 </template>
@@ -99,7 +99,7 @@
 
   export default {
     mounted () {
-      setTimeout(() => { this.emptyBg = true }, 1000)
+      setTimeout(() => { this.emptyBg = true }, 300)
 
       this.refresh()
     },
@@ -163,14 +163,13 @@
             dir: this.$store.state.currentDir
           }
         }).then((res) => {
-          if (res.status !== 200) { console.log('An error occurred: request to delete file ended with a status ' + res.status + '.') }
-
+          this.$store.commit('setInfoSnackbar', `${item.name} ${item.ep} was successfully sent to Trash.`)
           this.$store.dispatch('appendHistory', {
             type: 'Delete',
             text: `${item.name} - ${item.ep}`
           }).catch(err => { void (err) })
-        }).catch((err) => {
-          console.log('An error occurred while trying to delete a file:' + err)
+        }).catch(() => {
+          this.$store.commit('setInfoSnackbar', `Error while trying to delete ${item.name} ${item.ep}. Please try again later.`)
         })
       },
       refresh () {

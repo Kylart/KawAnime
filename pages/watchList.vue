@@ -286,9 +286,4 @@
     display: flex;
     align-items: center;
   }
-
-  .list-container
-  {
-    margin-bottom: 85px;
-  }
 </style>

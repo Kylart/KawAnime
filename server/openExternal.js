@@ -5,7 +5,6 @@
 const {join} = require('path')
 
 const {dialog, BrowserWindow, shell} = require('electron')
-const fs = require('fs')
 
 const sendEmptyRes = (res) => {
   res.status(200).send()
@@ -45,11 +44,7 @@ exports.openExternal = (query, res) => {
       break
 
     case 'delete':
-      fs.unlink(join(query.dir, query.path), (err) => {
-        if (err) throw err
-
-        console.log('[Open-External] Deleted file successfully.')
-      })
+      shell.moveItemToTrash(join(query.dir, query.path))
       sendEmptyRes(res)
       break
 

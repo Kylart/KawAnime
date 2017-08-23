@@ -230,12 +230,19 @@ export default {
       log(`Refreshing Releases...`)
 
       const oldData = state.releases
-      const {data} = await axios.get('getLatestNyaa', { params: state.releaseParams })
+      try {
+        const {data} = await axios.get('getLatestNyaa', { params: state.releaseParams })
 
-      if (data.length === 18) {
-        commit('setReleases', data)
-        dispatch('autoRefreshReleases')
-      } else {
+        if (data.length === 18) {
+          commit('setReleases', data)
+          dispatch('autoRefreshReleases')
+        } else {
+          commit('setInfoSnackbar', 'Auto refresh releases failed... Attempting again in 30 minutes.')
+
+          commit('setReleases', oldData)
+          dispatch('autoRefreshReleases')
+        }
+      } catch (e) {
         commit('setInfoSnackbar', 'Auto refresh releases failed... Attempting again in 30 minutes.')
 
         commit('setReleases', oldData)
