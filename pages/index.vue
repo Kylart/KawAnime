@@ -94,7 +94,7 @@
         if (this.releases.length) {
           this.updateTime()
         }
-      }, 60 * 1000)
+      }, 15 * 1000)
     },
     data () {
       return {

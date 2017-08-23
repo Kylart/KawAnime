@@ -57,7 +57,7 @@ const download = (req, res) => {
           const ep = parseInt(elem.title[0].split(' ').splice(-2, 1)[0])
 
           if (ep <= searchData.untilEp && ep >= searchData.fromEp) {
-            magnets.push(elem.link[0].split('&')[0])
+            magnets.push('magnet:?xt=urn:btih:' + elem.link[0].split('/').slice(-1))
           }
         })
 
