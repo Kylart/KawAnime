@@ -3,6 +3,8 @@ const webpack = require('webpack')
 const MFS = require('memory-fs')
 const clientConfig = require(path.join(__dirname, 'webpack.client.config'))
 const serverConfig = require(path.join(__dirname, 'webpack.server.config'))
+const ProgressBarPlugin = require('progress-bar-webpack-plugin')
+const chalk = require('chalk')
 
 module.exports = function setupDevServer (app, cb) {
   let bundle, clientManifest
@@ -11,7 +13,7 @@ module.exports = function setupDevServer (app, cb) {
   const readyPromise = new Promise(r => { resolve = r }) // eslint-disable-line promise/param-names
   const ready = (...args) => {
     if (!resolved) resolve()
-    cb(...args) // eslint-disable-line
+    cb(...args) // eslint-disable-line standard/no-callback-literal
   }
 
   // modify client config to work with hot middleware
@@ -19,7 +21,11 @@ module.exports = function setupDevServer (app, cb) {
   clientConfig.output.filename = '[name].js'
   clientConfig.plugins.push(
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoEmitOnErrorsPlugin()
+    new webpack.NoEmitOnErrorsPlugin(),
+    new ProgressBarPlugin({
+      format: chalk.cyan('> build') + ' [:bar] ' + chalk.green.bold(':percent') + ' (:elapsed seconds)',
+      clear: true
+    })
   )
 
   // dev middleware

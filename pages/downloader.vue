@@ -54,8 +54,8 @@
           v-radio.radio.primary--text(label='720p', v-model='quality', value='720p', dark)
         v-flex(xs12, sm6, md4)
           v-radio.radio.primary--text(label='1080p', v-model='quality', value='1080p', dark)
-    .download-button-container
-      .download-button
+    v-layout.pt-4(justify-center, align-center)
+      v-flex(xs3)
         v-btn#download-btn(
           dark, block, secondary,
           @click='isDownloadable()',
@@ -258,18 +258,6 @@
   .radio
   {
     margin-left: 35%;
-  }
-
-  .download-button-container
-  {
-    align-content: center;
-  }
-
-  .download-button
-  {
-    margin-top: 45px;
-    display: inline-block;
-    width: 20%;
   }
 
   .modal-text
