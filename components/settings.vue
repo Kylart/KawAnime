@@ -11,33 +11,6 @@
         v-toolbar-items
           v-btn(dark, flat, v-on:click.native='save()')
             | Save
-      v-navigation-drawer.pb-0.drawer(v-model='drawer')
-        v-list
-          template(v-for='item in itemGroup')
-            v-list-group(v-if='item.items', :key='item.title')
-              v-list-tile.ripple(slot='item', ripple)
-                v-list-tile-action
-                  v-icon {{ item.action }}
-                v-list-tile-title {{ item.title }}
-                v-list-tile-action
-                  v-icon keyboard_arrow_down
-              v-list-tile.ripple(
-                v-for='subItem in item.items',
-                ripple, :to='subItem.href',
-                :key='subItem.title'
-              )
-                v-list-tile-action
-                  v-icon {{ subItem.action }}
-                v-list-tile-content
-                  v-list-tile-title {{ subItem.title }}
-              v-divider
-            v-subheader(v-else-if='item.header') {{ item.header }}
-            v-divider(v-else-if='item.divider')
-            v-list-tile(v-else, ripple, style='position: relative')
-              v-list-tile-action
-                v-icon {{ item.action }}
-              v-list-tile-title
-                | {{ item.title }}
 
       v-container.container(fluid)
         v-layout(row, wrap, justify-center)
@@ -49,7 +22,7 @@
               v-layout(row, wrap, justify-center)
                 v-flex.section-title(xs6) Preferred fansub
                 v-flex.section-title(xs6) Quality
-                v-flex(offset-xs1, xs4)
+                v-flex(xs5)
                   v-select(
                     v-bind:items='fansubChoices',
                     v-model='config.fansub',
@@ -59,13 +32,13 @@
                     item-value='text'
                   )
                 v-flex(xs1)
-                template(v-for='radio in radios')
-                  v-flex(xs2)
-                    v-radio.primary--text(
-                      :label='radio',
-                      :value='radio',
-                      v-model='config.quality'
-                    )
+                v-flex(xs5)
+                  v-radio-group(:isMantatory="true", row, v-model="config.quality")
+                    template(v-for='radio in radios')
+                      v-radio.primary--text(
+                        :label='radio',
+                        :value='radio'
+                      )
                 v-flex.section-title(offset-xs1, xs3) Magnets
                 v-flex(xs8)
                   v-switch(label='Activate', color='primary', v-model='config.magnets', dark)
@@ -175,7 +148,6 @@
 
   .container
   {
-    padding-left: 23%;
     padding-top: calc(24px + 48px);
   }
 

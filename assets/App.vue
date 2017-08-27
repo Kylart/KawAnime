@@ -5,7 +5,7 @@
         v-list-tile#title(to='/')
           v-list-tile-action
             img(src='static/images/icon2.png', height='50')
-          v-list-tile-title.title かわニメ
+          v-list-tile-title.title.white--text かわニメ
         template(v-for='item in itemGroup')
           v-list-group(v-if='item.items', :key='item.title')
             v-list-tile.ripple(slot='item', ripple)

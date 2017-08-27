@@ -1,67 +1,58 @@
 <template lang="pug">
-  v-container#downloader.container(fluid)
+  v-container#downloader.container(fluid, fill-height)
     .cute-char.left-pic
     .cute-char.right-pic
-    .form-container
-      v-layout(row, wrap, justify-center)
-        v-flex(xs2, sm7, md9)
-          // Dummy cell
-        v-flex(xs10, sm5, md3)
-          .choose-magnets
-            v-card.z-depth-0
-              v-card-text.switch
-                v-switch#magnets-switch(
-                  label='Get Magnets',
-                  color='primary',
-                  v-model='$store.state.config.magnets',
-                  dark
-                )
-        v-flex(xs4)
-        v-flex(xs4, @keydown.enter='next(1)')
-          v-text-field#name-input(
-            name='name-input',
-            type='text',
-            label='Name of the anime',
-            v-model='$store.state.downloaderForm.name',
-            autofocus,
-            dark
-          )
-        v-flex(xs4)
-        v-flex(xs4)
-        v-flex(xs4, @keydown.enter='next(2)', @keydown.delete='previous(2)')
-          v-text-field(
-            name='from-ep-input',
-            type='number',
-            min='0',
-            label='From episode...',
-            v-model='$store.state.downloaderForm.fromEp',
-            dark
-          )
-        v-flex(xs4)
-        v-flex(xs4)
-        v-flex(xs4, @keydown.enter='next(3)', @keydown.delete='previous(3)')
-          v-text-field(
-            name='until-ep-input',
-            type='number',
-            label='Until episode..',
-            v-model='$store.state.downloaderForm.untilEp',
-            dark
-          )
-        v-flex(xs4)
-        v-flex.radio-container(xs12, sm6, md4)
-          v-radio.radio.primary--text(label='480p', v-model='quality', value='480p', dark)
-        v-flex(xs12, sm6, md4)
-          v-radio.radio.primary--text(label='720p', v-model='quality', value='720p', dark)
-        v-flex(xs12, sm6, md4)
-          v-radio.radio.primary--text(label='1080p', v-model='quality', value='1080p', dark)
-    v-layout.pt-4(justify-center, align-center)
-      v-flex(xs3)
-        v-btn#download-btn(
-          dark, block, secondary,
-          @click='isDownloadable()',
-          v-if='!$store.state.downloaderForm.loading'
-        ) Download!
-        v-btn(dark, block, secondary, loading, v-else)
+    v-layout(row, wrap, justify-center, align-center)
+      v-flex.form-container(xs8)
+        v-layout(row, wrap, justify-center)
+          v-flex(xs9)
+          v-flex(xs3)
+            v-switch#magnets-switch(
+              label='Get Magnets',
+              color='primary',
+              v-model='$store.state.config.magnets',
+              dark
+            )
+          v-flex.pt-3.pl-5.pr-5(xs7, @keydown.enter='next(1)')
+            v-text-field#name-input(
+              name='name-input',
+              type='text',
+              label='Name of the anime',
+              v-model='$store.state.downloaderForm.name',
+              autofocus,
+              dark
+            )
+          v-flex.pt-3.pl-5.pr-5(xs7, @keydown.enter='next(2)',  @keydown.delete='previous(2)')
+            v-text-field(
+              name='from-ep-input',
+              type='number',
+              min='0',
+              label='From episode...',
+              v-model='$store.state.downloaderForm.fromEp',
+              dark
+            )
+          v-flex.pt-3.pl-5.pr-5(xs7, @keydown.enter='next(3)', @keydown.delete='previous(3)')
+            v-text-field(
+              name='until-ep-input',
+              type='number',
+              label='Until episode..',
+              v-model='$store.state.downloaderForm.untilEp',
+              dark
+            )
+          v-flex.pt-4(xs12)
+            v-radio-group(:isMandatory="true", row, v-model="quality")
+              v-radio.radio.primary--text(label='480p', value='480p')
+              v-radio.radio.primary--text(label='720p', value='720p')
+              v-radio.radio.primary--text(label='1080p', value='1080p')
+      v-flex.pt-4(xs12)
+        v-layout(justify-center, align-center)
+          v-flex(xs3)
+            v-btn#download-btn(
+              dark, block, secondary,
+              @click='isDownloadable()',
+              v-if='!$store.state.downloaderForm.loading'
+            ) Download!
+            v-btn(dark, block, secondary, loading, v-else)
     v-dialog.magnet-modal(v-model='magnetModal', lazy, absolute, width='800')
       v-card.secondary.white--text
         v-card-text.white--text
@@ -191,10 +182,14 @@
 </script>
 
 <style scoped>
-  div.container
+  .container
   {
     position: relative;
-    height: 91vh;
+    height: 100%;
+    width: 100%;
+    background-image: url('~static/images/downloader-back.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
   }
 
   .cute-char
@@ -216,48 +211,18 @@
     left: 2%;
   }
 
-  .container
-  {
-    height: 100%;
-    width: 100%;
-    align-content: center;
-    background-image: url('~static/images/downloader-back.jpg');
-    background-size: cover;
-    background-repeat: no-repeat;
-    text-align: center;
-  }
-
   .form-container
   {
     background-color: rgba(0, 0, 0, 0.4);
     width: 65%;
-    display: inline-block;
     margin-top: 4%;
     padding-bottom: 4%;
     padding-top: 3%;
   }
 
-  .switch
-  {
-    margin-top: 0;
-    margin-bottom: -15px;
-  }
-
-  /* Needed! */
-  .form-container .card
-  {
-    background-color: rgba(0, 0, 0, 0);
-    box-shadow: none;
-  }
-
-  .radio-container
-  {
-    text-align: center;
-  }
-
   .radio
   {
-    margin-left: 35%;
+    margin-left: 10%;
   }
 
   .modal-text

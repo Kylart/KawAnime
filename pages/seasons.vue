@@ -16,62 +16,63 @@
         v-flex.refresh-button(offset-sm1, sm2, xs8)
           v-btn(secondary, block, dark, @click='refreshSeason()') Refresh
       v-tabs#tabs(dark, fixed, centered)
-        v-tabs-bar.mablue(slot='activators')
+        v-tabs-bar.mablue
           v-tabs-slider.primary
           v-tabs-item(v-for='i in 3', :href="'#' + i", :key='i')
             | {{ season[i].name }}
-        v-tabs-content(v-for='i in 3', lazy, v-bind:id='`${i}`', :key='i')
-          v-text-field.query(v-model='query', label='Search entry', dark)
-          v-layout.elems(row, wrap)
-            transition-group(name='list')
-              v-flex(
-                md6, xs12,
-                v-for='item in computedSeason[i].items',
-                style='display: inline-block',
-                :key='item.key'
-              )
-                v-layout.elem.elevation-3(row, wrap, v-ripple='true')
-                  // Header of elem
-                  v-flex(xs12, v-tooltip:bottom='{ html: item.title }')
-                    h6.title.ellipsis.white--text
-                      | {{ item.title }}
-                  v-flex(xs8, v-tooltip:bottom="{ html: item.genres.join(' ') }")
-                    p.genres.ellipsis {{ item.genres.join(' ') }}
-                  v-flex(xs3, v-tooltip:bottom='{ html: item.fromType }')
-                    p.from-type.ellipsis
-                      | {{ item.fromType }}
-                  v-flex(xs1)
-                  // Picture of elem
-                  v-flex.image-container(xs4)
-                    lazy-component
-                      img.image(:src='item.picture', onerror="this.src='static/images/error.jpg'")
-                  v-flex.bottom-right(xs8)
-                    v-layout(wrap, justify-space-between, align-center)
-                      v-flex(xs12)
-                        .synopsis {{ reduced(item.synopsis) }}
-                      v-flex(xs12)
-                        v-layout(wrap, justify-space-between)
-                          v-flex.date(xs3) {{ getDate(item.releaseDate) }}
-                          v-flex.nb-ep(xs4) {{ episode(item) }}
-                        v-layout(wrap, justify-space-between)
-                          v-flex.producers(xs8)
-                            strong {{ item.producers.join(' ') }}
-                          v-flex.dropdown-container(xs4)
-                            v-menu(open-on-hover, transition='slide-x-transition')
-                              v-btn(flat, dark, slot='activator') More
-                              v-list.dark
-                                v-list-tile(@click='openModal(item.title, item.synopsis)')
-                                  v-list-tile-action
-                                    v-icon more
-                                  v-list-tile-title Check synopsis
-                                v-list-tile(@click="$store.dispatch('searchInfoFromName', item.title)")
-                                  v-list-tile-action
-                                    v-icon info_outline
-                                  v-list-tile-title Information
-                                v-list-tile(@click='showChoices(item.title)')
-                                  v-list-tile-action
-                                    v-icon add_box
-                                  v-list-tile-title Add to
+        v-tabs-items
+          v-tabs-content(v-for='i in 3', lazy, v-bind:id='`${i}`', :key='i')
+            v-text-field.query(v-model='query', label='Search entry', dark)
+            v-layout.elems(row, wrap)
+              transition-group(name='list')
+                v-flex(
+                  md6, xs12,
+                  v-for='item in computedSeason[i].items',
+                  style='display: inline-block',
+                  :key='item.key'
+                )
+                  v-layout.elem.elevation-3(row, wrap, v-ripple='true')
+                    // Header of elem
+                    v-flex(xs12, v-tooltip:bottom='{ html: item.title }')
+                      h6.title.ellipsis.white--text
+                        | {{ item.title }}
+                    v-flex(xs8, v-tooltip:bottom="{ html: item.genres.join(' ') }")
+                      p.genres.ellipsis {{ item.genres.join(' ') }}
+                    v-flex(xs3, v-tooltip:bottom='{ html: item.fromType }')
+                      p.from-type.ellipsis
+                        | {{ item.fromType }}
+                    v-flex(xs1)
+                    // Picture of elem
+                    v-flex.image-container(xs4)
+                      lazy-component
+                        img.image(:src='item.picture', onerror="this.src='static/images/error.jpg'")
+                    v-flex.bottom-right(xs8)
+                      v-layout(wrap, justify-space-between, align-center)
+                        v-flex(xs12)
+                          .synopsis {{ reduced(item.synopsis) }}
+                        v-flex(xs12)
+                          v-layout(wrap, justify-space-between)
+                            v-flex.date(xs3) {{ getDate(item.releaseDate) }}
+                            v-flex.nb-ep(xs4) {{ episode(item) }}
+                          v-layout(wrap, justify-space-between)
+                            v-flex.producers(xs8)
+                              strong {{ item.producers.join(' ') }}
+                            v-flex.dropdown-container(xs4)
+                              v-menu(open-on-hover, transition='slide-x-transition')
+                                v-btn(flat, dark, slot='activator') More
+                                v-list.dark
+                                  v-list-tile(@click='openModal(item.title, item.synopsis)')
+                                    v-list-tile-action
+                                      v-icon more
+                                    v-list-tile-title Check synopsis
+                                  v-list-tile(@click="$store.dispatch('searchInfoFromName', item.title)")
+                                    v-list-tile-action
+                                      v-icon info_outline
+                                    v-list-tile-title Information
+                                  v-list-tile(@click='showChoices(item.title)')
+                                    v-list-tile-action
+                                      v-icon add_box
+                                    v-list-tile-title Add to
       .text-xs-center.modal-container
         v-dialog(v-model='modal', width='70%')
           v-card.secondary.white--text
