@@ -1,20 +1,20 @@
 <template lang="pug">
   v-app(dark, footer, toolbar)
-    v-navigation-drawer.pb-0(style='width: 280px', temporary, v-model='$store.state.drawer')
+    v-navigation-drawer.pb-0(style='width: 280px', temporary, persistent, v-model='$store.state.drawer')
       v-list
         v-list-tile#title(to='/')
           v-list-tile-action
             img(src='static/images/icon2.png', height='50')
           v-list-tile-title.title.white--text かわニメ
         template(v-for='item in itemGroup')
-          v-list-group(v-if='item.items', :key='item.title')
+          v-list-group(v-if='item.items', :key='item.title', :group="item.group")
             v-list-tile.ripple(slot='item', ripple)
               v-list-tile-action
                 v-icon {{ item.action }}
               v-list-tile-title {{ item.title }}
               v-list-tile-action
                 v-icon keyboard_arrow_down
-            v-list-tile.ripple(v-for='subItem in item.items', ripple, :to='subItem.href', :key='subItem.title')
+            v-list-tile.ripple(v-for='subItem in item.items', ripple, :to='subItem.href', :key='subItem.title', exact)
               v-list-tile-action
                 v-icon {{ subItem.action }}
               v-list-tile-content
@@ -89,6 +89,7 @@
           {
             title: 'Downloading',
             action: 'file_download',
+            group: 'core',
             items: [
               {
                 title: 'Downloader',
@@ -103,6 +104,7 @@
           }, {
             title: 'News',
             action: 'info_outline',
+            group: 'news',
             items: [
               {
                 title: 'Seasons',
@@ -121,6 +123,7 @@
           {
             title: 'Anime related',
             action: 'folder_open',
+            group: 'local',
             items: [
               {
                 title: 'Animes',
