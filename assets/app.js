@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import App from './App.vue'
-import Vuetify from 'vuetify'
 import VueClipboards from 'vue-clipboards'
 import VueLazyload from 'vue-lazyload'
 
@@ -10,7 +9,44 @@ import { createStore } from 'store/index'
 import { createRouter } from 'router/index'
 import { sync } from 'vuex-router-sync'
 
-Vue.use(Vuetify)
+import {
+  Vuetify,
+  VApp,
+  VSelect,
+  VMenu,
+  VList,
+  VNavigationDrawer,
+  VToolbar,
+  VSystemBar,
+  VSubheader,
+  VFooter,
+  VBtn,
+  VIcon,
+  VSnackbar,
+  VCard,
+  VDialog,
+  VTextField
+} from 'vuetify'
+
+Vue.use(Vuetify, {
+  components: {
+    VApp,
+    VSelect,
+    VMenu,
+    VList,
+    VNavigationDrawer,
+    VToolbar,
+    VSystemBar,
+    VSubheader,
+    VFooter,
+    VBtn,
+    VIcon,
+    VSnackbar,
+    VCard,
+    VDialog,
+    VTextField
+  }
+})
 Vue.use(VueClipboards)
 Vue.use(VueLazyload, {
   preLoad: 1.3,
