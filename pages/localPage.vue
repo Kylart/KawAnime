@@ -24,7 +24,7 @@
               v-card.elem-content.elevation-3(v-ripple='true')
                 v-card-text.elem-card
                   v-container(fluid, style='padding: 0;')
-                    v-layout.elem-container(row, wrap)
+                    v-layout.elem-container.ma-0(row, wrap)
                       v-flex(xs7, v-tooltip:top='{ html: item.name }')
                         h6.elem-title.ellipsis.white--text {{ item.name }}
                       v-flex.elem-ep.text-xs-right(xs2, v-tooltip:top="{ html: 'Episode ' + item.ep }")
@@ -58,7 +58,7 @@
                         lazy-component
                           img.picture(:src='item.picture', onerror="this.src='static/images/error.jpg'")
                       v-flex.bottom-right-container(xl7, lg8, md7, xs8)
-                        v-layout(row, wrap, justify-space-between)
+                        v-layout.pa-2(row, wrap, justify-space-between)
                           v-flex(xs12)
                             .synopsis {{ reduced(item.synopsis) }}
                           v-flex(xs12, style='display: flex')
@@ -254,6 +254,7 @@
   .elem
   {
     margin-bottom: 10px;
+    padding: 0 4px !important;
     display: inline-block;
   }
 

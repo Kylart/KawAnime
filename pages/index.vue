@@ -1,5 +1,5 @@
 <template lang="pug" xmlns:v-tooltip="http://www.w3.org/1999/xhtml">
-  v-container#container.container.pa-0(fluid)
+  v-container#container.container.pa-0(fluid, grid-list-xs)
     transition(name='fade', v-if='releases.length')
       v-layout(row, wrap, justify-center, style='margin: 0 1% 0 1%;')
         v-flex.time-container(md4, sm4, xs8)
@@ -31,19 +31,19 @@
           v-flex.elem(xs12, sm6, md4, :key='item.name')
             v-card.elem-content.elevation-3(v-ripple='true')
               v-card-text.elem-card
-                v-container(fluid, style='padding: 0;')
+                v-container.pa-0(fluid)
                   v-layout(row, wrap)
-                    v-flex.elem-title(xs9, v-tooltip:top='{ html: item.rawName }')
+                    v-flex.elem-title.pa-0(xs9, v-tooltip:top='{ html: item.rawName }')
                       h6.white--text {{ item.rawName }}
-                    v-flex.elem-ep.text-xs-right(v-tooltip:top="{ html: epLabel(item.ep, true) }", xs3)
+                    v-flex.elem-ep.text-xs-right.pa-0(v-tooltip:top="{ html: epLabel(item.ep, true) }", xs3)
                       h6.white--text {{ epLabel(item.ep) }}
-                    v-flex.elem-image(xl6, lg4, md5, xs4)
+                    v-flex.elem-image.pa-0(xl6, lg4, md5, xs4)
                       img.picture(
                         :src='item.picture',
                         onerror="this.src='static/images/error.jpg'",
                         height='200'
                       )
-                    v-flex(xl6, lg8, md7, xs8)
+                    v-flex.pa-0(xl6, lg8, md7, xs8)
                       .elem-text-links
                         .synopsis {{ item.synopsis || 'No synopsis yet.' }}
                         .links
@@ -215,6 +215,7 @@
   {
     margin-bottom: 10px;
     display: inline-block;
+    padding: 1px 5px !important;
   }
 
   .elem-content

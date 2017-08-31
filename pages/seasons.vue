@@ -25,7 +25,7 @@
             v-text-field.query(v-model='query', label='Search entry', dark)
             v-layout.elems(row, wrap)
               transition-group(name='list')
-                v-flex(
+                v-flex.pa-1(
                   md6, xs12,
                   v-for='item in computedSeason[i].items',
                   style='display: inline-block',
@@ -230,7 +230,6 @@
   .elem
   {
     position: relative;
-    margin: 5px 0 10px;
     background-color: rgb(60, 60, 60);
   }
 
