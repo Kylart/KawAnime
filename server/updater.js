@@ -1,13 +1,15 @@
 module.exports = (app, routes) => {
   const {autoUpdater} = require('electron-updater')
   let isUpdateAvailable = false
+  let isInstallable = false
+  let downloadProgress
   let error
 
-  autoUpdater.on('update-available', (info) => {
+  autoUpdater.on('update-available', () => {
     isUpdateAvailable = true
   })
 
-  autoUpdater.on('update-not-available', (info) => {
+  autoUpdater.on('update-not-available', () => {
     isUpdateAvailable = false
   })
 
@@ -15,18 +17,30 @@ module.exports = (app, routes) => {
     error = err
   })
 
-  autoUpdater.on('update-downloaded', (info) => {
-    autoUpdater.quitAndInstall()
+  autoUpdater.on('download-progress', (progressObj) => {
+    downloadProgress = progressObj
+  })
+
+  autoUpdater.on('update-downloaded', () => {
+    isInstallable = true
   })
 
   autoUpdater.checkForUpdates()
 
   routes.push(
     (app) => {
-      app.get('/_isUpdateAvailable', async (req, res) => {
+      app.get('/_isUpdateAvailable', (req, res) => {
         res.send({
           ok: isUpdateAvailable,
           data: error
+        })
+      })
+    },
+    (app) => {
+      app.get('/_isInstallable', (req, res) => {
+        res.send({
+          ok: isInstallable,
+          progress: downloadProgress
         })
       })
     },

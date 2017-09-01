@@ -36,16 +36,35 @@ export default {
     dispatch('seasonsInit').catch(err => { void (err) })
     dispatch('newsInit').catch(err => { void (err) })
   },
-  async checkUpdate ({commit, dispatch}) {
+  async checkUpdate ({state, commit, dispatch}) {
+    setTimeout(async () => {
+      if (!state.isUpdateAvailable) {
+        try {
+          const {data} = await axios.get('_isUpdateAvailable')
+          if (data.ok) {
+            dispatch('isUpdateInstallable')
+            log('An update is available.')
+          }
+        } catch (e) {
+          log(`Error while checking update. ${e.message}`)
+        }
+
+        setTimeout(() => { dispatch('checkUpdate') }, 30 * 1000)
+      }
+    }, 30 * 1000)
+  },
+  async isUpdateInstallable ({commit, dispatch}) {
     try {
-      const {data} = await axios.get('_isUpdateAvailable')
+      const {data} = await axios.get('_isInstallable')
       if (data.ok) {
         commit('setUpdateStatus')
         commit('setInfoSnackbar', 'Update available. Think about installing it~')
+      } else {
+        setTimeout(() => { dispatch('_isInstallable') }, 1000)
       }
-    } catch (e) {}
-
-    setTimeout(() => { dispatch('checkUpdate') }, 15 * 60 * 1000)
+    } catch (e) {
+      log(`Error while checking if downloadable. ${e.message}`)
+    }
   },
   async updateApp ({commit}) {
     try {

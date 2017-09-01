@@ -34,7 +34,7 @@
       v-toolbar-side-icon(@click.stop='toggleDrawer()')
       v-toolbar-title.white--text.title.hidden-xs-only かわニメ
       v-spacer
-      v-btn(icon, v-show="$store.state.updateAvailable",v-tooltip:left="{ html: 'Update KawAnime' }", @click='restartAndUpdate()')
+      v-btn(icon, v-show="$store.state.isUpdateAvailable", v-tooltip:left="{ html: 'Update KawAnime' }", @click='restartAndUpdate()')
         v-icon.green--text file_download
       info-modal
       v-btn(icon, v-tooltip:left="{ html: 'Open KawAnime in your browser' }", @click='openInBrowser()')
@@ -60,7 +60,7 @@
     ) {{ $store.state.infoSnackbar.text }}
       v-btn.pink--text(flat, @click='$store.state.infoSnackbar.show = false') Close
 
-    v-footer.grey.darken-4
+    v-footer.grey.darken-4.pr-2
       v-spacer
       .white--text © 2016 - 2017 Kylart
 </template>
