@@ -12,6 +12,7 @@ import { sync } from 'vuex-router-sync'
 import {
   Vuetify,
   VApp,
+  VGrid,
   VSelect,
   VMenu,
   VList,
@@ -28,11 +29,14 @@ import {
   VTextField
 } from 'vuetify'
 
+import { Tooltip, Ripple } from 'vuetify/src/directives'
+
 Vue.use(Vuetify, {
   components: {
     VApp,
     VSelect,
     VMenu,
+    VGrid,
     VList,
     VNavigationDrawer,
     VToolbar,
@@ -45,6 +49,10 @@ Vue.use(Vuetify, {
     VCard,
     VDialog,
     VTextField
+  },
+  directives: {
+    Tooltip,
+    Ripple
   }
 })
 Vue.use(VueClipboards)
