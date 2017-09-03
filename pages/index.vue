@@ -45,7 +45,7 @@
                       )
                     v-flex.pa-0(xl6, lg8, md7, xs8)
                       .elem-text-links
-                        .synopsis {{ item.synopsis || 'No synopsis yet.' }}
+                        .synopsis.pl-1 {{ item.synopsis || 'No synopsis yet.' }}
                         .links
                           a.download-button(:href='item.magnetLink')
                             v-btn.btn--light-flat-pressed(dark, flat, @click='print(item)') Download

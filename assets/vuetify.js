@@ -15,7 +15,12 @@ import {
   VSnackbar,
   VCard,
   VDialog,
-  VTextField
+  VTextField,
+  VCheckbox,
+  VProgressCircular,
+  VRadioGroup,
+  VTabs,
+  VSwitch
 } from 'vuetify'
 
 import { Tooltip, Ripple } from 'vuetify/src/directives'
@@ -38,7 +43,12 @@ export default (Vue) => {
       VSnackbar,
       VCard,
       VDialog,
-      VTextField
+      VTextField,
+      VCheckbox,
+      VProgressCircular,
+      VRadioGroup,
+      VTabs,
+      VSwitch
     },
     directives: {
       Tooltip,
