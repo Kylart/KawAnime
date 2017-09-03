@@ -3,7 +3,16 @@
     ["env", { "modules": false }],
     "stage-2"
   ],
-  "plugins": ["transform-runtime"],
+  "plugins": [
+    "add-filehash",
+    ["transform-imports", {
+        "vuetify": {
+            "transform": "vuetify/src/components/${member}",
+            "preventFullImport": true
+        }
+    }],
+    "transform-runtime"
+  ],
   "comments": false,
   "env": {
     "test": {
