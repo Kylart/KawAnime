@@ -20,7 +20,9 @@ import {
   VProgressCircular,
   VRadioGroup,
   VTabs,
-  VSwitch
+  VSwitch,
+  VExpansionPanel,
+  VDivider
 } from 'vuetify'
 
 import { Tooltip, Ripple } from 'vuetify/src/directives'
@@ -48,7 +50,9 @@ export default (Vue) => {
       VProgressCircular,
       VRadioGroup,
       VTabs,
-      VSwitch
+      VSwitch,
+      VExpansionPanel,
+      VDivider
     },
     directives: {
       Tooltip,

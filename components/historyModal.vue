@@ -2,18 +2,18 @@
   v-dialog(lazy, absolute, width='75%', v-model='$store.state.historyModal')
     v-btn(secondary, dark, @click.mative='refresh()', slot='activator')
       | History
-    v-card.secondary
+    v-card
       v-card-title.headline History
       v-divider
       v-card-text
         v-layout(row, wrap)
-          v-expansion-panel.secondary(expand)
+          v-expansion-panel(expand, popout)
             v-expansion-panel-content.item-container(
               ripple,
               v-for='item in Object.keys(history).reverse()',
               :key='item'
             )
-              .day(slot='header', v-ripple='true')
+              .day(slot='header')
                 | {{ item }}
               v-card
                 v-card-text.lighten-3.info-container
@@ -79,11 +79,6 @@
     margin: 0;
   }
 
-  .expansion-panel > li
-  {
-    border: 1px solid #444 !important;
-  }
-
   .ellipsis
   {
     overflow: hidden;
@@ -108,6 +103,7 @@
     font-size: 17px;
     font-weight: 700;
     padding-left: 15px;
+    background-color: #424242 !important;
   }
 
   .entry

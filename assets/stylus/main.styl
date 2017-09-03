@@ -70,7 +70,7 @@ $theme := {
   Custom rules which will be applied globally, allows overriding
  */
 .application--toolbar.application--footer > main > .container
-  min-height calc(100vh - (48px + 24px))
+  min-height calc(100vh - (48px + 24px)) !important
 
 .navigation-drawer .list__tile
   font-size 14px
@@ -80,9 +80,6 @@ $theme := {
 
 div.dialog--fullscreen
   margin 24px 0 0
-
-.expansion-panel__bodylast-child
-  border-bottom 0 !important
 
 #title a.list__tile
   height 60px
