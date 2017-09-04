@@ -37,13 +37,13 @@
                       h6.white--text {{ item.rawName }}
                     v-flex.elem-ep.text-xs-right.pa-0(v-tooltip:top="{ html: epLabel(item.ep, true) }", xs3)
                       h6.white--text {{ epLabel(item.ep) }}
-                    v-flex.elem-image.pa-0(xl6, lg4, md5, xs4)
+                    v-flex.elem-image.pa-0(xl4, lg4, md5, xs4)
                       img.picture(
                         :src='item.picture',
                         onerror="this.src='static/images/error.jpg'",
                         height='200'
                       )
-                    v-flex.pa-0(xl6, lg8, md7, xs8)
+                    v-flex.pa-0(xl8, lg8, md7, xs8)
                       .elem-text-links
                         .synopsis.pl-1 {{ item.synopsis || 'No synopsis yet.' }}
                         .links

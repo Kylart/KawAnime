@@ -265,12 +265,12 @@
   .image-container
   {
     padding: 0;
-    max-height: 220px;
+    height: 210px;
   }
 
   .image
   {
-    max-height: 220px;
+    height: 210px;
     max-width: 90%;
   }
 
