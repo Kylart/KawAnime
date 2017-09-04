@@ -26,7 +26,7 @@
             v-layout.elems(row, wrap)
               transition-group(name='list')
                 v-flex.pa-1(
-                  md6, xs12,
+                  xl3, lg4, md6, xs12,
                   v-for='item in computedSeason[i].items',
                   style='display: inline-block',
                   :key='item.key'

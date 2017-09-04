@@ -28,7 +28,7 @@
           v-btn.refresh-button(icon, @click='refresh()')
             v-icon(large) refresh
         template(v-for='item in releases')
-          v-flex.elem(xs12, sm6, md4, :key='item.name')
+          v-flex.elem(xs12, sm6, md4, xl3, :key='item.name')
             v-card.elem-content.elevation-3(v-ripple='true')
               v-card-text.elem-card
                 v-container.pa-0(fluid)

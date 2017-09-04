@@ -1,13 +1,13 @@
 <template lang="pug">
   v-dialog(lazy, absolute, width='75%', v-model='$store.state.historyModal')
-    v-btn(secondary, dark, @click.mative='refresh()', slot='activator')
+    v-btn(secondary, dark, @click='refresh()', slot='activator')
       | History
     v-card
       v-card-title.headline History
       v-divider
       v-card-text
-        v-layout(row, wrap)
-          v-expansion-panel(expand, popout)
+        v-layout(row, wrap, justify-center)
+          v-expansion-panel(expand, popout, v-if='Object.keys(history).length')
             v-expansion-panel-content.item-container(
               ripple,
               v-for='item in Object.keys(history).reverse()',
@@ -28,6 +28,7 @@
                       v-flex.entry(xs1, :class='isDelete(info.type)')
                         v-icon.delete-entry(v-ripple='true', @click.stop='clearEntry(info, item)')
                           | clear
+          v-flex.empty-history(xs4, v-else) No entry yet, go watch some anime ~
       v-divider
       v-card-actions(style=' padding-right: 20px;')
         v-spacer
@@ -148,5 +149,10 @@
   {
     cursor: pointer;
     position: relative;
+  }
+
+  .empty-history
+  {
+    font-size: 16px;
   }
 </style>
