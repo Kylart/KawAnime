@@ -67,7 +67,9 @@ exports.openExternal = (query, res) => {
 
 exports.openInBrowser = (res) => {
   shell.openExternal(process.appURL)
-  if (process.win) process.win.close()
+  process.win && process.platform === 'darwin'
+    ? process.win.close()
+    : process.win.minimize()
 
   res.status(200).send()
 }

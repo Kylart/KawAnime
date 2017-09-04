@@ -244,6 +244,7 @@
     margin-top: 10px;
     margin-bottom: 10px;
     padding-left: 10px;
+    padding-right: 10px;
     line-height: 26px;
   }
 
@@ -257,7 +258,7 @@
 
   .genres
   {
-    padding-left: 5px;
+    padding-left: 10px;
     font-weight: 600;
   }
 

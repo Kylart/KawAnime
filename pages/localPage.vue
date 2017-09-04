@@ -58,7 +58,7 @@
                         lazy-component
                           img.picture(:src='item.picture', onerror="this.src='static/images/error.jpg'")
                       v-flex.bottom-right-container(xl7, lg8, md7, xs8)
-                        v-layout.pa-2(row, wrap, justify-space-between)
+                        v-layout.pl-2.pr-2.pb-2(row, wrap, justify-space-between)
                           v-flex(xs12)
                             .synopsis {{ reduced(item.synopsis) }}
                           v-flex(xs12, style='display: flex')
