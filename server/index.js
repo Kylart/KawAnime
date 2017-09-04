@@ -207,7 +207,7 @@ let routes = [
       if (action === 'minimize') {
         process.win.minimize()
       } else if (action === 'maximize') {
-        process.windowsStore.isMaximized()
+        process.win.isMaximized()
           ? process.win.unmaximize()
           : process.win.maximize()
       } else if (action === 'close') {

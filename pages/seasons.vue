@@ -50,14 +50,14 @@
                       v-layout(wrap, justify-space-between, align-center)
                         v-flex(xs12)
                           .synopsis {{ reduced(item.synopsis) }}
-                        v-flex(xs12)
+                        v-flex.pl-2(xs12)
                           v-layout(wrap, justify-space-between)
-                            v-flex.date(xs3) {{ getDate(item.releaseDate) }}
-                            v-flex.nb-ep(xs4) {{ episode(item) }}
+                            v-flex.date(xs6) {{ getDate(item.releaseDate) }}
+                            v-flex.nb-ep(xs6) {{ episode(item) }}
                           v-layout(wrap, justify-space-between)
                             v-flex.producers(xs8)
                               strong {{ item.producers.join(' ') }}
-                            v-flex.dropdown-container(xs4)
+                            v-flex.pb-1(xs4)
                               v-menu(open-on-hover, transition='slide-x-transition')
                                 v-btn(flat, dark, slot='activator') More
                                 v-list.dark
@@ -271,7 +271,7 @@
   .image
   {
     max-height: 220px;
-    max-width: 100%;
+    max-width: 90%;
   }
 
   .bottom-right
