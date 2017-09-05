@@ -190,9 +190,12 @@ export default {
     console.log('[INIT] News')
     const {data, status} = await axios.get('news.json')
 
-    status === 200
-      ? commit('setNews', data)
-      : log('A problem occurred while gathering the news.') && dispatch('newsInit')
+    if (status === 200) {
+      commit('setNews', data)
+    } else {
+      log('A problem occurred while gathering the news.')
+      dispatch('newsInit')
+    }
   },
   async localInit ({state, commit}) {
     console.log('[INIT] Local Files')

@@ -24,7 +24,7 @@
     "lint": "standard --fix --verbose --plugin vue '**/*.{js,vue}' | snazzy",
     "pack": "build --dir",
     "dist:linux": "build --linux",
-    "dist:win": "build --win",
+    "dist:win": "build --win --x64 --ia32",
     "dist:mac": "build --mac",
     "dist:all": "npm run build && npm run dist:mac && npm run dist:win && npm run dist:linux",
     "postinstall": "node nightwatch.conf.js"

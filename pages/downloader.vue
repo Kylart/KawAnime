@@ -62,7 +62,7 @@
         v-card-text.subheading.white--text
           v-layout(row, wrap, justify-center, align-center)
             v-flex.modal-icon-container(xs4, offset-xs6)
-              v-btn(flat, icon, v-if='links', v-clipboard="links.join('')", @success='copiedSnackbar = true')
+              v-btn(flat, icon, v-if='links', v-clipboard="links.join(eol)", @success='copiedSnackbar = true')
                 v-icon.copy-icon content_copy
             v-flex.subheading.grey--text.modal-text(
               xs12,
@@ -116,6 +116,13 @@
       },
       magnetModal () {
         return this.$store.state.downloaderModal.show
+      },
+      eol () {
+        if (this.$store.state.platform === 'win32') {
+          return '\r\n'
+        } else {
+          return '\n'
+        }
       }
     },
     watch: {

@@ -7,4 +7,4 @@ if [ -z "$GH_TOKEN" ]; then
 fi
 
 # This will build, package and upload the app to GitHub.
-npm run build && node_modules/.bin/build --win --mac --linux deb AppImage -p always
+npm run build && node_modules/.bin/build --win --ia32 --x64 --mac --linux deb AppImage -p always

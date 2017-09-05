@@ -17,6 +17,7 @@ dist/mac
 dist/github
 dist/linux-unpacked
 dist/win-unpacked
+dist/win-ia32-unpacked
 dist/latest*
 
 # webpack

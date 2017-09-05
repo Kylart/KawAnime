@@ -29,8 +29,8 @@
 </style>
 
 <script>
-  export default{
-    data: function () {
+  export default {
+    data () {
       return {
         number: this.ran()
       }
@@ -40,7 +40,7 @@
         return parseInt(Math.random() * 2 + 1)
       }
     },
-    mounted () {
+    beforeMount () {
       this.number = this.ran()
     }
   }

@@ -7,8 +7,8 @@
     "add-filehash",
     ["transform-imports", {
         "vuetify": {
-            "transform": "vuetify/src/components/${member}",
-            "preventFullImport": true
+            "transform": "vuetify/src/components/${member}"
+            // "preventFullImport": true  // waiting a-la-carte
         }
     }],
     "transform-runtime"
