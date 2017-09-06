@@ -16,6 +16,7 @@ KawAnime*
 dist/mac
 dist/github
 dist/linux-unpacked
+dist/linux-ia32-unpacked
 dist/win-unpacked
 dist/win-ia32-unpacked
 dist/latest*
