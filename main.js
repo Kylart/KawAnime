@@ -200,6 +200,9 @@ const newWin = () => {
     }))
   }
 
+  process.win = win
+  process.appURL = _APP_URL_
+
   pollServer()
 }
 
@@ -207,7 +210,9 @@ Electron.on('ready', () => {
   Menu.setApplicationMenu(menu)
 
   if (localConfig.system.toTray) {
-    Electron.dock.hide()
+    if (process.platform === 'darwin') {
+      Electron.dock.hide()
+    }
     tray = new Tray(path.join(__dirname, 'static', 'images', 'tray.png'))
     const contextMenu = Menu.buildFromTemplate([
       {label: 'New window', click: () => { win === null && newWin() }, accelerator: 'CommandOrControl+N'},
@@ -220,9 +225,6 @@ Electron.on('ready', () => {
   }
 
   newWin()
-
-  process.win = win
-  process.appURL = _APP_URL_
 })
 
 // Quit when all windows are closed.
@@ -230,8 +232,10 @@ Electron.on('window-all-closed', function () {
   // On OS X it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
   if (process.platform !== 'darwin') {
-    server.close()
-    Electron.quit()
+    if (!tray) {
+      server.close()
+      Electron.quit()
+    }
   }
 })
 
