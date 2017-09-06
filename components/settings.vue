@@ -41,7 +41,14 @@
                       )
                 v-flex.section-title(offset-xs1, xs3) Magnets
                 v-flex(xs8)
-                  v-switch(label='Activate', color='primary', v-model='config.magnets', dark)
+                  v-switch(
+                    label='Activate',
+                    color='primary',
+                    v-model='config.magnets',
+                    dark,
+                    persistent-hint,
+                    hint='Activate to get a list of magnets in the downloader'
+                  )
             v-card.section
               v-card-title#local.headline Local
               v-divider
@@ -56,7 +63,9 @@
                     :label="config.inside ? 'Inside' : 'Outside'",
                     color='primary',
                     v-model='config.inside',
-                    dark
+                    dark,
+                    persistent-hint,
+                    hint='Deactivate to open the news in your browser.'
                   )
             v-card.section
               v-card-title#local.headline Notification

@@ -1,17 +1,17 @@
 <template lang="pug">
   v-flex(
-    xs12 sm6 md4
+    xs12, sm6, md4, lg3,
     :class="item.split(' ').join('-')"
   ).elem
     v-card(v-ripple="true").elevation-3.elem-content
-      v-layout(row wrap)
+      v-layout(row, wrap)
         v-flex(xs2 @click.capture="select(item, index)").box
           v-checkbox(
-            label=""
-            accent
-            v-model="selected[index]"
-            disabled
-            :value="item"
+            label="",
+            accent,
+            v-model="selected[index]",
+            disabled,
+            :value="item",
             dark
           )
         v-flex(xs8 v-tooltip:top="{ html: item }", @click.capture="select(item, index)")

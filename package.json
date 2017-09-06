@@ -1,7 +1,7 @@
 {
   "name": "KawAnime",
   "description": "Desktop app for anime fans",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "main": "main.js",
   "repository": "https://github.com/Kylart/KawAnime.git",
   "author": {

@@ -43,10 +43,10 @@
                         | {{ item.fromType }}
                     v-flex(xs1)
                     // Picture of elem
-                    v-flex.image-container(xs4)
+                    v-flex.image-container(xs3, lg4)
                       lazy-component
                         img.image(:src='item.picture', onerror="this.src='static/images/error.jpg'")
-                    v-flex.bottom-right(xs8)
+                    v-flex.bottom-right(xs9, lg8)
                       v-layout(wrap, justify-space-between, align-center)
                         v-flex(xs12)
                           .synopsis {{ reduced(item.synopsis) }}
@@ -282,7 +282,7 @@
 
   .synopsis
   {
-    padding-left: 15px;
+    padding-left: 5px;
     padding-right: 15px;
     text-align: justify;
     display: block;

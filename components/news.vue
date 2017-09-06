@@ -3,10 +3,10 @@
     v-layout(row wrap)
       v-flex(xs12)
         h3.white--text.title {{ item.title }}
-      v-flex(md2 xs3 style="height: 220px;")
+      v-flex(md2, xs3, xl1, style="height: 220px;")
         lazy-component
           img(:src="item.image" onerror="this.src='static/images/error.jpg'").image
-      v-flex(md10 xs9)
+      v-flex(md10, xs9, xl11)
         v-layout(row wrap)
           v-flex(xs12)
             p.synopsis {{ item.text }}
