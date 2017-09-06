@@ -107,7 +107,7 @@ You can find help to use it on your platform
 
 #### For every OS
 ```
-npm run build npm run dist:all
+npm run build && npm run dist:all
 ```
 
 #### For Mac OS only
