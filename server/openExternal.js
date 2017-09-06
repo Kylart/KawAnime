@@ -31,6 +31,7 @@ exports.openExternal = (query, res) => {
       break
 
     case 'insideLink':
+      sendEmptyRes(res)
       const win = new BrowserWindow({
         parent: process.win,
         x: 50,
