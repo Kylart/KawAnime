@@ -19,16 +19,6 @@ export default {
   init (state, data) {
     const config = data
 
-    // config file looks like this
-    // const config = {
-    //   fansub: 'HorribleSubs',
-    //   quality: '720p',
-    //   localPath: join(userInfo().homedir, 'Downloads'),
-    //   sound: 'Nyanpasu',
-    //   inside: true,
-    //   magnets: false
-    // }
-
     state.releaseFansub = config.fansub
     state.releaseQuality = config.quality
     state.downloaderForm.quality = config.quality

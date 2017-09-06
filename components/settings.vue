@@ -84,6 +84,31 @@
                 v-flex(xs5)
                   v-btn(icon large @click="play()")
                     v-icon(large) play_circle_outline
+            v-card.section
+              v-card-title#system.headline System
+              v-divider
+              v-layout(row, wrap, justify-center)
+                v-flex.section-title(xs3) Auto-start
+                v-flex(xs3)
+                  v-switch(
+                    label='Enable',
+                    color='primary',
+                    dark,
+                    v-model='$store.state.config.system.autoStart',
+                    persistent-hint,
+                    hint='Launch KawAnime on system start?',
+                    disabled
+                  )
+                v-flex.section-title(xs3) Tray icon
+                v-flex(xs3)
+                  v-switch(
+                    label='Enable',
+                    color='primary',
+                    dark,
+                    v-model='$store.state.config.system.toTray',
+                    persistent-hint,
+                    hint='Launch KawAnime with tray icon'
+                  )
 </template>
 
 <script>

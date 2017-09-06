@@ -64,7 +64,18 @@ export default {
     onHold: [],
     dropped: []
   },
-  config: {},
+  config: {
+    fansub: 'HorribleSubs',
+    quality: '720p',
+    localPath: '',
+    sound: 'Nyanpasu',
+    inside: true,
+    magnets: false,
+    system: {
+      autoStart: false,
+      toTray: false
+    }
+  },
   history: {},
   historyModal: false,
   infoModal: false,
