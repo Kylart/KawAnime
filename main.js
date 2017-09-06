@@ -1,5 +1,6 @@
 require('colors')
 const fs = require('fs')
+const {homedir} = require('os')
 const path = require('path')
 const http = require('http')
 const LRU = require('lru-cache')
@@ -130,14 +131,16 @@ console.log(`> KawAnime is at ${_APP_URL_}`.green)
 /*
  ** Electron app
  */
-const {BrowserWindow, dialog, Menu} = require('electron')
+const {BrowserWindow, dialog, Menu, Tray} = require('electron')
 const Electron = require('electron').app
 const url = require('url')
+const localConfig = require(path.join(homedir(), '.KawAnime', 'config.json')).config
 
 const menuFile = require(path.join(__dirname, 'assets', 'menu.js'))
 const menu = Menu.buildFromTemplate(menuFile.menu)
 
 let win = null // Current window
+let tray = null
 
 const pollServer = () => {
   http.get(_APP_URL_, ({statusCode}) => {
@@ -202,6 +205,19 @@ const newWin = () => {
 
 Electron.on('ready', () => {
   Menu.setApplicationMenu(menu)
+
+  if (localConfig.system.toTray) {
+    Electron.dock.hide()
+    tray = new Tray(path.join(__dirname, 'static', 'images', 'tray.png'))
+    const contextMenu = Menu.buildFromTemplate([
+      {label: 'New window', click: () => { win === null && newWin() }, accelerator: 'CommandOrControl+N'},
+      {label: 'Close current window', role: 'close', accelerator: 'CommandOrControl+W'},
+      {type: 'separator'},
+      {label: 'Quit', role: 'quit', accelerator: 'CommandOrControl+Q'}
+    ])
+    tray.setToolTip('The ultimate otaku software.')
+    tray.setContextMenu(contextMenu)
+  }
 
   newWin()
 

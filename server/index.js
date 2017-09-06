@@ -27,22 +27,39 @@ const createConfig = () => {
   // Conf file
   const confPath = join(dir, 'config.json')
 
+  const basicConf = {
+    config: {
+      fansub: 'HorribleSubs',
+      quality: '720p',
+      localPath: join(BASE_PATH, 'Downloads'),
+      sound: 'Nyanpasu',
+      inside: true,
+      magnets: false,
+      system: {
+        autoStart: false,
+        toTray: false
+      }
+    }
+  }
+
   /* istanbul ignore next */
   if (!fs.existsSync(confPath)) {
     console.log('No configuration file detected. Creating...')
 
-    const basicConf = {
-      config: {
-        fansub: 'HorribleSubs',
-        quality: '720p',
-        localPath: join(BASE_PATH, 'Downloads'),
-        sound: 'Nyanpasu',
-        inside: true,
-        magnets: false
-      }
-    }
-
     fs.writeFileSync(confPath, JSON.stringify(basicConf), 'utf-8')
+  } else {
+    // Checking if no key is missing. Careful, works only up to 2 levels inside config
+    const currentConf = require(confPath)
+    let changed = false
+
+    _.each(basicConf.config, (elem, key) => {
+      if (!currentConf[key]) {
+        currentConf.config[key] = elem
+        changed = true
+      }
+    })
+
+    changed && fs.writeFileSync(confPath, JSON.stringify(currentConf), 'utf-8')
   }
 }
 
