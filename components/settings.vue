@@ -96,8 +96,7 @@
                     dark,
                     v-model='$store.state.config.system.autoStart',
                     persistent-hint,
-                    hint='Launch KawAnime on system start?',
-                    disabled
+                    hint='Launch KawAnime on system start?'
                   )
                 v-flex.section-title(xs3) Tray icon
                 v-flex(xs3)

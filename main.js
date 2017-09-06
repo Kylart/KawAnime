@@ -207,6 +207,7 @@ const newWin = () => {
 }
 
 Electron.on('ready', () => {
+  const currentSettings = Electron.getLoginItemSettings()
   Menu.setApplicationMenu(menu)
 
   if (localConfig.system.toTray) {
@@ -222,6 +223,33 @@ Electron.on('ready', () => {
     ])
     tray.setToolTip('The ultimate otaku software.')
     tray.setContextMenu(contextMenu)
+  }
+
+  if (localConfig.system.autoStart) {
+    if (process.platform === 'win32') {
+      const appFolder = path.dirname(process.execPath)
+      const updateExe = path.resolve(appFolder, '..', 'Update.exe')
+      const exeName = path.basename(process.execPath)
+
+      Electron.setLoginItemSettings({
+        openAtLogin: true,
+        path: updateExe,
+        args: [
+          '--processStart', `"${exeName}"`,
+          '--process-start-args', `"--hidden"`
+        ]
+      })
+    } else {
+      Electron.setLoginItemSettings({
+        openAtLogin: true
+      })
+    }
+  } else {
+    if (currentSettings.openAtLogin) {
+      Electron.setLoginItemSettings({
+        openAtLogin: false
+      })
+    }
   }
 
   newWin()
