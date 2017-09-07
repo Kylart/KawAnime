@@ -173,7 +173,7 @@ const newWin = () => {
     width: 1200,
     height: 800,
     titleBarStyle: 'hidden',
-    // frame: process.platform === 'darwin',
+    frame: process.platform === 'darwin',
     show: false
   })
 
