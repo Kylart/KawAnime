@@ -227,10 +227,13 @@ Electron.on('ready', () => {
       {
         label: 'New window',
         click: () => {
-          process.win === null && newWin()
+          process.win === null
+            ? newWin()
+            : process.win.show()
         },
         accelerator: 'CommandOrControl+N'
       },
+      {label: 'Show current window', click: () => { process.win.show() }},
       {label: 'Close current window', role: 'close', accelerator: 'CommandOrControl+W'},
       {type: 'separator'},
       {label: 'Quit', role: 'quit', accelerator: 'CommandOrControl+Q'}
