@@ -1,6 +1,6 @@
 <template lang="pug">
   v-app(dark, footer, toolbar)
-    v-navigation-drawer.pb-0(style='width: 280px', temporary, persistent, v-model='$store.state.drawer')
+    v-navigation-drawer.pb-0(style='width: 280px', temporary, v-model='$store.state.drawer')
       v-list
         v-list-tile#title(to='/')
           v-list-tile-action
