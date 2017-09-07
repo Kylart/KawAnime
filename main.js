@@ -124,10 +124,6 @@ app.get('*', !isDev ? render : (req, res) => {
   })
 })
 
-const server = http.createServer(app).listen()
-const _APP_URL_ = 'http://localhost:' + server.address().port
-console.log(`> KawAnime is at ${_APP_URL_}`.green)
-
 /*
  ** Electron app
  */
@@ -139,14 +135,22 @@ const localConfig = require(path.join(homedir(), '.KawAnime', 'config.json')).co
 const menuFile = require(path.join(__dirname, 'assets', 'menu.js'))
 const menu = Menu.buildFromTemplate(menuFile.menu)
 
-let win = null // Current window
+process.win = null // Current window
 let tray = null
+let _APP_URL_
+let server
+
+const startServer = () => {
+  server = http.createServer(app).listen()
+  _APP_URL_ = 'http://localhost:' + server.address().port
+  console.log(`> KawAnime is at ${_APP_URL_}`.green)
+}
 
 const pollServer = () => {
   http.get(_APP_URL_, ({statusCode}) => {
     statusCode !== 200
       ? setTimeout(pollServer, 300)
-      : win.loadURL(_APP_URL_)
+      : process.win.loadURL(_APP_URL_)
   })
     .on('error', pollServer)
 }
@@ -161,46 +165,50 @@ process.on('uncaughtException', (err) => {
 })
 
 const newWin = () => {
-  win = new BrowserWindow({
+  startServer()
+
+  process.win = new BrowserWindow({
     width: 1200,
     height: 800,
     titleBarStyle: 'hidden',
-    frame: process.platform === 'darwin',
+    // frame: process.platform === 'darwin',
     show: false
   })
 
-  win.once('ready-to-show', () => {
-    win.show()
+  process.win.once('ready-to-show', () => {
+    process.win.show()
   })
 
-  win.on('closed', () => {
-    win = null
+  process.win.on('closed', () => {
+    process.win = null
+    if (server.address()) {
+      server.close()
+    }
   })
 
-  win.webContents.on('crashed', (event) => {
+  process.win.webContents.on('crashed', (event) => {
     console.error('Main window crashed')
     console.error('Event is ' + event)
   })
 
-  win.on('unresponsive', () => {
+  process.win.on('unresponsive', () => {
     console.warn('Main window is unresponsive...')
   })
 
-  win.on('session-end', () => {
+  process.win.on('session-end', () => {
     console.info('Session logged off.')
   })
 
   if (!isDev) {
-    return win.loadURL(_APP_URL_)
+    return process.win.loadURL(_APP_URL_)
   } else {
-    win.loadURL(url.format({
+    process.win.loadURL(url.format({
       pathname: path.join(__dirname, 'index.html'),
       protocol: 'file:',
       slashes: true
     }))
   }
 
-  process.win = win
   process.appURL = _APP_URL_
 
   pollServer()
@@ -216,7 +224,13 @@ Electron.on('ready', () => {
     }
     tray = new Tray(path.join(__dirname, 'static', 'images', 'tray.png'))
     const contextMenu = Menu.buildFromTemplate([
-      {label: 'New window', click: () => { win === null && newWin() }, accelerator: 'CommandOrControl+N'},
+      {
+        label: 'New window',
+        click: () => {
+          process.win === null && newWin()
+        },
+        accelerator: 'CommandOrControl+N'
+      },
       {label: 'Close current window', role: 'close', accelerator: 'CommandOrControl+W'},
       {type: 'separator'},
       {label: 'Quit', role: 'quit', accelerator: 'CommandOrControl+Q'}
@@ -226,24 +240,9 @@ Electron.on('ready', () => {
   }
 
   if (localConfig.system.autoStart) {
-    if (process.platform === 'win32') {
-      const appFolder = path.dirname(process.execPath)
-      const updateExe = path.resolve(appFolder, '..', 'Update.exe')
-      const exeName = path.basename(process.execPath)
-
-      Electron.setLoginItemSettings({
-        openAtLogin: true,
-        path: updateExe,
-        args: [
-          '--processStart', `"${exeName}"`,
-          '--process-start-args', `"--hidden"`
-        ]
-      })
-    } else {
-      Electron.setLoginItemSettings({
-        openAtLogin: true
-      })
-    }
+    Electron.setLoginItemSettings({
+      openAtLogin: true
+    })
   } else {
     if (currentSettings.openAtLogin) {
       Electron.setLoginItemSettings({
@@ -267,4 +266,4 @@ Electron.on('window-all-closed', function () {
   }
 })
 
-Electron.on('activate', () => win === null && newWin())
+Electron.on('activate', () => process.win === null && newWin())
