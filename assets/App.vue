@@ -23,9 +23,9 @@
           v-subheader.white--text(v-else-if='item.header') {{ item.header }}
           v-divider(v-else-if='item.divider')
 
-    v-system-bar.wb.dragable(dark, status, v-if='!isBrowser')
+    v-system-bar.wb.dragable(dark, status)
       v-spacer
-      div(v-if="$store.state.platform !== 'darwin'")
+      div(v-if="!isBrowser && $store.state.platform !== 'darwin'")
         v-icon.window-icon.non-dragable(@click="actOnWindow('minimize')") remove
         v-icon.window-icon.non-dragable(@click="actOnWindow('maximize')") check_box_outline_blank
         v-icon.window-icon.non-dragable(@click="actOnWindow('close')") close

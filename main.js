@@ -144,6 +144,8 @@ const startServer = () => {
   server = http.createServer(app).listen()
   _APP_URL_ = 'http://localhost:' + server.address().port
   console.log(`> KawAnime is at ${_APP_URL_}`.green)
+
+  process.appURL = _APP_URL_
 }
 
 const pollServer = () => {
@@ -209,8 +211,6 @@ const newWin = () => {
     }))
   }
 
-  process.appURL = _APP_URL_
-
   pollServer()
 }
 
@@ -266,4 +266,8 @@ Electron.on('window-all-closed', function () {
   }
 })
 
-Electron.on('activate', () => process.win === null && newWin())
+Electron.on('activate', () => {
+  process.win === null
+    ? newWin()
+    : process.win.show()
+})
