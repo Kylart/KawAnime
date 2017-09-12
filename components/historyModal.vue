@@ -9,7 +9,7 @@
         v-layout(row, wrap, justify-center)
           v-expansion-panel(expand, popout, v-if='Object.keys(history).length')
             v-expansion-panel-content.item-container(
-              ripple,
+              ripple, lazy,
               v-for='item in Object.keys(history).reverse()',
               :key='item'
             )
@@ -19,7 +19,7 @@
                 v-card-text.lighten-3.info-container
                   v-layout(row, wrap)
                     template(v-for='info in history[item]')
-                      v-flex.time.entry(xs2, :class='isDelete(info.type)')
+                      v-flex.pl-1.time.entry(xs2, :class='isDelete(info.type)')
                         | {{ info.time }}
                       v-flex.type.entry(xs2, :class='isDelete(info.type)')
                         | {{ info.type }}
@@ -69,6 +69,9 @@
           date: item,
           info
         })
+      },
+      refresh () {
+        this.$store.dispatch('getHistory')
       }
     }
   }

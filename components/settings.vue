@@ -151,9 +151,7 @@
       },
       save () {
         this.$store.commit('setConfig', this.config)
-        const toSave = {...this.config}
-
-        this.$store.dispatch('saveConfig', toSave)
+        this.$store.dispatch('saveConfig')
       },
       saveAndClose () {
         this.save()

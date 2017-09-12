@@ -112,7 +112,7 @@
 
   .box
   {
-    padding-top: 7px;
+    padding-top: 10px;
     padding-left: 13px;
   }
 

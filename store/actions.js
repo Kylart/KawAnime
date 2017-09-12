@@ -253,7 +253,6 @@ export default {
     setTimeout(async () => {
       log(`Refreshing Releases...`)
 
-      const oldData = state.releases
       try {
         const {data} = await axios.get('getLatestNyaa', { params: state.releaseParams })
 
@@ -263,13 +262,11 @@ export default {
         } else {
           commit('setInfoSnackbar', 'Auto refresh releases failed... Attempting again in 30 minutes.')
 
-          commit('setReleases', oldData)
           dispatch('autoRefreshReleases')
         }
       } catch (e) {
         commit('setInfoSnackbar', 'Auto refresh releases failed... Attempting again in 30 minutes.')
 
-        commit('setReleases', oldData)
         dispatch('autoRefreshReleases')
       }
     }, 30 * 60 * 1000)
@@ -426,7 +423,7 @@ export default {
           })
         }
       } else {
-        log('Unknown error occurred. nyaa.si and nyaa.pantsu.cat seems both down.')
+        log('Unknown error occurred. nyaa.si and nyaa.pantsu.cat seem both down.')
 
         commit('setInfoSnackbar', 'Sorry. KawAnime was not able to get your torrents...')
       }
@@ -434,16 +431,16 @@ export default {
 
     state.downloaderForm.loading = false
   },
-  saveConfig ({commit}, data) {  // eslint-disable-line
+  saveConfig ({state, commit}, data = null) {
     axios.post('saveConfig', JSON.stringify({
-      config: data
+      config: data || state.config
     })).then((res) => {
       if (res.status === 200) {
         log(`Successfully updated config!`)
         commit('setInfoSnackbar', 'Config saved successfully.')
       }
     }).catch((err) => {
-      log(`An error occurred while saving config: ${err}`)
+      log(`An error occurred while saving config:`, err)
       commit(
         'setInfoSnackbar',
         'An error occurred while saving config. If the problem continues to occur, please restart KawAnime and try again.'

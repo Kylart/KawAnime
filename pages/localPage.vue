@@ -317,6 +317,7 @@
   .genres
   {
     padding-left: 15px;
+    padding-right: 5px;
     font-weight: 600;
   }
 
