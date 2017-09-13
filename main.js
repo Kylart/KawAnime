@@ -3,6 +3,7 @@ const fs = require('fs')
 const {homedir} = require('os')
 const path = require('path')
 const http = require('http')
+const axios = require('axios')
 const LRU = require('lru-cache')
 const express = require('express')
 const compression = require('compression')
@@ -261,6 +262,15 @@ Electron.on('ready', () => {
   }
 
   newWin()
+
+  // Let's send some data to kawanime.com/_api
+  const {username} = require('os').userInfo()
+  const tokenPath = path.join(require('os').homedir(), '.KawAnime', '_token')
+  const token = fs.readFileSync(tokenPath, 'utf-8')
+  axios.post('https://kawanime.com/_api', {
+    id: `${username}/${token}`
+  })
+    .catch((err) => { console.error('Couldn\'t reach KawAnime.com\'s api:', err) })
 })
 
 // Quit when all windows are closed.
