@@ -22,7 +22,8 @@ const kawAnimeFilesPath = {
   local: join(DIR, 'locals.json'),
   history: join(DIR, 'history.json'),
   watchList: join(DIR, 'lists.json'),
-  config: join(DIR, 'config.json')
+  config: join(DIR, 'config.json'),
+  token: join(DIR, '_token')
 }
 
 // Init server listening on localhost:4000
@@ -69,6 +70,10 @@ test.cb(`KawAnime's config file exists`, t => {
 
 test.cb(`KawAnime's lists file exists`, t => {
   readFile(`${kawAnimeFilesPath.watchList}`, t.end)
+})
+
+test.cb(`KawAnime's token file exists`, t => {
+  readFile(`${kawAnimeFilesPath.token}`, t.end)
 })
 
 /**

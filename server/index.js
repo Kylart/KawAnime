@@ -7,6 +7,7 @@
 const fs = require('fs')
 const {join} = require('path')
 const _ = require('lodash')
+const randomString = require('randomstring')
 const axios = require('axios')
 
 const {homedir} = require('os')
@@ -104,6 +105,17 @@ const createHistory = () => {
     console.log('No watch history file detected. Creating...')
 
     fs.writeFileSync(historyPath, '{}', 'utf-8')
+  }
+}
+
+const createToken = () => {
+  const tokenPath = join(dir, '_token')
+
+  /* istanbul ignore next */
+  if (!fs.existsSync(tokenPath)) {
+    console.log('No token file detected. Creating...')
+
+    fs.writeFileSync(tokenPath, randomString.generate(40), 'utf-8')
   }
 }
 
@@ -261,6 +273,7 @@ const setup = (app) => {
   createLocal()
   createHistory()
   createList()
+  createToken()
 
   // auto update
   /* istanbul ignore next */
