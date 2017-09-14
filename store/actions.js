@@ -327,17 +327,21 @@ export default {
   async changePath ({commit, dispatch}) {
     const {data} = await axios.get('openThis?type=dialog')
 
-    commit('emptyLocals')
-    commit('setCurrentDir', data.path)
-    dispatch('refreshLocal')
+    if (data) {
+      commit('emptyLocals')
+      commit('setCurrentDir', data.path)
+      dispatch('refreshLocal')
+    }
   },
   async changePathWithConfig ({commit, dispatch}) {
     const {data} = await axios.get('openThis?type=dialog')
 
-    commit('emptyLocals')
-    commit('setCurrentDir', data.path)
-    commit('setConfigDir', data.path)
-    dispatch('refreshLocal')
+    if (data) {
+      commit('emptyLocals')
+      commit('setCurrentDir', data.path)
+      commit('setConfigDir', data.path)
+      dispatch('refreshLocal')
+    }
   },
   async openNewsLink ({state}, link) {
     log(`Opening ${link}`)

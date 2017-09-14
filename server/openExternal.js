@@ -57,6 +57,8 @@ exports.openExternal = (query, res) => {
           }
 
           sendRes(res, result)
+        } else {
+          sendEmptyRes(res)
         }
       })
       break
