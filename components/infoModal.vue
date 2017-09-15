@@ -1,6 +1,6 @@
 <template lang="pug">
   v-dialog(v-model='searchShow', width='650', lazy, absolute)
-    v-btn(icon, slot='activator')
+    v-btn(icon, slot='activator', @click="searchTerm = ''")
       v-icon search
     v-card.pr-4
       v-card-title.headline Which anime are you looking for?
@@ -11,6 +11,8 @@
               name='search-name',
               label='Anime name',
               v-model='searchTerm',
+              append-icon='close',
+              :append-icon-cb="() => (searchTerm = '')"
               dark
             )
           v-flex(xs12)
@@ -60,7 +62,7 @@
         async function () {
           const term = this.searchTerm
 
-          if (term.length > 2) {
+          if (term && term.length > 2) {
             try {
               const {data, status} = await axios.get(`searchTermOnMal?term=${term}`)
 
