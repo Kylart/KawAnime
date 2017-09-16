@@ -5,6 +5,7 @@ import state from './state'
 import mutations from './mutations'
 import actions from './actions'
 import getters from './getters'
+import * as modules from './modules'
 
 Vue.use(Vuex)
 
@@ -13,6 +14,7 @@ export function createStore () {
     state,
     actions,
     mutations,
-    getters
+    getters,
+    modules
   })
 }

@@ -49,10 +49,6 @@ export default {
     title: '',
     text: ''
   },
-  seasons: [],
-  seasonsStats: {},
-  year: 0,
-  season: '',
   news: [],
   localFiles: [],
   resettingLocal: false,

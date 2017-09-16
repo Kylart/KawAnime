@@ -6,13 +6,13 @@
         v-flex.season-container(sm3, xs8)
           v-select(
             v-bind:items='seasonChoices',
-            v-model='$store.state.season',
+            v-model='$store.state.seasons.season',
             label='Season',
             dark, item-text='name',
             item-value='value'
           )
         v-flex.year-container(offset-sm1, sm3, xs8)
-          v-text-field(name='input-year', type='number', min='2010', label='Year', v-model='$store.state.year', dark)
+          v-text-field(name='input-year', type='number', min='2010', label='Year', v-model='$store.state.seasons.year', dark)
         v-flex.refresh-button(offset-sm1, sm2, xs8)
           v-btn(secondary, block, dark, @click='refreshSeason()') Refresh
       v-tabs#tabs(dark, fixed, centered)
@@ -107,10 +107,10 @@
     },
     computed: {
       seasons: function () {
-        return this.$store.state.seasons
+        return this.$store.state.seasons.seasons
       },
       stats: function () {
-        return this.$store.state.seasonsStats
+        return this.$store.state.seasons.seasonsStats
       },
       TVs: function () {
         return this.seasons.TV
@@ -162,7 +162,7 @@
         } else return ''
       },
       refreshSeason () {
-        this.$store.dispatch('refreshSeasons')
+        this.$store.dispatch('seasons/refresh')
       },
       openModal (title, text) {
         console.log(`[${(new Date()).toLocaleTimeString()}]Opening modal for ${title}`)

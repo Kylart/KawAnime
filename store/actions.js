@@ -2,8 +2,7 @@
  * Created by Kylart on 26/07/2017.
  */
 
-import axios from 'axios'
-import {log} from './utils'
+import {axios, log} from './utils'
 
 export default {
   async init ({commit, dispatch}) {
@@ -33,7 +32,7 @@ export default {
   },
   async online ({dispatch}) {
     dispatch('releasesInit').catch(err => { void (err) })
-    dispatch('seasonsInit').catch(err => { void (err) })
+    dispatch('seasons/init').catch(err => { void (err) })
     dispatch('newsInit').catch(err => { void (err) })
   },
   async checkUpdate ({state, commit, dispatch}) {
@@ -160,32 +159,6 @@ export default {
       }
     }
   },
-  async seasonsInit ({commit, dispatch}) {
-    console.log('[INIT] Seasons')
-
-    const now = new Date()
-    const year = now.getFullYear()
-    const month = now.getMonth() + 1
-    let season
-
-    if (month > 0 && month < 4) season = 'winter'
-    else if (month > 3 && month < 7) season = 'spring'
-    else if (month > 6 && month < 10) season = 'summer'
-    else if (month > 9 && month < 13) season = 'fall'
-
-    commit('setCurrentSeason', {year, season})
-
-    try {
-      const {data} = await axios.get(`seasons.json?year=${year}&season=${season}`)
-      commit('setSeasons', data)
-    } catch (e) {
-      const msg = 'Error while getting this season data. Retrying in 10 seconds...'
-      log(msg)
-      commit('setInfoSnackbar', msg)
-
-      setTimeout(() => dispatch('seasonsInit'), 10 * 1000)
-    }
-  },
   async newsInit ({commit, dispatch}) {
     console.log('[INIT] News')
     const {data, status} = await axios.get('news.json')
@@ -270,26 +243,6 @@ export default {
         dispatch('autoRefreshReleases')
       }
     }, 30 * 60 * 1000)
-  },
-  async refreshSeasons ({state, commit, dispatch}) {
-    log(`Refreshing Seasons...`)
-
-    const year = state.year
-    const season = state.season.value || state.season
-
-    if (year >= 2010 && (year <= (new Date()).getYear() + 1901)) {
-      commit('emptySeasons')
-
-      const {data, status} = await axios.get(`seasons.json?year=${year}&season=${season}`)
-
-      status === 200
-        ? commit('setSeasons', data)
-        : dispatch('refreshSeasons')
-
-      log('Seasons refreshed.')
-    } else {
-      commit('setInfoSnackbar', `Year must be between 2010 and ${(new Date()).getYear() + 1901}`)
-    }
   },
   async refreshNews ({commit, dispatch}) {
     log(`Refreshing News...`)

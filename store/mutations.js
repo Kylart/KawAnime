@@ -39,18 +39,6 @@ export default {
     state.infoSnackbar.text = data
     state.infoSnackbar.show = true
   },
-  setCurrentSeason (state, data) {
-    state.year = data.year
-    state.season = data.season
-  },
-  setSeasons: function (state, data) {
-    state.seasons = data.info
-    state.seasonsStats = data.stats
-    log(`Seasons set.`)
-  },
-  emptySeasons: function (state) {
-    state.seasons = []
-  },
   emptyReleases: function (state) {
     state.releases = []
   },
