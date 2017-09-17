@@ -22,7 +22,7 @@ export function createRouter () {
     mode: 'history',
     scrollBehavior: () => ({y: 0}),
     routes: [
-      route('/', 'index'),
+      route('/', 'releases'),
       route('/downloader', 'downloader'),
       route('/seasons', 'seasons'),
       route('/news', 'news'),
