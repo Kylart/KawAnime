@@ -1,6 +1,6 @@
 <template lang="pug">
   v-dialog(v-model='searchShow', width='650', lazy, absolute)
-    v-btn(icon, slot='activator', @click="searchTerm = ''")
+    v-btn(icon, slot='activator')
       v-icon search
     v-card.pr-4
       v-card-title.headline Which anime are you looking for?

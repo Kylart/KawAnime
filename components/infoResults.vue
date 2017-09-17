@@ -2,6 +2,7 @@
   v-dialog(width='800', v-model='$store.state.info.show', persistent, lazy, absolute)
     v-card
       v-card-title.headline Result for «{{ searchTerm }}»
+      v-divider
       v-card-text
         h4(v-if='error') {{ error }}
         div(v-else-if='loading')
