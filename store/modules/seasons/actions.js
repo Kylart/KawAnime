@@ -3,7 +3,6 @@ import {axios, log, isRoot} from '../../utils'
 export default {
   async init ({commit, dispatch}) {
     console.log('[INIT] Seasons')
-    commit('setInfoSnackbar', 'Ok', isRoot)
 
     const now = new Date()
     const year = now.getFullYear()

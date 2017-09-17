@@ -27,7 +27,7 @@ export default {
     state.releaseParams.fansub = config.fansub
     state.releaseParams.quality = config.quality
 
-    state.config = config
+    state.config.config = config
   },
   toggleDrawer (state) {
     state.drawer = !state.drawer
@@ -94,13 +94,6 @@ export default {
   },
   showDownloaderModal: function (state, value) {
     state.downloaderModal.show = value
-  },
-  setConfigDir: function (state, data) {
-    state.config.localPath = data
-    log(`Config directory now is ${state.currentDir}`)
-  },
-  setConfig: function (state, data) {
-    state.config = data
   },
   setHistory: function (state, data) {
     state.history = data

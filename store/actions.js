@@ -79,11 +79,13 @@ export default {
   },
   setUpPlayer ({state}) {
     try {
-      const sound = state.config.sound
+      const sound = state.config.config.sound
       document.player = new window.Audio()
       document.player.src = `static/sounds/${sound}.m4a`
       document.player.volume = 0.5
-    } catch (e) { void e }
+    } catch (e) {
+      console.error('Could not setup the player:', e)
+    }
   },
   playSound () {
     if (!document.player.src.includes('sounds/None.m4a')) {
@@ -286,16 +288,6 @@ export default {
       dispatch('refreshLocal')
     }
   },
-  async changePathWithConfig ({commit, dispatch}) {
-    const {data} = await axios.get('openThis?type=dialog')
-
-    if (data) {
-      commit('emptyLocals')
-      commit('setCurrentDir', data.path)
-      commit('setConfigDir', data.path)
-      dispatch('refreshLocal')
-    }
-  },
   async openNewsLink ({state}, link) {
     log(`Opening ${link}`)
 
@@ -387,22 +379,6 @@ export default {
     }
 
     state.downloaderForm.loading = false
-  },
-  saveConfig ({state, commit}, data = null) {
-    axios.post('saveConfig', JSON.stringify({
-      config: data || state.config
-    })).then((res) => {
-      if (res.status === 200) {
-        log(`Successfully updated config!`)
-        commit('setInfoSnackbar', 'Config saved successfully.')
-      }
-    }).catch((err) => {
-      log(`An error occurred while saving config:`, err)
-      commit(
-        'setInfoSnackbar',
-        'An error occurred while saving config. If the problem continues to occur, please restart KawAnime and try again.'
-      )
-    })
   },
   appendHistory ({}, data) {  // eslint-disable-line
     axios.post('appendHistory', JSON.stringify(data)).then(() => {

@@ -56,7 +56,7 @@
                 v-flex.section-title(xs4) Preferred local path
                 v-flex.local-path(xs6) {{ config.localPath }}
                 v-flex(xs2)
-                  v-btn(accent, @click="$store.dispatch('changePathWithConfig')") Choose
+                  v-btn(accent, @click="changePath()") Choose
                 v-flex.section-title(xs3) News
                 v-flex(xs9)
                   v-switch(
@@ -94,7 +94,7 @@
                     label='Enable',
                     color='primary',
                     dark,
-                    v-model='$store.state.config.system.autoStart',
+                    v-model='config.system.autoStart',
                     persistent-hint,
                     hint='Launch KawAnime on system start?'
                   )
@@ -104,7 +104,7 @@
                     label='Enable',
                     color='primary',
                     dark,
-                    v-model='$store.state.config.system.toTray',
+                    v-model='config.system.toTray',
                     persistent-hint,
                     hint='Launch KawAnime with tray icon'
                   )
@@ -114,47 +114,28 @@
   export default {
     data () {
       return {
-        drawer: true,
         configModal: false,
-        radios: ['480p', '720p', '1080p'],
-        itemGroup: [
-          {
-            title: 'Download',
-            action: 'file_download',
-            to: '#download'
-          }, {
-            title: 'Local',
-            action: 'folder',
-            to: '#local'
-          }, {
-            title: 'Notification',
-            action: 'play_circle_outline',
-            to: '#notification'
-          }
-        ]
+        radios: ['480p', '720p', '1080p']
       }
     },
     computed: {
       config () {
-        return this.$store.state.config
+        return this.$store.state.config.config
       },
       fansubChoices () {
-        return this.$store.state.fansubList
+        return this.$store.state.config.fansubs
       },
       soundChoices () {
-        return this.$store.state.soundList
+        return this.$store.state.config.sounds
       }
     },
     methods: {
-      changeConfigPath () {
-        this.$store.dispatch('changePathWithConfig')
+      changePath () {
+        this.$store.dispatch('config/changeDir')
       },
       save () {
-        this.$store.commit('setConfig', this.config)
-        this.$store.dispatch('saveConfig')
-      },
-      saveAndClose () {
-        this.save()
+        this.$store.commit('config/set', this.config)
+        this.$store.dispatch('config/save')
         this.configModal = false
       },
       play () {
@@ -166,12 +147,6 @@
 </script>
 
 <style scoped>
-  .drawer
-  {
-    margin-top: 72px;
-    width: 23%;
-  }
-
   .tb
   {
     top: 24px;

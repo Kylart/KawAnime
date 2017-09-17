@@ -10,7 +10,7 @@
             v-switch#magnets-switch(
               label='Get Magnets',
               color='primary',
-              v-model='$store.state.config.magnets',
+              v-model='$store.state.config.config.magnets',
               dark
             )
           v-flex.pt-3.pl-5.pr-5(xs7, @keydown.enter='next(1)')

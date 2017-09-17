@@ -19,11 +19,6 @@ export default {
     'DurandalSubs',
     'DefinitelyNotMe'
   ],
-  soundList: [
-    'Nyanpasu',
-    'Nico Nico Nii',
-    'None'
-  ],
   releaseFansub: '',
   releaseQuality: '',
   releases: [],
@@ -59,18 +54,6 @@ export default {
     seen: [],
     onHold: [],
     dropped: []
-  },
-  config: {
-    fansub: 'HorribleSubs',
-    quality: '720p',
-    localPath: '',
-    sound: 'Nyanpasu',
-    inside: true,
-    magnets: false,
-    system: {
-      autoStart: false,
-      toTray: false
-    }
   },
   history: {},
   historyModal: false,
