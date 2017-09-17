@@ -22,7 +22,7 @@
     },
     methods: {
       open (link) {
-        this.$store.dispatch('openNewsLink', link)
+        this.$store.dispatch('news/openLink', link)
       }
     }
   }

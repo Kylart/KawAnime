@@ -1,6 +1,6 @@
 <template lang="pug">
   v-container(fluid).pa-0
-    loader(v-if="!$store.state.news.length")
+    loader(v-if="!news.length")
 
     v-container(fluid v-else)
       v-layout(row wrap).news-container
@@ -8,14 +8,19 @@
           v-btn(icon @click="refresh()").refresh-button
             v-icon(large) refresh
         v-flex(xs12).pr-3
-          news(v-for="item in $store.state.news", :item="item", :key="item.title")
+          news(v-for="item in news", :item="item", :key="item.title")
 </template>
 
 <script>
   export default {
     methods: {
       refresh () {
-        this.$store.dispatch('refreshNews')
+        this.$store.dispatch('news/refresh')
+      }
+    },
+    computed: {
+      news () {
+        return this.$store.state.news.data
       }
     }
   }

@@ -33,7 +33,7 @@ export default {
   async online ({dispatch}) {
     dispatch('releasesInit').catch(err => { void (err) })
     dispatch('seasons/init').catch(err => { void (err) })
-    dispatch('newsInit').catch(err => { void (err) })
+    dispatch('news/init').catch(err => { void (err) })
   },
   async checkUpdate ({state, commit, dispatch}) {
     setTimeout(async () => {
@@ -83,9 +83,7 @@ export default {
       document.player = new window.Audio()
       document.player.src = `static/sounds/${sound}.m4a`
       document.player.volume = 0.5
-    } catch (e) {
-      console.error('Could not setup the player:', e)
-    }
+    } catch (e) { void e }
   },
   playSound () {
     if (!document.player.src.includes('sounds/None.m4a')) {
@@ -159,17 +157,6 @@ export default {
           dispatch('releasesInit')
         }
       }
-    }
-  },
-  async newsInit ({commit, dispatch}) {
-    console.log('[INIT] News')
-    const {data, status} = await axios.get('news.json')
-
-    if (status === 200) {
-      commit('setNews', data)
-    } else {
-      log('A problem occurred while gathering the news.')
-      dispatch('newsInit')
     }
   },
   async localInit ({state, commit}) {
@@ -246,17 +233,6 @@ export default {
       }
     }, 30 * 60 * 1000)
   },
-  async refreshNews ({commit, dispatch}) {
-    log(`Refreshing News...`)
-
-    commit('emptyNews')
-
-    const {data, status} = await axios.get('news.json')
-
-    status === 200
-      ? commit('setNews', data)
-      : log('A problem occurred while gathering the news.') && dispatch('refreshNews')
-  },
   async refreshLocal ({commit, state}) {
     log(`Refreshing Local files...`)
 
@@ -287,15 +263,6 @@ export default {
       commit('setCurrentDir', data.path)
       dispatch('refreshLocal')
     }
-  },
-  async openNewsLink ({state}, link) {
-    log(`Opening ${link}`)
-
-    await axios.get(
-      state.config.inside
-        ? `openThis?type=insideLink&link=${link}`
-        : `openThis?type=link&link=${link}`
-    )
   },
   async download ({state, commit}, obj = {}) {
     const isDownloader = obj.isDownloader || true

@@ -48,13 +48,6 @@ export default {
 
     log(`Releases updated.`)
   },
-  emptyNews: function (state) {
-    state.news = []
-  },
-  setNews: function (state, data) {
-    state.news = data
-    log(`News updated.`)
-  },
   emptyLocals: function (state) {
     state.localFiles = []
   },

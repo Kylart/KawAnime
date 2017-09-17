@@ -44,7 +44,6 @@ export default {
     title: '',
     text: ''
   },
-  news: [],
   localFiles: [],
   resettingLocal: false,
   refreshingLocal: false,
