@@ -273,9 +273,9 @@ export default {
     const untilEp = state.downloaderForm.untilEp !== ''
       ? state.downloaderForm.untilEp
       : 20000
-    const quality = isDownloader ? state.downloaderForm.quality : state.config.quality
+    const quality = isDownloader ? state.downloaderForm.quality : state.config.config.quality
 
-    const magnets = state.config.magnets
+    const magnets = state.config.config.magnets
 
     log(`Received a request to download ${name} from ep ${fromEp} to ep ${untilEp}. Transmitting...`)
 
@@ -284,7 +284,7 @@ export default {
       quality: quality,
       fromEp: +fromEp,
       untilEp: +untilEp,
-      fansub: state.config.fansub,
+      fansub: state.config.config.fansub,
       choice: 'si'
     }
 

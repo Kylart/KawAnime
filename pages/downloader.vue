@@ -104,7 +104,7 @@
         y: 'top',
         copiedSnackbar: false,
         copiedTimeout: 2500,
-        quality: this.$store.state.downloaderForm.quality
+        quality: this.$store.state.config.config.quality
       }
     },
     computed: {
@@ -141,7 +141,7 @@
 
         this.$store.commit('setQuality', quality)
 
-        if (this.$store.state.downloaderForm.name) { this.$store.dispatch('download') }
+        this.$store.dispatch('download')
 
         this.$store.commit('setDownloaderValues', {
           name: '',
