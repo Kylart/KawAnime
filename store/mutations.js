@@ -39,100 +39,63 @@ export default {
     state.infoSnackbar.text = data
     state.infoSnackbar.show = true
   },
-  emptyReleases: function (state) {
+  emptyReleases (state) {
     state.releases = []
   },
-  setReleases: function (state, data) {
+  setReleases (state, data) {
     state.releases = data
     state.releasesUpdateTime = moment()
 
     log(`Releases updated.`)
   },
-  emptyLocals: function (state) {
+  emptyLocals (state) {
     state.localFiles = []
   },
-  setLocalFiles: function (state, data) {
+  setLocalFiles (state, data) {
     state.localFiles = data
     log(`Local files updated.`)
   },
-  setCurrentDir: function (state, data) {
+  setCurrentDir (state, data) {
     state.currentDir = data
     log(`Current directory now is ${state.currentDir}.`)
   },
-  setResettingLocal: function (state) {
+  setResettingLocal (state) {
     state.resettingLocal = !state.resettingLocal
   },
-  setRefreshingLocal: function (state) {
+  setRefreshingLocal (state) {
     state.refreshingLocal = !state.refreshingLocal
   },
-  updateLocalFiles: function (state, data) {
+  updateLocalFiles (state, data) {
     if (data.type === 'delete') {
       const index = state.localFiles.findIndex((file) => file.path === data.path)
 
       state.localFiles.splice(index, 1)
     }
   },
-  setWatchLists: function (state, data) {
-    state.watchLists = data
-    log('Updated watch lists.')
-  },
-  setDownloaderValues: function (state, data) {
+  setDownloaderValues (state, data) {
     state.downloaderForm = data
   },
-  setQuality: function (state, quality) {
+  setQuality (state, quality) {
     state.downloaderForm.quality = quality
   },
-  setDownloaderModal: function (state, data) {
+  setDownloaderModal (state, data) {
     state.downloaderModal = data
   },
-  showDownloaderModal: function (state, value) {
+  showDownloaderModal (state, value) {
     state.downloaderModal.show = value
   },
-  setHistory: function (state, data) {
+  setHistory (state, data) {
     state.history = data
     log(`History updated.`)
   },
-  setHistoryModal: function (state, data) {
+  setHistoryModal (state, data) {
     state.historyModal = data
   },
-  setInfoModal: function (state, data) {
+  setInfoModal (state, data) {
     state.infoModal = data
   },
-  setInfoModalInfo: function (state, data) {
+  setInfoModalInfo (state, data) {
     state.info = data
-  },
-  updateList (state, data) {
-    const lists = {
-      watchList: 'Watch list',
-      onHold: 'On Hold'
-    }
-
-    const listName = data.listName
-    const logListName = lists[data.listName] || listName
-    const entry = data.entry
-
-    const isAlreadyThere = state.watchLists[listName].filter((elem) => {
-      return elem.split(' ').join('').toLowerCase() === entry.split(' ').join('').toLowerCase()
-    }).length
-
-    if (!isAlreadyThere) {
-      state.watchLists[listName].push(entry)
-      state.watchLists[listName].sort()
-
-      log(`${listName} list updated.`)
-      state.infoSnackbar.text = `${entry} was added to your «${logListName}» list.`
-      state.infoSnackbar.show = true
-    } else {
-      // Displays error message
-      state.infoSnackbar.text = `${entry} is already in your «${logListName}» list.`
-      state.infoSnackbar.show = true
-    }
-  },
-  removeFromList (state, data) {
-    const listName = data.listName
-    const index = state.watchLists[listName].indexOf(data.entry)
-
-    state.watchLists[listName].splice(index, 1)
   },
   setAddToChoice (state, data) {
     state.addToChoice = data

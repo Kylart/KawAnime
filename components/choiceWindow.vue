@@ -61,7 +61,7 @@
       add () {
         this.selected.forEach((listName) => {
           const entry = this.entry
-          this.$store.dispatch('updateList', {
+          this.$store.dispatch('watchLists/updateList', {
             listName: listName,
             entry: entry
           })

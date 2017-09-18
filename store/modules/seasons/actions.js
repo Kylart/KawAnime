@@ -24,7 +24,7 @@ export default {
       log(msg)
       commit('setInfoSnackbar', msg, isRoot)
 
-      setTimeout(() => dispatch('seasonsInit'), 10 * 1000)
+      setTimeout(() => dispatch('init'), 10 * 1000)
     }
   },
   async refresh ({state, commit, dispatch}) {

@@ -25,7 +25,7 @@
                         v-btn(secondary, slot='activator') Move to
                         v-list.dark
                           v-list-tile(
-                            @click.capture='moveTo(action.list, i)',
+                            @click='moveTo(action.list, i)',
                             v-for='action in actions(i)',
                             :key='action.name'
                           )
@@ -126,22 +126,22 @@
       }
     },
     computed: {
-      watchList: function () {
-        return this.$store.state.watchLists.watchList
+      watchList () {
+        return this.$store.state.watchLists.lists.watchList
       },
-      seen: function () {
-        return this.$store.state.watchLists.seen
+      seen () {
+        return this.$store.state.watchLists.lists.seen
       },
-      watching: function () {
-        return this.$store.state.watchLists.watching
+      watching () {
+        return this.$store.state.watchLists.lists.watching
       },
-      onHold: function () {
-        return this.$store.state.watchLists.onHold
+      onHold () {
+        return this.$store.state.watchLists.lists.onHold
       },
-      dropped: function () {
-        return this.$store.state.watchLists.dropped
+      dropped () {
+        return this.$store.state.watchLists.lists.dropped
       },
-      lists: function () {
+      lists () {
         return [
           this.watchList,
           this.watching,
@@ -152,13 +152,13 @@
       }
     },
     methods: {
-      actions: function (i) {
+      actions (i) {
         return this.actionsList.filter((x) => { return x !== this.actionsList[i - 1] })
       },
       addEntry (i) {
         if (this.entries[i] !== '') {
           console.log(`[${(new Date()).toLocaleTimeString()}]: Adding ${this.entries[i]} to list.`)
-          this.$store.dispatch('updateList', {
+          this.$store.dispatch('watchLists/updateList', {
             entry: this.entries[i],
             listName: this.listNames[i]
           })
@@ -168,7 +168,7 @@
       deleteEntry (name, i) {
         removeSelectedClasses()
 
-        this.$store.dispatch('removeFromList', {
+        this.$store.dispatch('watchLists/removeFromList', {
           listName: this.actionsList[i - 1].list,
           entry: name
         })
@@ -213,12 +213,12 @@
       },
       moveTo (name, i) {
         this.selected[i].forEach((anime) => {
-          this.$store.dispatch('updateList', {
+          this.$store.dispatch('watchLists/updateList', {
             listName: name,
             entry: anime
           })
 
-          this.$store.dispatch('removeFromList', {
+          this.$store.dispatch('watchLists/removeFromList', {
             listName: this.actionsList[i - 1].list,
             entry: anime
           })
@@ -228,7 +228,7 @@
       },
       deleteSelected (i) {
         this.selected[i].forEach((anime) => {
-          this.$store.dispatch('removeFromList', {
+          this.$store.dispatch('watchLists/removeFromList', {
             listName: this.actionsList[i - 1].list,
             entry: anime
           })

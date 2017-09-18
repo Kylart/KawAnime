@@ -63,7 +63,7 @@
     },
     methods: {
       addTo (listName) {
-        this.$store.dispatch('updateList', {
+        this.$store.dispatch('watchLists/updateList', {
           listName,
           entry: this.info.title
         })

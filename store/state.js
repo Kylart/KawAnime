@@ -47,13 +47,6 @@ export default {
   localFiles: [],
   resettingLocal: false,
   refreshingLocal: false,
-  watchLists: {
-    watchList: [],
-    watching: [],
-    seen: [],
-    onHold: [],
-    dropped: []
-  },
   history: {},
   historyModal: false,
   infoModal: false,

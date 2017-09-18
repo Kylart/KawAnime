@@ -14,7 +14,7 @@ export default {
 
     dispatch('getEnv').catch(err => { void err })
     dispatch('localInit').catch(err => { void (err) })
-    dispatch('listInit').catch(err => { void (err) })
+    dispatch('watchLists/init').catch(err => { void (err) })
     dispatch('getHistory').catch(err => { void (err) })
     dispatch('setUpPlayer').catch(err => { void (err) })
 
@@ -165,15 +165,6 @@ export default {
     const {data} = await axios.get(`local.json?dir=${state.currentDir}`)
 
     commit('setLocalFiles', data)
-  },
-  async listInit ({commit}) {
-    console.log('[INIT] Watch List')
-
-    const {data} = await axios.get(`watchList.json?`)
-
-    log(`Received watch lists.`)
-
-    commit('setWatchLists', data)
   },
   async refreshReleases ({state, commit, dispatch}) {
     log(`Refreshing Releases...`)
@@ -368,19 +359,6 @@ export default {
   },
   async openInBrowser () {
     await axios.get('/_openInBrowser')
-  },
-  async saveWatchList ({state}) {
-    axios.post('saveWatchList', JSON.stringify(state.watchLists))
-  },
-  async updateList ({dispatch, commit}, data) {
-    commit('updateList', data)
-
-    dispatch('saveWatchList')
-  },
-  async removeFromList ({dispatch, commit}, data) {
-    commit('removeFromList', data)
-
-    dispatch('saveWatchList')
   },
   async searchInfoFromName ({commit, state}, name) {
     if (name === state.info.term) {
