@@ -9,16 +9,16 @@ export default {
     // Offline
     try {
       const {data} = await axios.get('getConfig.json')
-      commit('init', data.config)
-      // commit('config/set', data.config)
+
+      commit('config/set', data.config)
 
       // Setting defaults
+      commit('downloader/setQuality', data.config.quality)
       commit('releases/setParams', {
         fansub: data.config.fansub,
         quality: data.config.quality,
         choice: 'si'
       })
-
       commit('localFiles/setDir', data.config.localPath)
     } catch (e) { void e }
 
@@ -100,89 +100,6 @@ export default {
       document.player.currentTime = 0
       document.player.play()
     }
-  },
-  async download ({state, commit}, obj = {}) {
-    const isDownloader = obj.isDownloader || true
-    const name = obj.name || state.downloaderForm.name
-    const fromEp = state.downloaderForm.fromEp !== ''
-      ? state.downloaderForm.fromEp
-      : 0
-    const untilEp = state.downloaderForm.untilEp !== ''
-      ? state.downloaderForm.untilEp
-      : 20000
-    const quality = isDownloader ? state.downloaderForm.quality : state.config.config.quality
-
-    const magnets = state.config.config.magnets
-
-    log(`Received a request to download ${name} from ep ${fromEp} to ep ${untilEp}. Transmitting...`)
-
-    const infos = {
-      name: name,
-      quality: quality,
-      fromEp: +fromEp,
-      untilEp: +untilEp,
-      fansub: state.config.config.fansub,
-      choice: 'si'
-    }
-
-    const {data, status} = await axios.post('download', infos)
-
-    if (status === 200) {
-      log(`Request fulfilled!`)
-
-      if (magnets === true) {
-        const lastEp = fromEp !== '1' ? +fromEp + +data.length : data.length
-        log(`User says he prefers having magnets hashes.`)
-        commit('setDownloaderModal', {
-          show: true,
-          title: `${name.replace('_', ' ')}\t ${fromEp} - ${lastEp}`,
-          text: data
-        })
-      } else {
-        log(`Opening torrents directly on preferred torrent client.`)
-
-        data.forEach((link) => {
-          window.open(link)
-        })
-      }
-    } else if (status === 204) {
-      log('nyaa.si is down, trying with nyaa.pantsu.cat')
-
-      const {data, status} = await axios.post('download', {
-        name: name,
-        quality: quality,
-        fromEp: fromEp,
-        untilEp: untilEp,
-        fansub: state.config.fansub,
-        choice: 'pantsu'
-      })
-
-      if (status === 200) {
-        log(`Request fulfilled!`)
-
-        if (magnets === true) {
-          const lastEp = fromEp !== '1' ? +fromEp + +data.length : data.length
-          log(`User says he prefers having magnets hashes.`)
-          commit('setDownloaderModal', {
-            show: true,
-            title: `${name.replace('_', ' ')}\t ${fromEp} - ${lastEp}`,
-            text: data
-          })
-        } else {
-          log(`Opening torrents directly on preferred torrent client.`)
-
-          data.forEach((link) => {
-            window.open(link)
-          })
-        }
-      } else {
-        log('Unknown error occurred. nyaa.si and nyaa.pantsu.cat seem both down.')
-
-        commit('setInfoSnackbar', 'Sorry. KawAnime was not able to get your torrents...')
-      }
-    }
-
-    state.downloaderForm.loading = false
   },
   appendHistory ({}, data) {  // eslint-disable-line
     axios.post('appendHistory', JSON.stringify(data)).then(() => {

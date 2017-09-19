@@ -12,18 +12,6 @@ export default {
     show: false,
     text: ''
   },
-  downloaderForm: {
-    name: '',
-    fromEp: '',
-    untilEp: '',
-    quality: '',
-    loading: false
-  },
-  downloaderModal: {
-    show: false,
-    title: '',
-    text: ''
-  },
   history: {},
   historyModal: false,
   infoModal: false,

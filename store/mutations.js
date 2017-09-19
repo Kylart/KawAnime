@@ -15,55 +15,12 @@ export default {
   setUpdateStatus (state) {
     state.isUpdateAvailable = true
   },
-  init (state, data) {
-    const config = data
-
-    state.downloaderForm.quality = config.quality
-
-    state.config.config = config
-  },
   toggleDrawer (state) {
     state.drawer = !state.drawer
   },
   setInfoSnackbar (state, data) {
     state.infoSnackbar.text = data
     state.infoSnackbar.show = true
-  },
-  emptyLocals (state) {
-    state.localFiles = []
-  },
-  setLocalFiles (state, data) {
-    state.localFiles = data
-    log(`Local files updated.`)
-  },
-  setCurrentDir (state, data) {
-    state.currentDir = data
-    log(`Current directory now is ${state.currentDir}.`)
-  },
-  setResettingLocal (state) {
-    state.resettingLocal = !state.resettingLocal
-  },
-  setRefreshingLocal (state) {
-    state.refreshingLocal = !state.refreshingLocal
-  },
-  updateLocalFiles (state, data) {
-    if (data.type === 'delete') {
-      const index = state.localFiles.findIndex((file) => file.path === data.path)
-
-      state.localFiles.splice(index, 1)
-    }
-  },
-  setDownloaderValues (state, data) {
-    state.downloaderForm = data
-  },
-  setQuality (state, quality) {
-    state.downloaderForm.quality = quality
-  },
-  setDownloaderModal (state, data) {
-    state.downloaderModal = data
-  },
-  showDownloaderModal (state, value) {
-    state.downloaderModal.show = value
   },
   setHistory (state, data) {
     state.history = data

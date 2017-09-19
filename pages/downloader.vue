@@ -18,7 +18,7 @@
               name='name-input',
               type='text',
               label='Name of the anime',
-              v-model='$store.state.downloaderForm.name',
+              v-model='formValues.name',
               autofocus,
               dark
             )
@@ -28,7 +28,7 @@
               type='number',
               min='0',
               label='From episode...',
-              v-model='$store.state.downloaderForm.fromEp',
+              v-model='formValues.fromEp',
               dark
             )
           v-flex.pt-3.pl-5.pr-5(xs7, @keydown.enter='next(3)', @keydown.delete='previous(3)')
@@ -36,7 +36,7 @@
               name='until-ep-input',
               type='number',
               label='Until episode..',
-              v-model='$store.state.downloaderForm.untilEp',
+              v-model='formValues.untilEp',
               dark
             )
           v-flex.pt-4(xs12)
@@ -50,14 +50,14 @@
             v-btn#download-btn(
               dark, block, secondary,
               @click='isDownloadable()',
-              v-if='!$store.state.downloaderForm.loading'
+              v-if='!$store.state.downloader.form.loading'
             ) Download!
             v-btn(dark, block, secondary, loading, v-else)
     v-dialog.magnet-modal(v-model='magnetModal', lazy, absolute, width='800')
       v-card.secondary.white--text
         v-card-text.white--text
           h2.title.white--text
-            | Magnets for #[strong {{ $store.state.downloaderModal.title }}]
+            | Magnets for #[strong {{ $store.state.downloader.modal.title }}]
         v-divider
         v-card-text.subheading.white--text
           v-layout(row, wrap, justify-center, align-center)
@@ -66,12 +66,12 @@
                 v-icon.copy-icon content_copy
             v-flex.subheading.grey--text.modal-text(
               xs12,
-              v-for='link in $store.state.downloaderModal.text',
+              v-for='link in $store.state.downloader.modal.text',
               :key='link'
             ) {{ link.split('&')[0] }}
         v-card-actions
           v-spacer
-          v-btn.blue--text.darken-1(flat, v-on:click.native='$store.state.downloaderModal.show = false')
+          v-btn.blue--text.darken-1(flat, @click='$store.state.downloader.modal.show = false')
             | Thanks!
     v-snackbar(
       :timeout='timeout',
@@ -109,13 +109,13 @@
     },
     computed: {
       formValues () {
-        return this.$store.state.downloaderForm
+        return this.$store.state.downloader.form
       },
       links () {
-        return this.$store.state.downloaderModal.text
+        return this.$store.state.downloader.modal.text
       },
       magnetModal () {
-        return this.$store.state.downloaderModal.show
+        return this.$store.state.downloader.modal.show
       },
       eol () {
         if (this.$store.state.platform === 'win32') {
@@ -132,16 +132,16 @@
     },
     methods: {
       isDownloadable () {
-        if (this.$store.state.downloaderForm.name.length >= 3) { this.download() } else {
-          this.snackbar = true
-        }
+        this.formValues.name.length >= 3
+          ? this.download()
+          : this.snackbar = true
       },
       download () {
         const quality = this.quality
 
         this.$store.commit('setQuality', quality)
 
-        this.$store.dispatch('download')
+        this.$store.dispatch('downloader/download')
 
         this.$store.commit('setDownloaderValues', {
           name: '',
