@@ -1,4 +1,5 @@
 export { default as config } from './config'
+export { default as update } from './update'
 
 export { default as downloader } from './downloader'
 export { default as releases } from './releases'

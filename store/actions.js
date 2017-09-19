@@ -2,7 +2,7 @@
  * Created by Kylart on 26/07/2017.
  */
 
-import {axios, log} from './utils'
+import {axios} from './utils'
 
 export default {
   async init ({commit, dispatch}) {
@@ -44,43 +44,6 @@ export default {
     dispatch('releases/init').catch(err => { void err })
     dispatch('seasons/init').catch(err => { void err })
     dispatch('news/init').catch(err => { void err })
-  },
-  async checkUpdate ({state, commit, dispatch}) {
-    setTimeout(async () => {
-      if (!state.isUpdateAvailable) {
-        try {
-          const {data} = await axios.get('_isUpdateAvailable')
-          if (data.ok) {
-            dispatch('isUpdateInstallable')
-            log('An update is available.')
-          }
-        } catch (e) {
-          log(`Error while checking update. ${e.message}`)
-        }
-
-        setTimeout(() => { dispatch('checkUpdate') }, 30 * 1000)
-      }
-    }, 30 * 1000)
-  },
-  async isUpdateInstallable ({commit, dispatch}) {
-    try {
-      const {data} = await axios.get('_isInstallable')
-      if (data.ok) {
-        commit('setUpdateStatus')
-        commit('setInfoSnackbar', 'Update available. Think about installing it~')
-      } else {
-        setTimeout(() => { dispatch('_isInstallable') }, 1000)
-      }
-    } catch (e) {
-      log(`Error while checking if downloadable. ${e.message}`)
-    }
-  },
-  async updateApp ({commit}) {
-    try {
-      await axios.get('_quitAndInstall')
-    } catch (e) {
-      commit('setInfoSnackbar', 'An error occurred, please try again later or try restarting KawAnime and retry.')
-    }
   },
   async getEnv ({commit}) {
     const {data} = await axios.get('_env')

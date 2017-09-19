@@ -10,7 +10,7 @@ export default {
   },
   setDir (state, data) {
     state.dir = data
-    log(`Current directory now is ${state.dir}.`)
+    log(`Current directory is set to ${state.dir}.`)
   },
   toggleResetting (state) {
     state.resetting = !state.resetting

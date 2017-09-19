@@ -5,7 +5,6 @@
 export default {
   NODE_ENV: '',
   platform: '',
-  isUpdateAvailable: false,
   isConnected: false,
   drawer: false,
   infoSnackbar: {

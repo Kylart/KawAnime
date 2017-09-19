@@ -34,7 +34,7 @@
       v-toolbar-side-icon(@click.stop='toggleDrawer()')
       v-toolbar-title.white--text.title.hidden-xs-only かわニメ
       v-spacer
-      v-btn(icon, v-show="$store.state.isUpdateAvailable", v-tooltip:left="{ html: 'Update KawAnime' }", @click='restartAndUpdate()')
+      v-btn(icon, v-show="$store.state.update.isAvailable", v-tooltip:left="{ html: 'Update KawAnime' }", @click='restartAndUpdate()')
         v-icon.green--text file_download
       info-modal
       v-btn(icon, v-tooltip:left="{ html: 'Open KawAnime in your browser' }", @click='openInBrowser()')
@@ -163,7 +163,7 @@
         this.$store.dispatch('openInBrowser')
       },
       restartAndUpdate () {
-        this.$store.dispatch('updateApp')
+        this.$store.dispatch('update/updateApp')
       }
     }
   }

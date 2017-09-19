@@ -10,9 +10,6 @@ export default {
   setConnected (state, bool) {
     state.isConnected = bool
   },
-  setUpdateStatus (state) {
-    state.isUpdateAvailable = true
-  },
   toggleDrawer (state) {
     state.drawer = !state.drawer
   },
