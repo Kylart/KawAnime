@@ -2,7 +2,6 @@
  * Created by Kylart on 26/07/2017.
  */
 
-import moment from 'moment'
 import {log} from './utils'
 
 export default {
@@ -19,34 +18,17 @@ export default {
   init (state, data) {
     const config = data
 
-    state.releaseFansub = config.fansub
-    state.releaseQuality = config.quality
     state.downloaderForm.quality = config.quality
     state.currentDir = config.localPath
-
-    state.releaseParams.fansub = config.fansub
-    state.releaseParams.quality = config.quality
 
     state.config.config = config
   },
   toggleDrawer (state) {
     state.drawer = !state.drawer
   },
-  setReleaseParams (state, data) {
-    state.releaseParams = data
-  },
   setInfoSnackbar (state, data) {
     state.infoSnackbar.text = data
     state.infoSnackbar.show = true
-  },
-  emptyReleases (state) {
-    state.releases = []
-  },
-  setReleases (state, data) {
-    state.releases = data
-    state.releasesUpdateTime = moment()
-
-    log(`Releases updated.`)
   },
   emptyLocals (state) {
     state.localFiles = []

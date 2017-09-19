@@ -16,7 +16,7 @@
     "build": "rimraf public && npm run build:client && npm run build:server",
     "build:client": "cross-env NODE_ENV=production webpack --config webpack/webpack.client.config.js --hide-modules",
     "build:server": "cross-env NODE_ENV=production webpack --config webpack/webpack.server.config.js --hide-modules",
-    "cloc": "cloc $(git ls-files | grep -vE \".mkv|mp4|lock\")",
+    "cloc": "cloc $(git ls-files | grep -vE \".mkv|mp4|m4a|lock\")",
     "test:server": "nyc ava --verbose --serial test/server.test.js",
     "test:front": "npm run build && cross-env NODE_ENV=KawAnime-test nightwatch",
     "test": "standard --fix && npm test:front && npm test:server",
@@ -59,7 +59,7 @@
     "vue-loader": "^13.0.4",
     "vue-router": "^2.7.0",
     "vue-server-renderer": "^2.4.2",
-    "vuetify": "^0.15.5",
+    "vuetify": "^0.15.7",
     "vuex": "^2.3.1",
     "vuex-router-sync": "^4.1.2"
   },

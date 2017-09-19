@@ -3,6 +3,7 @@
  */
 
 export {default as axios} from 'axios'
+export {default as moment} from 'moment'
 
 export const log = (message) => {
   console.log(`[${(new Date()).toLocaleTimeString()}]: ${message}`)

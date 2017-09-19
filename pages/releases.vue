@@ -8,7 +8,7 @@
         v-flex(md2, sm3, xs10)
           v-select.select(
             :items='fansubList',
-            v-model='$store.state.releaseFansub',
+            v-model='$store.state.releases.params.fansub',
             label='Fansub',
             dark, single-line,
             hint='Pick a fansub',
@@ -17,7 +17,7 @@
         v-flex(md1, sm2, xs10)
           v-select.select(
             :items='qualityList',
-            v-model='$store.state.releaseQuality',
+            v-model='$store.state.releases.params.quality',
             label='Quality',
             dark,
             single-line,
@@ -108,10 +108,10 @@
     },
     computed: {
       releases () {
-        return this.$store.state.releases
+        return this.$store.state.releases.releases
       },
       fansubList () {
-        return this.$store.state.fansubList
+        return this.$store.state.releases.fansubs
       }
     },
     methods: {
@@ -130,8 +130,7 @@
       downloadAll (name) {
         console.log(`[${(new Date()).toLocaleTimeString()}]: Sending a request to download all episodes of ${name}.`)
 
-        const quality = this.$store.state.releaseQuality
-        const fansub = this.$store.state.releaseFansub
+        const {quality, fansub} = this.$store.state.releases.params
 
         axios.post('download', {
           name: name,
@@ -152,7 +151,7 @@
         })
       },
       async refresh () {
-        await this.$store.dispatch('refreshReleases')
+        await this.$store.dispatch('releases/refresh')
         this.updateTime()
       },
       print (item) {
@@ -163,7 +162,7 @@
         this.$store.commit('setAddToChoice', true)
       },
       updateTime () {
-        const updated = this.$store.state.releasesUpdateTime
+        const updated = this.$store.state.releases.updateTime
         if (updated) {
           this.lastUpdateTime = updated.fromNow()
         }

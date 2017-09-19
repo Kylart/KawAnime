@@ -10,6 +10,14 @@ export default {
     try {
       const {data} = await axios.get('getConfig.json')
       commit('init', data.config)
+      // commit('config/set', data.config)
+
+      // Defaulting releases params
+      commit('releases/setParams', {
+        fansub: data.config.fansub,
+        quality: data.config.quality,
+        choice: 'si'
+      })
     } catch (e) { void e }
 
     dispatch('getEnv').catch(err => { void err })
@@ -31,7 +39,7 @@ export default {
     } catch (e) { void e }
   },
   async online ({dispatch}) {
-    dispatch('releasesInit').catch(err => { void (err) })
+    dispatch('releases/init').catch(err => { void (err) })
     dispatch('seasons/init').catch(err => { void (err) })
     dispatch('news/init').catch(err => { void (err) })
   },
@@ -91,138 +99,12 @@ export default {
       document.player.play()
     }
   },
-  async releasesInit ({state, commit, dispatch}) {
-    console.log('[INIT] Releases')
-
-    const {data, status} = await axios.get('getLatestNyaa', { params: state.releaseParams })
-
-    if (status === 200) {
-      commit('setReleases', data)
-
-      if (state.autoRefreshReleases === true) dispatch('autoRefreshReleases')
-    } else if (status === 202) {
-      log(`An error occurred while getting the latest releases. Retrying in 45 seconds.`)
-      commit('setInfoSnackbar', 'Could not get the latest releases. Retrying in 45 seconds.')
-      setTimeout(function () {
-        log(`Retrying to get latest releases.`)
-        dispatch('releasesInit').catch(err => { void (err) })
-      }, 45 * 1000)
-    } else if (status === 204) {
-      log('nyaa.si does not respond... Switching to nyaa.pantsu.cat.')
-
-      commit('setReleaseParams', {
-        fansub: state.config.fansub,
-        quality: state.config.quality,
-        choice: 'pantsu'
-      })
-
-      const {data, status} = await axios.get('getLatestNyaa', { params: state.releaseParams })
-
-      if (status === 200) {
-        commit('setReleases', data)
-
-        if (state.autoRefreshReleases === true) dispatch('autoRefreshReleases')
-      } else if (status === 202) {
-        log(`An error occurred while getting the latest releases. Retrying in 45 seconds.`)
-        commit('setInfoSnackbar', 'Could not get the latest releases. Retrying in 45 seconds.')
-        setTimeout(function () {
-          log(`Retrying to get latest releases.`)
-          dispatch('releasesInit').catch(err => { void (err) })
-        }, 45 * 1000)
-      } else if (status === 204) {
-        log('nyaa.pantsu.cat does not respond... Switching to HorribleSubs.')
-
-        commit('setReleaseParams', {
-          fansub: state.config.fansub,
-          quality: state.config.quality,
-          choice: 'si'
-        })
-
-        const {data, status} = await axios.get(`getLatest.json?quality=${state.config.quality}`)
-
-        if (status === 200) {
-          commit('setReleases', data)
-
-          if (state.autoRefreshReleases === true) dispatch('autoRefreshReleases')
-        } else if (status === 202) {
-          log(`An error occurred while getting the latest releases. Retrying in 45 seconds.`)
-          commit('setInfoSnackbar', 'Could not get the latest releases. Retrying in 45 seconds.')
-          setTimeout(function () {
-            log(`Retrying to get latest releases.`)
-            dispatch('releasesInit').catch(err => { void (err) })
-          }, 45 * 1000)
-        } else if (status === 204) {
-          log('HorribleSubs does not respond. Retrying with nyaa.si.')
-
-          dispatch('releasesInit')
-        }
-      }
-    }
-  },
   async localInit ({state, commit}) {
     console.log('[INIT] Local Files')
 
     const {data} = await axios.get(`local.json?dir=${state.currentDir}`)
 
     commit('setLocalFiles', data)
-  },
-  async refreshReleases ({state, commit, dispatch}) {
-    log(`Refreshing Releases...`)
-
-    commit('emptyReleases')
-
-    commit('setReleaseParams', {
-      fansub: state.releaseFansub,
-      quality: state.releaseQuality,
-      choice: state.releaseParams.choice
-    })
-
-    const {data, status} = await axios.get('getLatestNyaa', { params: state.releaseParams })
-
-    if (status === 200) commit('setReleases', data)
-    else if (status === 202) {
-      log(`An error occurred while getting the latest releases. Retrying in 45 seconds.`)
-      commit('setInfoSnackbar', 'Could not get the latest releases. Retrying in 45 seconds.')
-      setTimeout(function () {
-        log(`Retrying to get latest releases.`)
-        dispatch('refreshReleases').catch(err => { void (err) })
-      }, 45 * 1000)
-    } else if (status === 204) {
-      const {data, status} = await axios.get(`getLatest.json?quality=${state.releaseQuality}`)
-
-      if (status === 200) commit('setReleases', data)
-      else if (status === 202 || status === 204) {
-        log(`An error occurred while getting the latest releases. Retrying in 45 seconds.`)
-        commit('setInfoSnackbar', 'Could not get the latest releases. Retrying in 45 seconds.')
-        setTimeout(function () {
-          log(`Retrying to get latest releases.`)
-          dispatch('refreshReleases').catch(err => { void (err) })
-        }, 45 * 1000)
-      }
-    }
-  },
-  async autoRefreshReleases ({dispatch, commit, state}) {
-    // Refresh releases every 30 minutes
-    setTimeout(async () => {
-      log(`Refreshing Releases...`)
-
-      try {
-        const {data} = await axios.get('getLatestNyaa', { params: state.releaseParams })
-
-        if (data.length === 18) {
-          commit('setReleases', data)
-          dispatch('autoRefreshReleases')
-        } else {
-          commit('setInfoSnackbar', 'Auto refresh releases failed... Attempting again in 30 minutes.')
-
-          dispatch('autoRefreshReleases')
-        }
-      } catch (e) {
-        commit('setInfoSnackbar', 'Auto refresh releases failed... Attempting again in 30 minutes.')
-
-        dispatch('autoRefreshReleases')
-      }
-    }, 30 * 60 * 1000)
   },
   async refreshLocal ({commit, state}) {
     log(`Refreshing Local files...`)
