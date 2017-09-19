@@ -142,7 +142,7 @@
         }).then((res) => {
           if (res.status !== 200) { console.log('An error occurred: request to open file ended with a status ' + res.status + '.') }
 
-          this.$store.dispatch('appendHistory', {
+          this.$store.dispatch('history/append', {
             type: 'Play',
             text: `${item.name} - ${item.ep}`
           }).catch(err => { void (err) })
@@ -164,7 +164,7 @@
           }
         }).then((res) => {
           this.$store.commit('setInfoSnackbar', `${item.name} ${item.ep} was successfully sent to Trash.`)
-          this.$store.dispatch('appendHistory', {
+          this.$store.dispatch('history/append', {
             type: 'Delete',
             text: `${item.name} - ${item.ep}`
           }).catch(err => { void (err) })

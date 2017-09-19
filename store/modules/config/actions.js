@@ -23,10 +23,9 @@ export default {
 
     if (data) {
       commit('setDir', data.path)
-      // TODO when local module ready
-      commit('emptyLocals', null, isRoot)
-      commit('setCurrentDir', data.path, isRoot)
-      dispatch('refreshLocal', null, isRoot)
+      commit('localFiles/empty', null, isRoot)
+      commit('localFiles/setDir', data.path, isRoot)
+      dispatch('localFiles/refresh', null, isRoot)
     }
   }
 }

@@ -2,7 +2,7 @@ import {axios, log} from '../../utils'
 
 export default {
   append ({}, data) {  // eslint-disable-line
-    axios.post('append', JSON.stringify(data)).then(() => {
+    axios.post('appendHistory', JSON.stringify(data)).then(() => {
       log(`Successfully appended to history.`)
     }).catch(err => {
       log('An error occurred while appending to history...', err)
