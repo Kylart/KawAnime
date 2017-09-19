@@ -139,8 +139,8 @@
         this.configModal = false
       },
       play () {
-        this.$store.dispatch('setUpPlayer')
-        this.$store.dispatch('playSound')
+        this.$store.dispatch('player/setUp')
+        this.$store.dispatch('player/play')
       }
     }
   }

@@ -127,7 +127,7 @@
     },
     watch: {
       magnetModal () {
-        this.magnetModal && this.$store.dispatch('playSound')
+        this.magnetModal && this.$store.dispatch('player/play')
       }
     },
     methods: {
