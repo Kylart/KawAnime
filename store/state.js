@@ -24,9 +24,6 @@ export default {
     title: '',
     text: ''
   },
-  localFiles: [],
-  resettingLocal: false,
-  refreshingLocal: false,
   history: {},
   historyModal: false,
   infoModal: false,

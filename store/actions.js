@@ -12,19 +12,21 @@ export default {
       commit('init', data.config)
       // commit('config/set', data.config)
 
-      // Defaulting releases params
+      // Setting defaults
       commit('releases/setParams', {
         fansub: data.config.fansub,
         quality: data.config.quality,
         choice: 'si'
       })
+
+      commit('localFiles/setDir', data.config.localPath)
     } catch (e) { void e }
 
     dispatch('getEnv').catch(err => { void err })
-    dispatch('localInit').catch(err => { void (err) })
-    dispatch('watchLists/init').catch(err => { void (err) })
-    dispatch('getHistory').catch(err => { void (err) })
-    dispatch('setUpPlayer').catch(err => { void (err) })
+    dispatch('localFiles/init').catch(err => { void err })
+    dispatch('watchLists/init').catch(err => { void err })
+    dispatch('getHistory').catch(err => { void err })
+    dispatch('setUpPlayer').catch(err => { void err })
 
     // Online
     try {
@@ -39,9 +41,9 @@ export default {
     } catch (e) { void e }
   },
   async online ({dispatch}) {
-    dispatch('releases/init').catch(err => { void (err) })
-    dispatch('seasons/init').catch(err => { void (err) })
-    dispatch('news/init').catch(err => { void (err) })
+    dispatch('releases/init').catch(err => { void err })
+    dispatch('seasons/init').catch(err => { void err })
+    dispatch('news/init').catch(err => { void err })
   },
   async checkUpdate ({state, commit, dispatch}) {
     setTimeout(async () => {
@@ -97,44 +99,6 @@ export default {
     if (!document.player.src.includes('sounds/None.m4a')) {
       document.player.currentTime = 0
       document.player.play()
-    }
-  },
-  async localInit ({state, commit}) {
-    console.log('[INIT] Local Files')
-
-    const {data} = await axios.get(`local.json?dir=${state.currentDir}`)
-
-    commit('setLocalFiles', data)
-  },
-  async refreshLocal ({commit, state}) {
-    log(`Refreshing Local files...`)
-
-    commit('setRefreshingLocal')
-
-    const {data} = await axios.get(`local.json?dir=${state.currentDir}`)
-
-    commit('setRefreshingLocal')
-    commit('setLocalFiles', data)
-  },
-  async resetLocal ({state, commit, dispatch}) {
-    log(`Resetting local information...`)
-
-    commit('setResettingLocal')
-
-    axios.get(`resetLocal?dir=${state.currentDir}`).then(() => {
-      dispatch('refreshLocal')
-      log(`Reset completed.`)
-    }).catch((err) => {
-      log('An error occurred while resetting.\n' + err)
-    }).then(() => { commit('setResettingLocal') })
-  },
-  async changePath ({commit, dispatch}) {
-    const {data} = await axios.get('openThis?type=dialog')
-
-    if (data) {
-      commit('emptyLocals')
-      commit('setCurrentDir', data.path)
-      dispatch('refreshLocal')
     }
   },
   async download ({state, commit}, obj = {}) {
@@ -223,7 +187,7 @@ export default {
   appendHistory ({}, data) {  // eslint-disable-line
     axios.post('appendHistory', JSON.stringify(data)).then(() => {
       log(`Successfully appended to history.`)
-    }).catch((err) => {
+    }).catch(err => {
       log(`An error occurred while appending to history... ${err}`)
     })
   },

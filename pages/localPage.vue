@@ -1,6 +1,6 @@
 <template lang="pug">
   v-container.pa-0(fluid)
-    div(v-if='files.length')
+    div(v-if='nbEps')
       v-layout(row, wrap, style='margin: 0 1%;')
         v-flex.menubar(xs12)
           v-layout(row, wrap)
@@ -10,12 +10,12 @@
             v-flex(xs4, sm2, md2)
               history-modal
             v-flex.menu-buttons(xs12, sm7, offset-md3, md5, offset-lg4, lg4, offset-xl5, xl3)
-              v-btn.refresh-button(icon, v-if='!this.$store.state.refreshingLocal', @click='refresh()')
+              v-btn.refresh-button(icon, v-if='!this.$store.state.localFiles.refreshing', @click='refresh()')
                 v-icon(large) refresh
               v-btn.refresh-button(v-else, icon, loading)
               v-btn.change-dir-button(flat, dark, @click='changePath()')
                 | Change dir
-              v-btn.reset-cache-button(secondary, dark, @click='resetLocal()', v-if='!this.$store.state.resettingLocal')
+              v-btn.reset-cache-button(secondary, dark, @click='resetLocal()', v-if='!this.$store.state.localFiles.resetting')
                 | Refresh local info
               v-btn.reset-cache-button(secondary, dark, loading, v-else)
         transition-group(name='list')
@@ -79,7 +79,7 @@
               history-modal
             v-flex(xs5)
             v-flex.menu-buttons(xs3)
-              v-btn.refresh-button(icon, v-if='!this.$store.state.refreshingLocal', @click='refresh()')
+              v-btn.refresh-button(icon, v-if='!this.$store.state.localFiles.refreshing', @click='refresh()')
                 v-icon(large) refresh
               v-btn.refresh-button(v-else, icon, loading)
               v-btn.change-dir-button(flat, dark, @click='changePath()')
@@ -113,13 +113,13 @@
       }
     },
     computed: {
-      files: function () {
-        return this.$store.state.localFiles
+      files () {
+        return this.$store.state.localFiles.files
       },
-      nbEps: function () {
+      nbEps () {
         return this.files.length
       },
-      episodeLabel: function () {
+      episodeLabel () {
         return this.nbEps === 1
           ? 'episode'
           : 'episodes'
@@ -137,7 +137,7 @@
           params: {
             type: 'video',
             path: item.path,
-            dir: this.$store.state.currentDir
+            dir: this.$store.state.localFiles.dir
           }
         }).then((res) => {
           if (res.status !== 200) { console.log('An error occurred: request to open file ended with a status ' + res.status + '.') }
@@ -151,7 +151,7 @@
       delThis (item) {
         console.log(`[${(new Date()).toLocaleTimeString()}]: Requested to delete ${item.path} - ${item.ep}. Sending...`)
 
-        this.$store.commit('updateLocalFiles', {
+        this.$store.commit('localFiles/updateFiles', {
           type: 'delete',
           path: item.path
         })
@@ -160,7 +160,7 @@
           params: {
             type: 'delete',
             path: item.path,
-            dir: this.$store.state.currentDir
+            dir: this.$store.state.localFiles.dir
           }
         }).then((res) => {
           this.$store.commit('setInfoSnackbar', `${item.name} ${item.ep} was successfully sent to Trash.`)
@@ -173,13 +173,13 @@
         })
       },
       refresh () {
-        this.$store.dispatch('refreshLocal')
+        this.$store.dispatch('localFiles/refresh')
       },
       changePath () {
-        this.$store.dispatch('changePath')
+        this.$store.dispatch('localFiles/changePath')
       },
       resetLocal () {
-        this.$store.dispatch('resetLocal')
+        this.$store.dispatch('localFiles/reset')
       },
       showChoices (name) {
         this.choiceTitle = name

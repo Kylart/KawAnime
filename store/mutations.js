@@ -19,7 +19,6 @@ export default {
     const config = data
 
     state.downloaderForm.quality = config.quality
-    state.currentDir = config.localPath
 
     state.config.config = config
   },
