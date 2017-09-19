@@ -11,6 +11,8 @@ const removeUnwanted = (string) => {
     .replace(' English Subbed', '')   // CCM
     .replace(' Episode', '')  // CCM
     .replace('[Multiple Subtitle]', '')  // Erai-raws
+    .replace(' END', '')
+    .replace(' FINAL', '')
 }
 
 module.exports = removeUnwanted
