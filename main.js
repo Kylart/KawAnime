@@ -165,6 +165,7 @@ dialog.showErrorBox = (title, content) => {
 
 process.on('uncaughtException', (err) => {
   console.error('Uncaught exception occurred in main process.\n', err)
+  fs.writeFileSync(path.join(homedir(), 'Desktop', 'error.txt'), err.message, 'utf-8')
 })
 
 const newWin = () => {
