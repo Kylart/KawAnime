@@ -2,8 +2,6 @@
  * Created by Kylart on 26/07/2017.
  */
 
-import {log} from './utils'
-
 export default {
   setEnv (state, data) {
     state.platform = data.platform
@@ -21,13 +19,6 @@ export default {
   setInfoSnackbar (state, data) {
     state.infoSnackbar.text = data
     state.infoSnackbar.show = true
-  },
-  setHistory (state, data) {
-    state.history = data
-    log(`History updated.`)
-  },
-  setHistoryModal (state, data) {
-    state.historyModal = data
   },
   setInfoModal (state, data) {
     state.infoModal = data

@@ -12,8 +12,6 @@ export default {
     show: false,
     text: ''
   },
-  history: {},
-  historyModal: false,
   infoModal: false,
   info: {
     info: {},

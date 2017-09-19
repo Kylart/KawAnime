@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-dialog(lazy, absolute, width='75%', v-model='$store.state.historyModal')
+  v-dialog(lazy, absolute, width='75%', v-model='$store.state.history.modal')
     v-btn(secondary, dark, @click='refresh()', slot='activator')
       | History
     v-card
@@ -35,7 +35,7 @@
         v-btn.blue--text.darken-1(
           flat,
           style='width: 100px;',
-          @click="$store.commit('setHistoryModal', false)"
+          @click="$store.commit('history/setModal', false)"
         ) Close
 </template>
 
@@ -45,17 +45,17 @@
       return {}
     },
     computed: {
-      history: function () {
-        return this.$store.state.history
+      history () {
+        return this.$store.state.history.entries
       },
-      modal: function () {
-        return this.$store.state.historyModal
+      modal () {
+        return this.$store.state.history.modal
       }
     },
     watch: {
-      modal: function () {
+      modal () {
         console.log(`[${(new Date()).toLocaleTimeString()}]: Refreshing history.`)
-        this.$store.dispatch('getHistory')
+        this.$store.dispatch('history/get')
       }
     },
     methods: {
@@ -65,13 +65,13 @@
           : 'not-delete'
       },
       clearEntry (info, item) {
-        this.$store.dispatch('removeFromHistory', {
+        this.$store.dispatch('history/remove', {
           date: item,
           info
         })
       },
       refresh () {
-        this.$store.dispatch('getHistory')
+        this.$store.dispatch('history/get')
       }
     }
   }

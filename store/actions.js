@@ -25,7 +25,7 @@ export default {
     dispatch('getEnv').catch(err => { void err })
     dispatch('localFiles/init').catch(err => { void err })
     dispatch('watchLists/init').catch(err => { void err })
-    dispatch('getHistory').catch(err => { void err })
+    dispatch('history/get').catch(err => { void err })
     dispatch('setUpPlayer').catch(err => { void err })
 
     // Online
@@ -100,25 +100,6 @@ export default {
       document.player.currentTime = 0
       document.player.play()
     }
-  },
-  appendHistory ({}, data) {  // eslint-disable-line
-    axios.post('appendHistory', JSON.stringify(data)).then(() => {
-      log(`Successfully appended to history.`)
-    }).catch(err => {
-      log(`An error occurred while appending to history... ${err}`)
-    })
-  },
-  async getHistory ({commit}) {
-    const {data, status} = await axios.get('getHistory?')
-
-    if (status !== 200) { log(`An error occurred while gathering the history.`) }
-
-    commit('setHistory', data)
-  },
-  async removeFromHistory ({dispatch}, data) {
-    await axios.post('removeFromHistory', JSON.stringify(data))
-
-    dispatch('getHistory')
   },
   async openInBrowser () {
     await axios.get('/_openInBrowser')
