@@ -34,11 +34,15 @@
       v-toolbar-side-icon(@click.stop='toggleDrawer()')
       v-toolbar-title.white--text.title.hidden-xs-only かわニメ
       v-spacer
-      v-btn(icon, v-show="$store.state.update.isAvailable", v-tooltip:left="{ html: 'Update KawAnime' }", @click='restartAndUpdate()')
-        v-icon.green--text file_download
+      v-tooltip(left)
+        v-btn(icon, v-show="$store.state.update.isAvailable", @click='restartAndUpdate()', slot='activator')
+          v-icon.green--text file_download
+        span Update KawAnime
       info-modal
-      v-btn(icon, v-tooltip:left="{ html: 'Open KawAnime in your browser' }", @click='openInBrowser()')
-        v-icon open_in_new
+      v-tooltip(left)
+        v-btn(icon, @click='openInBrowser()', slot='activator')
+          v-icon open_in_new
+        span Open KawAnime in your browser
       settings
 
     main.m

@@ -1,4 +1,4 @@
-<template lang="pug" xmlns:v-tooltip="http://www.w3.org/1999/xhtml">
+<template lang="pug">
   div(style='min-height: 95vh')
     loader(v-if='!season[1].items')
     v-container(fluid, v-else, style='padding: 20px 0 0')
@@ -33,14 +33,18 @@
                 )
                   v-layout.elem.elevation-3(row, wrap, v-ripple='true')
                     // Header of elem
-                    v-flex(xs12, v-tooltip:bottom='{ html: item.title }')
-                      h6.title.ellipsis.white--text
-                        | {{ item.title }}
-                    v-flex(xs8, v-tooltip:bottom="{ html: item.genres.join(' ') }")
-                      p.genres.ellipsis {{ item.genres.join(' ') }}
-                    v-flex(xs3, v-tooltip:bottom='{ html: item.fromType }')
-                      p.from-type.ellipsis
-                        | {{ item.fromType }}
+                    v-flex(xs12)
+                      v-tooltip(top)
+                        h6.title.ellipsis.white--text(slot='activator') {{ item.title }}
+                        span {{ item.title }}
+                    v-flex(xs8)
+                      v-tooltip(top)
+                        p.genres.ellipsis(slot='activator') {{ item.genres.join(' ') }}
+                        span {{ item.genres.join(' ') }}
+                    v-flex(xs3)
+                      v-tooltip(top)
+                        p.from-type.ellipsis(slot='activator') {{ item.fromType }}
+                        span.text-xs-right {{ item.fromType }}
                     v-flex(xs1)
                     // Picture of elem
                     v-flex.image-container(xs3, lg4)
