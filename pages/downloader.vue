@@ -139,17 +139,10 @@
       download () {
         const quality = this.quality
 
-        this.$store.commit('setQuality', quality)
-
         this.$store.dispatch('downloader/download')
-
-        this.$store.commit('setDownloaderValues', {
-          name: '',
-          fromEp: '',
-          untilEp: '',
-          quality: quality,
-          loading: true
-        })
+          .then(() => {
+            this.$store.commit('downloader/setQuality', quality)
+          })
       },
       next (number) {
         switch (number) {

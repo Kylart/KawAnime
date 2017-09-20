@@ -191,7 +191,7 @@ const newWin = () => {
 
   process.win.webContents.on('crashed', (event) => {
     console.error('Main window crashed')
-    console.error('Event is ' + event)
+    console.error('Event is ', event)
   })
 
   process.win.on('unresponsive', () => {

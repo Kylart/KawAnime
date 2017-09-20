@@ -302,5 +302,6 @@
     padding: 30px;
     text-align: justify;
     text-align-last: center;
+    white-space: pre-wrap;
   }
 </style>

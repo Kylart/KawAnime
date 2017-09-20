@@ -24,6 +24,9 @@ export default {
       fansub: rootState.config.config.fansub,
       choice: 'si'
     }
+    let failed = false
+
+    commit('toggleLoading')
 
     const {data, status} = await axios.post('download', infos)
 
@@ -76,12 +79,13 @@ export default {
           })
         }
       } else {
+        failed = true
         log('Unknown error occurred. nyaa.si and nyaa.pantsu.cat seem both down.')
 
         commit('setInfoSnackbar', 'Sorry. KawAnime was not able to get your torrents...', isRoot)
       }
     }
 
-    state.form.loading = false
+    commit(failed ? 'toggleLoading' : 'resetForm')
   }
 }
