@@ -182,13 +182,6 @@ const newWin = () => {
     process.win.show()
   })
 
-  process.win.on('close', (e) => {
-    if (process.platform === 'darwin') {
-      e.preventDefault()
-      process.win.hide()
-    }
-  })
-
   process.win.on('closed', () => {
     process.win = null
     if (server.address()) {
