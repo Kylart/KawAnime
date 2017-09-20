@@ -64,7 +64,13 @@ module.exports = {
       },
       {
         test: /\.styl$/,
-        loader: ['style-loader', 'css-loader', 'stylus-loader']
+        // loader: ['style-loader', 'css-loader', 'stylus-loader']
+        loader: ['vue-style-loader', 'css-loader', 'stylus-loader', {
+          loader: 'vuetify-loader',
+          options: {
+            theme: resolve('assets/stylus/theme.styl')
+          }
+        }]
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
