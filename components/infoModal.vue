@@ -49,13 +49,13 @@
       async search (name) {
         this.searchTerm = name
 
-        if (this.$store.state.info.info.title === name) {
-          this.$store.commit('showInfo', true)
+        if (this.$store.state.search.info.info.title === name) {
+          this.$store.commit('search/showInfo', true)
           this.searchShow = false
         } else {
           this.searchShow = false
 
-          this.$store.dispatch('searchInfoFromName', name)
+          this.$store.dispatch('search/fromName', name)
         }
       },
       quickSearch: _.debounce(

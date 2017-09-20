@@ -47,7 +47,7 @@
 
     env(v-show='$store.state.NODE_ENV === "development"')
 
-    info-results(v-show='$store.state.info.show')
+    info-results(v-show='$store.state.search.info.show')
 
     //- Used for displaying any info
     v-snackbar(

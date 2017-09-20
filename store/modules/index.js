@@ -10,3 +10,4 @@ export { default as watchLists } from './watchLists'
 
 export { default as history } from './history'
 export { default as player } from './player'
+export { default as search } from './search'

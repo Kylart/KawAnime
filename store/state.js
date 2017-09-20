@@ -11,13 +11,5 @@ export default {
     show: false,
     text: ''
   },
-  infoModal: false,
-  info: {
-    info: {},
-    error: '',
-    loading: true,
-    show: false,
-    term: ''
-  },
   addToChoice: false
 }

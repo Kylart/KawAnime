@@ -48,7 +48,7 @@
           }, {
             action: 'info_outline',
             text: 'Information',
-            method: (item) => vm.$store.dispatch('searchInfoFromName', item)
+            method: (item) => vm.$store.dispatch('search/fromName', item)
           }, {
             action: 'delete_sweep',
             text: 'Delete this entry',
@@ -59,7 +59,7 @@
     },
     methods: {
       download (name) {
-        this.$store.dispatch('download', {
+        this.$store.dispatch('downloader/download', {
           name,
           isDownloader: false
         })

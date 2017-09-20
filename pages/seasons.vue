@@ -65,7 +65,7 @@
                                     v-list-tile-action
                                       v-icon more
                                     v-list-tile-title Check synopsis
-                                  v-list-tile(@click="$store.dispatch('searchInfoFromName', item.title)")
+                                  v-list-tile(@click="$store.dispatch('search/fromName', item.title)")
                                     v-list-tile-action
                                       v-icon info_outline
                                     v-list-tile-title Information

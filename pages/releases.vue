@@ -168,7 +168,7 @@
         }
       },
       searchThis (name) {
-        this.$store.dispatch('searchInfoFromName', name)
+        this.$store.dispatch('search/fromName', name)
       }
     }
   }
