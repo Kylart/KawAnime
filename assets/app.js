@@ -5,7 +5,7 @@ import VueLazyload from 'vue-lazyload'
 // import Vuetify from './vuetify.js'  // waiting a-la-carte
 import Vuetify from 'vuetify'
 
-import Components from 'components/_index'
+import * as Components from 'components/_index.js'
 
 import { createStore } from 'store/index'
 import { createRouter } from 'router/index'

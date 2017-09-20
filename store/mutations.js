@@ -17,9 +17,6 @@ export default {
     state.infoSnackbar.text = data
     state.infoSnackbar.show = true
   },
-  setInfoModalInfo (state, data) {
-    state.info = data
-  },
   setAddToChoice (state, data) {
     state.addToChoice = data
   }
