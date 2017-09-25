@@ -82,8 +82,6 @@
 </template>
 
 <script>
-  import axios from 'axios'
-
   export default {
     mounted () {
       if (this.releases.length) {
@@ -132,22 +130,13 @@
 
         const {quality, fansub} = this.$store.state.releases.params
 
-        axios.post('download', {
-          name: name,
-          quality: quality,
+        this.$store.dispatch('downloader/download', {
+          name,
+          quality,
+          fansub,
           fromEp: 0,
           untilEp: 20000,
-          fansub: fansub,
           choice: 'si'
-        }).then(({data}) => {
-          console.log(`[${(new Date()).toLocaleTimeString()}]: Server responded!`)
-
-          data.forEach((link) => {
-            window.open(link)
-          })
-        }).catch((err) => {
-          console.log(`[${(new Date()).toLocaleTimeString()}]: An error occurred... ${err}`)
-          this.$store.commit('setInfoSnackbar', `An error occurred while getting ${name}.`)
         })
       },
       async refresh () {

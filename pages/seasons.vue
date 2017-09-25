@@ -5,7 +5,7 @@
       v-layout.form-container(row, wrap, justify-center)
         v-flex.season-container(sm3, xs8)
           v-select(
-            v-bind:items='seasonChoices',
+            :items='seasonChoices',
             v-model='$store.state.seasons.season',
             label='Season',
             dark, item-text='name',
@@ -21,7 +21,7 @@
           v-tabs-item(v-for='i in 3', :href="'#' + i", :key='i')
             | {{ season[i].name }}
         v-tabs-items
-          v-tabs-content(v-for='i in 3', lazy, v-bind:id='`${i}`', :key='i')
+          v-tabs-content(v-for='i in 3', lazy, :id='`${i}`', :key='i')
             v-text-field.query(v-model='query', label='Search entry', dark)
             v-layout.elems(row, wrap)
               transition-group(name='list')
@@ -106,22 +106,22 @@
       }
     },
     computed: {
-      seasons: function () {
+      seasons () {
         return this.$store.state.seasons.seasons
       },
-      stats: function () {
+      stats () {
         return this.$store.state.seasons.seasonsStats
       },
-      TVs: function () {
+      TVs () {
         return this.seasons.TV
       },
-      OVAs: function () {
+      OVAs () {
         return this.seasons.OVAs
       },
-      Movies: function () {
+      Movies () {
         return this.seasons.Movies
       },
-      season: function () {
+      season () {
         return [
           '',
           {name: 'TV', items: this.TVs},
@@ -129,7 +129,7 @@
           {name: 'Movies', items: this.Movies}
         ]
       },
-      computedSeason: function () {
+      computedSeason () {
         const query = this.query.toLowerCase()
         return query === ''
           ? this.season

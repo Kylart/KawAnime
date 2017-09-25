@@ -4,13 +4,15 @@ export default {
   async download ({state, commit, rootState}, obj = {}) {
     const isDownloader = obj.isDownloader || true
     const name = obj.name || state.form.name
-    const fromEp = state.form.fromEp !== ''
+    const fromEp = obj.fromEp || (state.form.fromEp !== ''
       ? state.form.fromEp
       : 0
-    const untilEp = state.form.untilEp !== ''
+    )
+    const untilEp = obj.untilEp || (state.form.untilEp !== ''
       ? state.form.untilEp
       : 20000
-    const quality = isDownloader ? state.form.quality : rootState.config.config.quality
+    )
+    const quality = obj.quality || (isDownloader ? state.form.quality : rootState.config.config.quality)
 
     const magnets = rootState.config.config.magnets
 
