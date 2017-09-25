@@ -8,13 +8,13 @@
           v-card-text.subheading.white--text
             v-layout(row, wrap, justify-center, align-center)
               v-flex.modal-icon-container(xs4, offset-xs6)
-                v-btn(flat, icon, v-if='values.text.length', v-clipboard="values.text.join(eol)", @success='snack = true')
+                v-btn(flat, icon, v-if='magnets.length', v-clipboard="magnets.join(eol)", @success='snack = true')
                   v-icon.copy-icon content_copy
               v-flex.subheading.grey--text.modal-text(
                 xs12,
-                v-for='link in values.text',
-                :key='link'
-              ) {{ link.split('&')[0] }}
+                v-for='magnet in values.magnets',
+                :key='magnet.link'
+              ) {{ magnet.link.split('&')[0] }}
           v-card-actions
             v-spacer
             v-btn.blue--text.darken-1(flat, @click='values.show = false') Thanks!
@@ -30,7 +30,8 @@
   export default {
     data () {
       return {
-        snack: false
+        snack: false,
+        selected: []
       }
     },
     computed: {
@@ -46,6 +47,11 @@
         } else {
           return '\n'
         }
+      },
+      magnets () {
+        return this.values.magnets.map((magnet) => {
+          return magnet.link
+        })
       }
     },
     watch: {

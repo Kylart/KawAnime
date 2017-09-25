@@ -55,10 +55,7 @@
             v-btn(dark, block, secondary, loading, v-else)
     v-snackbar(
       :timeout='timeout',
-      :top="y === 'top'",
-      :bottom="y === 'bottom'",
-      :right="x === 'right'",
-      :left="x === 'left'",
+      top,
       v-model='snackbar'
     ) Please, enter a valid name (at least 3 letters...)
       v-btn.pink--text(flat, @click='snackbar = false') ok!

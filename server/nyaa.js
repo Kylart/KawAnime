@@ -4,10 +4,35 @@
 
 const nyaa = require('nyaapi')
 const malScraper = require('mal-scraper')
+const _ = require('lodash')
 const {removeUnwanted} = require('./utils')
 
 const sendRes = (object, res) => {
   res.status(200).send(JSON.stringify(object))
+}
+
+const formatMagnets = (data, searchData, choice, res) => {
+  const magnets = []
+  const eps = []
+
+  data.forEach((elem) => {
+    elem.title[0] = removeUnwanted(elem.title[0])
+    const ep = elem.title[0].split(' ').splice(-2, 1)[0]
+    eps.push(ep)
+
+    if (ep <= searchData.untilEp && ep >= searchData.fromEp) {
+      magnets.push({
+        name: elem.title[0],
+        link: `magnet:?xt=urn:btih:${choice === 'si' ? elem['nyaa:infoHash'][0] : elem.link[0].split('/').slice(-1)}`
+      })
+    }
+  })
+
+  sendRes({
+    minEp: _.min(eps),
+    maxEp: _.max(eps),
+    magnets
+  }, res)
 }
 
 const download = (req, res) => {
@@ -32,36 +57,14 @@ const download = (req, res) => {
 
     if (choice === 'si') {
       nyaa.searchSi(term).then((data) => {
-        const magnets = []
-
-        data.forEach((elem) => {
-          elem.title[0] = removeUnwanted(elem.title[0])
-          const ep = elem.title[0].split(' ').splice(-2, 1)[0]
-
-          if (ep <= searchData.untilEp && ep >= searchData.fromEp) {
-            magnets.push(`magnet:?xt=urn:btih:${elem['nyaa:infoHash'][0]}`)
-          }
-        })
-
-        sendRes(magnets, res)
+        formatMagnets(data, searchData, choice, res)
       }).catch(/* istanbul ignore next */(err) => {
         console.log('[Nyaa]: An error occurred...\n' + err)
         res.status(204).send()
       })
     } else {
       nyaa.searchPantsu(term).then((data) => {
-        const magnets = []
-
-        data.forEach((elem) => {
-          elem.title[0] = removeUnwanted(elem.title[0])
-          const ep = parseInt(elem.title[0].split(' ').splice(-2, 1)[0])
-
-          if (ep <= searchData.untilEp && ep >= searchData.fromEp) {
-            magnets.push('magnet:?xt=urn:btih:' + elem.link[0].split('/').slice(-1))
-          }
-        })
-
-        sendRes(magnets, res)
+        formatMagnets(data, searchData, choice, res)
       }).catch(/* istanbul ignore next */(err) => {
         console.log(err.message)
         res.status(204).send()

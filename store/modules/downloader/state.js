@@ -9,6 +9,6 @@ export default {
   modal: {
     show: false,
     title: '',
-    text: ''
+    magnets: []
   }
 }

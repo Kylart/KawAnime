@@ -36,12 +36,11 @@ export default {
       log(`Request fulfilled!`)
 
       if (magnets === true) {
-        const lastEp = fromEp !== '1' ? +fromEp + +data.length : data.length
         log(`User says he prefers having magnets hashes.`)
         commit('setModal', {
           show: true,
-          title: `${name.replace('_', ' ')}\t ${fromEp} - ${lastEp}`,
-          text: data
+          title: `${name.replace('_', ' ')}\t ${data.minEp} - ${data.maxEp}`,
+          magnets: data.magnets
         })
       } else {
         log(`Opening torrents directly on preferred torrent client.`)
@@ -66,12 +65,11 @@ export default {
         log(`Request fulfilled!`)
 
         if (magnets === true) {
-          const lastEp = fromEp !== '1' ? +fromEp + +data.length : data.length
           log(`User says he prefers having magnets hashes.`)
           commit('setModal', {
             show: true,
-            title: `${name.replace('_', ' ')}\t ${fromEp} - ${lastEp}`,
-            text: data
+            title: `${name.replace('_', ' ')}\t ${data.minEp} - ${data.maxEp}`,
+            magnets: data.magnets
           })
         } else {
           log(`Opening torrents directly on preferred torrent client.`)
