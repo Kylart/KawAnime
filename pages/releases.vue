@@ -77,7 +77,7 @@
           v-card-text.subheading.white--text {{ modalText }}
           v-card-actions
             v-spacer
-            v-btn.blue--text.darken-1(flat, v-on:click.native='modal = false') Thanks!
+            v-btn.blue--text.darken-1(flat, @click='modal = false') Thanks!
     choice-window(:entry='choiceTitle')
 </template>
 

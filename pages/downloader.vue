@@ -53,26 +53,6 @@
               v-if='!$store.state.downloader.form.loading'
             ) Download!
             v-btn(dark, block, secondary, loading, v-else)
-    v-dialog.magnet-modal(v-model='magnetModal', lazy, absolute, width='800')
-      v-card.secondary.white--text
-        v-card-text.white--text
-          h2.title.white--text
-            | Magnets for #[strong {{ $store.state.downloader.modal.title }}]
-        v-divider
-        v-card-text.subheading.white--text
-          v-layout(row, wrap, justify-center, align-center)
-            v-flex.modal-icon-container(xs4, offset-xs6)
-              v-btn(flat, icon, v-if='links', v-clipboard="links.join(eol)", @success='copiedSnackbar = true')
-                v-icon.copy-icon content_copy
-            v-flex.subheading.grey--text.modal-text(
-              xs12,
-              v-for='link in $store.state.downloader.modal.text',
-              :key='link'
-            ) {{ link.split('&')[0] }}
-        v-card-actions
-          v-spacer
-          v-btn.blue--text.darken-1(flat, @click='$store.state.downloader.modal.show = false')
-            | Thanks!
     v-snackbar(
       :timeout='timeout',
       :top="y === 'top'",
@@ -82,15 +62,6 @@
       v-model='snackbar'
     ) Please, enter a valid name (at least 3 letters...)
       v-btn.pink--text(flat, @click='snackbar = false') ok!
-    v-snackbar(
-      :timeout='copiedTimeout',
-      :top="y === 'top'",
-      :bottom="y === 'bottom'",
-      :right="x === 'right'",
-      :left="x === 'left'",
-      v-model='copiedSnackbar'
-    ) All magnets were copied to clipboard!
-      v-btn.pink--text(flat, @click='copiedSnackbar = false') Thanks!
 </template>
 
 <script>
@@ -100,34 +71,12 @@
         modalText: '',
         snackbar: false,
         timeout: 4000,
-        x: '',
-        y: 'top',
-        copiedSnackbar: false,
-        copiedTimeout: 2500,
         quality: this.$store.state.config.config.quality
       }
     },
     computed: {
       formValues () {
         return this.$store.state.downloader.form
-      },
-      links () {
-        return this.$store.state.downloader.modal.text
-      },
-      magnetModal () {
-        return this.$store.state.downloader.modal.show
-      },
-      eol () {
-        if (this.$store.state.platform === 'win32') {
-          return '\r\n'
-        } else {
-          return '\n'
-        }
-      }
-    },
-    watch: {
-      magnetModal () {
-        this.magnetModal && this.$store.dispatch('player/play')
       }
     },
     methods: {
@@ -223,38 +172,5 @@
   .radio
   {
     margin-left: 10%;
-  }
-
-  .modal-text
-  {
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    margin: 0;
-    padding: 0;
-    height: 22px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .magnet-modal .title
-  {
-    padding: 0;
-  }
-
-  .magnet-modal .title h2
-  {
-    padding-bottom: 0;
-  }
-
-  .modal-icon-container
-  {
-    text-align: right;
-  }
-
-  .copy-icon
-  {
-    display: inline-block;
-    cursor: copy;
   }
 </style>
