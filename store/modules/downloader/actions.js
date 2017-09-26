@@ -20,7 +20,7 @@ export default {
 
     const infos = {
       name: name,
-      quality: quality,
+      quality: quality || rootState.config.config.quality,
       fromEp: +fromEp,
       untilEp: +untilEp,
       fansub: rootState.config.config.fansub,
@@ -61,7 +61,7 @@ export default {
         choice: 'pantsu'
       })
 
-      if (status === 200) {
+      if (status === 200 && data.magnets.length) {
         log(`Request fulfilled!`)
 
         if (magnets === true) {
@@ -84,6 +84,8 @@ export default {
 
         commit('setInfoSnackbar', 'Sorry. KawAnime was not able to get your torrents...', isRoot)
       }
+    } else {
+      commit('setInfoSnackbar', 'Could not find anything, please try again.', isRoot)
     }
 
     commit(failed ? 'toggleLoading' : 'resetForm')

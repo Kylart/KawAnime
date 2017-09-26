@@ -114,6 +114,9 @@
             : !this.selected.includes(magnet) && this.selected.push(magnet)
         })
       }
+    },
+    beforeDestroy () {
+      console.log('Destroyed')
     }
   }
 </script>
