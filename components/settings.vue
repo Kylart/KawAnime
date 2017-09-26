@@ -42,7 +42,7 @@
                 v-flex.section-title(offset-xs1, xs3) Magnets
                 v-flex(xs8)
                   v-switch(
-                    label='Activate',
+                    label='Activate (Recommended)',
                     color='primary',
                     v-model='config.magnets',
                     dark,

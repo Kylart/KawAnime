@@ -9,7 +9,8 @@
               flat, icon,
               v-if='magnets.length',
               v-clipboard="selected.join(eol)",
-              @success='snack = true'
+              @success='snack = true',
+              v-tooltip:left="{ html: 'Copy all selected magnets' }"
             )
               v-icon.copy-icon content_copy
           v-divider
@@ -21,9 +22,13 @@
                 :value='index === 0',
                 ripple
               )
-                v-layout(justify-space-between).entry-name(slot='header')
+                v-layout.entry-name(slot='header', justify-space-between)
                   span.vertical-centered {{ name }}
-                  v-btn.ma-0(icon, @click.stop='selectAll(name)')
+                  v-btn.ma-0(
+                    icon,
+                    @click.stop='selectAll(name)',
+                    v-tooltip:left="{ html: '(un)select these magnets' }"
+                  )
                     v-icon select_all
                 v-layout.pt-2.pl-3.pr-3(wrap)
                   template(v-for='link in getLinks(name)')
@@ -38,7 +43,7 @@
       :timeout='2500',
       top,
       v-model='snack'
-    ) All magnets were copied to clipboard!
+    ) All selected magnets were copied to clipboard!
       v-btn.pink--text(flat, @click='snack = false') Thanks!
 </template>
 
@@ -91,8 +96,8 @@
         console.log('Looking for', name)
         // Find all magnets with that name
         const magnets = this.$_.map(this.values.magnets, (e) => {
-            if (e.name.includes(name)) return e.link
-          }).filter((e) => typeof e !== 'undefined' && e)
+          if (e.name.includes(name)) return e.link
+        }).filter((e) => typeof e !== 'undefined' && e)
 
         // Checking if some of them are present in current selected array
         let selected = false
@@ -137,6 +142,7 @@
     letter-spacing: 2px;
     overflow: hidden;
     text-overflow: ellipsis;
+    font-weight: 300;
   }
 
   .ep-name
