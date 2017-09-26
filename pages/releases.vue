@@ -71,10 +71,10 @@
     loader(v-else)
     .text-xs-center.modal-container
       v-dialog(v-model='modal', width='70%')
-        v-card.white--text
-          v-card-text.white--text
-            h2.white--text.headline {{ modalTitle }}
-          v-card-text.subheading.white--text {{ modalText }}
+        v-card
+          v-card-title.headline {{ modalTitle }}
+          v-divider
+          v-card-text.subheading {{ modalText }}
           v-card-actions
             v-spacer
             v-btn.blue--text.darken-1(flat, @click='modal = false') Thanks!

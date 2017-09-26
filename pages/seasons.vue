@@ -75,11 +75,10 @@
                                     v-list-tile-title Add to
       .text-xs-center.modal-container
         v-dialog(v-model='modal', width='70%')
-          v-card.secondary.white--text
-            v-card-text.white--text
-              h2.headline.white--text {{ modalTitle }}
-            v-card-text.text.white--text
-              | {{ modalText }}
+          v-card
+            v-card-title.headline {{ modalTitle }}
+            v-divider
+            v-card-text.text {{ modalText }}
             v-card-actions
               v-spacer
               v-btn.blue--text.darken-1(flat, style='width: 100px', v-on:click.native='modal = false')
@@ -198,6 +197,7 @@
     text-align-last: center;
     padding: 20px;
     font-size: 16px;
+    white-space: pre-wrap;
   }
 
 
