@@ -8,7 +8,11 @@ export default {
       commit('setInfoTerm', name)
       commit('setInfoLoading', true)
       commit('showInfo', true)
-      const {data, status} = await axios.get(`getInfoFromMal?term=${name}`)
+      const {data, status} = await axios.get(`getInfoFromMal`, {
+        params: {
+          term: name
+        }
+      })
 
       commit('setInfoLoading', false)
 

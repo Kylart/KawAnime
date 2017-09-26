@@ -35,11 +35,11 @@ export default {
     if (status === 200) {
       log(`Request fulfilled!`)
 
-      if (magnets === true) {
+      if (magnets) {
         log(`User says he prefers having magnets hashes.`)
         commit('setModal', {
           show: true,
-          title: `${name.replace('_', ' ')}\t ${data.minEp} - ${data.maxEp}`,
+          title: `${name.replace('_', ' ')}\t ${fromEp} - ${untilEp === 20000 ? Infinity : untilEp}`,
           magnets: data.magnets
         })
       } else {
@@ -68,7 +68,7 @@ export default {
           log(`User says he prefers having magnets hashes.`)
           commit('setModal', {
             show: true,
-            title: `${name.replace('_', ' ')}\t ${data.minEp} - ${data.maxEp}`,
+            title: `${name.replace('_', ' ')}\t ${fromEp} - ${untilEp === 20000 ? Infinity : untilEp}`,
             magnets: data.magnets
           })
         } else {

@@ -4,6 +4,7 @@ import VueClipboards from 'vue-clipboards'
 import VueLazyload from 'vue-lazyload'
 // import Vuetify from './vuetify.js'  // waiting a-la-carte
 import Vuetify from 'vuetify'
+import _ from 'lodash'
 
 import * as Components from 'components/_index.js'
 
@@ -21,6 +22,8 @@ Vue.use(VueLazyload, {
   attempt: 1,
   lazyComponent: true
 })
+
+Vue.prototype.$_ = _
 
 Object.keys(Components).forEach(key => {
   Vue.component(key, Components[key])
