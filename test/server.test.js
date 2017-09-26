@@ -132,8 +132,8 @@ test('/download Mahou Shoujo Ikusei Keikaku with HorribleSubs at 720p on nyaa.si
   })
 
   if (status === 200) {
-    t.is(data.length, 12)
-    t.not(data[0], '')
+    t.is(data.magnets.length, 12)
+    t.not(data.magnets[0], '')
   } else {
     t.fail()
   }
@@ -151,8 +151,8 @@ test('/download Mahou Shoujo Ikusei Keikaku with HorribleSubs at 720p on nyaa.pa
   })
 
   if (status === 200) {
-    t.is(data.length, 12)
-    t.not(data[0], '')
+    t.is(data.magnets.length, 12)
+    t.not(data.magnets[0], '')
   } else {
     t.fail()
   }
@@ -188,10 +188,10 @@ test('/download Mahou Shoujo Ikusei Keikaku with HorribleSubs at 720p from ep 3 
   })
 
   if (status === 200) {
-    t.is(data.length, 7)
-    t.not(data[0], '')
+    t.is(data.magnets.length, 7)
+    t.not(data.magnets[0], '')
   } else if (status === 204) {
-    t.is(data.length, 0)
+    t.is(data.magnets.length, 0)
   } else {
     t.fail()
   }
@@ -210,10 +210,10 @@ test('/download Mahou Shoujo Ikusei Keikaku with HorribleSubs at 720p from ep 3 
   })
 
   if (status === 200) {
-    t.is(data.length, 7)
-    t.not(data[0], '')
+    t.is(data.magnets.length, 7)
+    t.not(data.magnets[0], '')
   } else if (status === 204) {
-    t.is(data.length, 0)
+    t.is(data.magnets.length, 0)
   } else {
     t.fail()
   }
