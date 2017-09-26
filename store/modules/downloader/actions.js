@@ -23,7 +23,7 @@ export default {
       quality: quality || rootState.config.config.quality,
       fromEp: +fromEp,
       untilEp: +untilEp,
-      fansub: rootState.config.config.fansub,
+      fansub: obj.fansub || rootState.config.config.fansub,
       choice: 'si'
     }
     let failed = false

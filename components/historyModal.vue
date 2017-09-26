@@ -41,9 +41,6 @@
 
 <script>
   export default {
-    data () {
-      return {}
-    },
     computed: {
       history () {
         return this.$store.state.history.entries
