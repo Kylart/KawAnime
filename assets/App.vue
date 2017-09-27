@@ -40,15 +40,14 @@
       v-btn(icon, v-tooltip:left="{ html: 'Open KawAnime in your browser' }", @click='openInBrowser()')
         v-icon open_in_new
       settings
+      logs
 
     main.m
       transition(name='page', mode='out-in')
         router-view
 
     env(v-show='$store.state.NODE_ENV === "development"')
-
     magnets-modal
-
     info-results(v-show='$store.state.search.info.show')
 
     //- Used for displaying any info

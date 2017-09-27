@@ -1,51 +1,51 @@
 <template lang="pug">
   div
     v-dialog(v-model='values.show', lazy, absolute, persistent, width='800')
-        v-card.white--text
-          v-card-title.pb-2.pt-2
-            h2.title.white--text.mb-0 Results for #[strong {{ values.title }}]
-            v-spacer
-            v-btn(
-              flat, icon,
-              v-if='magnets.length',
-              @click='openSelected()',
-              v-tooltip:left="{ html: 'Open all selected magnets' }"
+      v-card.white--text
+        v-card-title.pb-2.pt-2
+          h2.title.white--text.mb-0 Results for #[strong {{ values.title }}]
+          v-spacer
+          v-btn(
+            flat, icon,
+            v-if='magnets.length',
+            @click='openSelected()',
+            v-tooltip:left="{ html: 'Open all selected magnets' }"
+          )
+            v-icon open_in_new
+          v-btn(
+            flat, icon,
+            v-if='magnets.length',
+            v-clipboard="selected.join(eol)",
+            @success='snack = true',
+            v-tooltip:left="{ html: 'Copy all selected magnets' }"
+          )
+            v-icon.copy-icon content_copy
+        v-divider
+        v-card-text.subheading.white--text
+          v-expansion-panel(popout, expand)
+            v-expansion-panel-content(
+              v-for='(name, index) in filteredNames',
+              :key='name',
+              :value='index === 0',
+              ripple
             )
-              v-icon open_in_new
-            v-btn(
-              flat, icon,
-              v-if='magnets.length',
-              v-clipboard="selected.join(eol)",
-              @success='snack = true',
-              v-tooltip:left="{ html: 'Copy all selected magnets' }"
-            )
-              v-icon.copy-icon content_copy
-          v-divider
-          v-card-text.subheading.white--text
-            v-expansion-panel(popout, expand)
-              v-expansion-panel-content(
-                v-for='(name, index) in filteredNames',
-                :key='name',
-                :value='index === 0',
-                ripple
-              )
-                v-layout.entry-name(slot='header', justify-space-between)
-                  span.vertical-centered {{ name }}
-                  v-btn.ma-0(
-                    icon,
-                    @click.stop='selectAll(name)',
-                    v-tooltip:left="{ html: '(un)select these magnets' }"
-                  )
-                    v-icon select_all
-                v-layout.pt-2.pl-3.pr-3(wrap)
-                  template(v-for='link in getLinks(name)')
-                    v-flex(xs11).mt-1.pa-0.ep-name {{ link.name }}
-                    v-flex(xs1)
-                      v-checkbox.pt-0.primary--text(v-model='selected', :value='link.link', label='', hide-details)
-                    v-flex.mt-1.mb-2.pa-0.ep-magnet #[a.white--text(:href='link.link') {{ link.link }}]
-          v-card-actions
-            v-spacer
-            v-btn.blue--text.darken-1(flat, @click='values.show = false') Thanks!
+              v-layout.entry-name(slot='header', justify-space-between)
+                span.vertical-centered {{ name }}
+                v-btn.ma-0(
+                  icon,
+                  @click.stop='selectAll(name)',
+                  v-tooltip:left="{ html: '(un)select these magnets' }"
+                )
+                  v-icon select_all
+              v-layout.pt-2.pl-3.pr-3(wrap)
+                template(v-for='link in getLinks(name)')
+                  v-flex(xs11).mt-1.pa-0.ep-name {{ link.name }}
+                  v-flex(xs1)
+                    v-checkbox.pt-0.primary--text(v-model='selected', :value='link.link', label='', hide-details)
+                  v-flex.mt-1.mb-2.pa-0.ep-magnet #[a.white--text(:href='link.link') {{ link.link }}]
+        v-card-actions
+          v-spacer
+          v-btn.blue--text.darken-1(flat, @click='values.show = false') Thanks!
     v-snackbar(
       :timeout='2500',
       top,

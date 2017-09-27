@@ -41,6 +41,7 @@ export default {
     } catch (e) { void e }
   },
   async online ({dispatch}) {
+    dispatch('logs/init').catch(err => { void err })
     dispatch('releases/init').catch(err => { void err })
     dispatch('seasons/init').catch(err => { void err })
     dispatch('news/init').catch(err => { void err })

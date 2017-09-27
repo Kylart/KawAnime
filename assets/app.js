@@ -4,6 +4,7 @@ import VueClipboards from 'vue-clipboards'
 import VueLazyload from 'vue-lazyload'
 // import Vuetify from './vuetify.js'  // waiting a-la-carte
 import Vuetify from 'vuetify'
+import VueMarkdown from 'vue-markdown'
 import _ from 'lodash'
 
 import * as Components from 'components/_index.js'
@@ -25,6 +26,7 @@ Vue.use(VueLazyload, {
 
 Vue.prototype.$_ = _
 
+Vue.component('vue-markdown', VueMarkdown)
 Object.keys(Components).forEach(key => {
   Vue.component(key, Components[key])
 })

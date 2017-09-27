@@ -17,6 +17,8 @@ const dir = process.env.NODE_ENV !== 'KawAnime-test'
   ? join(BASE_PATH, '.KawAnime')
   : join(BASE_PATH, '.KawAnime-test')
 
+const _VERSION_ = require(join(__dirname, '..', 'package.json')).version
+
 // Initiating files and directory
 // Create the .KawAnime directory
 const createDir = () => {
@@ -35,7 +37,7 @@ const createConfig = () => {
       localPath: join(BASE_PATH, 'Downloads'),
       sound: 'Nyanpasu',
       inside: true,
-      magnets: false,
+      magnets: true,
       system: {
         autoStart: false,
         toTray: false
@@ -260,6 +262,19 @@ let routes = [
         const {status} = await axios.get('https://myanimelist.net')
 
         res.status(status === 200 ? 200 : 204).send()
+      } catch (e) {
+        res.status(204).send()
+      }
+    })
+  },
+  /* istanbul ignore next */ (app) => {
+    app.get('/releaseNotes', async (req, res) => {
+      try {
+        const {data, status} = await axios.get('https://api.github.com/repos/Kylart/KawAnime/releases')
+
+        status === 200
+          ? res.status(200).send(_.find(data, (e) => e.name === `v${_VERSION_}`).body)
+          : res.status(204).send()
       } catch (e) {
         res.status(204).send()
       }
