@@ -45,7 +45,7 @@ export default {
       } else {
         log(`Opening torrents directly on preferred torrent client.`)
 
-        data.forEach((link) => {
+        data.magnets.forEach(({link}) => {
           window.open(link)
         })
       }
@@ -74,7 +74,7 @@ export default {
         } else {
           log(`Opening torrents directly on preferred torrent client.`)
 
-          data.forEach((link) => {
+          data.magnets.forEach(({link}) => {
             window.open(link)
           })
         }
