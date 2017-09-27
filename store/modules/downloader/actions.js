@@ -52,14 +52,8 @@ export default {
     } else if (status === 204) {
       log('nyaa.si is down, trying with nyaa.pantsu.cat')
 
-      const {data, status} = await axios.post('download', {
-        name: name,
-        quality: quality,
-        fromEp: fromEp,
-        untilEp: untilEp,
-        fansub: rootState.config.fansub,
-        choice: 'pantsu'
-      })
+      infos.choice = 'pantsu'
+      const {data, status} = await axios.post('download', infos)
 
       if (status === 200 && data.magnets.length) {
         log(`Request fulfilled!`)
