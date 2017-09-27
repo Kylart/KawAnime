@@ -57,6 +57,12 @@ export default {
     margin-bottom: 5px;
   }
 
+  #logs blockquote
+  {
+    padding-bottom: 5px;
+    padding-top: 5px;
+  }
+
   #logs p
   {
     text-indent: 20px;
