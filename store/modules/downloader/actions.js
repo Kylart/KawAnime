@@ -82,7 +82,7 @@ export default {
         failed = true
         log('Unknown error occurred. nyaa.si and nyaa.pantsu.cat seem both down.')
 
-        commit('setInfoSnackbar', 'Sorry. KawAnime was not able to get your torrents...', isRoot)
+        commit('setInfoSnackbar', 'Sorry. KawAnime was not able to get those torrents...', isRoot)
       }
     } else {
       commit('setInfoSnackbar', 'Could not find anything, please try again.', isRoot)

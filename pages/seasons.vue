@@ -65,6 +65,10 @@
                                     v-list-tile-action
                                       v-icon more
                                     v-list-tile-title Check synopsis
+                                  v-list-tile(@click='downloadAll(item.title)')
+                                    v-list-tile-action
+                                      v-icon file_download
+                                    v-list-tile-title Download all episodes
                                   v-list-tile(@click="$store.dispatch('search/fromName', item.title)")
                                     v-list-tile-action
                                       v-icon info_outline
@@ -174,6 +178,20 @@
       showChoices (name) {
         this.choiceTitle = name
         this.$store.commit('setAddToChoice', true)
+      },
+      downloadAll (name) {
+        console.log(`[${(new Date()).toLocaleTimeString()}]: Sending a request to download all episodes of ${name}.`)
+
+        const {quality, fansub} = this.$store.state.releases.params
+
+        this.$store.dispatch('downloader/download', {
+          name,
+          quality,
+          fansub,
+          fromEp: 0,
+          untilEp: 20000,
+          choice: 'si'
+        })
       }
     }
   }
