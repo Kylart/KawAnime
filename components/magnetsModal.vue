@@ -5,7 +5,14 @@
           v-card-title.pb-2.pt-2
             h2.title.white--text.mb-0 Results for #[strong {{ values.title }}]
             v-spacer
-            v-btn.modal-icon-container(
+            v-btn(
+              flat, icon,
+              v-if='magnets.length',
+              @click='openSelected()',
+              v-tooltip:left="{ html: 'Open all selected magnets' }"
+            )
+              v-icon open_in_new
+            v-btn(
               flat, icon,
               v-if='magnets.length',
               v-clipboard="selected.join(eol)",
@@ -15,7 +22,7 @@
               v-icon.copy-icon content_copy
           v-divider
           v-card-text.subheading.white--text
-            v-expansion-panel(popout)
+            v-expansion-panel(popout, expand)
               v-expansion-panel-content(
                 v-for='(name, index) in filteredNames',
                 :key='name',
@@ -93,30 +100,31 @@
         }).filter((e) => typeof e !== 'undefined' && e)
       },
       selectAll (name) {
-        console.log('Looking for', name)
         // Find all magnets with that name
         const magnets = this.$_.map(this.values.magnets, (e) => {
           if (e.name.includes(name)) return e.link
         }).filter((e) => typeof e !== 'undefined' && e)
 
         // Checking if some of them are present in current selected array
-        let selected = false
+        let allSelected = false
+        let counter = 0
         this.$_.each(magnets, (magnet) => {
           if (this.$_.find(this.selected, (o) => o === magnet)) {
-            selected = true
+            ++counter
+            if (counter === magnets.length) allSelected = true
           }
         })
 
         // Selecting or unselecting accordingly
         this.$_.each(magnets, (magnet) => {
-          selected
+          allSelected
             ? this.selected = this.selected.filter((link) => link !== magnet)
             : !this.selected.includes(magnet) && this.selected.push(magnet)
         })
+      },
+      openSelected () {
+        this.$_.each(this.selected, (l) => window.open(l))
       }
-    },
-    beforeDestroy () {
-      console.log('Destroyed')
     }
   }
 </script>
@@ -126,11 +134,6 @@
   {
     display: flex;
     align-items: center;
-  }
-
-  .modal-icon-container
-  {
-    text-align: right;
   }
 
   .copy-icon
