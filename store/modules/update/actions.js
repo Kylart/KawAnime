@@ -7,8 +7,11 @@ export default {
         try {
           const {data} = await axios.get('_isUpdateAvailable')
           if (data.ok) {
-            dispatch('isInstallable')
-            log('An update is available.')
+            if (!state.isRunning) {
+              commit('setRunning')
+              dispatch('isInstallable')
+              log('An update is available.')
+            }
           }
         } catch (e) {
           log(`Error while checking update. ${e.message}`)
@@ -25,6 +28,7 @@ export default {
         commit('setStatus')
         commit('setInfoSnackbar', 'Update available. Think about installing it~', isRoot)
       } else {
+        log(`Update progress: ${data.progress.percent.toFixed(2)} at ${data.progress.bytesPerSecond.toFixed(2) / (10 ** 6)} MB/s.`)
         setTimeout(() => { dispatch('isInstallable') }, 1000)
       }
     } catch (e) {

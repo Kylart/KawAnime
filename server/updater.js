@@ -30,6 +30,7 @@ module.exports = (app, routes) => {
   routes.push(
     (app) => {
       app.get('/_isUpdateAvailable', (req, res) => {
+        !isUpdateAvailable && autoUpdater.checkForUpdates()
         res.send({
           ok: isUpdateAvailable,
           data: error

@@ -1,3 +1,4 @@
 export default {
-  isAvailable: false
+  isAvailable: false,
+  isRunning: false
 }
