@@ -63,6 +63,15 @@ export default {
     padding-top: 5px;
   }
 
+  #logs code
+  {
+    background-color: rgba(0, 0, 0, 0);
+    color: white;
+    display: inline;
+    font-size: 14px;
+    font-weight: 400 !important;
+  }
+
   #logs p
   {
     text-indent: 20px;
