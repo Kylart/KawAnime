@@ -49,12 +49,6 @@
         return this.$store.state.history.modal
       }
     },
-    watch: {
-      modal () {
-        console.log(`[${(new Date()).toLocaleTimeString()}]: Refreshing history.`)
-        this.$store.dispatch('history/get')
-      }
-    },
     methods: {
       isDelete (type) {
         return type === 'Delete'
