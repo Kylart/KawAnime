@@ -14,8 +14,10 @@
             :value="item",
             dark
           )
-        v-flex(xs8 v-tooltip:top="{ html: item }", @click.capture="select(item, index)")
-          h6.ellipsis.elem-title.white--text {{ item }}
+        v-flex(xs8, @click.capture="select(item, index)")
+          v-tooltip(top)
+            h6.ellipsis.elem-title.white--text(slot='activator') {{ item }}
+            span {{ item }}
         v-flex(xs2)
           v-menu(bottom right)
             v-btn(icon slot="activator" dark)

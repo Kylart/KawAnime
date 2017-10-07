@@ -3,20 +3,11 @@
 // Specify overrides (theme and/or base variables etc.)
 // See https://vuetifyjs.com/quick-start
 
-$theme := {
-  primary: #ff9800
-  accent: #ce93d8
-  secondary: #505050
-  info: #9c27b0
-  warning: #0D47A1
-  error: #B71C1C
-  success: #2E7D32
-  mablue: #0D47A1
-  dark: #424242
-}
 
-@import '../../node_modules/vuetify/src/stylus/main'
-// @import '../../node_modules/vuetify/src/stylus/app'  // waiting a-la-carte
+
+// @import '../../node_modules/vuetify/src/stylus/main'
+@import './theme'
+@import '../../node_modules/vuetify/src/stylus/app'  // waiting a-la-carte
 
 /**
   Transitions
@@ -70,7 +61,7 @@ $theme := {
 /**
   Custom rules which will be applied globally, allows overriding
  */
-.application--toolbar.application--footer > main > .container
+.fill-height
   min-height calc(100vh - (48px + 24px)) !important
 
 .navigation-drawer .list__tile

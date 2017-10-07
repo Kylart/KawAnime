@@ -25,10 +25,14 @@
                 v-card-text.elem-card
                   v-container(fluid, style='padding: 0;')
                     v-layout.elem-container.ma-0(row, wrap)
-                      v-flex(xs7, v-tooltip:top='{ html: item.name }')
-                        h6.elem-title.ellipsis.white--text {{ item.name }}
-                      v-flex.elem-ep.text-xs-right(xs2, v-tooltip:top="{ html: 'Episode ' + item.ep }")
-                        p.ellipsis.ep {{ item.ep }} / {{ item.numberOfEpisode }}
+                      v-flex(xs7)
+                        v-tooltip(top)
+                          h6.elem-title.ellipsis.white--text(slot='activator') {{ item.name }}
+                          span {{ item.name }}
+                      v-flex.elem-ep.text-xs-right(xs2)
+                        v-tooltip(top)
+                          p.ellipsis.ep(slot='activator') {{ item.ep }} / {{ item.numberOfEpisode }}
+                          span {{ 'Episode ' + item.ep }}
                       v-flex.buttons-container(xs3)
                         v-btn.play-button(large, icon, @click='playThis(item)')
                           v-icon(large) play_circle_outline
@@ -45,15 +49,16 @@
                               v-list-tile-action
                                 v-icon.primary--text(medium) delete_forever
                               v-list-tile-title.primary--text Delete
-                      v-flex(
-                        xs8,
-                        v-tooltip:top="{ html: item.genres.length ? item.genres.join(', ') : 'No specified genre' }"
-                      )
-                        p.ellipsis.genres
-                          | {{ item.genres.length ? item.genres.join(', ') : 'No specified genre' }}
-                      v-flex(xs4, v-tooltip:top="{ html: item.classification.replace('None', 'No restriction') }")
-                        p.ellipsis.classification
-                          | {{ item.classification.replace('None', 'No restriction') }}
+                      v-flex(xs8)
+                        v-tooltip(top)
+                          p.ellipsis.genres(slot='activator')
+                            | {{ item.genres.length ? item.genres.join(', ') : 'No specified genre' }}
+                          span {{ item.genres.length ? item.genres.join(', ') : 'No specified genre' }}
+                      v-flex(xs4)
+                        v-tooltip(top)
+                          p.ellipsis.classification(slot='activator')
+                            | {{ item.classification.replace('None', 'No restriction') }}
+                          span {{ item.classification.replace('None', 'No restriction') }}
                       v-flex.picture-container(xl5, lg4, md5, xs4)
                         lazy-component
                           img.picture(:src='item.picture', onerror="this.src='static/images/error.jpg'")

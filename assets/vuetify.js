@@ -22,10 +22,11 @@ import {
   VTabs,
   VSwitch,
   VExpansionPanel,
-  VDivider
+  VDivider,
+  VTooltip
 } from 'vuetify'
 
-import { Tooltip, Ripple } from 'vuetify/src/directives'
+import { Ripple } from 'vuetify/es5/directives'
 
 export default (Vue) => {
   Vue.use(Vuetify, {
@@ -52,10 +53,10 @@ export default (Vue) => {
       VTabs,
       VSwitch,
       VExpansionPanel,
-      VDivider
+      VDivider,
+      VTooltip
     },
     directives: {
-      Tooltip,
       Ripple
     }
   })

@@ -5,21 +5,25 @@
         v-card-title.pb-2.pt-2
           h2.title.white--text.mb-0 Results for #[strong {{ values.title }}]
           v-spacer
-          v-btn(
-            flat, icon,
-            v-if='magnets.length',
-            @click='openSelected()',
-            v-tooltip:left="{ html: 'Open all selected magnets' }"
-          )
-            v-icon open_in_new
-          v-btn(
-            flat, icon,
-            v-if='magnets.length',
-            v-clipboard="selected.join(eol)",
-            @success='snack = true',
-            v-tooltip:left="{ html: 'Copy all selected magnets' }"
-          )
-            v-icon.copy-icon content_copy
+          v-tooltip(left)
+            v-btn(
+              flat, icon,
+              v-if='magnets.length',
+              @click='openSelected()',
+              slot='activator'
+            )
+              v-icon open_in_new
+            span Open all selected magnets
+          v-tooltip(left)
+            v-btn(
+              flat, icon,
+              v-if='magnets.length',
+              v-clipboard="selected.join(eol)",
+              @success='snack = true',
+              slot='activator'
+            )
+              v-icon.copy-icon content_copy
+            span Copy all selected magnets
         v-divider
         v-card-text.subheading.white--text
           v-expansion-panel(popout, expand)
@@ -31,12 +35,14 @@
             )
               v-layout.entry-name(slot='header', justify-space-between)
                 span.vertical-centered {{ name }}
-                v-btn.ma-0(
-                  icon,
-                  @click.stop='selectAll(name)',
-                  v-tooltip:left="{ html: '(un)select these magnets' }"
-                )
-                  v-icon select_all
+                v-tooltip(left)
+                  v-btn.ma-0(
+                    icon,
+                    @click.stop='selectAll(name)',
+                    slot='activator'
+                  )
+                    v-icon select_all
+                  span (un)select these magnets
               v-layout.pt-2.pl-3.pr-3(wrap)
                 template(v-for='link in getLinks(name)')
                   v-flex(xs11).mt-1.pa-0.ep-name {{ link.name }}

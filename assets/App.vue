@@ -1,6 +1,6 @@
 <template lang="pug">
-  v-app(dark, footer, toolbar)
-    v-navigation-drawer.pb-0(style='width: 280px', temporary, v-model='$store.state.drawer')
+  v-app(dark)
+    v-navigation-drawer.pb-0.main-drawer(app, temporary, v-model='$store.state.drawer')
       v-list
         v-list-tile#title(to='/')
           v-list-tile-action
@@ -23,26 +23,31 @@
           v-subheader.white--text(v-else-if='item.header') {{ item.header }}
           v-divider(v-else-if='item.divider')
 
-    v-system-bar.wb.dragable(dark, status)
+    v-system-bar.wb.dragable(app, dark, status)
       v-spacer
       div(v-if="!isBrowser && $store.state.platform !== 'darwin'")
         v-icon.window-icon.non-dragable(@click="actOnWindow('minimize')") remove
         v-icon.window-icon.non-dragable(@click="actOnWindow('maximize')") check_box_outline_blank
         v-icon.window-icon.non-dragable(@click="actOnWindow('close')") close
 
-    v-toolbar.mablue.tb(fixed, dark)
+    v-toolbar.mablue.tb(app, fixed, dark)
       v-toolbar-side-icon(@click.stop='toggleDrawer()')
       v-toolbar-title.white--text.title.hidden-xs-only かわニメ
       v-spacer
-      v-btn(icon, v-show="$store.state.update.isAvailable", v-tooltip:left="{ html: 'Update KawAnime' }", @click='restartAndUpdate()')
-        v-icon.green--text file_download
+      v-tooltip(left)
+        v-btn(icon, v-show="$store.state.update.isAvailable", @click='restartAndUpdate()', slot='activator')
+          v-icon.green--text file_download
+        span Update KawAnime
       info-modal
-      v-btn(icon, v-tooltip:left="{ html: 'Open KawAnime in your browser' }", @click='openInBrowser()')
-        v-icon open_in_new
+      v-tooltip(left)
+        v-btn(icon, @click='openInBrowser()', slot='activator')
+          v-icon open_in_new
+        span Open KawAnime in your browser
       settings
       logs
 
     main.m
+      //- v-content // Apparently required. Todo
       transition(name='page', mode='out-in')
         router-view
 
@@ -61,7 +66,7 @@
     ) {{ $store.state.infoSnackbar.text }}
       v-btn.pink--text(flat, @click='$store.state.infoSnackbar.show = false') Close
 
-    v-footer.grey.darken-4.pr-2
+    v-footer.grey.darken-4.pr-2(app)
       v-spacer
       .white--text © 2016 - 2017 Kylart
 </template>
@@ -181,7 +186,6 @@
   {
     position: fixed;
     width: 100%;
-    z-index: 100;
     background-color: #303030 !important;
   }
 
@@ -192,12 +196,17 @@
     padding-left: 1%;
   }
 
-  .navigation-drawer
+  .main-drawer
   {
-    padding-top: 24px;
+    width: 280px !important;
     background-image: url('/static/images/sidebar-background.png');
     background-position: left bottom;
     background-size: 75%;
+  }
+
+  .main-drawer ul
+  {
+    background-image: none;
   }
 
   .ripple

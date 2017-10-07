@@ -1,4 +1,4 @@
-<template lang="pug" xmlns:v-tooltip="http://www.w3.org/1999/xhtml">
+<template lang="pug">
   v-container#container.container.pa-0(fluid, grid-list-xs)
     transition(name='fade', v-if='releases.length')
       v-layout(row, wrap, justify-center, style='margin: 0 1% 0 1%;')
@@ -33,10 +33,14 @@
               v-card-text.elem-card
                 v-container.pa-0(fluid)
                   v-layout(row, wrap)
-                    v-flex.elem-title.pa-0(xs9, v-tooltip:top='{ html: item.rawName }')
-                      h6.white--text {{ item.rawName }}
-                    v-flex.elem-ep.text-xs-right.pa-0(v-tooltip:top="{ html: epLabel(item.ep, true) }", xs3)
-                      h6.white--text {{ epLabel(item.ep) }}
+                    v-flex.elem-title.pa-0(xs9)
+                      v-tooltip(top)
+                        h6.white--text(slot='activator') {{ item.rawName }}
+                        span {{ item.rawName }}
+                    v-flex.elem-ep.text-xs-right.pa-0(xs3)
+                      v-tooltip(top)
+                        h6.white--text(slot='activator') {{ epLabel(item.ep) }}
+                        span {{ epLabel(item.ep, true) }}
                     v-flex.elem-image.pa-0(xl4, lg4, md5, xs4)
                       img.picture(
                         :src='item.picture',

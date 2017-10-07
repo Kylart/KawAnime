@@ -50,7 +50,8 @@
         v-layout(justify-center, align-center)
           v-flex(xs3)
             v-btn#download-btn(
-              dark, block, secondary,
+              dark, block,
+              color='secondary',
               @click='isDownloadable()',
               v-if='!$store.state.downloader.form.loading'
             ) Download!

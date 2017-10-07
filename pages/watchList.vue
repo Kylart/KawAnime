@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-container#watch-list.pa-0(fluid)
+  v-container#watch-list.pa-0.mt-0(fluid, fill-height)
     v-tabs#tabs(grow, icons)
       v-tabs-bar.mablue
         v-tabs-slider.primary
@@ -15,12 +15,14 @@
                 v-flex(xs12)
                   v-layout.top-form(row, wrap, align-center, justify-center)
                     v-flex(md3, sm4, xs9)
-                      v-btn(
-                        icon, flat,
-                        @click='selectAll(i)',
-                        v-tooltip:bottom="{ html: allSelected[i] ? 'Unselect all' : 'Select all' }"
-                      )
-                        v-icon select_all
+                      v-tooltip(bottom)
+                        v-btn(
+                          icon, flat,
+                          @click='selectAll(i)',
+                          slot='activator'
+                        )
+                          v-icon select_all
+                        span {{ selectLabel(i) }}
                       v-menu(open-on-hover, transition='slide-x-transition')
                         v-btn(secondary, slot='activator') Move to
                         v-list.dark
@@ -32,12 +34,14 @@
                             v-list-tile-action
                               v-icon {{ action.icon }}
                             v-list-tile-title {{ action.name }}
-                      v-btn.red--text(
-                        @click='deleteSelected(i)',
-                        v-tooltip:bottom="{ html: 'Delete all selected items from this list' }",
-                        icon
-                      )
-                        v-icon delete_sweep
+                      v-tooltip(bottom)
+                        v-btn.red--text(
+                          @click='deleteSelected(i)',
+                          slot='activator',
+                          icon
+                        )
+                          v-icon delete_sweep
+                        span Delete all selected items from this list
                     v-flex(md2, sm2, xs3)
                       p.elem-number
                         | {{ lists[i - 1].length }} {{ lists[i - 1].length === 1 ? 'entry' : 'entries' }}
@@ -211,6 +215,9 @@
           this.allSelected[i] = true
         }
       },
+      selectLabel (i) {
+        return this.allSelected[i] ? 'Unselect all' : 'Select all'
+      },
       moveTo (name, i) {
         this.selected[i].forEach((anime) => {
           this.$store.dispatch('watchLists/updateList', {
@@ -241,6 +248,11 @@
 </script>
 
 <style scoped>
+  #watch-list
+  {
+    display: inline-block !important;
+  }
+
   h6
   {
     margin: 0;
