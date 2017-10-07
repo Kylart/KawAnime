@@ -16,10 +16,12 @@
           v-flex.pt-3.pl-5.pr-5(xs7, @keydown.enter='next(1)')
             v-text-field#name-input(
               name='name-input',
-              type='text',
+              type='text', ref='name',
               label='Name of the anime',
               v-model='formValues.name',
               autofocus,
+              required,
+              :rules='nameRules',
               dark
             )
           v-flex.pt-3.pl-5.pr-5(xs7, @keydown.enter='next(2)',  @keydown.delete='previous(2)')
@@ -53,12 +55,6 @@
               v-if='!$store.state.downloader.form.loading'
             ) Download!
             v-btn(dark, block, secondary, loading, v-else)
-    v-snackbar(
-      :timeout='timeout',
-      top,
-      v-model='snackbar'
-    ) Please, enter a valid name (at least 3 letters...)
-      v-btn.pink--text(flat, @click='snackbar = false') ok!
 </template>
 
 <script>
@@ -66,9 +62,10 @@
     data () {
       return {
         modalText: '',
-        snackbar: false,
-        timeout: 4000,
-        quality: this.$store.state.config.config.quality
+        quality: this.$store.state.config.config.quality,
+        nameRules: [
+          () => this.formValues.name.length > 2 || 'Please enter at least 3 characters.'
+        ]
       }
     },
     computed: {
@@ -78,9 +75,9 @@
     },
     methods: {
       isDownloadable () {
-        this.formValues.name.length >= 3
+        this.formValues.name.length > 2
           ? this.download()
-          : this.snackbar = true
+          : this.$refs.name.focus()
       },
       download () {
         const quality = this.quality
