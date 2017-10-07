@@ -42,25 +42,27 @@ module.exports = {
         test: /\.vue$/,
         loader: 'vue-loader',
         options: vueConfig,
-        include: [
-          resolve('assets/App.vue'),
-          resolve('pages'),
-          resolve('components'),
-          resolve('node_modules/vuetify')
-        ]
+        exclude: /node_modules/
+        // include: [
+        //   resolve('assets/App.vue'),
+        //   resolve('pages'),
+        //   resolve('components'),
+        //   resolve('node_modules/vuetify')
+        // ]
       },
       {
         test: /\.js$/,
         loader: 'babel-loader',
-        include: [
-          resolve('components/_index.js'),
-          resolve('mixins'),
-          resolve('store'),
-          resolve('router'),
-          resolve('server'),
-          resolve('assets'),
-          resolve('node_modules/vuetify')
-        ]
+        exclude: /node_modules/
+        // include: [
+        //   resolve('components/_index.js'),
+        //   resolve('mixins'),
+        //   resolve('store'),
+        //   resolve('router'),
+        //   resolve('server'),
+        //   resolve('assets'),
+        //   resolve('node_modules/vuetify')
+        // ]
       },
       {
         test: /\.styl$/,

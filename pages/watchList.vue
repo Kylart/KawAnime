@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-container#watch-list.pa-0(fluid)
+  v-container#watch-list.pa-0.mt-0(fluid, fill-height)
     v-tabs#tabs(grow, icons)
       v-tabs-bar.mablue
         v-tabs-slider.primary
@@ -241,6 +241,11 @@
 </script>
 
 <style scoped>
+  #watch-list
+  {
+    display: inline-block !important;
+  }
+
   h6
   {
     margin: 0;
