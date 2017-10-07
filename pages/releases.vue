@@ -32,7 +32,7 @@
             v-card.elem-content.elevation-3(v-ripple='true')
               v-card-text.elem-card
                 v-container.pa-0(fluid)
-                  v-layout(row, wrap)
+                  v-layout.elem-card-layout(row, wrap)
                     v-flex.elem-title.pa-0(xs9)
                       v-tooltip(top)
                         h6.white--text(slot='activator') {{ item.rawName }}
@@ -227,6 +227,11 @@
   .elem-card
   {
     padding: 0 10px 0 0;
+  }
+
+  .elem-card-layout
+  {
+    padding-left: 1px;
   }
 
   .elem-title h6
