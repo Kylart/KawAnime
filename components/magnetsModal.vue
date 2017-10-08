@@ -1,6 +1,6 @@
 <template lang="pug">
   div
-    v-dialog(v-model='values.show', lazy, absolute, persistent, width='800')
+    v-dialog(v-model='values.show', lazy, absolute, persistent, max-width='800', @keydown.esc='close()')
       v-card.white--text
         v-card-title.pb-2.pt-2
           h2.title.white--text.mb-0 Results for #[strong {{ values.title }}]
@@ -51,7 +51,7 @@
                   v-flex.mt-1.mb-2.pa-0.ep-magnet #[a.white--text(:href='link.link') {{ link.link }}]
         v-card-actions
           v-spacer
-          v-btn.blue--text.darken-1(flat, @click='values.show = false') Thanks!
+          v-btn.blue--text.darken-1(flat, @click='close()') Thanks!
     v-snackbar(
       :timeout='2500',
       top,
@@ -100,6 +100,9 @@
       }
     },
     methods: {
+      close () {
+        this.$store.commit('downloader/closeModal')
+      },
       getLinks (name) {
         return this.values.magnets.map((magnet) => {
           if (magnet.name.includes(name)) return magnet

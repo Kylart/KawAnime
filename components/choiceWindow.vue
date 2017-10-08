@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-dialog(v-model='show', persistent, width='650')
+  v-dialog(v-model='show', persistent, max-width='650', @keydown.esc='hide()')
     v-card
       v-card-title.headline Add «{{ entry }}» to
       v-card-text

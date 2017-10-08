@@ -3,7 +3,7 @@
  */
 
 const electron = require('electron')
-const app = electron.app
+const {app} = electron
 
 const template = () => {
   let menu = [
@@ -77,7 +77,7 @@ const template = () => {
       submenu: [
         {
           label: 'Learn More',
-          click () { require('electron').shell.openExternal('https://github.com/Kylart/KawAnime') }
+          click () { electron.shell.openExternal('https://github.com/Kylart/KawAnime') }
         }
       ]
     }

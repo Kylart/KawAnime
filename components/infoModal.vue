@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-dialog(v-model='searchShow', width='650', lazy, absolute)
+  v-dialog(v-model='searchShow', max-width='650', lazy, absolute, @keydown.esc='searchShow = false')
     v-btn(icon, slot='activator')
       v-icon search
     v-card.pr-4

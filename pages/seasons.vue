@@ -81,16 +81,15 @@
                                     v-list-tile-action
                                       v-icon add_box
                                     v-list-tile-title Add to
-      .text-xs-center.modal-container
-        v-dialog(v-model='modal', width='70%')
-          v-card
-            v-card-title.headline {{ modalTitle }}
-            v-divider
-            v-card-text.text {{ modalText }}
-            v-card-actions
-              v-spacer
-              v-btn.blue--text.darken-1(flat, style='width: 100px', v-on:click.native='modal = false')
-                | Thanks!
+      v-dialog(v-model='modal', max-width='70%', @keydown.esc='modal = false')
+        v-card
+          v-card-title.headline {{ modalTitle }}
+          v-divider
+          v-card-text.text {{ modalText }}
+          v-card-actions
+            v-spacer
+            v-btn.blue--text.darken-1(flat, style='width: 100px', v-on:click.native='modal = false')
+              | Thanks!
       choice-window(:entry='choiceTitle')
 </template>
 

@@ -19,5 +19,8 @@ export default {
   },
   toggleLoading (state) {
     state.form.loading = !state.form.loading
+  },
+  closeModal (state) {
+    state.modal.show = false
   }
 }

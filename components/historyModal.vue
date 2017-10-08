@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-dialog(lazy, absolute, width='75%', v-model='$store.state.history.modal')
+  v-dialog(lazy, absolute, max-width='75%', v-model='$store.state.history.modal', @keydown.esc='close()')
     v-btn(secondary, dark, @click='refresh()', slot='activator')
       | History
     v-card
@@ -35,7 +35,7 @@
         v-btn.blue--text.darken-1(
           flat,
           style='width: 100px;',
-          @click="$store.commit('history/setModal', false)"
+          @click="close()"
         ) Close
 </template>
 
@@ -63,6 +63,9 @@
       },
       refresh () {
         this.$store.dispatch('history/get')
+      },
+      close () {
+        this.$store.commit('history/setModal', false)
       }
     }
   }

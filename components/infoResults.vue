@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-dialog(width='800', v-model='$store.state.search.info.show', persistent, lazy, absolute)
+  v-dialog(max-width='800', v-model='$store.state.search.info.show', persistent, lazy, absolute, @keydown.esc='close()')
     v-card
       v-card-title.headline Result for «{{ searchTerm }}»
       v-divider
@@ -45,7 +45,7 @@
             v-flex.info-text.h-centered(xs3) {{ info.status }} ({{ info.aired.split(' ')[2] }})
       v-card-actions
         v-spacer
-        v-btn.blue--text.darken-1.close-button(flat, @click="$store.commit('search/showInfo', false)") Thanks!
+        v-btn.blue--text.darken-1.close-button(flat, @click="close()") Thanks!
 </template>
 
 <script>
@@ -67,6 +67,9 @@
           listName,
           entry: this.info.title
         })
+      },
+      close () {
+        this.$store.commit('search/showInfo', false)
       }
     },
     computed: {
