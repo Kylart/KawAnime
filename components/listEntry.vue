@@ -15,7 +15,7 @@
             dark
           )
         v-flex(xs8, @click.capture="select(item, index)")
-          v-tooltip(top)
+          v-tooltip(top, open-delay='150')
             h6.ellipsis.elem-title.white--text(slot='activator') {{ item }}
             span {{ item }}
         v-flex(xs2)
