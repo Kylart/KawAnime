@@ -1,6 +1,6 @@
 <template lang="pug">
   v-dialog(lazy, absolute, max-width='75%', v-model='$store.state.history.modal', @keydown.esc='close()')
-    v-btn(secondary, dark, @click='refresh()', slot='activator')
+    v-btn(color='secondary', dark, @click='refresh()', slot='activator')
       | History
     v-card
       v-card-title.headline History

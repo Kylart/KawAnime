@@ -55,7 +55,7 @@
               @click='isDownloadable()',
               v-if='!$store.state.downloader.form.loading'
             ) Download!
-            v-btn(dark, block, secondary, loading, v-else)
+            v-btn(dark, block, color='secondary', loading, v-else)
 </template>
 
 <script>

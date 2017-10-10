@@ -24,7 +24,7 @@
                           v-icon select_all
                         span {{ selectLabel(i) }}
                       v-menu(open-on-hover, transition='slide-x-transition')
-                        v-btn(secondary, slot='activator') Move to
+                        v-btn(color='secondary', slot='activator') Move to
                         v-list.dark
                           v-list-tile(
                             @click='moveTo(action.list, i)',
@@ -50,7 +50,7 @@
                       v-text-field.entry-text(type='text', label='Add entry', v-model='entries[i]', dark)
                     v-flex(hidden-sm-and-up, xs1)
                     v-flex.add-button-container(md2, sm2, xs4)
-                      v-btn.add-button(dark, secondary, @click='addEntry(i)')
+                      v-btn.add-button(dark, color='secondary', @click='addEntry(i)')
                         | Add
                 transition-group(name='list')
                   template(v-for='item in lists[i - 1]')

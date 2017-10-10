@@ -15,9 +15,9 @@
               v-btn.refresh-button(v-else, icon, loading)
               v-btn.change-dir-button(flat, dark, @click='changePath()')
                 | Change dir
-              v-btn.reset-cache-button(secondary, dark, @click='resetLocal()', v-if='!this.$store.state.localFiles.resetting')
+              v-btn.reset-cache-button(color='secondary', dark, @click='resetLocal()', v-if='!this.$store.state.localFiles.resetting')
                 | Refresh local info
-              v-btn.reset-cache-button(secondary, dark, loading, v-else)
+              v-btn.reset-cache-button(color='secondary', dark, loading, v-else)
         transition-group(name='list')
           template(v-for='item in files')
             v-flex.elem(:key='item.path', xs12, sm6, md4, xl3)
@@ -27,7 +27,7 @@
                     v-layout.elem-container.ma-0(row, wrap)
                       v-flex(xs7)
                         v-tooltip(top)
-                          h6.elem-title.ellipsis.white--text(slot='activator') {{ item.name }}
+                          h6.elem-title.ellipsis(slot='activator') {{ item.name }}
                           span {{ item.name }}
                       v-flex.elem-ep.text-xs-right(xs2)
                         v-tooltip(top)

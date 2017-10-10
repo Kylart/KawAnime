@@ -2,7 +2,7 @@
   v-flex(xs12 v-ripple="true").elevation-3.elem
     v-layout(row wrap)
       v-flex(xs12)
-        h3.white--text.title {{ item.title }}
+        h3.title {{ item.title }}
       v-flex(md2, xs3, xl1, style="height: 220px;")
         lazy-component
           img(:src="item.image" onerror="this.src='static/images/error.jpg'").image
@@ -12,7 +12,7 @@
             p.synopsis {{ item.text }}
           v-flex(xs12).link
             div.button-container
-              v-btn(secondary block @click="open(item.link)") Open
+              v-btn(color='secondary', block, @click="open(item.link)") Open
 </template>
 
 <script>
