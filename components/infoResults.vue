@@ -22,7 +22,7 @@
                     v-list-tile-title {{ list.text }}
             v-flex.flex-v-centered(xs7)
               v-card-title.info-title
-                | 「{{ info.alternativeTitles.japanese[0].replace('Japanese: ', '') }}」ー {{ info.type }}
+                | 「{{ getTitle(info) }}」ー {{ info.type }}
             v-flex(xs3)
               v-card-title.score-container
                 p.info-score {{ info.statistics.score.value }}
@@ -62,6 +62,11 @@
       }
     },
     methods: {
+      getTitle (info) {
+        return info.alternativeTitles.japanese
+          ? info.alternativeTitles.japanese[0].replace('Japanese: ', '')
+          : info.title
+      },
       addTo (listName) {
         this.$store.dispatch('watchLists/updateList', {
           listName,
