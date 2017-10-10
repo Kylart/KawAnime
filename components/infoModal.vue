@@ -12,8 +12,8 @@
               label='Anime name',
               v-model='searchTerm',
               append-icon='close',
-              :append-icon-cb="() => (searchTerm = '')"
-              dark
+              :append-icon-cb="clear"
+              dark, ref='input'
             )
           v-flex(xs12)
             v-layout(row, wrap, justify-center)
@@ -46,6 +46,10 @@
       }
     },
     methods: {
+      clear () {
+        this.searchTerm = ''
+        this.$refs.input.focus()
+      },
       async search (name) {
         this.searchTerm = name
 
@@ -70,7 +74,7 @@
                 this.results = data.categories[0].items
               }
             } catch (e) {
-              console.log((new Date()).toLocaleTimeString() + e.message)
+              console.log((new Date()).toLocaleTimeString(), e.message)
               this.$store.commit('setInfoSnackbar', e.message)
             }
           } else {
@@ -82,6 +86,13 @@
     watch: {
       async searchTerm () {
         this.quickSearch()
+      },
+      searchShow (bool) {
+        if (bool) {
+          this.$nextTick(() => {
+            this.$refs.input.focus()
+          })
+        }
       }
     }
   }
