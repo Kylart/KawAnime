@@ -140,7 +140,7 @@ const template = () => {
       {
         label: 'Close',
         accelerator: 'CmdOrCtrl+W',
-        role: 'close'
+        role: 'hide'
       },
       {
         label: 'Minimize',

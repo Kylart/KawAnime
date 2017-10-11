@@ -5,7 +5,7 @@
       v-card-text
         v-layout(row, wrap)
           template(v-for='i in 5')
-            v-flex(v-if='!options[i - 1].half', xs4)
+            v-flex(v-if='i < 4', xs4)
               v-checkbox.option.primary--text(
                 v-model='selected',
                 :value='options[i - 1].value',
@@ -33,24 +33,19 @@
         selected: [],
         options: [{
           label: 'Watch list',
-          value: 'watchList',
-          half: false
+          value: 'watchList'
         }, {
           label: 'Watching',
-          value: 'watching',
-          half: false
+          value: 'watching'
         }, {
           label: 'Seen',
-          value: 'seen',
-          half: false
+          value: 'seen'
         }, {
           label: 'On Hold',
-          value: 'onHold',
-          half: true
+          value: 'onHold'
         }, {
           label: 'Dropped',
-          value: 'dropped',
-          half: true
+          value: 'dropped'
         }]
       }
     },
@@ -71,17 +66,20 @@
       }
     },
     computed: {
-      show () {
-        return this.$store.state.addToChoice
+      show: {
+        get () {
+          return this.$store.state.addToChoice
+        },
+        set (bool) {
+          this.$store.commit('setAddToChoice', bool)
+        }
       }
     }
   }
 </script>
 
-<style scoped>
+<style lang="stylus" scoped>
   .option
-  {
-    width: 60%;
-    margin-left: 35%;
-  }
+    width 60%
+    margin-left 35%
 </style>
