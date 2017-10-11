@@ -180,6 +180,7 @@
   {
     min-width: 100%;
     padding-top: calc(48px + 24px);
+    height: 100vh;
   }
 
   .wb
