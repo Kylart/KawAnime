@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-container.pa-0(fluid)
+  v-container#local-page.pa-0(fluid, fill-height)
     div(v-if='nbEps')
       v-layout(row, wrap, style='margin: 0 1%;')
         v-flex.menubar(xs12)
@@ -203,6 +203,11 @@
   .fade-enter, .fade-leave-to
   {
     opacity: 0
+  }
+
+  #local-page
+  {
+    display: inline-block;
   }
 
   h6
