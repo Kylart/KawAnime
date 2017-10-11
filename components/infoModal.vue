@@ -30,7 +30,7 @@
                     v-flex.elem-name(xs10) {{ item.name }}
       v-card-actions
         v-spacer
-        v-btn.blue--text.darken-1.close-button(flat, @click='searchShow = false') Close
+        v-btn.blue--text.darken-1(flat, @click='searchShow = false') Close
 </template>
 
 <script>
@@ -98,37 +98,24 @@
   }
 </script>
 
-<style scoped>
-  .close-button
-  {
-    margin-right: 10px !important;
-  }
-
+<style lang="stylus" scoped>
   .elem
-  {
-    margin-top: 10px;
-    padding-left: 10px;
-  }
+    margin-top 10px
+    padding-left 10px
 
   .elem-content
-  {
-    margin: 0;
-    height: 100%;
-    position: relative;
-    margin-left: 10%;
-    width: 100%;
-    background-color: rgb(60, 60, 60);
-    padding-bottom: 5px;
-  }
+    margin 0
+    height 100%
+    position relative
+    margin-left 10%
+    width 100%
+    background-color rgb(60, 60, 60)
+    padding-bottom 5px
 
   .elem-name
-  {
-    font-size: 16px;
-    text-align: center;
-  }
+    font-size 16px
+    text-align center
 
   .elem-picture
-  {
-    max-width: 90%;
-  }
+    max-width 90%
 </style>
