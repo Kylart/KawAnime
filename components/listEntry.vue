@@ -70,64 +70,33 @@
   }
 </script>
 
-<style scoped>
-  .card__text
-  {
-    padding-top: 0;
-  }
-
-  .ellipsis
-  {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
+<style lang="stylus" scoped>
+  @import '~stylus/functions'
 
   .elem-content
-  {
-    margin-left: 5px;
-    position: relative;
-    background-color: rgb(60, 60, 60);
-    height: 45px !important;
-  }
+    margin-left 5px
+    position relative
+    background-color rgb(60, 60, 60)
+    height 45px !important
 
   .elem-content:hover
-  {
-    transition: all 0.25s;
-    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
-    0 8px 10px 1px rgba(0, 0, 0, 0.14),
-    0 3px 14px 2px rgba(0, 0, 0, 0.12) !important;
-  }
+    hover_background()
 
   .elem
-  {
-    padding: 5px 5px 5px 5px;
-    display: inline-block;
-    width: 100%;
-  }
-
-  .elem .input-group
-  {
-    margin: 0;
-    padding: 0;
-  }
+    padding 5px 5px 5px 5px
+    display inline-block
+    width 100%
 
   .box
-  {
-    padding-top: 10px;
-    padding-left: 13px;
-  }
+    padding-top 10px
+    padding-left 13px
 
   .elem-title
-  {
-    line-height: 24px;
-    font-size: 20px;
-    padding-top: 10px;
-    padding-left: 10px;
-  }
+    line-height 24px
+    font-size 20px
+    padding-top 10px
+    padding-left 10px
 
   .selected
-  {
-    background-color: #2E7D32;
-  }
+    background-color #2E7D32
 </style>
