@@ -38,56 +38,42 @@ export default {
 }
 </script>
 
-<style>
+<style lang="stylus">
   #logs h2
-  {
-    font-size: 32px;
-    font-weight: 300;
-    letter-spacing: 1px;
-    padding-left: 10px;
-  }
+    font-size 32px
+    font-weight 300
+    letter-spacing 1px
+    padding-left 10px
 
   #logs h3
-  {
-    font-size: 24px;
-    font-weight: 300;
-    letter-spacing: 1px;
-    padding-left: 10px;
-    margin-top: 15px;
-    margin-bottom: 5px;
-  }
+    font-size 24px
+    font-weight 300
+    letter-spacing 1px
+    padding-left 10px
+    margin-top 15px
+    margin-bottom 5px
 
   #logs blockquote
-  {
-    padding-bottom: 5px;
-    padding-top: 5px;
-  }
+    padding-bottom 5px
+    padding-top 5px
 
   #logs code
-  {
-    background-color: rgba(0, 0, 0, 0);
-    color: white;
-    display: inline;
-    font-size: 14px;
-    font-weight: 400 !important;
-  }
+    background-color rgba(0, 0, 0, 0)
+    color white
+    display inline
+    font-size 14px
+    font-weight 400 !important
 
   #logs p
-  {
-    text-indent: 20px;
-    letter-spacing: 0.05em;
-    font-weight: 400;
-  }
+    text-indent 20px
+    letter-spacing 0.05em
+    font-weight 400
 
   #logs ul
-  {
-    padding-left: 10%;
-  }
+    padding-left 10%
 
   #logs li
-  {
-    margin-bottom: 4px;
-    letter-spacing: 0.05em;
-    font-weight: 400;
-  }
+    margin-bottom 4px
+    letter-spacing 0.05em
+    font-weight 400
 </style>
