@@ -8,24 +8,18 @@
         img(v-else-if="number === 2" src="~static/images/loading-gif2.gif" height="500")
 </template>
 
-<style scoped>
+<style lang="stylus" scoped>
   .loading-text
-  {
-    padding: 0;
-    margin: 0;
-    font-family: 'Hiragino Mincho Pro', 'MS PMincho', serif;
-  }
+    padding 0
+    margin 0
+    font-family 'Hiragino Mincho Pro', 'MS PMincho', serif
 
   .loader-container
-  {
-    min-height: calc(100vh - (48px + 24px));
-  }
+    min-height calc(100vh - (48px + 24px))
 
   .flex-centered
-  {
-    display: flex;
-    justify-content: center;
-  }
+    display flex
+    justify-content center
 </style>
 
 <script>
