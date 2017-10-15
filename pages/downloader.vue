@@ -125,47 +125,35 @@
   }
 </script>
 
-<style scoped>
+<style lang="stylus" scoped>
   .container
-  {
-    position: relative;
-    height: 100%;
-    width: 100%;
-    background-image: url('~static/images/downloader-back.jpg');
-    background-size: cover;
-    background-repeat: no-repeat;
-  }
+    position relative
+    height 100%
+    width 100%
+    background-image url(~static/images/downloader-back.jpg)
+    background-size cover
+    background-repeat no-repeat
 
   .cute-char
-  {
-    position: absolute;
-    bottom: 0;
-    height: 45%;
-  }
+    position absolute
+    bottom 0
+    height 45%
 
   .right-pic
-  {
-    content: url(~static/images/downloader-char-right.png);
-    right: 2%;
-  }
+    content url(~static/images/downloader-char-right.png)
+    right 2%
 
   .left-pic
-  {
-    content: url(~static/images/downloader-char-left.png);
-    left: 2%;
-  }
+    content url(~static/images/downloader-char-left.png)
+    left 2%
 
   .form-container
-  {
-    background-color: rgba(0, 0, 0, 0.4);
-    width: 65%;
-    margin-top: 4%;
-    padding-bottom: 4%;
-    padding-top: 3%;
-  }
+    background-color rgba(0, 0, 0, 0.4)
+    width 65%
+    margin-top 4%
+    padding-bottom 4%
+    padding-top 3%
 
   .radio
-  {
-    margin-left: 10%;
-  }
+    margin-left 10%
 </style>
