@@ -1,7 +1,7 @@
 <template lang="pug">
-  div(style='min-height: 95vh')
+  v-container#seasons.pa-0.pt-2(fluid, fill-height)
     loader(v-if='!season[1].items')
-    v-container(fluid, v-else, style='padding: 20px 0 0')
+    div(v-else)
       v-layout.form-container(row, wrap, justify-center)
         v-flex.season-container(sm3, xs8)
           v-select(
@@ -81,16 +81,16 @@
                                     v-list-tile-action
                                       v-icon add_box
                                     v-list-tile-title Add to
-      v-dialog(v-model='modal', max-width='70%', @keydown.esc='modal = false')
-        v-card
-          v-card-title.headline {{ modalTitle }}
-          v-divider
-          v-card-text.text {{ modalText }}
-          v-card-actions
-            v-spacer
-            v-btn.blue--text.darken-1(flat, style='width: 100px', v-on:click.native='modal = false')
-              | Thanks!
-      choice-window(:entry='choiceTitle')
+    v-dialog(v-model='modal', max-width='70%', @keydown.esc='modal = false')
+      v-card
+        v-card-title.headline {{ modalTitle }}
+        v-divider
+        v-card-text.text {{ modalText }}
+        v-card-actions
+          v-spacer
+          v-btn.blue--text.darken-1(flat, style='width: 100px', v-on:click.native='modal = false')
+            | Thanks!
+    choice-window(:entry='choiceTitle')
 </template>
 
 <script>
@@ -201,6 +201,11 @@
 </script>
 
 <style scoped>
+  #seasons
+  {
+    display: inline;
+  }
+
   h6
   {
     margin: 0;
