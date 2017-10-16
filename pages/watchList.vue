@@ -10,58 +10,57 @@
       v-tabs-items
         v-tabs-content(v-for='i in 5', :key='i', lazy, v-bind:id="'tabs-' + i")
           v-card(style='background-color: #303030')
-            v-card-text
-              v-layout.list-container(row, wrap)
-                v-flex(xs12)
-                  v-layout.top-form(row, wrap, align-center, justify-center)
-                    v-flex(md3, sm4, xs9)
-                      v-tooltip(bottom)
-                        v-btn(
-                          icon, flat,
-                          @click='selectAll(i)',
-                          slot='activator'
+            v-layout.list-container(row, wrap)
+              v-flex(xs12)
+                v-layout.top-form(row, wrap, align-center, justify-center)
+                  v-flex(md3, sm4, xs9)
+                    v-tooltip(bottom)
+                      v-btn(
+                        icon, flat,
+                        @click='selectAll(i)',
+                        slot='activator'
+                      )
+                        v-icon select_all
+                      span {{ selectLabel(i) }}
+                    v-menu(open-on-hover, transition='slide-x-transition')
+                      v-btn(color='secondary', slot='activator') Move to
+                      v-list.dark
+                        v-list-tile(
+                          @click='moveTo(action.list, i)',
+                          v-for='action in actions(i)',
+                          :key='action.name'
                         )
-                          v-icon select_all
-                        span {{ selectLabel(i) }}
-                      v-menu(open-on-hover, transition='slide-x-transition')
-                        v-btn(color='secondary', slot='activator') Move to
-                        v-list.dark
-                          v-list-tile(
-                            @click='moveTo(action.list, i)',
-                            v-for='action in actions(i)',
-                            :key='action.name'
-                          )
-                            v-list-tile-action
-                              v-icon {{ action.icon }}
-                            v-list-tile-title {{ action.name }}
-                      v-tooltip(bottom)
-                        v-btn.red--text(
-                          @click='deleteSelected(i)',
-                          slot='activator',
-                          icon
-                        )
-                          v-icon delete_sweep
-                        span Delete all selected items from this list
-                    v-flex(md2, sm2, xs3)
-                      p.elem-number
-                        | {{ lists[i - 1].length }} {{ lists[i - 1].length === 1 ? 'entry' : 'entries' }}
-                    v-flex(md3, sm1, hidden-xs-only)
-                    v-flex(md2, sm3, xs4, @keyup.enter='addEntry(i)')
-                      v-text-field.entry-text(type='text', label='Add entry', v-model='entries[i]', dark)
-                    v-flex(hidden-sm-and-up, xs1)
-                    v-flex.add-button-container(md2, sm2, xs4)
-                      v-btn.add-button(dark, color='secondary', @click='addEntry(i)')
-                        | Add
-                transition-group(name='list')
-                  template(v-for='item in lists[i - 1]')
-                    list-entry(
-                      :item='item',
-                      :deleteEntry='deleteEntry',
-                      :key='item',
-                      :index='i',
-                      :select='select',
-                      :selected='selected'
-                    )
+                          v-list-tile-action
+                            v-icon {{ action.icon }}
+                          v-list-tile-title {{ action.name }}
+                    v-tooltip(bottom)
+                      v-btn.red--text(
+                        @click='deleteSelected(i)',
+                        slot='activator',
+                        icon
+                      )
+                        v-icon delete_sweep
+                      span Delete all selected items from this list
+                  v-flex(md2, sm2, xs3)
+                    p.elem-number
+                      | {{ lists[i - 1].length }} {{ lists[i - 1].length === 1 ? 'entry' : 'entries' }}
+                  v-flex(md3, sm1, hidden-xs-only)
+                  v-flex(md2, sm3, xs4, @keyup.enter='addEntry(i)')
+                    v-text-field.entry-text(type='text', label='Add entry', v-model='entries[i]', dark)
+                  v-flex(hidden-sm-and-up, xs1)
+                  v-flex.add-button-container(md2, sm2, xs4)
+                    v-btn.add-button(dark, color='secondary', @click='addEntry(i)')
+                      | Add
+              transition-group(name='list')
+                template(v-for='item in lists[i - 1]')
+                  list-entry(
+                    :item='item',
+                    :deleteEntry='deleteEntry',
+                    :key='item',
+                    :index='i',
+                    :select='select',
+                    :selected='selected'
+                  )
 </template>
 
 <script>
@@ -247,56 +246,31 @@
   }
 </script>
 
-<style scoped>
+<style lang="stylus" scoped>
   #watch-list
-  {
-    display: inline-block !important;
-  }
+    display inline-block
 
   h6
-  {
-    margin: 0;
-  }
+    margin 0
 
   span
-  {
-    width: 100%;
-  }
-
-  .card__text
-  {
-    padding-top: 0;
-  }
-
-  .ellipsis
-  {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
+    width 100%
 
   .elem-number
-  {
-    margin: 15px 0 0 0;
-    font-size: 16px;
-    font-weight: 700;
-    font-style: italic;
-  }
+    margin 10px 0 0 0
+    font-size 18px
+    font-weight 400
+    font-style italic
+    letter-spacing 1px
 
   .top-form
-  {
-    padding-left: 15px;
-  }
+    padding-left 15px
 
   .entry-text
-  {
-    margin-top: 5px;
-  }
+    margin-top 5px
 
   .add-button-container
-  {
-    padding-right: 2%;
-    display: flex;
-    align-items: center;
-  }
+    padding-right 2%
+    display flex
+    align-items center
 </style>
