@@ -35,7 +35,7 @@
                     v-btn.play-button(large, icon, @click='playThis(item)')
                       v-icon(large) play_circle_outline
                     v-menu(open-on-hover, transition='slide-x-transition')
-                      v-btn(icon, medium, slot='activator')
+                      v-btn.ml-0(icon, medium, slot='activator')
                         v-icon more_vert
                       v-list.dark
                         v-list-tile(@click='showChoices(item.name)')
@@ -266,7 +266,7 @@
   .buttons-container
     display flex
     justify-content flex-end
-    align-items center
+    align-items space-around
     padding 0
 
   .play-button
