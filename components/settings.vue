@@ -146,35 +146,25 @@
   }
 </script>
 
-<style scoped>
+<style lang="stylus" scoped>
   .tb
-  {
-    top: 24px;
-  }
+    top 24px
 
   .container
-  {
-    padding-top: calc(24px + 48px);
-  }
+    padding-top calc(24px + 48px)
 
   .section
-  {
-    margin-top: 20px;
-  }
+    margin-top 20px
 
   .section-title
-  {
-    padding-left: 20px;
-    margin-top: 15px;
-    font-size: 22px;
-    font-weight: 300;
-  }
+    padding-left 20px
+    margin-top 15px
+    font-size 22px
+    font-weight 300
 
   .local-path
-  {
-    margin-top: 15px;
-    font-size: 18px;
-    font-weight: 200;
-    text-align: center;
-  }
+    margin-top 15px
+    font-size 18px
+    font-weight 200
+    text-align center
 </style>

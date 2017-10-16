@@ -138,44 +138,34 @@
   }
 </script>
 
-<style scoped>
+<style lang="stylus" scoped>
   .vertical-centered
-  {
-    display: flex;
-    align-items: center;
-  }
+    display flex
+    align-items center
 
   .copy-icon
-  {
-    display: inline-block;
-    cursor: copy;
-  }
+    display inline-block
+    cursor copy
 
   .entry-name
-  {
-    font-size: 18px;
-    letter-spacing: 2px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-weight: 300;
-  }
+    font-size 18px
+    letter-spacing 2px
+    overflow hidden
+    text-overflow ellipsis
+    font-weight 300
 
   .ep-name
-  {
-    font-size: 16px;
-    letter-spacing: 1px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+    font-size 16px
+    letter-spacing 1px
+    overflow hidden
+    text-overflow ellipsis
 
   .ep-magnet
-  {
-    font-size: 16px;
-    letter-spacing: 1px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    text-align: right;
-    width: 100%;
-  }
+    font-size 16px
+    letter-spacing 1px
+    overflow hidden
+    text-overflow ellipsis
+    text-align right
+    width 100%
 </style>
 

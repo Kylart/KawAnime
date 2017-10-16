@@ -28,58 +28,43 @@
   }
 </script>
 
-<style scoped>
+<style lang="stylus" scoped>
+  @import '~stylus/functions'
+
   .elem
-  {
-    position: relative;
-    margin-bottom: 15px;
-    padding: 0;
-    background-color: rgb(60, 60, 60);
-  }
+    position relative
+    margin-bottom 15px
+    padding 0
+    background-color rgb(60, 60, 60)
 
   .elem:hover
-  {
-    transition: all 0.25s;
-    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
-    0 8px 10px 1px rgba(0, 0, 0, 0.14),
-    0 3px 14px 2px rgba(0, 0, 0, 0.12) !important;
-  }
+    hover_background()
 
   .title
-  {
-    line-height: 24px;
-    margin-top: 10px;
-    padding-left: 2%;
-    padding-right: 2%;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-  }
+    line-height 24px
+    margin-top 10px
+    padding-left 2%
+    padding-right 2%
+    overflow hidden
+    white-space nowrap
+    text-overflow ellipsis
 
   .image
-  {
-    height: 220px;
-    max-width: 100%;
-  }
+    height 220px
+    max-width 100%
 
   .synopsis
-  {
-    padding-top: 2%;
-    height: 150px;
-  }
+    padding-top 2%
+    height 150px
 
   .link
-  {
-    height: 50%;
-    width: 100%;
-    text-align: right;
-    display: inline-block;
-    padding: 0 5% 0 10%;
-  }
+    height 50%
+    width 100%
+    text-align right
+    display inline-block
+    padding 0 5% 0 10%
 
   .button-container
-  {
-    display: inline-block;
-    width: 15%;
-  }
+    display inline-block
+    width 15%
 </style>

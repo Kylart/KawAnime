@@ -175,64 +175,45 @@
   }
 </script>
 
-<style scoped>
+<style lang="stylus" scoped>
   .m
-  {
-    min-width: 100%;
-    padding-top: calc(48px + 24px);
-  }
+    min-width 100%
+    padding-top calc(48px + 24px)
 
   .wb
-  {
-    position: fixed;
-    width: 100%;
-    background-color: #303030 !important;
-  }
+    position fixed
+    width 100%
+    background-color #303030 !important
 
   .tb
-  {
-    margin-top: 24px !important;
-    max-height: 48px;
-    padding-left: 1%;
-  }
+    margin-top 24px !important
+    max-height 48px
+    padding-left 1%
 
   .main-drawer
-  {
-    width: 280px !important;
-    background-image: url('/static/images/sidebar-background.png');
-    background-position: left bottom;
-    background-size: 75%;
-  }
+    width 280px !important
+    background-image url('/static/images/sidebar-background.png')
+    background-position left bottom
+    background-size 75%
 
   .main-drawer ul
-  {
-    background-image: none;
-  }
+    background-image none
 
   .ripple
-  {
-    position: relative;
-  }
+    position relative
 
   .window-icon
-  {
-    cursor: pointer;
-  }
+    cursor pointer
 
   .title
-  {
-    overflow: hidden;
-    padding-left: 20px;
-    font-family: 'Hiragino Mincho Pro', 'MS PMincho', serif;
-    font-size: 30px !important;
-  }
+    overflow hidden
+    padding-left 20px
+    font-family 'Hiragino Mincho Pro', 'MS PMincho', serif
+    font-size 30px !important
 </style>
 
 <style lang="stylus">
+  @import '../node_modules/animate.css/animate.min.css'
+  @import './iconfont/material-icons.css'
   @import './stylus/main'
-</style>
-
-<style>
-  @import '../node_modules/animate.css/animate.min.css';
-  @import './iconfont/material-icons.css';
 </style>

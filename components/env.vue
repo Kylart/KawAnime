@@ -1,34 +1,21 @@
 <template lang="pug">
-  .c
-    div#container
-      span.text.white--text Development mode
+  .dev-label
+    span Development mode
 </template>
 
-<style scoped>
-  .c
-  {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-  }
+<style lang="stylus" scoped>
+  .dev-label
+    height 24px
+    width 100%
+    position fixed
+    top 0
+    z-index 7
+    text-align center
 
-  #container
-  {
-    height: 24px;
-    width: 50%;
-    position: fixed;
-    top: 0;
-    z-index: 110;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .text
-  {
-    font-size: 12px;
-    font-style: italic;
-    font-weight: 300;
-    letter-spacing: 1px;
-  }
+    span
+      line-height 24px
+      font-size 12px
+      font-style italic
+      font-weight 300
+      letter-spacing 1px
 </style>

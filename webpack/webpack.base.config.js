@@ -23,8 +23,8 @@ module.exports = {
     extensions: ['*', '.js', '.json', '.vue'],
     alias: {
       'assets': resolve('assets'),
+      'stylus': resolve('assets/stylus'),
       'components': resolve('components'),
-      'examples': resolve('pages/examples'),
       'layouts': resolve('layouts'),
       'mixins': resolve('mixins'),
       'pages': resolve('pages'),
@@ -43,30 +43,14 @@ module.exports = {
         loader: 'vue-loader',
         options: vueConfig,
         exclude: /node_modules/
-        // include: [
-        //   resolve('assets/App.vue'),
-        //   resolve('pages'),
-        //   resolve('components'),
-        //   resolve('node_modules/vuetify')
-        // ]
       },
       {
         test: /\.js$/,
         loader: 'babel-loader',
         exclude: /node_modules/
-        // include: [
-        //   resolve('components/_index.js'),
-        //   resolve('mixins'),
-        //   resolve('store'),
-        //   resolve('router'),
-        //   resolve('server'),
-        //   resolve('assets'),
-        //   resolve('node_modules/vuetify')
-        // ]
       },
       {
         test: /\.styl$/,
-        // loader: ['style-loader', 'css-loader', 'stylus-loader']
         loader: ['vue-style-loader', 'css-loader', 'stylus-loader', {
           loader: 'vuetify-loader',
           options: {

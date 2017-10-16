@@ -8,13 +8,12 @@
       v-card-text
         v-layout(row, wrap, justify-center)
           v-expansion-panel(expand, popout, v-if='Object.keys(history).length')
-            v-expansion-panel-content.item-container(
+            v-expansion-panel-content(
               ripple, lazy,
               v-for='item in Object.keys(history).reverse()',
               :key='item'
             )
-              .day(slot='header')
-                | {{ item }}
+              .day(slot='header') {{ item }}
               v-card
                 v-card-text.lighten-3.info-container
                   v-layout(row, wrap)
@@ -30,11 +29,10 @@
                           | clear
           v-flex.empty-history(xs4, v-else) No entry yet, go watch some anime ~
       v-divider
-      v-card-actions(style=' padding-right: 20px;')
+      v-card-actions(style='padding-right: 20px;')
         v-spacer
         v-btn.blue--text.darken-1(
           flat,
-          style='width: 100px;',
           @click="close()"
         ) Close
 </template>
@@ -45,8 +43,13 @@
       history () {
         return this.$store.state.history.entries
       },
-      modal () {
-        return this.$store.state.history.modal
+      modal: {
+        get () {
+          return this.$store.state.history.modal
+        },
+        set (bool) {
+          this.$store.commit('history/setModal', bool)
+        }
       }
     },
     methods: {
@@ -71,85 +74,60 @@
   }
 </script>
 
-<style scoped>
-  h6, p
-  {
-    margin: 0;
+<style lang="stylus" scoped>
+  $font_size = 16px
+  $colors = {
+    play: {
+      back: rgba(119, 221, 119, 0.62),
+      border: rgba(119, 221, 119, 0.62)
+    },
+    delete: {
+      back: rgba(216, 24, 24, 0.55),
+      border: rgba(235, 26, 26, 0.20)
+    },
+    dark: rgb(50, 50, 50)
   }
 
-  .ellipsis
-  {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  .item-container
-  {
-    background-color: rgb(50, 50, 50);
-    border-bottom: 0 !important;
-  }
-
-  .info-container
-  {
-    background-color: rgb(50, 50, 50);
-  }
-
-  .day
-  {
-    position: relative;
-    font-size: 17px;
-    font-weight: 700;
-    padding-left: 15px;
-    background-color: #424242 !important;
-  }
-
-  .entry
-  {
-    height: 27px;
-    padding-top: 1px;
-  }
+  colored(background, border)
+    background-color background
+    border-bottom 1px solid border
+    border-top 1px solid border
 
   .not-delete
-  {
-    background-color: rgba(119, 221, 119, 0.62);
-    border-bottom: 1px solid rgba(119, 221, 119, 0.62);
-    border-top: 1px solid rgba(119, 221, 119, 0.62);
-  }
+    colored($colors.play.back, $colors.play.border)
 
   .delete
-  {
-    background-color: rgba(216, 24, 24, 0.55);
-    border-bottom: 1px solid rgba(235, 26, 26, 0.20);
-    border-top: 1px solid rgba(235, 26, 26, 0.20);
-  }
+    colored($colors.delete.back, $colors.delete.border)
+
+  .info-container
+    background-color: $colors.dark
+
+  .day
+    position relative
+    font-size $font_size
+    font-weight 700
+    padding-left 15px
+
+  .entry
+    height 27px
+    padding-top 1px
 
   .time
-  {
-    font-size: 16px;
-    font-weight: 600;
-  }
+    font-size $font_size
+    font-weight 600
 
   .type
-  {
-    font-size: 16px;
-    font-style: italic;
-  }
+    font-size $font_size
+    font-style italic
 
   .text
-  {
-    font-size: 16px;
-    font-weight: 700;
-  }
+    font-size $font_size
+    font-weight 700
 
   .delete-entry
-  {
-    cursor: pointer;
-    position: relative;
-  }
+    cursor pointer
+    position relative
 
   .empty-history
-  {
-    font-size: 16px;
-  }
+    font-size $font_size
 </style>

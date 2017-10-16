@@ -22,58 +22,56 @@
           template(v-for='item in files')
             v-flex.elem(:key='item.path', xs12, sm6, md4, xl3)
               v-card.elem-content.elevation-3(v-ripple='true')
-                v-card-text.elem-card
-                  v-container(fluid, style='padding: 0;')
-                    v-layout.elem-container.ma-0(row, wrap)
-                      v-flex(xs7)
-                        v-tooltip(top)
-                          h6.elem-title.ellipsis(slot='activator') {{ item.name }}
-                          span {{ item.name }}
-                      v-flex.elem-ep.text-xs-right(xs2)
-                        v-tooltip(top)
-                          p.ellipsis.ep(slot='activator') {{ item.ep }} / {{ item.numberOfEpisode }}
-                          span {{ 'Episode ' + item.ep }}
-                      v-flex.buttons-container(xs3)
-                        v-btn.play-button(large, icon, @click='playThis(item)')
-                          v-icon(large) play_circle_outline
-                        v-menu(open-on-hover, transition='slide-x-transition')
-                          v-btn(icon, medium, slot='activator')
-                            v-icon more_vert
-                          v-list.dark
-                            v-list-tile(@click='showChoices(item.name)')
-                              v-list-tile-action
-                                v-icon add_box
-                              v-list-tile-title
-                                | Add to
-                            v-list-tile(@click='delThis(item)')
-                              v-list-tile-action
-                                v-icon.primary--text(medium) delete_forever
-                              v-list-tile-title.primary--text Delete
-                      v-flex(xs8)
-                        v-tooltip(top)
-                          p.ellipsis.genres(slot='activator')
-                            | {{ item.genres.length ? item.genres.join(', ') : 'No specified genre' }}
-                          span {{ item.genres.length ? item.genres.join(', ') : 'No specified genre' }}
-                      v-flex(xs4)
-                        v-tooltip(top)
-                          p.ellipsis.classification(slot='activator')
-                            | {{ item.classification.replace('None', 'No restriction') }}
-                          span {{ item.classification.replace('None', 'No restriction') }}
-                      v-flex.picture-container(xl5, lg4, md5, xs4)
-                        lazy-component
-                          img.picture(:src='item.picture', onerror="this.src='static/images/error.jpg'")
-                      v-flex.bottom-right-container(xl7, lg8, md7, xs8)
-                        v-layout.pl-2.pr-2.pb-2(row, wrap, justify-space-between)
-                          v-flex(xs12)
-                            .synopsis {{ reduced(item.synopsis) }}
-                          v-flex(xs12, style='display: flex')
-                            v-layout(align-center, justify-space-between, style='min-width: 100%')
-                              v-flex(xs2)
-                                p.year {{ item.year }}
-                              v-flex(xs7)
-                                p.status {{ item.status }}
-                              v-flex(xs3)
-                                p.mark {{ item.mark }}
+                v-layout.elem-container.ma-0(row, wrap)
+                  v-flex(xs7)
+                    v-tooltip(top)
+                      h6.elem-title.ellipsis(slot='activator') {{ item.name }}
+                      span {{ item.name }}
+                  v-flex.elem-ep.text-xs-right(xs2)
+                    v-tooltip(top)
+                      p.ellipsis.ep(slot='activator') {{ item.ep }} / {{ item.numberOfEpisode }}
+                      span {{ 'Episode ' + item.ep }}
+                  v-flex.buttons-container(xs3)
+                    v-btn.play-button(large, icon, @click='playThis(item)')
+                      v-icon(large) play_circle_outline
+                    v-menu(open-on-hover, transition='slide-x-transition')
+                      v-btn(icon, medium, slot='activator')
+                        v-icon more_vert
+                      v-list.dark
+                        v-list-tile(@click='showChoices(item.name)')
+                          v-list-tile-action
+                            v-icon add_box
+                          v-list-tile-title
+                            | Add to
+                        v-list-tile(@click='delThis(item)')
+                          v-list-tile-action
+                            v-icon.primary--text(medium) delete_forever
+                          v-list-tile-title.primary--text Delete
+                  v-flex(xs8)
+                    v-tooltip(top)
+                      p.ellipsis.genres(slot='activator')
+                        | {{ item.genres.length ? item.genres.join(', ') : 'No specified genre' }}
+                      span {{ item.genres.length ? item.genres.join(', ') : 'No specified genre' }}
+                  v-flex(xs4)
+                    v-tooltip(top)
+                      p.ellipsis.classification(slot='activator')
+                        | {{ item.classification.replace('None', 'No restriction') }}
+                      span {{ item.classification.replace('None', 'No restriction') }}
+                  v-flex.picture-container(xl5, lg4, md5, xs4)
+                    lazy-component
+                      img.picture(:src='item.picture', onerror="this.src='static/images/error.jpg'")
+                  v-flex.bottom-right-container(xl7, lg8, md7, xs8)
+                    v-layout.pl-2.pr-2.pb-2(row, wrap, justify-space-between)
+                      v-flex(xs12)
+                        .synopsis {{ reduced(item.synopsis) }}
+                      v-flex(xs12, style='display: flex')
+                        v-layout(align-center, justify-space-between, style='min-width: 100%')
+                          v-flex(xs2)
+                            p.year {{ item.year }}
+                          v-flex(xs7)
+                            p.status {{ item.status }}
+                          v-flex(xs3)
+                            p.mark {{ item.mark }}
     v-container(fluid, v-else)
       transition(name='fade')
         img.empty-bg(v-if='emptyBg', height='400', src='~static/images/empty-bg.png')
@@ -194,211 +192,138 @@
   }
 </script>
 
-<style scoped>
+<style lang="stylus" scoped>
+  @import '~stylus/functions'
+
   .fade-enter-active, .fade-leave-active
-  {
-    transition: opacity .5s
-  }
+    transition opacity .5s
 
   .fade-enter, .fade-leave-to
-  {
-    opacity: 0
-  }
+    opacity 0
 
   #local-page
-  {
-    display: inline-block;
-  }
+    display inline-block
 
   h6
-  {
-    margin-top: 0.7rem;
-    margin-bottom: 0;
-  }
+    margin-top 0.7rem
+    margin-bottom 0
 
   span
-  {
-    max-width: 100%;
-    width: 100%;
-  }
-
-  .ellipsis
-  {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
+    max-width 100%
+    width 100%
 
   /* ------------- MENUBAR ------------- */
   .menubar
-  {
-    margin-top: 2px;
-  }
+    margin-top 2px
 
   .menu-eps-text
-  {
-    font-size: 16px;
-    font-weight: 800;
-    margin-top: 12px;
-    padding-left: 8%;
-  }
+    font-size 16px
+    font-weight 800
+    margin-top 12px
+    padding-left 8%
 
   .refresh-button, .change-dir-button
-  {
-    display: inline-block;
-  }
+    display inline-block
 
   .reset-cache-button:hover
-  {
-    border-color: #ff9800 !important;
-    background-color: #ff9800 !important;
-  }
+    border-color #ff9800 !important
+    background-color #ff9800 !important
 
   .menu-buttons
-  {
-    display: flex;
-    justify-content: center;
-  }
+    display flex
+    justify-content center
 
   /* -------------- ELEMS -------------- */
   .elem
-  {
-    margin-bottom: 10px;
-    padding: 0 4px !important;
-    display: inline-block;
-  }
+    margin-bottom 10px
+    padding 0 4px !important
+    display inline-block
 
   .elem-content
-  {
-    background-color: rgb(60, 60, 60);
-    cursor: default;
-  }
+    background-color rgb(60, 60, 60)
+    cursor default
 
   .elem-content:hover
-  {
-    transition: all 0.25s;
-    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12) !important;
-  }
-
-  .elem-card
-  {
-    padding: 0 5px 0 0;
-  }
+    hover_background()
 
   .elem-container
-  {
-    padding-top: 5px;
-  }
+    padding-top 5px
 
   .elem-title
-  {
-    padding-left: 10px;
-    line-height: 30px;
-  }
+    padding-left 10px
+    line-height 30px
 
   .elem-ep
-  {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+    display flex
+    justify-content center
+    align-items center
 
   .ep
-  {
-    margin: 0;
-    font-size: 15px;
-    font-weight: 800;
-  }
+    margin 0
+    font-size 15px
+    font-weight 800
 
   .buttons-container
-  {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    padding: 0;
-  }
+    display flex
+    justify-content flex-end
+    align-items center
+    padding 0
 
   .play-button
-  {
-    display: inline;
-    margin: 0;
-  }
+    display inline
+    margin 0
 
   .genres
-  {
-    padding-left: 15px;
-    padding-right: 5px;
-    font-weight: 600;
-  }
+    padding-left 15px
+    padding-right 5px
+    font-weight 600
 
   .classification
-  {
-    padding-right: 10px;
-  }
+    padding-right 10px
 
   .picture-container
-  {
-    height: 220px;
-    max-width: 100%;
-  }
+    height 220px
+    max-width 100%
 
   .picture
-  {
-    max-width: 100%;
-    height: 220px;
-  }
+    max-width 100%
+    height 220px
 
   .bottom-right-container
-  {
-    position: relative;
-    display: flex;
-  }
+    position relative
+    display flex
 
   .synopsis
-  {
-    padding: 2px 5px 5px 5px;
-    text-align: justify;
-    display: block;
-    text-overflow: ellipsis;
-    word-wrap: break-word;
-    overflow: hidden;
-    height: 9em;
-    line-height: 1.5em;
-  }
+    padding 2px 5px 5px 5px
+    text-align justify
+    display block
+    text-overflow ellipsis
+    word-wrap break-word
+    overflow hidden
+    height 9em
+    line-height 1.5em
 
   p.year, p.status, p.mark
-  {
-    margin-bottom: 0;
-  }
+    margin-bottom 0
 
   .year
-  {
-    padding-left: 5px;
-    font-weight: 600;
-  }
+    padding-left 5px
+    font-weight 600
 
   .status
-  {
-    text-align: center;
-    font-weight: 600;
-  }
+    text-align center
+    font-weight 600
 
   .mark
-  {
-    font-size: large;
-    font-weight: 900;
-  }
+    font-size large
+    font-weight 900
 
   .empty-message
-  {
-    margin-top: 5%;
-    text-align: center;
-  }
+    margin-top 5%
+    text-align center
 
   .empty-bg
-  {
-    position: absolute;
-    bottom: 0;
-    left: 5%;
-  }
+    position absolute
+    bottom 0
+    left 5%
 </style>

@@ -166,139 +166,100 @@
   }
 </script>
 
-<style scoped>
+<style lang="stylus" scoped>
+  @import '~stylus/functions'
+
   p
-  {
-    margin-bottom: 0;
-  }
+    margin-bottom 0
 
   div.input-group
-  {
-    padding-bottom: 5px !important;
-    padding-top: 8px !important;
-  }
+    padding-bottom 5px !important
+    padding-top 8px !important
 
   /* ----- Refresh button ----- */
   .refresh-button-container
-  {
-    display: inline-block;
-    text-align: center;
-    padding: 0;
-    align-self: center;
-  }
+    display inline-block
+    text-align center
+    padding 0
+    align-self center
 
   .time-container
-  {
-    height: 70px;
-    display: flex;
-    align-items: center;
-  }
+    height 70px
+    display flex
+    align-items center
 
   .update-time
-  {
-    padding-left: 20px;
-    font-weight: 600;
-    font-size: 16px;
-    font-style: italic;
-  }
+    padding-left 20px
+    font-weight 600
+    font-size 16px
+    font-style italic
 
   .elem
-  {
-    margin-bottom: 10px;
-    display: inline-block;
-    padding: 1px 5px !important;
-  }
+    margin-bottom 10px
+    display inline-block
+    padding 1px 5px !important
 
   .elem-content
-  {
-    background-color: rgb(60, 60, 60);
-    cursor: default;
-  }
+    background-color rgb(60, 60, 60)
+    cursor default
 
   .elem-content:hover
-  {
-    transition: all 0.4s;
-    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
-    0 8px 10px 1px rgba(0, 0, 0, 0.14),
-    0 3px 14px 2px rgba(0, 0, 0, 0.12) !important;
-  }
+    hover_background(0.4s)
 
   .elem-card
-  {
-    padding: 0 10px 0 0;
-  }
+    padding 0 10px 0 0
 
   .elem-card-layout
-  {
-    padding-left: 1px;
-  }
+    padding-left 1px
 
   .elem-title h6
-  {
-    padding-left: 10px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    line-height: 26px;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-  }
+    padding-left 10px
+    margin-top 10px
+    margin-bottom 10px
+    line-height 26px
+    white-space nowrap
+    text-overflow ellipsis
+    overflow hidden
 
   .elem-ep h6
-  {
-    margin-top: 10px;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-  }
+    margin-top 10px
+    white-space nowrap
+    text-overflow ellipsis
+    overflow hidden
 
   .elem-image
-  {
-    height: 200px;
-  }
+    height 200px
 
   .picture
-  {
-    max-width: 95%;
-  }
+    max-width 95%
 
   .elem-text-links
-  {
-    height: 100%;
-    position: relative;
-  }
+    height 100%
+    position relative
 
   .synopsis
-  {
-    text-align: justify;
-    display: block;
-    text-overflow: ellipsis;
-    word-wrap: break-word;
-    overflow: hidden;
-    max-height: 9em;
-    line-height: 1.5em;
-  }
+    text-align justify
+    display block
+    text-overflow ellipsis
+    word-wrap break-word
+    overflow hidden
+    max-height 9em
+    line-height 1.5em
 
   .links
-  {
-    height: 25%;
-    position: absolute;
-    bottom: 5px;
-    right: -2px;
-    display: flex;
-  }
+    height 25%
+    position absolute
+    bottom 5px
+    right -2px
+    display flex
 
   .download-button
-  {
-    text-decoration: none;
-    margin-right: 0;
-  }
+    text-decoration none
+    margin-right 0
 
   .subheading
-  {
-    padding: 30px;
-    text-align: justify;
-    text-align-last: center;
-    white-space: pre-wrap;
-  }
+    padding 30px
+    text-align justify
+    text-align-last center
+    white-space pre-wrap
 </style>

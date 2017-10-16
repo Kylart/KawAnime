@@ -99,95 +99,67 @@
   }
 </script>
 
-<style scoped>
+<style lang="stylus" scoped>
   .flex-v-centered
-  {
-    display: flex;
-    align-items: center;
-  }
+    display flex
+    align-items center
 
   .h-centered
-  {
-    text-align: center;
-  }
+    text-align center
 
   .loading-text
-  {
-    text-align: center;
-    position: relative;
-  }
+    text-align center
+    position relative
 
   .info-title
-  {
-    width: 100%;
-    padding-left: 15% !important;
-    font-family: 'Hiragino Mincho Pro', 'MS PMincho', serif;
-    font-size: 24px;
-    font-weight: 100;
-  }
+    width 100%
+    padding-left 15% !important
+    font-family 'Hiragino Mincho Pro', 'MS PMincho', serif
+    font-size 24px
+    font-weight 100
 
   .score-container
-  {
-    justify-content: center;
-    display: inline-block;
-    text-align: center;
-  }
+    justify-content center
+    display inline-block
+    text-align center
 
   .info-score
-  {
-    margin-bottom: 0;
-    font-size: 20px;
-    font-weight: 200;
-    letter-spacing: 1px;
-  }
+    margin-bottom 0
+    font-size 20px
+    font-weight 200
+    letter-spacing 1px
 
   .info-pic-container
-  {
-    max-width: 200px;
-  }
+    max-width 200px
 
   .info-pic
-  {
-    max-width: 100%;
-    max-height: 400px;
-  }
+    max-width 100%
+    max-height 400px
 
   .info-synopsis-container
-  {
-    padding: 20px;
-  }
+    padding 20px
 
   .info-synopsis
-  {
-    text-align: justify;
-    font-size: 16px;
-    line-height: 22px;
-    white-space: pre-wrap;
-  }
+    text-align justify
+    font-size 16px
+    line-height 22px
+    white-space pre-wrap
 
   .bottom-info
-  {
-    margin-top: 15px;
-    padding-bottom: 15px;
-  }
+    margin-top 15px
+    padding-bottom 15px
 
   .info-text
-  {
-    font-weight: 100;
-    font-size: 16px;
-  }
+    font-weight 100
+    font-size 16px
 
   .genre-title
-  {
-    padding-left: 15px;
-    letter-spacing: 1px;
-    font-weight: 100;
-    font-style: italic;
-  }
+    padding-left 15px
+    letter-spacing 1px
+    font-weight 100
+    font-style italic
 
   .info-genres
-  {
-    padding-left: 5%;
-    letter-spacing: 1px;
-  }
+    padding-left 5%
+    letter-spacing 1px
 </style>
