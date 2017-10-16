@@ -200,134 +200,92 @@
   }
 </script>
 
-<style scoped>
+<style lang="stylus" scoped>
+  @import '~stylus/functions'
+
   h6
-  {
-    margin: 0;
-  }
+    margin 0
 
   div.input-group
-  {
-    padding-bottom: 5px !important;
-    margin-top: 8px !important;
-  }
+    padding-bottom 5px !important
+    margin-top 8px !important
 
   .text
-  {
-    text-align: justify;
-    text-align-last: center;
-    padding: 20px;
-    font-size: 16px;
-    white-space: pre-wrap;
-  }
+    text-align justify
+    text-align-last center
+    padding 20px
+    font-size 16px
+    white-space pre-wrap
 
 
   .refresh-button
-  {
-    display: flex;
-    align-items: center;
-  }
+    display flex
+    align-items center
 
   .query
-  {
-    margin: 30px 0 0;
-    margin-left: 10%;
-    width: 25%;
-  }
+    margin 30px 0 0
+    margin-left 10%
+    width 25%
 
   /* ----------- ELEM ---------- */
-  .ellipsis
-  {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
   .elems
-  {
-    padding: 0 1% 2% 1%;
-  }
+    padding 0 1% 2% 1%
 
   .elem
-  {
-    position: relative;
-    background-color: rgb(60, 60, 60);
-  }
+    position relative
+    background-color rgb(60, 60, 60)
 
   .elem:hover
-  {
-    transition: all 0.25s;
-    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12) !important;
-  }
+    hover_background()
 
   .title
-  {
-    margin-top: 10px;
-    margin-bottom: 10px;
-    padding-left: 10px;
-    padding-right: 10px;
-    line-height: 26px;
-  }
+    margin-top 10px
+    margin-bottom 10px
+    padding-left 10px
+    padding-right 10px
+    line-height 26px
 
   .from-type
-  {
-    margin-bottom: 5px;
-    text-align: right;
-    font-weight: 700;
-    font-size: 120%;
-  }
+    margin-bottom 5px
+    text-align right
+    font-weight 700
+    font-size 120%
 
   .genres
-  {
-    padding-left: 10px;
-    font-weight: 600;
-  }
+    padding-left 10px
+    font-weight 600
 
   .image-container
-  {
-    padding: 0;
-    height: 210px;
-  }
+    padding 0
+    height 210px
 
   .image
-  {
-    height: 210px;
-    max-width: 90%;
-  }
+    height 210px
+    max-width 90%
 
   .bottom-right
-  {
-    position: relative;
-    display: flex;
-  }
+    position relative
+    display flex
 
   .synopsis
-  {
-    padding-left: 5px;
-    padding-right: 15px;
-    text-align: justify;
-    display: block;
-    text-overflow: ellipsis;
-    word-wrap: break-word;
-    overflow: hidden;
-    height: 7.5em;
-    line-height: 1.5em;
-  }
+    padding-left 5px
+    padding-right 15px
+    text-align justify
+    display block
+    text-overflow ellipsis
+    word-wrap break-word
+    overflow hidden
+    height 7.5em
+    line-height 1.5em
 
   .date
-  {
-    margin-top: 5%;
-  }
+    margin-top 5%
 
   .nb-ep
-  {
-    text-align: right;
-    margin-top: 5%;
-    padding-right: 20px;
-  }
+    text-align right
+    margin-top 5%
+    padding-right 20px
 
   .producers
-  {
-    margin-top: 4%;
-  }
+    margin-top 4%
 </style>
