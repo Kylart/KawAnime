@@ -26,25 +26,19 @@
   }
 </script>
 
-<style scoped>
+<style lang="stylus" scoped>
   /* ----- Refresh button ----- */
   .refresh-button-container
-  {
-    display: inline-block;
-    text-align: right;
-    margin-top: 5px;
-    margin-bottom: 2px;
-    padding-right: 3%;
-  }
+    display inline-block
+    text-align right
+    margin-top 5px
+    margin-bottom 2px
+    padding-right 3%
 
   .refresh-button
-  {
-    display: inline-block;
-  }
+    display inline-block
 
   /* ---------- ELEM ---------- */
   .news-container
-  {
-    padding: 0 0 1% 1%;
-  }
+    padding 0 0 1% 1%
 </style>
