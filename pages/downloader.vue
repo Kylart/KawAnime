@@ -130,7 +130,7 @@
     position relative
     height 100%
     width 100%
-    background-image url(~static/images/downloader-back.jpg)
+    background-image: url('~static/images/downloader-back.jpg')
     background-size cover
     background-repeat no-repeat
 
@@ -140,11 +140,11 @@
     height 45%
 
   .right-pic
-    content url(~static/images/downloader-char-right.png)
+    content: url('~static/images/downloader-char-right.png')
     right 2%
 
   .left-pic
-    content url(~static/images/downloader-char-left.png)
+    content: url('~static/images/downloader-char-left.png')
     left 2%
 
   .form-container
