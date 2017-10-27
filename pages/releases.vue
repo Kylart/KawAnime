@@ -50,6 +50,8 @@
                     v-flex.pa-0(xl8, lg8, md7, xs8)
                       .elem-text-links
                         .synopsis.pl-1 {{ item.synopsis || 'No synopsis yet.' }}
+                        div.text-xs-right(v-if='isFollowed(item.rawName)')
+                          span.following-status.not-selectable {{ isFollowed(item.rawName) }}
                         .links
                           a.download-button(:href='item.magnetLink')
                             v-btn.btn--light-flat-pressed(dark, flat, @click='print(item)') Download
@@ -161,6 +163,13 @@
       },
       searchThis (name) {
         this.$store.dispatch('search/fromName', name)
+      },
+      isFollowed (name) {
+        return this.$store.state.watchLists.lists.watching.includes(name)
+          ? 'Watching'
+          : this.$store.state.watchLists.lists.watchList.includes(name)
+            ? 'Watch List'
+            : ''
       }
     }
   }
@@ -245,6 +254,13 @@
     overflow hidden
     max-height 9em
     line-height 1.5em
+
+  .following-status
+    padding 2px 3px 2px 2px
+    font-style italic
+    letter-spacing 1px
+    font-size 15px
+    border 1px solid rgba(255, 255, 255, 0.3)
 
   .links
     height 25%
