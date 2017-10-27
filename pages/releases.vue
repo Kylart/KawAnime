@@ -256,8 +256,7 @@
     line-height 1.5em
 
   .following-status
-    padding 2px 3px 2px 2px
-    font-style italic
+    padding 2px 2px 2px 3px
     letter-spacing 1px
     font-size 15px
     border 1px solid rgba(255, 255, 255, 0.3)
