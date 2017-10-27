@@ -3,7 +3,7 @@
     xs12, sm6, md4, lg3,
     :class="item.split(' ').join('-')"
   ).elem
-    v-card(v-ripple="true").elevation-3.elem-content
+    v-card(ripple).elevation-3.elem-content
       v-layout(row, wrap)
         v-flex(xs2 @click.capture="select(item, index)").box
           v-checkbox(

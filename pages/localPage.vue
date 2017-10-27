@@ -21,7 +21,7 @@
         transition-group(name='list')
           template(v-for='item in files')
             v-flex.elem(:key='item.path', xs12, sm6, md4, xl3)
-              v-card.elem-content.elevation-3(v-ripple='true')
+              v-card.elem-content.elevation-3(ripple)
                 v-layout.elem-container.ma-0(row, wrap)
                   v-flex(xs7)
                     v-tooltip(top)
