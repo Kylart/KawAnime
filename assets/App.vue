@@ -25,10 +25,10 @@
 
     v-system-bar.wb.dragable(app, dark, status)
       v-spacer
-      div(v-if="!isBrowser && $store.state.platform !== 'darwin'")
-        v-icon.window-icon.non-dragable(@click="actOnWindow('minimize')") remove
-        v-icon.window-icon.non-dragable(@click="actOnWindow('maximize')") check_box_outline_blank
-        v-icon.window-icon.non-dragable(@click="actOnWindow('close')") close
+      div.window-icon.non-dragable(v-if="!isBrowser && $store.state.platform !== 'darwin'")
+        v-icon.not-close(@click="actOnWindow('minimize')") remove
+        v-icon.not-close(@click="actOnWindow('maximize')") check_box_outline_blank
+        v-icon.close(@click="actOnWindow('close')") close
 
     v-toolbar.mablue.tb(app, fixed, dark)
       v-toolbar-side-icon(@click.stop='toggleDrawer()')
@@ -51,7 +51,7 @@
       transition(name='page', mode='out-in')
         router-view
 
-    env(v-show='$store.state.NODE_ENV === "development"')
+    env(v-show='!$store.state.NODE_ENV === "development"')
     magnets-modal
     info-results(v-show='$store.state.search.info.show')
 
@@ -181,6 +181,7 @@
     padding-top calc(48px + 24px)
 
   .wb
+    padding-right 0
     position fixed
     width 100%
     background-color #303030 !important
@@ -204,6 +205,27 @@
 
   .window-icon
     cursor pointer
+    height 100%
+
+  .close, .not-close
+    text-align center
+    margin 0
+    height 100%
+    width 25px
+
+  .not-close
+    padding-top 4px
+    font-size 17px
+    
+    &:hover
+      background-color rgba(255, 255, 255, 0.25)
+
+  .close
+    padding-top 2px
+    font-size 18px
+
+    &:hover
+      background-color rgba(240, 71, 71, 0.7)
 
   .title
     overflow hidden
