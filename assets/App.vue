@@ -51,7 +51,7 @@
       transition(name='page', mode='out-in')
         router-view
 
-    env(v-show='!$store.state.NODE_ENV === "development"')
+    env(v-show='$store.state.NODE_ENV === "development"')
     magnets-modal
     info-results(v-show='$store.state.search.info.show')
 
@@ -216,7 +216,7 @@
   .not-close
     padding-top 4px
     font-size 17px
-    
+
     &:hover
       background-color rgba(255, 255, 255, 0.25)
 
