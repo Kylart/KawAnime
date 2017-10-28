@@ -18,12 +18,11 @@
           v-flex(xs12)
             v-layout(row, wrap, justify-center)
               template(v-if='results.length', v-for='item in results')
-                v-flex.elem(xs3, @click='search(item.name)')
+                v-flex.elem(xs3, @click='search(item)')
                   v-layout.elem-content.elevation-3(
                     wrap,
                     justify-center,
-                    v-ripple='true',
-                    @click.all='search(item.name)'
+                    v-ripple='true'
                   )
                     v-flex(xs8)
                       img.elem-picture(:src='item.image_url', height='140')
@@ -50,16 +49,16 @@
         this.searchTerm = ''
         this.$refs.input.focus()
       },
-      async search (name) {
-        this.searchTerm = name
+      async search (item) {
+        this.searchTerm = item.name
 
-        if (this.$store.state.search.info.info.title === name) {
+        if (this.$store.state.search.info.info.title === item.name) {
           this.$store.commit('search/showInfo', true)
           this.searchShow = false
         } else {
           this.searchShow = false
 
-          this.$store.dispatch('search/fromName', name)
+          this.$store.dispatch('search/fromUrl', item)
         }
       },
       quickSearch: _.debounce(
@@ -68,7 +67,9 @@
 
           if (term && term.length > 2) {
             try {
-              const {data, status} = await axios.get(`searchTermOnMal?term=${term}`)
+              const {data, status} = await axios.get(`searchTermOnMal`, {
+                params: {term}
+              })
 
               if (status === 200) {
                 this.results = data.categories[0].items

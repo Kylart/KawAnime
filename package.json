@@ -48,7 +48,7 @@
     "horrible-api": "^1.0.5",
     "lodash": "^4.17.4",
     "lru-cache": "^4.0.2",
-    "mal-scraper": "^1.4.1",
+    "mal-scraper": "^1.5.0",
     "moment": "^2.19.1",
     "nyaapi": "^1.2.2",
     "progress-bar-webpack-plugin": "^1.10.0",

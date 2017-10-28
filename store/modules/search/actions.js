@@ -1,7 +1,9 @@
 import {axios} from '../../utils'
 
 export default {
-  async fromName ({commit, state}, name) {
+  async fromUrl ({commit, state}, item) {
+    const {name, url} = item
+
     if (name === state.info.term) {
       commit('showInfo', true)
     } else {
@@ -9,9 +11,7 @@ export default {
       commit('setInfoLoading', true)
       commit('showInfo', true)
       const {data, status} = await axios.get(`getInfoFromMal`, {
-        params: {
-          term: name
-        }
+        params: {url}
       })
 
       commit('setInfoLoading', false)

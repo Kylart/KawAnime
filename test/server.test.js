@@ -404,8 +404,19 @@ test('/searchTermOnMal route exits and return 10 elements', async t => {
   t.is(data.categories[0].items.length, 10)
 })
 
-test('/getInfoFromMal route exits and return an object with name', async t => {
+test('/getInfoFromMal route exits if given name and return an object with name', async t => {
   const { data, status } = await axios.get(`${uri}/getInfoFromMal?term=sakura trick`)
+
+  t.is(status, 200)
+  t.is(data.title, 'Sakura Trick')
+})
+
+test('/getInfoFromMal route exits if given url and return an object with name', async t => {
+  const { data, status } = await axios.get(`${uri}/getInfoFromMal`, {
+    params: {
+      url: 'https://myanimelist.net/anime/20047/Sakura_Trick'
+    }
+  })
 
   t.is(status, 200)
   t.is(data.title, 'Sakura Trick')

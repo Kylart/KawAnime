@@ -223,7 +223,9 @@ let routes = [
   },
   (app) => {
     app.get('/getInfoFromMal', ({query}, res) => {
-      search.searchOnMal(query, res)
+      query.url
+        ? search.fromUrl(query, res)
+        : search.fromName(query, res)
     })
   },
   /* istanbul ignore next */ (app) => {

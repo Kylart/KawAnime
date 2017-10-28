@@ -22,8 +22,18 @@ const searchTerm = (query, res) => {
   })
 }
 
-const searchOnMal = (query, res) => {
+const fromName = (query, res) => {
   malScraper.getInfoFromName(query.term).then((data) => {
+    res.type('application/json')
+    res.status(200).send(JSON.stringify(data))
+  }).catch(/* istanbul ignore next */(err) => {
+    console.log(err.message)
+    res.status(204).send()
+  })
+}
+
+const fromUrl = (query, res) => {
+  malScraper.getInfoFromUrl(query.url).then((data) => {
     res.type('application/json')
     res.status(200).send(JSON.stringify(data))
   }).catch(/* istanbul ignore next */(err) => {
@@ -34,5 +44,6 @@ const searchOnMal = (query, res) => {
 
 module.exports = {
   searchTerm,
-  searchOnMal
+  fromName,
+  fromUrl
 }
