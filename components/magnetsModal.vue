@@ -3,7 +3,7 @@
     v-dialog(v-model='values.show', lazy, absolute, persistent, max-width='800', @keydown.esc='close()')
       v-card.white--text
         v-card-title.pb-2.pt-2
-          h2.title.white--text.mb-0 Results for #[strong {{ values.title }}]
+          h2.title.white--text.mb-0.entry-title.ellipsis Results for #[strong {{ values.title }}]
           v-spacer
           v-tooltip(left)
             v-btn(
@@ -146,6 +146,9 @@
   .copy-icon
     display inline-block
     cursor copy
+
+  .entry-title
+    max-width 85%
 
   .entry-name
     font-size 18px
