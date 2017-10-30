@@ -252,7 +252,7 @@
     text-overflow ellipsis
     word-wrap break-word
     overflow hidden
-    max-height 9em
+    height 9em
     line-height 1.5em
 
   .following-status
