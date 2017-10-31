@@ -85,7 +85,7 @@ const searchLocalFiles = (query, res) => {
 
           json[minifyName(elem)] = {
             name: elem,
-            picture: anime.image,
+            picture: anime.picture,
             numberOfEpisode: anime.episodes.replace('Unknown', 'NC'),
             status: anime.status,
             year: anime.aired.split(' ')[2],
