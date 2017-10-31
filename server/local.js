@@ -90,8 +90,8 @@ const searchLocalFiles = (query, res) => {
             status: anime.status,
             year: anime.aired.split(' ')[2],
             genres: anime.genres,
-            classification: anime.classification,
-            mark: anime.statistics.score.value,
+            classification: anime.rating,
+            mark: anime.score,
             synopsis: anime.synopsis
           }
 

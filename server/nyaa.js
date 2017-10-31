@@ -14,7 +14,7 @@ const sendRes = (object, res) => {
 const formatMagnets = (data, searchData, choice, res) => {
   const magnets = []
   const eps = []
-  const isPantsu = choice === pantsu
+  const isPantsu = choice === 'pantsu'
 
   data.forEach((elem) => {
     elem.name = removeUnwanted(elem.name)
@@ -54,7 +54,7 @@ const download = (req, res) => {
 
     console.log(searchData)
 
-    const term = `[${searchData.fansub}]+${searchData.quality}+${searchData.name}+` + (choice === 'si' ? '-unofficial' : '')
+    const term = `[${searchData.fansub}] ${searchData.quality} ${searchData.name} ` + (choice === 'si' ? '-unofficial' : '')
 
     if (choice === 'si') {
       si.search(term).then((data) => {
@@ -124,7 +124,7 @@ const getLatest = (query, res) => {
       console.log('[Nyaa] (Releases): An error occurred...\n', err)
       res.status(204).send()
     })
-  } else if (choice === 'pantsu') {
+  } else {
     pantsu.search(`[${fansub}] ${quality}`, 18).then((data) => {
       makeSearch(data, res, true)
     }).catch(/* istanbul ignore next */(err) => {

@@ -107,7 +107,6 @@ test('/getLatest.json exits and returns 18 elements with right keys at 720p', as
 
   if (status === 200) {
     t.is(data.length, 18)
-    t.not(data[0].name, undefined)
     t.not(data[0].rawName, undefined)
     t.not(data[0].researchName, undefined)
     t.not(data[0].magnetLink, undefined)
@@ -163,7 +162,6 @@ test('/getLatestNyaa exits and returns 18 elements with right keys at 720p on ny
 
   if (status === 200) {
     t.is(data.length, 18)
-    t.not(data[0].name, undefined)
     t.not(data[0].rawName, undefined)
     t.not(data[0].researchName, undefined)
     t.not(data[0].magnetLink, undefined)
@@ -230,7 +228,6 @@ test('/getLatestNyaa exits and returns 18 elements with right keys at 720p on ny
 
   if (status === 200) {
     t.is(data.length, 18)
-    t.not(data[0].name, undefined)
     t.not(data[0].rawName, undefined)
     t.not(data[0].researchName, undefined)
     t.not(data[0].magnetLink, undefined)
@@ -245,16 +242,16 @@ test('/getLatestNyaa exits and returns 18 elements with right keys at 720p on ny
 
 test('/seasons.json route exits and returns elements on Spring 2017', async t => {
   const { data } = await axios.get(`${uri}/seasons.json?year=2017&season=spring`)
-  t.true(data.info.TV.length > 1)
-  t.true(data.info.OVAs.length > 1)
-  t.true(data.info.Movies.length > 1)
+  t.true(data.TV.length > 1)
+  t.true(data.OVAs.length > 1)
+  t.true(data.Movies.length > 1)
 })
 
 test('/seasons.json route exits and returns elements on Fall 2016', async t => {
   const { data } = await axios.get(`${uri}/seasons.json?year=2016&season=fall`)
-  t.true(data.info.TV.length > 1)
-  t.true(data.info.OVAs.length > 1)
-  t.true(data.info.Movies.length > 1)
+  t.true(data.TV.length > 1)
+  t.true(data.OVAs.length > 1)
+  t.true(data.Movies.length > 1)
 })
 
 test('/seasons.json route exits and returns and log a error message on Fall 201', async t => {
