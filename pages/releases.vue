@@ -66,7 +66,7 @@
                                 v-list-tile-action
                                   v-icon file_download
                                 v-list-tile-title Download all episodes
-                              v-list-tile(@click='searchThis(item.rawName)')
+                              v-list-tile(@click='searchThis(item)')
                                 v-list-tile-action
                                   v-icon info_outline
                                 v-list-tile-title Information
@@ -161,8 +161,11 @@
           this.lastUpdateTime = updated.fromNow()
         }
       },
-      searchThis (name) {
-        this.$store.dispatch('search/fromName', name)
+      searchThis (item) {
+        this.$store.dispatch('search/fromUrl', {
+          name: item.rawName,
+          url: item.url
+        })
       },
       isFollowed (name) {
         return this.$store.state.watchLists.lists.watching.includes(name)

@@ -48,7 +48,8 @@
                   v-flex(xs11).mt-1.pa-0.ep-name {{ link.name }}
                   v-flex(xs1)
                     v-checkbox.pt-0.primary--text(v-model='selected', :value='link.link', label='', hide-details)
-                  v-flex.mt-1.mb-2.pa-0.ep-magnet #[a.white--text(:href='link.link') {{ link.link }}]
+                  v-flex(xs1)
+                  v-flex.mt-1.mb-2.pa-0.ep-magnet.ellipsis(xs11) #[a.white--text(:href='link.link') {{ link.link }}]
         v-card-actions
           v-spacer
           v-btn.blue--text.darken-1(flat, @click='close()') Thanks!

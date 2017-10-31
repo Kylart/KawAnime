@@ -22,14 +22,14 @@
                     v-list-tile-title {{ list.text }}
             v-flex.flex-v-centered(xs7)
               v-card-title.info-title
-                | 「{{ getTitle(info) }}」ー {{ info.type }}
+                | 「{{ info.japaneseTitle }}」ー {{ info.type }}
             v-flex(xs3)
               v-card-title.score-container
-                p.info-score {{ info.statistics.score.value }}
-                p.info-score ({{ info.statistics.score.count }} votes)
+                p.info-score {{ info.score }}
+                p.info-score ({{ info.scoreStats.split(' ')[2] }} votes)
           v-layout.mb-3(row, wrap)
             v-flex.info-pic-container(xs3)
-              img.info-pic(:src='info.image')
+              img.info-pic(:src='info.picture')
             v-flex.info-synopsis-container(xs9)
               p.info-synopsis {{ info.synopsis }}
           v-layout.top-info
@@ -41,7 +41,7 @@
             v-flex.info-text.pl-2(xs5)
               span.genre-title Studios:
               span.info-genres.pl-4 {{ info.studios.join(' / ') }}
-            v-flex.info-text(xs4) {{ info.classification }}
+            v-flex.info-text(xs4) {{ info.rating }}
             v-flex.info-text.h-centered(xs3) {{ info.status }} ({{ info.aired.split(' ')[2] }})
       v-card-actions
         v-spacer
@@ -62,11 +62,6 @@
       }
     },
     methods: {
-      getTitle (info) {
-        return info.alternativeTitles.japanese
-          ? info.alternativeTitles.japanese[0].replace('Japanese: ', '')
-          : info.title
-      },
       addTo (listName) {
         this.$store.dispatch('watchLists/updateList', {
           listName,

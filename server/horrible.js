@@ -23,37 +23,30 @@ exports.getLatest = (query, res) => {
       const ep = name.split(' ').slice(-1)[0]
       const link = result[i].link
 
-      malScraper.getResultsFromSearch(rawName).then((items) => {
-        return malScraper.getInfoFromURI(malScraper.getBestMatch(rawName, items))
-      }).then((item) => {
-        const picture = item.picture
-        const fullSynopsis = item.synopsis
-        const synopsis = item.synopsis.length > 170
-          ? item.synopsis.slice(0, 175) + '...'
-          : fullSynopsis
+      malScraper.getInfoFromName(rawName)
+        .then((item) => {
+          item.rawName = rawName
+          item.researchName = researchName
+          item.magnetLink = link
+          item.ep = ep
+          item.synopsis = item.synopsis.length > 170
+            ? item.synopsis.slice(0, 175) + '...'
+            : item.synopsis
 
-        toReturn[i] = {
-          name: name,
-          rawName: rawName,
-          researchName: researchName,
-          ep: ep,
-          magnetLink: link,
-          picture: picture,
-          synopsis: synopsis,
-          fullSynopsis: fullSynopsis
-        }
+          toReturn[i] = item
 
-        ++counter
-        /* istanbul ignore next */
-        if (counter === 18) {
-          console.log('[Horrible] (Releases): Sending Latest releases.')
-          res.type('application/json')
-          res.status(200).send(JSON.stringify(toReturn))
-        }
-      }).catch(/* istanbul ignore next */ (err) => {
-        console.log('[MalScraper] (Releases): An error occurred...\n' + err)
-        res.status(202).send()
-      })
+          ++counter
+          /* istanbul ignore next */
+          if (counter === 18) {
+            console.log('[Horrible] (Releases): Sending Latest releases.')
+            res.type('application/json')
+            res.status(200).send(JSON.stringify(toReturn))
+          }
+        })
+        .catch(/* istanbul ignore next */ (err) => {
+          console.log('[MalScraper] (Releases): An error occurred...\n', err)
+          res.status(202).send()
+        })
     }
   }).catch((err) => {
     console.log('[Horrible] (Releases): An error occurred...\n' + err)

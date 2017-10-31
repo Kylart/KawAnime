@@ -33,7 +33,7 @@ const fromName = (query, res) => {
 }
 
 const fromUrl = (query, res) => {
-  malScraper.getInfoFromUrl(query.url).then((data) => {
+  malScraper.getInfoFromURL(query.url).then((data) => {
     res.type('application/json')
     res.status(200).send(JSON.stringify(data))
   }).catch(/* istanbul ignore next */(err) => {

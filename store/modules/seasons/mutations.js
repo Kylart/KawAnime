@@ -6,8 +6,7 @@ export default {
     state.season = data.season
   },
   setSeasons (state, data) {
-    state.seasons = data.info
-    state.seasonsStats = data.stats
+    state.seasons = data
     log(`Seasons set.`)
   },
   emptySeasons (state) {
