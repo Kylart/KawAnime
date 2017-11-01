@@ -95,6 +95,7 @@
             | &nbsp;or&nbsp;
             router-link.cyan--text(to='/') here!
     choice-window(:entry='choiceTitle')
+    k-footer
 </template>
 
 <script>

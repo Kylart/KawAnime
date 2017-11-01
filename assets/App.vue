@@ -65,10 +65,6 @@
       v-model='$store.state.infoSnackbar.show'
     ) {{ $store.state.infoSnackbar.text }}
       v-btn.pink--text(flat, @click='$store.state.infoSnackbar.show = false') Close
-
-    v-footer.grey.darken-4.pr-2(app)
-      v-spacer
-      .white--text © 2016 - 2017 Kylart
 </template>
 
 <script>
@@ -177,8 +173,10 @@
 
 <style lang="stylus" scoped>
   .m
+    overflow-y scroll
+    max-height calc(100vh - (48px + 24px))
     min-width 100%
-    padding-top calc(48px + 24px)
+    margin-top calc(48px + 24px)
 
   .wb
     padding-right 0

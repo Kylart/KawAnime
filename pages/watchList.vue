@@ -9,58 +9,58 @@
             v-icon {{ actionsList[i - 1].icon }}
       v-tabs-items
         v-tabs-content(v-for='i in 5', :key='i', lazy, v-bind:id="'tabs-' + i")
-          v-card(style='background-color: #303030')
-            v-layout.list-container(row, wrap)
-              v-flex(xs12)
-                v-layout.top-form(row, wrap, align-center, justify-center)
-                  v-flex(md3, sm4, xs9)
-                    v-tooltip(bottom)
-                      v-btn(
-                        icon, flat,
-                        @click='selectAll(i)',
-                        slot='activator'
+          v-layout.list-container.pb-2(row, wrap)
+            v-flex(xs12)
+              v-layout.top-form(row, wrap, align-center, justify-center)
+                v-flex(md3, sm4, xs9)
+                  v-tooltip(bottom)
+                    v-btn(
+                      icon, flat,
+                      @click='selectAll(i)',
+                      slot='activator'
+                    )
+                      v-icon select_all
+                    span {{ selectLabel(i) }}
+                  v-menu(open-on-hover, transition='slide-x-transition')
+                    v-btn(color='secondary', slot='activator') Move to
+                    v-list.dark
+                      v-list-tile(
+                        @click='moveTo(action.list, i)',
+                        v-for='action in actions(i)',
+                        :key='action.name'
                       )
-                        v-icon select_all
-                      span {{ selectLabel(i) }}
-                    v-menu(open-on-hover, transition='slide-x-transition')
-                      v-btn(color='secondary', slot='activator') Move to
-                      v-list.dark
-                        v-list-tile(
-                          @click='moveTo(action.list, i)',
-                          v-for='action in actions(i)',
-                          :key='action.name'
-                        )
-                          v-list-tile-action
-                            v-icon {{ action.icon }}
-                          v-list-tile-title {{ action.name }}
-                    v-tooltip(bottom)
-                      v-btn.red--text(
-                        @click='deleteSelected(i)',
-                        slot='activator',
-                        icon
-                      )
-                        v-icon delete_sweep
-                      span Delete all selected items from this list
-                  v-flex(md2, sm2, xs3)
-                    p.elem-number
-                      | {{ lists[i - 1].length }} {{ lists[i - 1].length === 1 ? 'entry' : 'entries' }}
-                  v-flex(md3, sm1, hidden-xs-only)
-                  v-flex(md2, sm3, xs4, @keyup.enter='addEntry(i)')
-                    v-text-field.entry-text(type='text', label='Add entry', v-model='entries[i]', dark)
-                  v-flex(hidden-sm-and-up, xs1)
-                  v-flex.add-button-container(md2, sm2, xs4)
-                    v-btn.add-button(dark, color='secondary', @click='addEntry(i)')
-                      | Add
-              transition-group(name='list')
-                template(v-for='item in lists[i - 1]')
-                  list-entry(
-                    :item='item',
-                    :deleteEntry='deleteEntry',
-                    :key='item',
-                    :index='i',
-                    :select='select',
-                    :selected='selected'
-                  )
+                        v-list-tile-action
+                          v-icon {{ action.icon }}
+                        v-list-tile-title {{ action.name }}
+                  v-tooltip(bottom)
+                    v-btn.red--text(
+                      @click='deleteSelected(i)',
+                      slot='activator',
+                      icon
+                    )
+                      v-icon delete_sweep
+                    span Delete all selected items from this list
+                v-flex(md2, sm2, xs3)
+                  p.elem-number
+                    | {{ lists[i - 1].length }} {{ lists[i - 1].length === 1 ? 'entry' : 'entries' }}
+                v-flex(md3, sm1, hidden-xs-only)
+                v-flex(md2, sm3, xs4, @keyup.enter='addEntry(i)')
+                  v-text-field.entry-text(type='text', label='Add entry', v-model='entries[i]', dark)
+                v-flex(hidden-sm-and-up, xs1)
+                v-flex.add-button-container(md2, sm2, xs4)
+                  v-btn.add-button(dark, color='secondary', @click='addEntry(i)')
+                    | Add
+            transition-group(name='list')
+              template(v-for='item in lists[i - 1]')
+                list-entry(
+                  :item='item',
+                  :deleteEntry='deleteEntry',
+                  :key='item',
+                  :index='i',
+                  :select='select',
+                  :selected='selected'
+                )
+          k-footer
 </template>
 
 <script>
@@ -255,6 +255,9 @@
 
   span
     width 100%
+
+  list-container
+    background-color #303030
 
   .elem-number
     margin 10px 0 0 0

@@ -1,8 +1,8 @@
 <template lang="pug">
-  v-container#downloader.container(fluid, fill-height)
+  v-container#downloader.container.pa-0(fluid)
     .cute-char.left-pic
     .cute-char.right-pic
-    v-layout(row, wrap, justify-center, align-center)
+    v-layout.form(row, wrap, justify-center, align-center)
       v-flex.form-container(xs8)
         v-layout(row, wrap, justify-center)
           v-flex(xs9)
@@ -56,6 +56,8 @@
               v-if='!$store.state.downloader.form.loading'
             ) Download!
             v-btn(dark, block, color='secondary', loading, v-else)
+
+    k-footer
 </template>
 
 <script>
@@ -134,9 +136,12 @@
     background-size cover
     background-repeat no-repeat
 
+  .form
+    height calc(100vh - (48px + 24px))
+
   .cute-char
     position absolute
-    bottom 0
+    bottom 36px
     height 45%
 
   .right-pic

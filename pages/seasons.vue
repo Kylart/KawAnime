@@ -91,6 +91,7 @@
           v-btn.blue--text.darken-1(flat, style='width: 100px', v-on:click.native='modal = false')
             | Thanks!
     choice-window(:entry='choiceTitle')
+    k-footer
 </template>
 
 <script>

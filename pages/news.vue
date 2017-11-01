@@ -1,6 +1,7 @@
 <template lang="pug">
-  v-container(fluid).pa-0
-    loader(v-if="!news.length")
+  div
+    v-container(fluid v-if='!news.length')
+      loader
 
     v-container(fluid v-else)
       v-layout(row wrap).news-container
@@ -9,6 +10,8 @@
             v-icon(large) refresh
         v-flex(xs12).pr-3
           news(v-for="item in news", :item="item", :key="item.title")
+
+    k-footer
 </template>
 
 <script>

@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-container#container.container.pa-0(fluid, grid-list-xs)
+  v-container#container.pa-0(fluid, grid-list-xs)
     transition(name='fade', v-if='releases.length')
       v-layout(row, wrap, justify-center, style='margin: 0 1% 0 1%;')
         v-flex.time-container(md4, sm4, xs8)
@@ -84,6 +84,7 @@
           v-spacer
           v-btn.blue--text.darken-1(flat, @click='modal = false') Thanks!
     choice-window(:entry='choiceTitle')
+    k-footer
 </template>
 
 <script>
