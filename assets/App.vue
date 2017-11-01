@@ -174,6 +174,7 @@
 <style lang="stylus" scoped>
   .m
     overflow-y scroll
+    overflow-x hidden
     max-height calc(100vh - (48px + 24px))
     min-width 100%
     margin-top calc(48px + 24px)
