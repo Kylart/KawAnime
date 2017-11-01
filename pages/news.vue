@@ -10,8 +10,6 @@
             v-icon(large) refresh
         v-flex(xs12).pr-3
           news(v-for="item in news", :item="item", :key="item.title")
-
-    k-footer
 </template>
 
 <script>

@@ -60,7 +60,6 @@
                   :select='select',
                   :selected='selected'
                 )
-          k-footer
 </template>
 
 <script>

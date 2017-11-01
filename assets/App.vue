@@ -51,6 +51,8 @@
       transition(name='page', mode='out-in')
         router-view
 
+      k-footer
+
     env(v-show='$store.state.NODE_ENV === "development"')
     magnets-modal
     info-results(v-show='$store.state.search.info.show')
@@ -173,6 +175,7 @@
 
 <style lang="stylus" scoped>
   .m
+    display block
     overflow-y scroll
     overflow-x hidden
     max-height calc(100vh - (48px + 24px))

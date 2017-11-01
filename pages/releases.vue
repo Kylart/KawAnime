@@ -84,7 +84,6 @@
           v-spacer
           v-btn.blue--text.darken-1(flat, @click='modal = false') Thanks!
     choice-window(:entry='choiceTitle')
-    k-footer
 </template>
 
 <script>

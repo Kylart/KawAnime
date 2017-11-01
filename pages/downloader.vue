@@ -56,8 +56,6 @@
               v-if='!$store.state.downloader.form.loading'
             ) Download!
             v-btn(dark, block, color='secondary', loading, v-else)
-
-    k-footer
 </template>
 
 <script>
