@@ -92,6 +92,7 @@ const makeSearch = (data, res, isPantsu = false) => {
         item.researchName = researchName
         item.magnetLink = link
         item.ep = ep
+        item.fullSynopsis = item.synopsis
         item.synopsis = item.synopsis.length > 170
           ? item.synopsis.slice(0, 175) + '...'
           : item.synopsis
