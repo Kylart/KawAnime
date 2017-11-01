@@ -41,7 +41,7 @@
     hover_background()
 
   .title
-    line-height 24px
+    line-height 24px !important
     margin-top 10px
     padding-left 2%
     padding-right 2%
