@@ -63,7 +63,7 @@
                   v-flex.bottom-right-container(xl7, lg8, md7, xs8)
                     v-layout.pl-2.pr-2.pb-2(row, wrap, justify-space-between)
                       v-flex(xs12)
-                        .synopsis {{ reduced(item.synopsis) }}
+                        .synopsis {{ item.synopsis }}
                       v-flex(xs12, style='display: flex')
                         v-layout(align-center, justify-space-between, style='min-width: 100%')
                           v-flex(xs2)
@@ -129,9 +129,6 @@
       }
     },
     methods: {
-      reduced (text) {
-        return text.length > 220 ? text.slice(0, 217) + '...' : text
-      },
       playThis (item) {
         console.log(`[${(new Date()).toLocaleTimeString()}]: Requested to play ${item.name} - ${item.ep}. Sending...`)
 
@@ -297,10 +294,10 @@
     padding 2px 5px 5px 5px
     text-align justify
     display block
-    text-overflow ellipsis
-    word-wrap break-word
-    overflow hidden
-    height 9em
+    white-space pre-wrap
+    overflow-y auto
+    overflow-x hidden
+    height 10.8em
     line-height 1.5em
 
   p.year, p.status, p.mark

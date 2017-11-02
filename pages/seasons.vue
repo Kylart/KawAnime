@@ -53,7 +53,7 @@
                     v-flex.bottom-right(xs9, lg8)
                       v-layout(wrap, justify-space-between, align-center)
                         v-flex(xs12)
-                          .synopsis {{ reduced(item.synopsis) }}
+                          .synopsis {{ item.synopsis }}
                         v-flex.pl-2(xs12)
                           v-layout(wrap, justify-space-between)
                             v-flex.date(xs6) {{ getDate(item.releaseDate) }}
@@ -152,11 +152,6 @@
       }
     },
     methods: {
-      reduced (text) {
-        return text.length > 270
-          ? text.slice(0, 300) + '...'
-          : text
-      },
       getDate (string) {
         return string.split(' ').slice(0, 3).join(' ')
       },
@@ -272,21 +267,19 @@
 
   .synopsis
     padding-left 5px
-    padding-right 15px
+    padding-right 5px
+    margin-right 15px
+    margin-bottom 5px
     text-align justify
     display block
-    text-overflow ellipsis
-    word-wrap break-word
-    overflow hidden
-    height 7.5em
+    white-space pre-wrap
+    overflow-y auto
+    overflow-x hidden
+    height 9.3em
     line-height 1.5em
-
-  .date
-    margin-top 5%
 
   .nb-ep
     text-align right
-    margin-top 5%
     padding-right 20px
 
   .producers

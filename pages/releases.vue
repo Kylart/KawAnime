@@ -49,7 +49,7 @@
                       )
                     v-flex.pa-0(xl8, lg8, md7, xs8)
                       .elem-text-links
-                        .synopsis.pl-1 {{ item.synopsis || 'No synopsis yet.' }}
+                        .synopsis.pl-1.pr-1.mb-1 {{ item.synopsis || 'No synopsis yet.' }}
                         div.text-xs-right(v-if='isFollowed(item.rawName)')
                           span.following-status.not-selectable {{ isFollowed(item.rawName) }}
                         .links
@@ -58,7 +58,7 @@
                           v-menu(open-on-hover, transition='slide-x-transition')
                             v-btn(flat, dark, slot='activator') More
                             v-list.dark
-                              v-list-tile(@click='openModal(item.rawName, item.fullSynopsis)')
+                              v-list-tile(@click='openModal(item.rawName, item.synopsis)')
                                 v-list-tile-action
                                   v-icon more
                                 v-list-tile-title Check synopsis
@@ -252,16 +252,16 @@
   .synopsis
     text-align justify
     display block
-    text-overflow ellipsis
-    word-wrap break-word
-    overflow hidden
-    height 9em
+    white-space pre-wrap
+    overflow-y auto
+    overflow-x hidden
+    height 9.3em
     line-height 1.5em
 
   .following-status
     padding 2px 2px 2px 3px
     letter-spacing 1px
-    font-size 15px
+    font-size 13px
     border 1px solid rgba(255, 255, 255, 0.3)
 
   .links
