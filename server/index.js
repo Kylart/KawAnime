@@ -9,6 +9,7 @@ const {join} = require('path')
 const _ = require('lodash')
 const randomString = require('randomstring')
 const axios = require('axios')
+const keytar = require('keytar')
 
 const {homedir} = require('os')
 const BASE_PATH = homedir()
@@ -126,6 +127,7 @@ const seasons = require('./seasons.js')
 const news = require('./news.js')
 const local = require('./local.js')
 const wl = require('./watchList.js')
+const mal = require('./mal')
 const history = require('./history')
 const horrible = require('./horrible.js')
 const nyaa = require('./nyaa.js')
@@ -258,6 +260,26 @@ let routes = [
       })
     })
   },
+  (app) => {
+    app.get('/_setupAccount', (req, res) => {
+      req.on('data', (chunk) => {
+        // At the moment service must be 'kawanime.mal' please
+        const {service, credentials} = JSON.parse(chunk)
+
+        // Writting the username in the config file so no one forgets
+        const p = join(dir, 'config.json')
+        const conf = require(p)
+        conf.malUsername = credentials.username
+
+        fs.writeFileSync(p, JSON.stringify(conf), 'utf-8')
+
+        // Setting password into services
+        keytar.setPassword(service, credentials.username, credentials.password)
+          .then(() => res.send())
+          .catch(() => res.status(204).send())
+      })
+    })
+  },
   /* istanbul ignore next */ (app) => {
     app.get('/_isOnline', async (req, res) => {
       try {
@@ -297,6 +319,8 @@ const setup = (app) => {
   if (!['KawAnime-test', 'development'].includes(process.env.NODE_ENV)) {
     routes = require('./updater.js')(app, routes)
   }
+
+  _.each(mal, (route) => routes.push(route))
 
   _.each(routes, (route) => route(app))
 }

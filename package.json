@@ -42,6 +42,7 @@
     "electron-updater": "^2.15.1",
     "express": "^4.16.2",
     "horrible-api": "^1.0.5",
+    "keytar": "^4.0.5",
     "lodash": "^4.17.4",
     "lru-cache": "^4.0.2",
     "mal-scraper": "^2.0.5",
