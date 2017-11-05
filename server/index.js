@@ -261,7 +261,7 @@ let routes = [
     })
   },
   (app) => {
-    app.get('/_setupAccount', (req, res) => {
+    app.post('/_setupAccount', (req, res) => {
       req.on('data', (chunk) => {
         // At the moment service must be 'kawanime.mal' please
         const {service, credentials} = JSON.parse(chunk)
@@ -269,7 +269,7 @@ let routes = [
         // Writting the username in the config file so no one forgets
         const p = join(dir, 'config.json')
         const conf = require(p)
-        conf.malUsername = credentials.username
+        conf.config.malUsername = credentials.username
 
         fs.writeFileSync(p, JSON.stringify(conf), 'utf-8')
 

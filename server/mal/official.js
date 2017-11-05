@@ -10,7 +10,7 @@ const getWatchList = (query, res) => {
   console.log('[MalScraper]: Looking for the watch lists of', user + '...')
 
   malScraper.getWatchListFromUser(user)
-    .then((data) => res.status(200).send(data))
+    .then((data) => res.send(data))
     .catch((err) => {
       console.log('[MalScraper]: An error occurred while gathring watchLIst from user...', err)
       res.status(204).send()
@@ -19,7 +19,7 @@ const getWatchList = (query, res) => {
 
 const checkCreds = (res) => {
   api.checkCredentials()
-    .then((data) => res.status(data === 'Invalid credentials' ? 204 : 200).send())
+    .then((data) => res.status(data === 'Invalid credentials' ? 206 : 200).send())
     .catch((err) => {
       console.log('[MalScraper] (check): An error occurred...', err)
       res.status(204).send()
