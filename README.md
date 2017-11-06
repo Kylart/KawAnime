@@ -22,6 +22,9 @@
   <a href="https://opensource.org/licenses/MIT" target="_blank">
     <img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License">
   </a>
+  <a href="https://discord.gg/sdArN2Z" target="_blank">
+    <img src="https://img.shields.io/badge/chat-on%20discord-7289da.svg" alt="Chat">
+  </a>
 </p>
 
 <p align="center"><img src="https://i.imgur.com/TQAyUlD.png"/></p>
