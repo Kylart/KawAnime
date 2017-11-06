@@ -1,4 +1,4 @@
-import {log} from '../../utils.js'
+import {_, log} from '../../utils.js'
 
 export default {
   setWatchLists (state, data) {
@@ -7,5 +7,11 @@ export default {
   },
   showForm (state, bool) {
     state.form = bool
+  },
+  setEntry (state, name) {
+    if (name) {
+      // Need to find the right entry in the lists
+      state.entry = _.find(state.watchLists, (o) => o === name) || {}
+    }
   }
 }

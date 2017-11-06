@@ -28,5 +28,10 @@ module.exports = {
     'title': 'Watch list - KawAnime',
     'description': 'Your watch lists.',
     'keywords': 'list, animes'
+  },
+  '/malPage': {
+    'title': 'MyAnimeList - KawAnime',
+    'description': 'Your MyAnimeList.',
+    'keywords': 'myanimelist, list, animes'
   }
 }

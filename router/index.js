@@ -28,6 +28,7 @@ export function createRouter () {
       route('/news', 'news'),
       route('/localPage', 'localPage'),
       route('/watchList', 'watchList'),
+      route('/malPage', 'malPage'),
       // Global redirect for 404
       {path: '*', redirect: '/'}  // TODO: make a custom 404 page
     ]

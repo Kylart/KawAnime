@@ -55,6 +55,7 @@
 
     env(v-show='$store.state.NODE_ENV === "development"')
     magnets-modal
+    mal-form
     info-results(v-show='$store.state.search.info.show')
 
     //- Used for displaying any info
@@ -137,6 +138,10 @@
                 title: 'Watch list',
                 action: 'sort_by_alpha',
                 href: '/watchList'
+              }, {
+                title: 'MyAnimeList',
+                action: 'web',
+                href: '/malPage'
               }
             ]
           }
