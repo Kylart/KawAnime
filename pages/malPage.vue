@@ -10,7 +10,7 @@
           hide-details,
           v-model='search'
         )
-        v-btn.mt-4.ml-4(@click.stop='showForm()')
+        v-btn.mt-4.ml-4(@click.stop='showSearch()')
           v-icon add
           span Add
       v-data-table(
@@ -28,7 +28,7 @@
           td.text-xs-center {{ props.item.progress }}
           td.text-xs-center {{ props.item.priorityString }}
           td
-            v-btn.blue--text.darken-1(icon, flat, @click.stop='showForm(props.item.title)')
+            v-btn.blue--text.darken-1(icon, flat, @click.stop='showForm(props.item.id)')
               v-icon edit
             v-btn.blue--text.darken-1(icon, flat, @click.stop='showInfo(props.item.title, props.item.url)')
               v-icon info_outline
@@ -41,7 +41,7 @@
     data () {
       return {
         search: '',
-        rowsPerPage: [10, 15, 25, 50, 100, { text: "All", value: -1 }],
+        rowsPerPage: [10, 15, 25, 50, 100, { text: 'All', value: -1 }],
         headers: [
           {
             text: 'Image',
@@ -89,9 +89,13 @@
           url
         })
       },
-      showForm (name) {
-        this.$store.commit('mal/setEntry', name)
+      showForm (id) {
+        this.$store.commit('mal/setEntry', id)
         this.$store.commit('mal/showForm', true)
+      },
+      showSearch () {
+        this.$store.commit('mal/isAdding', true)
+        this.$store.commit('search/show', true)
       }
     }
   }

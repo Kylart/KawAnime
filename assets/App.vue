@@ -56,7 +56,7 @@
     env(v-show='$store.state.NODE_ENV === "development"')
     magnets-modal
     mal-form
-    info-results(v-show='$store.state.search.info.show')
+    info-results
 
     //- Used for displaying any info
     v-snackbar(

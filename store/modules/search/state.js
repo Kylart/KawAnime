@@ -1,4 +1,5 @@
 export default {
+  search: false,
   modal: false,
   info: {
     info: {},

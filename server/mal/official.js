@@ -7,12 +7,12 @@ let api
 const getWatchList = (query, res) => {
   const {user} = query
 
-  console.log('[MalScraper]: Looking for the watch lists of', user + '...')
+  console.log('[Mal-Scraper]: Looking for the watch lists of', user + '...')
 
   malScraper.getWatchListFromUser(user)
     .then((data) => res.send(data))
     .catch((err) => {
-      console.log('[MalScraper]: An error occurred while gathring watchLIst from user...', err)
+      console.log('[Mal-Scraper]: An error occurred while gathring watchLIst from user...', err)
       res.status(204).send()
     })
 }
@@ -21,7 +21,7 @@ const checkCreds = (res) => {
   api.checkCredentials()
     .then((data) => res.status(data === 'Invalid credentials' ? 206 : 200).send())
     .catch((err) => {
-      console.log('[MalScraper] (check): An error occurred...', err)
+      console.log('[Mal-Scraper]: (check): An error occurred...', err)
       res.status(204).send()
     })
 }
@@ -63,11 +63,11 @@ const actOnList = (req, res) => {
 
     api.actOnList(type, id, opts)
       .then((data) => {
-        console.log('[MalScraper] (Act on List):', data)
+        console.log('[Mal-Scraper]: (Act on List):', data)
         res.status(data === 'Created' ? 200 : 204).send()
       })
       .catch((err) => {
-        console.log('[MalScraper] (Act on List): An error occurrred', err)
+        console.log('[Mal-Scraper]: (Act on List): An error occurrred', err)
         res.status(204).send()
       })
   })

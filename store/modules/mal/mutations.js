@@ -8,10 +8,11 @@ export default {
   showForm (state, bool) {
     state.form = bool
   },
-  setEntry (state, name) {
-    if (name) {
-      // Need to find the right entry in the lists
-      state.entry = _.find(state.watchLists, (o) => o === name) || {}
-    }
+  setEntry (state, id) {
+    // Need to find the right entry in the lists if it's in there
+    state.entry = _.find(state.watchLists, (o) => o.anime_id === id) || id
+  },
+  isAdding (state, bool) {
+    state.isAdding = bool
   }
 }

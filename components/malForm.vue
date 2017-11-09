@@ -1,6 +1,12 @@
 <template lang="pug">
   v-dialog(v-model='show', lazy, absolute, persistent, max-width='800', @keydown.esc='close()')
-    v-card hello
+    v-card
+      v-layout(row, wrap)
+        v-flex(xs6, offset-xs2) Blabla
+      v-expansion-panel(popout)
+        v-expansion-panel-content(ripple)
+          .entry-title(slot='header') Advanced options
+          v-card Blabla
 </template>
 
 <script>

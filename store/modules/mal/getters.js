@@ -20,7 +20,8 @@ export default {
         priorityNum: priorities[entry.priority_string],
         type: entry.anime_media_type_string,
         image: entry.anime_image_path,
-        url: 'https://myanimelist.net' + entry.anime_url
+        url: 'https://myanimelist.net' + entry.anime_url,
+        id: entry.anime_id
       })
     })
 

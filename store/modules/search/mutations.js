@@ -13,5 +13,8 @@ export default {
   },
   setInfoTerm (state, data) {
     state.info.term = data
+  },
+  show (state, bool) {
+    state.search = bool
   }
 }
