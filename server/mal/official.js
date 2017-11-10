@@ -64,7 +64,7 @@ const actOnList = (req, res) => {
     api.actOnList(type, id, opts)
       .then((data) => {
         console.log('[Mal-Scraper]: (Act on List):', data)
-        res.status(data === 'Created' ? 200 : 204).send()
+        res.status(typeof data === 'string' ? 200 : 204).send()
       })
       .catch((err) => {
         console.log('[Mal-Scraper]: (Act on List): An error occurrred', err)

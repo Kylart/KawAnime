@@ -13,6 +13,8 @@
         v-btn.mt-4.ml-4(@click.stop='showSearch()')
           v-icon add
           span Add
+        v-btn.mt-4(icon, @click='refresh()')
+          v-icon(large) refresh
       v-data-table(
         :headers='headers',
         :items='lists',
@@ -22,7 +24,8 @@
         template(slot='items', slot-scope='props')
           td.text-xs-center
             img.entry-image(:src='props.item.image')
-          td.text-xs-left.entry-title {{ props.item.title }}
+          td.text-xs-left
+            span.entry-title {{ props.item.title }}
           td.text-xs-center {{ props.item.score }}
           td.text-xs-center {{ props.item.type }}
           td.text-xs-center {{ props.item.progress }}
@@ -109,6 +112,8 @@
     font-size 16px
     letter-spacing 1px
     font-weight 200
+    padding-left 2%
+    min-width 30vw
 
   .entry-image
     max-height 60px

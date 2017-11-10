@@ -3,6 +3,7 @@ import App from './App.vue'
 import VueClipboards from 'vue-clipboards'
 import VueLazyload from 'vue-lazyload'
 import VueMarkdown from 'vue-markdown'
+import axios from 'axios'
 import _ from 'lodash'
 import Vuetify from './vuetify.js'
 
@@ -23,6 +24,7 @@ Vue.use(VueLazyload, {
 })
 
 Vue.prototype.$_ = _
+Vue.prototype.$axios = axios
 
 Vue.component('vue-markdown', VueMarkdown)
 Object.keys(Components).forEach(key => {

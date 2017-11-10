@@ -73,7 +73,7 @@
           this.close()
           // This might change when I'll work with Kitsu etc...
           // MAL specific
-          this.$store.commit('mal/setEntry', item.id)
+          this.$store.commit('mal/setEntry', item)
           this.$store.commit('mal/showForm', true)
         }
       },

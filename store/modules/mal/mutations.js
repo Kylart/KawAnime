@@ -8,11 +8,15 @@ export default {
   showForm (state, bool) {
     state.form = bool
   },
-  setEntry (state, id) {
+  setEntry (state, itemOrID) {
+    const id = itemOrID.id || itemOrID
     // Need to find the right entry in the lists if it's in there
-    state.entry = _.find(state.watchLists, (o) => o.anime_id === id) || id
+    state.entry = _.find(state.watchLists, (o) => o.anime_id === id) || itemOrID
   },
   isAdding (state, bool) {
     state.isAdding = bool
+  },
+  removeFromLists (state, id) {
+    state.watchLists = _.remove(state.watchLists, (o) => o.anime_id !== id)
   }
 }

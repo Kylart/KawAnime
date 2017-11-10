@@ -24,7 +24,9 @@ import {
   VExpansionPanel,
   VDivider,
   VTooltip,
-  VDataTable
+  VDataTable,
+  VDatePicker,
+  VChip
 } from 'vuetify'
 
 import { Ripple } from 'vuetify/es5/directives'
@@ -56,7 +58,9 @@ export default (Vue) => {
       VExpansionPanel,
       VDivider,
       VTooltip,
-      VDataTable
+      VDataTable,
+      VDatePicker,
+      VChip
     },
     directives: {
       Ripple

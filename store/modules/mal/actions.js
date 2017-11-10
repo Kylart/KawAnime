@@ -71,7 +71,7 @@ export default {
 
       if (status === 204) throw new Error('Invalid request.')
 
-      commit('setInfoSnackbar', 'Entry successfully entered to MyAnimeList!', isRoot)
+      commit('setInfoSnackbar', `Entry successfully ${data.type.action === 'delete' ? 'deleted from' : 'entered to'} MyAnimeList!`, isRoot)
     } catch (e) {
       log('MyAnimeList >', e)
       commit('setInfoSnackbar', 'An unknown error occurred. Please try again later.', isRoot)
