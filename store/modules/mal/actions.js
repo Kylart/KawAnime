@@ -26,10 +26,9 @@ export default {
       if (status === 204) throw new Error('Error while registering service.')
 
       const {username} = credentials
-
-      await dispatch('initApi', username)
-
       rootState.config.config.malUsername = username
+
+      await dispatch('init', username)
     } catch (e) {
       log('MyAnimeList >', e)
       commit('setInfoSnackbar', 'An unknown error occurred. Please restart KawAnime and try again.', isRoot)

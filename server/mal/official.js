@@ -19,7 +19,10 @@ const getWatchList = (query, res) => {
 
 const checkCreds = (res) => {
   api.checkCredentials()
-    .then((data) => res.status(data === 'Invalid credentials' ? 206 : 200).send())
+    .then((data) => {
+      const isOk = data.includes(api._credentials.username)
+      res.status(isOk ? 200 : 206).send()
+    })
     .catch((err) => {
       console.log('[Mal-Scraper]: (check): An error occurred...', err)
       res.status(204).send()

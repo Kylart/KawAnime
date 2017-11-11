@@ -16,7 +16,7 @@
         v-btn.mt-4(icon, @click='refresh()')
           v-icon(large) refresh
       v-data-table(
-        no-data-text='No data available, did you register your account and set your MyAnimeList public?',
+        no-data-text='No data available, did you register your account and set your MyAnimeList public? If yes, it is possible that the account you entered was wrong.',
         no-results-text='Seems like you haven\'t watched this one ;)',
         rows-per-page-text='Anime per page:',
         :loading='isLoading',

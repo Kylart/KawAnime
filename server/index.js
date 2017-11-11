@@ -39,6 +39,7 @@ const createConfig = () => {
       sound: 'Nyanpasu',
       inside: true,
       magnets: true,
+      malUsername: '',
       system: {
         autoStart: false,
         toTray: false
