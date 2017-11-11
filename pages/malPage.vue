@@ -106,6 +106,9 @@
       showSearch () {
         this.$store.commit('mal/isAdding', true)
         this.$store.commit('search/show', true)
+      },
+      refresh () {
+        this.$store.dispatch('mal/getWatchLists', this.$store.state.config.config.malUsername)
       }
     }
   }
