@@ -33,6 +33,7 @@
           td.text-xs-center {{ props.item.score }}
           td.text-xs-center {{ props.item.type }}
           td.text-xs-center {{ props.item.progress }}
+          td.text-xs-center {{ props.item.status }}
           td.text-xs-center {{ props.item.priorityString }}
           td
             v-btn.blue--text.darken-1(icon, flat, @click.stop='showForm(props.item.id)')
@@ -75,6 +76,11 @@
             align: 'center',
             sortable: true,
             value: 'progressDec'
+          }, {
+            text: 'Status',
+            align: 'center',
+            sortable: true,
+            value: 'status'
           }, {
             text: 'Priority',
             align: 'center',

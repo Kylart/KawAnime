@@ -67,13 +67,14 @@ export default {
       log('MyAnimeList >', e)
     }
   },
-  async actOnList ({rootState, commit}, data) {
+  async actOnList ({rootState, commit, dispatch}, data) {
     try {
       const {status} = await axios.post('actOnMalList', data)
 
       if (status === 204) throw new Error('Invalid request.')
 
       commit('setInfoSnackbar', `Entry successfully ${data.type.action === 'delete' ? 'deleted from' : 'entered to'} MyAnimeList!`, isRoot)
+      dispatch('getWatchLists', rootState.config.config.malUsername)
     } catch (e) {
       log('MyAnimeList >', e)
       commit('setInfoSnackbar', 'An unknown error occurred. Please try again later.', isRoot)
