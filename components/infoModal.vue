@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-dialog(v-model='searchShow', max-width='650', lazy, absolute, @keydown.esc='searchShow = false')
+  v-dialog(v-model='show', max-width='650', lazy, absolute, @keydown.esc='close()')
     v-btn(icon, slot='activator')
       v-icon search
     v-card.pr-4
@@ -12,13 +12,13 @@
               label='Anime name',
               v-model='searchTerm',
               append-icon='close',
-              :append-icon-cb="clear"
+              :append-icon-cb='clear'
               dark, ref='input'
             )
           v-flex(xs12)
             v-layout(row, wrap, justify-center)
               template(v-if='results.length', v-for='item in results')
-                v-flex.elem(xs3, @click='search(item)')
+                v-flex.elem(xs3, @click='actOnThis(item)')
                   v-layout.elem-content.elevation-3(
                     wrap,
                     justify-center,
@@ -29,7 +29,7 @@
                     v-flex.elem-name(xs10) {{ item.name }}
       v-card-actions
         v-spacer
-        v-btn.blue--text.darken-1(flat, @click='searchShow = false') Close
+        v-btn.blue--text.darken-1(flat, @click='close()') Close
 </template>
 
 <script>
@@ -39,24 +39,52 @@
   export default {
     data () {
       return {
-        searchShow: false,
         searchTerm: '',
         results: []
       }
     },
+    computed: {
+      show: {
+        get () {
+          return this.$store.state.search.search
+        },
+        set (bool) {
+          this.$store.commit('search/show', bool)
+          if (!bool) this.$store.commit('mal/isAdding', bool)
+        }
+      },
+      isSearch () {
+        return !this.$store.state.mal.isAdding
+      }
+    },
     methods: {
+      close () {
+        this.$store.commit('search/show', false)
+        this.$store.commit('mal/isAdding', false)
+      },
       clear () {
         this.searchTerm = ''
         this.$refs.input.focus()
+      },
+      actOnThis (item) {
+        if (this.isSearch) {
+          this.search(item)
+        } else {
+          this.close()
+          // This might change when I'll work with Kitsu etc...
+          // MAL specific
+          this.$store.commit('mal/setEntry', item)
+          this.$store.commit('mal/showForm', true)
+        }
       },
       async search (item) {
         this.searchTerm = item.name
 
         if (this.$store.state.search.info.info.title === item.name) {
           this.$store.commit('search/showInfo', true)
-          this.searchShow = false
+          this.close()
         } else {
-          this.searchShow = false
+          this.close()
 
           this.$store.dispatch('search/fromUrl', item)
         }
@@ -88,7 +116,7 @@
       async searchTerm () {
         this.quickSearch()
       },
-      searchShow (bool) {
+      show (bool) {
         if (bool) {
           this.$nextTick(() => {
             this.$refs.input.focus()

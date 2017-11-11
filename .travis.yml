@@ -4,6 +4,10 @@ node_js:
   - "8"
   - "7"
 
+sudo: true
+before_install:
+  - sudo apt-get install libsecret-1-dev
+
 install:
   - npm install
 

@@ -67,6 +67,30 @@
                     persistent-hint,
                     hint='Deactivate to open the news in your browser.'
                   )
+                v-flex(xs10)
+                  v-divider
+                v-flex.text-xs-left.section-title(xs3) MyAnimeList
+                v-flex(xs9)
+                  v-layout.pr-5(justify-space-between)
+                    v-flex(xs4)
+                      v-text-field(
+                        label='Username',
+                        persistent-hint,
+                        hint='Your MyAnimeList username',
+                        v-model='config.malUsername'
+                      )
+                    v-flex(xs4)
+                      v-text-field(
+                        label='Password',
+                        persistent-hint,
+                        hint='Your MyAnimeList password',
+                        v-model='mal.password',
+                        :append-icon="!mal.isVisible ? 'visibility' : 'visibility_off'",
+                        :append-icon-cb="() => (mal.isVisible = !mal.isVisible)",
+                        :type="!mal.isVisible ? 'password' : 'text'"
+                      )
+                    v-flex.pt-2(xs2)
+                      v-btn(flat, @click="malRegister") Save
             v-card.section
               v-card-title#local.headline Notification
               v-divider
@@ -115,7 +139,11 @@
     data () {
       return {
         configModal: false,
-        radios: ['480p', '720p', '1080p']
+        radios: ['480p', '720p', '1080p'],
+        mal: {
+          password: '',
+          isVisible: false
+        }
       }
     },
     computed: {
@@ -141,6 +169,14 @@
       play () {
         this.$store.dispatch('player/setUp')
         this.$store.dispatch('player/play')
+      },
+      async malRegister () {
+        if (this.mal.password && this.config.malUsername) {
+          await this.$store.dispatch('mal/setupAccount', {
+            username: this.config.malUsername,
+            password: this.mal.password
+          })
+        }
       }
     }
   }

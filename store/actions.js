@@ -45,6 +45,8 @@ export default {
     dispatch('releases/init').catch(err => { void err })
     dispatch('seasons/init').catch(err => { void err })
     dispatch('news/init').catch(err => { void err })
+
+    dispatch('mal/init').catch(err => { void err })
   },
   async getEnv ({commit}) {
     const {data} = await axios.get('_env')
