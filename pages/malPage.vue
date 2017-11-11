@@ -16,6 +16,10 @@
         v-btn.mt-4(icon, @click='refresh()')
           v-icon(large) refresh
       v-data-table(
+        no-data-text='No data available, did you register your account and set your MyAnimeList public?',
+        no-results-text='Seems like you haven\'t watched this one ;)',
+        rows-per-page-text='Anime per page:',
+        :loading='isLoading',
         :headers='headers',
         :items='lists',
         :search='search',
@@ -83,7 +87,10 @@
     computed: {
       ...Vuex.mapGetters('mal', [
         'lists'
-      ])
+      ]),
+      isLoading () {
+        return this.$store.state.mal.isLoading
+      }
     },
     methods: {
       showInfo (name, url) {

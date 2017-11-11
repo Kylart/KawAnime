@@ -56,10 +56,13 @@ export default {
       )
     }
   },
-  async getWatchLists ({commit}, user) {
+  async getWatchLists ({state, commit}, user) {
     try {
+      commit('isLoading', true)
+
       const {data} = await axios.get('getWatchList', {params: {user}})
 
+      commit('isLoading', false)
       commit('setWatchLists', data)
     } catch (e) {
       log('MyAnimeList >', e)

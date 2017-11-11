@@ -20,7 +20,9 @@
             min='0',
             :max='nbEpisodes || 999',
             label='Episode',
-            v-model='form.episode'
+            v-model='form.episode',
+            persistent-hint,
+            hint='How many episode have you watched?'
           )
         template(v-for='i in 2')
           v-flex(xs3, offset-xs1)
