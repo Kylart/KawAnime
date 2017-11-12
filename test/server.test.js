@@ -7,8 +7,10 @@ const test = require('ava')
 const axios = require('axios')
 const express = require('express')
 const {join} = require('path')
-const {readFile, writeFileSync, rmdirSync, unlinkSync, readdirSync} = require('fs')
+const rimraf = require('rimraf')
+const {readFile, writeFileSync} = require('fs')
 const {userInfo} = require('os')
+const {existsSync} = require('fs')
 
 process.env.NODE_ENV = 'KawAnime-test'
 
@@ -23,7 +25,12 @@ const kawAnimeFilesPath = {
   history: join(DIR, 'history.json'),
   watchList: join(DIR, 'lists.json'),
   config: join(DIR, 'config.json'),
-  token: join(DIR, '_token')
+  token: join(DIR, '_token'),
+  vault: {
+    base: join(DIR, 'vault'),
+    key: join(DIR, 'vault', 'p'),
+    mal: join(DIR, 'vault', 'mal.bcup')
+  }
 }
 
 // Init server listening on localhost:4000
@@ -426,6 +433,43 @@ test('/_env route exits and return string containing platform\'s name', async t 
   t.is(typeof data.platform, 'string')
 })
 
+test('/getWatchList route exits and return an array containing entries', async t => {
+  const { data, status } = await axios.get(`${uri}/getWatchList`, {
+    params: {
+      user: 'Kylart'
+    }
+  })
+
+  t.is(status, 200)
+  t.is(typeof data, 'object')
+  t.not(data.length, 0)
+  t.not(data[0].status, undefined)
+  t.not(data[0].anime_id, undefined)
+})
+
+test('/_setupCreds route exits and creates a bcup file along the master key', async t => {
+  const {status} = await axios.post(`${uri}/_setupAccount`, {
+    service: 'mal',
+    credentials: {
+      username: 'Hello',
+      password: 'world'
+    }
+  })
+
+  t.is(status, 200)
+  t.true(existsSync(kawAnimeFilesPath.vault.base))
+  t.true(existsSync(kawAnimeFilesPath.vault.key))
+  t.true(existsSync(kawAnimeFilesPath.vault.mal))
+})
+
+test('getCreds exits and return previously set credentials', async t => {
+  const {getCreds} = require('../server/vault')
+  const credentials = await getCreds('mal')
+
+  t.is(credentials.username, 'Hello')
+  t.is(credentials.password, 'world')
+})
+
 // Close server
 test.after('Closing server and server.test.js', () => {
   server.close()
@@ -434,17 +478,7 @@ test.after('Closing server and server.test.js', () => {
    * Removing temporary .KawAnime directory
    */
   console.info('Removing temporary info'.yellow)
-  const files = readdirSync(DIR)
-
-  files.forEach((file) => {
-    unlinkSync(`${DIR}/${file}`)
+  rimraf(DIR, () => {
+    console.info('All clear!'.green)
   })
-
-  try {
-    rmdirSync(DIR)
-  } catch (err) {
-    throw err
-  }
-
-  console.info('All clear!'.green)
 })

@@ -273,10 +273,9 @@ let routes = [
 
         fs.writeFileSync(p, JSON.stringify(conf), 'utf-8')
 
-        // Setting password into services
         vault.setupCreds(service, credentials)
           .then(() => res.send())
-          .catch(() => res.status(204).send())
+          .catch(/* istanbul ignore next */ () => res.status(204).send())
       })
     })
   },

@@ -5,15 +5,18 @@ const randomString = require('randomstring')
 const buttercup = require('buttercup')
 const {Archive, createCredentials, FileDatasource, EntryFinder} = buttercup
 
+/* istanbul ignore next */
 const dir = join(
   homedir(),
-  process.env === 'KawAnime-test' ? '.KawAnime-test' : '.KawAnime',
+  process.env.NODE_ENV === 'KawAnime-test' ? '.KawAnime-test' : '.KawAnime',
   'vault'
 )
+
 const keyPath = join(dir, 'p')
 
 const setupCreds = (service, credentials) => {
   return new Promise((resolve, reject) => {
+    /* istanbul ignore next */
     if (!existsSync(dir)) {
       // Creating vault directory
       mkdirSync(dir)

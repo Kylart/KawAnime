@@ -150,7 +150,9 @@
       "**/*.test.js",
       "**/node_modules/**",
       "**/openExternal.js",
-      "assets/serverStart.js"
+      "assets/serverStart.js",
+      "server/mal/index.js",
+      "server/mal/official.js"
     ],
     "watermarks": {
       "lines": [

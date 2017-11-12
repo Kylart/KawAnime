@@ -4,19 +4,6 @@ const Api = malScraper.officialApi
 
 let api
 
-const getWatchList = (query, res) => {
-  const {user} = query
-
-  console.log('[Mal-Scraper]: Looking for the watch lists of', user + '...')
-
-  malScraper.getWatchListFromUser(user)
-    .then((data) => res.send(data))
-    .catch((err) => {
-      console.log('[Mal-Scraper]: An error occurred while gathring watchLIst from user...', err)
-      res.status(204).send()
-    })
-}
-
 const checkCreds = (res) => {
   api.checkCredentials()
     .then((data) => {
@@ -61,7 +48,6 @@ const actOnList = (req, res) => {
 }
 
 module.exports = {
-  getWatchList,
   initOfficialApi,
   actOnList
 }

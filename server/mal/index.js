@@ -1,8 +1,5 @@
-const {
-  getWatchList,
-  initOfficialApi,
-  actOnList
-} = require('./official.js')
+const {getWatchList} = require('./scrap.js')
+const {initOfficialApi, actOnList} = require('./official.js')
 
 const routes = [
   (app) => app.get('/getWatchList', ({query}, res) => getWatchList(query, res)),
