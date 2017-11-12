@@ -238,20 +238,6 @@
           opts
         })
 
-        const lists = this.$store.state.mal.watchLists
-        const index = this.$_.findIndex(lists, (o) => o.anime_id === id)
-
-        lists[index].score = opts.score || lists[index].score
-        lists[index].num_watched_episodes = opts.episode || lists[index].num_watched_episodes
-
-        const priority = {
-          old: lists[index].priority_string,
-          new: this.$_.find(this.priority, (o) => o.value === opts.priority).text
-        }
-        lists[index].priority_string = priority.old !== priority.new ? priority.new : priority.old
-
-        this.$store.commit('mal/setWatchLists', lists)
-
         this.close()
       },
       deleteEntry () {
@@ -274,7 +260,7 @@
         if (this.isEdit) {
           this.form.status = obj.status
           this.form.score = obj.score || null
-          this.form.episode = obj.anime_num_episodes || null
+          this.form.episode = obj.num_watched_episodes || null
           this.form.date_start = obj.anime_start_date_string || null
           this.form.date_finish = obj.anime_end_date_string || null
           this.form.tags = obj.tags.length ? obj.tags.split(', ') : []
