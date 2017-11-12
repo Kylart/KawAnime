@@ -6,7 +6,7 @@ export default {
 
     if (malUsername) {
       try {
-        await dispatch('initApi', malUsername)
+        await dispatch('initApi')
         log(`MyAnimeList > Logged in as ${malUsername}.`)
 
         await dispatch('getWatchLists', malUsername)
@@ -34,10 +34,10 @@ export default {
       commit('setInfoSnackbar', 'An unknown error occurred. Please restart KawAnime and try again.', isRoot)
     }
   },
-  async initApi ({commit}, username) {
+  async initApi ({state, commit}) {
     try {
       const {status} = await axios.post('_initOfficalApi', {
-        username
+        service: state.service
       })
 
       if (status === 204) throw new Error('Error while registering service.')

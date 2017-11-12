@@ -9,7 +9,6 @@ const {join} = require('path')
 const _ = require('lodash')
 const randomString = require('randomstring')
 const axios = require('axios')
-const keytar = require('keytar')
 
 const {homedir} = require('os')
 const BASE_PATH = homedir()
@@ -123,6 +122,7 @@ const createToken = () => {
   }
 }
 
+const vault = require('./vault')
 const {openExternal, openInBrowser} = require('./openExternal.js')
 const seasons = require('./seasons.js')
 const news = require('./news.js')
@@ -264,7 +264,6 @@ let routes = [
   (app) => {
     app.post('/_setupAccount', (req, res) => {
       req.on('data', (chunk) => {
-        // At the moment service must be 'kawanime.mal' please
         const {service, credentials} = JSON.parse(chunk)
 
         // Writting the username in the config file so no one forgets
@@ -275,7 +274,7 @@ let routes = [
         fs.writeFileSync(p, JSON.stringify(conf), 'utf-8')
 
         // Setting password into services
-        keytar.setPassword(service, credentials.username, credentials.password)
+        vault.setupCreds(service, credentials)
           .then(() => res.send())
           .catch(() => res.status(204).send())
       })

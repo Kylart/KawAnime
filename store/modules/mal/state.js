@@ -1,5 +1,5 @@
 export default {
-  service: 'kawanime.mal',
+  service: 'mal',
   form: false,
   isAdding: false,
   isLoading: false,

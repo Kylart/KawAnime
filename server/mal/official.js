@@ -1,5 +1,5 @@
+const vault = require('../vault')
 const malScraper = require('mal-scraper')
-const keytar = require('keytar')
 const Api = malScraper.officialApi
 
 let api
@@ -33,13 +33,9 @@ const initOfficialApi = (req, res) => {
   req.on('data', (chunk) => {
     chunk = JSON.parse(chunk)
 
-    keytar.getPassword('kawanime.mal', chunk.username)
-      .then((pwd) => {
-        api = new Api({
-          username: chunk.username,
-          password: pwd
-        })
-
+    vault.getCreds(chunk.service)
+      .then((creds) => {
+        api = new Api(creds)
         checkCreds(res)
       })
       .catch(() => res.status(204).send())
