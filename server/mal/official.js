@@ -42,18 +42,6 @@ const initOfficialApi = (req, res) => {
   })
 }
 
-const resetCreds = (req, res) => {
-  req.on('data', (chunk) => {
-    chunk = JSON.parse(chunk)
-
-    const {credentials} = chunk
-
-    api.setCredentials(credentials)
-
-    checkCreds(res)
-  })
-}
-
 const actOnList = (req, res) => {
   req.on('data', (chunk) => {
     chunk = JSON.parse(chunk)
@@ -75,6 +63,5 @@ const actOnList = (req, res) => {
 module.exports = {
   getWatchList,
   initOfficialApi,
-  resetCreds,
   actOnList
 }
