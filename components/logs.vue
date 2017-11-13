@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-dialog(lazy, absolute, max-width='700', v-model='show', @keydown.esc='close()')
+  v-dialog(lazy, absolute, max-width='70%', v-model='show', @keydown.esc='close()')
     v-btn(icon, flat, slot='activator')
       v-icon fiber_new
     v-card#logs
