@@ -13,7 +13,7 @@
       v-card-text
         v-layout(row, wrap, justify-center)
           v-expansion-panel(expand, popout, v-if='Object.keys(history).length')
-            v-expansion-panel-content.elem(
+            v-expansion-panel-content.history-elem(
               ripple, lazy,
               v-for='item in Object.keys(history).reverse()',
               :key='item'
@@ -97,7 +97,7 @@
         this.$store.commit('history/setModal', false)
       },
       showElems (bool, quantity) {
-        const loaded = document.getElementsByClassName('elem')
+        const loaded = document.getElementsByClassName('history-elem')
 
         this.$_.each(loaded, (elem, i) => {
           if (bool) {
@@ -114,12 +114,12 @@
     },
     watch: {
       modal (bool) {
-        this.showElems(false, this.nbElems)
-
         if (bool) {
           this.$nextTick(() => {
             this.elem = document.getElementsByClassName('dialog--active')[0]
             this.elem.addEventListener('scroll', this.handleScroll)
+
+            this.showElems(false, this.nbElems)
           })
         } else {
           this.elem = document.getElementsByClassName('dialog--active')[0]
