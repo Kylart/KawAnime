@@ -168,10 +168,24 @@
         })
       },
       isFollowed (name) {
-        return this.$store.state.watchLists.lists.watching.includes(name)
-          ? 'Watching'
-          : this.$store.state.watchLists.lists.watchList.includes(name)
-            ? 'Watch List'
+        const malLists = this.$store.state.mal.watchLists
+        const localLists = {
+          watching: this.$store.state.watchLists.lists.watching,
+          watchList: this.$store.state.watchLists.lists.watchList
+        }
+
+        const isWatching = localLists.watching.includes(name) || this.$_.find(malLists, (o) => o.anime_title === name && o.status === 1)
+        const isPlanned = localLists.watchList.includes(name) || this.$_.find(malLists, (o) => o.anime_title === name && o.status === 2)
+
+        // If it's in both, it should say `watching`
+        if (isWatching && isPlanned) {
+          return 'Watching'
+        }
+
+        return isPlanned
+          ? 'Watch List'
+          : isWatching
+            ? 'Watching'
             : ''
       }
     }
