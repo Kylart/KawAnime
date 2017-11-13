@@ -1,5 +1,10 @@
 <template lang="pug">
-  v-dialog(lazy, absolute, max-width='75%', v-model='$store.state.history.modal', @keydown.esc='close()')
+  v-dialog#history(lazy,
+    absolute,
+    max-width='75%',
+    v-model='$store.state.history.modal',
+    @keydown.esc='close()'
+  )
     v-btn(color='secondary', dark, @click='refresh()', slot='activator')
       | History
     v-card
@@ -8,7 +13,7 @@
       v-card-text
         v-layout(row, wrap, justify-center)
           v-expansion-panel(expand, popout, v-if='Object.keys(history).length')
-            v-expansion-panel-content(
+            v-expansion-panel-content.elem(
               ripple, lazy,
               v-for='item in Object.keys(history).reverse()',
               :key='item'
@@ -39,6 +44,11 @@
 
 <script>
   export default {
+    data () {
+      return {
+        nbElems: 30
+      }
+    },
     computed: {
       history () {
         return this.$store.state.history.entries
@@ -53,6 +63,22 @@
       }
     },
     methods: {
+      handleScroll () {
+        const elem = document.getElementsByClassName('dialog--active')[0]
+
+        const modalHeight = elem.clientHeight
+        const cardHeight = document.querySelector('.dialog--active .card').clientHeight
+
+        const scroll = elem.scrollTop
+        const maxScroll = cardHeight - modalHeight
+
+        const scrollPercent = scroll / maxScroll
+
+        if (scrollPercent > 0.70) {
+          this.nbElems += 5
+          this.showElems(true, this.nbElems)
+        }
+      },
       isDelete (type) {
         return type === 'Delete'
           ? 'delete'
@@ -69,6 +95,36 @@
       },
       close () {
         this.$store.commit('history/setModal', false)
+      },
+      showElems (bool, quantity) {
+        const loaded = document.getElementsByClassName('elem')
+
+        this.$_.each(loaded, (elem, i) => {
+          if (bool) {
+            if (i < quantity) {
+              elem.style.display = 'list-item'
+            }
+          } else {
+            if (i >= quantity) {
+              elem.style.display = 'none'
+            }
+          }
+        })
+      }
+    },
+    watch: {
+      modal (bool) {
+        this.showElems(false, this.nbElems)
+
+        if (bool) {
+          this.$nextTick(() => {
+            this.elem = document.getElementsByClassName('dialog--active')[0]
+            this.elem.addEventListener('scroll', this.handleScroll)
+          })
+        } else {
+          this.elem = document.getElementsByClassName('dialog--active')[0]
+          this.elem.removeEventListener('scroll', this.handleScroll)
+        }
       }
     }
   }
