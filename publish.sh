@@ -6,5 +6,9 @@ if [ -z "$GH_TOKEN" ]; then
     exit 1
 fi
 
+# This removes the development dependencies. It helps reduce the size of the final app
+npm prune --production
 # This will build, package and upload the app to GitHub.
 npm run build && node_modules/.bin/build --win --ia32 --x64 --mac --linux deb AppImage -p always
+# Reinstalling development packages
+npm install

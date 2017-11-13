@@ -61,7 +61,7 @@
     //- Used for displaying any info
     v-snackbar(
       :timeout='5000',
-      bottom, left,
+      top, right,
       v-model='$store.state.infoSnackbar.show'
     ) {{ $store.state.infoSnackbar.text }}
       v-btn.pink--text(flat, @click='$store.state.infoSnackbar.show = false') Close
