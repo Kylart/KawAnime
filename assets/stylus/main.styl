@@ -3,104 +3,15 @@
 // Specify overrides (theme and/or base variables etc.)
 // See https://vuetifyjs.com/quick-start
 
+// Material icons/font
+@import './material-icons'
 
-
-// @import '../../node_modules/vuetify/src/stylus/main'
+// Vuetify
 @import './theme'
-@import './scrollbar'
 @import '../../node_modules/vuetify/src/stylus/app'
 
-/**
-  Transitions
- */
-.page-enter-active, .page-leave-active
-  transition all 0.5s
-
-.page-enter
-  opacity 0
-  transform translateY(30px)
-
-.page-leave-active
-  opacity 0
-  transform translateY(30px)
-
-.list-enter-active
-  transition all 1s
-
-.list-enter
-  opacity 0
-  transform translateX(30px)
-  transition transform 1s
-
-.list-leave-to
-  opacity 0
-  transform translateY(30px)
-  transition transform 1s
-
-.list-move
-  transition transform 0.75s
-
-.list-leave-active
-  transition all 1s
-  position absolute
-
-.config-enter-active
-  animation zoomIn 0.2s
-
-.config-leave-active
-  animation lightSpeedOut 0.3s
-
-/**
-  Electron
- */
-.dragable
-  -webkit-app-region drag
-
-.non-dragable
-  -webkit-app-region no-drag
-
-/**
-  Custom rules which will be applied globally, allows overriding
- */
-html
-  overflow hidden
-
-// VDataTable
-table.table thead td:not(:nth-child(1)), table.table tbody td:not(:nth-child(1)), table.table thead th:not(:nth-child(1)), table.table tbody th:not(:nth-child(1)), table.table thead td:first-child, table.table tbody td:first-child, table.table thead th:first-child, table.table tbody th:first-child
-  padding 0 !important
-
-.ellipsis
-  overflow hidden
-  text-overflow ellipsis
-  white-space nowrap
-
-.fill-height
-  min-height calc(100vh - (48px + 24px)) !important
-
-.navigation-drawer .list__tile
-  font-size 14px
-
-.toolbar__content
-  max-height 48px
-
-div.dialog--fullscreen
-  margin 24px 0 0
-
-#title a.list__tile
-  height 60px
-
-.application--dark a
-  color #ff9800
-
-div.tabs__items
-  border-width 0
-  border-style none
-
-.not-selectable
-  -webkit-user-select none
-  -moz-user-select none
-  -ms-user-select none
-  user-select none
-
-.column:focus
-  outline none
+// Custom
+@import './electron'
+@import './transitions'
+@import './scrollbar'
+@import './global'

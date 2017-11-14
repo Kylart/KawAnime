@@ -1,0 +1,30 @@
+.page-enter-active, .page-leave-active
+  transition all 0.5s
+
+.page-enter
+  opacity 0
+  transform translateY(30px)
+
+.page-leave-active
+  opacity 0
+  transform translateY(30px)
+
+.list-enter-active
+  transition all 1s
+
+.list-enter
+  opacity 0
+  transform translateX(30px)
+  transition transform 1s
+
+.list-leave-to
+  opacity 0
+  transform translateY(30px)
+  transition transform 1s
+
+.list-move
+  transition transform 0.75s
+
+.list-leave-active
+  transition all 1s
+  position absolute

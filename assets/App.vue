@@ -239,7 +239,5 @@
 </style>
 
 <style lang="stylus">
-  @import '../node_modules/animate.css/animate.min.css'
-  @import './iconfont/material-icons.css'
   @import './stylus/main'
 </style>

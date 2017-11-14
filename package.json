@@ -30,7 +30,6 @@
     "postinstall": "node nightwatch.conf.js"
   },
   "dependencies": {
-    "animate.css": "^3.5.2",
     "axios": "^0.16.2",
     "babel-core": "^6.25.0",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",

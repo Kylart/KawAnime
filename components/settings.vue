@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-dialog(v-model='configModal', fullscreen, transition='config', :overlay='false')
+  v-dialog(v-model='configModal', fullscreen, transition='scale-transition', :overlay='false')
     v-btn(icon, slot='activator')
       v-icon settings
     v-card.white--text.main
