@@ -73,7 +73,7 @@
                                     v-list-tile-action
                                       v-icon file_download
                                     v-list-tile-title Download all episodes
-                                  v-list-tile(@click="$store.dispatch('search/fromName', item.title)")
+                                  v-list-tile(@click="$store.dispatch('search/fromUrl', item)")
                                     v-list-tile-action
                                       v-icon info_outline
                                     v-list-tile-title Information
@@ -153,7 +153,7 @@
     },
     methods: {
       getDate (string) {
-        return string.split(' ').slice(0, 3).join(' ')
+        return string.split(' ').slice(0, 3).join(' ').slice(0, -1)
       },
       episode (item) {
         const nbEp = parseInt(item.nbEp)

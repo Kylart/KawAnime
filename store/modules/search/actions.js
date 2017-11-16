@@ -2,7 +2,8 @@ import {axios} from '../../utils'
 
 export default {
   async fromUrl ({commit, state}, item) {
-    const {name, url} = item
+    const url = item.url || item.link
+    const name = item.name || item.title
 
     if (name === state.info.term) {
       commit('showInfo', true)
