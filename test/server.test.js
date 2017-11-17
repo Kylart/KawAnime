@@ -126,15 +126,15 @@ test('/getLatest.json exits and returns 18 elements with right keys at 720p', as
   }
 })
 
-test('/download Mahou Shoujo Ikusei Keikaku with HorribleSubs at 720p on nyaa.si exits and returns all' +
-  ' magnets', async t => {
+test('/download Mahou Shoujo Ikusei Keikaku with HorribleSubs at 720p on nyaa.pantsu.cat exits and returns' +
+  ' all magnets', async t => {
   const { data, status } = await axios.post(`${uri}/download`, {
     name: 'Mahou Shoujo Ikusei Keikaku',
     quality: '720p',
     fromEp: 0,
     untilEp: 20000,
     fansub: 'HorribleSubs',
-    choice: 'si'
+    choice: 'pantsu'
   })
 
   if (status === 200) {
@@ -145,15 +145,15 @@ test('/download Mahou Shoujo Ikusei Keikaku with HorribleSubs at 720p on nyaa.si
   }
 })
 
-test('/download Mahou Shoujo Ikusei Keikaku with HorribleSubs at 720p on nyaa.pantsu.cat exits and returns' +
-  ' all magnets', async t => {
+test('/download Mahou Shoujo Ikusei Keikaku with HorribleSubs at 720p on nyaa.si exits and returns all' +
+  ' magnets', async t => {
   const { data, status } = await axios.post(`${uri}/download`, {
     name: 'Mahou Shoujo Ikusei Keikaku',
     quality: '720p',
     fromEp: 0,
     untilEp: 20000,
     fansub: 'HorribleSubs',
-    choice: 'pantsu'
+    choice: 'si'
   })
 
   if (status === 200) {
