@@ -158,9 +158,9 @@
           {text: 'None', value: 3}
         ],
         priority: [
-          {text: 'Low', value: 1},
-          {text: 'Medium', value: 2},
-          {text: 'High', value: 3}
+          {text: 'Low', value: 0},
+          {text: 'Medium', value: 1},
+          {text: 'High', value: 2}
         ],
         rewatch: [
           {text: 'Very low', value: 1},
