@@ -34,6 +34,26 @@ export default {
     close () {
       this.$store.commit('logs/show', false)
     }
+  },
+  watch: {
+    logs () {
+      this.$nextTick(() => {
+        const aTags = document.querySelectorAll('#logs a')
+
+        this.$_.each(aTags, (a) => {
+          a.onclick = (e) => {
+            e.preventDefault()
+
+            this.$axios.get('openThis', {
+              params: {
+                type: 'link',
+                link: a.href
+              }
+            })
+          }
+        })
+      })
+    }
   }
 }
 </script>
