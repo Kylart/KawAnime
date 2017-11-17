@@ -18,10 +18,10 @@
       v-tabs#tabs(dark, fixed, centered)
         v-tabs-bar.mablue
           v-tabs-slider.primary
-          v-tabs-item(v-for='i in 3', :href="'#' + i", :key='i')
+          v-tabs-item(v-for='i in 5', :href="'#' + i", :key='i')
             | {{ season[i].name }}
         v-tabs-items
-          v-tabs-content(v-for='i in 3', lazy, :id='`${i}`', :key='i')
+          v-tabs-content(v-for='i in 5', lazy, :id='`${i}`', :key='i')
             v-text-field.query(v-model='query', label='Search entry', dark)
             v-layout.elems(row, wrap)
               transition-group(name='list')
@@ -124,6 +124,12 @@
       OVAs () {
         return this.seasons.OVAs
       },
+      ONAs () {
+        return this.seasons.ONAs
+      },
+      Specials () {
+        return this.seasons.Specials
+      },
       Movies () {
         return this.seasons.Movies
       },
@@ -132,6 +138,8 @@
           '',
           {name: 'TV', items: this.TVs},
           {name: 'OVA', items: this.OVAs},
+          {name: 'ONA', items: this.ONAs},
+          {name: 'Specials', items: this.Specials},
           {name: 'Movies', items: this.Movies}
         ]
       },

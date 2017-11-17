@@ -38,7 +38,7 @@ This software allows one to:
 list of torrent magnets to paste in a torrent client on a distant server.
 * Get information from any anime (those come from myanimelist.net).
 * Get anime-related news from MyAnimeList.net.
-* Get seasonal releases information (from [www.livechart.me](https://www.livechart.me)).
+* Get seasonal releases information MyAnimeList.net.
 * Manage your anime files (watch and delete on click)
 * Manage watch lists.
 * More features are to come.
