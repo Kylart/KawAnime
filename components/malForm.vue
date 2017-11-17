@@ -169,6 +169,19 @@
           {text: 'High', value: 4},
           {text: 'Very high', value: 5}
         ],
+        initForm: {
+          status: 1,
+          episode: '',
+          score: '',
+          date_start: null,
+          date_finish: null,
+          tags: [],
+          priority: 0,
+          times_rewatched: 0,
+          rewatch_value: null,
+          storage_type: null,
+          comments: ''
+        },
         form: {
           status: 1,
           episode: '',
@@ -176,7 +189,7 @@
           date_start: null,
           date_finish: null,
           tags: [],
-          priority: 1,
+          priority: 0,
           times_rewatched: 0,
           rewatch_value: null,
           storage_type: null,
@@ -201,16 +214,6 @@
       },
       nbEpisodes () {
         return this.entry.anime_num_episodes || this.entry.episodes
-      },
-      episodes () {
-        if (this.nbEpisodes) {
-          const res = []
-          for (let i = 0; i < this.nbEpisodes; ++i) {
-            res.push(i + 1)
-          }
-          return res
-        }
-        return undefined
       },
       isEdit () {
         return this.entry.anime_id
@@ -278,6 +281,11 @@
           } catch (e) {
             console.error((new Date()).toLocaleTimeString(), e)
           }
+        }
+      },
+      show (bool) {
+        if (!bool) {
+          this.form = this.initForm
         }
       }
     }

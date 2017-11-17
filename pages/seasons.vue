@@ -42,9 +42,7 @@
                         p.genres.ellipsis(slot='activator') {{ item.genres.join(' ') }}
                         span {{ item.genres.join(' ') }}
                     v-flex(xs3)
-                      v-tooltip(top)
-                        p.from-type.ellipsis(slot='activator') {{ item.fromType }}
-                        span.text-xs-right {{ item.fromType }}
+                      p.from-type.ellipsis {{ item.fromType }}
                     v-flex(xs1)
                     // Picture of elem
                     v-flex.image-container(xs3, lg4)
@@ -81,6 +79,10 @@
                                     v-list-tile-action
                                       v-icon add_box
                                     v-list-tile-title Add to
+                                  v-list-tile(@click='showMal(item)')
+                                    v-list-tile-action
+                                      v-icon web
+                                    v-list-tile-title MyAnimeList
     v-dialog(v-model='modal', max-width='70%', @keydown.esc='modal = false')
       v-card
         v-card-title.headline {{ modalTitle }}
@@ -88,7 +90,7 @@
         v-card-text.text {{ modalText }}
         v-card-actions
           v-spacer
-          v-btn.blue--text.darken-1(flat, style='width: 100px', v-on:click.native='modal = false')
+          v-btn.blue--text.darken-1(flat, style='width: 100px', @click='modal = false')
             | Thanks!
     choice-window(:entry='choiceTitle')
 </template>
@@ -161,7 +163,7 @@
     },
     methods: {
       getDate (string) {
-        return string.split(' ').slice(0, 3).join(' ').slice(0, -1)
+        return string.split(' ').slice(0, 3).join(' ').split(',').slice(0, 2).join(', ')
       },
       episode (item) {
         const nbEp = parseInt(item.nbEp)
@@ -198,6 +200,15 @@
           untilEp: 20000,
           choice: 'si'
         })
+      },
+      showMal (item) {
+        const {link} = item
+
+        item.id = +link.split('/').splice(-2, 1)[0]
+        item.episodes = item.nbEp
+
+        this.$store.commit('mal/setEntry', item)
+        this.$store.commit('mal/showForm', true)
       }
     }
   }
@@ -249,7 +260,7 @@
     margin-bottom 10px
     padding-left 10px
     padding-right 10px
-    line-height 26px
+    line-height 26px !important
 
   .from-type
     margin-bottom 5px
