@@ -26,7 +26,8 @@ import {
   VTooltip,
   VDataTable,
   VDatePicker,
-  VChip
+  VChip,
+  VBadge
 } from 'vuetify'
 
 import { Ripple } from 'vuetify/es5/directives'
@@ -60,7 +61,8 @@ export default (Vue) => {
       VTooltip,
       VDataTable,
       VDatePicker,
-      VChip
+      VChip,
+      VBadge
     },
     directives: {
       Ripple

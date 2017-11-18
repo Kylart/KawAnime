@@ -12,14 +12,18 @@
           v-layout(row, wrap)
             v-flex.flex-v-centered.pl-3(xs2)
               v-menu(bottom, transition="slide-y-transition")
-                v-btn(flat, slot="activator")
-                  v-icon(left) add_box
-                  | Add to
+                v-btn.blue--text(flat, icon, slot="activator")
+                  v-icon add_box
                 v-list
                   v-list-tile(v-for="list in lists", :key="list.text", @click="addTo(list.listName)")
                     v-list-tile-action
                       v-icon {{ list.action }}
                     v-list-tile-title {{ list.text }}
+              v-spacer
+              v-badge(overlap, color='orange')
+                v-icon(slot='badge') add
+                v-btn.blue--text(icon, @click='showMal()')
+                  v-icon web
             v-flex.flex-v-centered(xs7)
               v-card-title.info-title
                 | 「{{ info.japaneseTitle }}」ー {{ info.type }}
@@ -70,6 +74,11 @@
       },
       close () {
         this.$store.commit('search/showInfo', false)
+      },
+      showMal () {
+        this.$store.commit('mal/setEntry', this.info)
+        this.close()
+        this.$store.commit('mal/showForm', true)
       }
     },
     computed: {
