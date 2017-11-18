@@ -12,7 +12,7 @@
             item-value='value'
           )
         v-flex.year-container(offset-sm1, sm3, xs8)
-          v-text-field(name='input-year', type='number', min='2010', label='Year', v-model='$store.state.seasons.year', dark)
+          v-text-field(name='input-year', type='number', min='1917', label='Year', v-model='$store.state.seasons.year', dark)
         v-flex.refresh-button(offset-sm1, sm2, xs8)
           v-btn(color='secondary', block, dark, @click='refreshSeason()') Refresh
       v-tabs#tabs(dark, fixed, centered)
