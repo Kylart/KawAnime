@@ -12,7 +12,7 @@
           v-layout(row, wrap)
             v-flex.flex-v-centered.pl-3(xs2)
               v-menu(bottom, transition="slide-y-transition")
-                v-btn.blue--text(flat, icon, slot="activator")
+                v-btn.blue--text(icon, slot="activator")
                   v-icon add_box
                 v-list
                   v-list-tile(v-for="list in lists", :key="list.text", @click="addTo(list.listName)")

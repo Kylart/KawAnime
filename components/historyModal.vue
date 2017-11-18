@@ -12,10 +12,10 @@
       v-divider
       v-card-text
         v-layout(row, wrap, justify-center)
-          v-expansion-panel(expand, popout, v-if='Object.keys(history).length')
+          v-expansion-panel(expand, popout, v-if='Object.keys(elems).length')
             v-expansion-panel-content.history-elem(
               ripple, lazy,
-              v-for='item in Object.keys(history).reverse()',
+              v-for='item in Object.keys(elems)',
               :key='item'
             )
               .day(slot='header') {{ item }}
@@ -44,9 +44,13 @@
 
 <script>
   export default {
+    mounted () {
+      this.generateHistory()
+    },
     data () {
       return {
-        nbElems: 30
+        nbElems: 30,
+        elems: {}
       }
     },
     computed: {
@@ -74,9 +78,9 @@
 
         const scrollPercent = scroll / maxScroll
 
-        if (scrollPercent > 0.70) {
+        if (scrollPercent > 0.65) {
           this.nbElems += 5
-          this.showElems(true, this.nbElems)
+          this.generateHistory()
         }
       },
       isDelete (type) {
@@ -96,20 +100,14 @@
       close () {
         this.$store.commit('history/setModal', false)
       },
-      showElems (bool, quantity) {
-        const loaded = document.getElementsByClassName('history-elem')
+      generateHistory () {
+        // This is still improvable
+        const keys = this.$_.keys(this.history).reverse()
+        this.elems = {}
 
-        this.$_.each(loaded, (elem, i) => {
-          if (bool) {
-            if (i < quantity) {
-              elem.style.display = 'list-item'
-            }
-          } else {
-            if (i >= quantity) {
-              elem.style.display = 'none'
-            }
-          }
-        })
+        for (let i = 0, l = this.nbElems; i < l; ++i) {
+          this.elems[keys[i]] = this.history[keys[i]]
+        }
       }
     },
     watch: {
@@ -118,8 +116,6 @@
           this.$nextTick(() => {
             this.elem = document.getElementsByClassName('dialog--active')[0]
             this.elem.addEventListener('scroll', this.handleScroll)
-
-            this.showElems(false, this.nbElems)
           })
         } else {
           this.elem = document.getElementsByClassName('dialog--active')[0]
