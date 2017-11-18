@@ -1,9 +1,12 @@
 <template lang="pug">
-  v-dialog(v-model='show', lazy, absolute, max-width='800', @keydown.esc='close()')
+  v-dialog(v-model='show', persistent, lazy, absolute, max-width='800', @keydown.esc='close()')
     v-card.pa-2
       v-layout(row, wrap)
-        v-flex.entry-title-generic.pa-2(xs11, offset-xs1) {{ addOrEdit }} a list entry
+        v-flex.entry-title-generic.pa-2(xs9, offset-xs1) {{ addOrEdit }} a list entry
           span.entry-title {{ entryTitle }}
+        v-flex(xs2)
+          v-btn(icon, @click='close')
+            v-icon close
         v-flex(xs4, offset-xs1)
           v-select(
             label='Status'
