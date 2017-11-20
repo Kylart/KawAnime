@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-dialog(max-width='800', v-model='$store.state.search.info.show', persistent, lazy, absolute, @keydown.esc='close()')
+  v-dialog(max-width='800', v-model='$store.state.search.info.show', lazy, absolute, @keydown.esc='close()')
     v-card
       v-card-title.headline Result for «{{ searchTerm }}»
       v-divider
@@ -12,7 +12,7 @@
           v-layout(row, wrap)
             v-flex.flex-v-centered.pl-3(xs2)
               v-menu(bottom, transition="slide-y-transition")
-                v-btn.blue--text(icon, slot="activator")
+                v-btn.blue--text(icon, outline, slot="activator")
                   v-icon add_box
                 v-list
                   v-list-tile(v-for="list in lists", :key="list.text", @click="addTo(list.listName)")
@@ -22,7 +22,7 @@
               v-spacer
               v-badge(overlap, color='orange')
                 v-icon(slot='badge') add
-                v-btn.blue--text(icon, @click='showMal()')
+                v-btn.blue--text(icon, outline, @click='showMal()')
                   v-icon web
             v-flex.flex-v-centered(xs7)
               v-card-title.info-title

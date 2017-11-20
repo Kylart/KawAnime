@@ -1,6 +1,6 @@
 <template lang="pug">
   div
-    v-dialog(v-model='values.show', lazy, absolute, persistent, max-width='800', @keydown.esc='close()')
+    v-dialog(v-model='values.show', lazy, absolute, max-width='800', @keydown.esc='close()')
       v-card.white--text
         v-card-title.pb-2.pt-2
           h2.title.white--text.mb-0.entry-title.ellipsis Results for #[strong {{ values.title }}]

@@ -5,7 +5,7 @@
         v-flex.entry-title-generic.pa-2(xs9, offset-xs1) {{ addOrEdit }} a list entry
           span.entry-title {{ entryTitle }}
         v-flex(xs2)
-          v-btn(icon, @click='close')
+          v-btn(icon, outline, @click='close')
             v-icon close
         v-flex(xs4, offset-xs1)
           v-select(
