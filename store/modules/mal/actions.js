@@ -1,4 +1,4 @@
-import {axios, log, isRoot} from '../../utils'
+import {axios, log, isRoot, _} from '../../utils'
 
 export default {
   async init ({rootState, commit, dispatch}) {
@@ -62,7 +62,15 @@ export default {
       const {data} = await axios.get('getWatchList', {params: {user}})
 
       commit('isLoading', false)
-      commit('setWatchLists', data)
+      commit('setWatchLists', _.map(data, (obj) => {
+        obj.id = +obj.id
+        obj.score = +obj.score
+        obj.nbEpisodes = +obj.nbEpisodes
+        obj.nbWatchedEpisode = +obj.nbWatchedEpisode
+        obj.status = +obj.status
+
+        return obj
+      }))
     } catch (e) {
       log('MyAnimeList >', e)
     }

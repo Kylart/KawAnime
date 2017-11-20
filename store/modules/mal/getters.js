@@ -19,12 +19,6 @@ export default {
     }
 
     _.each(state.watchLists, (entry) => {
-      entry.id = +entry.id
-      entry.score = +entry.score
-      entry.nbEpisodes = +entry.nbEpisodes
-      entry.nbWatchedEpisode = +entry.nbWatchedEpisode
-      entry.status = +entry.status
-
       const dec = (+entry.nbWatchedEpisode / +entry.nbEpisodes) || 1
       result.push({
         score: entry.score || 'N/A',
