@@ -218,7 +218,7 @@
   @import '~stylus/functions'
 
   #seasons
-    display inline
+    display inline-block
 
   h6
     margin 0
