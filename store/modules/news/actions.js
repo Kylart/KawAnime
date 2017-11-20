@@ -3,13 +3,19 @@ import {axios, log} from '../../utils'
 export default {
   async init ({state, commit, dispatch}) {
     console.log('[INIT] News')
-    const {data, status} = await axios.get('news.json')
 
-    if (status === 200) {
-      commit('set', data)
-    } else {
+    try {
+      const {data, status} = await axios.get('news.json')
+
+      if (status === 200) {
+        commit('set', data)
+      } else {
+        log('A problem occurred while gathering the news.')
+        setTimeout(() => { dispatch('init') })
+      }
+    } catch (e) {
       log('A problem occurred while gathering the news.')
-      dispatch('init')
+      setTimeout(() => { dispatch('init') })
     }
   },
   async refresh ({commit, dispatch}) {

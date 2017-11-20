@@ -4,24 +4,7 @@ export default {
   async init ({state, commit, dispatch}) {
     console.log('[INIT] Releases')
 
-    const {data, status} = await axios.get('getLatestNyaa', { params: state.params })
-
-    if (status === 200) {
-      commit('set', data)
-
-      if (state.autoRefresh === true) dispatch('autoRefresh')
-    } else if (status === 202) {
-      log(`An error occurred while getting the latest releases. Retrying in 45 seconds.`)
-      commit('setInfoSnackbar', 'Could not get the latest releases. Retrying in 45 seconds.', isRoot)
-      setTimeout(() => {
-        log(`Retrying to get latest releases.`)
-        dispatch('init').catch(err => { void (err) })
-      }, 45 * 1000)
-    } else if (status === 204) {
-      log('nyaa.si does not respond... Switching to nyaa.pantsu.cat.')
-
-      commit('setChoice', 'pantsu')
-
+    try {
       const {data, status} = await axios.get('getLatestNyaa', { params: state.params })
 
       if (status === 200) {
@@ -30,17 +13,17 @@ export default {
         if (state.autoRefresh === true) dispatch('autoRefresh')
       } else if (status === 202) {
         log(`An error occurred while getting the latest releases. Retrying in 45 seconds.`)
-        commit('setInfoSnackbar', 'Could not get the latest releases. Retrying in 45 seconds.')
+        commit('setInfoSnackbar', 'Could not get the latest releases. Retrying in 45 seconds.', isRoot)
         setTimeout(() => {
           log(`Retrying to get latest releases.`)
           dispatch('init').catch(err => { void (err) })
         }, 45 * 1000)
       } else if (status === 204) {
-        log('nyaa.pantsu.cat does not respond... Switching to HorribleSubs.')
+        log('nyaa.si does not respond... Switching to nyaa.pantsu.cat.')
 
-        commit('setChoice', 'si')
+        commit('setChoice', 'pantsu')
 
-        const {data, status} = await axios.get(`getLatest.json?quality=${state.params.quality}`)
+        const {data, status} = await axios.get('getLatestNyaa', { params: state.params })
 
         if (status === 200) {
           commit('set', data)
@@ -48,17 +31,44 @@ export default {
           if (state.autoRefresh === true) dispatch('autoRefresh')
         } else if (status === 202) {
           log(`An error occurred while getting the latest releases. Retrying in 45 seconds.`)
-          commit('setInfoSnackbar', 'Could not get the latest releases. Retrying in 45 seconds.')
-          setTimeout(function () {
+          commit('setInfoSnackbar', 'Could not get the latest releases. Retrying in 45 seconds.', isRoot)
+          setTimeout(() => {
             log(`Retrying to get latest releases.`)
             dispatch('init').catch(err => { void (err) })
           }, 45 * 1000)
         } else if (status === 204) {
-          log('HorribleSubs does not respond. Retrying with nyaa.si...')
+          log('nyaa.pantsu.cat does not respond... Switching to HorribleSubs.')
 
-          dispatch('init')
+          commit('setChoice', 'si')
+
+          const {data, status} = await axios.get(`getLatest.json?quality=${state.params.quality}`)
+
+          if (status === 200) {
+            commit('set', data)
+
+            if (state.autoRefresh === true) dispatch('autoRefresh')
+          } else if (status === 202) {
+            log(`An error occurred while getting the latest releases. Retrying in 45 seconds.`)
+            commit('setInfoSnackbar', 'Could not get the latest releases. Retrying in 45 seconds.', isRoot)
+            setTimeout(function () {
+              log(`Retrying to get latest releases.`)
+              dispatch('init').catch(err => { void (err) })
+            }, 45 * 1000)
+          } else if (status === 204) {
+            log('HorribleSubs does not respond. Retrying with nyaa.si...')
+
+            dispatch('init')
+          }
         }
       }
+    } catch (e) {
+      console.error(e)
+      log(`An error occurred while getting the latest releases. Retrying in 45 seconds.`)
+      commit('setInfoSnackbar', 'Could not get the latest releases. Retrying in 45 seconds.', isRoot)
+      setTimeout(() => {
+        log(`Retrying to get latest releases.`)
+        dispatch('init').catch(err => { void (err) })
+      }, 45 * 1000)
     }
   },
   async refresh ({state, commit, dispatch}) {
@@ -102,12 +112,12 @@ export default {
           commit('set', data)
           dispatch('autoRefresh')
         } else {
-          commit('setInfoSnackbar', 'Auto refresh releases failed... Attempting again in 30 minutes.')
+          commit('setInfoSnackbar', 'Auto refresh releases failed... Attempting again in 30 minutes.', isRoot)
 
           dispatch('autoRefresh')
         }
       } catch (e) {
-        commit('setInfoSnackbar', 'Auto refresh releases failed... Attempting again in 30 minutes.')
+        commit('setInfoSnackbar', 'Auto refresh releases failed... Attempting again in 30 minutes.', isRoot)
 
         dispatch('autoRefresh')
       }
