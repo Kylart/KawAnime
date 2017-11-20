@@ -449,7 +449,7 @@ test('/getWatchList route exits and return an array containing entries', async t
   t.is(typeof data, 'object')
   t.not(data.length, 0)
   t.not(data[0].status, undefined)
-  t.not(data[0].anime_id, undefined)
+  t.not(data[0].id, undefined)
 })
 
 test('/_setupCreds route exits and creates a bcup file along the master key', async t => {
