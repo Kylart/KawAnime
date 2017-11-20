@@ -11,19 +11,23 @@
         v-card.secondary.pb-3(v-else)
           v-layout(row, wrap)
             v-flex.flex-v-centered.pl-3(xs2)
-              v-menu(bottom, transition="slide-y-transition")
-                v-btn.blue--text(icon, outline, slot="activator")
-                  v-icon add_box
-                v-list
-                  v-list-tile(v-for="list in lists", :key="list.text", @click="addTo(list.listName)")
-                    v-list-tile-action
-                      v-icon {{ list.action }}
-                    v-list-tile-title {{ list.text }}
+              v-tooltip(bottom)
+                v-menu(bottom, transition='slide-y-transition', slot='activator')
+                  v-btn.blue--text(icon, outline, slot='activator')
+                    v-icon add_box
+                  v-list
+                    v-list-tile(v-for='list in lists', :key='list.text', @click='addTo(list.listName)')
+                      v-list-tile-action
+                        v-icon {{ list.action }}
+                      v-list-tile-title {{ list.text }}
+                span Add «{{ searchTerm }}» to local lists
               v-spacer
               v-badge(overlap, color='orange')
                 v-icon(slot='badge') add
-                v-btn.blue--text(icon, outline, @click='showMal()')
-                  v-icon web
+                v-tooltip(bottom)
+                  v-btn.blue--text(icon, outline, @click='showMal()', slot='activator')
+                    v-icon web
+                  span Add «{{ searchTerm }}» to MyAnimeList
             v-flex.flex-v-centered(xs7)
               v-card-title.info-title
                 | 「{{ info.japaneseTitle }}」ー {{ info.type }}

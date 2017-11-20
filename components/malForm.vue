@@ -128,6 +128,7 @@
           {text: 'Plan to watch', value: 6}
         ],
         score: [
+          {text: 'None', value: null},
           {text: '1 - Appalling', value: 1},
           {text: '2 - Horrible', value: 2},
           {text: '3 - Very bad', value: 3},
