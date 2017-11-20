@@ -33,7 +33,7 @@ export default {
     const year = state.year
     const season = state.season.value || state.season
 
-    if (year >= 2010 && (year <= (new Date()).getYear() + 1901)) {
+    if (year >= 1917 && (year <= (new Date()).getYear() + 1901)) {
       commit('emptySeasons')
 
       const {data, status} = await axios.get(`seasons.json?year=${year}&season=${season}`)
@@ -44,7 +44,7 @@ export default {
 
       log('Seasons refreshed.')
     } else {
-      commit('setInfoSnackbar', `Year must be between 2010 and ${(new Date()).getYear() + 1901}`, isRoot)
+      commit('setInfoSnackbar', `Year must be between 1917 and ${(new Date()).getYear() + 1901}`, isRoot)
     }
   }
 }
