@@ -20,6 +20,6 @@ export default {
     state.isLoading = bool
   },
   removeFromLists (state, id) {
-    state.watchLists = _.remove(state.watchLists, (o) => o.anime_id !== id)
+    state.watchLists = _.remove(state.watchLists, (o) => o.id !== id)
   }
 }

@@ -19,7 +19,13 @@ export default {
     }
 
     _.each(state.watchLists, (entry) => {
-      const dec = (entry.nbWatchedEpisode / entry.nbEpisodes) || 1
+      entry.id = +entry.id
+      entry.score = +entry.score
+      entry.nbEpisodes = +entry.nbEpisodes
+      entry.nbWatchedEpisode = +entry.nbWatchedEpisode
+      entry.status = +entry.status
+
+      const dec = (+entry.nbWatchedEpisode / +entry.nbEpisodes) || 1
       result.push({
         score: entry.score || 'N/A',
         progress: (entry.nbWatchedEpisode || '??') + ' / ' + (entry.nbEpisodes || '??'),
@@ -30,6 +36,8 @@ export default {
         id: entry.id,
         status: status[entry.status],
         statusNum: entry.status,
+        start: entry.myStartDate === '0000-00-00' ? null : entry.myStartDate,
+        end: entry.myEndDate === '0000-00-00' ? null : entry.myEndDate,
         link: 'https://myanimelist.net/anime/' + entry.id + '/' + entry.title
       })
     })

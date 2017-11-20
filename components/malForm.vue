@@ -31,7 +31,6 @@
           v-flex(xs3, offset-xs1)
             v-menu(
               lazy,
-              :close-on-content-click='true',
               v-model='datePickers[i - 1]',
               transition='scale-transition',
               offset-y,
@@ -74,18 +73,8 @@
                 chips,
                 tags
               )
-          v-layout.pa-3(justify-space-between)
-            v-flex(xs2)
-              v-select(
-                label='Priority'
-                :items='priority',
-                v-model='form.priority',
-                hint='How important?',
-                persistent-hint,
-                item-value='value',
-                item-text='text'
-              )
-            v-flex(xs2)
+          v-layout.pa-4(justify-space-between)
+            v-flex(xs3)
               v-select(
                 label='Storage type'
                 :items='storage',
@@ -160,11 +149,6 @@
           {text: 'Blu-ray', value: 8},
           {text: 'None', value: 3}
         ],
-        priority: [
-          {text: 'Low', value: 0},
-          {text: 'Medium', value: 1},
-          {text: 'High', value: 2}
-        ],
         rewatch: [
           {text: 'Very low', value: 1},
           {text: 'Low', value: 2},
@@ -219,7 +203,7 @@
         return this.entry.anime_num_episodes || this.entry.episodes
       },
       isEdit () {
-        return this.entry.anime_id
+        return this.entry.lastUpdate
       },
       addOrEdit () {
         return this.isEdit ? 'Edit' : 'Add'
@@ -230,10 +214,26 @@
         this.$store.commit('mal/showForm', false)
       },
       submit () {
-        const id = this.entry.anime_id || this.entry.id
+        const id = this.entry.id
         const opts = this.$_.clone(this.form)
 
         opts.tags = opts.tags.join(', ')
+
+        const formatDate = (date) => {
+          if (date) {
+            date = date.split('-')
+            const d = date[2]
+            const m = date[1]
+            const y = date[0]
+
+            return m + d + y
+          } else {
+            return null
+          }
+        }
+
+        opts.date_start = formatDate(opts.date_start)
+        opts.date_finish = formatDate(opts.date_finish)
 
         this.$store.dispatch('mal/actOnList', {
           type: {
@@ -247,7 +247,7 @@
         this.close()
       },
       deleteEntry () {
-        const id = this.entry.anime_id || this.entry.id
+        const id = this.entry.id
 
         this.$store.dispatch('mal/actOnList', {
           type: {
@@ -266,11 +266,12 @@
         if (this.isEdit) {
           this.form.status = obj.status
           this.form.score = obj.score || null
-          this.form.episode = obj.num_watched_episodes || null
-          this.form.date_start = obj.anime_start_date_string || null
-          this.form.date_finish = obj.anime_end_date_string || null
+          this.form.episode = obj.nbWatchedEpisode || null
+          this.form.date_start = obj.startDate || null
+          this.form.date_finish = obj.endDate || null
           this.form.tags = obj.tags.length ? obj.tags.split(', ') : []
-          this.form.priority = this.$_.find(this.priority, (o) => o.text === obj.priority_string).value
+          this.form.date_start = obj.myStartDate === '0000-00-00' ? null : obj.myStartDate
+          this.form.date_finish = obj.myEndDate === '0000-00-00' ? null : obj.myEndDate
         }
 
         const {id} = obj
