@@ -6,7 +6,7 @@ const getWatchList = (query, res) => {
   console.log('[Mal-Scraper]: Looking for the watch lists of', user + '...')
 
   malScraper.getWatchListFromUser(user)
-    .then((data) => res.send(data))
+    .then((data) => res.send(data.lists))
     .catch(/* istanbul ignore next */ (err) => {
       console.log('[Mal-Scraper]: An error occurred while gathring watchLIst from user...', err)
       res.status(204).send()

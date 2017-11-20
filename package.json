@@ -41,7 +41,7 @@
     "horrible-api": "^1.1.1",
     "lodash": "^4.17.4",
     "lru-cache": "^4.0.2",
-    "mal-scraper": "^2.1.3",
+    "mal-scraper": "^2.2.1",
     "moment": "^2.19.1",
     "nyaapi": "^2.0.4",
     "randomstring": "^1.1.5",

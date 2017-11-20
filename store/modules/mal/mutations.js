@@ -11,7 +11,7 @@ export default {
   setEntry (state, itemOrID) {
     const id = itemOrID.id || itemOrID
     // Need to find the right entry in the lists if it's in there
-    state.entry = _.find(state.watchLists, (o) => o.anime_id === id) || itemOrID
+    state.entry = _.find(state.watchLists, (o) => o.id === id) || itemOrID
   },
   isAdding (state, bool) {
     state.isAdding = bool

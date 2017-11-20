@@ -34,11 +34,11 @@
           td.text-xs-center {{ props.item.type }}
           td.text-xs-center {{ props.item.progress }}
           td.text-xs-center {{ props.item.status }}
-          td.text-xs-center {{ props.item.priorityString }}
+          //- td.text-xs-center {{ props.item.priorityString }}
           td
             v-btn.blue--text.darken-1(icon, flat, @click.stop='showForm(props.item.id)')
               v-icon edit
-            v-btn.blue--text.darken-1(icon, flat, @click.stop='showInfo(props.item.title, props.item.url)')
+            v-btn.blue--text.darken-1(icon, flat, @click.stop='showInfo(props.item.title, props.item.link)')
               v-icon info_outline
 </template>
 
