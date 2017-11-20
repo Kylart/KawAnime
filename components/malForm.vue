@@ -31,6 +31,7 @@
           v-flex(xs3, offset-xs1)
             v-menu(
               lazy,
+              :close-on-content-click='false',
               v-model='datePickers[i - 1]',
               transition='scale-transition',
               offset-y,
@@ -73,8 +74,18 @@
                 chips,
                 tags
               )
-          v-layout.pa-4(justify-space-between)
-            v-flex(xs3)
+          v-layout.pa-3(justify-space-between)
+            v-flex(xs2)
+              v-select(
+                label='Priority'
+                :items='priority',
+                v-model='form.priority',
+                hint='How important?',
+                persistent-hint,
+                item-value='value',
+                item-text='text'
+              )
+            v-flex(xs2)
               v-select(
                 label='Storage type'
                 :items='storage',
@@ -149,6 +160,11 @@
           {text: 'NAS', value: 7},
           {text: 'Blu-ray', value: 8},
           {text: 'None', value: 3}
+        ],
+        priority: [
+          {text: 'Low', value: 0},
+          {text: 'Medium', value: 1},
+          {text: 'High', value: 2}
         ],
         rewatch: [
           {text: 'Very low', value: 1},
