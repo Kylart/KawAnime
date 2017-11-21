@@ -96,6 +96,7 @@
       },
       refresh () {
         this.$store.dispatch('history/get')
+        this.generateHistory()
       },
       close () {
         this.$store.commit('history/setModal', false)

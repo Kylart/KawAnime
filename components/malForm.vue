@@ -229,6 +229,7 @@
     methods: {
       close () {
         this.$store.commit('mal/showForm', false)
+        this.form = this.initForm
       },
       submit () {
         const id = this.entry.id
@@ -302,11 +303,6 @@
           } catch (e) {
             console.error((new Date()).toLocaleTimeString(), e)
           }
-        }
-      },
-      show (bool) {
-        if (!bool) {
-          this.form = this.initForm
         }
       }
     }
