@@ -20,6 +20,7 @@
               )
                 v-btn(
                   slot='activator',
+                  v-model='fab',
                   small,
                   fab, icon, outline
                 )
