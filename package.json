@@ -133,6 +133,9 @@
           "path": "/Applications"
         }
       ]
+    },
+    "linux": {
+      "category": "Network"
     }
   },
   "standard": {

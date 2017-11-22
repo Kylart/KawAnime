@@ -10,24 +10,43 @@
           h5.loading-text.white--text Info should be displayed in a few seconds
         v-card.secondary.pb-3(v-else)
           v-layout(row, wrap)
-            v-flex.flex-v-centered.pl-3(xs2)
-              v-tooltip(bottom)
-                v-menu(bottom, transition='slide-y-transition', slot='activator')
-                  v-btn.blue--text(icon, outline, slot='activator')
+            v-flex.flex-v-centered(xs2)
+              v-speed-dial(
+                v-model='fab',
+                top, left,
+                direction='bottom',
+                :hover='true',
+                transition='slide-y-transition'
+              )
+                v-btn(
+                  slot='activator',
+                  small,
+                  fab, icon, outline
+                )
+                  v-icon more
+                  v-icon close
+                v-tooltip(right)
+                  //- v-menu(bottom, transition='slide-y-transition', slot='activator')
+                  v-btn.green(fab, small, @click='showChoices', slot='activator')
                     v-icon add_box
-                  v-list
-                    v-list-tile(v-for='list in lists', :key='list.text', @click='addTo(list.listName)')
-                      v-list-tile-action
-                        v-icon {{ list.action }}
-                      v-list-tile-title {{ list.text }}
-                span Add «{{ searchTerm }}» to local lists
-              v-spacer
-              v-badge(overlap, color='orange')
-                v-icon(slot='badge') add
-                v-tooltip(bottom)
-                  v-btn.blue--text(icon, outline, @click='showMal()', slot='activator')
-                    v-icon web
+                    //- v-list
+                    //-   v-list-tile(v-for='list in lists', :key='list.text', @click='addTo(list.listName)')
+                    //-     v-list-tile-action
+                    //-       v-icon {{ list.action }}
+                    //-     v-list-tile-title {{ list.text }}
+                  span Add «{{ searchTerm }}» to local lists
+                v-tooltip(right)
+                  v-btn.blue(fab, small, @click='showMal', slot='activator')
+                    span.mal-icon
                   span Add «{{ searchTerm }}» to MyAnimeList
+                v-tooltip(right)
+                  v-btn.indigo(fab, small, v-clipboard="url", @success='log', slot='activator')
+                    v-icon content_copy
+                  span Copy MyAnimeList link
+                v-tooltip(right)
+                  v-btn.indigo(fab, small, @click='open', slot='activator')
+                    v-icon open_in_new
+                  span Open link in your browser
             v-flex.flex-v-centered(xs7)
               v-card-title.info-title
                 | 「{{ info.japaneseTitle }}」ー {{ info.type }}
@@ -60,6 +79,7 @@
   export default {
     data () {
       return {
+        fab: false,
         lists: [
           {text: 'Watch List', listName: 'watchList', action: 'watch_later'},
           {text: 'Watching', listName: 'watching', action: 'tv'},
@@ -83,6 +103,22 @@
         this.$store.commit('mal/setEntry', this.info)
         this.close()
         this.$store.commit('mal/showForm', true)
+      },
+      showChoices () {
+        this.close()
+        this.$store.commit('setAddToChoiceTitle', this.info.title)
+        this.$store.commit('setAddToChoice', true)
+      },
+      open () {
+        this.$axios.get('openThis', {
+          params: {
+            type: 'link',
+            link: this.url
+          }
+        })
+      },
+      log () {
+        this.$store.commit('setInfoSnackbar', `Link copied!`)
       }
     },
     computed: {
@@ -102,6 +138,9 @@
         return this.info.episodes !== 1
           ? 'episodes'
           : 'episode'
+      },
+      url () {
+        return `https://myanimelist.net/anime/${this.info.id}/${this.info.title}`
       }
     }
   }

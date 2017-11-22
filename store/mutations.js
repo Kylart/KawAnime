@@ -18,6 +18,9 @@ export default {
     state.infoSnackbar.show = true
   },
   setAddToChoice (state, data) {
-    state.addToChoice = data
+    state.addToChoice.show = data
+  },
+  setAddToChoiceTitle (state, data) {
+    state.addToChoice.title = data
   }
 }

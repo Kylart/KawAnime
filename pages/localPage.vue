@@ -94,7 +94,6 @@
             router-link.green--text(to='/downloader') here
             | &nbsp;or&nbsp;
             router-link.cyan--text(to='/') here!
-    choice-window(:entry='choiceTitle')
 </template>
 
 <script>
@@ -111,8 +110,7 @@
     },
     data () {
       return {
-        emptyBg: false,
-        choiceTitle: ''
+        emptyBg: false
       }
     },
     computed: {
@@ -182,7 +180,7 @@
         this.$store.dispatch('localFiles/reset')
       },
       showChoices (name) {
-        this.choiceTitle = name
+        this.$store.commit('setAddToChoiceTitle', name)
         this.$store.commit('setAddToChoice', true)
       }
     }

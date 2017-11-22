@@ -81,7 +81,7 @@
                                     v-list-tile-title Add to
                                   v-list-tile(@click='showMal(item)')
                                     v-list-tile-action
-                                      v-icon web
+                                      span.mal-icon
                                     v-list-tile-title MyAnimeList
     v-dialog(v-model='modal', max-width='70%', @keydown.esc='modal = false')
       v-card
@@ -92,7 +92,6 @@
           v-spacer
           v-btn.blue--text.darken-1(flat, style='width: 100px', @click='modal = false')
             | Thanks!
-    choice-window(:entry='choiceTitle')
 </template>
 
 <script>
@@ -100,7 +99,6 @@
     data () {
       return {
         query: '',
-        choiceTitle: '',
         choices: [],
         modalTitle: '',
         modalText: '',
@@ -184,7 +182,7 @@
         this.modal = true
       },
       showChoices (name) {
-        this.choiceTitle = name
+        this.$store.commit('setAddToChoiceTitle', name)
         this.$store.commit('setAddToChoice', true)
       },
       downloadAll (name) {

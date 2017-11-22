@@ -11,5 +11,8 @@ export default {
     show: false,
     text: ''
   },
-  addToChoice: false
+  addToChoice: {
+    show: false,
+    title: ''
+  }
 }

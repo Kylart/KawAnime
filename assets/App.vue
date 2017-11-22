@@ -57,6 +57,7 @@
     magnets-modal
     mal-form
     info-results
+    choice-window
 
     //- Used for displaying any info
     v-snackbar(

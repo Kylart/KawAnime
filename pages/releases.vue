@@ -83,7 +83,6 @@
         v-card-actions
           v-spacer
           v-btn.blue--text.darken-1(flat, @click='modal = false') Thanks!
-    choice-window(:entry='choiceTitle')
 </template>
 
 <script>
@@ -101,7 +100,6 @@
     },
     data () {
       return {
-        choiceTitle: '',
         modal: false,
         modalTitle: '',
         modalText: '',
@@ -152,7 +150,7 @@
         console.log(`[${(new Date()).toLocaleTimeString()}]: Downloading ${item.rawName} ep. ${item.ep}.`)
       },
       showChoices (name) {
-        this.choiceTitle = name
+        this.$store.commit('setAddToChoiceTitle', name)
         this.$store.commit('setAddToChoice', true)
       },
       updateTime () {

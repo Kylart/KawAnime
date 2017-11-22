@@ -1,7 +1,7 @@
 <template lang="pug">
   v-dialog(v-model='show', persistent, max-width='650', @keydown.esc='hide()')
     v-card
-      v-card-title.headline Add «{{ entry }}» to
+      v-card-title.headline Add «{{ title }}» to
       v-card-text
         v-layout(row, wrap)
           template(v-for='i in 5')
@@ -25,9 +25,6 @@
 
 <script>
   export default {
-    props: {
-      entry: ''
-    },
     data () {
       return {
         selected: [],
@@ -55,10 +52,9 @@
       },
       add () {
         this.selected.forEach((listName) => {
-          const entry = this.entry
           this.$store.dispatch('watchLists/updateList', {
-            listName: listName,
-            entry: entry
+            listName,
+            entry: this.title
           })
         })
 
@@ -68,11 +64,14 @@
     computed: {
       show: {
         get () {
-          return this.$store.state.addToChoice
+          return this.$store.state.addToChoice.show
         },
         set (bool) {
           this.$store.commit('setAddToChoice', bool)
         }
+      },
+      title () {
+        return this.$store.state.addToChoice.title
       }
     }
   }
