@@ -26,14 +26,8 @@
                   v-icon more
                   v-icon close
                 v-tooltip(right)
-                  //- v-menu(bottom, transition='slide-y-transition', slot='activator')
                   v-btn.green(fab, small, @click='showChoices', slot='activator')
                     v-icon add_box
-                    //- v-list
-                    //-   v-list-tile(v-for='list in lists', :key='list.text', @click='addTo(list.listName)')
-                    //-     v-list-tile-action
-                    //-       v-icon {{ list.action }}
-                    //-     v-list-tile-title {{ list.text }}
                   span Add «{{ searchTerm }}» to local lists
                 v-tooltip(right)
                   v-btn.blue(fab, small, @click='showMal', slot='activator')
