@@ -10,7 +10,7 @@
           h5.loading-text.white--text Info should be displayed in a few seconds
         v-card.secondary.pb-3(v-else)
           v-layout(row, wrap)
-            v-flex.flex-v-centered(xs2)
+            v-flex.flex-v-centered.fab-container(xs2)
               v-speed-dial(
                 v-model='fab',
                 top, left,
@@ -152,6 +152,9 @@
   .loading-text
     text-align center
     position relative
+
+  .fab-container
+    padding-bottom 25px
 
   .info-title
     width 100%
