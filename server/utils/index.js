@@ -3,7 +3,11 @@
  */
 
 const removeUnwanted = require('./removeUnwanted')
+const {Logger} = require('./logger.js')
+const dir = require('./dir.js')
 
 module.exports = {
-  removeUnwanted
+  removeUnwanted,
+  dir,
+  Logger
 }

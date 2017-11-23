@@ -4,9 +4,12 @@
 
 const {getSeason} = require('mal-scraper')
 
-exports.getSeason = (query, res) => {
+const {Logger} = require('../utils')
+const logger = new Logger('Mal-Scraper (Seasons)')
+
+exports.getSeason = ({query}, res) => {
   getSeason(query.year, query.season).then((data) => {
-    console.log(`[Mal-Scraper] (Seasons): Now having ${query.season} ${query.year}.`)
+    logger.info(`Now having ${query.season} ${query.year}.`)
 
     const keys = Object.keys(data)
 
@@ -19,7 +22,7 @@ exports.getSeason = (query, res) => {
     res.type('application/json')
     res.status(200).send(JSON.stringify(data))
   }).catch((err) => {
-    console.log('[MalScraper] (Seasons): ' + err.message)
+    logger.error('An error occurred.', err)
     res.status(204).send()
   })
 }

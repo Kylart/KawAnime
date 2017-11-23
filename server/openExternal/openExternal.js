@@ -3,8 +3,9 @@
  */
 
 const {join} = require('path')
-
 const {dialog, BrowserWindow, shell} = require('electron')
+const {Logger} = require('../utils')
+const logger = new Logger('Open-External')
 
 const sendEmptyRes = (res) => {
   res.status(200).send()
@@ -15,9 +16,9 @@ const sendRes = (res, data) => {
   res.status(200).send(JSON.stringify(data))
 }
 
-exports.openExternal = (query, res) => {
+const openExternal = ({query}, res) => {
   const type = query.type
-  console.log('[Open-External] Got a request for external open: type is ' + type)
+  logger.info('Got a request for external open: type is ' + type)
 
   switch (type) {
     case 'video':
@@ -68,11 +69,16 @@ exports.openExternal = (query, res) => {
   }
 }
 
-exports.openInBrowser = (res) => {
+const openInBrowser = (req, res) => {
   shell.openExternal(process.appURL)
   process.win && process.platform === 'darwin'
     ? process.win.hide()
     : process.win.minimize()
 
   res.status(200).send()
+}
+
+module.exports = {
+  openInBrowser,
+  openExternal
 }

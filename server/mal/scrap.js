@@ -1,14 +1,16 @@
 const malScraper = require('mal-scraper')
+const {Logger} = require('../utils')
+const logger = new Logger('Mal-Scraper')
 
-const getWatchList = (query, res) => {
+const getWatchList = ({query}, res) => {
   const {user} = query
 
-  console.log('[Mal-Scraper]: Looking for the watch lists of', user + '...')
+  logger.info('Looking for the watch lists of ' + user + '...')
 
   malScraper.getWatchListFromUser(user)
     .then((data) => res.send(data.lists))
     .catch(/* istanbul ignore next */ (err) => {
-      console.log('[Mal-Scraper]: An error occurred while gathring watchLIst from user...', err)
+      logger.error('An error occurred while gathring watchLIst from user.', err)
       res.status(204).send()
     })
 }

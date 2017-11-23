@@ -33,7 +33,6 @@
 </template>
 
 <script>
-  import axios from 'axios'
   import _ from 'lodash'
 
   export default {
@@ -95,12 +94,14 @@
 
           if (term && term.length > 2) {
             try {
-              const {data, status} = await axios.get(`searchTermOnMal`, {
+              const {data, status} = await this.$axios.get(`searchTermOnMal`, {
                 params: {term}
               })
 
               if (status === 200) {
-                this.results = data.categories[0].items
+                this.results = data
+              } else {
+                throw new Error('Error while searching.')
               }
             } catch (e) {
               console.log((new Date()).toLocaleTimeString(), e.message)

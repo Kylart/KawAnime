@@ -3,19 +3,24 @@
  */
 
 const {getNewsNoDetails} = require('mal-scraper')
+const {Logger} = require('../utils')
+const logger = new Logger('Mal-Scraper (News)')
 
 /* istanbul ignore next */
-exports.getNews = (res) => {
+const getNews = (req, res) => {
   getNewsNoDetails().then((news) => {
-    console.log('[Mal-Scraper] (News): Finished gathering the news.')
+    logger.info('Finished gathering the news.')
 
     res.type('application/json')
     res.status(200).send(JSON.stringify(news))
   }).catch((err) => {
-    console.log('[Mal-Scraper] (News): A problem occurred while gathering news.')
-    console.error(err.message)
+    logger.error('A problem occurred while gathering news.', err)
 
     res.type('application/json')
     res.status(204).send(JSON.stringify([]))
   })
+}
+
+module.exports = {
+  getNews
 }

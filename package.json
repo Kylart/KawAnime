@@ -151,10 +151,12 @@
       "nightwatch.conf.js",
       "**/*.test.js",
       "**/node_modules/**",
-      "**/openExternal.js",
       "assets/serverStart.js",
       "server/mal/index.js",
-      "server/mal/official.js"
+      "server/mal/official.js",
+      "server/openExternal",
+      "server/utils",
+      "server/env"
     ],
     "watermarks": {
       "lines": [

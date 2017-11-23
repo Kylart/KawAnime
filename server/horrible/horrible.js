@@ -8,8 +8,12 @@
 const horribleApi = require('horrible-api')
 const malScraper = require('mal-scraper')
 
-exports.getLatest = (query, res) => {
-  const quality = query.quality
+const {Logger} = require('../utils')
+const horribleLogger = new Logger('Horrible (Releases)')
+const malLogger = new Logger('Mal-Scraper (Releases)')
+
+exports.getLatest = ({query}, res) => {
+  const {quality} = query
 
   let counter = 0
   let toReturn = []
@@ -38,18 +42,18 @@ exports.getLatest = (query, res) => {
           ++counter
           /* istanbul ignore next */
           if (counter === 18) {
-            console.log('[Horrible] (Releases): Sending Latest releases.')
+            horribleLogger.info('Sending latest releases.')
             res.type('application/json')
             res.status(200).send(JSON.stringify(toReturn))
           }
         })
         .catch(/* istanbul ignore next */ (err) => {
-          console.log('[MalScraper] (Releases): An error occurred...\n', err)
+          malLogger.error('An error occurred.', err)
           res.status(202).send()
         })
     }
   }).catch((err) => {
-    console.log('[Horrible] (Releases): An error occurred...\n' + err)
+    horribleLogger.error('An error occurred.', err)
     res.status(204).send()
   })
 }

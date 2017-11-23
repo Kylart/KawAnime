@@ -4,16 +4,13 @@
 
 const {join} = require('path')
 const {writeFileSync} = require('fs')
-const {userInfo} = require('os')
 
-const dir = process.env.NODE_ENV !== 'KawAnime-test'
-  /* istanbul ignore next */
-  ? join(userInfo().homedir, '.KawAnime')
-  : join(userInfo().homedir, '.KawAnime-test')
+const {Logger, dir} = require('../utils')
+const logger = new Logger('History')
 
 const historyPath = join(dir, 'history.json')
 
-exports.appendHistory = (req, res) => {
+const appendHistory = (req, res) => {
   // Date info
   const today = new Date()
   const day = today.toDateString()
@@ -42,13 +39,13 @@ exports.appendHistory = (req, res) => {
     // Writing file to history.json
     writeFileSync(historyPath, JSON.stringify(historyFile), 'utf-8')
 
-    console.log(`[History]: New entry appended to history.`)
+    logger.info('New entry appended to history.')
   })
 
   res.status(200).send()
 }
 
-exports.getHistory = (res) => {
+const getHistory = (req, res) => {
   // Getting history
   const historyFile = require(historyPath)
 
@@ -56,15 +53,14 @@ exports.getHistory = (res) => {
   res.status(200).send(JSON.stringify(historyFile))
 }
 
-exports.removeFromHistory = (req, res) => {
+const removeFromHistory = (req, res) => {
   req.on('data', (chunk) => {
     chunk = JSON.parse(chunk)
 
     // Getting history
     const historyFile = require(historyPath)
 
-    const date = chunk.date
-    const info = chunk.info
+    const {date, info} = chunk
 
     historyFile[date] = historyFile[date].filter((elem) => {
       return elem.time !== info.time
@@ -73,8 +69,14 @@ exports.removeFromHistory = (req, res) => {
     // Writing file to history.json
     writeFileSync(historyPath, JSON.stringify(historyFile), 'utf-8')
 
-    console.log(`[History]: Removed an entry from the ${date}:\n`, info)
+    logger.info(`Removed an entry from the ${date}:`, info)
   })
 
   res.status(200).send()
+}
+
+module.exports = {
+  appendHistory,
+  getHistory,
+  removeFromHistory
 }

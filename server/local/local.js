@@ -1,12 +1,8 @@
-/**
- * Created by Kylart on 12/04/2017.
- */
-
 const malScraper = require('mal-scraper')
 const fs = require('fs')
-const {userInfo} = require('os')
 const {join, extname} = require('path')
-const {removeUnwanted} = require('./utils')
+const {removeUnwanted, Logger, dir} = require('../utils')
+const logger = new Logger('Local')
 
 const extensions = ['.mkv', '.mp4']
 
@@ -44,7 +40,7 @@ const getUniques = (files) => {
 const sendFiles = (json, files, res) => {
   const result = []
 
-  console.log('[Local]: Sending files.')
+  logger.info('Sending files.')
 
   files.forEach((file) => {
     const name = getName(file)
@@ -60,15 +56,12 @@ const sendFiles = (json, files, res) => {
   res.status(200).send(JSON.stringify(result))
 }
 
-const searchLocalFiles = (query, res) => {
-  /* istanbul ignore next */
-  const json = process.env.NODE_ENV !== 'KawAnime-test'
-    ? require(join(userInfo().homedir, '.KawAnime', 'locals.json'))
-    : require(join(userInfo().homedir, '.KawAnime-test', 'locals.json'))
+const searchLocalFiles = ({query}, res) => {
+  const json = require(join(dir, 'locals.json'))
 
-  const dir = query.dir
+  const DIR = query.dir
 
-  const files = fs.readdirSync(dir).filter((file) => { return extensions.includes(extname(file)) })
+  const files = fs.readdirSync(DIR).filter((file) => extensions.includes(extname(file)))
   const uniqueNames = getUniques(files)
 
   let counter = 0
@@ -79,9 +72,9 @@ const searchLocalFiles = (query, res) => {
     uniqueNames.forEach((elem) => {
       // Search MAL for each name if not in json
       if (!json[minifyName(elem)]) {
-        console.log(`[Local]: Looking for ${elem} on MAL.`)
+        logger.info(`Looking for ${elem} on MAL.`)
         malScraper.getInfoFromName(elem).then((anime) => {
-          console.log('[Local]: Found!')
+          logger.info('Found!')
 
           json[minifyName(elem)] = {
             name: elem,
@@ -98,17 +91,15 @@ const searchLocalFiles = (query, res) => {
           ++counter
           /* istanbul ignore next */
           if (counter === uniqueNames.length) {
-            /* istanbul ignore next */
             // Saving new data
-            process.env.NODE_ENV !== 'KawAnime-test'
-              ? fs.writeFileSync(join(userInfo().homedir, '.KawAnime', 'locals.json'), JSON.stringify(json), 'utf-8')
-              : fs.writeFileSync(join(userInfo().homedir, '.KawAnime-test', 'locals.json'), JSON.stringify(json), 'utf-8')
-            console.log('[Local]: Successfully saved data.')
+            fs.writeFileSync(join(dir, 'locals.json'), JSON.stringify(json), 'utf-8')
+
+            logger.info('Successfully saved data.')
 
             sendFiles(json, files, res)
           }
         }).catch(/* istanbul ignore next */(err) => {
-          console.log('[Local]: ' + err)
+          logger.error('An error occurred.', err)
           res.status(204).send()
         })
       } else {
@@ -120,26 +111,22 @@ const searchLocalFiles = (query, res) => {
   }
 }
 
-const resetLocal = (query, res) => {
-  /**
-   * Here we just erase stored data about files in directory.
-   */
-  /* istanbul ignore next */
-  const json = process.env.NODE_ENV !== 'KawAnime-test'
-    ? require(join(userInfo().homedir, '.KawAnime', 'locals.json'))
-    : require(join(userInfo().homedir, '.KawAnime-test', 'locals.json'))
+/* istanbul ignore next */
+const resetLocal = (req, res) => {
+  // Here we just erase stored data about files in directory.
+  const json = require(join(dir, 'locals.json'))
 
-  const dir = query.dir
+  const DIR = req.query.dir
 
-  console.log('[Local]: Received a request to reset local data for files in ' + dir)
+  logger.info('Received a request to reset local data for files in ' + DIR)
 
-  const files = fs.readdirSync(dir).filter((file) => { return extensions.includes(extname(file)) })
+  const files = fs.readdirSync(dir).filter((file) => extensions.includes(extname(file)))
 
   files.forEach((file) => {
     delete json[minifyName(getName(file))]
   })
 
-  searchLocalFiles(query, res)
+  searchLocalFiles(req, res)
 }
 
 module.exports = {

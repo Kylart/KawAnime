@@ -2,6 +2,9 @@ const vault = require('../vault')
 const malScraper = require('mal-scraper')
 const Api = malScraper.officialApi
 
+const {Logger} = require('../utils')
+const logger = new Logger('Mal-Scraper')
+
 let api
 
 const checkCreds = (res) => {
@@ -11,7 +14,7 @@ const checkCreds = (res) => {
       res.status(isOk ? 200 : 206).send()
     })
     .catch((err) => {
-      console.log('[Mal-Scraper]: (check): An error occurred...', err)
+      logger.error('An error occurred while checking credentials.', err)
       res.status(204).send()
     })
 }
@@ -37,11 +40,11 @@ const actOnList = (req, res) => {
 
     api.actOnList(type, id, opts)
       .then((data) => {
-        console.log('[Mal-Scraper]: (Act on List):', data)
+        logger.info('(Act on List):' + data)
         res.status(typeof data === 'string' ? 200 : 204).send()
       })
       .catch((err) => {
-        console.log('[Mal-Scraper]: (Act on List): An error occurrred', err)
+        logger.error('(Act on List): An error occurred.', err)
         res.status(204).send()
       })
   })
