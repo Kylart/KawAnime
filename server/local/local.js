@@ -116,11 +116,11 @@ const resetLocal = (req, res) => {
   // Here we just erase stored data about files in directory.
   const json = require(join(dir, 'locals.json'))
 
-  const DIR = req.query.dir
+  const path = req.query.dir
 
-  logger.info('Received a request to reset local data for files in ' + DIR)
+  logger.info('Received a request to reset local data for files in ' + path)
 
-  const files = fs.readdirSync(dir).filter((file) => extensions.includes(extname(file)))
+  const files = fs.readdirSync(path).filter((file) => extensions.includes(extname(file)))
 
   files.forEach((file) => {
     delete json[minifyName(getName(file))]
