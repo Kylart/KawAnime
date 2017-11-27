@@ -214,10 +214,10 @@
         return this.$store.state.mal.entry
       },
       entryTitle () {
-        return ': ' + (this.entry.anime_title || this.entry.name || this.entry.title)
+        return ': ' + (this.entry.title || this.entry.name)
       },
       nbEpisodes () {
-        return this.entry.anime_num_episodes || this.entry.episodes
+        return this.entry.nbEpisodes || this.entry.episodes
       },
       isEdit () {
         return this.entry.lastUpdate
