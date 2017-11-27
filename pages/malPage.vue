@@ -28,12 +28,16 @@
         template(slot='items', slot-scope='props')
           td.text-xs-center
             img.entry-image(:src='props.item.image')
-          td.text-xs-left
-            span.entry-title {{ props.item.title }}
+          td.text-xs-left.entry-title
+            span.pl-3 {{ props.item.title }}
           td.text-xs-center {{ props.item.score }}
           td.text-xs-center {{ props.item.type }}
           td.text-xs-center {{ props.item.progress }}
           td.text-xs-center {{ props.item.status }}
+          td.text-xs-center.ellipsis.entry-tags
+            v-tooltip(top)
+              span(slot='activator') {{ props.item.tags }}
+              span {{ props.item.tags }}
           td
             v-btn.blue--text.darken-1(icon, flat, @click.stop='showForm(props.item.id)')
               v-icon edit
@@ -127,10 +131,12 @@
     font-size 16px
     letter-spacing 1px
     font-weight 200
-    padding-left 2%
     min-width 30vw
 
   .entry-image
     max-height 60px
     max-width 40px
+
+  .entry-tags
+    max-width 100px
 </style>

@@ -32,7 +32,8 @@ export default {
         statusNum: entry.status,
         start: entry.myStartDate === '0000-00-00' ? null : entry.myStartDate,
         end: entry.myEndDate === '0000-00-00' ? null : entry.myEndDate,
-        link: 'https://myanimelist.net/anime/' + entry.id + '/' + entry.title
+        link: 'https://myanimelist.net/anime/' + entry.id + '/' + entry.title,
+        tags: entry.tags || 'No tags'
       })
     })
 
