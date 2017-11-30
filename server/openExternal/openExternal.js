@@ -31,7 +31,7 @@ const openExternal = ({query}, res) => {
       sendEmptyRes(res)
       break
 
-    case 'insideLink':
+    case 'inside':
       sendEmptyRes(res)
       const win = new BrowserWindow({
         parent: process.win,
@@ -65,6 +65,7 @@ const openExternal = ({query}, res) => {
       break
 
     default:
+      sendEmptyRes(res)
       break
   }
 }
