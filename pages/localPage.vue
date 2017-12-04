@@ -32,7 +32,7 @@
                       p.ellipsis.ep(slot='activator') {{ item.ep }} / {{ item.numberOfEpisode }}
                       span {{ 'Episode ' + item.ep }}
                   v-flex.buttons-container(xs3)
-                    v-btn.play-button(large, icon, @click='playThis(item)')
+                    v-btn.ma-0(large, icon, @click='playThis(item)')
                       v-icon(large) play_circle_outline
                     v-menu(open-on-hover, transition='slide-x-transition')
                       v-btn.ml-0(icon, medium, slot='activator')
@@ -263,10 +263,6 @@
     justify-content flex-end
     align-items space-around
     padding 0
-
-  .play-button
-    display inline
-    margin 0
 
   .genres
     padding-left 15px
