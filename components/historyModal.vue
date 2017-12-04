@@ -94,8 +94,8 @@
           info
         })
       },
-      refresh () {
-        this.$store.dispatch('history/get')
+      async refresh () {
+        await this.$store.dispatch('history/get')
         this.generateHistory()
       },
       close () {
