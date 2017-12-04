@@ -6,8 +6,8 @@
       v-card-text
         h4(v-if='error') {{ error }}
         div(v-else-if='loading')
-          h5.loading-text.white--text Gathering data...
-          h5.loading-text.white--text Info should be displayed in a few seconds
+          h5.loading-text Gathering data...
+          h5.loading-text Info should be displayed in a few seconds
         v-card.secondary.pb-3(v-else)
           v-layout(row, wrap)
             v-flex.flex-v-centered.fab-container(xs2)

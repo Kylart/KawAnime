@@ -35,7 +35,8 @@
                 v-flex(xs5)
                   v-radio-group(:isMantatory="true", row, v-model="config.quality")
                     template(v-for='radio in radios')
-                      v-radio.primary--text(
+                      v-radio(
+                        color='orange'
                         :label='radio',
                         :value='radio'
                       )

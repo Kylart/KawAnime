@@ -18,7 +18,7 @@ export default {
   },
 
   mounted () {
-    this.$vuetify.load(this.setMeta)
+    this.setMeta()
   },
 
   methods: {

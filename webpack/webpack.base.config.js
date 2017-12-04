@@ -32,7 +32,7 @@ module.exports = {
       'router': resolve('router'),
       'static': resolve('static'),
       'store': resolve('store'),
-      'vue$': 'vue/dist/vue.common.js'
+      'vue$': 'vue/dist/vue.esm.js'
     }
   },
   module: {
@@ -51,12 +51,7 @@ module.exports = {
       },
       {
         test: /\.styl$/,
-        loader: ['vue-style-loader', 'css-loader', 'stylus-loader', {
-          loader: 'vuetify-loader',
-          options: {
-            theme: resolve('assets/stylus/theme.styl')
-          }
-        }]
+        loader: ['vue-style-loader', 'css-loader', 'stylus-loader']
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,

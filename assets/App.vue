@@ -1,6 +1,6 @@
 <template lang="pug">
   v-app(dark)
-    v-navigation-drawer.pb-0.main-drawer(app, temporary, v-model='$store.state.drawer')
+    v-navigation-drawer.pb-0.main-drawer(app, fixed, temporary, v-model='$store.state.drawer')
       v-list
         v-list-tile#title(to='/')
           v-list-tile-action
@@ -46,7 +46,8 @@
       settings
       logs
 
-    main.m
+    //- main.m
+    v-content
       //- v-content // Apparently required. Todo
       transition(name='page', mode='out-in')
         router-view
@@ -177,14 +178,6 @@
 </script>
 
 <style lang="stylus" scoped>
-  .m
-    display block
-    overflow-y scroll
-    overflow-x hidden
-    max-height calc(100vh - (48px + 24px))
-    min-width 100%
-    margin-top calc(48px + 24px)
-
   .wb
     padding-right 0
     position fixed

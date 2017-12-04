@@ -52,7 +52,7 @@
     "vue-markdown": "^2.2.4",
     "vue-router": "^2.8.1",
     "vue-server-renderer": "^2.5.3",
-    "vuetify": "^0.16.9",
+    "vuetify": "^0.17.3",
     "vuex": "^2.5.0",
     "vuex-router-sync": "^4.3.2"
   },
@@ -110,7 +110,6 @@
     "vue-loader": "^13.4.0",
     "vue-style-loader": "^3.0.3",
     "vue-template-compiler": "^2.5.3",
-    "vuetify-loader": "^0.1.1",
     "webpack": "^3.8.1",
     "webpack-dev-middleware": "^1.11.0",
     "webpack-hot-middleware": "^2.20.0",

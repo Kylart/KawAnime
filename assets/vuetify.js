@@ -1,3 +1,5 @@
+import theme from './stylus/theme.js'
+
 import {
   Vuetify,
   VApp,
@@ -35,6 +37,7 @@ import { Ripple } from 'vuetify/es5/directives'
 
 export default (Vue) => {
   Vue.use(Vuetify, {
+    theme,
     components: {
       VApp,
       VSelect,

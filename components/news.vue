@@ -42,9 +42,8 @@
 
   .title
     line-height 24px !important
-    margin-top 10px
-    padding-left 2%
-    padding-right 2%
+    margin-top 5px
+    padding 5px 2%
     overflow hidden
     white-space nowrap
     text-overflow ellipsis
