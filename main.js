@@ -270,7 +270,7 @@ Electron.on('ready', () => {
   axios.post('https://kawanime.com/_api', {
     id: `${username}/${token}`
   })
-    .catch((err) => { console.error('Couldn\'t reach KawAnime.com\'s api:', err) })
+    .catch((err) => { console.error('Couldn\'t reach KawAnime.com\'s api:', err.message) })
 })
 
 // Quit when all windows are closed.
