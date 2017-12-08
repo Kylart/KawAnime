@@ -88,8 +88,8 @@
               v-btn.change-dir-button(flat, dark, @click='changePath()')
                 | Change dir
         v-flex.empty-message(xs12)
-          h3.white--text Wow such empty!
-          h4.white--text
+          h3 Wow such empty!
+          h4
             | Start downloading anime&nbsp;
             router-link.green--text(to='/downloader') here
             | &nbsp;or&nbsp;

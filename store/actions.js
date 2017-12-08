@@ -2,7 +2,7 @@
  * Created by Kylart on 26/07/2017.
  */
 
-import {axios} from './utils'
+import {axios, log} from './utils'
 
 export default {
   async init ({commit, dispatch}) {
@@ -29,24 +29,30 @@ export default {
     dispatch('player/setUp').catch(err => { void err })
 
     // Online
+    dispatch('online').catch(err => { void err })
+  },
+  async online ({commit, dispatch}) {
     try {
       const {status} = await axios.get('_isOnline')
+
       if (status === 200) {
         commit('setConnected', true)
-        dispatch('online')
+
+        dispatch('logs/init').catch(err => { void err })
+        dispatch('releases/init').catch(err => { void err })
+        dispatch('seasons/init').catch(err => { void err })
+        dispatch('news/init').catch(err => { void err })
+
+        dispatch('mal/init').catch(err => { void err })
       } else {
-        commit('setInfoSnackbar', 'No internet access. Retrying in 1 minutes.')
+        commit('setInfoSnackbar', 'No internet access. Retrying in 1 minute.')
         setTimeout(() => { dispatch('online') }, 60 * 1000)
       }
-    } catch (e) { void e }
-  },
-  async online ({dispatch}) {
-    dispatch('logs/init').catch(err => { void err })
-    dispatch('releases/init').catch(err => { void err })
-    dispatch('seasons/init').catch(err => { void err })
-    dispatch('news/init').catch(err => { void err })
-
-    dispatch('mal/init').catch(err => { void err })
+    } catch (e) {
+      log('An error occurred while reaching _isOnline.', e)
+      commit('setInfoSnackbar', 'An unknown error occurred, please restart KawAnime.')
+      setTimeout(() => { dispatch('online') }, 60 * 1000)
+    }
   },
   async getEnv ({commit}) {
     const {data} = await axios.get('_env')
