@@ -49,7 +49,7 @@ export default {
         setTimeout(() => { dispatch('online') }, 60 * 1000)
       }
     } catch (e) {
-      log('An error occurred while reaching _isOnline.', e)
+      log('An error occurred while reaching _isOnline.', e.message)
       commit('setInfoSnackbar', 'An unknown error occurred, please restart KawAnime.')
       setTimeout(() => { dispatch('online') }, 60 * 1000)
     }

@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-container#local-page.pa-0(fluid, fill-height)
+  v-container#local-page.pa-0(fluid)
     div(v-if='nbEps')
       v-layout(row, wrap, style='margin: 0 1%;')
         v-flex.menubar(xs12)
@@ -72,7 +72,7 @@
                             p.status {{ item.status }}
                           v-flex(xs3)
                             p.mark {{ item.mark }}
-    v-container(fluid, v-else)
+    v-container#empty(fluid, v-else)
       transition(name='fade')
         img.empty-bg(v-if='emptyBg', height='400', src='~static/images/empty-bg.png')
       v-layout(row, wrap)
@@ -196,8 +196,8 @@
   .fade-enter, .fade-leave-to
     opacity 0
 
-  #local-page
-    display inline-block
+  #empty
+    height calc(100vh - 48px - 24px)
 
   h6
     margin-top 0.7rem
