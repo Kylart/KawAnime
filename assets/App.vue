@@ -4,7 +4,7 @@
       v-list
         v-list-tile#title(to='/')
           v-list-tile-action
-            img(src='static/images/icon2.png', height='50')
+            img(src='~static/images/icon2.png', height='50')
           v-list-tile-title.title.white--text かわニメ
         template(v-for='item in itemGroup')
           v-list-group(v-if='item.items', :key='item.title', :group="item.group")
@@ -191,7 +191,7 @@
 
   .main-drawer
     width 280px !important
-    background-image url('/static/images/sidebar-background.png')
+    background-image url('~static/images/sidebar-background.png')
     background-position left bottom
     background-size 75%
 

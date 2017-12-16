@@ -241,9 +241,6 @@
   .elem-content:hover
     hover_background()
 
-  .elem-container
-    padding-top 5px
-
   .elem-title
     padding-left 10px
     line-height 30px

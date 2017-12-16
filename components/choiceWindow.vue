@@ -6,13 +6,15 @@
         v-layout(row, wrap)
           template(v-for='i in 5')
             v-flex(v-if='i < 4', xs4)
-              v-checkbox.option.primary--text(
+              v-checkbox.option(
+                color='orange',
                 v-model='selected',
                 :value='options[i - 1].value',
                 :label='options[i - 1].label'
               )
             v-flex.checkbox-container(v-else, xs6)
-              v-checkbox.option.primary--text(
+              v-checkbox.option(
+                color='orange',
                 v-model='selected',
                 :value='options[i - 1].value',
                 :label='options[i - 1].label'

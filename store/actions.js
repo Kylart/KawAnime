@@ -2,7 +2,7 @@
  * Created by Kylart on 26/07/2017.
  */
 
-import {axios, log} from './utils'
+import {axios} from './utils'
 
 export default {
   async init ({commit, dispatch}) {
@@ -48,11 +48,7 @@ export default {
         commit('setInfoSnackbar', 'No internet access. Retrying in 1 minute.')
         setTimeout(() => { dispatch('online') }, 60 * 1000)
       }
-    } catch (e) {
-      log('An error occurred while reaching _isOnline.', e.message)
-      commit('setInfoSnackbar', 'An unknown error occurred, please restart KawAnime.')
-      setTimeout(() => { dispatch('online') }, 60 * 1000)
-    }
+    } catch (e) { void e }
   },
   async getEnv ({commit}) {
     const {data} = await axios.get('_env')
