@@ -196,8 +196,8 @@
   .fade-enter, .fade-leave-to
     opacity 0
 
-  #empty
-    height calc(100vh - 48px - 24px)
+  #local-page
+    min-height calc(100vh - 48px - 24px)
 
   h6
     margin-top 0.7rem
