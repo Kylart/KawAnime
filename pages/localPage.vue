@@ -21,7 +21,7 @@
         transition-group(name='list')
           template(v-for='item in files')
             v-flex.elem(:key='item.path', xs12, sm6, md4, xl3)
-              v-card.elem-content.elevation-3(ripple)
+              v-card.pt-1.elem-content.elevation-3(ripple)
                 v-layout.elem-container.ma-0(row, wrap)
                   v-flex(xs7)
                     v-tooltip(top)
@@ -97,8 +97,6 @@
 </template>
 
 <script>
-  import axios from 'axios'
-
   export default {
     mounted () {
       setTimeout(() => { this.emptyBg = true }, 300)
@@ -131,7 +129,7 @@
         console.log(`[${(new Date()).toLocaleTimeString()}]: Requested to play ${item.name} - ${item.ep}. Sending...`)
 
         // No need to get through store.
-        axios.get(`openThis`, {
+        this.$axios.get(`openThis`, {
           params: {
             type: 'video',
             path: item.path,
@@ -154,7 +152,7 @@
           path: item.path
         })
 
-        axios.get(`openThis`, {
+        this.$axios.get(`openThis`, {
           params: {
             type: 'delete',
             path: item.path,
