@@ -36,6 +36,7 @@
     "colors": "^1.1.2",
     "compression": "^1.7.1",
     "electron-devtools-installer": "^2.2.1",
+    "electron-log": "^2.2.13",
     "electron-updater": "^2.16.2",
     "express": "^4.16.2",
     "horrible-api": "^1.1.1",

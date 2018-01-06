@@ -13,9 +13,7 @@ export default {
               log('An update is available.')
             }
           }
-        } catch (e) {
-          log(`Error while checking update. ${e.message}`)
-        }
+        } catch (e) {}
 
         setTimeout(() => { dispatch('check') }, 30 * 1000)
       }

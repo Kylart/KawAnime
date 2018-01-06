@@ -1,9 +1,15 @@
 module.exports = (app, routes) => {
+  const {join} = require('path')
   const {autoUpdater} = require('electron-updater')
   let isUpdateAvailable = false
   let isInstallable = false
   let downloadProgress
   let error
+
+  autoUpdater.logger = require('electron-log')
+  autoUpdater.logger.transports.console.level = false  // There is no need to log this in the console.
+  autoUpdater.logger.transports.file.level = 'silly'
+  autoUpdater.logger.transports.file.file = join(require('../utils').dir, 'error-update.log')
 
   autoUpdater.on('update-available', () => {
     isUpdateAvailable = true
