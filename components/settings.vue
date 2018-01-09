@@ -165,6 +165,7 @@
       save () {
         this.$store.commit('config/set', this.config)
         this.$store.dispatch('config/save')
+        this.$store.dispatch('player/setUp')
         this.configModal = false
       },
       play () {
