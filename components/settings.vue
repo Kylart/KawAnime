@@ -169,8 +169,7 @@
         this.configModal = false
       },
       play () {
-        this.$store.dispatch('player/setUp')
-        this.$store.dispatch('player/play')
+        this.$store.dispatch('player/testSound')
       },
       async malRegister () {
         if (this.mal.password && this.config.malUsername) {

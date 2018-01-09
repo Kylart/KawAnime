@@ -12,5 +12,24 @@ export default {
       document.player.currentTime = 0
       document.player.play()
     }
+  },
+  testSound ({rootState}) {
+    const {sound} = rootState.config.config
+
+    if (sound !== 'None') {
+      if (sound !== 'None') {
+        const back = document.player.src
+
+        document.player.src = `static/sounds/${sound}.m4a`
+        document.player.currentTime = 0
+
+        document.player.play()
+        .then(() => {
+          setTimeout(() => {
+            document.player.src = back
+          }, 2500)
+        })
+      }
+    }
   }
 }
