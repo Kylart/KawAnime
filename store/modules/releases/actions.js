@@ -8,7 +8,7 @@ export default {
       const {data, status} = await axios.get('getLatestNyaa', { params: state.params })
 
       if (status === 200) {
-        commit('set', data)
+        commit('set', {data})
 
         if (state.autoRefresh === true) dispatch('autoRefresh')
       } else if (status === 202) {
@@ -26,7 +26,7 @@ export default {
         const {data, status} = await axios.get('getLatestNyaa', { params: state.params })
 
         if (status === 200) {
-          commit('set', data)
+          commit('set', {data})
 
           if (state.autoRefresh === true) dispatch('autoRefresh')
         } else if (status === 202) {
@@ -44,13 +44,13 @@ export default {
           const {data, status} = await axios.get(`getLatest.json?quality=${state.params.quality}`)
 
           if (status === 200) {
-            commit('set', data)
+            commit('set', {data})
 
             if (state.autoRefresh === true) dispatch('autoRefresh')
           } else if (status === 202) {
             log(`An error occurred while getting the latest releases. Retrying in 45 seconds.`)
             commit('setInfoSnackbar', 'Could not get the latest releases. Retrying in 45 seconds.', isRoot)
-            setTimeout(function () {
+            setTimeout(() => {
               log(`Retrying to get latest releases.`)
               dispatch('init').catch(err => { void (err) })
             }, 45 * 1000)
@@ -62,7 +62,6 @@ export default {
         }
       }
     } catch (e) {
-      console.error(e)
       log(`An error occurred while getting the latest releases. Retrying in 45 seconds.`)
       commit('setInfoSnackbar', 'Could not get the latest releases. Retrying in 45 seconds.', isRoot)
       setTimeout(() => {
@@ -74,39 +73,38 @@ export default {
   async refresh ({state, commit, dispatch}) {
     log(`Refreshing Releases...`)
 
+    const retryLater = (backUp) => {
+      log(`An error occurred while getting the latest releases. Retrying in 45 seconds.`)
+      commit('setInfoSnackbar', 'Could not get the latest releases. Retrying in 45 seconds.', isRoot)
+
+      backUp.length && commit('set', {old: backUp})
+
+      setTimeout(() => {
+        log(`Retrying to get latest releases.`)
+        dispatch('refresh').catch(err => { void (err) })
+      }, 45 * 1000)
+    }
+
+    const backUp = state.releases
+
     commit('empty')
 
     try {
       const {data, status} = await axios.get('getLatestNyaa', { params: state.params })
 
-      if (status === 200) commit('set', data)
+      if (status === 200) commit('set', {data})
       else if (status === 202) {
-        log(`An error occurred while getting the latest releases. Retrying in 45 seconds.`)
-        commit('setInfoSnackbar', 'Could not get the latest releases. Retrying in 45 seconds.', isRoot)
-        setTimeout(() => {
-          log(`Retrying to get latest releases.`)
-          dispatch('refresh').catch(err => { void (err) })
-        }, 45 * 1000)
+        retryLater(backUp)
       } else if (status === 204) {
         const {data, status} = await axios.get(`getLatest.json?quality=${state.params.quality}`)
 
-        if (status === 200) commit('set', data)
+        if (status === 200) commit('set', {data})
         else if (status === 202 || status === 204) {
-          log(`An error occurred while getting the latest releases. Retrying in 45 seconds.`)
-          commit('setInfoSnackbar', 'Could not get the latest releases. Retrying in 45 seconds.', isRoot)
-          setTimeout(() => {
-            log(`Retrying to get latest releases.`)
-            dispatch('refresh').catch(err => { void (err) })
-          }, 45 * 1000)
+          retryLater(backUp)
         }
       }
     } catch (e) {
-      log(`An error occurred while getting the latest releases. Retrying in 45 seconds.`, e)
-      commit('setInfoSnackbar', 'Could not get the latest releases. Retrying in 45 seconds.', isRoot)
-      setTimeout(() => {
-        log(`Retrying to get latest releases.`)
-        dispatch('refresh').catch(err => { void (err) })
-      }, 45 * 1000)
+      retryLater(backUp)
     }
   },
   async autoRefresh ({dispatch, commit, state}) {
@@ -118,7 +116,7 @@ export default {
         const {data} = await axios.get('getLatestNyaa', { params: state.params })
 
         if (data.length === 18) {
-          commit('set', data)
+          commit('set', {data})
           dispatch('autoRefresh')
         } else {
           commit('setInfoSnackbar', 'Auto refresh releases failed... Attempting again in 30 minutes.', isRoot)

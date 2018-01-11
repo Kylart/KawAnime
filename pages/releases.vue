@@ -4,6 +4,9 @@
       v-layout(row, wrap, justify-center, style='margin: 0 1% 0 1%;')
         v-flex.time-container(md4, sm4, xs8)
           span.update-time Updated {{ lastUpdateTime }}.
+          v-tooltip(top, v-if='notLoaded')
+            span.update-time.pl-0(slot='activator') *
+            span The list was not refreshed due to an error.
         v-flex(md4, sm1, hidden-xs-only)
         v-flex(md2, sm3, xs10)
           v-select.select(
@@ -113,6 +116,9 @@
       },
       fansubList () {
         return this.$store.state.releases.fansubs
+      },
+      notLoaded () {
+        return this.$store.state.releases.notLoaded
       }
     },
     methods: {

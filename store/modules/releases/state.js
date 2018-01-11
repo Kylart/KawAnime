@@ -5,6 +5,7 @@ export default {
   releases: [],
   autoRefresh: true,
   updateTime: moment(),
+  notLoaded: false,
   params: {
     quality: '',
     fansub: '',

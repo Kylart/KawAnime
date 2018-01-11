@@ -1,11 +1,23 @@
 import {log, moment} from '../../utils.js'
 
 export default {
-  set (state, data) {
-    state.releases = data
-    state.updateTime = moment()
+  set (state, obj) {
+    const {old, data} = obj
 
-    log(`Releases updated.`)
+    if (!old) {
+      state.updateTime = moment()
+      state.notLoaded = false
+
+      state.releases = data
+
+      log(`Releases updated.`)
+    } else {
+      state.notLoaded = true
+
+      state.releases = old
+
+      log('Releases were not updated and put back to a back up.')
+    }
   },
   setParams (state, data) {
     state.params = data
