@@ -6,8 +6,9 @@ export default {
       const {data, status} = await axios.get('releaseNotes')
 
       if (status === 200) {
-        commit('set', data)
-        commit('show', true)
+        commit('set', data.logs)
+
+        data.mustShow && commit('show', true)
       } else {
         setTimeout(() => { dispatch('init') }, 300)
       }

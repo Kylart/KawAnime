@@ -32,7 +32,8 @@ const createConfig = () => {
       system: {
         autoStart: false,
         toTray: false
-      }
+      },
+      version: '0.0.0'
     }
   }
 
