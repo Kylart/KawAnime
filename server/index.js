@@ -4,25 +4,25 @@ const _ = require('lodash')
 
 const generateEnv = require('./generateEnv.js')
 
-const features = {
-  config: require('./config'),
-  env: require('./env'),
-  history: require('./history'),
-  horrible: require('./horrible'),
-  local: require('./local'),
-  mal: require('./mal'),
-  news: require('./news'),
-  nyaa: require('./nyaa'),
-  openExternal: require('./openExternal'),
-  seasons: require('./seasons'),
-  search: require('./search'),
-  wl: require('./watchList')
-}
-
-let routes = []
-
 const setup = (app) => {
   generateEnv()
+
+  let routes = []
+
+  const features = {
+    config: require('./config'),
+    env: require('./env'),
+    history: require('./history'),
+    horrible: require('./horrible'),
+    local: require('./local'),
+    mal: require('./mal'),
+    news: require('./news'),
+    nyaa: require('./nyaa'),
+    openExternal: require('./openExternal'),
+    seasons: require('./seasons'),
+    search: require('./search'),
+    wl: require('./watchList')
+  }
 
   _.each(features, (feature) => {
     _.each(feature, (route) => routes.push(route))
