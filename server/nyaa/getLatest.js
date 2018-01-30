@@ -42,7 +42,11 @@ const getLatest = ({query}, res) => {
   const {fansub, choice, quality} = query
 
   if (choice === 'si') {
-    si.search(`[${fansub}] ${quality} -unofficial -batch`, 18).then((data) => {
+    si.search({
+      term: `[${fansub}] ${quality} -unofficial -batch`,
+      n: 18,
+      filter: 2
+    }).then((data) => {
       makeSearch(data, res)
     }).catch(/* istanbul ignore next */(err) => {
       logger.error('An error occurred.', err)
