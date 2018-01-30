@@ -61,10 +61,6 @@
                           v-menu(open-on-hover, transition='slide-x-transition')
                             v-btn(flat, dark, slot='activator') More
                             v-list.dark
-                              v-list-tile(@click='openModal(item.rawName, item.synopsis)')
-                                v-list-tile-action
-                                  v-icon more
-                                v-list-tile-title Check synopsis
                               v-list-tile(@click='downloadAll(item.rawName)')
                                 v-list-tile-action
                                   v-icon file_download
@@ -77,15 +73,11 @@
                                 v-list-tile-action
                                   v-icon add_box
                                 v-list-tile-title Add to
+                              v-list-tile(@click='showMal(item)')
+                                v-list-tile-action
+                                  span.mal-icon
+                                v-list-tile-title MyAnimeList
     loader(v-else)
-    v-dialog(v-model='modal', max-width='70%', @keydown.esc='modal = false')
-      v-card
-        v-card-title.headline {{ modalTitle }}
-        v-divider
-        v-card-text.subheading {{ modalText }}
-        v-card-actions
-          v-spacer
-          v-btn.blue--text.darken-1(flat, @click='modal = false') Thanks!
 </template>
 
 <script>
@@ -103,7 +95,6 @@
     },
     data () {
       return {
-        modal: false,
         modalTitle: '',
         modalText: '',
         qualityList: ['480p', '720p', '1080p'],
@@ -127,12 +118,6 @@
         return /\[[0-9]{3,4}p\]/.test(ep)
           ? 'Batch'
           : `${isTooltip ? 'Episode' : 'Ep'} ${ep}`
-      },
-      openModal (title, text) {
-        this.modalTitle = title
-        this.modalText = text
-
-        this.modal = true
       },
       downloadAll (name) {
         console.log(`[${(new Date()).toLocaleTimeString()}]: Sending a request to download all episodes of ${name}.`)
@@ -159,6 +144,15 @@
         this.$store.commit('setAddToChoiceTitle', name)
         this.$store.commit('setAddToChoice', true)
       },
+      showMal (item) {
+        const {url} = item
+
+        item.id = +url.split('/').splice(-2, 1)[0]
+        item.episodes = item.episodes
+
+        this.$store.commit('mal/setEntry', item)
+        this.$store.commit('mal/showForm', true)
+      },
       updateTime () {
         const updated = this.$store.state.releases.updateTime
         if (updated) {
@@ -166,10 +160,9 @@
         }
       },
       searchThis (item) {
-        this.$store.dispatch('search/fromUrl', {
-          name: item.rawName,
-          url: item.url
-        })
+        this.$store.commit('search/setInfo', item)
+        this.$store.commit('search/setInfoLoading', false)
+        this.$store.commit('search/showInfo', true)
       },
       isFollowed (name) {
         const malLists = this.$store.state.mal.watchLists
