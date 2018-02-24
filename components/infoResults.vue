@@ -135,7 +135,7 @@
           : 'episode'
       },
       url () {
-        return `https://myanimelist.net/anime/${this.info.id}/${this.info.title}`
+        return `https://myanimelist.net/anime/${this.info.id}/${encodeURI(this.info.title)}`
       }
     }
   }
