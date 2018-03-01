@@ -74,15 +74,17 @@ export default {
     log(`Refreshing Releases...`)
 
     const retryLater = (backUp) => {
-      log(`An error occurred while getting the latest releases. Retrying in 45 seconds.`)
-      commit('setInfoSnackbar', 'Could not get the latest releases. Retrying in 45 seconds.', isRoot)
+      if (!state.notLoaded) {
+        log(`An error occurred while getting the latest releases. Retrying in 45 seconds.`)
+        commit('setInfoSnackbar', 'Could not get the latest releases. Retrying in 45 seconds.', isRoot)
 
-      backUp.length && commit('set', {old: backUp})
+        backUp.length && commit('set', {old: backUp})
 
-      setTimeout(() => {
-        log(`Retrying to get latest releases.`)
-        dispatch('refresh').catch(err => { void (err) })
-      }, 45 * 1000)
+        setTimeout(() => {
+          log(`Retrying to get latest releases.`)
+          dispatch('refresh').catch(err => { void (err) })
+        }, 45 * 1000)
+      }
     }
 
     const backUp = state.releases
