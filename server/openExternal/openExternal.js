@@ -34,6 +34,7 @@ const openExternal = ({query}, res) => {
     case 'inside':
       sendEmptyRes(res)
       const win = new BrowserWindow({
+        nodeIntegration: false,
         parent: process.win,
         x: 50,
         y: 50,
