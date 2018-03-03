@@ -25,6 +25,7 @@ Vue.use(VueLazyload, {
 
 Vue.prototype.$_ = _
 Vue.prototype.$axios = axios
+Vue.prototype.$log = (...args) => console.log(`[${(new Date()).toLocaleTimeString()}]:`, ...args)
 
 Vue.component('vue-markdown', VueMarkdown)
 Object.keys(Components).forEach(key => {

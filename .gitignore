@@ -1,3 +1,5 @@
+!.gitkeep
+
 # dependencies
 node_modules
 package-lock.json
@@ -20,6 +22,7 @@ dist/linux-ia32-unpacked
 dist/win-unpacked
 dist/win-ia32-unpacked
 dist/latest*
+dist/electron-builder.yaml
 
 # webpack
 public
