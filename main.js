@@ -171,7 +171,9 @@ const newWin = () => {
   startServer()
 
   process.win = new BrowserWindow({
-    nodeIntegration: false,
+    webPreferences: {
+      nodeIntegration: false
+    },
     width: 1200,
     height: 800,
     titleBarStyle: 'hidden',
