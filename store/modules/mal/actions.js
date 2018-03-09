@@ -71,6 +71,7 @@ export default {
 
         return obj
       }))
+      commit('setCustomTags')
     } catch (e) {
       log('MyAnimeList >', e)
     }

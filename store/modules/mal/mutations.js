@@ -21,5 +21,19 @@ export default {
   },
   removeFromLists (state, id) {
     state.watchLists = _.remove(state.watchLists, (o) => o.id !== id)
+  },
+  setTagsFilter (state, tags) {
+    state.tagsFilter = tags
+  },
+  setCustomTags (state) {
+    const result = []
+    const entryWithTags = state.watchLists.filter((entry) => entry.tags !== '')
+    const tagsArray = entryWithTags.map((entry) => entry.tags.split(', '))
+
+    _.each(tagsArray, (tags) => {
+      _.each(tags, (tag) => result.push(tag))
+    })
+
+    state.customTags = result
   }
 }

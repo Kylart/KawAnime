@@ -20,7 +20,8 @@ export default {
 
     _.each(state.watchLists, (entry) => {
       const dec = (+entry.nbWatchedEpisode / +entry.nbEpisodes) || 1
-      result.push({
+
+      const toAdd = {
         score: entry.score || 'N/A',
         progress: (entry.nbWatchedEpisode || '??') + ' / ' + (entry.nbEpisodes || '??'),
         progressDec: (dec === 1 ? entry.nbWatchedEpisode : dec),
@@ -34,9 +35,22 @@ export default {
         end: entry.myEndDate === '0000-00-00' ? null : entry.myEndDate,
         link: 'https://myanimelist.net/anime/' + entry.id + '/' + entry.title,
         tags: entry.tags || 'No tags'
-      })
+      }
+
+      if (state.tagsFilter.length) {
+        if (toAdd.tags !== 'No tags') {
+          _.each(state.tagsFilter, (tag) => {
+            _.each(toAdd.tags.split(', '), (tag_) => {
+              tag === tag_ && result.push(toAdd)
+            })
+            // _.includes(toAdd.tags, tag) && result.push(toAdd)
+          })
+        }
+      } else {
+        result.push(toAdd)
+      }
     })
 
-    return _.orderBy(result, ['title', 'score'], ['asc', 'desc'])
+    return _.uniqWith(_.orderBy(result, ['title', 'score'], ['asc', 'desc']), _.isEqual)
   }
 }

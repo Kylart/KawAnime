@@ -3,6 +3,8 @@ export default {
   form: false,
   isAdding: false,
   isLoading: false,
+  customTags: [],
+  tagsFilter: [],
   watchLists: [],
   entry: {}
 }

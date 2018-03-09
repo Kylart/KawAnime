@@ -1,20 +1,32 @@
 <template lang="pug">
   v-container(fluid, fill-height, grid-list-xs)
     v-card
-      v-card-title.headline.pl-4 MyAnimeList
-        v-spacer
-        v-text-field(
-          append-icon='search',
-          label='Search',
-          single-line,
-          hide-details,
-          v-model='search'
-        )
-        v-btn.mt-4.ml-4(@click.stop='showSearch()')
-          v-icon add
-          span Add
-        v-btn.mt-4(icon, @click='refresh()')
-          v-icon(large) refresh
+      v-layout.pa-2(row, wrap, justify-center)
+        v-flex.centered(xs12, sm2)
+          .headline.pl-4 MyAnimeList
+        v-flex.centered.pr-2(xs10, sm3, md3, offset-sm1)
+          v-select(
+            v-model='tagsFilter',
+            :items='customTags',
+            label='Tags',
+            persistent-hint,
+            hint='Looking for special tags?',
+            single-line,
+            clearable, dense, chips, tags
+          )
+        v-flex.centered.pl-2(xs8, sm3, md3, offset-md1)
+          v-text-field(
+            append-icon='search',
+            label='Search',
+            single-line,
+            v-model='search'
+          )
+        v-flex.centered.pt-3.pl-3(xs4, sm3, md2)
+          v-btn(@click.stop='showSearch()')
+            v-icon add
+            span Add
+          v-btn(icon, @click='refresh()')
+            v-icon(large) refresh
       v-data-table(
         no-data-text='No data available, did you register your account and set your MyAnimeList public? If yes, it is possible that the account you entered was wrong.',
         no-results-text='Seems like you haven\'t watched this one ;)',
@@ -99,6 +111,20 @@
       ]),
       isLoading () {
         return this.$store.state.mal.isLoading
+      },
+      tagsFilter: {
+        get () {
+          return this.$store.state.mal.tagsFilter
+        },
+        set (tags) {
+          this.$store.commit('mal/setTagsFilter', tags)
+        }
+      },
+      customTags: {
+        get () {
+          return this.$store.state.mal.customTags
+        },
+        set () {}
       }
     },
     methods: {
@@ -126,6 +152,11 @@
 <style lang="stylus" scoped>
   .container
     display inline-block
+
+  .centered
+    display flex
+    align-items center
+    justify-content center
 
   .entry-title
     font-size 16px
