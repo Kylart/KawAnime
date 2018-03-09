@@ -85,10 +85,10 @@ function render ({url}, res) {
 
   const handleError = (err) => {
     if (err && err.code === 404) {
-      res.status(404).end('404 | Page Not Found')
+      res.status(404).send('404 | Page Not Found')
     } else {
       // Render Error Page or Redirect
-      res.status(500).end(`<pre>500 | Internal Server Error\n${err.stack}</pre>`)
+      res.status(500).send(`<pre>500 | Internal Server Error\n${err.stack}</pre>`)
       console.error(`error during render : ${url}`)
       console.error(err.stack)
     }
