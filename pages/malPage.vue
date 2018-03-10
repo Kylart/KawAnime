@@ -31,6 +31,7 @@
         no-data-text='No data available, did you register your account and set your MyAnimeList public? If yes, it is possible that the account you entered was wrong.',
         no-results-text='Seems like you haven\'t watched this one ;)',
         rows-per-page-text='Anime per page:',
+        :disable-initial-sort='true',
         :loading='isLoading',
         :headers='headers',
         :items='lists',

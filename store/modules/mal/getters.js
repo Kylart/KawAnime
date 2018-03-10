@@ -34,16 +34,19 @@ export default {
         start: entry.myStartDate === '0000-00-00' ? null : entry.myStartDate,
         end: entry.myEndDate === '0000-00-00' ? null : entry.myEndDate,
         link: 'https://myanimelist.net/anime/' + entry.id + '/' + entry.title,
-        tags: entry.tags || 'No tags'
+        tags: entry.tags || 'No tags',
+        nbCorrespondingTags: 0
       }
 
       if (state.tagsFilter.length) {
         if (toAdd.tags !== 'No tags') {
           _.each(state.tagsFilter, (tag) => {
             _.each(toAdd.tags.split(', '), (tag_) => {
-              tag === tag_ && result.push(toAdd)
+              if (tag === tag_) {
+                ++toAdd.nbCorrespondingTags
+                result.push(toAdd)
+              }
             })
-            // _.includes(toAdd.tags, tag) && result.push(toAdd)
           })
         }
       } else {
@@ -51,6 +54,11 @@ export default {
       }
     })
 
-    return _.uniqWith(_.orderBy(result, ['title', 'score'], ['asc', 'desc']), _.isEqual)
+    return _.uniqWith(
+      _.orderBy(
+        result,
+        ['nbCorrespondingTags', 'title', 'score'],
+        ['desc', 'asc', 'desc']
+      ), _.isEqual)
   }
 }
