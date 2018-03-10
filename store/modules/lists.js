@@ -10,5 +10,7 @@ export const fansubs = [
 export const sounds = [
   'Nyanpasu',
   'Nico Nico Nii',
+  'Cute Baka',
+  'Poi',
   'None'
 ]

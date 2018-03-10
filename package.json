@@ -16,7 +16,7 @@
     "build": "rimraf public && npm run build:client && npm run build:server",
     "build:client": "cross-env NODE_ENV=production webpack --config webpack/webpack.client.config.js --hide-modules",
     "build:server": "cross-env NODE_ENV=production webpack --config webpack/webpack.server.config.js --hide-modules",
-    "cloc": "cloc $(git ls-files | grep -vE \".mkv|mp4|m4a|lock\")",
+    "cloc": "cloc $(git ls-files | grep -vE \".mkv|mp4|m4a|mp3|lock\")",
     "test:server": "nyc ava --verbose --serial test/server.test.js",
     "test:front": "npm run build && cross-env NODE_ENV=KawAnime-test nightwatch",
     "test": "standard --fix && npm test:front && npm test:server",
