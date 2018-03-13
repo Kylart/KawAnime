@@ -59,6 +59,7 @@
     mal-form
     info-results
     choice-window
+    video-modal
 
     //- Used for displaying any info
     v-snackbar(

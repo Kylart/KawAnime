@@ -48,6 +48,10 @@
             text: 'Download',
             method: (item) => vm.download(item)
           }, {
+            action: 'tv',
+            text: 'Watch',
+            method: (item) => vm.watch(item)
+          }, {
             action: 'info_outline',
             text: 'Information',
             method: (item) => vm.$store.dispatch('search/fromName', item)
@@ -64,6 +68,11 @@
         this.$store.dispatch('downloader/download', {
           name,
           isDownloader: false
+        })
+      },
+      watch (name) {
+        this.$store.dispatch('downloader/watch', {
+          name
         })
       }
     }

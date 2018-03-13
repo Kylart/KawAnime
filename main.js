@@ -142,7 +142,7 @@ let _APP_URL_
 let server
 
 const startServer = () => {
-  server = http.createServer(app).listen()
+  server = http.createServer(app).listen(process.env.PORT)
   _APP_URL_ = 'http://localhost:' + server.address().port
   console.log(`> KawAnime is at ${_APP_URL_}`.green)
 

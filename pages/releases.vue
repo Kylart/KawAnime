@@ -57,23 +57,27 @@
                           span.following-status.not-selectable {{ isFollowed(item.rawName) }}
                         .links
                           a.download-button(:href='item.magnetLink')
-                            v-btn.btn--light-flat-pressed(dark, flat, @click='print(item)') Download
+                            v-btn.btn--light-flat-pressed(dark, flat, @click.stop='print(item)') Download
                           v-menu(open-on-hover, transition='slide-x-transition')
                             v-btn(flat, dark, slot='activator') More
                             v-list.dark
-                              v-list-tile(@click='downloadAll(item.rawName)')
+                              v-list-tile(@click.stop='watch(item)')
+                                v-list-tile-action
+                                  v-icon tv
+                                v-list-tile-title Watch
+                              v-list-tile(@click.stop='downloadAll(item.rawName)')
                                 v-list-tile-action
                                   v-icon file_download
                                 v-list-tile-title Download all episodes
-                              v-list-tile(@click='searchThis(item)')
+                              v-list-tile(@click.stop='searchThis(item)')
                                 v-list-tile-action
                                   v-icon info_outline
                                 v-list-tile-title Information
-                              v-list-tile(@click='showChoices(item.rawName)')
+                              v-list-tile(@click.stop='showChoices(item.rawName)')
                                 v-list-tile-action
                                   v-icon add_box
                                 v-list-tile-title Add to
-                              v-list-tile(@click='showMal(item)')
+                              v-list-tile(@click.stop='showMal(item)')
                                 v-list-tile-action
                                   span.mal-icon
                                 v-list-tile-title MyAnimeList
@@ -184,6 +188,15 @@
           : isWatching
             ? 'Watching'
             : ''
+      },
+      watch (item) {
+        console.log(item)
+        this.$store.commit('videoPlayer/play', {
+          show: true,
+          link: {
+            link: item.magnetLink
+          }
+        })
       }
     }
   }

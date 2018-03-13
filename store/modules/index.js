@@ -11,5 +11,6 @@ export { default as mal } from './mal'
 
 export { default as history } from './history'
 export { default as player } from './player'
+export { default as videoPlayer } from './videoPlayer'
 export { default as search } from './search'
 export { default as logs } from './logs'

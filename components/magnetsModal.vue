@@ -4,26 +4,27 @@
       v-card.white--text
         v-card-title.pb-2.pt-2
           h2.title.white--text.mb-0.entry-title.ellipsis Results for #[strong {{ values.title }}]
-          v-spacer
-          v-tooltip(left)
-            v-btn(
-              flat, icon,
-              v-if='magnets.length',
-              @click='openSelected()',
-              slot='activator'
-            )
-              v-icon open_in_new
-            span Open all selected magnets
-          v-tooltip(left)
-            v-btn(
-              flat, icon,
-              v-if='magnets.length',
-              v-clipboard="selected.join(eol)",
-              @success='snack = true',
-              slot='activator'
-            )
-              v-icon.copy-icon content_copy
-            span Copy all selected magnets
+          template(v-if='!values.watch')
+            v-spacer
+            v-tooltip(left)
+              v-btn(
+                flat, icon,
+                v-if='magnets.length',
+                @click='openSelected()',
+                slot='activator'
+              )
+                v-icon open_in_new
+              span Open all selected magnets
+            v-tooltip(left)
+              v-btn(
+                flat, icon,
+                v-if='magnets.length',
+                v-clipboard="selected.join(eol)",
+                @success='snack = true',
+                slot='activator'
+              )
+                v-icon.copy-icon content_copy
+              span Copy all selected magnets
         v-divider
         v-card-text.subheading.white--text
           v-expansion-panel(popout, expand)
@@ -35,7 +36,7 @@
             )
               v-layout.entry-name(slot='header', justify-space-between)
                 span.vertical-centered {{ name }}
-                v-tooltip(left)
+                v-tooltip(left v-if='!values.watch')
                   v-btn.ma-0(
                     icon,
                     @click.stop='selectAll(name)',
@@ -46,10 +47,11 @@
               v-layout.pt-2.pl-3.pr-3(wrap)
                 template(v-for='link in getLinks(name)')
                   v-flex(xs11).mt-1.pa-0.ep-name {{ link.name }}
-                  v-flex(xs1)
-                    v-checkbox.pt-0.primary--text(v-model='selected', :value='link.link', label='', color='orange', hide-details)
-                  v-flex(xs1)
-                  v-flex.mt-1.mb-2.pa-0.ep-magnet.ellipsis(xs11) #[a.white--text(:href='link.link') {{ link.link }}]
+                  template(v-if='!values.watch')
+                    v-flex(xs1)
+                      v-checkbox.pt-0.primary--text(v-model='selected', :value='link.link', label='', color='orange', hide-details)
+                    v-flex(xs1)
+                  v-flex.mt-1.mb-2.pa-0.ep-magnet.ellipsis(xs11 @click='e => clickLink(e, link)') #[a.white--text(:href='link.link') {{ link.link }}]
         v-card-actions
           v-spacer
           v-btn.blue--text.darken-1(flat, @click='close()') Thanks!
@@ -134,6 +136,16 @@
       },
       openSelected () {
         this.$_.each(this.selected, (l) => window.open(l))
+      },
+      clickLink (event, link) {
+        if (this.values.watch) {
+          event.preventDefault()
+          this.close()
+          this.$store.commit('videoPlayer/play', {
+            show: true,
+            link
+          })
+        }
       }
     }
   }
