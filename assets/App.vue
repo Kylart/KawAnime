@@ -76,7 +76,7 @@
   export default {
     mixins: [Meta],
     mounted () {
-      this.isBrowser = !window.process
+      this.isBrowser = !window.navigator.appVersion.includes('Electron')
     },
     data () {
       return {
