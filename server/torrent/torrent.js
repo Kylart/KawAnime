@@ -93,7 +93,9 @@ const tracks = (req, res) => {
       res.once('error', close)
       res.once('finish', close)
       stream.pipe(parser)
-    } else { res.end() }
+    } else {
+      res.end()
+    }
   }
 
   const torrent = client.get(magnet)
