@@ -4,6 +4,7 @@ const mime = require('mime')
 const {Logger} = require('../utils')
 const logger = new Logger('Torrent Streamer')
 const decode = require('urldecode')
+const MatroskaSubtitles = require('matroska-subtitles')
 
 const client = new WebTorrent()
 
@@ -61,5 +62,51 @@ const stream = (req, res) => {
     client.add(magnet, processTorrent)
   }
 }
+const tracks = (req, res) => {
+  console.log('Matroska')
+  const magnet = decode(req.url.slice('/tracks/'.length))
+  logger.info(`Tracks for Magnet magnet: ${magnet}`)
 
-module.exports = {stream}
+  const processTorrent = ({ files: [torrent] }) => {
+    const mimeType = mime.getType(torrent.name)
+    if (mimeType === 'video/x-matroska') {
+      const parser = new MatroskaSubtitles()
+      let stream = torrent.createReadStream()
+
+      parser.once('tracks', tracks => res.sse('tracks', tracks))
+
+      parser.on('subtitle', (subtitle, trackNumber) => res.sse('subtitle', {
+        subtitle,
+        trackNumber
+      }))
+
+      const close = () => {
+        if (stream) {
+          logger.info(`Closing stream for magnet tracks: ${magnet}`)
+          stream.destroy()
+          torrent.deselect()
+          stream = null
+        }
+      }
+
+      res.once('close', close)
+      res.once('error', close)
+      res.once('finish', close)
+      stream.pipe(parser)
+    } else { res.end() }
+  }
+
+  const torrent = client.get(magnet)
+
+  if (torrent) {
+    if (torrent.ready) {
+      processTorrent(torrent)
+    } else {
+      torrent.once('ready', () => processTorrent(torrent))
+    }
+  } else {
+    client.add(magnet, processTorrent)
+  }
+}
+
+module.exports = {stream, tracks}

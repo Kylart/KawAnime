@@ -86,25 +86,16 @@ export default {
   },
 
   async watch ({state, commit, rootState}, obj = {}) {
-    const isDownloader = obj.isDownloader || true
     const name = obj.name || state.form.name
-    const fromEp = obj.fromEp || (state.form.fromEp !== ''
-      ? state.form.fromEp
-      : 0
-    )
-    const untilEp = obj.untilEp || (state.form.untilEp !== ''
-      ? state.form.untilEp
-      : 20000
-    )
-    const quality = obj.quality || (isDownloader ? state.form.quality : rootState.config.config.quality)
+    const fromEp = +obj.fromEp || 0
+    const untilEp = +obj.untilEp || 20000
 
     log(`Received a request to download ${name} from ep ${fromEp} to ep ${untilEp}. Transmitting...`)
 
     const infos = {
-      name: name,
-      quality: quality || rootState.config.config.quality,
-      fromEp: +fromEp,
-      untilEp: +untilEp,
+      name,
+      fromEp,
+      untilEp,
       fansub: obj.fansub || rootState.config.config.fansub,
       choice: 'si'
     }
