@@ -15,6 +15,9 @@ const formatMagnets = (data, searchData, choice, res) => {
   data.forEach((elem) => {
     elem.name = removeUnwanted(elem.name)
     const ep = elem.name.split(' ').splice(-2, 1)[0]
+      .replace('v2', '')
+      .replace('v3', '')
+      .replace('v4', '')
     eps.push(ep)
 
     if (ep <= searchData.untilEp && ep >= searchData.fromEp) {
