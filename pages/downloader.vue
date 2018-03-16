@@ -81,12 +81,9 @@
           : this.$refs.name.focus()
       },
       download () {
-        const quality = this.quality
+        this.$store.commit('downloader/setQuality', this.quality)
 
         this.$store.dispatch('downloader/download')
-          .then(() => {
-            this.$store.commit('downloader/setQuality', quality)
-          })
       },
       next (number) {
         switch (number) {
