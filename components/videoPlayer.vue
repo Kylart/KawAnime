@@ -64,10 +64,8 @@ export default {
     this.eventSource.addEventListener('tracks', ({ data }) => {
       const tracks = JSON.parse(data)
       tracks.forEach(track => {
-        if (track.language) {
-          const language = track.language.slice(0, 2)
-          textTracks[track.number] = this.$refs.video.addTextTrack('captions', language, language)
-        }
+        const language = (track.language || 'eng').slice(0, 2)
+        textTracks[track.number] = this.$refs.video.addTextTrack('captions', language, language)
       })
     })
 
