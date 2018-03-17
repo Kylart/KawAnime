@@ -71,7 +71,7 @@
         })
       },
       watch (name) {
-        this.$store.dispatch('downloader/watch', {
+        this.$store.dispatch('videoPlayer/watch', {
           name
         })
       }

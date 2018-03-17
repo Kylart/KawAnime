@@ -73,7 +73,9 @@ export default {
 
     this.eventSource.addEventListener('subtitle', ({ data }) => {
       const { trackNumber, subtitle: { time, duration, text } } = JSON.parse(data)
-      if (trackNumber in textTracks) { textTracks[trackNumber].addCue(new window.VTTCue(time / 1000, (time + duration) / 1000, text.replace(/\\N/g, '\n'))) }
+      if (trackNumber in textTracks) {
+        textTracks[trackNumber].addCue(new window.VTTCue(time / 1000, (time + duration) / 1000, text.replace(/\\N/g, '\n')))
+      }
     })
   },
   created () {

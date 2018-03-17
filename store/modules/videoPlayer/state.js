@@ -1,3 +1,9 @@
 export default {
-  player: { show: false }
+  player: {
+    show: false
+  },
+  modal: {
+    show: false,
+    magnets: []
+  }
 }
