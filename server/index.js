@@ -20,6 +20,7 @@ const setup = (app) => {
     nyaa: require('./nyaa'),
     openExternal: require('./openExternal'),
     seasons: require('./seasons'),
+    torrent: require('./torrent'),
     search: require('./search'),
     wl: require('./watchList')
   }

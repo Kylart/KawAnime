@@ -30,7 +30,9 @@ import {
   VDatePicker,
   VChip,
   VBadge,
-  VSpeedDial
+  VSpeedDial,
+  VSlider,
+  transitions
 } from 'vuetify'
 
 import { Ripple } from 'vuetify/es5/directives'
@@ -67,7 +69,9 @@ export default (Vue) => {
       VDatePicker,
       VChip,
       VBadge,
-      VSpeedDial
+      VSpeedDial,
+      VSlider,
+      transitions
     },
     directives: {
       Ripple

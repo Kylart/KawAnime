@@ -56,7 +56,14 @@ const serve = (path, cache) => express.static(resolve(path), {
   maxAge: cache && !isDev ? 60 * 60 * 24 * 30 : 0
 })
 
-app.use(compression({ threshold: 0 }))
+app.use(compression({
+  threshold: 0,
+  filter (req, res) {
+    return res.getHeader('Content-Type') === 'text/event-stream'
+      ? false
+      : compression.filter(req, res)
+  }
+}))
 app.use('/static', serve(path.join(__dirname, 'static'), true))
 app.use('/public', serve(path.join(__dirname, 'public'), true))
 
@@ -142,7 +149,7 @@ let _APP_URL_
 let server
 
 const startServer = () => {
-  server = http.createServer(app).listen()
+  server = http.createServer(app).listen(process.env.PORT)
   _APP_URL_ = 'http://localhost:' + server.address().port
   console.log(`> KawAnime is at ${_APP_URL_}`.green)
 

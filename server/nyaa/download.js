@@ -51,7 +51,7 @@ const download = (req, res) => {
 
     logger.info('Received a download request. Choice is ' + choice, searchData)
 
-    const term = `[${searchData.fansub}] ${searchData.quality} ${searchData.name} ` + (choice === 'si' ? '-unofficial' : '')
+    const term = `[${searchData.fansub}] ${searchData.quality || ''} ${searchData.name} ` + (choice === 'si' ? '-unofficial' : '')
 
     if (choice === 'si') {
       si.search(term).then((data) => {
