@@ -14,13 +14,13 @@ export default {
     )
     const quality = obj.quality || (isDownloader ? state.form.quality : rootState.config.config.quality)
 
-    const magnets = rootState.config.config.magnets
+    const { magnets } = rootState.config.config
 
     log(`Received a request to download ${name} from ep ${fromEp} to ep ${untilEp}. Transmitting...`)
 
     const infos = {
-      name: name,
-      quality: quality || rootState.config.config.quality,
+      name,
+      quality,
       fromEp: +fromEp,
       untilEp: +untilEp,
       fansub: obj.fansub || rootState.config.config.fansub,
@@ -82,6 +82,6 @@ export default {
       commit('setInfoSnackbar', 'Could not find anything, please try again.', isRoot)
     }
 
-    commit(failed ? 'toggleLoading' : 'resetForm')
+    commit(failed ? 'toggleLoading' : 'resetForm', quality)
   }
 }

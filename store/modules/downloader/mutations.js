@@ -2,12 +2,12 @@ export default {
   setForm (state, data) {
     state.form = data
   },
-  resetForm (state) {
+  resetForm (state, quality) {
     state.form = {
       name: '',
       fromEp: '',
       untilEp: '',
-      quality: '',
+      quality,
       loading: false
     }
   },

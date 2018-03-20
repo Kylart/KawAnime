@@ -63,7 +63,6 @@
     data () {
       return {
         modalText: '',
-        quality: this.$store.state.config.config.quality,
         nameRules: [
           () => this.formValues.name.length > 2 || 'Please enter at least 3 characters.'
         ]
@@ -72,6 +71,14 @@
     computed: {
       formValues () {
         return this.$store.state.downloader.form
+      },
+      quality: {
+        get () {
+          return this.formValues.quality
+        },
+        set (val) {
+          this.$store.commit('downloader/setQuality', val)
+        }
       }
     },
     methods: {
@@ -81,8 +88,6 @@
           : this.$refs.name.focus()
       },
       download () {
-        this.$store.commit('downloader/setQuality', this.quality)
-
         this.$store.dispatch('downloader/download')
       },
       next (number) {
