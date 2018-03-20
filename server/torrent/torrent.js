@@ -63,7 +63,6 @@ const stream = (req, res) => {
   }
 }
 const tracks = (req, res) => {
-  console.log('Matroska')
   const magnet = decode(req.url.slice('/tracks/'.length))
   logger.info(`Tracks for Magnet magnet: ${magnet}`)
 

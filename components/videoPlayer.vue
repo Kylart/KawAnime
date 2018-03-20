@@ -1,5 +1,5 @@
 <template lang="pug">
-  div.video-player(v-on:mousemove='onMouseMove', :style='{ cursor: controlsHidden ? "none" : null }')
+  div.video-player(@mousemove='onMouseMove', :style='{ cursor: controlsHidden ? "none" : null }')
     video(ref='video',
       @pause='paused = true',
       @play='paused = false',
@@ -9,21 +9,21 @@
       @progress='onProgress',
       @click='togglePlay',
       :src='`/stream/${value}`') Your browser does not support HTML5 video.
-		
+
     v-progress-circular.main-color--text.video-waiting(dark, indeterminate, v-show='waiting')
 
-    v-icon.video-play(dark, v-on:click="togglePlay", v-if="paused") play_arrow
+    v-icon.video-play(dark, @click="togglePlay", v-if="paused") play_arrow
 
     v-fade-transition
       div.video-controls(v-show="hasPlayed && !controlsHidden")
-        player-slider.timeline(dark, hide-details, color='blue', :step="0", :buffer="buffered", :value="timeline", v-on:input="changeTimeline")
-        v-btn(color="blue", dark, icon, v-on:click.stop='togglePlay')
+        player-slider.timeline(dark, hide-details, color='blue', :step="0", :buffer="buffered", :value="timeline", @input="changeTimeline")
+        v-btn(color="blue", dark, icon, @click.stop='togglePlay')
           v-icon(v-html='paused ? "play_arrow" : "pause"')
-        v-btn(color="blue", dark, icon, v-on:click.stop="toggleMute")
+        v-btn(color="blue", dark, icon, @click.stop="toggleMute")
           v-icon(v-html="muted ? 'volume_off' : 'volume_up'")
-        v-slider.volume(hide-details, color='blue', dark, :max="100", :value="muted ? 0 : volume", v-on:input="changeVolume")
+        v-slider.volume(hide-details, color='blue', dark, :max="100", :value="muted ? 0 : volume", @input="changeVolume")
         div.timer {{ currentTime }}/{{ duration }}
-        v-btn.right(color='blue', dark, icon, v-on:click.stop="toggleFullScreen")
+        v-btn.right(color='blue', dark, icon, @click.stop="toggleFullScreen")
           v-icon(v-html="fullscreen ? 'fullscreen_exit' : 'fullscreen'")
         v-menu.right(v-if='$refs.video && !controlsHidden', open-on-hover, offset-overflow, offset-y, top)
           v-btn.subtitles(slot='activator', color='blue', dark)

@@ -9,8 +9,7 @@
         v-toolbar-title.headline Settings
         v-spacer
         v-toolbar-items
-          v-btn(dark, flat, v-on:click.native='save()')
-            | Save
+          v-btn(dark, flat, @click='save()') Save
 
       v-container.container(fluid)
         v-layout(row, wrap, justify-center)
