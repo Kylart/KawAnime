@@ -12,7 +12,7 @@
 
     v-progress-circular.main-color--text.video-waiting(dark, indeterminate, v-show='waiting')
 
-    v-icon.video-play(dark, @click="togglePlay", v-if="paused") play_arrow
+    v-icon.video-play(dark, @click.stop="togglePlay", v-if="paused") play_arrow
 
     v-fade-transition
       div.video-controls(v-show="hasPlayed && !controlsHidden")
@@ -112,9 +112,11 @@ export default {
     },
     onTimelineChangeEvent () {
       const video = this.$refs.video
-      if (video) this.timeline = 100 / video.duration * video.currentTime
-      this.currentTime = this.formatTime(video.currentTime)
-      this.duration = this.formatTime(video.duration)
+      if (video) {
+        this.timeline = 100 / video.duration * video.currentTime
+        this.currentTime = this.formatTime(video.currentTime)
+        this.duration = this.formatTime(video.duration)
+      }
     },
     onProgress () {
       const video = this.$refs.video

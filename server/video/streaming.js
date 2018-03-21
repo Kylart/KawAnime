@@ -10,19 +10,32 @@ const MatroskaSubtitles = require('matroska-subtitles')
 const client = process.torrentClient = new WebTorrent()
 
 const stream = (req, res) => {
-  // Getting magnet hash
-  const magnet = decode(req.url.slice('/stream/'.length))
-  logger.info(`Streaming magnet: ${magnet}`)
+  const info = decode(req.url.slice('/stream/'.length))
+  const isMagnet = /^magnet:\?/.test(info)
+  const type = isMagnet ? 'magnet' : 'file'
 
-  const processTorrent = ({ files: [torrent] }) => {
-    const mimeType = mime.getType(torrent.name)
+  const path = isMagnet ? null : info
+  const magnet = isMagnet ? info : null
+
+  const stat = path && fs.statSync(path)
+
+  logger.info(`Tracks for ${type}: ${isMagnet ? magnet : path}`)
+
+  const processFile = (obj = { files: [] }) => {
+    const { files: [torrent] } = obj
+
+    const size = isMagnet ? torrent.length : stat.size
+
+    const mimeType = mime.getType(path || torrent.name)
+
     logger.info(`Video mime-type: "${mimeType}"`)
+
     res.set({
       'Content-Type': mime.getType(mimeType),
       'Accept-Ranges': 'bytes'
     })
 
-    let range = parseRange(torrent.length, req.headers.range || '')
+    let range = parseRange(size, req.headers.range || '')
 
     if (Array.isArray(range)) {
       range = range[0]
@@ -30,22 +43,23 @@ const stream = (req, res) => {
       res
         .status(206)
         .set({
-          'Content-Range': `bytes ${range.start}-${range.end}/${torrent.length}`,
+          'Content-Range': `bytes ${range.start}-${range.end}/${size}`,
           'Content-Length': range.end - range.start + 1
         })
     } else {
-      // Means that parseRange a parsing error occurred.
-      res.setHeader('Content-Length', torrent.length)
+      res.setHeader('Content-Length', size)
     }
 
     if (req.method === 'HEAD') { res.end() } else {
-      let stream = torrent.createReadStream(range)
+      let stream = isMagnet
+        ? torrent.createReadStream(range)
+        : fs.createReadStream(path, range)
 
       const close = () => {
         if (stream) {
-          logger.info(`Closing stream of range: ${JSON.stringify(range)} for magnet: ${magnet}`)
+          logger.info(`Closing stream of range: ${JSON.stringify(range)} for ${type}: ${isMagnet ? magnet : path}`)
           stream.destroy()
-          torrent.deselect(range)
+          torrent && torrent.deselect(range)
           stream = null
         }
       }
@@ -57,17 +71,21 @@ const stream = (req, res) => {
     }
   }
 
-  // const torrent = client.get(magnet)
+  if (isMagnet) {
+    const torrent = client.get(magnet)
 
-  // if (torrent) {
-  //   if (torrent.ready) {
-  //     processTorrent(torrent)
-  //   } else {
-  //     torrent.once('ready', () => processTorrent(torrent))
-  //   }
-  // } else {
-  //   client.add(magnet, processTorrent)
-  // }
+    if (torrent) {
+      if (torrent.ready) {
+        processFile(torrent)
+      } else {
+        torrent.once('ready', () => processFile(torrent))
+      }
+    } else {
+      client.add(magnet, processFile)
+    }
+  } else {
+    processFile()
+  }
 }
 
 const tracks = (req, res) => {
@@ -99,7 +117,7 @@ const tracks = (req, res) => {
 
       const close = () => {
         if (stream) {
-          logger.info(`Closing stream for ${type} tracks: ${magnet}`)
+          logger.info(`Closing stream for ${type} tracks: ${isMagnet ? magnet : path}`)
           stream.destroy()
           torrent && torrent.deselect()
           stream = null
