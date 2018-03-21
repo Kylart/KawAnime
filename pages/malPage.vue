@@ -98,10 +98,10 @@
             sortable: true,
             value: 'status'
           }, {
-            text: 'Priority',
+            text: 'Tags',
             align: 'center',
-            sortable: true,
-            value: 'priorityNum'
+            sortable: false,
+            value: 'tags'
           }
         ]
       }
