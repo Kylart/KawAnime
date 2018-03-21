@@ -163,7 +163,8 @@
       "server/mal/official.js",
       "server/openExternal",
       "server/utils",
-      "server/env"
+      "server/env",
+      "server/video"
     ],
     "watermarks": {
       "lines": [
