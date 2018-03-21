@@ -13,6 +13,9 @@ npm-debug.log
 # Idea directory
 .idea
 
+# vscode directory
+.vscode
+
 #dist
 KawAnime*
 dist/mac
