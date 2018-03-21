@@ -190,7 +190,6 @@
             : ''
       },
       watch (item) {
-        console.log(item)
         this.$store.commit('videoPlayer/play', {
           show: true,
           link: {

@@ -1,3 +1,4 @@
+const fs = require('fs')
 const WebTorrent = require('webtorrent')
 const parseRange = require('range-parser')
 const mime = require('mime')
@@ -6,9 +7,10 @@ const logger = new Logger('Torrent Streamer')
 const decode = require('urldecode')
 const MatroskaSubtitles = require('matroska-subtitles')
 
-const client = new WebTorrent()
+const client = process.torrentClient = new WebTorrent()
 
 const stream = (req, res) => {
+  // Getting magnet hash
   const magnet = decode(req.url.slice('/stream/'.length))
   logger.info(`Streaming magnet: ${magnet}`)
 
@@ -21,19 +23,24 @@ const stream = (req, res) => {
     })
 
     let range = parseRange(torrent.length, req.headers.range || '')
+
     if (Array.isArray(range)) {
       range = range[0]
 
-      res.status(206)
-          .set({
-            'Content-Range': `bytes ${range.start}-${range.end}/${torrent.length}`,
-            'Content-Length': range.end - range.start + 1
-          })
+      res
+        .status(206)
+        .set({
+          'Content-Range': `bytes ${range.start}-${range.end}/${torrent.length}`,
+          'Content-Length': range.end - range.start + 1
+        })
     } else {
+      // Means that parseRange a parsing error occurred.
       res.setHeader('Content-Length', torrent.length)
     }
+
     if (req.method === 'HEAD') { res.end() } else {
       let stream = torrent.createReadStream(range)
+
       const close = () => {
         if (stream) {
           logger.info(`Closing stream of range: ${JSON.stringify(range)} for magnet: ${magnet}`)
@@ -50,27 +57,38 @@ const stream = (req, res) => {
     }
   }
 
-  const torrent = client.get(magnet)
+  // const torrent = client.get(magnet)
 
-  if (torrent) {
-    if (torrent.ready) {
-      processTorrent(torrent)
-    } else {
-      torrent.once('ready', () => processTorrent(torrent))
-    }
-  } else {
-    client.add(magnet, processTorrent)
-  }
+  // if (torrent) {
+  //   if (torrent.ready) {
+  //     processTorrent(torrent)
+  //   } else {
+  //     torrent.once('ready', () => processTorrent(torrent))
+  //   }
+  // } else {
+  //   client.add(magnet, processTorrent)
+  // }
 }
-const tracks = (req, res) => {
-  const magnet = decode(req.url.slice('/tracks/'.length))
-  logger.info(`Tracks for Magnet magnet: ${magnet}`)
 
-  const processTorrent = ({ files: [torrent] }) => {
-    const mimeType = mime.getType(torrent.name)
+const tracks = (req, res) => {
+  const info = decode(req.url.slice('/tracks/'.length))
+  const isMagnet = /^magnet:\?/.test(info)
+  const type = isMagnet ? 'magnet' : 'file'
+
+  const path = isMagnet ? null : info
+  const magnet = isMagnet ? info : null
+
+  logger.info(`Tracks for ${type}: ${isMagnet ? magnet : path}`)
+
+  const processFile = (obj = {files: []}) => {
+    const { files: [torrent] } = obj
+    const mimeType = mime.getType(path || torrent.name)
+
     if (mimeType === 'video/x-matroska') {
       const parser = new MatroskaSubtitles()
-      let stream = torrent.createReadStream()
+      let stream = isMagnet
+        ? torrent.createReadStream()
+        : fs.createReadStream(path)
 
       parser.once('tracks', tracks => res.sse('tracks', tracks))
 
@@ -81,9 +99,9 @@ const tracks = (req, res) => {
 
       const close = () => {
         if (stream) {
-          logger.info(`Closing stream for magnet tracks: ${magnet}`)
+          logger.info(`Closing stream for ${type} tracks: ${magnet}`)
           stream.destroy()
-          torrent.deselect()
+          torrent && torrent.deselect()
           stream = null
         }
       }
@@ -97,16 +115,20 @@ const tracks = (req, res) => {
     }
   }
 
-  const torrent = client.get(magnet)
+  if (magnet) {
+    const torrent = client.get(magnet)
 
-  if (torrent) {
-    if (torrent.ready) {
-      processTorrent(torrent)
+    if (torrent) {
+      if (torrent.ready) {
+        processFile(torrent)
+      } else {
+        torrent.once('ready', () => processFile(torrent))
+      }
     } else {
-      torrent.once('ready', () => processTorrent(torrent))
+      client.add(magnet, processFile)
     }
   } else {
-    client.add(magnet, processTorrent)
+    processFile()
   }
 }
 

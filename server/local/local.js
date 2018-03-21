@@ -37,7 +37,7 @@ const getUniques = (files) => {
   return result
 }
 
-const sendFiles = (json, files, res) => {
+const sendFiles = (json, dir, files, res) => {
   const result = []
 
   logger.info('Sending files.')
@@ -47,7 +47,7 @@ const sendFiles = (json, files, res) => {
     if (name) {
       const tmp = JSON.parse(JSON.stringify(json[minifyName(name)]))
       tmp.ep = getEp(file)
-      tmp.path = file
+      tmp.path = join(dir, file)
       result.push(tmp)
     }
   })
@@ -67,7 +67,7 @@ const searchLocalFiles = ({query}, res) => {
   let counter = 0
 
   if (!files.length) {
-    sendFiles(json, [], res)
+    sendFiles(json, DIR, [], res)
   } else {
     uniqueNames.forEach((elem) => {
       // Search MAL for each name if not in json
@@ -96,7 +96,7 @@ const searchLocalFiles = ({query}, res) => {
 
             logger.info('Successfully saved data.')
 
-            sendFiles(json, files, res)
+            sendFiles(json, DIR, files, res)
           }
         }).catch(/* istanbul ignore next */(err) => {
           logger.error('An error occurred.', err)
@@ -105,7 +105,7 @@ const searchLocalFiles = ({query}, res) => {
       } else {
         ++counter
         /* istanbul ignore next */
-        if (counter === uniqueNames.length) sendFiles(json, files, res)
+        if (counter === uniqueNames.length) sendFiles(json, DIR, files, res)
       }
     })
   }

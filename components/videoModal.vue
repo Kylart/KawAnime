@@ -18,7 +18,7 @@ export default {
   },
   methods: {
     close () {
-      if (document.fullscreenElement == null) {
+      if (document.fullscreenElement === null) {
         this.$store.commit('videoPlayer/close')
       }
     }
