@@ -47,7 +47,9 @@ const stream = (req, res) => {
           'Content-Length': range.end - range.start + 1
         })
     } else {
+      // Here range is either -1 or -2
       res.setHeader('Content-Length', size)
+      range = null
     }
 
     if (req.method === 'HEAD') { res.end() } else {
