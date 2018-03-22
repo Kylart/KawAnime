@@ -1,6 +1,7 @@
 <template lang="pug">
   div.video-player(@mousemove='onMouseMove', :style='{ cursor: controlsHidden ? "none" : null }')
     video(ref='video',
+      :autoplay='autoplay',
       @pause='paused = true',
       @play='paused = false',
       @timeupdate='onTimelineChangeEvent',
@@ -12,24 +13,29 @@
 
     v-progress-circular.main-color--text.video-waiting(dark, indeterminate, v-show='waiting')
 
-    v-icon.video-play(dark, @click.stop="togglePlay", v-if="paused") play_arrow
+    v-icon.video-play(dark, @click.stop='togglePlay', v-if='paused') play_arrow
+
+    v-btn.video-close(color='blue', dark, icon, @click.stop='close', v-show='!controlsHidden')
+      v-icon close
 
     v-fade-transition
-      div.video-controls(v-show="hasPlayed && !controlsHidden")
-        player-slider.timeline(dark, hide-details, color='blue', :step="0", :buffer="buffered", :value="timeline", @input="changeTimeline")
-        v-btn(color="blue", dark, icon, @click.stop='togglePlay')
-          v-icon(v-html='paused ? "play_arrow" : "pause"')
-        v-btn(color="blue", dark, icon, @click.stop="toggleMute")
+      div.video-controls(v-show='!controlsHidden')
+        player-slider.timeline(dark, hide-details, color='blue', :step='0', :buffer='buffered', :value='timeline', @input='changeTimeline')
+
+        v-btn(color='blue', dark, icon, @click.stop='togglePlay')
+          v-icon(v-html="paused ? 'play_arrow' : 'pause'")
+        v-btn(color='blue', dark, icon, @click.stop='toggleMute')
           v-icon(v-html="muted ? 'volume_off' : 'volume_up'")
-        v-slider.volume(hide-details, color='blue', dark, :max="100", :value="muted ? 0 : volume", @input="changeVolume")
+        v-slider.volume(hide-details, color='blue', dark, :max='100', :value='muted ? 0 : volume', @input='changeVolume')
         div.timer {{ currentTime }}/{{ duration }}
-        v-btn.right(color='blue', dark, icon, @click.stop="toggleFullScreen")
+
+        v-btn.right(color='blue', dark, icon, @click.stop='toggleFullWindow')
           v-icon(v-html="fullscreen ? 'fullscreen_exit' : 'fullscreen'")
         v-menu.right(v-if='$refs.video && !controlsHidden', open-on-hover, offset-overflow, offset-y, top)
           v-btn.subtitles(slot='activator', color='blue', dark)
             v-icon subtitles
           v-list
-            v-list-tile.video-subtitle(v-for="(track,i) in $refs.video.textTracks", :key="i" @click="setTrack(track)")
+            v-list-tile.video-subtitle(v-for='(track,i) in $refs.video.textTracks', :key='i' @click='setTrack(track)')
               v-list-tile-title(:class="{ 'blue--text': track.mode === 'showing' }") {{ track.label }}
 </template>
 
@@ -53,8 +59,8 @@ export default {
       volume: 100,
       currentTime: 0,
       duration: 0,
-      controlsHidden: true,
-      hasPlayed: false
+      controlsHidden: false,
+      autoplay: true
     }
   },
   mounted () {
@@ -87,17 +93,15 @@ export default {
   },
   methods: {
     formatTime (time = 0) {
-      let minutes = Math.floor(time / 60)
-      minutes = minutes >= 10 ? minutes : '0' + minutes
-      let seconds = Math.floor(time % 60)
-      seconds = seconds >= 10 ? seconds : '0' + seconds
+      const minutes = ('0' + Math.floor(time / 60)).slice(-2)
+      const seconds = ('0' + Math.floor(time % 60)).slice(-2)
+
       return `${minutes}:${seconds}`
     },
     togglePlay () {
       const video = this.$refs.video
       this.showControls()
       this.paused ? video.play() : video.pause()
-      this.hasPlayed = true
     },
     toggleMute () {
       this.muted = this.$refs.video.muted = !this.muted
@@ -122,7 +126,7 @@ export default {
       const video = this.$refs.video
       if (video) {
         const buffered = []
-        for (let i = 0; i < video.buffered.length; ++i) {
+        for (let i = 0, l = video.buffered.length; i < l; ++i) {
           buffered.push([
             video.buffered.start(i) / video.duration * 100,
             video.buffered.end(i) / video.duration * 100
@@ -157,12 +161,21 @@ export default {
 
         track.mode = 'showing'
       }
+    },
+    close () {
+      this.$parent.$parent.close()
     }
   }
 }
 </script>
 
 <style lang="stylus">
+  ::cue
+    color white
+    font-weight bold
+    text-shadow 1px 1px 2px black, 1px -1px 2px black, -1px 1px 2px black, -1px -1px 2px black
+    background-color rgba(0, 0, 0, 0)
+
   .video-player
     background-color black
     line-height 0px
@@ -185,6 +198,12 @@ export default {
       height 10% !important
       width 10% !important
       transform translate(-50%, -50%)
+
+    .video-close
+      cursor pointer
+      position absolute
+      right 1%
+      top 1%
 
     .video-play
       cursor pointer

@@ -1,5 +1,13 @@
 <template lang="pug">
-  v-dialog(v-model='values.show', lazy, absolute, width='initial' @keydown.esc='close()')
+  v-dialog(
+    v-model='values.show',
+    persistent,
+    lazy,
+    absolute,
+    width='initial',
+    max-width='100%',
+    @keydown.esc='close()'
+  )
     template(v-if='values.show')
       video-player(:value='values.link.link')
       h2.text-md-center {{ values.link.name }}
