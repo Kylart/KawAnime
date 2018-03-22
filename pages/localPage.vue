@@ -161,8 +161,7 @@
         this.$axios.get(`openThis`, {
           params: {
             type: 'delete',
-            path: item.path,
-            dir: this.$store.state.localFiles.dir
+            path: item.path
           }
         }).then((res) => {
           this.$store.commit('setInfoSnackbar', `${item.name} ${item.ep} was successfully sent to Trash.`)

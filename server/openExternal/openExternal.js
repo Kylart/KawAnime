@@ -49,7 +49,7 @@ const openExternal = ({query}, res) => {
       break
 
     case 'delete':
-      shell.moveItemToTrash(join(query.dir, query.path))
+      shell.moveItemToTrash(query.path)
       sendEmptyRes(res)
       break
 
