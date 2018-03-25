@@ -105,8 +105,8 @@
                     persistent-hint,
                     hint='Activate to use the KawAnime in-app video player!'
                   )
-                v-flex.section-title(xs3, v-show='config.video.inside') Streaming quality
-                v-flex(xs5, v-show='config.video.inside')
+                v-flex.section-title(xs4) Streaming quality
+                v-flex(xs8)
                   v-radio-group(:isMantatory="true", row, v-model="config.video.quality")
                     template(v-for='radio in radios')
                       v-radio(
@@ -114,7 +114,17 @@
                         :label='radio',
                         :value='radio'
                       )
-                v-flex(xs2, v-show='config.video.inside')
+                v-flex(xs4, offset-xs1)
+                  v-select(
+                    v-bind:items='subtitlesLanguages',
+                    v-model='config.video.preferredLanguage',
+                    hint='What should the language of the sutitles be?',
+                    persistent-hint,
+                    dark,
+                    item-text='text',
+                    item-value='value'
+                  )
+                v-flex(xs3, offset-xs1)
                   v-switch(
                     :label="config.video.autoplay ? 'Yes' : 'No'",
                     color='primary',
@@ -123,7 +133,7 @@
                     persistent-hint,
                     hint='Do you want the video to run instantly?'
                   )
-                v-flex(xs2, v-show='config.video.inside')
+                v-flex(xs3)
                   v-switch(
                     :label="config.video.fullscreen ? 'Yes' : 'No'",
                     color='primary',
@@ -201,6 +211,9 @@
       },
       soundChoices () {
         return this.$store.state.config.sounds
+      },
+      subtitlesLanguages () {
+        return this.$store.state.config.subtitlesLanguages
       }
     },
     methods: {

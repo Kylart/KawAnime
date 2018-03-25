@@ -14,3 +14,14 @@ export const sounds = [
   'Poi',
   'None'
 ]
+
+export const subtitlesLanguages = [
+  { value: 'en', text: 'English' },
+  { value: 'ar', text: 'Arabic' },
+  { value: 'ge', text: 'German' },
+  { value: 'sp', text: 'Spanish' },
+  { value: 'fr', text: 'French' },
+  { value: 'it', text: 'Italian' },
+  { value: 'po', text: 'Portuguese' },
+  { value: 'ru', text: 'Russian' }
+]

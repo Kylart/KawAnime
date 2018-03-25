@@ -1,4 +1,4 @@
-import {fansubs, sounds} from '../lists.js'
+import {fansubs, sounds, subtitlesLanguages} from '../lists.js'
 
 export default {
   config: {
@@ -16,9 +16,11 @@ export default {
       inside: true,
       autoplay: true,
       fullscreen: false,
+      preferredLanguage: 'en',
       quality: '720p'
     }
   },
   fansubs,
-  sounds
+  sounds,
+  subtitlesLanguages
 }

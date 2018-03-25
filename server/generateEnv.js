@@ -38,6 +38,7 @@ const createConfig = () => {
         inside: true,
         autoplay: true,
         fullscreen: false,
+        preferredLanguage: 'en',
         quality: '720p'
       }
     }
