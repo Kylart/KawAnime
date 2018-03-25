@@ -2,7 +2,6 @@
  * Created by Kylart on 04/04/2017.
  */
 
-const {join} = require('path')
 const {dialog, BrowserWindow, shell} = require('electron')
 const {Logger} = require('../utils')
 const logger = new Logger('Open-External')
@@ -22,7 +21,7 @@ const openExternal = ({query}, res) => {
 
   switch (type) {
     case 'video':
-      shell.openItem(join(query.dir, query.path))
+      shell.openItem(query.path)
       sendEmptyRes(res)
       break
 

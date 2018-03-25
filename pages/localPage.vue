@@ -122,33 +122,41 @@
         return this.nbEps === 1
           ? 'episode'
           : 'episodes'
+      },
+      inside: {
+        get () {
+          return this.$store.state.config.config.video.inside
+        },
+        set () {}
       }
     },
     methods: {
-      playThis (item) {
-        console.log(`[${(new Date()).toLocaleTimeString()}]: Requested to play ${item.name} - ${item.ep}. Sending...`)
+      async playThis (item) {
+        this.$log(`Requested to play ${item.name} - ${item.ep}. Sending...`)
 
-        // No need to get through store.
-        // this.$axios.get(`openThis`, {
-        //   params: {
-        //     type: 'video',
-        //     path: item.path,
-        //     dir: this.$store.state.localFiles.dir
-        //   }
-        // }).then((res) => {
-        //   if (res.status !== 200) { console.log('An error occurred: request to open file ended with a status ' + res.status + '.') }
+        if (this.inside) {
+          this.$store.commit('videoPlayer/play', {
+            show: true,
+            link: {
+              link: item.path
+            }
+          })
+        } else {
+          const { status } = await this.$axios.get(`openThis`, {
+            params: {
+              type: 'video',
+              path: item.path,
+              dir: this.$store.state.localFiles.dir
+            }
+          })
 
-        //   this.$store.dispatch('history/append', {
-        //     type: 'Play',
-        //     text: `${item.name} - ${item.ep}`
-        //   }).catch(err => { void (err) })
-        // })
-        this.$store.commit('videoPlayer/play', {
-          show: true,
-          link: {
-            link: item.path
-          }
-        })
+          if (status !== 200) this.$log(`An error occurred: request to open file ended with a status ${status}.`)
+        }
+
+        this.$store.dispatch('history/append', {
+          type: 'Play',
+          text: `${item.name} - ${item.ep}`
+        }).catch(err => { void (err) })
       },
       delThis (item) {
         console.log(`[${(new Date()).toLocaleTimeString()}]: Requested to delete ${item.path} - ${item.ep}. Sending...`)
