@@ -11,6 +11,12 @@ export default {
     system: {
       autoStart: false,
       toTray: false
+    },
+    video: {
+      inside: true,
+      autoplay: true,
+      fullscreen: false,
+      quality: '720p'
     }
   },
   fansubs,

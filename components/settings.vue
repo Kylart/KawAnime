@@ -92,6 +92,47 @@
                     v-flex.pt-2(xs2)
                       v-btn(flat, @click="malRegister") Save
             v-card.section
+              v-card-title#local.headline Video
+              v-divider
+              v-layout(row, wrap, justify-center)
+                v-flex.section-title(xs3) Player
+                v-flex(xs9)
+                  v-switch(
+                    :label="config.video.inside ? 'Inside' : 'Outside'",
+                    color='primary',
+                    v-model='config.video.inside',
+                    dark,
+                    persistent-hint,
+                    hint='Activate to use the KawAnime in-app video player!'
+                  )
+                v-flex.section-title(xs3, v-show='config.video.inside') Streaming quality
+                v-flex(xs5, v-show='config.video.inside')
+                  v-radio-group(:isMantatory="true", row, v-model="config.video.quality")
+                    template(v-for='radio in radios')
+                      v-radio(
+                        color='orange'
+                        :label='radio',
+                        :value='radio'
+                      )
+                v-flex(xs2, v-show='config.video.inside')
+                  v-switch(
+                    :label="config.video.autoplay ? 'Yes' : 'No'",
+                    color='primary',
+                    v-model='config.video.autoplay',
+                    dark,
+                    persistent-hint,
+                    hint='Do you want the video to run instantly?'
+                  )
+                v-flex(xs2, v-show='config.video.inside')
+                  v-switch(
+                    :label="config.video.fullscreen ? 'Yes' : 'No'",
+                    color='primary',
+                    v-model='config.video.fullscreen',
+                    dark,
+                    persistent-hint,
+                    hint='Should KawAnime\'s be fullscreen by default?'
+                  )
+            v-card.section
               v-card-title#local.headline Notification
               v-divider
               v-layout(row, wrap, justify-center)
@@ -147,8 +188,13 @@
       }
     },
     computed: {
-      config () {
-        return this.$store.state.config.config
+      config: {
+        get () {
+          return this.$store.state.config.config
+        },
+        set (val) {
+          this.$store.commit('config/set', val)
+        }
       },
       fansubChoices () {
         return this.$store.state.config.fansubs

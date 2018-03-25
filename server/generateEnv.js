@@ -33,7 +33,13 @@ const createConfig = () => {
         autoStart: false,
         toTray: false
       },
-      version: '0.0.0'
+      version: '0.0.0',
+      video: {
+        inside: true,
+        autoplay: true,
+        fullscreen: false,
+        quality: '720p'
+      }
     }
   }
 
