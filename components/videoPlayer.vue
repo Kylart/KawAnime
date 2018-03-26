@@ -1,7 +1,7 @@
 <template lang="pug">
   div.video-player(@mousemove='onMouseMove', :style='{ cursor: controlsHidden ? "none" : null }')
     video(ref='video',
-      :autoplay='autoplay',
+      :autoplay='config.autoplay',
       @pause='paused = true',
       @play='paused = false',
       @timeupdate='onTimelineChangeEvent',
@@ -15,24 +15,28 @@
 
     v-icon.video-play(dark, @click.stop='togglePlay', v-if='paused') play_arrow
 
-    v-btn.video-close(color='blue', dark, icon, @click.stop='close', v-show='!controlsHidden')
+    v-btn.video-close(color='mablue', dark, icon, @click.stop='close', v-show='!controlsHidden')
       v-icon close
 
     v-fade-transition
       div.video-controls(v-show='!controlsHidden')
-        player-slider.timeline(dark, hide-details, color='blue', :step='0', :buffer='buffered', :value='timeline', @input='changeTimeline')
+        player-slider.timeline(dark, hide-details, color='mablue', :step='0', :buffer='buffered', :value='timeline', @input='changeTimeline')
 
-        v-btn(color='blue', dark, icon, @click.stop='togglePlay')
+        v-btn(color='mablue', dark, icon, @click.stop='togglePlay')
           v-icon(v-html="paused ? 'play_arrow' : 'pause'")
-        v-btn(color='blue', dark, icon, @click.stop='toggleMute')
+        v-btn(color='mablue', dark, icon, @click.stop='toggleMute')
           v-icon(v-html="muted ? 'volume_off' : 'volume_up'")
-        v-slider.volume(hide-details, color='blue', dark, :max='100', :value='muted ? 0 : volume', @input='changeVolume')
+        v-slider.volume(hide-details, color='mablue', dark, :max='100', :value='muted ? 0 : volume', @input='changeVolume')
         div.timer {{ currentTime }}/{{ duration }}
+        v-btn(color='mablue', dark, icon, @click.stop='timeForward(5)')
+          v-icon forward_5
+        v-btn(color='mablue', dark, icon, @click.stop='timeForward(90)')
+          v-icon fast_forward
 
-        v-btn.right(color='blue', dark, icon, @click.stop='toggleFullWindow')
+        v-btn#fullscreen.right(color='mablue', dark, icon, @click.stop='toggleFullScreen')
           v-icon(v-html="fullscreen ? 'fullscreen_exit' : 'fullscreen'")
         v-menu.right(v-if='$refs.video && !controlsHidden', open-on-hover, offset-overflow, offset-y, top)
-          v-btn.subtitles(slot='activator', color='blue', dark)
+          v-btn.subtitles(slot='activator', color='mablue', dark)
             v-icon subtitles
           v-list
             v-list-tile.video-subtitle(v-for='(track,i) in $refs.video.textTracks', :key='i' @click='setTrack(track)')
@@ -40,133 +44,158 @@
 </template>
 
 <script>
+  export default {
+    name: 'video-player',
+    props: ['value', 'name'],
+    data () {
+      return {
+        waiting: false,
+        paused: true,
+        muted: false,
+        fullscreen: false,
+        buffered: [],
+        timeline: 0,
+        volume: 100,
+        currentTime: 0,
+        duration: 0,
+        controlsHidden: true,
+        autoplay: true
+      }
+    },
+    computed: {
+      config: {
+        get () {
+          return this.$store.state.config.config.video
+        },
+        set () {}
+      }
+    },
+    mounted () {
+      this.eventSource = new window.EventSource(`/tracks/${this.value}`)
+      const textTracks = {}
 
-if (typeof document !== 'undefined') {
-  import('fullscreen-api-polyfill')
-}
+      this.eventSource.addEventListener('tracks', ({ data }) => {
+        const tracks = JSON.parse(data)
+        tracks.forEach(track => {
+          const language = (track.language || 'eng').slice(0, 2)
+          textTracks[track.number] = this.$refs.video.addTextTrack('captions', language, language)
 
-export default {
-  name: 'video-player',
-  props: ['value'],
-  data () {
-    return {
-      waiting: false,
-      paused: true,
-      muted: false,
-      fullscreen: false,
-      buffered: [],
-      timeline: 0,
-      volume: 100,
-      currentTime: 0,
-      duration: 0,
-      controlsHidden: false,
-      autoplay: true
-    }
-  },
-  mounted () {
-    this.eventSource = new window.EventSource(`/tracks/${this.value}`)
-    const textTracks = {}
-
-    this.eventSource.addEventListener('tracks', ({ data }) => {
-      const tracks = JSON.parse(data)
-      tracks.forEach(track => {
-        const language = (track.language || 'eng').slice(0, 2)
-        textTracks[track.number] = this.$refs.video.addTextTrack('captions', language, language)
+          language === this.config.preferredLanguage && this.setTrack(textTracks[track.number])
+        })
       })
-    })
 
-    this.eventSource.addEventListener('subtitle', ({ data }) => {
-      const { trackNumber, subtitle: { time, duration, text } } = JSON.parse(data)
-      if (trackNumber in textTracks) {
-        textTracks[trackNumber].addCue(new window.VTTCue(time / 1000, (time + duration) / 1000, text.replace(/\\N/g, '\n')))
-      }
-    })
-  },
-  created () {
-    document.addEventListener('fullscreenchange', this.onFullscreenEvent)
-    document.addEventListener('fullscreenerror', this.onFullscreenEvent)
-  },
-  beforeDestroy () {
-    this.eventSource && this.eventSource.close()
-    document.removeEventListener('fullscreenchange', this.onFullscreenEvent)
-    document.removeEventListener('fullscreenerror', this.onFullscreenEvent)
-  },
-  methods: {
-    formatTime (time = 0) {
-      const minutes = ('0' + Math.floor(time / 60)).slice(-2)
-      const seconds = ('0' + Math.floor(time % 60)).slice(-2)
-
-      return `${minutes}:${seconds}`
-    },
-    togglePlay () {
-      const video = this.$refs.video
-      this.showControls()
-      this.paused ? video.play() : video.pause()
-    },
-    toggleMute () {
-      this.muted = this.$refs.video.muted = !this.muted
-    },
-    toggleFullScreen () {
-      this.fullscreen
-        ? document.exitFullscreen()
-        : this.$el.requestFullscreen()
-    },
-    onFullscreenEvent () {
-      this.fullscreen = document.fullscreenElement !== null
-    },
-    onTimelineChangeEvent () {
-      const video = this.$refs.video
-      if (video) {
-        this.timeline = 100 / video.duration * video.currentTime
-        this.currentTime = this.formatTime(video.currentTime)
-        this.duration = this.formatTime(video.duration)
-      }
-    },
-    onProgress () {
-      const video = this.$refs.video
-      if (video) {
-        const buffered = []
-        for (let i = 0, l = video.buffered.length; i < l; ++i) {
-          buffered.push([
-            video.buffered.start(i) / video.duration * 100,
-            video.buffered.end(i) / video.duration * 100
-          ])
+      this.eventSource.addEventListener('subtitle', ({ data }) => {
+        const { trackNumber, subtitle: { time, duration, text } } = JSON.parse(data)
+        if (trackNumber in textTracks) {
+          textTracks[trackNumber].addCue(new window.VTTCue(time / 1000, (time + duration) / 1000, text.replace(/\\N/g, '\n')))
         }
-        this.buffered = buffered
+      })
+
+      const video = this.$refs.video
+
+      if (video) {
+        video.addEventListener('canplay', () => {
+          this.config.fullscreen && this.toggleFullScreen()
+          this.controlsHidden = false
+        })
       }
     },
-    changeTimeline (value) {
-      const video = this.$refs.video
-      if (video) { video.currentTime = video.duration * ((this.timeline = value) / 100) }
+    beforeDestroy () {
+      this.eventSource && this.eventSource.close()
     },
-    changeVolume (value) {
-      if (this.$refs.video) { this.$refs.video.volume = (this.volume = value) / 100 }
-    },
-    onMouseMove (e) {
-      if (Math.abs(e.movementX) > 1 || Math.abs(e.movementY) > 1) { this.showControls() }
-    },
-    showControls () {
-      this.controlsHidden = false
-      if (this.timeoutID) clearTimeout(this.timeoutID)
-      this.timeoutID = setTimeout(() => (this.controlsHidden = true), 3000)
-    },
-    setTrack (track) {
-      const video = this.$refs.video
-      if (track.mode === 'showing') {
-        track.mode = 'hidden'
-      } else {
-        for (const track of video.textTracks) {
+    methods: {
+      formatTime (time = 0) {
+        const minutes = ('0' + Math.floor(time / 60)).slice(-2)
+        const seconds = ('0' + Math.floor(time % 60)).slice(-2)
+
+        return `${minutes}:${seconds}`
+      },
+      togglePlay () {
+        const video = this.$refs.video
+        this.showControls()
+        this.paused ? video.play() : video.pause()
+      },
+      toggleMute () {
+        this.muted = this.$refs.video.muted = !this.muted
+      },
+      toggleFullScreen () {
+        this.$parent.$parent.toggleFullScreen()
+      },
+      onTimelineChangeEvent () {
+        const video = this.$refs.video
+        if (video) {
+          this.timeline = 100 / video.duration * video.currentTime
+          this.currentTime = this.formatTime(video.currentTime)
+          this.duration = this.formatTime(video.duration)
+        }
+      },
+      onProgress () {
+        const video = this.$refs.video
+        if (video) {
+          const buffered = []
+          for (let i = 0, l = video.buffered.length; i < l; ++i) {
+            buffered.push([
+              video.buffered.start(i) / video.duration * 100,
+              video.buffered.end(i) / video.duration * 100
+            ])
+          }
+          this.buffered = buffered
+        }
+      },
+      changeTimeline (value) {
+        const video = this.$refs.video
+        if (video) { video.currentTime = video.duration * ((this.timeline = value) / 100) }
+      },
+      timeForward (value) {
+        const video = this.$refs.video
+
+        if (video) {
+          video.currentTime += value
+        }
+      },
+      changeVolume (value) {
+        if (this.$refs.video) this.$refs.video.volume = (this.volume = value) / 100
+      },
+      increaseVolume (value) {
+        const video = this.$refs.video
+
+        if (video) {
+          const currentVolume = video.volume * 100
+          let newVolume = currentVolume + value
+
+          newVolume = newVolume >= 0 && newVolume <= 100
+            ? newVolume
+            : currentVolume
+
+          this.volume = newVolume
+          this.$refs.video.volume = newVolume / 100
+        }
+      },
+      onMouseMove (e) {
+        if (Math.abs(e.movementX) > 1 || Math.abs(e.movementY) > 1) { this.showControls() }
+      },
+      showControls () {
+        this.controlsHidden = false
+        if (this.timeoutID) clearTimeout(this.timeoutID)
+        this.timeoutID = setTimeout(() => (this.controlsHidden = true), 3000)
+      },
+      setTrack (track) {
+        const video = this.$refs.video
+        if (track.mode === 'showing') {
           track.mode = 'hidden'
-        }
+        } else {
+          for (const track of video.textTracks) {
+            track.mode = 'hidden'
+          }
 
-        track.mode = 'showing'
+          track.mode = 'showing'
+        }
+      },
+      close () {
+        this.$parent.$parent.close()
       }
-    },
-    close () {
-      this.$parent.$parent.close()
     }
   }
-}
 </script>
 
 <style lang="stylus">
@@ -181,7 +210,8 @@ export default {
     line-height 0px
     position relative
     display inline-block
-    height 100%
+    // height 100%
+    height calc(100% - 24px) // Because of system-bar
     width 100%
 
     &:fullscreen

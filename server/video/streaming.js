@@ -28,8 +28,6 @@ const stream = (req, res) => {
 
     const mimeType = mime.getType(path || torrent.name)
 
-    logger.info(`Video mime-type: "${mimeType}"`)
-
     res.set({
       'Content-Type': mime.getType(mimeType),
       'Accept-Ranges': 'bytes'

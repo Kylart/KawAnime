@@ -39,7 +39,6 @@
     "electron-log": "^2.2.14",
     "electron-updater": "^2.21.3",
     "express": "^4.16.2",
-    "fullscreen-api-polyfill": "^1.1.2",
     "horrible-api": "^1.1.1",
     "lodash": "^4.17.5",
     "lru-cache": "^4.0.2",

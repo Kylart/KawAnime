@@ -14,6 +14,15 @@ const actOnWin = ({query}, res) => {
   res.status(200).send()
 }
 
+const toggleFullScreen = (req, res) => {
+  if (process.win && process.win.isVisible()) {
+    process.win.setFullScreen(!process.win.isFullScreen())
+  }
+
+  res.status(200).send()
+}
+
 module.exports = {
-  actOnWin
+  actOnWin,
+  toggleFullScreen
 }

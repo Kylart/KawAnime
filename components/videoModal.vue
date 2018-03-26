@@ -1,21 +1,30 @@
 <template lang="pug">
-  v-dialog(
-    v-model='values.show',
+  v-dialog#video-player-dialog(
+    v-model='show',
     persistent,
     lazy,
-    absolute,
     width='initial',
     max-width='100%',
-    @keydown.esc='close()'
+    @keydown.esc='close()',
+    @keydown.right='forward(5)',
+    @keydown.left='forward(-5)',
+    @keydown.up='increaseVolume(5)',
+    @keydown.down='increaseVolume(-5)',
+    @keydown.space='togglePlay()',
+    :fullscreen='fullscreen'
   )
     template(v-if='values.show')
-      video-player(:value='values.link.link')
-      h2.text-md-center {{ values.link.name }}
+      video-player(ref='player', :value='values.link.link', :name='values.link.name')
 </template>
 
 <script>
 
 export default {
+  data () {
+    return {
+      fullscreen: false
+    }
+  },
   computed: {
     values () {
       return this.$store.state.videoPlayer.player
@@ -26,9 +35,20 @@ export default {
   },
   methods: {
     close () {
-      if (document.fullscreenElement === null) {
-        this.$store.commit('videoPlayer/close')
-      }
+      this.$store.commit('videoPlayer/close')
+    },
+    async toggleFullScreen () {
+      this.fullscreen = !this.fullscreen
+      await this.$axios.get('/_fullScreen')
+    },
+    forward (value) {
+      this.$refs.player.timeForward(value)
+    },
+    increaseVolume (value) {
+      this.$refs.player.increaseVolume(value)
+    },
+    togglePlay () {
+      this.$refs.player.togglePlay()
     }
   }
 }
