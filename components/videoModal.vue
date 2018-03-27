@@ -14,7 +14,7 @@
     :fullscreen='fullscreen'
   )
     template(v-if='values.show')
-      video-player(ref='player', :value='values.link.link', :name='values.link.name')
+      video-player(ref='player', :value='values.link.link', :title='values.link.name')
 </template>
 
 <script>

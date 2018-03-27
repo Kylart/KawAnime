@@ -13,6 +13,8 @@
 
     v-progress-circular.main-color--text.video-waiting(dark, indeterminate, v-show='waiting')
 
+    h6.video-title(v-show='!controlsHidden') {{ title }}
+
     v-icon.video-play(dark, @click.stop='togglePlay', v-if='paused') play_arrow
 
     v-btn.video-close(color='mablue', dark, icon, @click.stop='close', v-show='!controlsHidden')
@@ -28,6 +30,8 @@
           v-icon(v-html="muted ? 'volume_off' : 'volume_up'")
         v-slider.volume(hide-details, color='mablue', dark, :max='100', :value='muted ? 0 : volume', @input='changeVolume')
         div.timer {{ currentTime }}/{{ duration }}
+        v-btn(color='mablue', dark, icon, @click.stop='timeForward(-5)')
+          v-icon replay_5
         v-btn(color='mablue', dark, icon, @click.stop='timeForward(5)')
           v-icon forward_5
         v-btn(color='mablue', dark, icon, @click.stop='timeForward(90)')
@@ -46,7 +50,7 @@
 <script>
   export default {
     name: 'video-player',
-    props: ['value', 'name'],
+    props: ['value', 'title'],
     data () {
       return {
         waiting: false,
@@ -244,6 +248,14 @@
       height 100px
       width 100px
       font-size 100px
+
+    .video-title
+        position absolute
+        width 80%
+        left 10%
+        top 4%
+        text-align center
+        line-height 22px
 
     .video-controls
       text-align left

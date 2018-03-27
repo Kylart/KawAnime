@@ -193,7 +193,8 @@
         this.$store.commit('videoPlayer/play', {
           show: true,
           link: {
-            link: item.magnetLink
+            link: item.magnetLink,
+            name: `${item.title} -- ${item.ep}`
           }
         })
       }

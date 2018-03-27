@@ -138,7 +138,8 @@
           this.$store.commit('videoPlayer/play', {
             show: true,
             link: {
-              link: item.path
+              link: item.path,
+              name: item.path.replace(this.$store.state.localFiles.dir, '').slice(1)
             }
           })
         } else {
