@@ -148,6 +148,11 @@ const template = () => {
         role: 'minimize'
       },
       {
+        label: 'Maximize',
+        accelerator: 'CmdOrCtrl+Shift+M',
+        click: (item, window) => window.setFullScreen(!window.isFullScreen())
+      },
+      {
         label: 'Zoom',
         role: 'zoom'
       },
