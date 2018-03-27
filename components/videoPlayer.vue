@@ -95,17 +95,16 @@
         }
       })
 
-      const video = this.$refs.video
+      const { video } = this.$refs
 
       if (video) {
-        video.addEventListener('canplay', () => {
-          this.config.fullscreen && this.toggleFullScreen()
-          this.controlsHidden = false
-        })
+        !this.fullscreen && this.config.fullscreen && this.toggleFullScreen()
+        this.controlsHidden = false
       }
     },
     beforeDestroy () {
       this.eventSource && this.eventSource.close()
+      this.fullscreen && this.toggleFullScreen()
     },
     methods: {
       formatTime (time = 0) {
@@ -115,7 +114,7 @@
         return `${minutes}:${seconds}`
       },
       togglePlay () {
-        const video = this.$refs.video
+        const { video } = this.$refs
         this.showControls()
         this.paused ? video.play() : video.pause()
       },
@@ -124,9 +123,10 @@
       },
       toggleFullScreen () {
         this.$parent.$parent.toggleFullScreen()
+        this.fullscreen = !this.fullscreen
       },
       onTimelineChangeEvent () {
-        const video = this.$refs.video
+        const { video } = this.$refs
         if (video) {
           this.timeline = 100 / video.duration * video.currentTime
           this.currentTime = this.formatTime(video.currentTime)
@@ -134,7 +134,7 @@
         }
       },
       onProgress () {
-        const video = this.$refs.video
+        const { video } = this.$refs
         if (video) {
           const buffered = []
           for (let i = 0, l = video.buffered.length; i < l; ++i) {
@@ -147,11 +147,11 @@
         }
       },
       changeTimeline (value) {
-        const video = this.$refs.video
+        const { video } = this.$refs
         if (video) { video.currentTime = video.duration * ((this.timeline = value) / 100) }
       },
       timeForward (value) {
-        const video = this.$refs.video
+        const { video } = this.$refs
 
         if (video) {
           video.currentTime += value
@@ -161,7 +161,7 @@
         if (this.$refs.video) this.$refs.video.volume = (this.volume = value) / 100
       },
       increaseVolume (value) {
-        const video = this.$refs.video
+        const { video } = this.$refs
 
         if (video) {
           const currentVolume = video.volume * 100
@@ -184,7 +184,7 @@
         this.timeoutID = setTimeout(() => (this.controlsHidden = true), 3000)
       },
       setTrack (track) {
-        const video = this.$refs.video
+        const { video } = this.$refs
         if (track.mode === 'showing') {
           track.mode = 'hidden'
         } else {
