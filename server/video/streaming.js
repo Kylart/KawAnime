@@ -19,7 +19,7 @@ const stream = (req, res) => {
 
   const stat = path && fs.statSync(path)
 
-  logger.info(`Tracks for ${type}: ${isMagnet ? magnet : path}`)
+  logger.info(`Streaming ${type}: ${isMagnet ? magnet : path}`)
 
   const processFile = (obj = { files: [] }) => {
     const { files: [torrent] } = obj
@@ -108,7 +108,7 @@ const tracks = (req, res) => {
         ? torrent.createReadStream()
         : fs.createReadStream(path)
 
-      parser.once('tracks', tracks => res.sse('tracks', tracks))
+      parser.on('tracks', tracks => res.sse('tracks', tracks))
 
       parser.on('subtitle', (subtitle, trackNumber) => res.sse('subtitle', {
         subtitle,
@@ -133,21 +133,7 @@ const tracks = (req, res) => {
     }
   }
 
-  if (magnet) {
-    const torrent = client.get(magnet)
-
-    if (torrent) {
-      if (torrent.ready) {
-        processFile(torrent)
-      } else {
-        torrent.once('ready', () => processFile(torrent))
-      }
-    } else {
-      client.add(magnet, processFile)
-    }
-  } else {
-    processFile()
-  }
+  processFile(isMagnet ? client.get(magnet) : undefined)
 }
 
 module.exports = {stream, tracks}

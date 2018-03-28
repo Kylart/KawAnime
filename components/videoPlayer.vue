@@ -75,27 +75,31 @@
       }
     },
     mounted () {
-      this.eventSource = new window.EventSource(`/tracks/${this.value}`)
+      const { video } = this.$refs
       const textTracks = {}
 
-      this.eventSource.addEventListener('tracks', ({ data }) => {
-        const tracks = JSON.parse(data)
-        tracks.forEach(track => {
-          const language = (track.language || 'eng').slice(0, 2)
-          textTracks[track.number] = this.$refs.video.addTextTrack('captions', language, language)
+      video.addEventListener('loadedmetadata', () => {
+        // We need to get the subtitles only when the torrent is ready to be read. Otherwise,
+        // there is no file to get the subtitles from.
+        this.eventSource = new window.EventSource(`/tracks/${this.value}`)
 
-          language === this.config.preferredLanguage && this.setTrack(textTracks[track.number])
+        this.eventSource.addEventListener('tracks', ({ data }) => {
+          const tracks = JSON.parse(data)
+          tracks.forEach(track => {
+            const language = (track.language || 'eng').slice(0, 2)
+            textTracks[track.number] = this.$refs.video.addTextTrack('captions', language, language)
+
+            language === this.config.preferredLanguage && this.setTrack(textTracks[track.number])
+          })
+        })
+
+        this.eventSource.addEventListener('subtitle', ({ data }) => {
+          const { trackNumber, subtitle: { time, duration, text } } = JSON.parse(data)
+          if (trackNumber in textTracks) {
+            textTracks[trackNumber].addCue(new window.VTTCue(time / 1000, (time + duration) / 1000, text.replace(/\\N/g, '\n')))
+          }
         })
       })
-
-      this.eventSource.addEventListener('subtitle', ({ data }) => {
-        const { trackNumber, subtitle: { time, duration, text } } = JSON.parse(data)
-        if (trackNumber in textTracks) {
-          textTracks[trackNumber].addCue(new window.VTTCue(time / 1000, (time + duration) / 1000, text.replace(/\\N/g, '\n')))
-        }
-      })
-
-      const { video } = this.$refs
 
       if (video) {
         !this.fullscreen && this.config.fullscreen && this.toggleFullScreen()
