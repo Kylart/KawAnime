@@ -215,6 +215,7 @@
 <style lang="stylus">
   ::cue
     color white
+    font-size 36px
     font-weight bold
     text-shadow 1px 1px 2px black, 1px -1px 2px black, -1px 1px 2px black, -1px -1px 2px black
     background-color rgba(0, 0, 0, 0)

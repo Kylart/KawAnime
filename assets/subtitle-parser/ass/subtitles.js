@@ -1,10 +1,7 @@
 import _ from 'lodash'
 
-const findStyleByName = (name, styles) => {
-  return _.filter(styles, (style) => style.Name === name)[0]
-}
-
 export default function (subtitle, styles, info) {
+  // Following the ass-specs http://www.cccp-project.net/stuff/ass-specs.pdf
   const { time, duration, text } = subtitle
   const result = new window.VTTCue(time / 1000, (time + duration) / 1000, text)
 
@@ -14,7 +11,8 @@ export default function (subtitle, styles, info) {
   const unitX = resX / 90 // Border between 5 and 95.
   const unitY = resY / 16
 
-  const style = findStyleByName(subtitle.style, styles)
+  // First we need to set the current subtitle style if any.
+  const style = _.filter(styles, (style) => style.Name === subtitle.style)[0] // findStyleByName(subtitle.style, styles)
 
   const alignment = +style.Alignment
 
@@ -31,7 +29,7 @@ export default function (subtitle, styles, info) {
     // Text should be horizontally centered
     result.position = 'auto'
   } else {
-    result.position = mR < mL
+    result.position = !mL
       ? 95 - Math.round(mR / unitX)
       : 2 + Math.round(mL / unitX)
   }
@@ -63,8 +61,11 @@ export default function (subtitle, styles, info) {
       ? 'end'
       : 'center'
 
-  // alignment === 7 && console.log(subtitle, style, result)
+  // const isItalic = +style.Italic
+  // const isBold = +style.Bold
+  // const isUnderline = -+style.Underline
 
+  // We should handle tags now
   let string = text
 
   // Getting those line breaks
