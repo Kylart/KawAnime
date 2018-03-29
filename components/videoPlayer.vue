@@ -48,6 +48,8 @@
 </template>
 
 <script>
+  import { fromAss } from 'assets/subtitle-parser'
+
   export default {
     name: 'video-player',
     props: ['value', 'title'],
@@ -63,7 +65,9 @@
         currentTime: 0,
         duration: 0,
         controlsHidden: true,
-        autoplay: true
+        autoplay: true,
+        styles: null,
+        info: null
       }
     },
     computed: {
@@ -85,6 +89,10 @@
 
         this.eventSource.addEventListener('tracks', ({ data }) => {
           const tracks = JSON.parse(data)
+          const parsedTracks = fromAss.tracks(tracks)
+          this.styles = parsedTracks.styles
+          this.info = parsedTracks.info
+
           tracks.forEach(track => {
             const language = (track.language || 'eng').slice(0, 2)
             textTracks[track.number] = this.$refs.video.addTextTrack('captions', language, language)
@@ -94,17 +102,15 @@
         })
 
         this.eventSource.addEventListener('subtitle', ({ data }) => {
-          const { trackNumber, subtitle: { time, duration, text } } = JSON.parse(data)
+          const { trackNumber, subtitle } = JSON.parse(data)
           if (trackNumber in textTracks) {
-            textTracks[trackNumber].addCue(new window.VTTCue(time / 1000, (time + duration) / 1000, text.replace(/\\N/g, '\n')))
+            const cue = fromAss.subtitles(subtitle, this.styles, this.info)
+            textTracks[trackNumber].addCue(cue)
           }
         })
       })
 
-      if (video) {
-        !this.fullscreen && this.config.fullscreen && this.toggleFullScreen()
-        this.controlsHidden = false
-      }
+      video && !this.fullscreen && this.config.fullscreen && this.toggleFullScreen()
     },
     beforeDestroy () {
       this.eventSource && this.eventSource.close()

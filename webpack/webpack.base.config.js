@@ -25,7 +25,6 @@ module.exports = {
       'assets': resolve('assets'),
       'stylus': resolve('assets/stylus'),
       'components': resolve('components'),
-      'layouts': resolve('layouts'),
       'mixins': resolve('mixins'),
       'pages': resolve('pages'),
       'public': resolve('public'),
