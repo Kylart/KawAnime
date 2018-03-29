@@ -8,7 +8,7 @@ export default function (subtitle, styles, info) {
   const resX = +info.PlayResX
   const resY = +info.PlayResY
 
-  const unitX = resX / 90 // Border between 5 and 95.
+  const unitX = resX / 100 // Border between 5 and 95.
   const unitY = resY / 16
 
   // First we need to set the current subtitle style if any.
@@ -26,17 +26,16 @@ export default function (subtitle, styles, info) {
 
   // Horizontally
   if (mR === mL) {
-    // Text should be horizontally centered
     result.position = 'auto'
   } else {
     result.position = !mL
       ? 95 - Math.round(mR / unitX)
-      : 2 + Math.round(mL / unitX)
+      : 5 + Math.round(mL / unitX)
   }
 
-  // Vertically
-  const isTop = _.inRange(alignment, 4, 8) // 3 < a < 7
-  const isBot = _.inRange(alignment, 1, 4) // 0 < a < 4
+  // Vertical-alignment. We assume that the file is unicoded.
+  const isTop = _.inRange(alignment, 7, 10)
+  const isBot = _.inRange(alignment, 1, 4)
 
   const offsetY = Math.round(mV / unitY)
 
@@ -51,7 +50,9 @@ export default function (subtitle, styles, info) {
     result.line = 8
   }
 
-  // Alignment. We assume that the file is unicoded.
+  subtitle.text === 'Register' && console.log(subtitle, style, result)
+
+  // Horizontal-alignment. We assume that the file is unicoded.
   const leftAligned = [1, 4, 7]
   const rightAligned = [3, 6, 9]
 
