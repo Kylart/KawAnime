@@ -26,6 +26,7 @@ export default function (styles, name) {
   _.each(styles, (style) => {
     const isItalic = +style.Italic ? 'italic' : 'none'
     const isUnderline = -+style.Underline ? 'underline' : null
+    const bold = -+style.Bold ? 'font-weight: bold;' : ''
     const fontSize = +style.Fontsize
     const strikeOut = +style.Strikeout ? 'line-through' : null
     const primaryColor = vbToRGBA(style.PrimaryColour)
@@ -41,6 +42,7 @@ export default function (styles, name) {
         text-decoration: ${(isUnderline || strikeOut) || 'none'};
         color: ${primaryColor};
         text-shadow: 1px 1px 2px ${outlineColor}, 1px -1px 2px ${outlineColor}, -1px 1px 2px ${outlineColor}, -1px -1px 2px ${outlineColor};
+        ${bold}
         ${outline}
         -webkit-font-smoothing: antialiased;
         ${defStyle}
