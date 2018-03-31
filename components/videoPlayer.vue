@@ -93,6 +93,8 @@
           this.styles = parsedTracks.styles
           this.info = parsedTracks.info
 
+          fromAss.setStyles(this.styles, this.value)
+
           tracks.forEach(track => {
             const language = (track.language || 'eng').slice(0, 2)
             textTracks[track.number] = this.$refs.video.addTextTrack('captions', language, language)
@@ -115,6 +117,10 @@
     beforeDestroy () {
       this.eventSource && this.eventSource.close()
       this.fullscreen && this.toggleFullScreen()
+
+      // Removing cue styling from head
+      const { head } = document
+      head.removeChild(head.children[head.childElementCount - 1])
     },
     methods: {
       formatTime (time = 0) {
@@ -213,13 +219,6 @@
 </script>
 
 <style lang="stylus">
-  ::cue
-    color white
-    font-size 36px
-    font-weight bold
-    text-shadow 1px 1px 2px black, 1px -1px 2px black, -1px 1px 2px black, -1px -1px 2px black
-    background-color rgba(0, 0, 0, 0)
-
   .video-player
     background-color black
     line-height 0px
