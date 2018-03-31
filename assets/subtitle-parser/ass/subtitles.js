@@ -1,7 +1,9 @@
 import _ from 'lodash'
 
 export default function (subtitle, styles, info) {
-  // Following the ass-specs http://www.cccp-project.net/stuff/ass-specs.pdf
+  // Following the ass-specs: http://www.cccp-project.net/stuff/ass-specs.pdf
+  // Position testing can somewhat be done here : http://ronallo.com/demos/webvtt-cue-settings/
+  // WebVTT documentation: https://developer.mozilla.org/en-US/docs/Web/API/WebVTT_API
   const { time, duration, text } = subtitle
   const result = new window.VTTCue(time / 1000, (time + duration) / 1000, text)
 
