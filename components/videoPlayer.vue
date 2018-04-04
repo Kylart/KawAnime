@@ -66,6 +66,7 @@
         duration: 0,
         controlsHidden: true,
         autoplay: true,
+        isAss: false,
         styles: null,
         info: null
       }
@@ -89,15 +90,24 @@
 
         this.eventSource.addEventListener('tracks', ({ data }) => {
           const tracks = JSON.parse(data)
-          const parsedTracks = fromAss.tracks(tracks)
-          this.styles = parsedTracks.styles
-          this.info = parsedTracks.info
-
-          fromAss.setStyles(this.styles, this.value)
+          let isStyleSet = false
 
           tracks.forEach(track => {
             const language = (track.language || 'eng').slice(0, 2)
             textTracks[track.number] = this.$refs.video.addTextTrack('captions', language, language)
+
+            if (track.type === 'ass') {
+              this.isAss = true
+              const parsedTracks = fromAss.tracks(tracks)
+              this.styles = parsedTracks.styles
+              this.info = parsedTracks.info
+
+              // Let's suppose each track have the same style and that only the language of each changes.
+              if (!isStyleSet) {
+                fromAss.setStyles(this.styles, this.value)
+                isStyleSet = true
+              }
+            }
 
             language === this.config.preferredLanguage && this.setTrack(textTracks[track.number])
           })
@@ -106,7 +116,10 @@
         this.eventSource.addEventListener('subtitle', ({ data }) => {
           const { trackNumber, subtitle } = JSON.parse(data)
           if (trackNumber in textTracks) {
-            const cue = fromAss.subtitles(subtitle, this.styles, this.info)
+            const cue = this.isAss
+              ? fromAss.subtitles(subtitle, this.styles, this.info)
+              : new window.VTTCue(subtitle.time / 1000, (subtitle.time + subtitle.duration) / 1000, subtitle.text)
+
             textTracks[trackNumber].addCue(cue)
           }
         })
