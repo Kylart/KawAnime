@@ -12,7 +12,7 @@ const vbToRGBA = (vb) => {
   return `#${r}${g}${b}`
 }
 
-const generateStroke = (outline, outlineColor) => {
+const generateOutline = (outline, outlineColor) => {
   const unit = `0 0 ${1.8 * outline || 4}px ${outlineColor}, `
 
   return `text-shadow: ${unit.repeat(8).slice(0, -2)};`
@@ -31,17 +31,18 @@ export default function (styles, name) {
     const strikeOut = +style.Strikeout ? 'line-through' : null
     const primaryColor = vbToRGBA(style.PrimaryColour)
     const outlineColor = vbToRGBA(style.OutlineColour)
-    const outline = generateStroke(+style.Outline, outlineColor)
+    const outlineThickness = +style.Outline
+    const outline = generateOutline(outlineThickness, outlineColor)
 
     const defStyle = style.Name === 'Default' ? 'background-color: rgba(0, 0, 0, 0);\nfont-weight: 36px;' : ''
 
     styleTag.innerHTML += `
       .video-player > video::cue${style.Name === 'Default' ? '' : '(.' + style.Name.replace(/\s/g, '_') + ')'} {
         font-size: ${fontSize}px;
+        line-height: ${fontSize + (5 * outlineThickness || 4)}px;
         font-style: ${isItalic};
         text-decoration: ${(isUnderline || strikeOut) || 'none'};
         color: ${primaryColor};
-        text-shadow: 1px 1px 2px ${outlineColor}, 1px -1px 2px ${outlineColor}, -1px 1px 2px ${outlineColor}, -1px -1px 2px ${outlineColor};
         ${bold}
         ${outline}
         -webkit-font-smoothing: antialiased;
