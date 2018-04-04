@@ -40,7 +40,7 @@ export default function (subtitle, styles, info) {
   result.position = (alignment < 9 && alignment > 0 && alignmentToPos[alignment][1]) || 'auto'
 
   if (typeof result.position === 'number') {
-    result.position += offsetX
+    result.position = Math.abs(result.position + offsetX)
   }
 
   // Vertically. We assume that the file is unicoded.
