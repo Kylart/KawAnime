@@ -232,6 +232,9 @@
 </script>
 
 <style lang="stylus">
+  ::cue
+    background-color rgba(0, 0, 0, 0)
+
   .video-player
     background-color black
     line-height 0px
@@ -279,6 +282,7 @@
         top 4%
         text-align center
         line-height 22px
+        -webkit-text-stroke 1px black
 
     .video-controls
       text-align left

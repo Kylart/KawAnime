@@ -34,7 +34,7 @@ export default function (styles, name) {
     const outlineThickness = +style.Outline
     const outline = generateOutline(outlineThickness, outlineColor)
 
-    const defStyle = style.Name === 'Default' ? 'background-color: rgba(0, 0, 0, 0);\nfont-weight: 36px;' : ''
+    const defStyle = style.Name === 'Default' ? 'font-weight: 36px;' : ''
 
     styleTag.innerHTML += `
       .video-player > video::cue${style.Name === 'Default' ? '' : '(.' + style.Name.replace(/\s/g, '_') + ')'} {
