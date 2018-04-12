@@ -165,6 +165,7 @@
       },
       searchThis (item) {
         this.$store.commit('search/setInfo', item)
+        this.$store.commit('search/setInfoTerm', item.title)
         this.$store.commit('search/setInfoLoading', false)
         this.$store.commit('search/showInfo', true)
       },
