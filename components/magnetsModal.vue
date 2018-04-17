@@ -133,7 +133,14 @@
         })
       },
       openSelected () {
-        this.$_.each(this.selected, (l) => window.open(l))
+        this.$_.each(this.selected, (l) => {
+          this.$axios.get('openThis', {
+            params: {
+              type: 'link',
+              link: l
+            }
+          })
+        })
       }
     }
   }
