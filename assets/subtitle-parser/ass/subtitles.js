@@ -43,7 +43,8 @@ const getLine = (alignment, mV, unitY, height) => {
     // Distance is taken from the bottom
     result = (align.numpad[alignment][0] || 16) - offsetY
   } else {
-    result = 8 + offsetY
+    // Should be vertically centered
+    result = 8
   }
 
   return result
@@ -67,10 +68,6 @@ export default function (subtitle, styles, info) {
   const className = style.Name.replace(/\s/g, '_')
 
   const alignment = +style.Alignment
-  // const alignmentToPos = align.numpad
-
-  // For position style, need to handle Margin(L|R|V),
-  // Alignment, Font-size, Italic, Spacing?, Underline
 
   // First, Margins
   const mR = +style.MarginR
