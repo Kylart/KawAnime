@@ -37,8 +37,9 @@ const re = {
     name: /(\\fn.+(?=\\)|\\fn.+(?=}))/g,
     size: /\\fs[0-9]{1,3}/g
   },
-  color: /\\\d?c&H[0-9A-Za-z]{2,6}&/g,
+  color: /\\\d?c&H[0-9A-Za-z]{2,6}&/,
   alignment: /\\an?\d{1,2}/g,
+  karaoke: /\\k(f|o)?\d{1,5}/ig,
   notSupported: [
     /\\s(0|1)/g, // Strikeout
     /\\(bord|shad|be)[0-9]{1,5}/g, // Border, shadow and blur
@@ -48,7 +49,7 @@ const re = {
     /\\b\d{1,3}/g, // Custom bold is a pain to handle
     /\\fe\d{1,3}/g, // Encoding
     /\\(\d?a|alpha)&H[0-9A-Za-z]{2}&/g, // Alpha
-    /\\fad\(\d{1,3},\d{1,3}\)/g // fade animation
+    /\\fad\(\d{1,5},\d{1,5}\)/g // fade animation
   ]
 }
 
@@ -77,17 +78,20 @@ const handleFont = (type, string, style) => {
 
   if (fontType) {
     const font = fontType.slice(3)
-    const fontClass = font.replace(/\s/g, '_')
+    const fontClass = 'font_' + font.replace(/\s/g, '_')
 
     const value = font + (type === 'size' ? 'px' : '')
 
     // Check if class is in style. If not, includes it.
     let current = style.innerHTML
     if (!current.includes(`.${fontClass}`)) {
-      current += `.video-player > ::cue(.${fontClass}){font-${type === 'name' ? 'family' : 'size'}:${value};}`
+      style.innerHTML += `.video-player > video::cue(.${fontClass}) {
+        font-${type === 'name' ? 'family' : 'size'}:${value};
+        ${type === 'size' && 'line-height: 1.25 !important'};
+      }`
     }
 
-    string = `<c.${fontClass}>${string}</c>`
+    string = string.replace(re.font[type], `<c.${fontClass}>`) + '</c>'
   }
 
   return string.replace(re.font[type], '')
@@ -114,25 +118,31 @@ const setColorStyle = (type, colorTag, string, style) => {
   }
 
   // Check if class is in style. If not, includes it.
-  const current = style.innerHTML
-  if (!current.includes(`.${color}`)) {
-    current.append(
-      `.video-player > ::cue(${colorClass}){${typeToProperty[type].property}:${typeToProperty[type].rule};}`
-    )
+  let current = style.innerHTML
+  if (!current.includes(`.${colorClass}`)) {
+    style.innerHTML += `.video-player > ::cue(${colorClass}){${typeToProperty[type].property}:${typeToProperty[type].rule};}`
   }
 
-  return `<c${colorClass}>${string}</c>`
+  return string.replace(re.color, `<c${colorClass}>`)
 }
 
 const handleColor = (string, style) => {
-  const colorTag = re.color.test(string) && string.match(re.color)[0]
-
-  if (colorTag) {
-    // matching type can either be \c&H<color>H or \<number>c&H<>color&
+  while (re.color.test(string)) {
+    const colorTag = string.match(re.color)[0]
     const isPrimary = colorTag[1] === 'c' || colorTag[1] === '1'
 
     if (isPrimary) {
       string = setColorStyle('c', colorTag, string, style)
+
+      if (re.color.test(string)) {
+        // Meaning there is another color tag in the string so the closing tag should be
+        // before the next color tag
+        const match = string.match(re.color)[0]
+        const index = string.indexOf(match)
+        string = string.slice(0, index) + '</c>' + string.slice(index)
+      } else {
+        string += '</c>'
+      }
     } else {
       // Hopefully temporary
       // Support only for border color
@@ -142,7 +152,7 @@ const handleColor = (string, style) => {
     }
   }
 
-  return string.replace(re.color, '')
+  return string
 }
 
 const handleAlignment = (string, cue) => {
@@ -172,6 +182,28 @@ const handleAlignment = (string, cue) => {
   return cue
 }
 
+// const handleKaraoke = (string, cue) => {
+//   const karaokeTag = re.karaoke.test(string) && string.match(re.karaoke)
+//   // console.log(cue)
+
+//   if (karaokeTag.length) {
+//     const durations = []
+
+//     karaokeTag.forEach((tag) => {
+//       const tag_ = tag.replace(/f/g, '').replace(/o/g, '')
+
+//       const { startTime } = cue // Format is mm:ss.xx
+//       durations.push(tag_.slice(2))
+
+//       const completeDuration = durations.reduce((a, elem) => a + elem)
+
+//       const shouldStartAt = startTime + completeDuration
+//     })
+//   }
+
+//   return string.replace(karaokeTag, '')
+// }
+
 const handleNotSupported = (string) => {
   re.notSupported.forEach((tag) => { string = string.replace(tag, '') })
 
@@ -187,6 +219,8 @@ export default function (string, cue) {
     string = handleCommon('bold', string)
     string = handleCommon('italic', string)
     string = handleCommon('underline', string)
+
+    // string = handleKaraoke(string, cue)
 
     string = handleFont('name', string, cssStyle)
     string = handleFont('size', string, cssStyle)

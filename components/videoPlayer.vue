@@ -234,6 +234,9 @@
 <style lang="stylus">
   ::cue
     background-color rgba(0, 0, 0, 0)
+    -webkit-font-smoothing: antialiased;
+    line-height 1.25
+    white-space pre-line
 
   .video-player
     background-color black

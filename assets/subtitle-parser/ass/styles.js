@@ -34,19 +34,14 @@ export default function (styles, name) {
     const outlineThickness = +style.Outline
     const outline = generateOutline(outlineThickness, outlineColor)
 
-    const defStyle = style.Name === 'Default' ? 'font-weight: 36px;' : ''
-
     styleTag.innerHTML += `
       .video-player > video::cue${style.Name === 'Default' ? '' : '(.' + style.Name.replace(/\s/g, '_') + ')'} {
         font-size: ${fontSize}px;
-        line-height: ${fontSize + (5 * outlineThickness || 4)}px;
         font-style: ${isItalic};
         text-decoration: ${(isUnderline || strikeOut) || 'none'};
         color: ${primaryColor};
         ${bold}
         ${outline}
-        -webkit-font-smoothing: antialiased;
-        ${defStyle}
       }
     `
   })
