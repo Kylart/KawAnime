@@ -15,7 +15,7 @@ const getPosition = (alignment, mR, mL, width) => {
   } else if ([2, 5, 8].includes(alignment)) {
     result = (width / 2) + mL - mR
   } else if ([3, 6, 9].includes(alignment)) {
-    result = width - mL
+    result = width - mR
   } else {
     result = 'auto'
   }
