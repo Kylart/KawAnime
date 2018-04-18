@@ -6,22 +6,22 @@ const percent = (value, res) => {
   return Math.round((value / res) * 100)
 }
 
-const getPosition = (alignment, mR, mL, width) => {
-  // Following libass rules: https://github.com/libass/libass/wiki/ASSv5-Override-Tags
-  let result = 0
+const getPosition = (alignment, mR, mL, resX) => {
+  // The idea is to reduce the resX / resY rectangle with the margins.
+  // Only then, the position can be determined using the numpad alignment.
+
+  // Position 0 is left and Position 100 is right.
+  const left = percent(mL, resX)
+  const right = percent((resX - mR), resX)
+
+  let result = 'auto'
 
   if ([1, 4, 7].includes(alignment)) {
-    result = mL
-  } else if ([2, 5, 8].includes(alignment)) {
-    result = (width / 2) + mL - mR
+    result = left
   } else if ([3, 6, 9].includes(alignment)) {
-    result = width - mR
-  } else {
-    result = 'auto'
-  }
-
-  if (typeof result === 'number') {
-    return percent(result, width)
+    result = right
+  } else if ([2, 5, 8].includes(alignment)) {
+    result = (left + right) / 2
   }
 
   return result
