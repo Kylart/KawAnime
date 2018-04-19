@@ -62,6 +62,8 @@ const stream = (req, res) => {
           stream.destroy()
           torrent && torrent.deselect(range)
           stream = null
+
+          process.torrent = null
         }
       }
 
