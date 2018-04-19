@@ -226,11 +226,13 @@ const newWin = () => {
 }
 
 Electron.on('ready', () => {
-  const installExtension = require('electron-devtools-installer')
-  installExtension.default(installExtension.VUEJS_DEVTOOLS)
-    .catch(err => {
-      console.log('Unable to install `vue-devtools`: \n', err)
-    })
+  if (isDev) {
+    const installExtension = require('electron-devtools-installer')
+    installExtension.default(installExtension.VUEJS_DEVTOOLS)
+      .catch(err => {
+        console.log('Unable to install `vue-devtools`: \n', err)
+      })
+  }
 
   const currentSettings = Electron.getLoginItemSettings()
   Menu.setApplicationMenu(menu)
