@@ -127,7 +127,9 @@ const setColorStyle = (type, colorTag, string, style) => {
 }
 
 const handleColor = (string, style) => {
-  while (re.color.test(string)) {
+  const globalRe = new RegExp(re.color, ['g'])
+
+  for (let i = 0, l = string.match(globalRe).length; i < l; ++i) {
     const colorTag = string.match(re.color)[0]
     const isPrimary = colorTag[1] === 'c' || colorTag[1] === '1'
 
