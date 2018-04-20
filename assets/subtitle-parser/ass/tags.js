@@ -127,29 +127,31 @@ const setColorStyle = (type, colorTag, string, style) => {
 }
 
 const handleColor = (string, style) => {
-  const globalRe = new RegExp(re.color, ['g'])
+  if (re.color.test(string)) {
+    const globalRe = new RegExp(re.color, ['g'])
 
-  for (let i = 0, l = string.match(globalRe).length; i < l; ++i) {
-    const colorTag = string.match(re.color)[0]
-    const isPrimary = colorTag[1] === 'c' || colorTag[1] === '1'
+    for (let i = 0, l = string.match(globalRe).length; i < l; ++i) {
+      const colorTag = string.match(re.color)[0]
+      const isPrimary = colorTag[1] === 'c' || colorTag[1] === '1'
 
-    if (isPrimary) {
-      string = setColorStyle('c', colorTag, string, style)
+      if (isPrimary) {
+        string = setColorStyle('c', colorTag, string, style)
 
-      if (re.color.test(string)) {
-        // Meaning there is another color tag in the string so the closing tag should be
-        // before the next color tag
-        const match = string.match(re.color)[0]
-        const index = string.indexOf(match)
-        string = string.slice(0, index) + '</c>' + string.slice(index)
+        if (re.color.test(string)) {
+          // Meaning there is another color tag in the string so the closing tag should be
+          // before the next color tag
+          const match = string.match(re.color)[0]
+          const index = string.indexOf(match)
+          string = string.slice(0, index) + '</c>' + string.slice(index)
+        } else {
+          string += '</c>'
+        }
       } else {
-        string += '</c>'
-      }
-    } else {
-      // Hopefully temporary
-      // Support only for border color
-      if (colorTag[1] === '3') {
-        string = setColorStyle('b', colorTag, string, style)
+        // Hopefully temporary
+        // Support only for border color
+        if (colorTag[1] === '3') {
+          string = setColorStyle('b', colorTag, string, style)
+        }
       }
     }
   }
