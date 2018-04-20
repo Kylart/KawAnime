@@ -134,6 +134,14 @@
       // Removing cue styling from head
       const { head } = document
       head.removeChild(head.children[head.childElementCount - 1])
+
+      if (this.value.match(/magnet:\?/)) {
+        this.$axios.get('remove_torrent', {
+          params: {
+            magnet: this.value
+          }
+        })
+      }
     },
     methods: {
       formatTime (time = 0) {
@@ -285,6 +293,7 @@
         top 4%
         text-align center
         line-height 22px
+        font-weight 700
         -webkit-text-stroke 1px black
 
     .video-controls
