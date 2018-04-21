@@ -7,10 +7,13 @@ const logger = new Logger('Torrent Streamer')
 const decode = require('urldecode')
 const MatroskaSubtitles = require('matroska-subtitles')
 
-// TODO Limit download speed, check https://github.com/webtorrent/webtorrent/issues/163
-const client = process.torrentClient = new WebTorrent()
+let client = null
 
 const stream = (req, res) => {
+  if (!client) {
+    client = process.torrentClient = new WebTorrent()
+  }
+
   const info = decode(req.url.slice('/stream/'.length))
   const isMagnet = /^magnet:\?/.test(info)
   const type = isMagnet ? 'magnet' : 'file'

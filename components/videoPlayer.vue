@@ -135,8 +135,8 @@
       const { head } = document
       head.removeChild(head.children[head.childElementCount - 1])
 
-      if (this.value.match(/magnet:\?/)) {
-        this.$axios.get('remove_torrent', {
+      if (/^magnet:\?/.test(this.value)) {
+        this.$axios.delete('torrent/remove', {
           params: {
             magnet: this.value
           }
