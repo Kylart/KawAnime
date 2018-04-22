@@ -172,14 +172,16 @@ const handleAlignment = (string, cue) => {
     cue.position = isNumpad ? alignment.numpad[align][1] : alignment.ssa[align][1]
     cue.line = isNumpad ? alignment.numpad[align][0] : alignment.ssa[align][0]
 
-    const leftAligned = [1, 4, 7]
-    const rightAligned = [3, 6, 9]
+    if (isNumpad) {
+      const leftAligned = [1, 4, 7]
+      const rightAligned = [3, 6, 9]
 
-    cue.align = leftAligned.includes(align)
-      ? 'start'
-      : rightAligned.includes(align)
-        ? 'end'
-        : 'center'
+      cue.align = leftAligned.includes(align)
+        ? 'start'
+        : rightAligned.includes(align)
+          ? 'end'
+          : 'center'
+    }
   }
 
   cue.text = string.replace(re.alignment, '')
