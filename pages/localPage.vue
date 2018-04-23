@@ -4,12 +4,21 @@
       v-layout(row, wrap, style='margin: 0 1%;')
         v-flex.menubar(xs12)
           v-layout(row, wrap)
-            v-flex(hidden-sm-and-up, xs2)
-            v-flex.menu-eps(xs4, sm3, md2)
+            v-flex(hidden-sm-and-up, xs1)
+            v-flex.menu-eps(xs3, sm2, md2)
               p.menu-eps-text {{ nbEps }} {{ episodeLabel }}
-            v-flex(xs4, sm2, md2)
+            v-flex(xs4, offset-xs1, sm2, offset-sm0, md2)
               history-modal
-            v-flex.menu-buttons(xs12, sm7, offset-md3, md5, offset-lg4, lg4, offset-xl5, xl3)
+            v-flex(xs3, sm2, md2)
+              v-switch(
+                :label="inside ? 'Inside' : 'Outside'",
+                color='primary',
+                v-model='inside',
+                dark,
+                persistent-hint,
+                hint='Play in KawAnime?'
+              )
+            v-flex.menu-buttons(xs12, sm6, offset-md1, md5, offset-lg2, lg4, offset-xl3, xl3)
               v-btn.refresh-button(icon, v-if='!this.$store.state.localFiles.refreshing', @click='refresh()')
                 v-icon(large) refresh
               v-btn.refresh-button(v-else, icon, loading)
@@ -101,6 +110,8 @@
     mounted () {
       setTimeout(() => { this.emptyBg = true }, 300)
 
+      this.inside = this.$store.state.config.config.video.inside
+
       this.refresh()
     },
     beforeDestroy () {
@@ -108,6 +119,7 @@
     },
     data () {
       return {
+        inside: true,
         emptyBg: false
       }
     },
@@ -122,12 +134,6 @@
         return this.nbEps === 1
           ? 'episode'
           : 'episodes'
-      },
-      inside: {
-        get () {
-          return this.$store.state.config.config.video.inside
-        },
-        set () {}
       }
     },
     methods: {
@@ -160,7 +166,7 @@
         }).catch(err => { void (err) })
       },
       delThis (item) {
-        console.log(`[${(new Date()).toLocaleTimeString()}]: Requested to delete ${item.path} - ${item.ep}. Sending...`)
+        this.$log(`[${(new Date()).toLocaleTimeString()}]: Requested to delete ${item.path} - ${item.ep}. Sending...`)
 
         this.$store.commit('localFiles/updateFiles', {
           type: 'delete',
