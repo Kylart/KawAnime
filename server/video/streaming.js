@@ -7,11 +7,10 @@ const logger = new Logger('Torrent Streamer')
 const decode = require('urldecode')
 const MatroskaSubtitles = require('matroska-subtitles')
 
-let client = null
-
 const stream = (req, res) => {
-  if (!client) {
-    client = process.torrentClient = new WebTorrent()
+  const client = process.torrentClient
+  if (!client || (client && client.destroyed)) {
+    process.torrentClient = new WebTorrent()
   }
 
   const info = decode(req.url.slice('/stream/'.length))
@@ -26,6 +25,7 @@ const stream = (req, res) => {
   logger.info(`Streaming ${type}: ${isMagnet ? magnet : path}`)
 
   const processFile = (obj = { files: [] }) => {
+    obj = obj || { files: [] }
     const { files: [torrent] } = obj
 
     const size = isMagnet ? torrent.length : stat.size
@@ -63,7 +63,7 @@ const stream = (req, res) => {
         if (stream) {
           logger.info(`Closing stream of range: ${JSON.stringify(range)} for ${type}: ${isMagnet ? magnet : path}`)
           stream.destroy()
-          torrent && torrent.deselect(range)
+          torrent && torrent.deselect && torrent.deselect(range)
           stream = null
 
           process.torrent = null
@@ -78,7 +78,7 @@ const stream = (req, res) => {
   }
 
   if (isMagnet) {
-    const torrent = client.get(magnet)
+    const torrent = process.torrentClient.get(magnet)
 
     if (torrent) {
       if (torrent.ready) {
@@ -87,7 +87,7 @@ const stream = (req, res) => {
         torrent.once('ready', () => processFile(torrent))
       }
     } else {
-      client.add(magnet, processFile)
+      process.torrentClient.add(magnet, processFile)
     }
   } else {
     processFile()
@@ -105,6 +105,7 @@ const tracks = (req, res) => {
   logger.info(`Tracks for ${type}: ${isMagnet ? magnet : path}`)
 
   const processFile = (obj = {files: []}) => {
+    obj = obj || { files: [] }
     const { files: [torrent] } = obj
     const mimeType = mime.getType(path || torrent.name)
 
@@ -125,7 +126,7 @@ const tracks = (req, res) => {
         if (stream) {
           logger.info(`Closing stream for ${type} tracks: ${isMagnet ? magnet : path}`)
           stream.destroy()
-          torrent && torrent.deselect()
+          torrent && torrent.deselect && torrent.deselect()
           stream = null
         }
       }
@@ -139,7 +140,7 @@ const tracks = (req, res) => {
     }
   }
 
-  processFile(isMagnet ? client.get(magnet) : undefined)
+  processFile(isMagnet ? process.torrentClient.get(magnet) : undefined)
 }
 
 module.exports = {stream, tracks}
