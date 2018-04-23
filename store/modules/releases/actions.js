@@ -28,6 +28,8 @@ export default {
         if (status === 200) {
           commit('set', {data})
 
+          dispatch('news/init', null, isRoot)
+
           if (state.autoRefresh === true) dispatch('autoRefresh')
         } else if (status === 202) {
           log(`An error occurred while getting the latest releases. Retrying in 45 seconds.`)

@@ -39,9 +39,7 @@ export default {
         commit('setConnected', true)
 
         dispatch('logs/init').catch(err => { void err })
-        dispatch('releases/init')
-          .then(() => { dispatch('news/init').catch(err => { void err }) })
-          .catch(err => { void err })
+        dispatch('releases/init').catch(err => { void err })
         dispatch('seasons/init').catch(err => { void err })
 
         dispatch('mal/init').catch(err => { void err })
