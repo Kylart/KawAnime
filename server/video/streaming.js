@@ -1,5 +1,4 @@
 const fs = require('fs')
-const WebTorrent = require('webtorrent')
 const parseRange = require('range-parser')
 const mime = require('mime')
 const {Logger} = require('../utils')
@@ -8,11 +7,6 @@ const decode = require('urldecode')
 const MatroskaSubtitles = require('matroska-subtitles')
 
 const stream = (req, res) => {
-  const client = process.torrentClient
-  if (!client || (client && client.destroyed)) {
-    process.torrentClient = new WebTorrent()
-  }
-
   const info = decode(req.url.slice('/stream/'.length))
   const isMagnet = /^magnet:\?/.test(info)
   const type = isMagnet ? 'magnet' : 'file'
@@ -63,10 +57,7 @@ const stream = (req, res) => {
         if (stream) {
           logger.info(`Closing stream of range: ${JSON.stringify(range)} for ${type}: ${isMagnet ? magnet : path}`)
           stream.destroy()
-          torrent && torrent.deselect && torrent.deselect(range)
           stream = null
-
-          process.torrent = null
         }
       }
 
@@ -126,7 +117,6 @@ const tracks = (req, res) => {
         if (stream) {
           logger.info(`Closing stream for ${type} tracks: ${isMagnet ? magnet : path}`)
           stream.destroy()
-          torrent && torrent.deselect && torrent.deselect()
           stream = null
         }
       }

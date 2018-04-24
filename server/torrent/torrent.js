@@ -4,24 +4,34 @@ const logger = new Logger('Torrent Client')
 
 // TODO Limit download speed, check https://github.com/webtorrent/webtorrent/issues/163
 
+const isClientExisting = () => {
+  const client = process.torrentClient
+
+  return !client || (client && client.destroyed)
+}
+
 const init = (req, res) => {
-  process.torrentClient = new WebTorrent()
-  logger.info('Instanciated torrent client.')
+  if (isClientExisting()) {
+    process.torrentClient = new WebTorrent()
+    logger.info('Instanciated torrent client.')
 
-  // Setting up all listeners
-  process.torrentClient.on('torrent', (torrent) => {
-    logger.info(`${torrent.infoHash} is ready to be used.`)
-  })
+    // Setting up all listeners
+    process.torrentClient.on('torrent', (torrent) => {
+      logger.info(`${torrent.infoHash} is ready to be used.`)
+    })
 
-  process.torrentClient.on('error', (err) => {
-    logger.error('Client encounered an error.', err)
-  })
+    process.torrentClient.on('error', (err) => {
+      logger.error('Client encounered an error.', err)
+    })
+  } else {
+    logger.info('Torrent client already instanciated.')
+  }
 
   res.send()
 }
 
 const add = ({query: {magnet}}, res) => {
-  if (!process.torrentClient) {
+  if (isClientExisting()) {
     init(null, res)
   }
 
@@ -33,6 +43,8 @@ const add = ({query: {magnet}}, res) => {
 }
 
 const remove = ({query: {magnet}}, res) => {
+  // Be careful calling this one.
+
   process.torrentClient.remove(magnet, (err) => {
     err
       ? logger.error(`Error while removing ${magnet}`, err)
@@ -50,13 +62,19 @@ const remove = ({query: {magnet}}, res) => {
   res.send()
 }
 
-const events = (req, res) => {
+const infoClient = (req, res) => {
+  const result = {}
 
+  if (isClientExisting()) {
+
+  }
+
+  res.send(result)
 }
 
 module.exports = {
   init,
   add,
   remove,
-  events
+  infoClient
 }

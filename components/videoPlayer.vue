@@ -68,7 +68,8 @@
         autoplay: true,
         isAss: false,
         styles: null,
-        info: null
+        info: null,
+        isMagnetRe: /^magnet:\?/
       }
     },
     computed: {
@@ -77,15 +78,21 @@
           return this.$store.state.config.config.video
         },
         set () {}
+      },
+      isMagnet () {
+        return this.isMagnetRe.test(this.value)
       }
+    },
+    async created () {
+      if (this.isMagnet) await this.$axios.get('torrent/init')
     },
     mounted () {
       const { video } = this.$refs
       const textTracks = {}
 
       video.addEventListener('loadedmetadata', () => {
-        // We need to get the subtitles only when the torrent is ready to be read. Otherwise,
-        // there is no file to get the subtitles from.
+        // We need to get the subtitles only when the torrent is ready to be read.
+        // Otherwise, there is no file to get the subtitles from.
         this.eventSource = new window.EventSource(`/tracks/${this.value}`)
 
         this.eventSource.addEventListener('tracks', ({ data }) => {
@@ -135,7 +142,7 @@
       const { head } = document
       head.removeChild(head.children[head.childElementCount - 1])
 
-      if (/^magnet:\?/.test(this.value)) {
+      if (this.isMagnet) {
         this.$axios.delete('torrent/remove', {
           params: {
             magnet: this.value
