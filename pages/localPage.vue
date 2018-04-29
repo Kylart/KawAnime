@@ -141,7 +141,7 @@
         this.$log(`Requested to play ${item.name} - ${item.ep}. Sending...`)
 
         if (this.inside) {
-          this.$store.commit('videoPlayer/play', {
+          this.$store.commit('streaming/play', {
             show: true,
             link: {
               link: item.path,

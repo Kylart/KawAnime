@@ -30,7 +30,7 @@
   export default {
     computed: {
       values () {
-        return this.$store.state.videoPlayer.modal
+        return this.$store.state.streaming.modal
       },
       show () {
         return this.values.show
@@ -66,11 +66,11 @@
     },
     methods: {
       close () {
-        this.$store.commit('videoPlayer/closeModal')
+        this.$store.commit('streaming/closeModal')
       },
       watch (episode, i) {
         this.close()
-        this.$store.commit('videoPlayer/play', {
+        this.$store.commit('streaming/play', {
           show: true,
           link: {
             name: `${this.values.title} - ${episode}`,

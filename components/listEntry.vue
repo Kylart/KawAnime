@@ -71,7 +71,7 @@
         })
       },
       watch (name) {
-        this.$store.dispatch('videoPlayer/watch', {
+        this.$store.dispatch('streaming/watch', {
           name
         })
       }

@@ -27,7 +27,7 @@ export default {
   },
   computed: {
     values () {
-      return this.$store.state.videoPlayer.player
+      return this.$store.state.streaming.player
     },
     show () {
       return this.values.show
@@ -35,7 +35,7 @@ export default {
   },
   methods: {
     close () {
-      this.$store.commit('videoPlayer/close')
+      this.$store.commit('streaming/close')
     },
     async toggleFullScreen () {
       this.fullscreen = !this.fullscreen

@@ -191,7 +191,7 @@
             : ''
       },
       watch (item) {
-        this.$store.commit('videoPlayer/play', {
+        this.$store.commit('streaming/play', {
           show: true,
           link: {
             link: item.magnetLink,
