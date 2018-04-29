@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-footer.grey.darken-4.pr-2(app)
+  v-footer.grey.darken-4.pr-2
     v-spacer
     .white--text © 2016 - {{ lastYear }} Kylart
 </template>

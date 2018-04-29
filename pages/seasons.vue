@@ -15,74 +15,71 @@
           v-text-field(name='input-year', type='number', min='1917', label='Year', v-model='$store.state.seasons.year', dark)
         v-flex.refresh-button(offset-sm1, sm2, xs8)
           v-btn(color='secondary', block, dark, @click='refreshSeason()') Refresh
-      v-tabs#tabs(dark, fixed, centered)
-        v-tabs-bar.mablue
-          v-tabs-slider.primary
-          v-tabs-item(v-for='i in 5', :href="'#' + i", :key='i')
-            | {{ season[i].name }}
-        v-tabs-items
-          v-tabs-content(v-for='i in 5', lazy, :id='`${i}`', :key='i')
-            v-text-field.query(v-model='query', label='Search entry', dark)
-            v-layout.elems(row, wrap)
-              transition-group(name='list')
-                v-flex.pa-1(
-                  xl3, lg4, md6, xs12,
-                  v-for='item in computedSeason[i].items',
-                  style='display: inline-block',
-                  :key='item.key'
-                )
-                  v-layout.elem.elevation-3(row, wrap, v-ripple='true')
-                    // Header of elem
-                    v-flex(xs12)
-                      v-tooltip(top)
-                        h6.title.ellipsis.white--text(slot='activator') {{ item.title }}
-                        span {{ item.title }}
-                    v-flex(xs8)
-                      v-tooltip(top)
-                        p.genres.ellipsis(slot='activator') {{ item.genres.join(' ') }}
-                        span {{ item.genres.join(' ') }}
-                    v-flex(xs3)
-                      p.from-type.ellipsis {{ item.fromType }}
-                    v-flex(xs1)
-                    // Picture of elem
-                    v-flex.image-container(xs3, lg4)
-                      lazy-component
-                        img.image(:src='item.picture', onerror="this.src='static/images/error.jpg'")
-                    v-flex.bottom-right(xs9, lg8)
-                      v-layout(wrap, justify-space-between, align-center)
-                        v-flex(xs12)
-                          .synopsis {{ item.synopsis }}
-                        v-flex.pl-2(xs12)
-                          v-layout(wrap, justify-space-between)
-                            v-flex.date(xs6) {{ getDate(item.releaseDate) }}
-                            v-flex.nb-ep(xs6) {{ episode(item) }}
-                          v-layout(wrap, justify-space-between)
-                            v-flex.producers(xs8)
-                              strong {{ item.producers.join(' ') }}
-                            v-flex.pb-1(xs4)
-                              v-menu(open-on-hover, transition='slide-x-transition')
-                                v-btn(flat, dark, slot='activator') More
-                                v-list.dark
-                                  v-list-tile(@click='openModal(item.title, item.synopsis)')
-                                    v-list-tile-action
-                                      v-icon more
-                                    v-list-tile-title Check synopsis
-                                  v-list-tile(@click='downloadAll(item.title)')
-                                    v-list-tile-action
-                                      v-icon file_download
-                                    v-list-tile-title Download all episodes
-                                  v-list-tile(@click="$store.dispatch('search/fromUrl', item)")
-                                    v-list-tile-action
-                                      v-icon info_outline
-                                    v-list-tile-title Information
-                                  v-list-tile(@click='showChoices(item.title)')
-                                    v-list-tile-action
-                                      v-icon add_box
-                                    v-list-tile-title Add to
-                                  v-list-tile(@click='showMal(item)')
-                                    v-list-tile-action
-                                      span.mal-icon
-                                    v-list-tile-title MyAnimeList
+      v-tabs#tabs(grow, slider-color='primary')
+        v-tab.mablue(v-for='i in 5', :href="'#' + i", :key='i')
+          | {{ season[i].name }}
+        v-tab-item(v-for='i in 5', lazy, :id='`${i}`', :key='i')
+          v-text-field.query(v-model='query', label='Search entry', dark)
+          v-layout.elems(row, wrap)
+            transition-group(name='list')
+              v-flex.pa-1(
+                xl3, lg4, md6, xs12,
+                v-for='item in computedSeason[i].items',
+                style='display: inline-block',
+                :key='item.key'
+              )
+                v-layout.elem.elevation-3(row, wrap, v-ripple='true')
+                  // Header of elem
+                  v-flex(xs12)
+                    v-tooltip(top)
+                      h6.title.ellipsis.white--text(slot='activator') {{ item.title }}
+                      span {{ item.title }}
+                  v-flex(xs8)
+                    v-tooltip(top)
+                      p.genres.ellipsis(slot='activator') {{ item.genres.join(' ') }}
+                      span {{ item.genres.join(' ') }}
+                  v-flex(xs3)
+                    p.from-type.ellipsis {{ item.fromType }}
+                  v-flex(xs1)
+                  // Picture of elem
+                  v-flex.image-container(xs3, lg4)
+                    lazy-component
+                      img.image(:src='item.picture', onerror="this.src='static/images/error.jpg'")
+                  v-flex.bottom-right(xs9, lg8)
+                    v-layout(wrap, justify-space-between, align-center)
+                      v-flex(xs12)
+                        .synopsis {{ item.synopsis }}
+                      v-flex.pl-2(xs12)
+                        v-layout(wrap, justify-space-between)
+                          v-flex.date(xs6) {{ getDate(item.releaseDate) }}
+                          v-flex.nb-ep(xs6) {{ episode(item) }}
+                        v-layout(wrap, justify-space-between)
+                          v-flex.producers(xs8)
+                            strong {{ item.producers.join(' ') }}
+                          v-flex.pb-1(xs4)
+                            v-menu(open-on-hover, transition='slide-x-transition')
+                              v-btn(flat, dark, slot='activator') More
+                              v-list.dark
+                                v-list-tile(@click='openModal(item.title, item.synopsis)')
+                                  v-list-tile-action
+                                    v-icon more
+                                  v-list-tile-title Check synopsis
+                                v-list-tile(@click='downloadAll(item.title)')
+                                  v-list-tile-action
+                                    v-icon file_download
+                                  v-list-tile-title Download all episodes
+                                v-list-tile(@click="$store.dispatch('search/fromUrl', item)")
+                                  v-list-tile-action
+                                    v-icon info_outline
+                                  v-list-tile-title Information
+                                v-list-tile(@click='showChoices(item.title)')
+                                  v-list-tile-action
+                                    v-icon add_box
+                                  v-list-tile-title Add to
+                                v-list-tile(@click='showMal(item)')
+                                  v-list-tile-action
+                                    span.mal-icon
+                                  v-list-tile-title MyAnimeList
     v-dialog(v-model='modal', max-width='70%', @keydown.esc='modal = false')
       v-card
         v-card-title.headline {{ modalTitle }}

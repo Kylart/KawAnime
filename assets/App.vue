@@ -1,25 +1,35 @@
 <template lang="pug">
   v-app(dark)
     v-navigation-drawer.pb-0.main-drawer(app, fixed, temporary, v-model='$store.state.drawer')
-      v-list
+      v-list(dark)
         v-list-tile#title(to='/')
           v-list-tile-action
             img(src='~static/images/icon2.png', height='50')
           v-list-tile-title.title.white--text かわニメ
+
         template(v-for='item in itemGroup')
-          v-list-group(v-if='item.items', :key='item.title', :group="item.group")
-            v-list-tile.ripple(slot='item', ripple)
-              v-list-tile-action
-                v-icon {{ item.action }}
-              v-list-tile-title {{ item.title }}
-              v-list-tile-action
-                v-icon keyboard_arrow_down
-            v-list-tile.ripple(v-for='subItem in item.items', ripple, :to='subItem.href', :key='subItem.title', exact)
-              v-list-tile-action
-                v-icon {{ subItem.action }}
+          v-list-group(
+            v-if='item.items',
+            :group='item.group',
+            :prepend-icon='item.action',
+            no-action
+          )
+            v-list-tile(slot='activator', ripple)
               v-list-tile-content
-                v-list-tile-title {{ subItem.title }}
-            v-divider
+                v-list-tile-title {{ item.title }}
+            template(v-for='(subItem, i) in item.items')
+              v-list-tile(
+                :key='i',
+                :to='subItem.href',
+                :disabled='subItem.disabled',
+                ripple
+              )
+                v-list-tile-action
+                  v-icon {{ subItem.action }}
+                v-list-tile-content
+                  v-list-tile-title
+                    span {{ subItem.title }}
+
           v-subheader.white--text(v-else-if='item.header') {{ item.header }}
           v-divider(v-else-if='item.divider')
 
@@ -46,9 +56,7 @@
       settings
       logs
 
-    //- main.m
     v-content
-      //- v-content // Apparently required. Todo
       transition(name='page', mode='out-in')
         router-view
 
@@ -72,7 +80,6 @@
 </template>
 
 <script>
-  import axios from 'axios'
   import Meta from 'mixins/meta'
 
   export default {
@@ -91,7 +98,7 @@
 
       setInterval(async () => {
         try {
-          const {status} = await this.$axios.get('_isOnline')
+          const {status} = await this.$this.$axios.get('_isOnline')
 
           this.$store.commit('setConnected', status === 200)
         } catch (e) { void e }
@@ -189,7 +196,7 @@
         this.$store.commit('toggleDrawer')
       },
       actOnWindow (action) {
-        axios.get('/_win', {
+        this.$axios.get('/_win', {
           params: {
             action
           }
