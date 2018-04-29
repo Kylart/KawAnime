@@ -24,6 +24,8 @@ export function createRouter () {
     routes: [
       route('/', 'releases'),
       route('/downloader', 'downloader'),
+      route('/torrenting', 'torrenting'),
+      route('/streaming', 'streaming'),
       route('/seasons', 'seasons'),
       route('/news', 'news'),
       route('/localPage', 'localPage'),

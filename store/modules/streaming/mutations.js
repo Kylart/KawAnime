@@ -10,5 +10,11 @@ export default {
   },
   closeModal (state) {
     state.modal.show = false
+  },
+  setTerm (state, val) {
+    state.page.term = val
+  },
+  setTorrents (state, torrents) {
+    state.page.torrents = torrents
   }
 }

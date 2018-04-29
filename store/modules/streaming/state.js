@@ -5,5 +5,9 @@ export default {
   modal: {
     show: false,
     magnets: []
+  },
+  page: {
+    torrents: [],
+    term: ''
   }
 }
