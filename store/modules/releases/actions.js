@@ -1,7 +1,15 @@
-import {axios, log, isRoot} from '../../utils'
+import {axios, log, isRoot} from 'store/utils'
 
 export default {
-  async init ({state, commit, dispatch}) {
+  async init ({rootState, state, commit, dispatch}) {
+    if (!rootState.isConnected) {
+      setTimeout(() => {
+        dispatch('init')
+      }, 30 * 1000)
+
+      return
+    }
+
     console.log('[INIT] Releases')
 
     try {
@@ -72,9 +80,7 @@ export default {
       }, 45 * 1000)
     }
   },
-  async refresh ({state, commit, dispatch}) {
-    log(`Refreshing Releases...`)
-
+  async refresh ({state, rootState, commit, dispatch}) {
     const retryLater = (backUp) => {
       if (!state.notLoaded) {
         log(`An error occurred while getting the latest releases. Retrying in 45 seconds.`)
@@ -90,6 +96,13 @@ export default {
     }
 
     const backUp = state.releases
+
+    if (!rootState.isConnected) {
+      retryLater(backUp)
+      return
+    }
+
+    log(`Refreshing Releases...`)
 
     commit('empty')
 
@@ -111,9 +124,14 @@ export default {
       retryLater(backUp)
     }
   },
-  async autoRefresh ({dispatch, commit, state}) {
+  async autoRefresh ({rootState, dispatch, commit, state}) {
     // Refresh releases every 30 minutes
     setTimeout(async () => {
+      if (!rootState.isConnected) {
+        log('No internet connection.')
+        return
+      }
+
       log(`Refreshing Releases...`)
 
       try {

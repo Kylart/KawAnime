@@ -1,4 +1,4 @@
-import {log, moment} from '../../utils.js'
+import {log, moment} from 'store/utils.js'
 
 export default {
   set (state, obj) {

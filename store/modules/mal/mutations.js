@@ -1,4 +1,4 @@
-import {_, log} from '../../utils.js'
+import {_, log} from 'store/utils.js'
 
 export default {
   setWatchLists (state, data) {

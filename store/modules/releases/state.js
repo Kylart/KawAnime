@@ -1,5 +1,5 @@
-import {fansubs} from '../lists.js'
-import {moment} from '../../utils.js'
+import {fansubs} from 'store/modules/lists.js'
+import {moment} from 'store/utils.js'
 
 export default {
   releases: [],

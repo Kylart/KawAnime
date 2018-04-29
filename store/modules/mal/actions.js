@@ -1,8 +1,16 @@
-import {axios, log, isRoot, _} from '../../utils'
+import {axios, log, isRoot, _} from 'store/utils'
 
 export default {
   async init ({rootState, commit, dispatch}) {
     const {malUsername} = rootState.config.config
+
+    if (!rootState.isConnected) {
+      setTimeout(() => {
+        dispatch('init')
+      }, 60 * 1000)
+
+      return
+    }
 
     if (malUsername) {
       try {

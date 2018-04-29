@@ -1,4 +1,4 @@
-import {axios} from '../../utils'
+import {axios} from 'store/utils'
 
 export default {
   async fromUrl ({commit, state}, item) {

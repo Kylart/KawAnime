@@ -1,4 +1,4 @@
-import {axios, log} from '../../utils'
+import {axios, log} from 'store/utils'
 
 export default {
   append ({}, data) {  // eslint-disable-line

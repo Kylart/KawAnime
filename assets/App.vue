@@ -88,6 +88,14 @@
           document.body.appendChild(devtools)
         }
       })
+
+      setInterval(async () => {
+        try {
+          const {status} = await this.$axios.get('_isOnline')
+
+          this.$store.commit('setConnected', status === 200)
+        } catch (e) { void e }
+      }, 30 * 1000)
     },
     data () {
       return {
@@ -95,8 +103,7 @@
         drawer: false,
         isBrowser: false,
         links: [
-          {link: 'Github', to: 'https://github.com/Kylart/KawAnime', icon: 'github-circle'},
-          {link: 'Updates', to: '', icon: ''}
+          {link: 'Github', to: 'https://github.com/Kylart/KawAnime', icon: 'github-circle'}
         ],
         itemGroup: [
           {divider: true},
@@ -117,6 +124,25 @@
               }
             ]
           }, {
+            title: 'Torrent',
+            action: 'folder_open',
+            group: 'torrent',
+            items: [
+              // {
+              //   title: 'Torrenting',
+              //   action: 'file_upload',
+              //   href: '/torrenting'
+              // },
+              {
+                title: 'Streaming',
+                action: 'tv',
+                href: '/streaming'
+              }
+            ]
+          },
+          {divider: true},
+          {header: 'Anime world'},
+          {
             title: 'News',
             action: 'info_outline',
             group: 'news',
@@ -155,15 +181,6 @@
               }
             ]
           }
-//            Too soon...
-//          {
-//            title: 'Torrenting',
-//            items: [
-//              {title: 'Current downloads'},
-//              {title: 'Sourcing'},
-//              {title: 'Create torrents'}
-//            ]
-//          }
         ]
       }
     },

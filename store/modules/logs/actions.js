@@ -1,7 +1,12 @@
-import {axios, log} from '../../utils'
+import {axios, log} from 'store/utils'
 
 export default {
-  async init ({commit, dispatch}) {
+  async init ({rootState, commit, dispatch}) {
+    if (!rootState.isConnected) {
+      setTimeout(() => { dispatch('init') }, 60 * 1000)
+      return
+    }
+
     try {
       const {data, status} = await axios.get('releaseNotes')
 

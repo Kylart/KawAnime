@@ -1,4 +1,4 @@
-import {_} from '../../utils.js'
+import {_} from 'store/utils.js'
 
 export default {
   lists (state) {

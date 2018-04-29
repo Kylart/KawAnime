@@ -1,7 +1,12 @@
-import {axios, log, isRoot} from '../../utils'
+import {axios, log, isRoot} from 'store/utils'
 
 export default {
-  async init ({commit, dispatch}) {
+  async init ({rootState, commit, dispatch}) {
+    if (!rootState.isConnected) {
+      setTimeout(() => { dispatch('init') }, 10 * 1000)
+      return
+    }
+
     console.log('[INIT] Seasons')
 
     const now = new Date()
@@ -30,7 +35,7 @@ export default {
   async refresh ({state, commit, dispatch}) {
     log(`Refreshing Seasons...`)
 
-    const year = state.year
+    const {year} = state
     const season = state.season.value || state.season
 
     if (year >= 1917 && (year <= (new Date()).getYear() + 1901)) {

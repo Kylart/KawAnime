@@ -1,4 +1,4 @@
-import {axios, log, isRoot} from '../../utils'
+import {axios, log, isRoot} from 'store/utils'
 
 export default {
   async download ({state, commit, rootState}, obj = {}) {

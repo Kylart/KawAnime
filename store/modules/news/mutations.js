@@ -1,4 +1,4 @@
-import {log} from '../../utils'
+import {log} from 'store/utils'
 
 export default {
   empty (state) {

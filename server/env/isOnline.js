@@ -1,7 +1,7 @@
 const axios = require('axios')
 
 const isOnline = (req, res) => {
-  axios.get('https://myanimelist.net')
+  axios.get('https://kawanime.com')
     .then(({status}) => {
       res.status(status === 200 ? 200 : 204).send()
     })
