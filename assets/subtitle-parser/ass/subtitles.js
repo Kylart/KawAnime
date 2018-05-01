@@ -27,24 +27,24 @@ const getPosition = (alignment, mR, mL, resX) => {
   return result
 }
 
-const getLine = (alignment, mV, unitY, height) => {
+const getLine = (alignment, mV, height) => {
   // Following libass rules: https://github.com/libass/libass/wiki/ASSv5-Override-Tags
   let result = 0
 
   const isTop = _.inRange(alignment, 7, 10)
   const isBot = _.inRange(alignment, 1, 4)
 
-  const offsetY = Math.round(mV / unitY)
+  const offsetY = Math.round(mV / height)
 
   if (isTop) {
     // Distance is taken from the top
     result = offsetY
   } else if (isBot) {
     // Distance is taken from the bottom
-    result = (align.numpad[alignment][0] || 16) - offsetY
+    result = (align.numpad[alignment][0] || 100) - offsetY
   } else {
     // Should be vertically centered
-    result = 8
+    result = 50
   }
 
   return result
@@ -61,8 +61,6 @@ export default function (subtitle, styles, info) {
   const resX = +info.PlayResX
   const resY = +info.PlayResY
 
-  const unitY = resY / 16
-
   // First we need to set the current subtitle style if any.
   const style = _.filter(styles, (style) => style.Name === subtitle.style)[0] // findStyleByName(subtitle.style, styles)
   const className = style.Name.replace(/\s/g, '_')
@@ -74,9 +72,11 @@ export default function (subtitle, styles, info) {
   const mL = +style.MarginL
   const mV = +style.MarginV
 
-  // Horizontally
+  // Horizontally and vertically
   result.position = getPosition(alignment, mR, mL, resX)
-  result.line = getLine(alignment, mV, unitY, resY)
+
+  result.snapToLines = false
+  result.line = getLine(alignment, mV, resY)
 
   // Horizontal-alignment. We assume that the file is unicoded.
   const leftAligned = [1, 4, 7]
