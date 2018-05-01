@@ -44,8 +44,7 @@ export default {
 
         dispatch('mal/init').catch(err => { void err })
       } else {
-        commit('setInfoSnackbar', 'No internet access. Retrying in 1 minute.')
-        setTimeout(() => { dispatch('online') }, 60 * 1000)
+        commit('setInfoSnackbar', 'No internet access. Will keep retrying.')
       }
     } catch (e) { void e }
   },
