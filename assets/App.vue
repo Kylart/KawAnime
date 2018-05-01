@@ -95,14 +95,6 @@
           document.body.appendChild(devtools)
         }
       })
-
-      setInterval(async () => {
-        try {
-          const {status} = await this.$this.$axios.get('_isOnline')
-
-          this.$store.commit('setConnected', status === 200)
-        } catch (e) { void e }
-      }, 30 * 1000)
     },
     data () {
       return {

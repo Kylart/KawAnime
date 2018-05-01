@@ -29,24 +29,15 @@ export default {
     dispatch('player/setUp').catch(err => { void err })
 
     // Online
+    dispatch('checkOnlineStatus').catch(err => { void err })
     dispatch('online').catch(err => { void err })
   },
   async online ({commit, dispatch}) {
-    try {
-      const {status} = await axios.get('_isOnline')
+    dispatch('logs/init').catch(err => { void err })
+    dispatch('releases/init').catch(err => { void err })
+    dispatch('seasons/init').catch(err => { void err })
 
-      if (status === 200) {
-        commit('setConnected', true)
-
-        dispatch('logs/init').catch(err => { void err })
-        dispatch('releases/init').catch(err => { void err })
-        dispatch('seasons/init').catch(err => { void err })
-
-        dispatch('mal/init').catch(err => { void err })
-      } else {
-        commit('setInfoSnackbar', 'No internet access. Will keep retrying.')
-      }
-    } catch (e) { void e }
+    dispatch('mal/init').catch(err => { void err })
   },
   async getEnv ({commit}) {
     const {data} = await axios.get('_env')
@@ -55,5 +46,18 @@ export default {
   },
   async openInBrowser () {
     await axios.get('/_openInBrowser')
+  },
+  async checkOnlineStatus ({commit, dispatch}) {
+    try {
+      const {status} = await axios.get('_isOnline')
+
+      const isOnline = status === 200
+
+      commit('setConnected', isOnline)
+    } catch (e) { void e }
+
+    setTimeout(() => {
+      dispatch('checkOnlineStatus')
+    }, 60 * 1000)
   }
 }
