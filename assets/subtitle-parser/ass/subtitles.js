@@ -34,7 +34,7 @@ const getLine = (alignment, mV, height) => {
   const isTop = _.inRange(alignment, 7, 10)
   const isBot = _.inRange(alignment, 1, 4)
 
-  const offsetY = Math.round(mV / height)
+  const offsetY = percent(mV, height)
 
   if (isTop) {
     // Distance is taken from the top

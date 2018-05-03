@@ -257,6 +257,7 @@
     padding-left 20px
     font-family 'Hiragino Mincho Pro', 'MS PMincho', serif
     font-size 30px !important
+    line-height 25px !important
 </style>
 
 <style lang="stylus">
