@@ -10,19 +10,19 @@
           h5.loading-text Info should be displayed in a few seconds
         v-card.secondary.pb-3(v-else)
           v-layout(row, wrap)
-            v-flex.flex-v-centered.fab-container(xs2)
+            v-flex.flex-v-centered(xs2)
               v-speed-dial(
                 v-model='fab',
                 top, left,
                 direction='bottom',
-                :hover='true',
+                :open-on-hover='true',
                 transition='slide-y-transition'
               )
                 v-btn(
                   slot='activator',
                   v-model='fab',
                   small,
-                  fab, icon, outline
+                  fab, outline, hover
                 )
                   v-icon more
                   v-icon close
@@ -74,7 +74,7 @@
   export default {
     data () {
       return {
-        fab: false,
+        fab: true,
         lists: [
           {text: 'Watch List', listName: 'watchList', action: 'watch_later'},
           {text: 'Watching', listName: 'watching', action: 'tv'},
@@ -149,12 +149,13 @@
   .h-centered
     text-align center
 
+  .icon
+    position absolute
+    top 10px !important
+
   .loading-text
     text-align center
     position relative
-
-  .fab-container
-    padding-bottom 25px
 
   .info-title
     width 100%
