@@ -15,6 +15,13 @@ export const sounds = [
   'None'
 ]
 
+export const qualities = [
+  '360p',
+  '480p',
+  '720p',
+  '1080p'
+]
+
 export const subtitlesLanguages = [
   { value: 'en', text: 'English' },
   { value: 'ar', text: 'Arabic' },

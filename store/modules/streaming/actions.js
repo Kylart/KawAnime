@@ -6,11 +6,6 @@ export default {
 
     log(`Received a request to watch ${name}. Transmitting...`)
 
-    log(`Getting info for ${name} ...`)
-    const malRequest = axios.get(`getInfoFromMal`, {
-      params: {term: name}
-    })
-
     const infos = {
       name,
       fromEp: 0,
@@ -24,11 +19,9 @@ export default {
     if (status === 200) {
       log(`Request fulfilled!`)
 
-      commit('setModal', {
-        show: true,
+      commit('setTorrents', {
         title: name.replace('_', ' '),
-        magnets: data.magnets,
-        infos: (await malRequest).data
+        magnets: data.magnets
       })
     } else if (status === 204) {
       log('nyaa.si is down, trying with nyaa.pantsu.cat')
@@ -39,11 +32,9 @@ export default {
       if (status === 200 && data.magnets.length) {
         log(`Request fulfilled!`)
 
-        commit('setModal', {
-          show: true,
+        commit('setTorrents', {
           title: name.replace('_', ' '),
-          magnets: data.magnets,
-          infos: (await malRequest).data
+          magnets: data.magnets
         })
       } else {
         log('Unknown error occurred. nyaa.si and nyaa.pantsu.cat seem both down.')

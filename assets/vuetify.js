@@ -32,6 +32,7 @@ import {
   VBadge,
   VSpeedDial,
   VSlider,
+  VPagination,
   transitions
 } from 'vuetify'
 
@@ -71,6 +72,7 @@ export default (Vue) => {
       VBadge,
       VSpeedDial,
       VSlider,
+      VPagination,
       transitions
     },
     directives: {

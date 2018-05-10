@@ -7,7 +7,10 @@ export default {
     magnets: []
   },
   page: {
-    torrents: [],
+    torrents: {
+      magnets: [],
+      title: ''
+    },
     term: ''
   }
 }
