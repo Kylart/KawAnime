@@ -74,7 +74,7 @@
   export default {
     data () {
       return {
-        fab: true,
+        fab: false,
         lists: [
           {text: 'Watch List', listName: 'watchList', action: 'watch_later'},
           {text: 'Watching', listName: 'watching', action: 'tv'},
