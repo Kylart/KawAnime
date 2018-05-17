@@ -65,7 +65,6 @@
     env(v-show='$store.state.NODE_ENV === "development"')
     magnets-modal
     video-modal
-    episodes-modal
     mal-form
     info-results
     choice-window
