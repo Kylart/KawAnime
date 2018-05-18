@@ -24,18 +24,18 @@
           xs12, sm6, md3
         )
           .entry
-            .card-picture
+            .card-picture(@click='setCurrent(anime)')
               .picture
-                img(v-if='hasInfo.includes(anime)', :src='infos[anime] && infos[anime].picture')
+                img(v-if='hasInfo.includes(anime)', :src='hasInfo.includes(anime) && infos[anime].picture')
                 v-progress-circular.loading(large, indeterminate, v-else)
 
               .card-actions
-                v-btn(icon, large, @click='setCurrent(anime)')
+                v-btn(icon, large, @click.stop='setCurrent(anime)')
                   v-icon(large) play_circle_outline
-                v-btn(icon, large, @click='showQualityModal(anime)')
+                v-btn(icon, large, @click.stop='showQualityModal(anime)')
                   v-icon(large) file_download
                 v-tooltip(top)
-                  v-icon(slot='activator') more
+                  v-icon(slot='activator', @click.stop='') more
                   div {{ getLabel(anime) }} available.
             v-tooltip(top)
               .card-title.ellipsis.pl-2.pr-2(slot='activator') {{ removeSub(anime) }}
@@ -117,10 +117,12 @@
   export default {
     mounted () {
       this.infos = this.$store.state.streaming.page.infos
+      this.currentEps = this.$store.state.streaming.page.eps
     },
 
     beforeDestroy () {
       this.$store.commit('streaming/setInfos', this.infos)
+      this.$store.commit('streaming/setEps', this.currentEps)
     },
 
     data: () => ({
@@ -132,6 +134,7 @@
       qualityList: [],
       pageIndex: 1,
       infos: {},
+      currentEps: {},
       hasInfo: []
     }),
 
@@ -153,14 +156,6 @@
         },
         get () {
           return this.$store.state.streaming.page.current
-        }
-      },
-      currentEps: {
-        set (val) {
-          this.$store.commit('streaming/setEps', val)
-        },
-        get () {
-          return this.$store.state.streaming.page.eps
         }
       },
       animes () {
@@ -186,9 +181,6 @@
     },
 
     methods: {
-      order (arr, key) {
-        return this.$_.orderBy(arr, key)
-      },
       async search () {
         if (!this.isSearching) {
           if (!this.$store.state.isConnected) return
@@ -254,23 +246,29 @@
         })
       },
       async getEps () {
-        const { id, title: name } = this.currentInfo
+        if (!this.currentEps[this.current]) {
+          const { id, title: name } = this.currentInfo
 
-        const { data } = await this.$axios.get('searchEpsOnMal', {
-          params: {
-            id, name
-          }
-        })
+          this.$log('Looking for episode information of', this.current)
 
-        this.currentEps = data
+          const { data } = await this.$axios.get('searchEpsOnMal', {
+            params: {
+              id, name
+            }
+          })
+
+          this.currentEps[this.current] = data
+        } else {
+          this.$log('Cached episode information of', this.current)
+        }
       },
       getEpisodeTitle ({name}) {
         const epNum = +name.split(' ').slice(-2, -1)[0] // nyanparser pls
 
-        if (this.currentEps.length) {
-          const info = this.currentEps.filter(({epNumber}) => epNumber === epNum)[0]
+        if (this.currentEps[this.current] && this.currentEps[this.current].length) {
+          const info = this.currentEps[this.current].filter(({epNumber}) => epNumber === epNum)[0]
 
-          return `${info.title} / ${info.japaneseTitle}`
+          return `${info.title} ${info.japaneseTitle ? '/ ' + info.japaneseTitle : ''}`
         }
 
         return 'No data.'
@@ -279,12 +277,12 @@
         return name.split(' ').slice(-2, -1)[0] // nyanparser pls
       },
       getEpAired (ep) {
-        if (this.currentEps.length) {
+        if (this.currentEps[this.current] && this.currentEps[this.current].length) {
           const epNum = +ep.name.split(' ').slice(-2, -1)[0] // nyanparser pls
 
-          const info = this.currentEps.filter(({epNumber}) => epNumber === epNum)[0]
+          const info = this.currentEps[this.current].filter(({epNumber}) => epNumber === epNum)[0]
 
-          return info.aired
+          return (info && info.aired) || 'N/A'
         }
 
         return 'No data.'
@@ -408,6 +406,7 @@
     width 90%
     padding-bottom 10px
     margin-bottom 10px
+    background-color rgba(60, 60, 60, 0.3)
     border 1px solid rgba(30, 30, 30, 0.7)
 
     &:hover
@@ -418,6 +417,7 @@
     align-items flex-start
     justify-content space-between
     height 85%
+    border-bottom 0.02em solid rgba(255, 255 ,255, 0.7)
 
     img
       height 100%
@@ -451,7 +451,6 @@
     font-weight 300
     height 15%
     text-align center
-    vertical-align middle
 
   .back-button
     position absolute
