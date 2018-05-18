@@ -6,7 +6,7 @@ export default {
 
     state.page.torrents.magnets.forEach(({ link, name }) => {
       const superKey = name.split(' ').slice(0, -3).join(' ') // Todo: Once nyanparser is done, make it be <fansub + name>
-      const key = name.split(' ').slice(-2, -1)[0] // Todo: Once nyanparser is done, make it be <episodeNumber>
+      const key = +name.split(' ').slice(-2, -1)[0] // Todo: Once nyanparser is done, make it be <episodeNumber>
 
       if (typeof result[superKey] === 'undefined') result[superKey] = {}
 
@@ -20,7 +20,7 @@ export default {
             result[superKey][key].quality.push(quality)
           } else {
             result[superKey][key] = {
-              name,
+              name: name.replace(qualityLabel, ''),
               index,
               quality: [quality]
             }

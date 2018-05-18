@@ -1,9 +1,9 @@
 <template lang="pug">
-  v-container#container(fluid)
+  v-container.container.pa-0(fluid, :class="{ 'fill-height': !current }")
 
-    v-fade-transition
+    transition-group(name='container', tag='div', :class="{ 'fill-height': !current }").container.fluid.ma-0.pa-0
 
-      v-layout(row, wrap, align-content-start)
+      v-layout(v-if='!current', row, wrap, align-content-start, key='list')
         v-flex.form(xs12)
           .term
             v-text-field(
@@ -24,26 +24,69 @@
           xs12, sm6, md3
         )
           .entry
-            v-fade-transition
-              .card-picture
-                .picture
-                  img(v-if='hasInfo.includes(anime)', :src='infos[anime] && infos[anime].picture')
-                  v-progress-circular.loading(large, indeterminate, v-else)
+            .card-picture
+              .picture
+                img(v-if='hasInfo.includes(anime)', :src='infos[anime] && infos[anime].picture')
+                v-progress-circular.loading(large, indeterminate, v-else)
 
-                .card-actions
-                  v-btn(icon, large)
-                    v-icon(large) play_circle_outline
-                  v-btn(icon, large, @click='showQualityModal(anime)')
-                    v-icon(large) file_download
-                  v-tooltip(top)
-                    v-icon(slot='activator') more
-                    div {{ getLabel(anime) }} available.
+              .card-actions
+                v-btn(icon, large, @click='setCurrent(anime)')
+                  v-icon(large) play_circle_outline
+                v-btn(icon, large, @click='showQualityModal(anime)')
+                  v-icon(large) file_download
+                v-tooltip(top)
+                  v-icon(slot='activator') more
+                  div {{ getLabel(anime) }} available.
             v-tooltip(top)
-              .card-title.ellipsis(slot='activator') {{ removeSub(anime) }}
+              .card-title.ellipsis.pl-2.pr-2(slot='activator') {{ removeSub(anime) }}
               div {{ removeSub(anime) }}
 
+      v-layout(column, align-content-space-between, v-else, key='state')
+
+        .back-button
+          v-btn(icon, @click='setCurrent(\'\')')
+            v-icon(color='primary', large) arrow_back
+
+        v-flex.info-top(xs12)
+          v-layout(justify-space-between, v-if='infos[current]')
+            v-flex(xs12, sm4, lg2)
+              img(max-height='100%', :src='currentInfo.picture')
+            v-flex.pa-4
+              v-layout(column, justify-center, align-content-space-around)
+                v-flex.info-title.pl-2.pr-2(xs12) {{ currentInfo.title }} ({{ currentInfo.japaneseTitle }})
+                v-divider
+                v-flex.info-synopsis.pa-2(xs12) {{ currentInfo.synopsis }}
+
+          v-layout(justify-space-between, v-else)
+            v-flex(align-content-start, xs12, sm4, lg2)
+              img(height='300', src='~static/images/error.jpg')
+            v-flex.pa-4
+              v-layout(column, justify-center, align-content-space-around)
+                v-flex.info-title.pl-2.pr-2(xs12) {{ removeSub(current) }}
+                v-divider
+                v-flex.info-synopsis.pa-2(xs12) No synopsis loaded.
+        v-flex(xs12)
+          v-layout(column)
+            v-flex.ep-container.pt-1.pl-1.pr-1(v-for='i in Object.keys(files[current]).reverse()', :key='files[current][i].name', xs12)
+              v-layout.ep-container-layout(row, wrap)
+                v-flex.ep-aired(xs2) {{ getEpAired(files[current][i]) }}
+                v-flex.ep-title(xs6) {{ getEpisodeTitle(files[current][i]) }}
+                v-flex.ep-number.ellipsis(xs1) Ep. {{ getEpNumber(files[current][i].name) }}
+                v-flex.ep-quality(xs1)
+                  v-select.pt-0(
+                    v-model='qualityEp[files[current][i].name]',
+                    :items='files[current][i].quality',
+                    hint='Quality?',
+                    persistent-hint
+                  )
+                v-flex.ep-actions(xs2)
+                  v-btn(icon, large, @click="act('play', files[current][i])")
+                    v-icon(large) play_circle_outline
+                  v-btn(icon, large, @click="act('download', files[current][i])")
+                    v-icon(large) file_download
+
     v-fade-transition
-      .pagination-container(v-if='pageLength > 1')
+      .pagination-container(v-if='pageLength > 1 && !current')
         v-pagination(
           v-model='pageIndex',
           :length='pageLength',
@@ -51,18 +94,20 @@
         )
 
     v-dialog(
-      v-model='qualityModal'
-      max-width='500px'
-      transition='dialog-transition'
+      v-model='qualityModal',
+      max-width='500px',
+      transition='dialog-transition',
+      lazy, absolute
     )
-      div.ma-5
-        v-select(
-          :items='qualityList'
-          v-model='quality'
-          label='Which quality should be downloaded?'
-        )
-      div.pr-2.pb-2.download-all-dialog
-        v-btn(@click='downloadAll') Download
+      v-card
+        div.pa-5
+          v-select(
+            :items='qualityList'
+            v-model='quality'
+            label='Which quality should be downloaded?'
+          )
+        div.pr-2.pb-2.download-all-dialog
+          v-btn(@click='downloadAll') Download
 </template>
 
 <script>
@@ -70,16 +115,24 @@
   import { mapGetters } from 'vuex'
 
   export default {
+    mounted () {
+      this.infos = this.$store.state.streaming.page.infos
+    },
+
+    beforeDestroy () {
+      this.$store.commit('streaming/setInfos', this.infos)
+    },
+
     data: () => ({
       isSearching: false,
       downloadAllName: '',
+      qualityEp: {},
       quality: '',
       qualityModal: false,
       qualityList: [],
       pageIndex: 1,
       infos: {},
-      hasInfo: [],
-      current: ''
+      hasInfo: []
     }),
 
     computed: {
@@ -92,6 +145,22 @@
         },
         get () {
           return this.$store.state.streaming.page.term
+        }
+      },
+      current: {
+        set (val) {
+          this.$store.commit('streaming/setCurrent', val)
+        },
+        get () {
+          return this.$store.state.streaming.page.current
+        }
+      },
+      currentEps: {
+        set (val) {
+          this.$store.commit('streaming/setEps', val)
+        },
+        get () {
+          return this.$store.state.streaming.page.eps
         }
       },
       animes () {
@@ -110,10 +179,16 @@
       },
       visibleAnimes () {
         return this.animes.slice(this.fileRange.inf, this.fileRange.sup + 1)
+      },
+      currentInfo () {
+        return (this.current && this.infos[this.current]) || {}
       }
     },
 
     methods: {
+      order (arr, key) {
+        return this.$_.orderBy(arr, key)
+      },
       async search () {
         if (!this.isSearching) {
           if (!this.$store.state.isConnected) return
@@ -145,12 +220,18 @@
           }
         })
       },
+      setCurrent (anime = '') {
+        this.current = anime
+      },
       showQualityModal (anime) {
         const files = this.files[anime]
         this.qualityList = this.$_.map(files, (file) => file.quality)[0]
+        const prefQuality = this.$store.state.config.config.quality
 
         this.downloadAllName = anime
-        this.quality = this.qualityList[Math.floor(this.qualityList.length / 2)]
+        this.quality = this.qualityList.includes(prefQuality)
+          ? prefQuality
+          : this.qualityList[Math.floor(this.qualityList.length / 2)]
 
         this.qualityModal = true
       },
@@ -171,6 +252,73 @@
             }
           })
         })
+      },
+      async getEps () {
+        const { id, title: name } = this.currentInfo
+
+        const { data } = await this.$axios.get('searchEpsOnMal', {
+          params: {
+            id, name
+          }
+        })
+
+        this.currentEps = data
+      },
+      getEpisodeTitle ({name}) {
+        const epNum = +name.split(' ').slice(-2, -1)[0] // nyanparser pls
+
+        if (this.currentEps.length) {
+          const info = this.currentEps.filter(({epNumber}) => epNumber === epNum)[0]
+
+          return `${info.title} / ${info.japaneseTitle}`
+        }
+
+        return 'No data.'
+      },
+      getEpNumber (name) {
+        return name.split(' ').slice(-2, -1)[0] // nyanparser pls
+      },
+      getEpAired (ep) {
+        if (this.currentEps.length) {
+          const epNum = +ep.name.split(' ').slice(-2, -1)[0] // nyanparser pls
+
+          const info = this.currentEps.filter(({epNumber}) => epNumber === epNum)[0]
+
+          return info.aired
+        }
+
+        return 'No data.'
+      },
+      act (action, { name: anime }) {
+        const quality = this.qualityEp[anime]
+
+        const { link, name } = this.$store.state.streaming.page.torrents.magnets.filter((magnet) => {
+          return magnet.name.includes(this.current) && magnet.name.includes(quality)
+        })[0]
+
+        if (action === 'play') {
+          const text = name.split(' ').slice(1, -1).join(' ') // nyanparser pls
+
+          this.$store.commit('streaming/play', {
+            show: true,
+            link: {
+              link,
+              name: text
+            }
+          })
+
+          this.$store.dispatch('history/append', {
+            type: 'Stream',
+            text
+          })
+        } else {
+          this.$axios.get('openThis', {
+            params: {
+              type: 'link',
+              link
+            }
+          })
+        }
       }
     },
 
@@ -193,6 +341,21 @@
             this.hasInfo.push(name)
           }
         })
+      },
+      async current (val) {
+        if (val) {
+          // Setting quality models for all episodes
+          const eps = this.$_.map(this.files[this.current], (ep, epNumber) => ep)
+          const prefQuality = this.$store.state.config.config.quality
+
+          eps.forEach((ep) => {
+            this.qualityEp[ep.name] = ep.quality.includes(prefQuality)
+              ? prefQuality
+              : ep.quality[Math.floor(ep.quality.length / 2)]
+          })
+
+          await this.getEps()
+        }
       }
     }
   }
@@ -201,10 +364,23 @@
 <style lang="stylus" scoped>
   @import '~stylus/functions'
 
-  #container
-    height 100%
+  .container-enter-active
+    transition all 1s
+
+  .container-enter
+    opacity 0
+    transform translateY(-30px)
+
+  .container-leave-active
+    opacity 0
+
+  .container
     min-height calc(100vh - 48px - 24px)
     position relative
+    display inline-block
+
+  .fill-height
+    height 100%
 
   .layout
     height 100%
@@ -228,6 +404,7 @@
   .entry
     display flex
     flex-direction column
+    justify-content space-between
     width 90%
     padding-bottom 10px
     margin-bottom 10px
@@ -269,13 +446,62 @@
         margin 0
 
   .card-title
-    font-size 22px
+    font-size 20px
     line-height 1.25
     font-weight 300
     height 15%
+    text-align center
+    vertical-align middle
+
+  .back-button
+    position absolute
+    right 0
+
+  .info-top
+    background-color rgba(30, 30, 30, 0.3)
+    border-bottom 0.02em solid rgba(255, 255, 255, 0.7)
+    padding-bottom 1px
+
+  .info-title
+    font-size 24px
+    font-weight 300
+    line-height 1.25
+    max-height 80px
+    text-align center
+
+  .info-synopsis
+    height 80%
+    text-align justify
+    white-space pre-wrap
+    overflow-y auto
+    overflow-x hidden
+
+
+  // Episode display
+  .ep-container
+    background-color rgba(30, 30, 30, 0.3)
+
+    &:hover
+      transition all 0.33s
+      background-color rgba(60, 60, 60, 0.7)
+
+  .ep-container-layout
+    border-bottom 0.02em solid rgba(255, 255 ,255, 0.7)
+
+  .ep-number, .ep-title, .ep-aired, .ep-quality, .ep-actions
     display flex
-    align-items flex-end
+    align-items center
     justify-content center
+
+  .ep-number
+    font-size 18px
+
+  .ep-title
+    text-align center
+    font-style italic
+
+  .ep-aired
+    font-size 16px
 
   .pagination-container
     width 100%

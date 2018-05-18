@@ -16,5 +16,14 @@ export default {
   },
   setTorrents (state, torrents) {
     state.page.torrents = torrents
+  },
+  setInfos (state, data) {
+    state.page.infos = data
+  },
+  setCurrent (state, val) {
+    state.page.current = val
+  },
+  setEps (state, val) {
+    state.page.eps = val
   }
 }
