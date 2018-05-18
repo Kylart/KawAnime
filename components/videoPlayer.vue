@@ -123,9 +123,11 @@
         this.eventSource.addEventListener('subtitle', ({ data }) => {
           const { trackNumber, subtitle } = JSON.parse(data)
           if (trackNumber in textTracks) {
-            const cue = this.isAss
+            let cue = this.isAss
               ? fromAss.subtitles(subtitle, this.styles, this.info)
               : new window.VTTCue(subtitle.time / 1000, (subtitle.time + subtitle.duration) / 1000, subtitle.text)
+
+            cue = fromAss.checkOverlap(this.info, cue, textTracks[trackNumber])
 
             textTracks[trackNumber].addCue(cue)
           }
@@ -304,6 +306,7 @@
         -webkit-text-stroke 1px black
 
     .video-controls
+      background linear-gradient(to top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.07), rgba(0, 0, 0, 0.0))
       text-align left
       position absolute
       width 100%
