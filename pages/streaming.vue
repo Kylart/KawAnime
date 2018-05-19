@@ -23,7 +23,7 @@
           :key='anime',
           xs12, sm6, md3
         )
-          .entry
+          .entry.elevation-3
             .card-picture(@click='setCurrent(anime)')
               .picture
                 img(v-if='hasInfo.includes(anime)', :src='hasInfo.includes(anime) && infos[anime].picture')
@@ -118,6 +118,10 @@
     mounted () {
       this.infos = this.$store.state.streaming.page.infos
       this.currentEps = this.$store.state.streaming.page.eps
+
+      const { name } = this.$route.query
+
+      if (name) this.term = name
     },
 
     beforeDestroy () {
@@ -126,6 +130,7 @@
     },
 
     data: () => ({
+      animePerPage: 8,
       isSearching: false,
       downloadAllName: '',
       qualityEp: {},
@@ -162,14 +167,14 @@
         return Object.keys(this.files)
       },
       pageLength () {
-        return Math.ceil(this.animes.length / 6)
+        return Math.ceil(this.animes.length / this.animePerPage)
       },
       fileRange () {
         const index = this.pageIndex - 1
 
         return {
-          inf: index * 8,
-          sup: (index + 1) * 8 - 1
+          inf: index * this.animePerPage,
+          sup: (index + 1) * this.animePerPage - 1
         }
       },
       visibleAnimes () {
@@ -186,6 +191,8 @@
           if (!this.$store.state.isConnected) return
 
           this.isSearching = true
+
+          this.pageIndex = 1
 
           await this.$store.dispatch('streaming/watch', {
             name: this.term
@@ -249,13 +256,15 @@
         if (!this.currentEps[this.current]) {
           const { id, title: name } = this.currentInfo
 
-          this.$log('Looking for episode information of', this.current)
+          this.$log('Looking for episode information of', name)
 
           const { data } = await this.$axios.get('searchEpsOnMal', {
             params: {
               id, name
             }
           })
+
+          this.$log('Received episode information of', name)
 
           this.currentEps[this.current] = data
         } else {
@@ -268,7 +277,9 @@
         if (this.currentEps[this.current] && this.currentEps[this.current].length) {
           const info = this.currentEps[this.current].filter(({epNumber}) => epNumber === epNum)[0]
 
-          return `${info.title} ${info.japaneseTitle ? '/ ' + info.japaneseTitle : ''}`
+          return info
+            ? `${info.title} ${info.japaneseTitle ? '/ ' + info.japaneseTitle : ''}`
+            : 'No Data'
         }
 
         return 'No data.'
@@ -282,7 +293,9 @@
 
           const info = this.currentEps[this.current].filter(({epNumber}) => epNumber === epNum)[0]
 
-          return (info && info.aired) || 'N/A'
+          return info
+            ? (info && info.aired) || 'N/A'
+            : 'No data.'
         }
 
         return 'No data.'
@@ -323,7 +336,7 @@
     watch: {
       term: _.debounce(async function () {
         this.term.length > 2 && await this.search()
-      }, 1000),
+      }, 750),
       visibleAnimes (animes) {
         animes.forEach(async (name) => {
           if (!this.hasInfo.includes(name)) {
@@ -334,6 +347,8 @@
             const { data } = await this.$axios.get(`getInfoFromMal`, {
               params: {term}
             })
+
+            this.$log(`Received infos for ${term}.`)
 
             this.infos[name] = data
             this.hasInfo.push(name)
@@ -421,6 +436,7 @@
 
     img
       height 100%
+      max-width 100%
 
     .picture
       height 100%

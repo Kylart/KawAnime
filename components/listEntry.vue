@@ -71,9 +71,7 @@
         })
       },
       watch (name) {
-        this.$store.dispatch('streaming/watch', {
-          name
-        })
+        this.$router.push({path: '/streaming', query: {name}})
       }
     }
   }
