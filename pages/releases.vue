@@ -198,11 +198,6 @@
             name: `${item.title} - ${item.ep}`
           }
         })
-
-        this.$store.dispatch('history/append', {
-          type: 'Stream',
-          text: `${item.title} - ${item.ep}`
-        }).catch(err => { void (err) })
       }
     }
   }

@@ -13,7 +13,7 @@
 
     v-progress-circular.main-color--text.video-waiting(dark, indeterminate, v-show='waiting')
 
-    h6.video-title(v-show='!controlsHidden') {{ title }}
+    h6.video-title(v-show='!controlsHidden') {{ videoTitle }}
 
     v-icon.video-play(dark, @click.stop='togglePlay', v-if='paused') play_arrow
 
@@ -69,7 +69,9 @@
         isAss: false,
         styles: null,
         info: null,
-        isMagnetRe: /^magnet:\?/
+        isMagnetRe: /^magnet:\?/,
+        name: '',
+        hasAppendedToHistory: false
       }
     },
     computed: {
@@ -80,7 +82,10 @@
         set () {}
       },
       isMagnet () {
-        return this.isMagnetRe.test(this.value)
+        return this.isMagnetRe.test(this.value) || this.value.slice(-8) === '.torrent'
+      },
+      videoTitle () {
+        return this.title || this.name
       }
     },
     async created () {
@@ -127,10 +132,22 @@
               ? fromAss.subtitles(subtitle, this.styles, this.info)
               : new window.VTTCue(subtitle.time / 1000, (subtitle.time + subtitle.duration) / 1000, subtitle.text)
 
-            cue = fromAss.checkOverlap(this.info, cue, textTracks[trackNumber])
+            // cue = fromAss.checkOverlap(this.info, cue, textTracks[trackNumber])
 
             textTracks[trackNumber].addCue(cue)
           }
+        })
+
+        if (this.title) {
+          this.addToHistory()
+        }
+
+        this.eventSource.addEventListener('name', ({ data }) => {
+          const { name } = JSON.parse(data)
+
+          this.name = name
+
+          this.addToHistory()
         })
       })
 
@@ -243,6 +260,16 @@
       },
       close () {
         this.$parent.$parent.close()
+      },
+      addToHistory () {
+        if (this.isMagnet && !this.hasAppendedToHistory) {
+          this.$store.dispatch('history/append', {
+            type: 'Stream',
+            text: this.videoTitle
+          })
+
+          this.hasAppendedToHistory = true
+        }
       }
     }
   }

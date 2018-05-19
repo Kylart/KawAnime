@@ -1,17 +1,19 @@
+const fs = require('fs')
+const { extname } = require('path')
 const WebTorrent = require('webtorrent')
 const {Logger} = require('../utils')
 const logger = new Logger('Torrent Client')
 
 // TODO Limit download speed, check https://github.com/webtorrent/webtorrent/issues/163
 
-const isClientExisting = () => {
+const isClientDestroyed = () => {
   const client = process.torrentClient
 
   return !client || (client && client.destroyed)
 }
 
 const init = (req, res) => {
-  if (isClientExisting()) {
+  if (isClientDestroyed()) {
     process.torrentClient = new WebTorrent()
     logger.info('Instanciated torrent client.')
 
@@ -31,7 +33,7 @@ const init = (req, res) => {
 }
 
 const add = ({query: {magnet}}, res) => {
-  if (isClientExisting()) {
+  if (isClientDestroyed()) {
     init(null, res)
   }
 
@@ -44,6 +46,8 @@ const add = ({query: {magnet}}, res) => {
 
 const remove = ({query: {magnet}}, res) => {
   // Be careful calling this one.
+
+  magnet = (extname(magnet) === '.torrent' && fs.readFileSync(magnet)) || magnet
 
   process.torrentClient.remove(magnet, (err) => {
     err
@@ -65,8 +69,44 @@ const remove = ({query: {magnet}}, res) => {
 const infoClient = (req, res) => {
   const result = {}
 
-  if (isClientExisting()) {
+  if (isClientDestroyed()) {
+    const client = process.torrentClient
 
+    result.downloadSpeed = client.downloadSpeed
+    result.uploadSpeed = client.uploadSpeed
+    result.progress = client.progress
+    result.ratio = client.ratio
+    result.nbTorrents = client.torrents.length
+  }
+
+  res.send(result)
+}
+
+const infoTorrents = (req, res) => {
+  const result = []
+
+  if (isClientDestroyed()) {
+    const torrents = process.torrentClient.torrents
+
+    torrents.forEach((torrent) => {
+      result.push(Object.assign(
+        {},
+        torrent.infoHash,
+        torrent.magnetURI,
+        torrent.torrentFile,
+        torrent.files,
+        torrent.timeRemaining,
+        torrent.received,
+        torrent.downloaded,
+        torrent.uploaded,
+        torrent.downloadSpeed,
+        torrent.uploadSpeed,
+        torrent.progress,
+        torrent.ratio,
+        torrent.numPeers,
+        torrent.path
+      ))
+    })
   }
 
   res.send(result)
@@ -76,5 +116,6 @@ module.exports = {
   init,
   add,
   remove,
-  infoClient
+  infoClient,
+  infoTorrents
 }

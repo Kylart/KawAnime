@@ -1,4 +1,5 @@
 const fs = require('fs')
+const { extname } = require('path')
 const parseRange = require('range-parser')
 const mime = require('mime')
 const {Logger} = require('../utils')
@@ -8,11 +9,17 @@ const MatroskaSubtitles = require('matroska-subtitles')
 
 const stream = (req, res) => {
   const info = decode(req.url.slice('/stream/'.length))
+  const isTorrentFile = extname(info) === '.torrent'
   const isMagnet = /^magnet:\?/.test(info)
+  const isTorrent = isTorrentFile || isMagnet
   const type = isMagnet ? 'magnet' : 'file'
 
   const path = isMagnet ? null : info
-  const magnet = isMagnet ? info : null
+  const magnet = isMagnet
+    ? info
+    : isTorrentFile
+      ? fs.readFileSync(info)
+      : null
 
   const stat = path && fs.statSync(path)
 
@@ -22,7 +29,7 @@ const stream = (req, res) => {
     obj = obj || { files: [] }
     const { files: [torrent] } = obj
 
-    const size = isMagnet ? torrent.length : stat.size
+    const size = isTorrent ? torrent.length : stat.size
 
     const mimeType = mime.getType(path || torrent.name)
 
@@ -49,7 +56,7 @@ const stream = (req, res) => {
     }
 
     if (req.method === 'HEAD') { res.end() } else {
-      let stream = isMagnet
+      let stream = isTorrent
         ? torrent.createReadStream(range)
         : fs.createReadStream(path, range)
 
@@ -68,7 +75,7 @@ const stream = (req, res) => {
     }
   }
 
-  if (isMagnet) {
+  if (isTorrent) {
     const torrent = process.torrentClient.get(magnet)
 
     if (torrent) {
@@ -87,11 +94,17 @@ const stream = (req, res) => {
 
 const tracks = (req, res) => {
   const info = decode(req.url.slice('/tracks/'.length))
+  const isTorrentFile = extname(info) === '.torrent'
   const isMagnet = /^magnet:\?/.test(info)
+  const isTorrent = isTorrentFile || isMagnet
   const type = isMagnet ? 'magnet' : 'file'
 
   const path = isMagnet ? null : info
-  const magnet = isMagnet ? info : null
+  const magnet = isMagnet
+    ? info
+    : isTorrentFile
+      ? fs.readFileSync(info)
+      : null
 
   logger.info(`Tracks for ${type}: ${isMagnet ? magnet : path}`)
 
@@ -100,11 +113,15 @@ const tracks = (req, res) => {
     const { files: [torrent] } = obj
     const mimeType = mime.getType(path || torrent.name)
 
-    if (mimeType === 'video/x-matroska') {
+    if (['video/x-matroska', 'application/x-bittorrent'].includes(mimeType)) {
       const parser = new MatroskaSubtitles()
-      let stream = isMagnet
+      let stream = isTorrent
         ? torrent.createReadStream()
         : fs.createReadStream(path)
+
+      isMagnet && res.sse('name', {
+        name: torrent.name.split(' ').slice(1, -1).join(' ') // nyanparser pls
+      })
 
       parser.on('tracks', tracks => res.sse('tracks', tracks))
 
@@ -115,7 +132,7 @@ const tracks = (req, res) => {
 
       const close = () => {
         if (stream) {
-          logger.info(`Closing stream for ${type} tracks: ${isMagnet ? magnet : path}`)
+          logger.info(`Closing stream for ${type} tracks: ${isTorrent ? magnet : path}`)
           stream.destroy()
           stream = null
         }
@@ -130,7 +147,7 @@ const tracks = (req, res) => {
     }
   }
 
-  processFile(isMagnet ? process.torrentClient.get(magnet) : undefined)
+  processFile(isTorrent ? process.torrentClient.get(magnet) : undefined)
 }
 
 module.exports = {stream, tracks}

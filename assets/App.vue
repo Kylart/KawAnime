@@ -80,9 +80,11 @@
 
 <script>
   import Meta from 'mixins/meta'
+  import ReadMagnet from 'mixins/readMagnet'
+  import DragDrop from 'mixins/dragDrop'
 
   export default {
-    mixins: [Meta],
+    mixins: [Meta, ReadMagnet, DragDrop],
     mounted () {
       this.isBrowser = !window.navigator.appVersion.includes('Electron')
 

@@ -35,6 +35,7 @@
     "chalk": "^2.4.1",
     "colors": "^1.1.2",
     "compression": "^1.7.2",
+    "drag-drop": "^4.1.0",
     "electron-log": "^2.2.14",
     "electron-updater": "^2.21.3",
     "express": "^4.16.2",

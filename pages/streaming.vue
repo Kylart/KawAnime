@@ -317,11 +317,6 @@
               name: text
             }
           })
-
-          this.$store.dispatch('history/append', {
-            type: 'Stream',
-            text
-          })
         } else {
           this.$axios.get('openThis', {
             params: {
