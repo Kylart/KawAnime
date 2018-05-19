@@ -83,10 +83,9 @@
   import Meta from 'mixins/global/meta'
   import ReadMagnet from 'mixins/global/readMagnet'
   import DragDrop from 'mixins/global/dragDrop'
-  import Overlay from 'mixins/global/overlay'
 
   export default {
-    mixins: [Meta, ReadMagnet, DragDrop, Overlay],
+    mixins: [Meta, ReadMagnet, DragDrop],
     mounted () {
       this.isBrowser = !window.navigator.appVersion.includes('Electron')
 

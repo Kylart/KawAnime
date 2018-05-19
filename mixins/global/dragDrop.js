@@ -6,6 +6,17 @@ export default {
     overlayEl: '#overlay'
   }),
 
+  computed: {
+    overlay: {
+      set (val) {
+        this.$store.commit('overlay/show', val)
+      },
+      get () {
+        return this.$store.state.overlay.show
+      }
+    }
+  },
+
   mounted () {
     const vm = this
 
