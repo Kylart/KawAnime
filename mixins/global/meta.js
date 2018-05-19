@@ -1,4 +1,4 @@
-const meta = require('../router/meta.js')
+const meta = require('router/meta.js')
 
 export default {
   watch: {

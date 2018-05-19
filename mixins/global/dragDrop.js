@@ -2,13 +2,21 @@ import dragDrop from 'drag-drop'
 
 export default {
   data: () => ({
-    el: '#app'
+    el: '#app',
+    overlayEl: '#overlay'
   }),
 
   mounted () {
     const vm = this
 
     dragDrop(this.el, {
+
+      onDragEnter () {
+        vm.overlay = true
+      }
+    })
+
+    dragDrop(this.overlayEl, {
       onDrop (files /*, pos, fileList */) {
         const { name: fullName, path } = files[0]
 
@@ -21,9 +29,12 @@ export default {
             name
           }
         })
+
+        vm.overlay = false
       },
-      onDragEnter () {},
-      onDragLeave () {}
+      onDragLeave () {
+        vm.overlay = false
+      }
     })
   }
 }

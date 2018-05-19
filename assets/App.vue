@@ -63,6 +63,7 @@
       k-footer
 
     env(v-show='$store.state.NODE_ENV === "development"')
+    overlay(v-show='overlay')
     magnets-modal
     video-modal
     mal-form
@@ -79,12 +80,13 @@
 </template>
 
 <script>
-  import Meta from 'mixins/meta'
-  import ReadMagnet from 'mixins/readMagnet'
-  import DragDrop from 'mixins/dragDrop'
+  import Meta from 'mixins/global/meta'
+  import ReadMagnet from 'mixins/global/readMagnet'
+  import DragDrop from 'mixins/global/dragDrop'
+  import Overlay from 'mixins/global/overlay'
 
   export default {
-    mixins: [Meta, ReadMagnet, DragDrop],
+    mixins: [Meta, ReadMagnet, DragDrop, Overlay],
     mounted () {
       this.isBrowser = !window.navigator.appVersion.includes('Electron')
 
