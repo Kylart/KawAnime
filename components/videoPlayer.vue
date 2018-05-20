@@ -262,9 +262,9 @@
         this.$parent.$parent.close()
       },
       addToHistory () {
-        if (this.isMagnet && !this.hasAppendedToHistory) {
+        if (!this.hasAppendedToHistory) {
           this.$store.dispatch('history/append', {
-            type: 'Stream',
+            type: this.isMagnet ? 'Stream' : 'Play',
             text: this.videoTitle
           })
 

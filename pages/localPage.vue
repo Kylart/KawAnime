@@ -139,13 +139,14 @@
     methods: {
       async playThis (item) {
         this.$log(`Requested to play ${item.name} - ${item.ep}. Sending...`)
+        const name = `${item.name} - ${item.ep}`
 
         if (this.inside) {
           this.$store.commit('streaming/play', {
             show: true,
             link: {
               link: item.path,
-              name: item.path.replace(this.$store.state.localFiles.dir, '').slice(1)
+              name
             }
           })
         } else {
@@ -157,13 +158,13 @@
             }
           })
 
+          this.$store.dispatch('history/append', {
+            type: 'Play',
+            text: name
+          })
+
           if (status !== 200) this.$log(`An error occurred: request to open file ended with a status ${status}.`)
         }
-
-        this.$store.dispatch('history/append', {
-          type: 'Play',
-          text: `${item.name} - ${item.ep}`
-        }).catch(err => { void (err) })
       },
       delThis (item) {
         this.$log(`[${(new Date()).toLocaleTimeString()}]: Requested to delete ${item.path} - ${item.ep}. Sending...`)
