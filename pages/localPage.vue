@@ -195,7 +195,7 @@
         this.$store.dispatch('localFiles/changePath')
       },
       resetLocal () {
-        if (!this.$store.state.isConnected) {
+        if (this.$store.state.isConnected) {
           this.$store.dispatch('localFiles/reset')
         } else {
           this.$store.commit('setInfoSnackbar', 'You are offline.')
