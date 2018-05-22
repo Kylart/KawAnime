@@ -225,7 +225,7 @@
       showQualityModal (anime) {
         const files = this.files[anime]
         this.qualityList = this.$_.map(files, (file) => file.quality)[0]
-        const prefQuality = this.$store.state.config.config.quality
+        const prefQuality = this.$store.state.config.config.video.quality
 
         this.downloadAllName = anime
         this.quality = this.qualityList.includes(prefQuality)
@@ -354,7 +354,7 @@
         if (val) {
           // Setting quality models for all episodes
           const eps = this.$_.map(this.files[this.current], (ep, epNumber) => ep)
-          const prefQuality = this.$store.state.config.config.quality
+          const prefQuality = this.$store.state.config.config.video.quality
 
           eps.forEach((ep) => {
             this.qualityEp[ep.name] = ep.quality.includes(prefQuality)
