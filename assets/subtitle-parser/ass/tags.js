@@ -1,7 +1,7 @@
 import { alignment } from './utils.js'
 
 const re = {
-  delimiter: /(\{|\})/g,
+  delimiter: /(\{.+\})/g,
   newline: /\\N/g,
   bold: {
     start: {
@@ -39,18 +39,7 @@ const re = {
   },
   color: /\\\d?c&H[0-9A-Za-z]{2,6}&/,
   alignment: /\\an?\d{1,2}/g,
-  karaoke: /\\k(f|o)?\d{1,5}/ig,
-  notSupported: [
-    /\\s(0|1)/g, // Strikeout
-    /\\(bord|shad|be)[0-9]{1,5}/g, // Border, shadow and blur
-    /\\fsc(x|y)\d{1,3}/g, // Scaling
-    /\\fsp\d{1,3}/g, // letter-spacing is not supported in cue
-    /fr(x|y|z)?\d{1,3}/g, // Cannot rotate text in cue
-    /\\b\d{1,3}/g, // Custom bold is a pain to handle
-    /\\fe\d{1,3}/g, // Encoding
-    /\\(\d?a|alpha)&H[0-9A-Za-z]{2}&/g, // Alpha
-    /\\fad\(\d{1,5},\d{1,5}\)/g // fade animation
-  ]
+  karaoke: /\\k(f|o)?\d{1,5}/ig
 }
 
 // Need to clean up {}s after
@@ -210,18 +199,10 @@ const handleAlignment = (string, cue) => {
 //   return string.replace(karaokeTag, '')
 // }
 
-const handleNotSupported = (string) => {
-  re.notSupported.forEach((tag) => { string = string.replace(tag, '') })
-
-  return string
-}
-
 export default function (string, cue) {
   const cssStyle = document.head.children[document.head.childElementCount - 1]
 
   if (/\{/g.test(string)) {
-    string = handleNotSupported(string)
-
     string = handleCommon('bold', string)
     string = handleCommon('italic', string)
     string = handleCommon('underline', string)
