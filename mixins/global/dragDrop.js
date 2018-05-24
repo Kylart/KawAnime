@@ -27,6 +27,9 @@ export default {
   },
 
   methods: {
+    isValidFile (ext) {
+      return this.torrentExtension.includes(ext) || this.videoExtension.includes(ext)
+    },
     showOverlay (bool) {
       this.overlay = bool
 
@@ -51,12 +54,12 @@ export default {
       e.preventDefault()
       e.stopPropagation()
 
-      const { dataTransfer: { files: [file] } } = e
-      const { name: fullName, path } = file
+      const { dataTransfer: { files: [file = {}] } } = e
+      const { name: fullName = '', path = '' } = file
 
       const fileExtension = path.split('.').slice(-1)[0]
 
-      if (this.torrentExtension.includes(fileExtension) || this.videoExtension.includes(fileExtension)) {
+      if (this.isValidFile(fileExtension)) {
         const name = fullName.split(' ').slice(1, -1).join(' ') // nyanparser pls
 
         this.$store.commit('streaming/play', {
@@ -74,9 +77,9 @@ export default {
             text: name
           })
         }
-
-        this.showOverlay(false)
       }
+
+      this.showOverlay(false)
     }
   }
 }
