@@ -302,9 +302,10 @@
       },
       act (action, { name: anime }) {
         const quality = this.qualityEp[anime]
+        const ep = anime.split(' ').slice(-2, -1)[0] // nyanparser pls
 
         const { link, name } = this.$store.state.streaming.page.torrents.magnets.filter((magnet) => {
-          return magnet.name.includes(this.current) && magnet.name.includes(quality)
+          return magnet.name.includes(this.current) && magnet.name.includes(ep) && magnet.name.includes(quality)
         })[0]
 
         if (action === 'play') {
