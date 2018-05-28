@@ -1,6 +1,7 @@
 import _ from 'lodash'
 import handleTags from './tags.js'
 import { alignment as align } from './utils.js'
+import handleNewlines from './newlines.js'
 
 const percent = (value, res) => {
   return Math.round((value / res) * 100)
@@ -12,7 +13,7 @@ const getPosition = (alignment, mR, mL, resX) => {
 
   // Position 0 is left and Position 100 is right.
   const left = percent(mL, resX)
-  const right = percent((resX - mR), resX)
+  const right = 100 - percent(mR, resX)
 
   let result = 'auto'
 
@@ -63,7 +64,6 @@ export default function (subtitle, styles, info) {
 
   // First we need to set the current subtitle style if any.
   const style = _.filter(styles, (style) => style.Name === subtitle.style)[0] // findStyleByName(subtitle.style, styles)
-  const className = style.Name.replace(/\s/g, '_')
 
   const alignment = +style.Alignment
 
@@ -73,9 +73,8 @@ export default function (subtitle, styles, info) {
   const mV = +style.MarginV
 
   // Horizontally and vertically
-  result.position = getPosition(alignment, mR, mL, resX)
-
   result.snapToLines = false
+  result.position = getPosition(alignment, mR, mL, resX)
   result.line = getLine(alignment, mV, resY)
 
   // Horizontal-alignment. We assume that the file is unicoded.
@@ -91,7 +90,7 @@ export default function (subtitle, styles, info) {
   // We should handle tags now
   result = handleTags(text, result)
 
-  result.text = `<c.${className}>${result.text}</c>`
+  result = handleNewlines(result, style, resY)
 
   return result
 }

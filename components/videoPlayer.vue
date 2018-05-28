@@ -71,6 +71,7 @@
         info: null,
         isMagnetRe: /^magnet:\?/,
         name: '',
+        isPrefLanguageSet: false,
         hasAppendedToHistory: false
       }
     },
@@ -106,7 +107,7 @@
 
           tracks.forEach(track => {
             const language = (track.language || 'eng').slice(0, 2)
-            textTracks[track.number] = this.$refs.video.addTextTrack('captions', language, language)
+            textTracks[track.number] = video.addTextTrack('captions', language, language)
 
             if (track.type === 'ass') {
               this.isAss = true
@@ -121,20 +122,27 @@
               }
             }
 
-            language === this.config.preferredLanguage && this.setTrack(textTracks[track.number])
+            if (language === this.config.preferredLanguage) {
+              this.setTrack(textTracks[track.number])
+              this.isPrefLanguageSet = true
+            }
           })
+
+          if (tracks.length === 1 && !this.isPrefLanguageSet) {
+            this.setTrack(textTracks[Object.keys(textTracks)[0]])
+          }
         })
 
         this.eventSource.addEventListener('subtitle', ({ data }) => {
           const { trackNumber, subtitle } = JSON.parse(data)
           if (trackNumber in textTracks) {
-            let cue = this.isAss
+            const cues = this.isAss
               ? fromAss.subtitles(subtitle, this.styles, this.info)
-              : new window.VTTCue(subtitle.time / 1000, (subtitle.time + subtitle.duration) / 1000, subtitle.text)
+              : [new window.VTTCue(subtitle.time / 1000, (subtitle.time + subtitle.duration) / 1000, subtitle.text)]
 
-            // cue = fromAss.checkOverlap(this.info, cue, textTracks[trackNumber])
-
-            textTracks[trackNumber].addCue(cue)
+            cues.forEach((cue) => {
+              textTracks[trackNumber].addCue(cue)
+            })
           }
         })
 
