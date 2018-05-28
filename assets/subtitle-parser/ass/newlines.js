@@ -10,12 +10,14 @@ export default function (cue, style, height) {
   } else {
     const fontSize = +style.Fontsize
     const vSize = fontSize / height * 100
+    const offset = Math.ceil(vSize)
 
     // This way, overall text is in the same region as originally planned.
     let { line: vAnchor } = cue
-    vAnchor -= vSize * (lines.length - 1)
+    const blockSize = vSize * (lines.length - 1)
+    vAnchor -= blockSize
 
-    const offset = (vSize + 2 * Math.round(vSize / 100))
+    if (vAnchor < 0) vAnchor = 0
 
     lines.forEach((line, i) => {
       const _cue = new window.VTTCue(cue.startTime, cue.endTime, line)

@@ -76,7 +76,6 @@ const handleFont = (type, string, style) => {
     if (!current.includes(`.${fontClass}`)) {
       style.innerHTML += `.video-player > video::cue(.${fontClass}) {
         font-${type === 'name' ? 'family' : 'size'}:${value};
-        ${type === 'size' && 'line-height: 1.25 !important'};
       }`
     }
 
