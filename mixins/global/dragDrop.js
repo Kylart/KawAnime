@@ -69,14 +69,6 @@ export default {
             name
           }
         })
-
-        // Adding to history if video file.
-        if (['mkv', 'mp4', 'avi'].includes(fullName.slice(-3))) {
-          this.$store.dispatch('history/append', {
-            type: 'Play',
-            text: name
-          })
-        }
       }
 
       this.showOverlay(false)
