@@ -8,6 +8,7 @@
       @waiting='waiting = true',
       @canplay='waiting = false',
       @progress='onProgress',
+      @seeked='onSeeked',
       @click='togglePlay',
       :src='`/stream/${value}`') Your browser does not support HTML5 video.
 
@@ -19,6 +20,15 @@
 
     v-btn.video-close(color='mablue', dark, icon, @click.stop='close', v-show='!controlsHidden')
       v-icon close
+
+    .cues-container
+      .cue(
+        v-for='cue in activeCues',
+        :key='cue.id',
+        :class="cue.style.join(' ')",
+        :style="{top: `${cue.line}%`, left: `${cue.position}%`, transform: `translate(${cue.align}%, 0)`, 'text-align': cue.textAlign}",
+        v-html='cue.text'
+      )
 
     v-fade-transition
       div.video-controls(v-show='!controlsHidden')
@@ -49,9 +59,11 @@
 
 <script>
   import { fromAss } from 'assets/subtitle-parser'
+  import SubtitleTiming from 'mixins/subtitles/timing.js'
 
   export default {
     name: 'video-player',
+    mixins: [SubtitleTiming],
     props: ['value', 'title'],
     data () {
       return {
@@ -117,7 +129,7 @@
 
               // Let's suppose each track have the same style and that only the language of each changes.
               if (!isStyleSet) {
-                fromAss.setStyles(this.styles, this.value)
+                fromAss.setStyles(this.styles, this.value, this.info)
                 isStyleSet = true
               }
             }
@@ -136,13 +148,14 @@
         this.eventSource.addEventListener('subtitle', ({ data }) => {
           const { trackNumber, subtitle } = JSON.parse(data)
           if (trackNumber in textTracks) {
-            const cues = this.isAss
-              ? fromAss.subtitles(subtitle, this.styles, this.info)
-              : [new window.VTTCue(subtitle.time / 1000, (subtitle.time + subtitle.duration) / 1000, subtitle.text)]
+            if (this.isAss) {
+              const cues = fromAss.subtitles(subtitle, this.styles, this.info)
 
-            cues.forEach((cue) => {
+              cues.forEach((_cue) => this.cues.push(_cue))
+            } else {
+              const cue = new window.VTTCue(subtitle.time / 1000, (subtitle.time + subtitle.duration) / 1000, subtitle.text)
               textTracks[trackNumber].addCue(cue)
-            })
+            }
           }
         })
 
@@ -202,6 +215,9 @@
           this.timeline = 100 / video.duration * video.currentTime
           this.currentTime = this.formatTime(video.currentTime)
           this.duration = this.formatTime(video.duration)
+          this.rawTime = video.currentTime
+
+          this.updateActiveCues()
         }
       },
       onProgress () {
@@ -216,6 +232,9 @@
           }
           this.buffered = buffered
         }
+      },
+      onSeeked () {
+        this.index = 0
       },
       changeTimeline (value) {
         const { video } = this.$refs
@@ -284,11 +303,11 @@
 </script>
 
 <style lang="stylus">
-  ::cue
+  .cue
     background-color rgba(0, 0, 0, 0)
-    -webkit-font-smoothing: antialiased;
-    line-height 1.25
-    white-space pre-line
+    -webkit-font-smoothing antialiased
+    width 95%
+    font-family: 'Open Sans', sans-serif
 
   .video-player
     background-color black
@@ -319,6 +338,17 @@
       position absolute
       right 1%
       top 1%
+
+    .cues-container
+      position relative
+      left 0
+      top 0
+      height 100%
+      width 100%
+      pointer-events: none
+
+      div
+        position absolute
 
     .video-play
       cursor pointer

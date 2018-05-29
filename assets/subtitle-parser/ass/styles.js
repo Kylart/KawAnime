@@ -1,5 +1,3 @@
-// For cue styling reference: https://developer.mozilla.org/en-US/docs/Web/CSS/::cue
-
 import _ from 'lodash'
 
 const vbToRGBA = (vb) => {
@@ -12,36 +10,50 @@ const vbToRGBA = (vb) => {
   return `#${r}${g}${b}`
 }
 
-const generateOutline = (outline, outlineColor) => {
-  const unit = `0 0 ${1.8 * outline || 4}px ${outlineColor}, `
+const getTextStroke = (style) => {
+  const outlineColor = vbToRGBA(style.OutlineColour)
+  const outlineThickness = +style.Outline
 
-  return `text-shadow: ${unit.repeat(8).slice(0, -2)};`
+  const fontSize = +style.Fontsize
+
+  // If stroke's thickness is more than 10% of the fontSize,
+  // it surrounds the cue so much that it hides it.
+  // So if the thickness is more than 10% of the font-size,
+  // we'll simply set it at 1px. This shouldn't bother the user
+  // that much.
+  const limit = Math.round((outlineThickness / fontSize) * 100)
+  const isTooThick = limit >= 10
+
+  // Also, as the problem tends to happen with small sized texts,
+  // we'll make it bolder than it should be.
+  const bold = 'font-weight: 500;'
+
+  return `-webkit-text-stroke: ${isTooThick ? 1 : outlineThickness}px ${outlineColor}; ${bold}`
 }
 
-export default function (styles, name) {
+export default function (styles, name, info) {
   const styleTag = document.createElement('style')
   styleTag.type = 'text/css'
   styleTag.name = name
 
   _.each(styles, (style) => {
-    const isItalic = +style.Italic ? 'italic' : 'none'
+    const isItalic = +style.Italic ? 'italic' : 'unset'
     const isUnderline = -+style.Underline ? 'underline' : null
-    const bold = -+style.Bold ? 'font-weight: bold;' : ''
+    const bold = -+style.Bold ? 'font-weight: bolder;' : ''
     const fontSize = +style.Fontsize
     const strikeOut = +style.Strikeout ? 'line-through' : null
     const primaryColor = vbToRGBA(style.PrimaryColour)
-    const outlineColor = vbToRGBA(style.OutlineColour)
-    const outlineThickness = +style.Outline
-    const outline = generateOutline(outlineThickness, outlineColor)
+
+    const outline = getTextStroke(style)
 
     styleTag.innerHTML += `
-      .video-player > video::cue${style.Name === 'Default' ? '' : '(.' + style.Name.replace(/\s/g, '_') + ')'} {
+      .cues-container > .${style.Name.replace(/\s/g, '_')} {
         font-size: ${fontSize}px;
         font-style: ${isItalic};
         text-decoration: ${(isUnderline || strikeOut) || 'none'};
         color: ${primaryColor};
-        ${bold}
         ${outline}
+        ${bold}
       }
     `
   })

@@ -1,7 +1,7 @@
-import { alignment } from './utils.js'
+import { alignment, alignDir } from './utils.js'
 
 const re = {
-  delimiter: /(\{.+\})/g,
+  delimiter: /((\{|\}))/g,
   newline: /\\N/g,
   bold: {
     start: {
@@ -74,12 +74,12 @@ const handleFont = (type, string, style) => {
     // Check if class is in style. If not, includes it.
     let current = style.innerHTML
     if (!current.includes(`.${fontClass}`)) {
-      style.innerHTML += `.video-player > video::cue(.${fontClass}) {
+      style.innerHTML += `.video-player .${fontClass} {
         font-${type === 'name' ? 'family' : 'size'}:${value};
       }`
     }
 
-    string = string.replace(re.font[type], `<c.${fontClass}>`) + '</c>'
+    string = string.replace(re.font[type], `<p class="${fontClass}" style="display: inline;">`) + '</c>'
   }
 
   return string.replace(re.font[type], '')
@@ -92,7 +92,7 @@ const setColorStyle = (type, colorTag, string, style) => {
   const b = color.slice(0, 2)
   const hexColor = `#${r}${g}${b}`
 
-  const colorClass = `.${type}${color}`
+  const colorClass = `${type}${color}`
 
   const typeToProperty = {
     'c': {
@@ -100,18 +100,18 @@ const setColorStyle = (type, colorTag, string, style) => {
       rule: hexColor
     },
     'b': {
-      property: 'text-shadow',
-      rule: `0 0 ${1.8 * 4}px ${hexColor},`.repeat(8).slice(-2)
+      property: '-webkit-text-stroke',
+      rule: `1.5px ${hexColor},`
     }
   }
 
   // Check if class is in style. If not, includes it.
   let current = style.innerHTML
   if (!current.includes(`.${colorClass}`)) {
-    style.innerHTML += `.video-player > ::cue(${colorClass}){${typeToProperty[type].property}:${typeToProperty[type].rule};}`
+    style.innerHTML += `.video-player p.${colorClass} {${typeToProperty[type].property}:${typeToProperty[type].rule};}`
   }
 
-  return string.replace(re.color, `<c${colorClass}>`)
+  return string.replace(re.color, `<p class="${colorClass}" style="display: inline;">`)
 }
 
 const handleColor = (string, style) => {
@@ -130,9 +130,9 @@ const handleColor = (string, style) => {
           // before the next color tag
           const match = string.match(re.color)[0]
           const index = string.indexOf(match)
-          string = string.slice(0, index) + '</c>' + string.slice(index)
+          string = string.slice(0, index) + '</p>' + string.slice(index)
         } else {
-          string += '</c>'
+          string += '</p>'
         }
       } else {
         // Hopefully temporary
@@ -147,7 +147,7 @@ const handleColor = (string, style) => {
   return string
 }
 
-const handleAlignment = (string, cue) => {
+const handleAlignment = (string, cue, style) => {
   const alignmentTag = re.alignment.test(string) && string.match(re.alignment)[0] // Only he first tag matters
 
   if (alignmentTag) {
@@ -161,65 +161,49 @@ const handleAlignment = (string, cue) => {
     cue.line = isNumpad ? alignment.numpad[align][0] : alignment.ssa[align][0]
 
     if (isNumpad) {
-      const leftAligned = [1, 4, 7]
-      const rightAligned = [3, 6, 9]
+      cue.align = alignDir.left.includes(alignment)
+        ? -0
+        : alignDir.right.includes(alignment)
+          ? -100
+          : -50
 
-      cue.align = leftAligned.includes(align)
-        ? 'start'
-        : rightAligned.includes(align)
-          ? 'end'
+      cue.textAlign = alignDir.left.includes(alignment)
+        ? 'left'
+        : alignDir.right.includes(alignment)
+          ? 'right'
           : 'center'
     }
+
+    cue.text = string.replace(re.alignment, '')
   }
 
-  cue.text = string.replace(re.alignment, '')
   return cue
 }
 
-// const handleKaraoke = (string, cue) => {
-//   const karaokeTag = re.karaoke.test(string) && string.match(re.karaoke)
-//   // console.log(cue)
-
-//   if (karaokeTag.length) {
-//     const durations = []
-
-//     karaokeTag.forEach((tag) => {
-//       const tag_ = tag.replace(/f/g, '').replace(/o/g, '')
-
-//       const { startTime } = cue // Format is mm:ss.xx
-//       durations.push(tag_.slice(2))
-
-//       const completeDuration = durations.reduce((a, elem) => a + elem)
-
-//       const shouldStartAt = startTime + completeDuration
-//     })
-//   }
-
-//   return string.replace(karaokeTag, '')
-// }
-
-export default function (string, cue) {
+export default function (cues) {
   const cssStyle = document.head.children[document.head.childElementCount - 1]
 
-  if (/\{/g.test(string)) {
-    string = handleCommon('bold', string)
-    string = handleCommon('italic', string)
-    string = handleCommon('underline', string)
+  cues.forEach((cue) => {
+    let string = cue.text
 
-    // string = handleKaraoke(string, cue)
+    if (/\{/g.test(string)) {
+      string = handleCommon('bold', string)
+      string = handleCommon('italic', string)
+      string = handleCommon('underline', string)
 
-    string = handleFont('name', string, cssStyle)
-    string = handleFont('size', string, cssStyle)
+      // string = handleKaraoke(string, cue)
 
-    string = handleColor(string, cssStyle)
+      string = handleFont('name', string, cssStyle)
+      string = handleFont('size', string, cssStyle)
 
-    cue = handleAlignment(string, cue)
-    string = cue.text
-  }
+      string = handleColor(string, cssStyle)
 
-  string = string.replace(re.newline, '\n')
+      cue = handleAlignment(string, cue, cssStyle)
+      string = cue.text
+    }
 
-  cue.text = clean(string)
+    cue.text = clean(string)
+  })
 
-  return cue
+  return cues
 }
