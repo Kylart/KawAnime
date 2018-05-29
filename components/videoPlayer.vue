@@ -340,7 +340,7 @@
       top 1%
 
     .cues-container
-      position relative
+      position absolute
       left 0
       top 0
       height 100%
