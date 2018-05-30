@@ -1,4 +1,4 @@
-import { alignment, alignDir } from './utils.js'
+import { alignment, alignDir, generateAnimation } from './utils.js'
 
 const re = {
   delimiter: /((\{|\}))/g,
@@ -39,6 +39,7 @@ const re = {
   },
   color: /\\\d?c&H[0-9A-Za-z]{2,6}&/,
   alignment: /\\an?\d{1,2}/g,
+  fade: /\\fad\(\d*,\d*\)/,
   karaoke: /\\k(f|o)?\d{1,5}/ig
 }
 
@@ -147,6 +148,39 @@ const handleColor = (string, style) => {
   return string
 }
 
+const handleFade = (cue, style) => {
+  let string = cue.text
+
+  if (re.fade.test(string)) {
+    const fadeTag = string.match(re.fade)[0]
+
+    // We can handle only appearing fade animation atm.
+    // The time is in ms, we need it in seconds.
+    const inDuration = +fadeTag.split(',')[0].replace('\\fad(', '') / 1000
+
+    // There is a need for a css class.
+    const fadeInClass = `fade_in_${inDuration}`.replace('.', '')
+
+    cue.style.push(fadeInClass)
+    cue.text = string.replace(fadeTag, '')
+
+    // Check if class is in style. If not, includes it.
+    let current = style.innerHTML
+    if (!current.includes(`.${fadeInClass}`)) {
+      const animationName = `fade${inDuration}`.replace('.', '')
+      const types = [
+        { type: 'in', duration: inDuration, cls: fadeInClass, name: `fade_in_${inDuration}`.replace('.', '') }
+      ]
+
+      types.forEach(({type, duration, cls}) => {
+        style.innerHTML += `.video-player .${cls} ${generateAnimation(type, animationName, duration)}`
+      })
+    }
+  }
+
+  return cue
+}
+
 const handleAlignment = (string, cue, style) => {
   const alignmentTag = re.alignment.test(string) && string.match(re.alignment)[0] // Only he first tag matters
 
@@ -191,18 +225,16 @@ export default function (cues) {
       string = handleCommon('italic', string)
       string = handleCommon('underline', string)
 
-      // string = handleKaraoke(string, cue)
-
       string = handleFont('name', string, cssStyle)
       string = handleFont('size', string, cssStyle)
 
       string = handleColor(string, cssStyle)
 
-      cue = handleAlignment(string, cue, cssStyle)
-      string = cue.text
-    }
+      cue.text = clean(string)
 
-    cue.text = clean(string)
+      cue = handleAlignment(string, cue, cssStyle)
+      cue = handleFade(cue, cssStyle)
+    }
   })
 
   return cues

@@ -103,3 +103,37 @@ export const getAlign = (style) => {
 
   return { align, textAlign }
 }
+
+export const generateAnimation = (type, name, duration) => {
+  const from = type === 'in' ? 0 : 1
+  const to = type === 'in' ? 1 : 0
+
+  return `{
+      animation: ${name} ${duration}s;
+      -webkit-animation: ${name} ${duration}s;
+      -moz-animation: ${name} ${duration}s;
+      -o-animation: ${name} ${duration}s;
+      -ms-animation: ${name} ${duration}s;
+    }
+    @keyframes ${name} {
+      from { opacity: ${from};}
+      to { opacity: ${to}; }
+    }
+    @-webkit-keyframes ${name} {
+      from { opacity: ${from};}
+      to { opacity: ${to}; }
+    }
+    @-moz-keyframes ${name} {
+      from { opacity: ${from};}
+      to { opacity: ${to}; }
+    }
+    @-ms-keyframes ${name} {
+      from { opacity: ${from};}
+      to { opacity: ${to}; }
+    }
+    @-o-keyframes ${name} {
+      from { opacity: ${from};}
+      to { opacity: ${to}; }
+    }
+  `
+}

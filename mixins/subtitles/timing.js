@@ -32,7 +32,7 @@ export default {
       const { index, nbCues } = this
       let hasAdded = false
 
-      for (let i = index, l = nbCues; i < l; ++i) {
+      for (let i = index > 0 ? index - 1 : index, l = nbCues; i < l; ++i) {
         const _cue = this.cues[i]
 
         if (this.isActive(_cue)) {
