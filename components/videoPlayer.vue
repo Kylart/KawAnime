@@ -60,10 +60,11 @@
 <script>
   import { fromAss } from 'assets/subtitle-parser'
   import SubtitleTiming from 'mixins/subtitles/timing.js'
+  import CheckOverlap from 'mixins/subtitles/checkOverlap.js'
 
   export default {
     name: 'video-player',
-    mixins: [SubtitleTiming],
+    mixins: [SubtitleTiming, CheckOverlap],
     props: ['value', 'title'],
     data () {
       return {
@@ -217,7 +218,7 @@
           this.duration = this.formatTime(video.duration)
           this.rawTime = video.currentTime
 
-          this.updateActiveCues()
+          if (this.isAss) this.updateActiveCues()
         }
       },
       onProgress () {

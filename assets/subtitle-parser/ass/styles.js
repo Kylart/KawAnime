@@ -11,37 +11,28 @@ const vbToRGBA = (vb) => {
   return `rgba(${r}, ${g}, ${b}, ${a})`
 }
 
-const getTextStroke = (style) => {
+const getShadow = (style) => {
+  let result = ''
+
+  const color = vbToRGBA(style.BackColour)
+  const depth = +style.Shadow * 1.5
+
   const outlineColor = vbToRGBA(style.OutlineColour)
   const outlineThickness = +style.Outline
 
-  const fontSize = +style.Fontsize
+  // First, outline
+  result = `0 0 ${1.8 * outlineThickness}px ${outlineColor}, `.repeat(6).slice(0, -2)
 
-  // If stroke's thickness is more than 10% of the fontSize,
-  // it surrounds the cue so much that it hides it.
-  // So if the thickness is more than 10% of the font-size,
-  // we'll simply set it at 1px. This shouldn't bother the user
-  // that much.
-  const limit = Math.round((outlineThickness / fontSize) * 100)
-  const isTooThick = limit >= 10
+  if (depth) {
+    if (!outlineThickness) {
+      // SSA specifies that if no outline is set, 1px outline must be forced.
+      result = `0 0 1px ${color}, `.repeat(6).slice(0, -2)
+    }
 
-  // Also, as the problem tends to happen with small sized texts,
-  // we'll make it bolder than it should be.
-  const bold = 'font-weight: 500;'
+    result = `${depth}px ${depth}px ${depth}px ${color}, ${result}`
+  }
 
-  return `-webkit-text-stroke: ${isTooThick ? 1 : outlineThickness}px ${outlineColor}; ${bold}`
-}
-
-const getShadow = (style) => {
-  const color = vbToRGBA(style.BackColour)
-  const depth = +style.Shadow
-
-  // SSA specifies that if no outline is set, 1px outline must be forced.
-  const outline = `-webkit-text-stroke: 1px ${color};`
-
-  return depth
-    ? `${outline} text-shadow: ${depth}px ${depth}px ${depth}px ${color};`
-    : ''
+  return `text-shadow: ${result};`
 }
 
 export default function (styles, name, info) {
@@ -58,7 +49,6 @@ export default function (styles, name, info) {
     const primaryColor = vbToRGBA(style.PrimaryColour)
 
     const shadow = getShadow(style)
-    const outline = getTextStroke(style)
 
     styleTag.innerHTML += `
       .cues-container > .${style.Name.replace(/\s/g, '_')} {
@@ -67,7 +57,6 @@ export default function (styles, name, info) {
         text-decoration: ${(isUnderline || strikeOut) || 'none'};
         color: ${primaryColor};
         ${shadow}
-        ${outline}
         ${bold}
       }
     `
