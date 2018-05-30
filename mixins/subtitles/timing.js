@@ -36,17 +36,15 @@ export default {
         const _cue = this.cues[i]
 
         if (this.isActive(_cue)) {
-          // let isAlreadyIn = false
+          let isAlreadyIn = this.$_.find(this.activeCues, { id: _cue.id })
 
-          // this.activeCues.forEach((_c) => {
-          //   if (_c.id === _cue.id) isAlreadyIn = true
-          // })
+          if (!isAlreadyIn) {
+            this.activeCues.push(_cue)
 
-          // if (!isAlreadyIn) {
-          this.activeCues.push(_cue)
+            this.checkOverlap()
 
-          if (!hasAdded) hasAdded = true
-          // }
+            if (!hasAdded) hasAdded = true
+          }
         } else {
           if (hasAdded) {
             this.index = i
@@ -54,11 +52,6 @@ export default {
           }
         }
       }
-
-      // Would be nice to optimize this though activeCues should never have
-      // more than a dozen cues.
-      this.activeCues = this.$_.uniq(this.activeCues)
-      this.checkOverlap()
     },
     clearActiveCues () {
       this.activeCues = this.activeCues.filter((_cue) => {

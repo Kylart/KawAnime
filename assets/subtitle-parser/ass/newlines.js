@@ -6,6 +6,7 @@ export default function (cue, style, height) {
   const lines = cue.text.split('\\N')
 
   if (lines.length === 1) {
+    cue.id = `${cue.start}-${cue.end}-${cue.line}-${cue.position}-${cue.text}`
     return [cue]
   } else {
     const fontSize = +style.Fontsize
