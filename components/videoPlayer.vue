@@ -307,7 +307,7 @@
     background-color rgba(0, 0, 0, 0)
     -webkit-font-smoothing antialiased
     width 95%
-    font-family: 'Open Sans', sans-serif
+    font-family "Open Sans", sans-serif
 
   .video-player
     background-color black

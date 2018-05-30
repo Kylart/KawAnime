@@ -2,12 +2,13 @@ import _ from 'lodash'
 
 const vbToRGBA = (vb) => {
   // vb is like &HAABBGGRR
-  vb = vb.slice(4)
-  const b = vb.slice(0, 2)
-  const g = vb.slice(2, 4)
-  const r = vb.slice(4, 6)
+  vb = vb.slice(2)
+  const a = 1 - (parseInt(vb.slice(0, 2), 16) / 256)
+  const b = parseInt(vb.slice(2, 4), 16)
+  const g = parseInt(vb.slice(4, 6), 16)
+  const r = parseInt(vb.slice(6, 8), 16)
 
-  return `#${r}${g}${b}`
+  return `rgba(${r}, ${g}, ${b}, ${a})`
 }
 
 const getTextStroke = (style) => {
@@ -31,6 +32,18 @@ const getTextStroke = (style) => {
   return `-webkit-text-stroke: ${isTooThick ? 1 : outlineThickness}px ${outlineColor}; ${bold}`
 }
 
+const getShadow = (style) => {
+  const color = vbToRGBA(style.BackColour)
+  const depth = +style.Shadow
+
+  // SSA specifies that if no outline is set, 1px outline must be forced.
+  const outline = `-webkit-text-stroke: 1px ${color};`
+
+  return depth
+    ? `${outline} text-shadow: ${depth}px ${depth}px ${depth}px ${color};`
+    : ''
+}
+
 export default function (styles, name, info) {
   const styleTag = document.createElement('style')
   styleTag.type = 'text/css'
@@ -44,6 +57,7 @@ export default function (styles, name, info) {
     const strikeOut = +style.Strikeout ? 'line-through' : null
     const primaryColor = vbToRGBA(style.PrimaryColour)
 
+    const shadow = getShadow(style)
     const outline = getTextStroke(style)
 
     styleTag.innerHTML += `
@@ -52,6 +66,7 @@ export default function (styles, name, info) {
         font-style: ${isItalic};
         text-decoration: ${(isUnderline || strikeOut) || 'none'};
         color: ${primaryColor};
+        ${shadow}
         ${outline}
         ${bold}
       }
