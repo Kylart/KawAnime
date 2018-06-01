@@ -21,7 +21,7 @@
     v-btn.video-close(color='mablue', dark, icon, @click.stop='close', v-show='!controlsHidden')
       v-icon close
 
-    .cues-container
+    .cues-container(v-show='isAss')
       .cue(
         v-for='cue in activeCues',
         :key='cue.id',

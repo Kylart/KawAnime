@@ -41,12 +41,12 @@ export default {
           if (!isAlreadyIn) {
             this.activeCues.push(_cue)
 
-            this.checkOverlap()
-
             if (!hasAdded) hasAdded = true
           }
         } else {
           if (hasAdded) {
+            // We check overlap once it's over
+            this.checkOverlap()
             this.index = i
             break
           }
