@@ -40,6 +40,8 @@ const re = {
   color: /\\\d?c&H[0-9A-Za-z]{2,6}&/,
   alignment: /\\an?\d{1,2}/g,
   fade: /\\fad\(\d*,\d*\)/,
+  pos: /\\pos\(\d*,\d*\)/,
+  rot: /\\fr(x|y|z)?\d{1,3}/,
   karaoke: /\\k(f|o)?\d{1,5}/ig
 }
 
@@ -181,6 +183,49 @@ const handleFade = (cue, style) => {
   return cue
 }
 
+const handlePos = (cue, info) => {
+  const string = cue.text
+  const { PlayResX: resX, PlayResY: resY } = info
+
+  if (re.pos.test(string)) {
+    const posTag = string
+
+    const xy = string.replace('\\pos(', '').replace(')', '').split(',')
+    const x = Math.round((xy[0] / resX) * 100)
+    const y = Math.round((xy[1] / resY) * 100)
+
+    cue.position = x
+    cue.line = y
+
+    cue.text = string.replace(posTag, '')
+  }
+
+  return cue
+}
+
+const handleRotation = (cue) => {
+  const string = cue.text
+
+  if (re.rot.test(string)) {
+    const rotateTag = string.match(re.rot)
+    let axis = rotateTag.replace('\\fr', '').slice(0, 1)
+
+    if (!isNaN(+axis)) {
+      // According to the specs, if no axis is specified,
+      // the fallback axis should be z.
+      axis = 'z'
+    }
+
+    const degrees = rotateTag.replace(`\\fr${axis}`, '')
+
+    cue.rotate = ` rotate${axis.toUpperCase}(${degrees}deg)`
+
+    cue.text = string.replace(rotateTag, '')
+  }
+
+  return cue
+}
+
 const handleAlignment = (string, cue, style) => {
   const alignmentTag = re.alignment.test(string) && string.match(re.alignment)[0] // Only he first tag matters
 
@@ -214,7 +259,7 @@ const handleAlignment = (string, cue, style) => {
   return cue
 }
 
-export default function (cues) {
+export default function (cues, info) {
   const cssStyle = document.head.children[document.head.childElementCount - 1]
 
   cues.forEach((cue) => {
@@ -232,6 +277,8 @@ export default function (cues) {
 
       cue.text = clean(string)
 
+      cue = handlePos(cue, info)
+      cue = handleRotation(cue)
       cue = handleAlignment(string, cue, cssStyle)
       cue = handleFade(cue, cssStyle)
     }
