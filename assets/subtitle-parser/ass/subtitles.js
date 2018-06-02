@@ -1,5 +1,6 @@
 import handleTags from './tags.js'
 import handleNewlines from './newlines.js'
+import handleStyle from './getStyle.js'
 import { getPosition, getLine, getAlign } from './utils.js'
 
 export default function (subtitle, styles, info) {
@@ -32,7 +33,10 @@ export default function (subtitle, styles, info) {
   result = handleNewlines(result, style, +info.PlayResY)
 
   // We should handle tags now
-  result = handleTags(result)
+  result = handleTags(result, info)
+
+  // Style is set on each cue
+  result = handleStyle(result)
 
   return result
 }

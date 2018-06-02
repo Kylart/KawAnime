@@ -26,7 +26,7 @@
         v-for='cue in activeCues',
         :key='cue.id',
         :class="cue.style.join(' ')",
-        :style="{top: `${cue.line}%`, left: `${cue.position}%`, transform: `translate(${cue.align}%, 0)`, 'text-align': cue.textAlign}",
+        :style="cue.getStyle()",
         v-html='cue.text'
       )
 
