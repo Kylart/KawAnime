@@ -141,6 +141,10 @@
     },
     "linux": {
       "category": "Network"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
     }
   },
   "standard": {
