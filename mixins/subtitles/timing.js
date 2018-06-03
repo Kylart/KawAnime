@@ -1,22 +1,28 @@
 export default {
   data: () => ({
     rawTime: 0,
-    cues: [],
+    allCues: {},
+    numToLang: {},
+    trackNum: null,
     activeCues: [],
     index: 0
   }),
 
   computed: {
+    cues () {
+      return this.allCues[this.trackNum] || []
+    },
     nbCues () {
-      return this.cues.length
+      return this.cues.length || null
+    },
+    subLanguage () {
+      return this.numToLang[this.trackNum]
     }
   },
 
   methods: {
-    addCue (cue) {
-      this.cues.push(cue)
-
-      this.cues = this.$_.sortBy(this.cues, ['start'])
+    setSubLanguage (num) {
+      this.trackNum = this.trackNum === +num ? null : +num
     },
     isActive (cue) {
       const { start, end } = cue

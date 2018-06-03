@@ -1,7 +1,8 @@
 export default {
   methods: {
     getBounds (groupedCue) {
-      const fontSize = this.styles.find(style => style.Name === groupedCue[0].style[0]).Fontsize
+      const style = this.styles.find(style => style.Name === groupedCue[0].style[0]) || this.styles[0]
+      const fontSize = style.Fontsize
       const vSize = Math.round((fontSize / this.info.PlayResY) * 100)
       const start = groupedCue[0].line
       const end = groupedCue.slice(-1)[0].line + vSize

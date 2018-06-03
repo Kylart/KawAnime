@@ -53,8 +53,8 @@
           v-btn.subtitles(slot='activator', color='mablue', dark)
             v-icon subtitles
           v-list
-            v-list-tile.video-subtitle(v-for='(track,i) in $refs.video.textTracks', :key='i' @click='setTrack(track)')
-              v-list-tile-title(:class="{ 'blue--text': track.mode === 'showing' }") {{ track.label }}
+            v-list-tile.video-subtitle(v-for='(num, i) in Object.keys(numToLang)', :key='i' @click='setSubLanguage(num)')
+              v-list-tile-title(:class="{ 'blue--text': +num === trackNum }") {{ numToLang[num] }}
 </template>
 
 <script>
@@ -120,7 +120,10 @@
 
           tracks.forEach(track => {
             const language = (track.language || 'eng').slice(0, 2)
-            textTracks[track.number] = video.addTextTrack('captions', language, language)
+            const trackNumber = +track.number
+            this.allCues[trackNumber] = []
+
+            this.numToLang[trackNumber] = language
 
             if (track.type === 'ass') {
               this.isAss = true
@@ -136,23 +139,23 @@
             }
 
             if (language === this.config.preferredLanguage) {
-              this.setTrack(textTracks[track.number])
               this.isPrefLanguageSet = true
+              this.trackNum = trackNumber
             }
           })
 
           if (tracks.length === 1 && !this.isPrefLanguageSet) {
-            this.setTrack(textTracks[Object.keys(textTracks)[0]])
+            this.trackNum = Object.keys(this.numToLang)[0]
           }
         })
 
         this.eventSource.addEventListener('subtitle', ({ data }) => {
           const { trackNumber, subtitle } = JSON.parse(data)
-          if (trackNumber in textTracks) {
+          if (trackNumber in this.allCues) {
             if (this.isAss) {
               const cues = fromAss.subtitles(subtitle, this.styles, this.info)
 
-              cues.forEach((_cue) => this.cues.push(_cue))
+              cues.forEach((_cue) => this.allCues[trackNumber].push(_cue))
             } else {
               const cue = new window.VTTCue(subtitle.time / 1000, (subtitle.time + subtitle.duration) / 1000, subtitle.text)
               textTracks[trackNumber].addCue(cue)

@@ -9,7 +9,7 @@ export default function (subtitle, styles, info) {
   const { time, duration, text } = subtitle
 
   // First we need to set the current subtitle style if any.
-  const style = styles.filter((style) => style.Name === subtitle.style)[0]
+  const style = styles.filter((style) => style.Name === subtitle.style)[0] || styles[0]
 
   let result = {
     start: time / 1000,
