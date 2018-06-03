@@ -30,26 +30,24 @@
 <p align="center"><img src="https://i.imgur.com/TQAyUlD.png"/></p>
 
 # Features
-Disclaimer : This is a software for otaku/anime-fans. Do not try if you're not prepared.
+Disclaimer : KawAnime is built for otaku/anime-fans. Software will contain images and sounds sourced from anime. Do not try if you're not prepared.
 
-This software allows one to:
-* Be aware of the latest anime release.
-* Download an anime (from ep X to ep Y) via Torrent (one would need a torrent client atm). One can also only get a
-list of torrent magnets to paste in a torrent client on a distant server.
-* Get information from any anime (those come from myanimelist.net).
-* Get anime-related news from MyAnimeList.net.
-* Get seasonal releases information MyAnimeList.net.
+Use KawAnime to:
+* Get updated on anime releases.
+* Download episodes of an anime (from ep X to ep Y) via Torrent (requires Torrent Client). 
+  * Magnet links for all episodes can be generated through the Downloader.
+* Get anime information, news, and seasonal information (information sourced from MyAnimeList.net)
 * Manage your anime files (watch and delete on click)
 * Manage watch lists.
-* More features are to come.
+* More features to come.
 
 ## About OS
 _KawAnime_ is completely cross-platform.
 
-Yet, if you find any problem, you can tell me anytime in the `issues` section.
+If you have any problems installing for your OS, you can contact me anytime in the `issues` section.
 
 ## Installation
-Be sure that you have Npm installed. You can find how to install npm (node) [here](https://nodejs.org/en/).
+Be sure that Npm is installed. You can find how to install npm (node) [here](https://nodejs.org/en/).
 ```
 git clone https://github.com/Kylart/KawAnime
 ```
@@ -105,7 +103,7 @@ npm run cloc
 ## Generating distributable apps
 This feature uses [electron-builder](https://github.com/electron-userland/electron-builder).
 
-You can find help to use it on your platform
+Find help to use it on your platform
 [here](https://github.com/electron-userland/electron-builder/wiki/Multi-Platform-Build).
 
 #### For every OS
@@ -118,12 +116,12 @@ npm run build && npm run dist:all
 npm run build && npm run dist:mac
 ```
 
-#### For Linux platforms only
+#### For Linux OS only
 ```
 npm run build && npm run dist:linux
 ```
 
-#### For Windows platforms
+#### For Windows OS only
 ```
 npm run build && npm run dist:win
 ```
@@ -140,8 +138,9 @@ Any contribution is appreciated.
 5. Submit a pull request.
 
 ## Thanks
-This software is being developped with the following technologies, many thanks to
-* [Electron](https://electron.atom.io)
+KawAnime is developed using the following technologies, many thanks to
+* [Electron](https://electron.atom.io)  
+and
 * [Vuetify](https://vuetifyjs.com)
 
 _It is still in development_.
