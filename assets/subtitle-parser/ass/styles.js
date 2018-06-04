@@ -47,6 +47,7 @@ export default function (styles, name, info) {
     const fontSize = +style.Fontsize
     const strikeOut = +style.Strikeout ? 'line-through' : null
     const primaryColor = vbToRGBA(style.PrimaryColour)
+    const spacing = +style.Spacing ? `letter-spacing: ${style.Spacing}px;` : ''
 
     const shadow = getShadow(style)
 
@@ -58,6 +59,7 @@ export default function (styles, name, info) {
         color: ${primaryColor};
         ${shadow}
         ${bold}
+        ${spacing}
       }
     `
   })
