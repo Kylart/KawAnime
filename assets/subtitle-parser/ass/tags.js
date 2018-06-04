@@ -1,7 +1,7 @@
 import { alignment, alignDir, generateAnimation } from './utils.js'
 
 const re = {
-  delimiter: /((\{|\}))/g,
+  delimiter: /[{}]/g,
   newline: /\\N/g,
   bold: {
     start: {
