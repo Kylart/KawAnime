@@ -188,9 +188,9 @@ const handlePos = (cue, info) => {
   const { PlayResX: resX, PlayResY: resY } = info
 
   if (re.pos.test(string)) {
-    const posTag = string
+    const posTag = string.match(re.pos)[0]
 
-    const xy = string.replace('\\pos(', '').replace(')', '').split(',')
+    const xy = posTag.replace('\\pos(', '').replace(')', '').split(',')
     const x = Math.round((xy[0] / resX) * 100)
     const y = Math.round((xy[1] / resY) * 100)
 
