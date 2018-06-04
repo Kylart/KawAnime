@@ -22,13 +22,14 @@
       v-icon close
 
     .cues-container(v-show='isAss')
-      .cue(
-        v-for='cue in activeCues',
-        :key='cue.id',
-        :class="cue.style.join(' ')",
-        :style="cue.getStyle()",
-        v-html='cue.text'
-      )
+      .cues-r-container
+        .cue(
+          v-for='cue in activeCues',
+          :key='cue.id',
+          :class="cue.style.join(' ')",
+          :style="cue.getStyle()",
+          v-html='cue.text'
+        )
 
     v-fade-transition
       div.video-controls(v-show='!controlsHidden')
@@ -145,7 +146,7 @@
           })
 
           if (tracks.length === 1 && !this.isPrefLanguageSet) {
-            this.trackNum = Object.keys(this.numToLang)[0]
+            this.trackNum = +Object.keys(this.numToLang)[0]
           }
         })
 
@@ -353,6 +354,11 @@
 
       div
         position absolute
+
+      .cues-r-container
+        position relative
+        height 100%
+        width 100%
 
     .video-play
       cursor pointer

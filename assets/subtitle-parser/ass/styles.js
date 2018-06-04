@@ -51,7 +51,7 @@ export default function (styles, name, info) {
     const shadow = getShadow(style)
 
     styleTag.innerHTML += `
-      .cues-container > .${style.Name.replace(/\s/g, '_')} {
+      .cues-container .${style.Name.replace(/\s/g, '_')} {
         font-size: ${fontSize}px;
         font-style: ${isItalic};
         text-decoration: ${(isUnderline || strikeOut) || 'none'};

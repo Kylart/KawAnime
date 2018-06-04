@@ -12,9 +12,6 @@ export default {
     cues () {
       return this.allCues[this.trackNum] || []
     },
-    nbCues () {
-      return this.cues.length || null
-    },
     subLanguage () {
       return this.numToLang[this.trackNum]
     }
@@ -35,7 +32,8 @@ export default {
       this.setActiveCues()
     },
     setActiveCues () {
-      const { index, nbCues } = this
+      const { index } = this
+      const nbCues = this.cues.length || null
       let hasAdded = false
 
       for (let i = index > 0 ? index - 1 : index, l = nbCues; i < l; ++i) {
