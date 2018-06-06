@@ -19,6 +19,10 @@ export default function (subtitle, styles, info) {
 
   result.style = [style.Name.replace(/\s/g, '_')]
 
+  // font-size should be a percentage of the resY value so
+  // that it can be changed accordingly.
+  result.fontSize = +style.Fontsize / +info.PlayResY
+
   result.position = getPosition(style, info)
   const { line, vert } = getLine(style, info)
   result.line = line

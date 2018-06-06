@@ -65,27 +65,20 @@ const handleCommon = (type, string) => {
   return string.replace(re_.start.from, '').replace(re_.end.from, '')
 }
 
-const handleFont = (type, string, style) => {
-  const fontType = re.font[type].test(string) && string.match(re.font[type])[0]
+const handleFontSize = (cue, info) => {
+  const string = cue.text
+  const fontType = re.font.size.test(string) && string.match(re.font.size)[0]
 
   if (fontType) {
-    const font = fontType.slice(3)
-    const fontClass = 'font_' + font.replace(/\s/g, '_')
+    const { PlayResY: resY } = info
+    const size = fontType.slice(3) / resY
 
-    const value = font + (type === 'size' ? 'px' : '')
+    cue.fontSize = size
 
-    // Check if class is in style. If not, includes it.
-    let current = style.innerHTML
-    if (!current.includes(`.${fontClass}`)) {
-      style.innerHTML += `.video-player .${fontClass} {
-        font-${type === 'name' ? 'family' : 'size'}:${value};
-      }`
-    }
-
-    string = string.replace(re.font[type], `<p class="${fontClass}" style="display: inline;">`) + '</c>'
+    cue.text = string.replace(re.font.size, '')
   }
 
-  return string.replace(re.font[type], '')
+  return cue
 }
 
 const setColorStyle = (type, colorTag, string, style) => {
@@ -274,13 +267,15 @@ export default function (cue, info) {
     string = handleCommon('italic', string)
     string = handleCommon('underline', string)
 
-    string = handleFont('name', string, cssStyle)
-    string = handleFont('size', string, cssStyle)
+    // Most of the time the font name would not be supported,
+    // we'll postpone that to another day.
+    // string = handleFont('name', string, cssStyle)
 
     string = handleColor(string, cssStyle)
 
     cue.text = clean(string)
 
+    cue = handleFontSize(cue, info)
     cue = handlePos(cue, info)
     cue = handleRotation(cue)
     cue = handleAlignment(cue, cssStyle)
