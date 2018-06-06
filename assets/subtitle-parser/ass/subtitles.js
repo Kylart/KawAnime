@@ -1,5 +1,4 @@
 import handleTags from './tags.js'
-import handleStyle from './getStyle.js'
 import { getPosition, getLine, getAlign } from './utils.js'
 
 export default function (subtitle, styles, info) {
@@ -19,6 +18,10 @@ export default function (subtitle, styles, info) {
 
   result.style = [style.Name.replace(/\s/g, '_')]
 
+  // font-size should be a percentage of the resY value so
+  // that it can be changed accordingly.
+  result.fontSize = +style.Fontsize / +info.PlayResY
+
   result.position = getPosition(style, info)
   const { line, vert } = getLine(style, info)
   result.line = line
@@ -35,9 +38,6 @@ export default function (subtitle, styles, info) {
 
   // We should handle tags now
   result = handleTags(result, info)
-
-  // Style is set on each cue
-  result = handleStyle(result)
 
   return result
 }

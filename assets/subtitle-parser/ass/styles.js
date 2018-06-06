@@ -44,7 +44,6 @@ export default function (styles, name, info) {
     const isItalic = +style.Italic ? 'italic' : 'unset'
     const isUnderline = -+style.Underline ? 'underline' : null
     const bold = -+style.Bold ? 'font-weight: bolder;' : ''
-    const fontSize = +style.Fontsize
     const strikeOut = +style.Strikeout ? 'line-through' : null
     const primaryColor = vbToRGBA(style.PrimaryColour)
     const spacing = +style.Spacing ? `letter-spacing: ${style.Spacing}px;` : ''
@@ -53,7 +52,6 @@ export default function (styles, name, info) {
 
     styleTag.innerHTML += `
       .cues-container .${style.Name.replace(/\s/g, '_')} {
-        font-size: ${fontSize}px;
         font-style: ${isItalic};
         text-decoration: ${(isUnderline || strikeOut) || 'none'};
         color: ${primaryColor};

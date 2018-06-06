@@ -27,7 +27,7 @@
           v-for='cue in activeCues',
           :key='cue.id',
           :class="cue.style.join(' ')",
-          :style="cue.getStyle()",
+          :style="getStyle(cue)",
           v-html='cue.text'
         )
 
@@ -60,12 +60,11 @@
 
 <script>
   import { fromAss } from 'assets/subtitle-parser'
-  import SubtitleTiming from 'mixins/subtitles/timing.js'
-  import CheckOverlap from 'mixins/subtitles/checkOverlap.js'
+  import Subtitle from 'mixins/subtitles'
 
   export default {
     name: 'video-player',
-    mixins: [SubtitleTiming, CheckOverlap],
+    mixins: [Subtitle],
     props: ['value', 'title'],
     data () {
       return {
@@ -114,6 +113,7 @@
         // We need to get the subtitles only when the torrent is ready to be read.
         // Otherwise, there is no file to get the subtitles from.
         this.eventSource = new window.EventSource(`/tracks/${this.value}`)
+        this.setHeight()
 
         this.eventSource.addEventListener('tracks', ({ data }) => {
           const tracks = JSON.parse(data)
