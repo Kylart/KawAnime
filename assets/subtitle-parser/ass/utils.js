@@ -7,23 +7,23 @@ export const alignDir = {
 
 export const alignment = {
   numpad: {
-    1: [96, 2], // Bottom left
-    2: [96, 50], // Bottom center
-    3: [96, 98], // Bottom right
+    1: [2, 2], // Bottom left
+    2: [2, 50], // Bottom center
+    3: [2, 98], // Bottom right
     4: [50, 2], // Middle left
     5: [50, 50], // Middle center
     6: [50, 98], // Middle right
-    7: [4, 2], // Top left
-    8: [4, 50], // Top center
-    9: [4, 98] // Top right
+    7: [2, 2], // Top left
+    8: [2, 50], // Top center
+    9: [2, 98] // Top right
   },
   ssa: {
-    1: [96, 2], // Bottom left
-    2: [96, 50], // Bottom center
-    3: [96, 98], // Bottom right
-    5: [4, 2], // Top left
-    6: [4, 50], // Top center
-    7: [4, 98], // Top right
+    1: [2, 2], // Bottom left
+    2: [2, 50], // Bottom center
+    3: [2, 98], // Bottom right
+    5: [2, 2], // Top left
+    6: [2, 50], // Top center
+    7: [2, 98], // Top right
     9: [50, 2], // Middle left
     10: [50, 50], // Middle center
     11: [50, 98] // Middle right
@@ -64,25 +64,33 @@ export const getLine = (style, info) => {
   const resY = +info.PlayResY
   const alignment_ = +style.Alignment
   const mV = +style.MarginV
-  let result = 0
+  let line = 0
+  let vert = 'bottom'
 
   const isTop = _.inRange(alignment_, 7, 10)
   const isBot = _.inRange(alignment_, 1, 4)
 
   const offsetY = percent(mV, resY)
 
+  // <vert> is set to top if the subtitle is on the top of the screen
+  // so that the origin of the cue in its top. Logical. Also, this
+  // way, the text will be properly wrapped inside the screen if it takes
+  // more than one line.
+  // Same thing with bottom
   if (isTop) {
     // Distance is taken from the top
-    result = offsetY
+    line = offsetY
+    vert = 'top'
   } else if (isBot) {
     // Distance is taken from the bottom
-    result = (alignment.numpad[alignment_][0] || 100) - offsetY
+    line = offsetY
+    vert = 'bottom'
   } else {
     // Should be vertically centered
-    result = 50
+    line = 50
   }
 
-  return result
+  return { line, vert }
 }
 
 export const getAlign = (style) => {

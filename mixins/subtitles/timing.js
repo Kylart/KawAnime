@@ -40,7 +40,7 @@ export default {
         const _cue = this.cues[i]
 
         if (this.isActive(_cue)) {
-          let isAlreadyIn = this.$_.find(this.activeCues, { id: _cue.id })
+          let isAlreadyIn = this.$_.find(this.activeCues, { masterId: _cue.masterId })
 
           if (!isAlreadyIn) {
             this.activeCues.push(_cue)

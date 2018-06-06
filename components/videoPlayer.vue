@@ -154,9 +154,9 @@
           const { trackNumber, subtitle } = JSON.parse(data)
           if (trackNumber in this.allCues) {
             if (this.isAss) {
-              const cues = fromAss.subtitles(subtitle, this.styles, this.info)
+              const cue = fromAss.subtitles(subtitle, this.styles, this.info)
 
-              cues.forEach((_cue) => this.allCues[trackNumber].push(_cue))
+              this.allCues[trackNumber].push(cue)
             } else {
               const cue = new window.VTTCue(subtitle.time / 1000, (subtitle.time + subtitle.duration) / 1000, subtitle.text)
               textTracks[trackNumber].addCue(cue)
@@ -313,6 +313,7 @@
     -webkit-font-smoothing antialiased
     width 95%
     font-family "Open Sans", sans-serif
+    line-height 1.25
 
   .video-player
     background-color black

@@ -237,8 +237,12 @@ const handleAlignment = (cue, style) => {
       ? +alignmentTag[3] // tag === '\an<number>, 1 <= number <= 9
       : +alignmentTag.slice(2, 4) // tag === '\a<number>, 1 <= number <= 11
 
-    cue.position = isNumpad ? alignment.numpad[align][1] : alignment.ssa[align][1]
+    // Vertical
+    cue.vert = align > 7 ? 'top' : 'bottom'
     cue.line = isNumpad ? alignment.numpad[align][0] : alignment.ssa[align][0]
+
+    // HOrizontal
+    cue.position = isNumpad ? alignment.numpad[align][1] : alignment.ssa[align][1]
 
     if (isNumpad) {
       cue.align = alignDir.left.includes(alignment)
@@ -260,30 +264,28 @@ const handleAlignment = (cue, style) => {
   return cue
 }
 
-export default function (cues, info) {
+export default function (cue, info) {
   const cssStyle = document.head.children[document.head.childElementCount - 1]
 
-  cues.forEach((cue) => {
-    let string = cue.text
+  let string = cue.text
 
-    if (/\{/g.test(string)) {
-      string = handleCommon('bold', string)
-      string = handleCommon('italic', string)
-      string = handleCommon('underline', string)
+  if (/\{/g.test(string)) {
+    string = handleCommon('bold', string)
+    string = handleCommon('italic', string)
+    string = handleCommon('underline', string)
 
-      string = handleFont('name', string, cssStyle)
-      string = handleFont('size', string, cssStyle)
+    string = handleFont('name', string, cssStyle)
+    string = handleFont('size', string, cssStyle)
 
-      string = handleColor(string, cssStyle)
+    string = handleColor(string, cssStyle)
 
-      cue.text = clean(string)
+    cue.text = clean(string)
 
-      cue = handlePos(cue, info)
-      cue = handleRotation(cue)
-      cue = handleAlignment(cue, cssStyle)
-      cue = handleFade(cue, cssStyle)
-    }
-  })
+    cue = handlePos(cue, info)
+    cue = handleRotation(cue)
+    cue = handleAlignment(cue, cssStyle)
+    cue = handleFade(cue, cssStyle)
+  }
 
-  return cues
+  return cue
 }

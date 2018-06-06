@@ -1,5 +1,4 @@
 import handleTags from './tags.js'
-import handleNewlines from './newlines.js'
 import handleStyle from './getStyle.js'
 import { getPosition, getLine, getAlign } from './utils.js'
 
@@ -21,7 +20,9 @@ export default function (subtitle, styles, info) {
   result.style = [style.Name.replace(/\s/g, '_')]
 
   result.position = getPosition(style, info)
-  result.line = getLine(style, info)
+  const { line, vert } = getLine(style, info)
+  result.line = line
+  result.vert = vert
 
   const align = getAlign(style)
   result.align = align.align
@@ -30,7 +31,7 @@ export default function (subtitle, styles, info) {
   // We handle newline "manually". Hence, there is a need for
   // a masterId as to know which cues are initially the same.
   result.masterId = `${result.start}-${result.end}-${result.line}-${result.position}-${result.text}`
-  result = handleNewlines(result, style, +info.PlayResY)
+  result.text = result.text.replace(/\\N/g, '<br>')
 
   // We should handle tags now
   result = handleTags(result, info)
