@@ -1,7 +1,7 @@
 import { alignment, alignDir, generateAnimation } from './utils.js'
 
 const re = {
-  delimiter: /[{}]/g,
+  delimiter: /({|})/g,
   newline: /\\N/g,
   bold: {
     start: {
@@ -226,7 +226,8 @@ const handleRotation = (cue) => {
   return cue
 }
 
-const handleAlignment = (string, cue, style) => {
+const handleAlignment = (cue, style) => {
+  const string = cue.text
   const alignmentTag = re.alignment.test(string) && string.match(re.alignment)[0] // Only he first tag matters
 
   if (alignmentTag) {
@@ -279,7 +280,7 @@ export default function (cues, info) {
 
       cue = handlePos(cue, info)
       cue = handleRotation(cue)
-      cue = handleAlignment(string, cue, cssStyle)
+      cue = handleAlignment(cue, cssStyle)
       cue = handleFade(cue, cssStyle)
     }
   })
