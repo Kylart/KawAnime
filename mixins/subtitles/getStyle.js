@@ -28,7 +28,7 @@ export default {
         width: cue.width + '%',
         'text-align': cue.textAlign,
         // We reduce the size a bit so that it's not too big on the screen :<
-        'font-size': Math.round(0.90 * cue.fontSize * this.videoHeight) + 'px'
+        'font-size': Math.round(0.70 * cue.fontSize * this.videoHeight) + 'px'
       }
     }
   }
