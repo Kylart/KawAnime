@@ -8,6 +8,7 @@
       @waiting='waiting = true',
       @canplay='waiting = false',
       @progress='onProgress',
+      @seeked='onSeeked',
       @click='togglePlay',
       :src='`/stream/${value}`') Your browser does not support HTML5 video.
 
@@ -19,6 +20,16 @@
 
     v-btn.video-close(color='mablue', dark, icon, @click.stop='close', v-show='!controlsHidden')
       v-icon close
+
+    .cues-container(v-show='isAss')
+      .cues-r-container
+        .cue(
+          v-for='cue in activeCues',
+          :key='cue.id',
+          :class="cue.style.join(' ')",
+          :style="getStyle(cue)",
+          v-html='cue.text'
+        )
 
     v-fade-transition
       div.video-controls(v-show='!controlsHidden')
@@ -43,15 +54,17 @@
           v-btn.subtitles(slot='activator', color='mablue', dark)
             v-icon subtitles
           v-list
-            v-list-tile.video-subtitle(v-for='(track,i) in $refs.video.textTracks', :key='i' @click='setTrack(track)')
-              v-list-tile-title(:class="{ 'blue--text': track.mode === 'showing' }") {{ track.label }}
+            v-list-tile.video-subtitle(v-for='(num, i) in Object.keys(numToLang)', :key='i' @click='setSubLanguage(num)')
+              v-list-tile-title(:class="{ 'blue--text': +num === trackNum }") {{ numToLang[num] }}
 </template>
 
 <script>
   import { fromAss } from 'assets/subtitle-parser'
+  import Subtitle from 'mixins/subtitles'
 
   export default {
     name: 'video-player',
+    mixins: [Subtitle],
     props: ['value', 'title'],
     data () {
       return {
@@ -100,6 +113,7 @@
         // We need to get the subtitles only when the torrent is ready to be read.
         // Otherwise, there is no file to get the subtitles from.
         this.eventSource = new window.EventSource(`/tracks/${this.value}`)
+        this.setHeight()
 
         this.eventSource.addEventListener('tracks', ({ data }) => {
           const tracks = JSON.parse(data)
@@ -107,7 +121,10 @@
 
           tracks.forEach(track => {
             const language = (track.language || 'eng').slice(0, 2)
-            textTracks[track.number] = video.addTextTrack('captions', language, language)
+            const trackNumber = +track.number
+            this.allCues[trackNumber] = []
+
+            this.numToLang[trackNumber] = language
 
             if (track.type === 'ass') {
               this.isAss = true
@@ -117,32 +134,33 @@
 
               // Let's suppose each track have the same style and that only the language of each changes.
               if (!isStyleSet) {
-                fromAss.setStyles(this.styles, this.value)
+                fromAss.setStyles(this.styles, this.value, this.info)
                 isStyleSet = true
               }
             }
 
             if (language === this.config.preferredLanguage) {
-              this.setTrack(textTracks[track.number])
               this.isPrefLanguageSet = true
+              this.trackNum = trackNumber
             }
           })
 
           if (tracks.length === 1 && !this.isPrefLanguageSet) {
-            this.setTrack(textTracks[Object.keys(textTracks)[0]])
+            this.trackNum = +Object.keys(this.numToLang)[0]
           }
         })
 
         this.eventSource.addEventListener('subtitle', ({ data }) => {
           const { trackNumber, subtitle } = JSON.parse(data)
-          if (trackNumber in textTracks) {
-            const cues = this.isAss
-              ? fromAss.subtitles(subtitle, this.styles, this.info)
-              : [new window.VTTCue(subtitle.time / 1000, (subtitle.time + subtitle.duration) / 1000, subtitle.text)]
+          if (trackNumber in this.allCues) {
+            if (this.isAss) {
+              const cue = fromAss.subtitles(subtitle, this.styles, this.info)
 
-            cues.forEach((cue) => {
+              this.allCues[trackNumber].push(cue)
+            } else {
+              const cue = new window.VTTCue(subtitle.time / 1000, (subtitle.time + subtitle.duration) / 1000, subtitle.text)
               textTracks[trackNumber].addCue(cue)
-            })
+            }
           }
         })
 
@@ -202,6 +220,9 @@
           this.timeline = 100 / video.duration * video.currentTime
           this.currentTime = this.formatTime(video.currentTime)
           this.duration = this.formatTime(video.duration)
+          this.rawTime = video.currentTime
+
+          if (this.isAss) this.updateActiveCues()
         }
       },
       onProgress () {
@@ -216,6 +237,9 @@
           }
           this.buffered = buffered
         }
+      },
+      onSeeked () {
+        this.index = 0
       },
       changeTimeline (value) {
         const { video } = this.$refs
@@ -284,11 +308,12 @@
 </script>
 
 <style lang="stylus">
-  ::cue
+  .cue
     background-color rgba(0, 0, 0, 0)
-    -webkit-font-smoothing: antialiased;
+    -webkit-font-smoothing antialiased
+    width 95%
+    font-family "Open Sans", sans-serif
     line-height 1.25
-    white-space pre-line
 
   .video-player
     background-color black
@@ -319,6 +344,22 @@
       position absolute
       right 1%
       top 1%
+
+    .cues-container
+      position absolute
+      left 0
+      top 0
+      height 100%
+      width 100%
+      pointer-events: none
+
+      div
+        position absolute
+
+      .cues-r-container
+        position relative
+        height 100%
+        width 100%
 
     .video-play
       cursor pointer

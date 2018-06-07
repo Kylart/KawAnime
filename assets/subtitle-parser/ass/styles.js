@@ -1,47 +1,63 @@
-// For cue styling reference: https://developer.mozilla.org/en-US/docs/Web/CSS/::cue
-
 import _ from 'lodash'
 
 const vbToRGBA = (vb) => {
   // vb is like &HAABBGGRR
-  vb = vb.slice(4)
-  const b = vb.slice(0, 2)
-  const g = vb.slice(2, 4)
-  const r = vb.slice(4, 6)
+  vb = vb.slice(2)
+  const a = 1 - (parseInt(vb.slice(0, 2), 16) / 256)
+  const b = parseInt(vb.slice(2, 4), 16)
+  const g = parseInt(vb.slice(4, 6), 16)
+  const r = parseInt(vb.slice(6, 8), 16)
 
-  return `#${r}${g}${b}`
+  return `rgba(${r}, ${g}, ${b}, ${a})`
 }
 
-const generateOutline = (outline, outlineColor) => {
-  const unit = `0 0 ${1.8 * outline || 4}px ${outlineColor}, `
+const getShadow = (style) => {
+  let result = ''
 
-  return `text-shadow: ${unit.repeat(8).slice(0, -2)};`
+  const color = vbToRGBA(style.BackColour)
+  const depth = +style.Shadow * 1.5
+
+  const outlineColor = vbToRGBA(style.OutlineColour)
+  const outlineThickness = +style.Outline
+
+  // First, outline
+  result = `0 0 ${1.8 * outlineThickness}px ${outlineColor}, `.repeat(6).slice(0, -2)
+
+  if (depth) {
+    if (!outlineThickness) {
+      // SSA specifies that if no outline is set, 1px outline must be forced.
+      result = `0 0 1px ${color}, `.repeat(6).slice(0, -2)
+    }
+
+    result = `${depth}px ${depth}px ${depth}px ${color}, ${result}`
+  }
+
+  return `text-shadow: ${result};`
 }
 
-export default function (styles, name) {
+export default function (styles, name, info) {
   const styleTag = document.createElement('style')
   styleTag.type = 'text/css'
   styleTag.name = name
 
   _.each(styles, (style) => {
-    const isItalic = +style.Italic ? 'italic' : 'none'
+    const isItalic = +style.Italic ? 'italic' : 'unset'
     const isUnderline = -+style.Underline ? 'underline' : null
-    const bold = -+style.Bold ? 'font-weight: bold;' : ''
-    const fontSize = +style.Fontsize
+    const bold = -+style.Bold ? 'font-weight: bolder;' : ''
     const strikeOut = +style.Strikeout ? 'line-through' : null
     const primaryColor = vbToRGBA(style.PrimaryColour)
-    const outlineColor = vbToRGBA(style.OutlineColour)
-    const outlineThickness = +style.Outline
-    const outline = generateOutline(outlineThickness, outlineColor)
+    const spacing = +style.Spacing ? `letter-spacing: ${style.Spacing}px;` : ''
+
+    const shadow = getShadow(style)
 
     styleTag.innerHTML += `
-      .video-player > video::cue${style.Name === 'Default' ? '' : '(.' + style.Name.replace(/\s/g, '_') + ')'} {
-        font-size: ${fontSize}px;
+      .cues-container .${style.Name.replace(/\s/g, '_')} {
         font-style: ${isItalic};
         text-decoration: ${(isUnderline || strikeOut) || 'none'};
         color: ${primaryColor};
+        ${shadow}
         ${bold}
-        ${outline}
+        ${spacing}
       }
     `
   })
