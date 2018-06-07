@@ -18,10 +18,10 @@
 
     v-icon.video-play(dark, @click.stop='togglePlay', v-if='paused') play_arrow
 
-    v-btn.video-close(color='mablue', dark, icon, @click.stop='close', v-show='!controlsHidden')
+    v-btn.video-close(color='mablue', dark, icon, @click.stop='actOnWindow("close")', v-show='!controlsHidden')
       v-icon close
 
-    .cues-container(v-show='isAss')
+    .cues-container(v-show='trackNum && isAss')
       .cues-r-container
         .cue(
           v-for='cue in activeCues',
@@ -211,7 +211,7 @@
         this.muted = this.$refs.video.muted = !this.muted
       },
       toggleFullScreen () {
-        this.$parent.$parent.toggleFullScreen()
+        this.$parent.toggleFullScreen()
         this.fullscreen = !this.fullscreen
       },
       onTimelineChangeEvent () {
@@ -290,8 +290,8 @@
           track.mode = 'showing'
         }
       },
-      close () {
-        this.$parent.$parent.close()
+      actOnWindow (type) {
+        this.$parent[type]()
       },
       addToHistory () {
         if (!this.hasAppendedToHistory) {
@@ -320,8 +320,7 @@
     line-height 0px
     position relative
     display inline-block
-    // height 100%
-    height calc(100% - 24px) // Because of system-bar
+    height 100%
     width 100%
 
     &:fullscreen
