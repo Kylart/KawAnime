@@ -46,17 +46,19 @@ export const getPosition = (style, info) => {
   const left = percent(mL, resX)
   const right = 100 - percent(mR, resX)
 
-  let result
+  const width = Math.abs(right - left)
+
+  let position
 
   if ([1, 4, 7].includes(alignment)) {
-    result = left
+    position = left
   } else if ([3, 6, 9].includes(alignment)) {
-    result = right
+    position = right
   } else if ([2, 5, 8].includes(alignment)) {
-    result = (left + right) / 2
+    position = (left + right) / 2
   }
 
-  return result
+  return { position, width }
 }
 
 export const getLine = (style, info) => {

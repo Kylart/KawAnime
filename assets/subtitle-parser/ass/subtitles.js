@@ -22,7 +22,10 @@ export default function (subtitle, styles, info) {
   // that it can be changed accordingly.
   result.fontSize = +style.Fontsize / +info.PlayResY
 
-  result.position = getPosition(style, info)
+  const { position, width } = getPosition(style, info)
+  result.position = position
+  result.width = width
+
   const { line, vert } = getLine(style, info)
   result.line = line
   result.vert = vert
@@ -35,6 +38,10 @@ export default function (subtitle, styles, info) {
   // a masterId as to know which cues are initially the same.
   result.masterId = `${result.start}-${result.end}-${result.line}-${result.position}-${result.text}`
   result.text = result.text.replace(/\\N/g, '<br>')
+
+  // Style might ask for a rotation, this needs to be set as a key
+  // for the cue. It seems the rotation axis is inversed too.
+  result.rotate = +style.Angle ? ` rotateZ(-${style.Angle}deg)` : ''
 
   // We should handle tags now
   result = handleTags(result, info)
