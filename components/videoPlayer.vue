@@ -21,6 +21,9 @@
     v-btn.video-close(color='mablue', dark, icon, @click.stop='actOnWindow("close")', v-show='!controlsHidden')
       v-icon close
 
+    v-btn.video-size(color='mablue', dark, icon, @click.stop='actOnWindow("minimize")', v-show='!controlsHidden')
+      v-icon {{ $parent.isMinimized ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}
+
     .cues-container(v-show='trackNum && isAss')
       .cues-r-container
         .cue(
@@ -341,7 +344,13 @@
     .video-close
       cursor pointer
       position absolute
-      right 1%
+      right 5px
+      top 1%
+
+    .video-size
+      cursor pointer
+      position absolute
+      right 50px
       top 1%
 
     .cues-container

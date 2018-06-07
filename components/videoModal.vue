@@ -1,36 +1,32 @@
 <template lang="pug">
-  .video-dialog(
-    v-show='show',
-    draggable='false',
-    :style='style'
-  )
-    template(v-if='values.show')
-      video-player(ref='player', :value='values.link.link', :title='values.link.name')
+  .dialog-container(v-show='show', draggable='false', :style="{ 'z-index': z }")
+    v-scale-transition
+      .video-dialog(:style='style')
+        template(v-if='values.show')
+          video-player(ref='player', :value='values.link.link', :title='values.link.name')
+
+    v-fade-transition
+      .video-overlay(v-show='!isMinimized')
 </template>
 
-<style lang="stylus" scoped>
-  .video-dialog
-    position absolute
-    bottom 0
-    right 0
-</style>
-
-
 <script>
-  import Draggable from 'mixins/utils/draggable.js'
-
   export default {
     name: 'Video-Container',
 
-    mixins: [Draggable],
-  
     data () {
       return {
         fullscreen: false,
-        height: 75,
-        width: 75,
-        z: 2
+        height: 85,
+        width: 85,
+        bottom: 0,
+        right: 0,
+        z: 2,
+        isMinimized: false
       }
+    },
+
+    mounted () {
+      this.center()
     },
 
     computed: {
@@ -44,18 +40,45 @@
         return {
           width: this.width + '%',
           height: this.height + '%',
+          bottom: this.bottom + '%',
+          right: this.right + '%',
           'z-index': this.z
         }
       }
     },
 
-    mounted () {
-      
-    },
-
     methods: {
+      center () {
+        this.$nextTick(() => {
+          const el = document.getElementsByTagName('video')[0]
+
+          if (el) {
+            const { clientHeight: videoHeight, clientWidth: videoWidth } = el
+            const { innerHeight: winHeight, innerWidth: winWidth } = window
+
+            this.bottom = (((winHeight - videoHeight) / winHeight) * 100) / 2
+            this.right = (((winWidth - videoWidth) / winWidth) * 100) / 2
+          }
+        })
+      },
       close () {
         this.$store.commit('streaming/close')
+      },
+      minimize () {
+        if (this.isMinimized) {
+          this.width = 85
+          this.height = 85
+
+          this.center()
+        } else {
+          this.width = 40
+          this.height = 40
+
+          this.bottom = 0
+          this.right = 0
+        }
+
+        this.isMinimized = !this.isMinimized
       },
       async toggleFullScreen () {
         this.fullscreen = !this.fullscreen
@@ -65,10 +88,13 @@
           this.z = 3
           this.width = 100
           this.height = 100
+          this.bottom = 0
+          this.right = 0
         } else {
-          this.width = 75
-          this.height = 75
+          this.width = 85
+          this.height = 85
           this.z = 2
+          this.center()
         }
       },
       forward (value) {
@@ -81,7 +107,7 @@
         this.$refs.player.togglePlay()
       },
       addListeners (e) {
-        switch(e.keyCode) {
+        switch (e.keyCode) {
           case 32: // Space
             this.togglePlay()
             break
@@ -122,4 +148,22 @@
 </script>
 
 <style lang="stylus" scoped>
+  .dialog-container
+    position fixed
+    top 0
+    left 0
+    width 100%
+    height 100%
+
+    .video-dialog
+      position absolute
+      transition bottom 0.25s ease, right 0.25s ease
+
+    .video-overlay
+      position absolute
+      left 0
+      top 0
+      width 100%
+      height 100%
+      background-color rgba(0, 0, 0, 0.5)
 </style>
