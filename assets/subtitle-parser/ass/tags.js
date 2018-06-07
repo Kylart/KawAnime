@@ -33,6 +33,16 @@ const re = {
       to: '</u>'
     }
   },
+  strike: {
+    start: {
+      from: /\\s1/g,
+      to: '<strike>'
+    },
+    end: {
+      from: /\\s0/g,
+      to: '</strike>'
+    }
+  },
   font: {
     name: /(\\fn.+(?=\\)|\\fn.+(?=}))/g,
     size: /\\fs[0-9]{1,3}/g
@@ -42,12 +52,39 @@ const re = {
   fade: /\\fad\(\d*,\d*\)/,
   pos: /\\pos\(\d*,\d*\)/,
   rot: /\\fr(x|y|z)?\d{1,3}/,
-  karaoke: /\\k(f|o)?\d{1,5}/ig
+  hardSpace: /\\h/g,
+  notSupported: [
+    /\\(x|y)?bord\d/g, // I don't get this
+    /\\(x|y)?shad\d/g,
+    /\\be\d/g, /\\blur\d/g,
+    /\\fsc(x|y)/g, // Can be supported but oh well
+    /\\fsp\d/g, // Letter spacing, i'm just lazy
+    /\\fa(x|y)\d/g,
+    /\\fe\d/,
+    /\\(\da|alpha)&H.+&/g, // Alpha
+    /\\k(f|o)?\d{1,5}/ig, // Karaoke
+    /\\q\d/g,
+    /(\\r.+(?=\\)|\\r.+(?=}))/, // Could be handled but rarely used
+    /\\move(.+)/g,
+    /\\org(.+)/g,
+    /\\t(.+)/g,
+    /\\i?clip(.+)/g,
+    /\\p\d.+\\p\d/g,
+    /\\pbo-?\d/g
+  ]
 }
 
-// Need to clean up {}s after
+// Need to clean up {}s after. Also, unsupported tags.
 const clean = (string) => {
+  re.notSupported.forEach((_re) => {
+    string = string.replace(_re, '')
+  })
+
   return string.replace(re.delimiter, '')
+}
+
+const handleHardSpace = (string) => {
+  return string.replace(re.hardSpace, '&nbsp;')
 }
 
 const handleCommon = (type, string) => {
@@ -186,7 +223,7 @@ const handlePos = (cue, info) => {
     const xy = posTag.replace('\\pos(', '').replace(')', '').split(',')
     const x = Math.round((xy[0] / resX) * 100)
     const y = Math.round((xy[1] / resY) * 100)
-    
+
     cue.position = x
 
     if (y >= 50) {
@@ -269,10 +306,15 @@ export default function (cue, info) {
 
   let string = cue.text
 
+  // Special characters
+  string = handleHardSpace(string)
+  string = string.replace(/\\n/g, '') // We don't support wrapping style anyway
+
   if (/\{/g.test(string)) {
     string = handleCommon('bold', string)
     string = handleCommon('italic', string)
     string = handleCommon('underline', string)
+    string = handleCommon('strike', string)
 
     // Most of the time the font name would not be supported,
     // we'll postpone that to another day.
