@@ -186,9 +186,16 @@ const handlePos = (cue, info) => {
     const xy = posTag.replace('\\pos(', '').replace(')', '').split(',')
     const x = Math.round((xy[0] / resX) * 100)
     const y = Math.round((xy[1] / resY) * 100)
-
+    
     cue.position = x
-    cue.line = y
+
+    if (y >= 50) {
+      cue.vert = 'bottom'
+      cue.line = 100 - y
+    } else {
+      cue.vert = 'top'
+      cue.line = y
+    }
 
     cue.text = string.replace(posTag, '')
   }
