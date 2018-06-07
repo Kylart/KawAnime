@@ -25,10 +25,6 @@
       }
     },
 
-    mounted () {
-      this.center()
-    },
-
     computed: {
       values () {
         return this.$store.state.streaming.player
@@ -78,6 +74,8 @@
           this.right = 0
         }
 
+        this.$nextTick(() => this.$refs.player.setHeight())
+
         this.isMinimized = !this.isMinimized
       },
       async toggleFullScreen () {
@@ -96,6 +94,8 @@
           this.z = 2
           this.center()
         }
+
+        this.$nextTick(() => this.$refs.player.setHeight())
       },
       forward (value) {
         this.$refs.player.timeForward(value)
@@ -138,6 +138,7 @@
     watch: {
       show (val) {
         if (val) {
+          this.center()
           window.addEventListener('keydown', this.addListeners)
         } else {
           window.removeEventListener('keydown', this.addListeners)
