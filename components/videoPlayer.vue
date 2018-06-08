@@ -88,8 +88,7 @@
         isMagnetRe: /^magnet:\?/,
         name: '',
         isPrefLanguageSet: false,
-        hasAppendedToHistory: false,
-        cuesContainerStyle: {}
+        hasAppendedToHistory: false
       }
     },
     computed: {
@@ -244,11 +243,6 @@
       },
       onCanPlay () {
         this.waiting = false
-
-        const video = document.getElementsByTagName('video')[0]
-        const { videoHeight, clientHeight } = video
-
-        this.cuesContainerStyle.height = ((clientHeight / videoHeight)) * 100 + '%'
       },
       onSeeked () {
         this.index = 0
