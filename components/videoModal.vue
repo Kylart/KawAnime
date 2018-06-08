@@ -21,7 +21,15 @@
         bottom: 0,
         right: 0,
         z: 2,
-        isMinimized: false
+        isMinimized: false,
+        listeners: {
+          32: () => this.togglePlay(),
+          27: () => this.close(),
+          37: () => this.forward(-5),
+          39: () => this.forward(5),
+          38: () => this.increaseVolume(5),
+          40: () => this.increaseVolume(-5)
+        }
       }
     },
 
@@ -107,31 +115,7 @@
         this.$refs.player.togglePlay()
       },
       addListeners (e) {
-        switch (e.keyCode) {
-          case 32: // Space
-            this.togglePlay()
-            break
-
-          case 27: // Escape
-            this.close()
-            break
-
-          case 37: // Left
-            this.forward(-5)
-            break
-
-          case 38: // Top
-            this.increaseVolume(5)
-            break
-
-          case 39: // Right
-            this.forward(5)
-            break
-
-          case 40: // Down
-            this.increaseVolume(-5)
-            break
-        }
+        this.listeners[e.keyCode]()
       }
     },
 
