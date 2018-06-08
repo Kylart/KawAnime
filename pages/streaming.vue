@@ -267,8 +267,7 @@
 
           this.$log('Received episode information of', name)
 
-          this.currentEps[this.current] = data
-          this.$forceUpdate()
+          this.$set(this.currentEps, this.current, data)
         } else {
           this.$log('Cached episode information of', this.current)
         }
