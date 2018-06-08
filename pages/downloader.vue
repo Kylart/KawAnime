@@ -4,15 +4,7 @@
     .cute-char.right-pic
     v-layout.form(row, wrap, justify-center, align-center)
       v-flex.form-container(xs8)
-        v-layout(row, wrap, justify-center)
-          v-flex(xs9)
-          v-flex(xs3)
-            v-switch#magnets-switch(
-              label='Get Magnets',
-              color='primary',
-              v-model='$store.state.config.config.magnets',
-              dark
-            )
+        v-layout.pt-3(row, wrap, justify-center)
           v-flex.pt-3.pl-5.pr-5(xs7, @keydown.enter='next(1)')
             v-text-field#name-input(
               name='name-input',

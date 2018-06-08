@@ -39,16 +39,6 @@
                         :label='radio',
                         :value='radio'
                       )
-                v-flex.section-title(offset-xs1, xs3) Magnets
-                v-flex(xs8)
-                  v-switch(
-                    label='Activate (Recommended)',
-                    color='primary',
-                    v-model='config.magnets',
-                    dark,
-                    persistent-hint,
-                    hint='Activate to get a list of magnets in the downloader'
-                  )
             v-card.section
               v-card-title#local.headline Local
               v-divider
@@ -140,7 +130,7 @@
                     v-model='config.video.fullscreen',
                     dark,
                     persistent-hint,
-                    hint='Should KawAnime\'s be fullscreen by default?'
+                    hint="Should KawAnime's be fullscreen by default?"
                   )
             v-card.section
               v-card-title#local.headline Notification

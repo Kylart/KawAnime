@@ -14,8 +14,6 @@ export default {
     )
     const quality = obj.quality || (isDownloader ? state.form.quality : rootState.config.config.quality)
 
-    const { magnets } = rootState.config.config
-
     log(`Received a request to download ${name} from ep ${fromEp} to ep ${untilEp}. Transmitting...`)
 
     const infos = {
@@ -35,20 +33,16 @@ export default {
     if (status === 200) {
       log(`Request fulfilled!`)
 
-      if (magnets) {
-        log(`User says he prefers having magnets hashes.`)
-        commit('setModal', {
-          show: true,
-          title: `${name.replace('_', ' ')}\t ${fromEp} - ${untilEp === 20000 ? Infinity : untilEp}`,
-          magnets: data.magnets
-        })
-      } else {
-        log(`Opening torrents directly on preferred torrent client.`)
-
-        data.magnets.forEach(({link}) => {
-          window.open(link)
-        })
+      const epsLabel = {
+        from: +fromEp || 'Begining',
+        until: +untilEp === 20000 ? 'End' : untilEp
       }
+
+      commit('setModal', {
+        show: true,
+        title: `${name.replace('_', ' ')}\t ${epsLabel.from} - ${epsLabel.until}`,
+        magnets: data.magnets
+      })
     } else if (status === 204) {
       log('nyaa.si is down, trying with nyaa.pantsu.cat')
 
@@ -58,20 +52,16 @@ export default {
       if (status === 200 && data.magnets.length) {
         log(`Request fulfilled!`)
 
-        if (magnets === true) {
-          log(`User says he prefers having magnets hashes.`)
-          commit('setModal', {
-            show: true,
-            title: `${name.replace('_', ' ')}\t ${fromEp} - ${untilEp === 20000 ? Infinity : untilEp}`,
-            magnets: data.magnets
-          })
-        } else {
-          log(`Opening torrents directly on preferred torrent client.`)
-
-          data.magnets.forEach(({link}) => {
-            window.open(link)
-          })
+        const epsLabel = {
+          from: +fromEp || 'Begining',
+          until: +untilEp === 20000 ? 'End' : untilEp
         }
+
+        commit('setModal', {
+          show: true,
+          title: `${name.replace('_', ' ')}\t ${epsLabel.from} - ${epsLabel.until}`,
+          magnets: data.magnets
+        })
       } else {
         failed = true
         log('Unknown error occurred. nyaa.si and nyaa.pantsu.cat seem both down.')
