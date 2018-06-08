@@ -21,7 +21,7 @@
     v-btn.video-close(color='mablue', dark, icon, @click.stop='actOnWindow("close")', v-show='!controlsHidden')
       v-icon close
 
-    v-btn.video-size(color='mablue', dark, icon, @click.stop='actOnWindow("minimize")', v-show='!controlsHidden')
+    v-btn.video-size(color='mablue', dark, icon, @click.stop='actOnWindow("minimize")', v-show='!controlsHidden && !$parent.fullscreen')
       v-icon {{ $parent.isMinimized ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}
 
     .cues-container(v-show='trackNum && isAss')
