@@ -21,15 +21,7 @@
         bottom: 0,
         right: 0,
         z: 2,
-        isMinimized: false,
-        listeners: {
-          32: () => this.togglePlay(),
-          27: () => this.close(),
-          37: () => this.forward(-5),
-          39: () => this.forward(5),
-          38: () => this.increaseVolume(5),
-          40: () => this.increaseVolume(-5)
-        }
+        isMinimized: false
       }
     },
 
@@ -47,6 +39,16 @@
           bottom: this.bottom + '%',
           right: this.right + '%',
           'z-index': this.z
+        }
+      },
+      listeners () {
+        return {
+          32: () => this.togglePlay(),
+          27: () => this.close(),
+          37: () => this.forward(-5),
+          39: () => this.forward(5),
+          38: () => this.increaseVolume(5),
+          40: () => this.increaseVolume(-5)
         }
       }
     },
@@ -115,7 +117,7 @@
         this.$refs.player.togglePlay()
       },
       addListeners (e) {
-        this.listeners[e.keyCode]()
+        if (this.listeners.hasOwnProperty(e.keyCode)) this.listeners[e.keyCode]()
       }
     },
 
