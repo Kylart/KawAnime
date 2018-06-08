@@ -118,6 +118,7 @@
     mounted () {
       this.infos = this.$store.state.streaming.page.infos
       this.currentEps = this.$store.state.streaming.page.eps
+      this.hasInfo = Object.keys(this.infos)
 
       const { name } = this.$route.query
 
@@ -267,6 +268,7 @@
           this.$log('Received episode information of', name)
 
           this.currentEps[this.current] = data
+          this.$forceUpdate()
         } else {
           this.$log('Cached episode information of', this.current)
         }
