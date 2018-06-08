@@ -155,10 +155,13 @@
     left 0
     width 100%
     height 100%
+    pointer-events none
+    user-select none
 
     .video-dialog
       position absolute
       transition bottom 0.25s ease, right 0.25s ease
+      pointer-events all
 
     .video-overlay
       position absolute
@@ -167,4 +170,5 @@
       width 100%
       height 100%
       background-color rgba(0, 0, 0, 0.5)
+      pointer-events all
 </style>

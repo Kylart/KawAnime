@@ -6,7 +6,7 @@
       @play='paused = false',
       @timeupdate='onTimelineChangeEvent',
       @waiting='waiting = true',
-      @canplay='waiting = false',
+      @canplay='onCanPlay',
       @progress='onProgress',
       @seeked='onSeeked',
       @click='togglePlay',
@@ -25,7 +25,7 @@
       v-icon {{ $parent.isMinimized ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}
 
     .cues-container(v-show='trackNum && isAss')
-      .cues-r-container
+      .cues-r-container(:style='cuesContainerStyle')
         .cue(
           v-for='cue in activeCues',
           :key='cue.id',
@@ -88,7 +88,8 @@
         isMagnetRe: /^magnet:\?/,
         name: '',
         isPrefLanguageSet: false,
-        hasAppendedToHistory: false
+        hasAppendedToHistory: false,
+        cuesContainerStyle: {}
       }
     },
     computed: {
@@ -241,6 +242,14 @@
           this.buffered = buffered
         }
       },
+      onCanPlay () {
+        this.waiting = false
+
+        const video = document.getElementsByTagName('video')[0]
+        const { videoHeight, clientHeight } = video
+
+        this.cuesContainerStyle.height = ((clientHeight / videoHeight)) * 100 + '%'
+      },
       onSeeked () {
         this.index = 0
       },
@@ -360,13 +369,15 @@
       height 100%
       width 100%
       pointer-events: none
+      display flex
+      align-items center
+      justify-content center
 
       div
         position absolute
 
       .cues-r-container
         position relative
-        height 100%
         width 100%
 
     .video-play
