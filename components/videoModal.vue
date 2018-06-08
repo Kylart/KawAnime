@@ -124,9 +124,10 @@
     watch: {
       show (val) {
         if (val) {
-          this.width = 85
-          this.height = 85
-          this.z = 2
+          if (this.isMinimized) {
+            this.minimize()
+          }
+
           this.center()
           window.addEventListener('keydown', this.addListeners)
         } else {
