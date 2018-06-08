@@ -275,10 +275,10 @@ const handleAlignment = (cue, style) => {
       : +alignmentTag.slice(2, 4) // tag === '\a<number>, 1 <= number <= 11
 
     // Vertical
-    cue.vert = align > 7 ? 'top' : 'bottom'
+    cue.vert = align > 6 ? 'top' : 'bottom'
     cue.line = isNumpad ? alignment.numpad[align][0] : alignment.ssa[align][0]
 
-    // HOrizontal
+    // Horizontal
     cue.position = isNumpad ? alignment.numpad[align][1] : alignment.ssa[align][1]
 
     if (isNumpad) {
