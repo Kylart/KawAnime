@@ -3,9 +3,10 @@ import {axios, log} from 'store/utils'
 export default {
   async init ({rootState, commit, dispatch}) {
     console.log('[INIT] News')
+    const delay = 2 * 60 * 1000
 
     if (!rootState.isConnected) {
-      setTimeout(() => { dispatch('init') }, 30 * 1000)
+      setTimeout(() => { dispatch('init') }, delay)
       return
     }
 
@@ -16,11 +17,11 @@ export default {
         commit('set', data)
       } else {
         log('A problem occurred while gathering the news.')
-        setTimeout(() => { dispatch('init') }, 30 * 1000)
+        setTimeout(() => { dispatch('init') }, delay)
       }
     } catch (e) {
       log('A problem occurred while gathering the news.')
-      setTimeout(() => { dispatch('init') }, 30 * 1000)
+      setTimeout(() => { dispatch('init') }, delay)
     }
   },
   async refresh ({commit, dispatch}) {
@@ -32,7 +33,7 @@ export default {
 
     status === 200
       ? commit('set', data)
-      : log('A problem occurred while gathering the news.') && setTimeout(() => { dispatch('refresh') }, 30 * 1000)
+      : log('A problem occurred while gathering the news.') && setTimeout(() => { dispatch('refresh') }, 1 * 60 * 1000)
   },
   async openLink ({rootState}, link) {
     log(`Opening ${link}.`)
