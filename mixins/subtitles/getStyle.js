@@ -25,7 +25,7 @@ export default {
     getStyle (cue) {
       return {
         [cue.vert]: cue.line + '%',
-        left: cue.position + '%',
+        [cue.horiz]: cue.position + '%',
         transform: `translate(${cue.align}%, 0)${cue.rotate || ''}`,
         width: cue.width + '%',
         'text-align': cue.textAlign,

@@ -1,128 +1,120 @@
 export default {
   methods: {
-    getBounds (groupedCue) {
-      const style = this.styles.find(style => style.Name === groupedCue[0].style[0]) || this.styles[0]
-      const fontSize = style.Fontsize
-      const vSize = Math.round((fontSize / this.info.PlayResY) * 100)
-      const start = groupedCue[0].line
-      const end = groupedCue.slice(-1)[0].line + vSize
+    getBounds (cue) {
+      const re = /<br>/g
+      const nbLines = ((re.test(cue.text) && cue.text.match(re).length) || 0) + 1
+      const vSize = cue.fontSize * 100
+      const vStart = cue.line
+      const vEnd = cue.line + (vSize * nbLines)
+
+      const hStart = cue.position
+      const hEnd = cue.position + cue.width
 
       return {
-        start,
-        end
+        vStart,
+        vEnd,
+        hStart,
+        hEnd
       }
     },
-    getGroupedActiveCues () {
-      const { activeCues } = this
+    checkInBounds (value, type, bounds) {
+      return this.$_.inRange(value, bounds[`${type}Start`], bounds[`${type}End`])
+    },
+    getOverlappingMode (master, slave) {
+      // We define different overlapping mode:
+      //   -- 0: No overlap
+      //   -- 1: master's left is inside slave's bounds
+      //   -- 2: master's right is inside slave's bounds
+      //   -- 3: master's top is inside slave's bounds
+      //   -- 4: master's bottom is inside slave's bounds
+      // A set of those modes can also exist:
+      //    e.g: 12: master's top and right are inside slave's bounds
+      //
+      // It is important to say that overlaps are checked between same
+      // "kind" of cues, i.e. between cues that have the same vert or the
+      // same horiz properties.
+      const shouldCheck = master.vert === slave.vert || master.horiz === slave.horiz
 
-      const groups = {}
-      const result = []
+      if (shouldCheck) {
+        let overlapMode = ''
 
-      activeCues.forEach((_cue) => {
-        const { masterId: key } = _cue
+        const masterBounds = this.getBounds(master)
+        const slaveBounds = this.getBounds(slave)
 
-        if (!groups.hasOwnProperty(key)) {
-          groups[key] = [_cue]
-        } else {
-          groups[key].push(_cue)
-        }
-      })
+        // First we shall check horizontal overlap.
+        if (this.checkInBounds(masterBounds.hStart, 'h', slaveBounds)) overlapMode += 1
+        if (this.checkInBounds(masterBounds.hEnd, 'h', slaveBounds)) overlapMode += 2
 
-      this.$_.forEach(groups, (group, key) => {
-        result.push(group)
-      })
+        // Then, vertical overlap
+        if (this.checkInBounds(masterBounds.vEnd, 'v', slaveBounds)) overlapMode += 3
+        if (this.checkInBounds(masterBounds.vStart, 'v', slaveBounds)) overlapMode += 4
 
-      return result
+        return +overlapMode
+      } else {
+        return 0
+      }
     },
     isIn (val, ref) {
       const hash = {}
 
-      ref.forEach((_val) => {
-        hash.val = 1
+      ref.forEach(({ cues: _val }) => {
+        hash[_val] = 1
       })
 
       return hash.hasOwnProperty(val)
     },
-    fixOverlap (groupedCues, overlaps) {
-      overlaps.forEach((overlap) => {
-        const top = overlap[0]
-        const bottom = overlap[1]
+    fixOverlap (cues, overlaps) {
+      overlaps.forEach(({ mode, cues: indexes }) => {
+        const masterIndex = indexes[0]
+        const slaveIndex = indexes[1]
 
-        const topCues = groupedCues[top]
-        const bottomCues = groupedCues[bottom]
+        const master = cues[masterIndex]
+        const slave = cues[slaveIndex]
 
-        // First we need to know by how much we should move the cue.
-        // Then whether it should be towards the top or the bottom.
-        const topCueBound = this.getBounds(topCues)
-        const bottomCueBound = this.getBounds(bottomCues)
+        const masterBounds = this.getBounds(master)
+        const slaveBounds = this.getBounds(slave)
 
-        const offset = topCueBound.end - bottomCueBound.start + 1
+        // We fix overlaps by moving master according to the mode
+        const masterInd = this.$_.indexOf(this.activeCues, master)
+        const slaveInd = this.$_.indexOf(this.activeCues, slave)
 
-        let shouldMove = 'top'
-
-        if (topCueBound.start - offset < 2) {
-          shouldMove = 'bottom'
-        }
-
-        // Finally, we should move the designated cues.
-        if (shouldMove === 'top') {
-          // Then we should move the top cues towards the top
-          topCues.forEach((_cue) => {
-            const ind = this.$_.indexOf(this.activeCues, _cue)
-
-            this.activeCues[ind].line -= offset
-          })
-        } else {
-          // Then we should move the bottom cues towards the bottom
-          bottomCues.forEach((_cue) => {
-            const ind = this.$_.indexOf(this.activeCues, _cue)
-
-            this.activeCues[ind].line += offset
-          })
+        if (mode === 13 || mode === 23 || mode === 123 || mode === 134 || mode === 1234) {
+          // All that includes top first
+          this.activeCues[slaveInd].line = masterBounds.vEnd + 1
+        } else if (mode === 14 || mode === 24 || mode === 234) {
+          // All that includes bottom first
+          this.activeCues[masterInd].line = slaveBounds.vEnd + 1
         }
       })
     },
     checkOverlap () {
       let isOverlapping = false
-      let overlappingCues = []
+      let overlaps = []
 
-      const groupedCues = this.getGroupedActiveCues()
+      const cues = this.activeCues
 
-      groupedCues.forEach((group, i) => {
-        const masterBounds = this.getBounds(group)
-
-        groupedCues.forEach((subGroup, j) => {
+      cues.forEach((master, i) => {
+        cues.forEach((slave, j) => {
           if (i !== j) {
-            const subBounds = this.getBounds(subGroup)
+            const overlapMode = this.getOverlappingMode(master, slave)
 
-            // Checking if there is overlap.
-            // If so, we need to know which one is on top on the other.
-            if (this.$_.inRange(masterBounds.start, subBounds.start, subBounds.end + 1)) {
-              // That means that master is under sub.
-              isOverlapping = true
-
-              if (!this.isIn([i, j], overlappingCues)) {
-                overlappingCues.push([j, i])
+            if (overlapMode > 4) {
+              if (!this.isIn([j, i], overlaps) && !this.isIn([i, j], overlaps)) {
+                overlaps.push({
+                  mode: overlapMode,
+                  cues: [i, j]
+                })
               }
-            } else if (this.$_.inRange(masterBounds.end, subBounds.start, subBounds.end + 1)) {
-              // That means that master is on top of slave.
-              isOverlapping = true
 
-              if (!this.isIn([j, i], overlappingCues)) {
-                overlappingCues.push([i, j])
-              }
+              if (!isOverlapping) isOverlapping = true
             }
           }
         })
       })
 
-      overlappingCues = this.$_.uniqBy(overlappingCues, JSON.stringify)
-
       if (isOverlapping) {
-        this.fixOverlap(groupedCues, overlappingCues)
+        this.fixOverlap(cues, overlaps)
       }
-
-      return isOverlapping
     }
   }
 }

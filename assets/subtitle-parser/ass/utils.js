@@ -9,24 +9,24 @@ export const alignment = {
   numpad: {
     1: [2, 2], // Bottom left
     2: [2, 50], // Bottom center
-    3: [2, 98], // Bottom right
+    3: [2, 2], // Bottom right
     4: [50, 2], // Middle left
     5: [50, 50], // Middle center
-    6: [50, 98], // Middle right
+    6: [50, 2], // Middle right
     7: [2, 2], // Top left
     8: [2, 50], // Top center
-    9: [2, 98] // Top right
+    9: [2, 2] // Top right
   },
   ssa: {
     1: [2, 2], // Bottom left
     2: [2, 50], // Bottom center
-    3: [2, 98], // Bottom right
+    3: [2, 2], // Bottom right
     5: [2, 2], // Top left
     6: [2, 50], // Top center
-    7: [2, 98], // Top right
+    7: [2, 2], // Top right
     9: [50, 2], // Middle left
     10: [50, 50], // Middle center
-    11: [50, 98] // Middle right
+    11: [50, 2] // Middle right
   }
 }
 
@@ -42,23 +42,26 @@ export const getPosition = (style, info) => {
   const mR = +style.MarginR
   const mL = +style.MarginL
 
-  // Position 0 is left and Position 100 is right.
   const left = percent(mL, resX)
-  const right = 100 - percent(mR, resX)
+  const right = percent(mR, resX)
 
-  const width = Math.abs(right - left)
+  const width = Math.abs(100 - right - left)
 
   let position
+  let horiz = 'left'
+  let align = 0
 
   if ([1, 4, 7].includes(alignment)) {
     position = left
   } else if ([3, 6, 9].includes(alignment)) {
     position = right
+    horiz = 'right'
   } else if ([2, 5, 8].includes(alignment)) {
-    position = (left + right) / 2
+    position = (left + (100 - right)) / 2
+    align = -50
   }
 
-  return { position, width }
+  return { position, width, horiz, align }
 }
 
 export const getLine = (style, info) => {
@@ -95,15 +98,9 @@ export const getLine = (style, info) => {
   return { line, vert }
 }
 
-export const getAlign = (style) => {
+export const getTextAlign = (style) => {
   // Horizontal-alignment. We assume that the file is unicoded.
   const alignment = +style.Alignment
-
-  const align = alignDir.left.includes(alignment)
-    ? -0
-    : alignDir.right.includes(alignment)
-      ? -100
-      : -50
 
   const textAlign = alignDir.left.includes(alignment)
     ? 'left'
@@ -111,7 +108,7 @@ export const getAlign = (style) => {
       ? 'right'
       : 'center'
 
-  return { align, textAlign }
+  return textAlign
 }
 
 export const generateAnimation = (type, name, duration) => {

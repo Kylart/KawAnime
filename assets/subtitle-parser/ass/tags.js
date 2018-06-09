@@ -265,7 +265,7 @@ const handleRotation = (cue) => {
 
 const handleAlignment = (cue, style) => {
   const string = cue.text
-  const alignmentTag = re.alignment.test(string) && string.match(re.alignment)[0] // Only he first tag matters
+  const alignmentTag = re.alignment.test(string) && string.match(re.alignment)[0] // Only the first tag matters
 
   if (alignmentTag) {
     const isNumpad = alignmentTag[2] === 'n'
@@ -280,17 +280,13 @@ const handleAlignment = (cue, style) => {
 
     // Horizontal
     cue.position = isNumpad ? alignment.numpad[align][1] : alignment.ssa[align][1]
+    cue.horiz = [3, 6, 9].includes(align) ? 'right' : 'left'
+    cue.align = [2, 5, 8].includes(align) ? -50 : 0
 
     if (isNumpad) {
-      cue.align = alignDir.left.includes(alignment)
-        ? -0
-        : alignDir.right.includes(alignment)
-          ? -100
-          : -50
-
-      cue.textAlign = alignDir.left.includes(alignment)
+      cue.textAlign = alignDir.left.includes(align)
         ? 'left'
-        : alignDir.right.includes(alignment)
+        : alignDir.right.includes(align)
           ? 'right'
           : 'center'
     }

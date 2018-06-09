@@ -1,5 +1,5 @@
 import handleTags from './tags.js'
-import { getPosition, getLine, getAlign } from './utils.js'
+import { getPosition, getLine, getTextAlign } from './utils.js'
 
 export default function (subtitle, styles, info) {
   // Following the ass-specs: http://www.cccp-project.net/stuff/ass-specs.pdf
@@ -22,17 +22,17 @@ export default function (subtitle, styles, info) {
   // that it can be changed accordingly.
   result.fontSize = +style.Fontsize / +info.PlayResY
 
-  const { position, width } = getPosition(style, info)
+  const { position, width, horiz, align } = getPosition(style, info)
   result.position = position
   result.width = width
+  result.horiz = horiz
+  result.align = align
 
   const { line, vert } = getLine(style, info)
   result.line = line
   result.vert = vert
 
-  const align = getAlign(style)
-  result.align = align.align
-  result.textAlign = align.textAlign
+  result.textAlign = getTextAlign(style)
 
   // We handle newline "manually". Hence, there is a need for
   // a masterId as to know which cues are initially the same.

@@ -17,7 +17,7 @@ export default {
 
       if (status === 200) {
         commit('set', {data})
-        
+
         dispatch('news/init', null, isRoot)
 
         if (state.autoRefresh === true) dispatch('autoRefresh')
