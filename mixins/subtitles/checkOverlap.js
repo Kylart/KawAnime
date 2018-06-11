@@ -31,9 +31,9 @@ export default {
       //    e.g: 12: master's top and right are inside slave's bounds
       //
       // It is important to say that overlaps are checked between same
-      // "kind" of cues, i.e. between cues that have the same vert or the
+      // "kind" of cues, i.e. between cues that have the same vert and the
       // same horiz properties.
-      const shouldCheck = master.vert === slave.vert || master.horiz === slave.horiz
+      const shouldCheck = master.vert === slave.vert && master.horiz === slave.horiz
 
       if (shouldCheck) {
         let overlapMode = ''
