@@ -57,7 +57,7 @@ const re = {
     /\\(x|y)?bord\d/g, // I don't get this
     /\\(x|y)?shad\d/g,
     /\\be\d/g, /\\blur\d/g,
-    /\\fsc(x|y)/g, // Can be supported but oh well
+    /\\fsc(x|y)\d/g, // Can be supported but oh well
     /\\fsp\d/g, // Letter spacing, i'm just lazy
     /\\fa(x|y)\d/g,
     /\\fe\d/,
@@ -80,7 +80,7 @@ const clean = (string) => {
     string = string.replace(_re, '')
   })
 
-  return string.replace(re.delimiter, '')
+  return string.replace(re.delimiter, '').replace(re.font.size, '')
 }
 
 const handleHardSpace = (string) => {
@@ -280,13 +280,24 @@ const handleAlignment = (cue, style) => {
 
     // Horizontal
     cue.position = isNumpad ? alignment.numpad[align][1] : alignment.ssa[align][1]
-    cue.horiz = [3, 6, 9].includes(align) ? 'right' : 'left'
-    cue.align = [2, 5, 8].includes(align) ? -50 : 0
 
     if (isNumpad) {
+      cue.horiz = [3, 6, 9].includes(align) ? 'right' : 'left'
+      cue.align = [2, 5, 8].includes(align) ? -50 : 0
+
       cue.textAlign = alignDir.left.includes(align)
         ? 'left'
         : alignDir.right.includes(align)
+          ? 'right'
+          : 'center'
+    } else {
+      // Pls use numpad fansubs zzz
+      cue.horiz = [3, 7, 11].includes(align) ? 'right' : 'left'
+      cue.align = [2, 6, 10].includes(align) ? -50 : 0
+
+      cue.textAlign = [1, 5, 9].includes(align)
+        ? 'left'
+        : [3, 7, 11].includes(align)
           ? 'right'
           : 'center'
     }
