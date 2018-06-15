@@ -90,7 +90,7 @@
       },
       async toggleFullScreen () {
         this.fullscreen = !this.fullscreen
-        await this.$axios.get('/_fullScreen')
+        await this.$axios.get('/_fullScreen', { params: { bool: this.fullscreen } })
 
         if (this.fullscreen) {
           this.z = 3
