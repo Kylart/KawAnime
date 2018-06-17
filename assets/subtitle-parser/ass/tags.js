@@ -255,7 +255,7 @@ const handleRotation = (cue) => {
 
     const degrees = rotateTag.replace(`\\fr${axis}`, '')
 
-    cue.rotate = ` rotate${axis.toUpperCase}(-${degrees}deg)`
+    cue.rotate = ` rotate${axis.toUpperCase}(${-+degrees}deg)`
 
     cue.text = string.replace(rotateTag, '')
   }

@@ -41,7 +41,7 @@ export default function (subtitle, styles, info) {
 
   // Style might ask for a rotation, this needs to be set as a key
   // for the cue. It seems the rotation axis is inversed too.
-  result.rotate = +style.Angle ? ` rotateZ(-${style.Angle}deg)` : ''
+  result.rotate = +style.Angle ? ` rotateZ(${-+style.Angle}deg)` : ''
 
   // We should handle tags now
   result = handleTags(result, info)
