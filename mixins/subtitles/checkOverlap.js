@@ -18,7 +18,7 @@ export default {
       }
     },
     checkInBounds (value, type, bounds) {
-      return this.$_.inRange(value, bounds[`${type}Start`], bounds[`${type}End`])
+      return this.$_.inRange(value, bounds[`${type}Start`] - 1, bounds[`${type}End`] + 1)
     },
     getOverlappingMode (master, slave) {
       // We define different overlapping mode:

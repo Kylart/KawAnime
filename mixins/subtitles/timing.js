@@ -49,13 +49,14 @@ export default {
           }
         } else {
           if (hasAdded) {
-            // We check overlap once it's over
-            this.checkOverlap()
             this.index = i
             break
           }
         }
       }
+
+      // We check overlap once it's over
+      this.checkOverlap()
     },
     clearActiveCues () {
       this.activeCues = this.activeCues.filter((_cue) => {
