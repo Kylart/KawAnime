@@ -28,6 +28,7 @@ export default {
 
   methods: {
     isValidFile (ext) {
+      ext = ext.toLowerCase()
       return this.torrentExtension.includes(ext) || this.videoExtension.includes(ext)
     },
     showOverlay (bool) {

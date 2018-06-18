@@ -61,7 +61,7 @@ const searchLocalFiles = ({query}, res) => {
 
   const DIR = query.dir
 
-  const files = fs.readdirSync(DIR).filter((file) => extensions.includes(extname(file)))
+  const files = fs.readdirSync(DIR).filter((file) => extensions.includes(extname(file.toLowerCase())))
   const uniqueNames = getUniques(files)
 
   let counter = 0
@@ -120,7 +120,7 @@ const resetLocal = (req, res) => {
 
   logger.info('Received a request to reset local data for files in ' + path)
 
-  const files = fs.readdirSync(path).filter((file) => extensions.includes(extname(file)))
+  const files = fs.readdirSync(path).filter((file) => extensions.includes(extname(file.toLowerCase())))
 
   files.forEach((file) => {
     delete json[minifyName(getName(file))]
