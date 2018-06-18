@@ -1,8 +1,10 @@
-import _ from 'lodash'
-
 export const alignDir = {
   right: [3, 6, 9],
-  left: [1, 4, 7]
+  left: [1, 4, 7],
+  middle: [2, 5, 8],
+  top: [7, 8, 9],
+  vCenter: [4, 5, 6],
+  bottom: [1, 2, 3]
 }
 
 export const alignment = {
@@ -27,6 +29,18 @@ export const alignment = {
     9: [50, 2], // Middle left
     10: [50, 50], // Middle center
     11: [50, 2] // Middle right
+  },
+  // eslint-disable-next
+  ssaToNumpad: {
+    1: 1, // Bottom
+    2: 2,
+    3: 3,
+    5: 7, // Middle
+    6: 8,
+    7: 9,
+    9: 4, // Top
+    10: 5,
+    11: 6
   }
 }
 
@@ -71,31 +85,30 @@ export const getLine = (style, info) => {
   const mV = +style.MarginV
   let line = 0
   let vert = 'bottom'
+  let align = 0
 
-  const isTop = _.inRange(alignment_, 7, 10)
-  const isBot = _.inRange(alignment_, 1, 4)
+  const isCenter = alignDir.vCenter.includes(alignment_)
 
   const offsetY = percent(mV, resY)
 
   // <vert> is set to top if the subtitle is on the top of the screen
   // so that the origin of the cue in its top. Logical. Also, this
   // way, the text will be properly wrapped inside the screen if it takes
-  // more than one line.
-  // Same thing with bottom
-  if (isTop) {
-    // Distance is taken from the top
-    line = offsetY
-    vert = 'top'
-  } else if (isBot) {
-    // Distance is taken from the bottom
-    line = offsetY
-    vert = 'bottom'
-  } else {
-    // Should be vertically centered
-    line = 50
-  }
+  // more than one line. vert depends on the alignment of the cue.
+  // Same thing with bottom. If the alignemnt is a centered one, the origin
+  // of the cue should be its middle. To imitate that, we'll use a bottom
+  // align and simply translate the cue down by 50%
+  if (isCenter) align = 50
 
-  return { line, vert }
+  vert = alignDir.top.includes(alignment_) ? 'top' : 'bottom'
+
+  // SSA says that is the cues has a vCenter alignement, it
+  // should be centered no matter the MarginV.
+  line = isCenter
+    ? 50
+    : offsetY
+
+  return { line, vert, align }
 }
 
 export const getTextAlign = (style) => {

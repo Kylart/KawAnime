@@ -26,7 +26,7 @@ export default {
       return {
         [cue.vert]: cue.line + '%',
         [cue.horiz]: cue.position + '%',
-        transform: `translate(${cue.align}%, 0)${cue.rotate || ''}`,
+        transform: `translate(${cue.align}%, ${cue.vAlign}%)${cue.rotate || ''}`,
         width: cue.width + '%',
         'text-align': cue.textAlign,
         // We reduce the size a bit so that it's not too big on the screen :<

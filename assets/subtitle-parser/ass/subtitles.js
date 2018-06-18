@@ -28,9 +28,10 @@ export default function (subtitle, styles, info) {
   result.horiz = horiz
   result.align = align
 
-  const { line, vert } = getLine(style, info)
+  const { line, vert, align: vAlign } = getLine(style, info)
   result.line = line
   result.vert = vert
+  result.vAlign = vAlign
 
   result.textAlign = getTextAlign(style)
 
@@ -44,7 +45,7 @@ export default function (subtitle, styles, info) {
   result.rotate = +style.Angle ? ` rotateZ(${-+style.Angle}deg)` : ''
 
   // We should handle tags now
-  result = handleTags(result, info)
+  result = handleTags(result, style, info)
 
   return result
 }

@@ -49,8 +49,8 @@ const re = {
   },
   color: /\\\d?c&H[0-9A-Za-z]{2,6}&/,
   alignment: /\\an?\d{1,2}/g,
-  fade: /\\fad\(\d*,\d*\)/,
-  pos: /\\pos\(\d*,\d*\)/,
+  fade: /\\fad\(\d*\.?\d+,\d*\.?\d+\)/,
+  pos: /\\pos\(\d*\.?\d+,\d*\.?\d+\)/,
   rot: /\\fr(x|y|z)?\d{1,3}/,
   hardSpace: /\\h/g,
   notSupported: [
@@ -61,15 +61,15 @@ const re = {
     /\\fsp\d/g, // Letter spacing, i'm just lazy
     /\\fa(x|y)\d/g,
     /\\fe\d/,
-    /\\(\da|alpha)&H.+&/g, // Alpha
+    /\\(\da|alpha)&H(.*?)&/g, // Alpha
     /\\k(f|o)?\d{1,5}/ig, // Karaoke
     /\\q\d/g,
-    /(\\r.+(?=\\)|\\r.+(?=}))/, // Could be handled but rarely used
-    /\\move(.+)/g,
-    /\\org(.+)/g,
-    /\\t(.+)/g,
-    /\\i?clip(.+)/g,
-    /\\p\d.+\\p\d/g,
+    /(\\r(.*?)(?=\\)|\\r(.*?)(?=}))/, // Could be handled but rarely used
+    /\\move\((.*?)\)/g,
+    /\\org\((.*?)\)/g,
+    /\\t\((.*?)\)/g,
+    /\\i?clip\((.*?)\)/g,
+    /\\p\d(.*?)\\p\d/g,
     /\\pbo-?\d/g
   ]
 }
@@ -213,26 +213,48 @@ const handleFade = (cue, style) => {
   return cue
 }
 
-const handlePos = (cue, info) => {
+const handlePos = (cue, style, info) => {
   const string = cue.text
   const { PlayResX: resX, PlayResY: resY } = info
 
   if (re.pos.test(string)) {
     const posTag = string.match(re.pos)[0]
 
+    // This will serve as backup is no alignment tag is present.
+    let alignment_ = +style.Alignment
+
+    // If there is an alignement tag, it should matter.
+    if (re.alignment.test(string)) {
+      const alignTag = string.match(re.alignment)[0]
+
+      const isNumpad = alignTag[2] === 'n'
+
+      alignment_ = isNumpad
+        ? +alignTag.replace('\\an', '')
+        : alignment.ssaToNumpad[+alignTag[2]]
+    }
+
     const xy = posTag.replace('\\pos(', '').replace(')', '').split(',')
     const x = Math.round((xy[0] / resX) * 100)
     const y = Math.round((xy[1] / resY) * 100)
 
+    // Horizontal
+    if (alignDir.middle.includes(alignment_)) cue.align = -50
+
+    cue.horiz = alignDir.right.includes(alignment_)
+      ? 'right'
+      : 'left'
+
     cue.position = x
 
-    if (y >= 50) {
-      cue.vert = 'bottom'
-      cue.line = 100 - y
-    } else {
-      cue.vert = 'top'
-      cue.line = y
-    }
+    // Vertical
+    if (alignDir.vCenter.includes(alignment_)) cue.vAlign = 50
+
+    cue.vert = alignDir.top.includes(alignment_)
+      ? 'top'
+      : 'bottom'
+
+    cue.line = y
 
     cue.text = string.replace(posTag, '')
   }
@@ -308,7 +330,7 @@ const handleAlignment = (cue, style) => {
   return cue
 }
 
-export default function (cue, info) {
+export default function (cue, style, info) {
   const cssStyle = document.head.children[document.head.childElementCount - 1]
 
   let string = cue.text
@@ -332,7 +354,7 @@ export default function (cue, info) {
     cue.text = clean(string)
 
     cue = handleFontSize(cue, info)
-    cue = handlePos(cue, info)
+    cue = handlePos(cue, style, info)
     cue = handleRotation(cue)
     cue = handleAlignment(cue, cssStyle)
     cue = handleFade(cue, cssStyle)
