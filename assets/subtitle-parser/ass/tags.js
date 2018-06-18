@@ -1,4 +1,4 @@
-import { alignment, alignDir, generateAnimation } from './utils.js'
+import { alignment, alignDir, percent, generateAnimation } from './utils.js'
 
 const re = {
   delimiter: /({|})/g,
@@ -231,7 +231,7 @@ const handlePos = (cue, style, info) => {
 
       alignment_ = isNumpad
         ? +alignTag.replace('\\an', '')
-        : alignment.ssaToNumpad[+alignTag[2]]
+        : alignment.ssaToNumpad[+alignTag.slice(2, 4)]
     }
 
     const xy = posTag.replace('\\pos(', '').replace(')', '').split(',')
@@ -285,7 +285,7 @@ const handleRotation = (cue) => {
   return cue
 }
 
-const handleAlignment = (cue, style) => {
+const handleAlignment = (cue, style, info) => {
   const string = cue.text
   const alignmentTag = re.alignment.test(string) && string.match(re.alignment)[0] // Only the first tag matters
 
@@ -294,35 +294,30 @@ const handleAlignment = (cue, style) => {
 
     const align = isNumpad
       ? +alignmentTag[3] // tag === '\an<number>, 1 <= number <= 9
-      : +alignmentTag.slice(2, 4) // tag === '\a<number>, 1 <= number <= 11
+      : alignment.ssaToNumpad[+alignmentTag.slice(2, 4)] // tag === '\a<number>, 1 <= number <= 11
 
-    // Vertical
-    cue.vert = align > 6 ? 'top' : 'bottom'
-    cue.line = isNumpad ? alignment.numpad[align][0] : alignment.ssa[align][0]
+    const { MarginR: mR, MarginL: mL, MarginV: mV } = style
+    const { PlayResX: resX, PlayResY: resY } = info
+
+    const left = percent(mL, resX)
+    const right = percent(mR, resX)
+    const vert = percent(mV, resY)
 
     // Horizontal
-    cue.position = isNumpad ? alignment.numpad[align][1] : alignment.ssa[align][1]
-
-    if (isNumpad) {
-      cue.horiz = [3, 6, 9].includes(align) ? 'right' : 'left'
-      cue.align = [2, 5, 8].includes(align) ? -50 : 0
-
-      cue.textAlign = alignDir.left.includes(align)
-        ? 'left'
-        : alignDir.right.includes(align)
-          ? 'right'
-          : 'center'
+    if (alignDir.middle.includes(align)) {
+      cue.position = (left + 100 - right) / 2
+      cue.horiz = 'left'
+      cue.align = -50
     } else {
-      // Pls use numpad fansubs zzz
-      cue.horiz = [3, 7, 11].includes(align) ? 'right' : 'left'
-      cue.align = [2, 6, 10].includes(align) ? -50 : 0
-
-      cue.textAlign = [1, 5, 9].includes(align)
-        ? 'left'
-        : [3, 7, 11].includes(align)
-          ? 'right'
-          : 'center'
+      const isLeft = alignDir.left.includes(align)
+      cue.position = isLeft ? left : right
+      cue.horiz = isLeft ? 'left' : 'right'
     }
+
+    // Vertical
+    cue.line = vert
+    cue.vert = alignDir.top.includes(align) ? 'top' : 'bottom'
+    cue.vAlign = alignDir.vCenter.includes(align) ? 50 : 0
 
     cue.text = string.replace(re.alignment, '')
   }
@@ -356,7 +351,7 @@ export default function (cue, style, info) {
     cue = handleFontSize(cue, info)
     cue = handlePos(cue, style, info)
     cue = handleRotation(cue)
-    cue = handleAlignment(cue, cssStyle)
+    cue = handleAlignment(cue, style, info)
     cue = handleFade(cue, cssStyle)
   }
 

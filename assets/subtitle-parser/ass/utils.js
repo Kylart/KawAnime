@@ -8,29 +8,6 @@ export const alignDir = {
 }
 
 export const alignment = {
-  numpad: {
-    1: [2, 2], // Bottom left
-    2: [2, 50], // Bottom center
-    3: [2, 2], // Bottom right
-    4: [50, 2], // Middle left
-    5: [50, 50], // Middle center
-    6: [50, 2], // Middle right
-    7: [2, 2], // Top left
-    8: [2, 50], // Top center
-    9: [2, 2] // Top right
-  },
-  ssa: {
-    1: [2, 2], // Bottom left
-    2: [2, 50], // Bottom center
-    3: [2, 2], // Bottom right
-    5: [2, 2], // Top left
-    6: [2, 50], // Top center
-    7: [2, 2], // Top right
-    9: [50, 2], // Middle left
-    10: [50, 50], // Middle center
-    11: [50, 2] // Middle right
-  },
-  // eslint-disable-next
   ssaToNumpad: {
     1: 1, // Bottom
     2: 2,
@@ -44,7 +21,7 @@ export const alignment = {
   }
 }
 
-const percent = (value, res) => {
+export const percent = (value, res) => {
   return Math.round((value / res) * 100)
 }
 
