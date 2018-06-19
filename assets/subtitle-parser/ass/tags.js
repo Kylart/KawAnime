@@ -308,16 +308,25 @@ const handleAlignment = (cue, style, info) => {
       cue.position = (left + 100 - right) / 2
       cue.horiz = 'left'
       cue.align = -50
+      cue.textAlign = 'center'
     } else {
       const isLeft = alignDir.left.includes(align)
       cue.position = isLeft ? left : right
       cue.horiz = isLeft ? 'left' : 'right'
+      cue.align = 0
+      cue.textAlign = cue.horiz
     }
 
     // Vertical
-    cue.line = vert
-    cue.vert = alignDir.top.includes(align) ? 'top' : 'bottom'
-    cue.vAlign = alignDir.vCenter.includes(align) ? 50 : 0
+    if (alignDir.vCenter.includes(align)) {
+      cue.vAlign = 50
+      cue.vert = 'bottom'
+      cue.line = 50
+    } else {
+      cue.vAlign = 0
+      cue.line = vert
+      cue.vert = alignDir.top.includes(align) ? 'top' : 'bottom'
+    }
 
     cue.text = string.replace(re.alignment, '')
   }
