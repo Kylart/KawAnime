@@ -78,10 +78,10 @@ export default {
         const masterInd = this.$_.indexOf(this.activeCues, master)
         const slaveInd = this.$_.indexOf(this.activeCues, slave)
 
-        if (mode === 13 || mode === 23 || mode === 123 || mode === 134 || mode === 1234) {
+        if (mode === 13 || mode === 23 || mode === 123 || mode === 134 || mode === 1234 || mode === 34) {
           // All that includes top first
           this.activeCues[slaveInd].line = masterBounds.vEnd + 1
-        } else if (mode === 14 || mode === 24 || mode === 234) {
+        } else if (mode === 14 || mode === 24 || mode === 124 || mode === 234) {
           // All that includes bottom first
           this.activeCues[masterInd].line = slaveBounds.vEnd + 1
         }
