@@ -1,4 +1,4 @@
-import { alignment, alignDir, percent, generateAnimation } from './utils.js'
+import { alignment, alignDir, percent, generateFadeIn } from './utils.js'
 
 const re = {
   delimiter: /({|})/g,
@@ -9,7 +9,7 @@ const re = {
       to: '<b>'
     },
     end: {
-      from: /\\b0/g,
+      from: /\\b0?/g,
       to: '</b>'
     }
   },
@@ -19,7 +19,7 @@ const re = {
       to: '<i>'
     },
     end: {
-      from: /\\i0/g,
+      from: /\\i0?/g,
       to: '</i>'
     }
   },
@@ -29,7 +29,7 @@ const re = {
       to: '<u>'
     },
     end: {
-      from: /\\u0/g,
+      from: /\\u0?/g,
       to: '</u>'
     }
   },
@@ -49,8 +49,8 @@ const re = {
   },
   color: /\\\d?c&H?[0-9A-Za-z]{2,6}&/,
   alignment: /\\an?\d{1,2}/g,
-  fade: /\\fad\(\d*\.?\d+,\d*\.?\d+\)/,
-  pos: /\\pos\(\d*\.?\d+,\d*\.?\d+\)/,
+  fade: /\\fad\(\d*\.?\d+,\d*\.?\d+(\)|\}|\\)/,
+  pos: /\\pos\(\d*\.?\d+,\d*\.?\d+(\)|\}|\\)/,
   rot: /\\fr(x|y|z)?\d{1,3}/,
   hardSpace: /\\h/g,
   notSupported: [
@@ -64,11 +64,11 @@ const re = {
     /\\(\da|alpha)&H(.*?)&/g, // Alpha
     /\\k(f|o)?\d{1,5}/ig, // Karaoke
     /\\q\d/g,
-    /(\\r(.*?)(?=\\)|\\r(.*?)(?=}))/, // Could be handled but rarely used
-    /\\move\((.*?)\)/g,
-    /\\org\((.*?)\)/g,
-    /\\t\((.*?)\)/g,
-    /\\i?clip\((.*?)\)/g,
+    /(\\r(.*?)(?=\(\)|\}|\\)|\\r(.*?)(?=}))/, // Could be handled but rarely used
+    /\\move\((.*?)(\)|\}|\\)/g,
+    /\\org\((.*?)(\)|\}|\\)/g,
+    /\\t\((.*?)(\)|\}|\\)/g,
+    /\\i?clip\((.*?)(\)|\}|\\)/g,
     /\\p\d(.*?)\\p\d/g,
     /\\pbo-?\d/g
   ]
@@ -189,6 +189,7 @@ const handleFade = (cue, style) => {
     // We can handle only appearing fade animation atm.
     // The time is in ms, we need it in seconds.
     const inDuration = +fadeTag.split(',')[0].replace('\\fad(', '') / 1000
+    const outDuration = +fadeTag.split(',')[1].replace(')', '') / 1000
 
     // There is a need for a css class.
     const fadeInClass = `fade_in_${inDuration}`.replace('.', '')
@@ -200,13 +201,8 @@ const handleFade = (cue, style) => {
     let current = style.innerHTML
     if (!current.includes(`.${fadeInClass}`)) {
       const animationName = `fade${inDuration}`.replace('.', '')
-      const types = [
-        { type: 'in', duration: inDuration, cls: fadeInClass, name: `fade_in_${inDuration}`.replace('.', '') }
-      ]
 
-      types.forEach(({type, duration, cls}) => {
-        style.innerHTML += `.video-player .${cls} ${generateAnimation(type, animationName, duration)}`
-      })
+      style.innerHTML += `.video-player .${fadeInClass} ${generateFadeIn(inDuration, outDuration, animationName)}`
     }
   }
 

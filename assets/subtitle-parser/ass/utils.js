@@ -101,36 +101,28 @@ export const getTextAlign = (style) => {
   return textAlign
 }
 
-export const generateAnimation = (type, name, duration) => {
-  const from = type === 'in' ? 0 : 1
-  const to = type === 'in' ? 1 : 0
-
+export const generateFadeIn = (inDuration, name) => {
   return `{
-      animation: ${name} ${duration}s;
-      -webkit-animation: ${name} ${duration}s;
-      -moz-animation: ${name} ${duration}s;
-      -o-animation: ${name} ${duration}s;
-      -ms-animation: ${name} ${duration}s;
+      animation: ${name} ${inDuration}s;
+      -webkit-animation: ${name} ${inDuration}s;
+      -moz-animation: ${name} ${inDuration}s;
+      -ms-animation: ${name} ${inDuration}s;
     }
     @keyframes ${name} {
-      from { opacity: ${from};}
-      to { opacity: ${to}; }
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
     @-webkit-keyframes ${name} {
-      from { opacity: ${from};}
-      to { opacity: ${to}; }
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
     @-moz-keyframes ${name} {
-      from { opacity: ${from};}
-      to { opacity: ${to}; }
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
     @-ms-keyframes ${name} {
-      from { opacity: ${from};}
-      to { opacity: ${to}; }
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
-    @-o-keyframes ${name} {
-      from { opacity: ${from};}
-      to { opacity: ${to}; }
-    }
-  `
+  `.replace(/\\n/g, '')
 }
