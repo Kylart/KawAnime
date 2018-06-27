@@ -101,8 +101,13 @@ export const getTextAlign = (style) => {
   return textAlign
 }
 
-export const generateFadeIn = (inDuration, name) => {
+export const generateFadeAnimation = (inDuration, outDuration, name) => {
   return `{
+      transition: opacity ${outDuration}s;
+      -webkit-transition: opacity ${outDuration}s;
+      -moz-transition: ${name} ${outDuration}s;
+      -ms-transition: ${name} ${outDuration}s;
+
       animation: ${name} ${inDuration}s;
       -webkit-animation: ${name} ${inDuration}s;
       -moz-animation: ${name} ${inDuration}s;

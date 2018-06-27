@@ -1,4 +1,8 @@
-import { alignment, alignDir, percent, generateFadeIn } from './utils.js'
+import { alignment, alignDir, percent, generateFadeAnimation } from './utils.js'
+
+let Velocity = null
+
+if (typeof window !== 'undefined') Velocity = require('velocity-animate').default
 
 const re = {
   delimiter: /({|})/g,
@@ -49,8 +53,8 @@ const re = {
   },
   color: /\\\d?c&H?[0-9A-Za-z]{2,6}&/,
   alignment: /\\an?\d{1,2}/g,
-  fade: /\\fad\(\d*\.?\d+,\d*\.?\d+(\)|\}|\\)/,
-  pos: /\\pos\(\d*\.?\d+,\d*\.?\d+(\)|\}|\\)/,
+  fade: /\\fad\(\d*\.?\d+,\d*\.?\d+\)?/,
+  pos: /\\pos\(\d*\.?\d+,\d*\.?\d+\)?/,
   rot: /\\fr(x|y|z)?\d{1,3}/,
   hardSpace: /\\h/g,
   notSupported: [
@@ -65,10 +69,10 @@ const re = {
     /\\k(f|o)?\d{1,5}/ig, // Karaoke
     /\\q\d/g,
     /(\\r(.*?)(?=\(\)|\}|\\)|\\r(.*?)(?=}))/, // Could be handled but rarely used
-    /\\move\((.*?)(\)|\}|\\)/g,
-    /\\org\((.*?)(\)|\}|\\)/g,
-    /\\t\((.*?)(\)|\}|\\)/g,
-    /\\i?clip\((.*?)(\)|\}|\\)/g,
+    /\\move\((.*?)[)}\\]/g,
+    /\\org\((.*?)[)}\\]/g,
+    /\\t\((.*?)[)}\\]/g,
+    /\\i?clip\((.*?)[)}\\]/g,
     /\\p\d(.*?)\\p\d/g,
     /\\pbo-?\d/g
   ]
@@ -186,23 +190,33 @@ const handleFade = (cue, style) => {
   if (re.fade.test(string)) {
     const fadeTag = string.match(re.fade)[0]
 
+    cue.text = string.replace(fadeTag, '')
+
     // We can handle only appearing fade animation atm.
     // The time is in ms, we need it in seconds.
     const inDuration = +fadeTag.split(',')[0].replace('\\fad(', '') / 1000
     const outDuration = +fadeTag.split(',')[1].replace(')', '') / 1000
 
     // There is a need for a css class.
-    const fadeInClass = `fade_in_${inDuration}`.replace('.', '')
+    const fadeClass = `fade_${inDuration}`.replace('.', '')
 
-    cue.style.push(fadeInClass)
-    cue.text = string.replace(fadeTag, '')
+    cue.style.push(fadeClass)
 
     // Check if class is in style. If not, includes it.
     let current = style.innerHTML
-    if (!current.includes(`.${fadeInClass}`)) {
-      const animationName = `fade${inDuration}`.replace('.', '')
+    if (!current.includes(`.${fadeClass}`)) {
+      const animationName = `fade-${inDuration}`.replace('.', '')
 
-      style.innerHTML += `.video-player .${fadeInClass} ${generateFadeIn(inDuration, outDuration, animationName)}`
+      style.innerHTML += `.video-player .${fadeClass} ${generateFadeAnimation(inDuration, outDuration, animationName)}`
+
+      // This allows the fade out effect to blend in.
+
+      cue.end = cue.end - outDuration
+      cue.leave = (el, done) => {
+        Velocity(el, { opacity: 0 }, { duration: outDuration * 1000, complete: done })
+      }
+
+      cue.hasAnimation = true
     }
   }
 

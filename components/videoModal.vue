@@ -1,12 +1,12 @@
 <template lang="pug">
-  .dialog-container(v-show='show', draggable='false', :style="{ 'z-index': z }")
+  .video-dialog-container(draggable='false', :style="{ 'z-index': z }")
     v-scale-transition
-      .video-dialog(:style='style')
+      .video-dialog(v-show='show', :style='style')
         template(v-if='values.show')
           video-player(ref='player', :value='values.link.link', :title='values.link.name')
 
     v-fade-transition
-      .video-overlay(v-show='!isMinimized')
+      .video-overlay(v-show='show && !isMinimized')
 </template>
 
 <script>
@@ -124,11 +124,12 @@
     watch: {
       show (val) {
         if (val) {
+          this.center()
+
           if (this.isMinimized) {
             this.minimize()
           }
 
-          this.center()
           window.addEventListener('keydown', this.addListeners)
         } else {
           window.removeEventListener('keydown', this.addListeners)
@@ -139,7 +140,7 @@
 </script>
 
 <style lang="stylus" scoped>
-  .dialog-container
+  .video-dialog-container
     position fixed
     top 0
     left 0
