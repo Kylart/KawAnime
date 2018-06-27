@@ -10,6 +10,7 @@
       @progress='onProgress',
       @seeked='onSeeked',
       @click='togglePlay',
+      @dblclick='toggleFullScreen',
       :src='`/stream/${value}`') Your browser does not support HTML5 video.
 
     v-progress-circular.main-color--text.video-waiting(dark, indeterminate, v-show='waiting')
@@ -26,13 +27,14 @@
 
     .cues-container(v-show='trackNum && isAss')
       .cues-r-container(:style='cuesContainerStyle')
-        .cue(
-          v-for='cue in activeCues',
-          :key='cue.id',
-          :class="cue.style.join(' ')",
-          :style="getStyle(cue)",
-          v-html='cue.text'
-        )
+        template(v-for='cue in activeCues')
+          transition(:name='cue.masterId', @leave='cue.onLeave')
+            .cue(
+              :key='cue.masterId',
+              :class="cue.style.join(' ')",
+              :style="getStyle(cue)",
+              v-html='cue.text'
+            )
 
     v-fade-transition
       div.video-controls(v-show='!controlsHidden')
