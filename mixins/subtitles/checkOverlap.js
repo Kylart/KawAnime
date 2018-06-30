@@ -1,4 +1,11 @@
 export default {
+  data: () => ({
+    overlapModes: {
+      top: [1, 2, 3, 4, 13, 23, 123, 134, 1234, 34],
+      bot: [14, 24, 124, 234]
+    }
+  }),
+
   methods: {
     getBounds (cue) {
       const re = /<br>/g
@@ -78,10 +85,10 @@ export default {
         const masterInd = this.$_.indexOf(this.activeCues, master)
         const slaveInd = this.$_.indexOf(this.activeCues, slave)
 
-        if (mode === 13 || mode === 23 || mode === 123 || mode === 134 || mode === 1234 || mode === 34) {
+        if (this.overlapModes.top.includes(mode)) {
           // All that includes top first
           this.activeCues[slaveInd].line = masterBounds.vEnd + 1
-        } else if (mode === 14 || mode === 24 || mode === 124 || mode === 234) {
+        } else if (this.overlapModes.bot.includes(mode)) {
           // All that includes bottom first
           this.activeCues[masterInd].line = slaveBounds.vEnd + 1
         }
