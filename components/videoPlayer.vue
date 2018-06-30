@@ -30,12 +30,15 @@
         template(v-for='cue in activeCues')
           transition(
             v-if='cue.hasAnimation',
-            :name='`cue-${cue.id}`',
+            name='cue-transition',
             :key='cue.masterId',
+            @before-enter='cue.beforeEnter',
+            @enter='cue.enter',
             @leave='cue.leave',
             :css='false'
           )
             .cue(
+              v-if='cue.show',
               :class="cue.style.join(' ')",
               :style="getStyle(cue)",
               v-html='cue.text'
@@ -334,7 +337,6 @@
     width 95%
     font-family "Open Sans", sans-serif
     line-height 1.25
-    opacity 1
 
   .video-player
     background-color black

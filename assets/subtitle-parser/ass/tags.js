@@ -1,4 +1,4 @@
-import { alignment, alignDir, percent, generateFadeAnimation } from './utils.js'
+import { alignment, alignDir, percent } from './utils.js'
 
 let Velocity = null
 
@@ -194,29 +194,36 @@ const handleFade = (cue, style) => {
 
     // We can handle only appearing fade animation atm.
     // The time is in ms, we need it in seconds.
-    const inDuration = +fadeTag.split(',')[0].replace('\\fad(', '') / 1000
-    const outDuration = +fadeTag.split(',')[1].replace(')', '') / 1000
+    const inDuration = +fadeTag.split(',')[0].replace('\\fad(', '')
+    const outDuration = +fadeTag.split(',')[1].replace(')', '')
 
-    // There is a need for a css class.
-    const fadeClass = `fade_${inDuration}`.replace('.', '')
+    // So if idea is to trigger a show property so that a Vue transition
+    // can be instanciated. Velocity will help us make the fade effect.
+    cue.hasAnimation = true
+    cue.show = false
 
-    cue.style.push(fadeClass)
+    // As the fade out effect has to be finished before the end of the cue,
+    // we can simply remove its duration from the cue's end time.
+    cue.end = cue.end - outDuration / 1000
 
-    // Check if class is in style. If not, includes it.
-    let current = style.innerHTML
-    if (!current.includes(`.${fadeClass}`)) {
-      const animationName = `fade-${inDuration}`.replace('.', '')
+    cue.beforeEnter = (el) => {
+      el.style.opacity = 0
+    }
 
-      style.innerHTML += `.video-player .${fadeClass} ${generateFadeAnimation(inDuration, outDuration, animationName)}`
+    cue.enter = (el, done) => {
+      Velocity(el, { opacity: 1 }, { duration: inDuration, complete: done })
+    }
 
-      // This allows the fade out effect to blend in.
+    cue.leave = (el, done) => {
+      const complete = () => {
+        done()
 
-      cue.end = cue.end - outDuration
-      cue.leave = (el, done) => {
-        Velocity(el, { opacity: 0 }, { duration: outDuration * 1000, complete: done })
+        // We need to re-hide the cue on leave so that the show can
+        // still be triggered if the user rewinds the player.
+        cue.show = false
       }
 
-      cue.hasAnimation = true
+      Velocity(el, { opacity: 0 }, { duration: outDuration, complete })
     }
   }
 

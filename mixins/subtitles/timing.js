@@ -40,10 +40,20 @@ export default {
         const _cue = this.cues[i]
 
         if (this.isActive(_cue)) {
-          let isAlreadyIn = this.$_.find(this.activeCues, { masterId: _cue.masterId })
+          let isAlreadyIn = this.activeCues.includes(_cue)
 
           if (!isAlreadyIn) {
+            const futureIndex = this.activeCues.length
+
             this.activeCues.push(_cue)
+
+            if (_cue.hasOwnProperty('show')) {
+              // We need to trigger the show property to trigger
+              // the transition element's enter.
+              this.$nextTick(() => {
+                this.activeCues[futureIndex].show = true
+              })
+            }
 
             if (!hasAdded) hasAdded = true
           }
