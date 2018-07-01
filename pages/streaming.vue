@@ -123,6 +123,8 @@
       const { name } = this.$route.query
 
       if (name) this.term = name
+
+      this.setEpsQuality()
     },
 
     beforeDestroy () {
@@ -296,10 +298,20 @@
 
           return info
             ? (info && info.aired) || 'N/A'
-            : 'No data.'
+            : 'N/A'
         }
 
         return 'No data.'
+      },
+      setEpsQuality () {
+        const eps = this.$_.map(this.files[this.current], (ep, epNumber) => ep)
+        const prefQuality = this.$store.state.config.config.video.quality
+
+        eps.forEach((ep) => {
+          this.qualityEp[ep.name] = ep.quality.includes(prefQuality)
+            ? prefQuality
+            : ep.quality[Math.floor(ep.quality.length / 2)]
+        })
       },
       act (action, { name: anime }) {
         const quality = this.qualityEp[anime]
@@ -355,14 +367,7 @@
       async current (val) {
         if (val) {
           // Setting quality models for all episodes
-          const eps = this.$_.map(this.files[this.current], (ep, epNumber) => ep)
-          const prefQuality = this.$store.state.config.config.video.quality
-
-          eps.forEach((ep) => {
-            this.qualityEp[ep.name] = ep.quality.includes(prefQuality)
-              ? prefQuality
-              : ep.quality[Math.floor(ep.quality.length / 2)]
-          })
+          this.setEpsQuality()
 
           await this.getEps()
         }
