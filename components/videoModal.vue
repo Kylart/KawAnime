@@ -92,6 +92,8 @@
         this.fullscreen = !this.fullscreen
         await this.$axios.get('/_fullScreen', { params: { bool: this.fullscreen } })
 
+        this.isMinimized = false
+
         if (this.fullscreen) {
           this.z = 3
           this.width = 100
