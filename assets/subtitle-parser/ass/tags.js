@@ -49,7 +49,7 @@ const re = {
   },
   font: {
     name: /(\\fn.+(?=\\)|\\fn.+(?=}))/g,
-    size: /\\fs[0-9]{1,3}/g
+    size: /\\fs\s?[0-9]{1,3}/g
   },
   color: /\\\d?c&H?[0-9A-Za-z]{2,6}&/,
   alignment: /\\an?\d{1,2}/g,
@@ -84,7 +84,7 @@ const clean = (string) => {
     string = string.replace(_re, '')
   })
 
-  return string.replace(re.delimiter, '').replace(re.font.size, '')
+  return string.replace(re.delimiter, '').replace(re.font.name, '')
 }
 
 const handleHardSpace = (string) => {
