@@ -293,6 +293,27 @@ Electron.on('window-all-closed', function () {
   }
 })
 
+Electron.on('quit', () => {
+  // We remove logs files every once in a while
+  const dir = require(path.join(__dirname, 'server', 'utils', 'dir.js'))
+
+  const filesToCheck = ['logs.log', 'error.log']
+
+  filesToCheck.forEach((file) => {
+    const filePath = path.join(dir, file)
+
+    fs.stat(filePath, (err, stats) => {
+      if (!err) {
+        const size = stats.size / 1000000.0
+
+        if (size > 5) {
+          fs.unlinkSync(filePath)
+        }
+      }
+    })
+  })
+})
+
 Electron.on('activate', () => {
   process.win === null
     ? newWin()
