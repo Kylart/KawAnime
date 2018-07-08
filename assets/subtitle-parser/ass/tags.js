@@ -372,13 +372,15 @@ export default function (cue, style, info) {
 
     string = handleColor(string, cssStyle)
 
-    cue.text = clean(string)
+    cue.text = string
 
     cue = handleFontSize(cue, info)
     cue = handlePos(cue, style, info)
     cue = handleRotation(cue)
     cue = handleAlignment(cue, style, info)
     cue = handleFade(cue, cssStyle)
+
+    cue.text = clean(cue.text)
   }
 
   return cue
