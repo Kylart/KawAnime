@@ -65,7 +65,7 @@
     env(v-show='$store.state.NODE_ENV === "development"')
     overlay(v-show='overlay')
     magnets-modal
-    video-modal
+    video-modal(v-show='$store.state.streaming.player.show')
     mal-form
     info-results
     choice-window
