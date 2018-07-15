@@ -59,14 +59,20 @@
           v-icon(v-html="paused ? 'play_arrow' : 'pause'")
         v-btn(color='mablue', dark, icon, @click.stop='toggleMute')
           v-icon(v-html="muted ? 'volume_off' : 'volume_up'")
-        v-slider.volume(hide-details, color='mablue', dark, :max='100', :value='muted ? 0 : volume', @input='changeVolume')
+        v-slider.volume(hide-details, color='mablue', dark, :max='100', :value='muted ? 0 : volume', thumb-label, @input='changeVolume')
         div.timer {{ currentTime }}/{{ duration }}
-        v-btn(color='mablue', dark, icon, @click.stop='timeForward(-5)')
-          v-icon replay_5
-        v-btn(color='mablue', dark, icon, @click.stop='timeForward(5)')
-          v-icon forward_5
-        v-btn(color='mablue', dark, icon, @click.stop='timeForward(90)')
-          v-icon fast_forward
+        v-tooltip(top)
+          span Rewind 5s
+          v-btn(color='mablue', dark, icon, @click.stop='timeForward(-5)', slot='activator')
+            v-icon replay_5
+        v-tooltip(top)
+          span Fast forward 5s
+          v-btn(color='mablue', dark, icon, @click.stop='timeForward(5)', slot='activator')
+            v-icon forward_5
+        v-tooltip(top)
+          span Skip 1m25 (op&ed)
+          v-btn(color='mablue', dark, icon, @click.stop='timeForward(85)', slot='activator')
+            v-icon fast_forward
 
         v-btn#fullscreen.right(color='mablue', dark, icon, @click.stop='toggleFullScreen')
           v-icon(v-html="fullscreen ? 'fullscreen_exit' : 'fullscreen'")
