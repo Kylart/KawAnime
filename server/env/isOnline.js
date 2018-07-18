@@ -1,15 +1,9 @@
-const axios = require('axios')
+const isOnline = require('is-online')
 
-const isOnline = (req, res) => {
-  axios.get('https://kawanime.com', {
-    params: {
-      ref: 'app'
-    }
+const checkOnline = (req, res) => {
+  isOnline().then((online) => {
+    res.status(online ? 200 : 204).send()
   })
-    .then(({status}) => {
-      res.status(status === 200 ? 200 : 204).send()
-    })
-    .catch(() => res.status(204).send())
 }
 
-module.exports = isOnline
+module.exports = checkOnline
