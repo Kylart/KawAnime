@@ -71,74 +71,74 @@
 </template>
 
 <script>
-  export default {
-    data () {
-      return {
-        fab: false,
-        lists: [
-          {text: 'Watch List', listName: 'watchList', action: 'watch_later'},
-          {text: 'Watching', listName: 'watching', action: 'tv'},
-          {text: 'Seen', listName: 'seen', action: 'done_all'},
-          {text: 'On Hold', listName: 'onHold', action: 'av_timer'},
-          {text: 'Dropped', listName: 'dropped', action: 'visibility_off'}
-        ]
-      }
+export default {
+  data () {
+    return {
+      fab: false,
+      lists: [
+        {text: 'Watch List', listName: 'watchList', action: 'watch_later'},
+        {text: 'Watching', listName: 'watching', action: 'tv'},
+        {text: 'Seen', listName: 'seen', action: 'done_all'},
+        {text: 'On Hold', listName: 'onHold', action: 'av_timer'},
+        {text: 'Dropped', listName: 'dropped', action: 'visibility_off'}
+      ]
+    }
+  },
+  methods: {
+    addTo (listName) {
+      this.$store.dispatch('watchLists/updateList', {
+        listName,
+        entry: this.info.title
+      })
     },
-    methods: {
-      addTo (listName) {
-        this.$store.dispatch('watchLists/updateList', {
-          listName,
-          entry: this.info.title
-        })
-      },
-      close () {
-        this.$store.commit('search/showInfo', false)
-      },
-      showMal () {
-        this.$store.commit('mal/setEntry', this.info)
-        this.close()
-        this.$store.commit('mal/showForm', true)
-      },
-      showChoices () {
-        this.close()
-        this.$store.commit('setAddToChoiceTitle', this.info.title)
-        this.$store.commit('setAddToChoice', true)
-      },
-      open () {
-        this.$axios.get('openThis', {
-          params: {
-            type: 'link',
-            link: this.url
-          }
-        })
-      },
-      log () {
-        this.$store.commit('setInfoSnackbar', `Link copied!`)
-      }
+    close () {
+      this.$store.commit('search/showInfo', false)
     },
-    computed: {
-      info () {
-        return this.$store.state.search.info.info
-      },
-      error () {
-        return this.$store.state.search.info.error
-      },
-      loading () {
-        return this.$store.state.search.info.loading
-      },
-      searchTerm () {
-        return this.$store.state.search.info.term
-      },
-      episodeLabel () {
-        return this.info.episodes !== 1
-          ? 'episodes'
-          : 'episode'
-      },
-      url () {
-        return `https://myanimelist.net/anime/${this.info.id}/${encodeURI(this.info.title)}`
-      }
+    showMal () {
+      this.$store.commit('mal/setEntry', this.info)
+      this.close()
+      this.$store.commit('mal/showForm', true)
+    },
+    showChoices () {
+      this.close()
+      this.$store.commit('setAddToChoiceTitle', this.info.title)
+      this.$store.commit('setAddToChoice', true)
+    },
+    open () {
+      this.$axios.get('openThis', {
+        params: {
+          type: 'link',
+          link: this.url
+        }
+      })
+    },
+    log () {
+      this.$store.commit('setInfoSnackbar', `Link copied!`)
+    }
+  },
+  computed: {
+    info () {
+      return this.$store.state.search.info.info
+    },
+    error () {
+      return this.$store.state.search.info.error
+    },
+    loading () {
+      return this.$store.state.search.info.loading
+    },
+    searchTerm () {
+      return this.$store.state.search.info.term
+    },
+    episodeLabel () {
+      return this.info.episodes !== 1
+        ? 'episodes'
+        : 'episode'
+    },
+    url () {
+      return `https://myanimelist.net/anime/${this.info.id}/${encodeURI(this.info.title)}`
     }
   }
+}
 </script>
 
 <style lang="stylus" scoped>

@@ -23,19 +23,19 @@
 </style>
 
 <script>
-  export default {
-    data () {
-      return {
-        number: this.ran()
-      }
-    },
-    methods: {
-      ran () {
-        return parseInt(Math.random() * 2 + 1)
-      }
-    },
-    beforeMount () {
-      this.number = this.ran()
+export default {
+  data () {
+    return {
+      number: this.ran()
     }
+  },
+  methods: {
+    ran () {
+      return parseInt(Math.random() * 2 + 1)
+    }
+  },
+  beforeMount () {
+    this.number = this.ran()
   }
+}
 </script>

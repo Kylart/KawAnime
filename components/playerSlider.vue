@@ -56,7 +56,6 @@ export default {
 }
 </script>
 
-
 <style lang="stylus">
 
 .slider__buffer-container

@@ -6,15 +6,14 @@
 </template>
 
 <script>
-  export default {
-    computed: {
-      isVisible () {
-        return this.$store.state.overlay.show
-      }
+export default {
+  computed: {
+    isVisible () {
+      return this.$store.state.overlay.show
     }
   }
+}
 </script>
-
 
 <style lang="stylus" scoped>
   #overlay
@@ -50,4 +49,3 @@
     padding 10px
     border-radius 3px
 </style>
-

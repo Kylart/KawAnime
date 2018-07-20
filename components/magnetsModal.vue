@@ -62,88 +62,88 @@
 </template>
 
 <script>
-  export default {
-    data () {
-      return {
-        snack: false,
-        selected: []
+export default {
+  data () {
+    return {
+      snack: false,
+      selected: []
+    }
+  },
+  computed: {
+    values () {
+      return this.$store.state.downloader.modal
+    },
+    show () {
+      return this.values.show
+    },
+    eol () {
+      if (this.$store.state.platform === 'win32') {
+        return '\r\n'
+      } else {
+        return '\n'
       }
     },
-    computed: {
-      values () {
-        return this.$store.state.downloader.modal
-      },
-      show () {
-        return this.values.show
-      },
-      eol () {
-        if (this.$store.state.platform === 'win32') {
-          return '\r\n'
-        } else {
-          return '\n'
-        }
-      },
-      magnets () {
-        return this.values.magnets.map((magnet) => {
-          return magnet.link
-        })
-      },
-      filteredNames () {
-        return this.$_.uniq(this.values.magnets.map((magnet) => {
-          return magnet.name.split(' ').slice(1, -3).join(' ')
-        }))
-      }
+    magnets () {
+      return this.values.magnets.map((magnet) => {
+        return magnet.link
+      })
     },
-    watch: {
-      show () {
-        this.show && this.$store.dispatch('player/play')
-        this.selected = this.magnets
-      }
+    filteredNames () {
+      return this.$_.uniq(this.values.magnets.map((magnet) => {
+        return magnet.name.split(' ').slice(1, -3).join(' ')
+      }))
+    }
+  },
+  watch: {
+    show () {
+      this.show && this.$store.dispatch('player/play')
+      this.selected = this.magnets
+    }
+  },
+  methods: {
+    close () {
+      this.$store.commit('downloader/closeModal')
     },
-    methods: {
-      close () {
-        this.$store.commit('downloader/closeModal')
-      },
-      getLinks (name) {
-        return this.values.magnets.map((magnet) => {
-          if (magnet.name.includes(name)) return magnet
-        }).filter((e) => typeof e !== 'undefined' && e)
-      },
-      selectAll (name) {
-        // Find all magnets with that name
-        const magnets = this.$_.map(this.values.magnets, (e) => {
-          if (e.name.includes(name)) return e.link
-        }).filter((e) => typeof e !== 'undefined' && e)
+    getLinks (name) {
+      return this.values.magnets.map((magnet) => {
+        if (magnet.name.includes(name)) return magnet
+      }).filter((e) => typeof e !== 'undefined' && e)
+    },
+    selectAll (name) {
+      // Find all magnets with that name
+      const magnets = this.$_.map(this.values.magnets, (e) => {
+        if (e.name.includes(name)) return e.link
+      }).filter((e) => typeof e !== 'undefined' && e)
 
-        // Checking if some of them are present in current selected array
-        let allSelected = false
-        let counter = 0
-        this.$_.each(magnets, (magnet) => {
-          if (this.$_.find(this.selected, (o) => o === magnet)) {
-            ++counter
-            if (counter === magnets.length) allSelected = true
+      // Checking if some of them are present in current selected array
+      let allSelected = false
+      let counter = 0
+      this.$_.each(magnets, (magnet) => {
+        if (this.$_.find(this.selected, (o) => o === magnet)) {
+          ++counter
+          if (counter === magnets.length) allSelected = true
+        }
+      })
+
+      // Selecting or unselecting accordingly
+      this.$_.each(magnets, (magnet) => {
+        allSelected
+          ? this.selected = this.selected.filter((link) => link !== magnet)
+          : !this.selected.includes(magnet) && this.selected.push(magnet)
+      })
+    },
+    openSelected () {
+      this.$_.each(this.selected, (l) => {
+        this.$axios.get('openThis', {
+          params: {
+            type: 'link',
+            link: l
           }
         })
-
-        // Selecting or unselecting accordingly
-        this.$_.each(magnets, (magnet) => {
-          allSelected
-            ? this.selected = this.selected.filter((link) => link !== magnet)
-            : !this.selected.includes(magnet) && this.selected.push(magnet)
-        })
-      },
-      openSelected () {
-        this.$_.each(this.selected, (l) => {
-          this.$axios.get('openThis', {
-            params: {
-              type: 'link',
-              link: l
-            }
-          })
-        })
-      }
+      })
     }
   }
+}
 </script>
 
 <style lang="stylus" scoped>
@@ -179,4 +179,3 @@
     text-align right
     width 100%
 </style>
-

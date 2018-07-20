@@ -43,88 +43,88 @@
 </template>
 
 <script>
-  export default {
-    mounted () {
+export default {
+  mounted () {
+    this.generateHistory()
+  },
+  data () {
+    return {
+      nbElems: 30,
+      elems: {}
+    }
+  },
+  computed: {
+    history () {
+      return this.$store.state.history.entries
+    },
+    modal: {
+      get () {
+        return this.$store.state.history.modal
+      },
+      set (bool) {
+        this.$store.commit('history/setModal', bool)
+      }
+    }
+  },
+  methods: {
+    handleScroll () {
+      const elem = document.getElementsByClassName('dialog--active')[0]
+
+      const modalHeight = elem.clientHeight
+      const cardHeight = document.querySelector('.dialog--active .card').clientHeight
+
+      const scroll = elem.scrollTop
+      const maxScroll = cardHeight - modalHeight
+
+      const scrollPercent = scroll / maxScroll
+
+      if (scrollPercent > 0.65) {
+        this.nbElems += 5
+        this.generateHistory()
+      }
+    },
+    isDelete (type) {
+      return type === 'Delete'
+        ? 'delete'
+        : 'not-delete'
+    },
+    clearEntry (info, item) {
+      this.$store.dispatch('history/remove', {
+        date: item,
+        info
+      })
+    },
+    async refresh () {
+      await this.$store.dispatch('history/get')
       this.generateHistory()
     },
-    data () {
-      return {
-        nbElems: 30,
-        elems: {}
-      }
+    close () {
+      this.$store.commit('history/setModal', false)
     },
-    computed: {
-      history () {
-        return this.$store.state.history.entries
-      },
-      modal: {
-        get () {
-          return this.$store.state.history.modal
-        },
-        set (bool) {
-          this.$store.commit('history/setModal', bool)
-        }
+    generateHistory () {
+      // This is still improvable
+      const keys = this.$_.keys(this.history).reverse()
+      this.elems = {}
+
+      for (let i = 0, l = this.nbElems; i < l; ++i) {
+        this.elems[keys[i]] = this.history[keys[i]]
       }
-    },
-    methods: {
-      handleScroll () {
-        const elem = document.getElementsByClassName('dialog--active')[0]
-
-        const modalHeight = elem.clientHeight
-        const cardHeight = document.querySelector('.dialog--active .card').clientHeight
-
-        const scroll = elem.scrollTop
-        const maxScroll = cardHeight - modalHeight
-
-        const scrollPercent = scroll / maxScroll
-
-        if (scrollPercent > 0.65) {
-          this.nbElems += 5
-          this.generateHistory()
-        }
-      },
-      isDelete (type) {
-        return type === 'Delete'
-          ? 'delete'
-          : 'not-delete'
-      },
-      clearEntry (info, item) {
-        this.$store.dispatch('history/remove', {
-          date: item,
-          info
-        })
-      },
-      async refresh () {
-        await this.$store.dispatch('history/get')
-        this.generateHistory()
-      },
-      close () {
-        this.$store.commit('history/setModal', false)
-      },
-      generateHistory () {
-        // This is still improvable
-        const keys = this.$_.keys(this.history).reverse()
-        this.elems = {}
-
-        for (let i = 0, l = this.nbElems; i < l; ++i) {
-          this.elems[keys[i]] = this.history[keys[i]]
-        }
-      }
-    },
-    watch: {
-      modal (bool) {
-        if (bool) {
-          this.$nextTick(() => {
-            this.elem = document.getElementsByClassName('dialog--active')[0]
-            this.elem.addEventListener('scroll', this.handleScroll)
-          })
-        } else {
+    }
+  },
+  watch: {
+    modal (bool) {
+      if (bool) {
+        this.$nextTick(() => {
           this.elem = document.getElementsByClassName('dialog--active')[0]
-          this.elem.removeEventListener('scroll', this.handleScroll)
-        }
+          this.elem.addEventListener('scroll', this.handleScroll)
+        })
+      } else {
+        this.elem = document.getElementsByClassName('dialog--active')[0]
+        this.elem.removeEventListener('scroll', this.handleScroll)
       }
     }
   }
+}
 </script>
 
 <style lang="stylus" scoped>

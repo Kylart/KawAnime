@@ -13,18 +13,18 @@
 </template>
 
 <script>
-  export default {
-    methods: {
-      refresh () {
-        this.$store.dispatch('news/refresh')
-      }
-    },
-    computed: {
-      news () {
-        return this.$store.state.news.data
-      }
+export default {
+  methods: {
+    refresh () {
+      this.$store.dispatch('news/refresh')
+    }
+  },
+  computed: {
+    news () {
+      return this.$store.state.news.data
     }
   }
+}
 </script>
 
 <style lang="stylus" scoped>

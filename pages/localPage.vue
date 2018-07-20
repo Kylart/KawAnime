@@ -106,108 +106,108 @@
 </template>
 
 <script>
-  export default {
-    mounted () {
-      setTimeout(() => { this.emptyBg = true }, 300)
+export default {
+  mounted () {
+    setTimeout(() => { this.emptyBg = true }, 300)
 
-      this.inside = this.$store.state.config.config.video.inside
+    this.inside = this.$store.state.config.config.video.inside
 
-      this.refresh()
+    this.refresh()
+  },
+  beforeDestroy () {
+    this.emptyBg = false
+  },
+  data () {
+    return {
+      inside: true,
+      emptyBg: false
+    }
+  },
+  computed: {
+    files () {
+      return this.$store.state.localFiles.files
     },
-    beforeDestroy () {
-      this.emptyBg = false
+    nbEps () {
+      return this.files.length
     },
-    data () {
-      return {
-        inside: true,
-        emptyBg: false
+    episodeLabel () {
+      return this.nbEps === 1
+        ? 'episode'
+        : 'episodes'
+    }
+  },
+  methods: {
+    async playThis (item) {
+      this.$log(`Requested to play ${item.name} - ${item.ep}. Sending...`)
+      const name = `${item.name} - ${item.ep}`
+
+      if (this.inside) {
+        this.$store.commit('streaming/play', {
+          show: true,
+          link: {
+            link: item.path,
+            name
+          }
+        })
+      } else {
+        const { status } = await this.$axios.get(`openThis`, {
+          params: {
+            type: 'video',
+            path: item.path,
+            dir: this.$store.state.localFiles.dir
+          }
+        })
+
+        this.$store.dispatch('history/append', {
+          type: 'Play',
+          text: name
+        })
+
+        if (status !== 200) this.$log(`An error occurred: request to open file ended with a status ${status}.`)
       }
     },
-    computed: {
-      files () {
-        return this.$store.state.localFiles.files
-      },
-      nbEps () {
-        return this.files.length
-      },
-      episodeLabel () {
-        return this.nbEps === 1
-          ? 'episode'
-          : 'episodes'
-      }
-    },
-    methods: {
-      async playThis (item) {
-        this.$log(`Requested to play ${item.name} - ${item.ep}. Sending...`)
-        const name = `${item.name} - ${item.ep}`
+    delThis (item) {
+      this.$log(`[${(new Date()).toLocaleTimeString()}]: Requested to delete ${item.path} - ${item.ep}. Sending...`)
 
-        if (this.inside) {
-          this.$store.commit('streaming/play', {
-            show: true,
-            link: {
-              link: item.path,
-              name
-            }
-          })
-        } else {
-          const { status } = await this.$axios.get(`openThis`, {
-            params: {
-              type: 'video',
-              path: item.path,
-              dir: this.$store.state.localFiles.dir
-            }
-          })
+      this.$store.commit('localFiles/updateFiles', {
+        type: 'delete',
+        path: item.path
+      })
 
-          this.$store.dispatch('history/append', {
-            type: 'Play',
-            text: name
-          })
-
-          if (status !== 200) this.$log(`An error occurred: request to open file ended with a status ${status}.`)
-        }
-      },
-      delThis (item) {
-        this.$log(`[${(new Date()).toLocaleTimeString()}]: Requested to delete ${item.path} - ${item.ep}. Sending...`)
-
-        this.$store.commit('localFiles/updateFiles', {
+      this.$axios.get(`openThis`, {
+        params: {
           type: 'delete',
           path: item.path
-        })
-
-        this.$axios.get(`openThis`, {
-          params: {
-            type: 'delete',
-            path: item.path
-          }
-        }).then((res) => {
-          this.$store.commit('setInfoSnackbar', `${item.name} ${item.ep} was successfully sent to Trash.`)
-          this.$store.dispatch('history/append', {
-            type: 'Delete',
-            text: `${item.name} - ${item.ep}`
-          }).catch(err => { void (err) })
-        }).catch(() => {
-          this.$store.commit('setInfoSnackbar', `Error while trying to delete ${item.name} ${item.ep}. Please try again later.`)
-        })
-      },
-      refresh () {
-        this.$store.dispatch('localFiles/refresh')
-      },
-      changePath () {
-        this.$store.dispatch('localFiles/changePath')
-      },
-      resetLocal () {
-        if (this.$store.state.isConnected) {
-          this.$store.dispatch('localFiles/reset')
-        } else {
-          this.$store.commit('setInfoSnackbar', 'You are offline.')
         }
-      },
-      showChoices (name) {
-        this.$store.commit('setAddToChoiceTitle', name)
-        this.$store.commit('setAddToChoice', true)
+      }).then((res) => {
+        this.$store.commit('setInfoSnackbar', `${item.name} ${item.ep} was successfully sent to Trash.`)
+        this.$store.dispatch('history/append', {
+          type: 'Delete',
+          text: `${item.name} - ${item.ep}`
+        }).catch(err => { void (err) })
+      }).catch(() => {
+        this.$store.commit('setInfoSnackbar', `Error while trying to delete ${item.name} ${item.ep}. Please try again later.`)
+      })
+    },
+    refresh () {
+      this.$store.dispatch('localFiles/refresh')
+    },
+    changePath () {
+      this.$store.dispatch('localFiles/changePath')
+    },
+    resetLocal () {
+      if (this.$store.state.isConnected) {
+        this.$store.dispatch('localFiles/reset')
+      } else {
+        this.$store.commit('setInfoSnackbar', 'You are offline.')
       }
+    },
+    showChoices (name) {
+      this.$store.commit('setAddToChoiceTitle', name)
+      this.$store.commit('setAddToChoice', true)
     }
   }
+}
 </script>
 
 <style lang="stylus" scoped>

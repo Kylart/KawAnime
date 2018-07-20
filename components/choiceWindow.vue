@@ -26,57 +26,57 @@
 </template>
 
 <script>
-  export default {
-    data () {
-      return {
-        selected: [],
-        options: [{
-          label: 'Watch list',
-          value: 'watchList'
-        }, {
-          label: 'Watching',
-          value: 'watching'
-        }, {
-          label: 'Seen',
-          value: 'seen'
-        }, {
-          label: 'On Hold',
-          value: 'onHold'
-        }, {
-          label: 'Dropped',
-          value: 'dropped'
-        }]
-      }
+export default {
+  data () {
+    return {
+      selected: [],
+      options: [{
+        label: 'Watch list',
+        value: 'watchList'
+      }, {
+        label: 'Watching',
+        value: 'watching'
+      }, {
+        label: 'Seen',
+        value: 'seen'
+      }, {
+        label: 'On Hold',
+        value: 'onHold'
+      }, {
+        label: 'Dropped',
+        value: 'dropped'
+      }]
+    }
+  },
+  methods: {
+    hide () {
+      this.$store.commit('setAddToChoice', false)
     },
-    methods: {
-      hide () {
-        this.$store.commit('setAddToChoice', false)
-      },
-      add () {
-        this.selected.forEach((listName) => {
-          this.$store.dispatch('watchLists/updateList', {
-            listName,
-            entry: this.title
-          })
+    add () {
+      this.selected.forEach((listName) => {
+        this.$store.dispatch('watchLists/updateList', {
+          listName,
+          entry: this.title
         })
+      })
 
-        this.hide()
+      this.hide()
+    }
+  },
+  computed: {
+    show: {
+      get () {
+        return this.$store.state.addToChoice.show
+      },
+      set (bool) {
+        this.$store.commit('setAddToChoice', bool)
       }
     },
-    computed: {
-      show: {
-        get () {
-          return this.$store.state.addToChoice.show
-        },
-        set (bool) {
-          this.$store.commit('setAddToChoice', bool)
-        }
-      },
-      title () {
-        return this.$store.state.addToChoice.title
-      }
+    title () {
+      return this.$store.state.addToChoice.title
     }
   }
+}
 </script>
 
 <style lang="stylus" scoped>

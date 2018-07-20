@@ -33,99 +33,99 @@
 </template>
 
 <script>
-  import _ from 'lodash'
+import _ from 'lodash'
 
-  export default {
-    data () {
-      return {
-        searchTerm: '',
-        results: []
+export default {
+  data () {
+    return {
+      searchTerm: '',
+      results: []
+    }
+  },
+  computed: {
+    show: {
+      get () {
+        return this.$store.state.search.search
+      },
+      set (bool) {
+        this.$store.commit('search/show', bool)
+        if (!bool) this.$store.commit('mal/isAdding', bool)
       }
     },
-    computed: {
-      show: {
-        get () {
-          return this.$store.state.search.search
-        },
-        set (bool) {
-          this.$store.commit('search/show', bool)
-          if (!bool) this.$store.commit('mal/isAdding', bool)
-        }
-      },
-      isSearch () {
-        return !this.$store.state.mal.isAdding
+    isSearch () {
+      return !this.$store.state.mal.isAdding
+    }
+  },
+  methods: {
+    close () {
+      this.$store.commit('search/show', false)
+      this.$store.commit('mal/isAdding', false)
+    },
+    clear () {
+      this.searchTerm = ''
+      this.$refs.input.focus()
+    },
+    actOnThis (item) {
+      if (this.isSearch) {
+        this.search(item)
+      } else {
+        this.close()
+        // This might change when I'll work with Kitsu etc...
+        // MAL specific
+        this.$store.commit('mal/setEntry', item)
+        this.$store.commit('mal/showForm', true)
       }
     },
-    methods: {
-      close () {
-        this.$store.commit('search/show', false)
-        this.$store.commit('mal/isAdding', false)
-      },
-      clear () {
-        this.searchTerm = ''
-        this.$refs.input.focus()
-      },
-      actOnThis (item) {
-        if (this.isSearch) {
-          this.search(item)
-        } else {
-          this.close()
-          // This might change when I'll work with Kitsu etc...
-          // MAL specific
-          this.$store.commit('mal/setEntry', item)
-          this.$store.commit('mal/showForm', true)
-        }
-      },
-      async search (item) {
-        this.searchTerm = item.name
+    async search (item) {
+      this.searchTerm = item.name
 
-        if (this.$store.state.search.info.info.title === item.name) {
-          this.$store.commit('search/showInfo', true)
-          this.close()
-        } else {
-          this.close()
+      if (this.$store.state.search.info.info.title === item.name) {
+        this.$store.commit('search/showInfo', true)
+        this.close()
+      } else {
+        this.close()
 
-          this.$store.dispatch('search/fromUrl', item)
-        }
-      },
-      quickSearch: _.debounce(
-        async function () {
-          const term = this.searchTerm
+        this.$store.dispatch('search/fromUrl', item)
+      }
+    },
+    quickSearch: _.debounce(
+      async function () {
+        const term = this.searchTerm
 
-          if (term && term.length > 2) {
-            try {
-              const {data, status} = await this.$axios.get(`searchTermOnMal`, {
-                params: {term}
-              })
+        if (term && term.length > 2) {
+          try {
+            const {data, status} = await this.$axios.get(`searchTermOnMal`, {
+              params: {term}
+            })
 
-              if (status === 200) {
-                this.results = data
-              } else {
-                throw new Error('Error while searching.')
-              }
-            } catch (e) {
-              console.log((new Date()).toLocaleTimeString(), e.message)
-              this.$store.commit('setInfoSnackbar', e.message)
+            if (status === 200) {
+              this.results = data
+            } else {
+              throw new Error('Error while searching.')
             }
-          } else {
-            this.results = []
+          } catch (e) {
+            console.log((new Date()).toLocaleTimeString(), e.message)
+            this.$store.commit('setInfoSnackbar', e.message)
           }
-        },
-        300)
-    },
-    watch: {
-      async searchTerm () {
-        this.quickSearch()
-      },
-      show (bool) {
-        if (bool) {
-          this.$nextTick(() => {
-            this.$refs.input.focus()
-          })
+        } else {
+          this.results = []
         }
+      },
+      300)
+  },
+  watch: {
+    async searchTerm () {
+      this.quickSearch()
+    },
+    show (bool) {
+      if (bool) {
+        this.$nextTick(() => {
+          this.$refs.input.focus()
+        })
       }
     }
   }
+}
 </script>
 
 <style lang="stylus" scoped>

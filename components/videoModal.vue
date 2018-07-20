@@ -10,135 +10,135 @@
 </template>
 
 <script>
-  export default {
-    name: 'Video-Container',
+export default {
+  name: 'Video-Container',
 
-    data () {
+  data () {
+    return {
+      fullscreen: false,
+      height: 85,
+      width: 85,
+      bottom: 0,
+      right: 0,
+      z: 2,
+      isMinimized: false
+    }
+  },
+
+  computed: {
+    values () {
+      return this.$store.state.streaming.player
+    },
+    show () {
+      return this.values.show
+    },
+    style () {
       return {
-        fullscreen: false,
-        height: 85,
-        width: 85,
-        bottom: 0,
-        right: 0,
-        z: 2,
-        isMinimized: false
+        width: this.width + '%',
+        height: this.height + '%',
+        bottom: this.bottom + '%',
+        right: this.right + '%',
+        'z-index': this.z
       }
     },
-
-    computed: {
-      values () {
-        return this.$store.state.streaming.player
-      },
-      show () {
-        return this.values.show
-      },
-      style () {
-        return {
-          width: this.width + '%',
-          height: this.height + '%',
-          bottom: this.bottom + '%',
-          right: this.right + '%',
-          'z-index': this.z
-        }
-      },
-      listeners () {
-        return {
-          32: () => this.togglePlay(),
-          27: () => this.close(),
-          37: () => this.forward(-5),
-          39: () => this.forward(5),
-          38: () => this.increaseVolume(5),
-          40: () => this.increaseVolume(-5)
-        }
+    listeners () {
+      return {
+        32: () => this.togglePlay(),
+        27: () => this.close(),
+        37: () => this.forward(-5),
+        39: () => this.forward(5),
+        38: () => this.increaseVolume(5),
+        40: () => this.increaseVolume(-5)
       }
+    }
+  },
+
+  methods: {
+    center () {
+      this.$nextTick(() => {
+        const el = document.getElementsByTagName('video')[0]
+
+        if (el) {
+          const { clientHeight: videoHeight, clientWidth: videoWidth } = el
+          const { innerHeight: winHeight, innerWidth: winWidth } = window
+
+          this.bottom = (((winHeight - videoHeight) / winHeight) * 100) / 2
+          this.right = (((winWidth - videoWidth) / winWidth) * 100) / 2
+        }
+      })
     },
+    close () {
+      this.$store.commit('streaming/close')
+    },
+    minimize () {
+      if (this.isMinimized) {
+        this.width = 85
+        this.height = 85
 
-    methods: {
-      center () {
-        this.$nextTick(() => {
-          const el = document.getElementsByTagName('video')[0]
+        this.center()
+      } else {
+        this.width = 40
+        this.height = 40
 
-          if (el) {
-            const { clientHeight: videoHeight, clientWidth: videoWidth } = el
-            const { innerHeight: winHeight, innerWidth: winWidth } = window
+        this.bottom = 0
+        this.right = 0
+      }
 
-            this.bottom = (((winHeight - videoHeight) / winHeight) * 100) / 2
-            this.right = (((winWidth - videoWidth) / winWidth) * 100) / 2
-          }
-        })
-      },
-      close () {
-        this.$store.commit('streaming/close')
-      },
-      minimize () {
+      this.$nextTick(() => this.$refs.player.setHeight())
+
+      this.isMinimized = !this.isMinimized
+    },
+    async toggleFullScreen () {
+      this.fullscreen = !this.fullscreen
+      await this.$axios.get('/_fullScreen', { params: { bool: this.fullscreen } })
+
+      this.isMinimized = false
+
+      if (this.fullscreen) {
+        this.z = 3
+        this.width = 100
+        this.height = 100
+        this.bottom = 0
+        this.right = 0
+      } else {
+        this.width = 85
+        this.height = 85
+        this.z = 2
+        this.center()
+      }
+
+      this.$nextTick(() => this.$refs.player.setHeight())
+    },
+    forward (value) {
+      this.$refs.player.timeForward(value)
+    },
+    increaseVolume (value) {
+      this.$refs.player.increaseVolume(value)
+    },
+    togglePlay () {
+      this.$refs.player.togglePlay()
+    },
+    addListeners (e) {
+      if (this.listeners.hasOwnProperty(e.keyCode)) this.listeners[e.keyCode]()
+    }
+  },
+
+  watch: {
+    show (val) {
+      if (val) {
+        this.center()
+
         if (this.isMinimized) {
-          this.width = 85
-          this.height = 85
-
-          this.center()
-        } else {
-          this.width = 40
-          this.height = 40
-
-          this.bottom = 0
-          this.right = 0
+          this.minimize()
         }
 
-        this.$nextTick(() => this.$refs.player.setHeight())
-
-        this.isMinimized = !this.isMinimized
-      },
-      async toggleFullScreen () {
-        this.fullscreen = !this.fullscreen
-        await this.$axios.get('/_fullScreen', { params: { bool: this.fullscreen } })
-
-        this.isMinimized = false
-
-        if (this.fullscreen) {
-          this.z = 3
-          this.width = 100
-          this.height = 100
-          this.bottom = 0
-          this.right = 0
-        } else {
-          this.width = 85
-          this.height = 85
-          this.z = 2
-          this.center()
-        }
-
-        this.$nextTick(() => this.$refs.player.setHeight())
-      },
-      forward (value) {
-        this.$refs.player.timeForward(value)
-      },
-      increaseVolume (value) {
-        this.$refs.player.increaseVolume(value)
-      },
-      togglePlay () {
-        this.$refs.player.togglePlay()
-      },
-      addListeners (e) {
-        if (this.listeners.hasOwnProperty(e.keyCode)) this.listeners[e.keyCode]()
-      }
-    },
-
-    watch: {
-      show (val) {
-        if (val) {
-          this.center()
-
-          if (this.isMinimized) {
-            this.minimize()
-          }
-
-          window.addEventListener('keydown', this.addListeners)
-        } else {
-          window.removeEventListener('keydown', this.addListeners)
-        }
+        window.addEventListener('keydown', this.addListeners)
+      } else {
+        window.removeEventListener('keydown', this.addListeners)
       }
     }
   }
+}
 </script>
 
 <style lang="stylus" scoped>

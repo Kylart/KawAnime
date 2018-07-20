@@ -5,10 +5,9 @@
 </template>
 
 <script>
-  export default {
-    data: () => ({
-      lastYear: (new Date()).getFullYear()
-    })
-  }
+export default {
+  data: () => ({
+    lastYear: (new Date()).getFullYear()
+  })
+}
 </script>
-

@@ -51,72 +51,72 @@
 </template>
 
 <script>
-  export default {
-    data () {
-      return {
-        modalText: '',
-        nameRules: [
-          () => this.formValues.name.length > 2 || 'Please enter at least 3 characters.'
-        ]
+export default {
+  data () {
+    return {
+      modalText: '',
+      nameRules: [
+        () => this.formValues.name.length > 2 || 'Please enter at least 3 characters.'
+      ]
+    }
+  },
+  computed: {
+    formValues () {
+      return this.$store.state.downloader.form
+    },
+    quality: {
+      get () {
+        return this.formValues.quality
+      },
+      set (val) {
+        this.$store.commit('downloader/setQuality', val)
+      }
+    }
+  },
+  methods: {
+    isDownloadable () {
+      this.formValues.name.length > 2
+        ? this.download()
+        : this.$refs.name.focus()
+    },
+    download () {
+      this.$store.dispatch('downloader/download')
+    },
+    next (number) {
+      switch (number) {
+        case 1:
+          document.getElementsByName('from-ep-input')[0].focus()
+          break
+
+        case 2:
+          document.getElementsByName('until-ep-input')[0].focus()
+          break
+
+        case 3:
+          document.getElementById('download-btn').click()
+          document.getElementsByName('name-input')[0].focus()
+          break
+
+        default:
+          break
       }
     },
-    computed: {
-      formValues () {
-        return this.$store.state.downloader.form
-      },
-      quality: {
-        get () {
-          return this.formValues.quality
-        },
-        set (val) {
-          this.$store.commit('downloader/setQuality', val)
-        }
-      }
-    },
-    methods: {
-      isDownloadable () {
-        this.formValues.name.length > 2
-          ? this.download()
-          : this.$refs.name.focus()
-      },
-      download () {
-        this.$store.dispatch('downloader/download')
-      },
-      next (number) {
-        switch (number) {
-          case 1:
-            document.getElementsByName('from-ep-input')[0].focus()
-            break
+    previous (number) {
+      switch (number) {
+        case 2:
+          if (!this.formValues.fromEp) document.getElementsByName('name-input')[0].focus()
+          break
 
-          case 2:
-            document.getElementsByName('until-ep-input')[0].focus()
-            break
+        case 3:
+          if (!this.formValues.untilEp) document.getElementsByName('from-ep-input')[0].focus()
+          break
 
-          case 3:
-            document.getElementById('download-btn').click()
-            document.getElementsByName('name-input')[0].focus()
-            break
-
-          default:
-            break
-        }
-      },
-      previous (number) {
-        switch (number) {
-          case 2:
-            if (!this.formValues.fromEp) document.getElementsByName('name-input')[0].focus()
-            break
-
-          case 3:
-            if (!this.formValues.untilEp) document.getElementsByName('from-ep-input')[0].focus()
-            break
-
-          default:
-            break
-        }
+        default:
+          break
       }
     }
   }
+}
 </script>
 
 <style lang="stylus" scoped>

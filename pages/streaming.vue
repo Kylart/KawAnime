@@ -111,269 +111,269 @@
 </template>
 
 <script>
-  import _ from 'lodash'
-  import { mapGetters } from 'vuex'
+import _ from 'lodash'
+import { mapGetters } from 'vuex'
 
-  export default {
-    mounted () {
-      this.infos = this.$store.state.streaming.page.infos
-      this.currentEps = this.$store.state.streaming.page.eps
-      this.hasInfo = Object.keys(this.infos)
+export default {
+  mounted () {
+    this.infos = this.$store.state.streaming.page.infos
+    this.currentEps = this.$store.state.streaming.page.eps
+    this.hasInfo = Object.keys(this.infos)
 
-      const { name } = this.$route.query
+    const { name } = this.$route.query
 
-      if (name) this.term = name
+    if (name) this.term = name
 
-      this.setEpsQuality()
-    },
+    this.setEpsQuality()
+  },
 
-    beforeDestroy () {
-      this.$store.commit('streaming/setInfos', this.infos)
-      this.$store.commit('streaming/setEps', this.currentEps)
-    },
+  beforeDestroy () {
+    this.$store.commit('streaming/setInfos', this.infos)
+    this.$store.commit('streaming/setEps', this.currentEps)
+  },
 
-    data: () => ({
-      animePerPage: 8,
-      isSearching: false,
-      downloadAllName: '',
-      qualityEp: {},
-      quality: '',
-      qualityModal: false,
-      qualityList: [],
-      pageIndex: 1,
-      infos: {},
-      currentEps: {},
-      hasInfo: []
-    }),
+  data: () => ({
+    animePerPage: 8,
+    isSearching: false,
+    downloadAllName: '',
+    qualityEp: {},
+    quality: '',
+    qualityModal: false,
+    qualityList: [],
+    pageIndex: 1,
+    infos: {},
+    currentEps: {},
+    hasInfo: []
+  }),
 
-    computed: {
-      ...mapGetters('streaming', [
-        'files'
-      ]),
-      term: {
-        set (val) {
-          this.$store.commit('streaming/setTerm', val)
-        },
-        get () {
-          return this.$store.state.streaming.page.term
-        }
+  computed: {
+    ...mapGetters('streaming', [
+      'files'
+    ]),
+    term: {
+      set (val) {
+        this.$store.commit('streaming/setTerm', val)
       },
-      current: {
-        set (val) {
-          this.$store.commit('streaming/setCurrent', val)
-        },
-        get () {
-          return this.$store.state.streaming.page.current
-        }
-      },
-      animes () {
-        return Object.keys(this.files)
-      },
-      pageLength () {
-        return Math.ceil(this.animes.length / this.animePerPage)
-      },
-      fileRange () {
-        const index = this.pageIndex - 1
-
-        return {
-          inf: index * this.animePerPage,
-          sup: (index + 1) * this.animePerPage - 1
-        }
-      },
-      visibleAnimes () {
-        return this.animes.slice(this.fileRange.inf, this.fileRange.sup + 1)
-      },
-      currentInfo () {
-        return (this.current && this.infos[this.current]) || {}
+      get () {
+        return this.$store.state.streaming.page.term
       }
     },
+    current: {
+      set (val) {
+        this.$store.commit('streaming/setCurrent', val)
+      },
+      get () {
+        return this.$store.state.streaming.page.current
+      }
+    },
+    animes () {
+      return Object.keys(this.files)
+    },
+    pageLength () {
+      return Math.ceil(this.animes.length / this.animePerPage)
+    },
+    fileRange () {
+      const index = this.pageIndex - 1
 
-    methods: {
-      async search () {
-        if (!this.isSearching) {
-          if (!this.$store.state.isConnected) return
+      return {
+        inf: index * this.animePerPage,
+        sup: (index + 1) * this.animePerPage - 1
+      }
+    },
+    visibleAnimes () {
+      return this.animes.slice(this.fileRange.inf, this.fileRange.sup + 1)
+    },
+    currentInfo () {
+      return (this.current && this.infos[this.current]) || {}
+    }
+  },
 
-          this.isSearching = true
+  methods: {
+    async search () {
+      if (!this.isSearching) {
+        if (!this.$store.state.isConnected) return
 
-          this.pageIndex = 1
+        this.isSearching = true
 
-          await this.$store.dispatch('streaming/watch', {
-            name: this.term
-          })
+        this.pageIndex = 1
 
-          this.isSearching = false
+        await this.$store.dispatch('streaming/watch', {
+          name: this.term
+        })
+
+        this.isSearching = false
+      }
+    },
+    getLabel (anime) {
+      const len = this.$_.size(this.files[anime])
+      const totalLen = (this.infos[anime] && this.infos[anime].episodes) || 'XX'
+
+      return `${len} / ${totalLen} episode${len !== 1 ? 's' : ''}`
+    },
+    removeSub (name) {
+      return name.split(']').slice(1).join('')
+    },
+    play ({link, name}) {
+      this.$store.commit('streaming/play', {
+        show: true,
+        link: {
+          link,
+          name
         }
-      },
-      getLabel (anime) {
-        const len = this.$_.size(this.files[anime])
-        const totalLen = (this.infos[anime] && this.infos[anime].episodes) || 'XX'
+      })
+    },
+    setCurrent (anime = '') {
+      this.current = anime
+    },
+    showQualityModal (anime) {
+      const files = this.files[anime]
+      this.qualityList = this.$_.map(files, (file) => file.quality)[0]
+      const prefQuality = this.$store.state.config.config.video.quality
 
-        return `${len} / ${totalLen} episode${len !== 1 ? 's' : ''}`
-      },
-      removeSub (name) {
-        return name.split(']').slice(1).join('')
-      },
-      play ({link, name}) {
+      this.downloadAllName = anime
+      this.quality = this.qualityList.includes(prefQuality)
+        ? prefQuality
+        : this.qualityList[Math.floor(this.qualityList.length / 2)]
+
+      this.qualityModal = true
+    },
+    downloadAll () {
+      this.qualityModal = false
+      const name = this.downloadAllName
+      const quality = this.quality
+
+      const torrents = this.$_.filter(this.$store.state.streaming.page.torrents.magnets, (file) => {
+        return file.name.includes(name) && file.name.includes(quality)
+      }).map(({link}) => link)
+
+      torrents.forEach((link) => {
+        this.$axios.get('openThis', {
+          params: {
+            type: 'link',
+            link
+          }
+        })
+      })
+    },
+    async getEps () {
+      if (!this.currentEps[this.current]) {
+        const { id, title: name } = this.currentInfo
+
+        this.$log('Looking for episode information of', name)
+
+        const { data } = await this.$axios.get('searchEpsOnMal', {
+          params: {
+            id, name
+          }
+        })
+
+        this.$log('Received episode information of', name)
+
+        this.$set(this.currentEps, this.current, data)
+      } else {
+        this.$log('Cached episode information of', this.current)
+      }
+    },
+    getEpisodeTitle ({name}) {
+      const epNum = +name.split(' ').slice(-2, -1)[0] // nyanparser pls
+
+      if (this.currentEps[this.current] && this.currentEps[this.current].length) {
+        const info = this.currentEps[this.current].filter(({epNumber}) => epNumber === epNum)[0]
+
+        return info
+          ? `${info.title} ${info.japaneseTitle ? '/ ' + info.japaneseTitle : ''}`
+          : 'No Data'
+      }
+
+      return 'No data.'
+    },
+    getEpNumber (name) {
+      return name.split(' ').slice(-2, -1)[0] // nyanparser pls
+    },
+    getEpAired (ep) {
+      if (this.currentEps[this.current] && this.currentEps[this.current].length) {
+        const epNum = +ep.name.split(' ').slice(-2, -1)[0] // nyanparser pls
+
+        const info = this.currentEps[this.current].filter(({epNumber}) => epNumber === epNum)[0]
+
+        return info
+          ? (info && info.aired) || 'N/A'
+          : 'N/A'
+      }
+
+      return 'No data.'
+    },
+    setEpsQuality () {
+      const eps = this.$_.map(this.files[this.current], (ep, epNumber) => ep)
+      const prefQuality = this.$store.state.config.config.video.quality
+
+      eps.forEach((ep) => {
+        this.qualityEp[ep.name] = ep.quality.includes(prefQuality)
+          ? prefQuality
+          : ep.quality[Math.floor(ep.quality.length / 2)]
+      })
+    },
+    act (action, { name: anime }) {
+      const quality = this.qualityEp[anime]
+      const ep = anime.split(' ').slice(-2, -1)[0] // nyanparser pls
+
+      const { link, name } = this.$store.state.streaming.page.torrents.magnets.filter((magnet) => {
+        return magnet.name.includes(this.current) && magnet.name.includes(ep) && magnet.name.includes(quality)
+      })[0]
+
+      if (action === 'play') {
+        const text = name.split(' ').slice(1, -1).join(' ') // nyanparser pls
+
         this.$store.commit('streaming/play', {
           show: true,
           link: {
             link,
-            name
+            name: text
           }
         })
-      },
-      setCurrent (anime = '') {
-        this.current = anime
-      },
-      showQualityModal (anime) {
-        const files = this.files[anime]
-        this.qualityList = this.$_.map(files, (file) => file.quality)[0]
-        const prefQuality = this.$store.state.config.config.video.quality
-
-        this.downloadAllName = anime
-        this.quality = this.qualityList.includes(prefQuality)
-          ? prefQuality
-          : this.qualityList[Math.floor(this.qualityList.length / 2)]
-
-        this.qualityModal = true
-      },
-      downloadAll () {
-        this.qualityModal = false
-        const name = this.downloadAllName
-        const quality = this.quality
-
-        const torrents = this.$_.filter(this.$store.state.streaming.page.torrents.magnets, (file) => {
-          return file.name.includes(name) && file.name.includes(quality)
-        }).map(({link}) => link)
-
-        torrents.forEach((link) => {
-          this.$axios.get('openThis', {
-            params: {
-              type: 'link',
-              link
-            }
-          })
+      } else {
+        this.$axios.get('openThis', {
+          params: {
+            type: 'link',
+            link
+          }
         })
-      },
-      async getEps () {
-        if (!this.currentEps[this.current]) {
-          const { id, title: name } = this.currentInfo
-
-          this.$log('Looking for episode information of', name)
-
-          const { data } = await this.$axios.get('searchEpsOnMal', {
-            params: {
-              id, name
-            }
-          })
-
-          this.$log('Received episode information of', name)
-
-          this.$set(this.currentEps, this.current, data)
-        } else {
-          this.$log('Cached episode information of', this.current)
-        }
-      },
-      getEpisodeTitle ({name}) {
-        const epNum = +name.split(' ').slice(-2, -1)[0] // nyanparser pls
-
-        if (this.currentEps[this.current] && this.currentEps[this.current].length) {
-          const info = this.currentEps[this.current].filter(({epNumber}) => epNumber === epNum)[0]
-
-          return info
-            ? `${info.title} ${info.japaneseTitle ? '/ ' + info.japaneseTitle : ''}`
-            : 'No Data'
-        }
-
-        return 'No data.'
-      },
-      getEpNumber (name) {
-        return name.split(' ').slice(-2, -1)[0] // nyanparser pls
-      },
-      getEpAired (ep) {
-        if (this.currentEps[this.current] && this.currentEps[this.current].length) {
-          const epNum = +ep.name.split(' ').slice(-2, -1)[0] // nyanparser pls
-
-          const info = this.currentEps[this.current].filter(({epNumber}) => epNumber === epNum)[0]
-
-          return info
-            ? (info && info.aired) || 'N/A'
-            : 'N/A'
-        }
-
-        return 'No data.'
-      },
-      setEpsQuality () {
-        const eps = this.$_.map(this.files[this.current], (ep, epNumber) => ep)
-        const prefQuality = this.$store.state.config.config.video.quality
-
-        eps.forEach((ep) => {
-          this.qualityEp[ep.name] = ep.quality.includes(prefQuality)
-            ? prefQuality
-            : ep.quality[Math.floor(ep.quality.length / 2)]
-        })
-      },
-      act (action, { name: anime }) {
-        const quality = this.qualityEp[anime]
-        const ep = anime.split(' ').slice(-2, -1)[0] // nyanparser pls
-
-        const { link, name } = this.$store.state.streaming.page.torrents.magnets.filter((magnet) => {
-          return magnet.name.includes(this.current) && magnet.name.includes(ep) && magnet.name.includes(quality)
-        })[0]
-
-        if (action === 'play') {
-          const text = name.split(' ').slice(1, -1).join(' ') // nyanparser pls
-
-          this.$store.commit('streaming/play', {
-            show: true,
-            link: {
-              link,
-              name: text
-            }
-          })
-        } else {
-          this.$axios.get('openThis', {
-            params: {
-              type: 'link',
-              link
-            }
-          })
-        }
       }
-    },
+    }
+  },
 
-    watch: {
-      term: _.debounce(async function () {
-        this.term.length > 2 && await this.search()
-      }, 750),
-      visibleAnimes (animes) {
-        animes.forEach(async (name) => {
-          if (!this.hasInfo.includes(name)) {
-            const term = name.split(' ').slice(1).join(' ')
+  watch: {
+    term: _.debounce(async function () {
+      this.term.length > 2 && await this.search()
+    }, 750),
+    visibleAnimes (animes) {
+      animes.forEach(async (name) => {
+        if (!this.hasInfo.includes(name)) {
+          const term = name.split(' ').slice(1).join(' ')
 
-            this.$log(`Looking for infos about ${term}.`)
+          this.$log(`Looking for infos about ${term}.`)
 
-            const { data } = await this.$axios.get(`getInfoFromMal`, {
-              params: {term}
-            })
+          const { data } = await this.$axios.get(`getInfoFromMal`, {
+            params: {term}
+          })
 
-            this.$log(`Received infos for ${term}.`)
+          this.$log(`Received infos for ${term}.`)
 
-            this.infos[name] = data
-            this.hasInfo.push(name)
-          }
-        })
-      },
-      async current (val) {
-        if (val) {
-          // Setting quality models for all episodes
-          this.setEpsQuality()
-
-          await this.getEps()
+          this.infos[name] = data
+          this.hasInfo.push(name)
         }
+      })
+    },
+    async current (val) {
+      if (val) {
+        // Setting quality models for all episodes
+        this.setEpsQuality()
+
+        await this.getEps()
       }
     }
   }
+}
 </script>
 
 <style lang="stylus" scoped>
@@ -492,7 +492,6 @@
     white-space pre-wrap
     overflow-y auto
     overflow-x hidden
-
 
   // Episode display
   .ep-container

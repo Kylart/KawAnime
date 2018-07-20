@@ -19,9 +19,9 @@
     "cloc": "cloc $(git ls-files | grep -vE \".mkv|mp4|m4a|mp3|lock\")",
     "test:server": "nyc ava --verbose --serial test/server.test.js",
     "test:front": "npm run build && cross-env NODE_ENV=KawAnime-test nightwatch",
-    "test": "standard --fix && npm run test:front && npm run test:server",
+    "test": "npm run lint && npm run test:front && npm run test:server",
     "coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
-    "lint": "standard --fix --verbose --plugin vue '**/*.{js,vue}' | snazzy",
+    "lint": "eslint --fix --ext .js,.vue pages",
     "pack": "build --dir",
     "dist:linux": "build --linux deb AppImage",
     "dist:win": "build --win --x64 --ia32",
@@ -92,13 +92,16 @@
     "electron-builder": "^20.24.4",
     "env2": "^2.2.2",
     "es6-promise": "^4.2.4",
+    "eslint": "^5.1.0",
+    "eslint-config-standard": "^11.0.0",
+    "eslint-plugin-import": "^2.13.0",
+    "eslint-plugin-node": "^7.0.1",
+    "eslint-plugin-promise": "^3.8.0",
     "eslint-plugin-react": "^7.10.0",
-    "eslint-plugin-vue": "^2.1.0",
-    "eventsource-polyfill": "^0.9.6",
+    "eslint-plugin-standard": "^3.1.0",
+    "eslint-plugin-vue": "^4.7.0",
     "file-loader": "^1.1.11",
     "friendly-errors-webpack-plugin": "^1.6.1",
-    "highlight.js": "^9.12.0",
-    "html-webpack-plugin": "^3.1.0",
     "mini-css-extract-plugin": "^0.4.1",
     "nightwatch": "^1.0.6",
     "nyc": "^12.0.2",
@@ -107,10 +110,7 @@
     "progress-bar-webpack-plugin": "^1.11.0",
     "pug": "^2.0.3",
     "rimraf": "^2.6.2",
-    "script-ext-html-webpack-plugin": "^2.0.1",
     "selenium-download": "^2.0.12",
-    "snazzy": "^7.1.1",
-    "standard": "^11.0.1",
     "style-loader": "^0.21.0",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2",
@@ -150,13 +150,6 @@
       "oneClick": false,
       "allowToChangeInstallationDirectory": true
     }
-  },
-  "standard": {
-    "parser": "babel-eslint",
-    "ignore": [
-      "test/front.test.js",
-      "public"
-    ]
   },
   "nyc": {
     "exclude": [

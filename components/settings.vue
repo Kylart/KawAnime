@@ -176,59 +176,59 @@
 </template>
 
 <script>
-  export default {
-    data () {
-      return {
-        configModal: false,
-        radios: ['480p', '720p', '1080p'],
-        mal: {
-          password: '',
-          isVisible: false
-        }
+export default {
+  data () {
+    return {
+      configModal: false,
+      radios: ['480p', '720p', '1080p'],
+      mal: {
+        password: '',
+        isVisible: false
+      }
+    }
+  },
+  computed: {
+    config: {
+      get () {
+        return this.$store.state.config.config
+      },
+      set (val) {
+        this.$store.commit('config/set', val)
       }
     },
-    computed: {
-      config: {
-        get () {
-          return this.$store.state.config.config
-        },
-        set (val) {
-          this.$store.commit('config/set', val)
-        }
-      },
-      fansubChoices () {
-        return this.$store.state.config.fansubs
-      },
-      soundChoices () {
-        return this.$store.state.config.sounds
-      },
-      subtitlesLanguages () {
-        return this.$store.state.config.subtitlesLanguages
-      }
+    fansubChoices () {
+      return this.$store.state.config.fansubs
     },
-    methods: {
-      changePath () {
-        this.$store.dispatch('config/changeDir')
-      },
-      save () {
-        this.$store.commit('config/set', this.config)
-        this.$store.dispatch('config/save')
-        this.$store.dispatch('player/setUp')
-        this.configModal = false
-      },
-      play () {
-        this.$store.dispatch('player/testSound')
-      },
-      async malRegister () {
-        if (this.mal.password && this.config.malUsername) {
-          await this.$store.dispatch('mal/setupAccount', {
-            username: this.config.malUsername,
-            password: this.mal.password
-          })
-        }
+    soundChoices () {
+      return this.$store.state.config.sounds
+    },
+    subtitlesLanguages () {
+      return this.$store.state.config.subtitlesLanguages
+    }
+  },
+  methods: {
+    changePath () {
+      this.$store.dispatch('config/changeDir')
+    },
+    save () {
+      this.$store.commit('config/set', this.config)
+      this.$store.dispatch('config/save')
+      this.$store.dispatch('player/setUp')
+      this.configModal = false
+    },
+    play () {
+      this.$store.dispatch('player/testSound')
+    },
+    async malRegister () {
+      if (this.mal.password && this.config.malUsername) {
+        await this.$store.dispatch('mal/setupAccount', {
+          username: this.config.malUsername,
+          password: this.mal.password
+        })
       }
     }
   }
+}
 </script>
 
 <style lang="stylus" scoped>

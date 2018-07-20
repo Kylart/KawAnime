@@ -85,122 +85,121 @@
 </template>
 
 <script>
-  export default {
-    mounted () {
+export default {
+  mounted () {
+    if (this.releases.length) {
+      this.updateTime()
+    }
+
+    setInterval(() => {
       if (this.releases.length) {
         this.updateTime()
       }
-
-      setInterval(() => {
-        if (this.releases.length) {
-          this.updateTime()
-        }
-      }, 15 * 1000)
+    }, 15 * 1000)
+  },
+  data () {
+    return {
+      modalTitle: '',
+      modalText: '',
+      qualityList: ['480p', '720p', '1080p'],
+      lastUpdateTime: 'a few seconds ago'
+    }
+  },
+  computed: {
+    releases () {
+      return this.$store.state.releases.releases
     },
-    data () {
-      return {
-        modalTitle: '',
-        modalText: '',
-        qualityList: ['480p', '720p', '1080p'],
-        lastUpdateTime: 'a few seconds ago'
+    fansubList () {
+      return this.$store.state.releases.fansubs
+    },
+    notLoaded () {
+      return this.$store.state.releases.notLoaded
+    }
+  },
+  methods: {
+    epLabel (ep, isTooltip = false) {
+      // HorribleSubs specific atm
+      return /\[[0-9]{3,4}p\]/.test(ep)
+        ? 'Batch'
+        : `${isTooltip ? 'Episode' : 'Ep'} ${ep}`
+    },
+    downloadAll (name) {
+      console.log(`[${(new Date()).toLocaleTimeString()}]: Sending a request to download all episodes of ${name}.`)
+
+      const {quality, fansub} = this.$store.state.releases.params
+
+      this.$store.dispatch('downloader/download', {
+        name,
+        quality,
+        fansub,
+        fromEp: 0,
+        untilEp: 20000,
+        choice: 'si'
+      })
+    },
+    async refresh () {
+      await this.$store.dispatch('releases/refresh')
+      this.updateTime()
+    },
+    print (item) {
+      console.log(`[${(new Date()).toLocaleTimeString()}]: Downloading ${item.rawName} ep. ${item.ep}.`)
+    },
+    showChoices (name) {
+      this.$store.commit('setAddToChoiceTitle', name)
+      this.$store.commit('setAddToChoice', true)
+    },
+    showMal (item) {
+      const {url} = item
+
+      item.id = +url.split('/').splice(-2, 1)[0]
+
+      this.$store.commit('mal/setEntry', item)
+      this.$store.commit('mal/showForm', true)
+    },
+    updateTime () {
+      const updated = this.$store.state.releases.updateTime
+      if (updated) {
+        this.lastUpdateTime = updated.fromNow()
       }
     },
-    computed: {
-      releases () {
-        return this.$store.state.releases.releases
-      },
-      fansubList () {
-        return this.$store.state.releases.fansubs
-      },
-      notLoaded () {
-        return this.$store.state.releases.notLoaded
-      }
+    searchThis (item) {
+      this.$store.commit('search/setInfo', item)
+      this.$store.commit('search/setInfoTerm', item.title)
+      this.$store.commit('search/setInfoLoading', false)
+      this.$store.commit('search/showInfo', true)
     },
-    methods: {
-      epLabel (ep, isTooltip = false) {
-        // HorribleSubs specific atm
-        return /\[[0-9]{3,4}p\]/.test(ep)
-          ? 'Batch'
-          : `${isTooltip ? 'Episode' : 'Ep'} ${ep}`
-      },
-      downloadAll (name) {
-        console.log(`[${(new Date()).toLocaleTimeString()}]: Sending a request to download all episodes of ${name}.`)
-
-        const {quality, fansub} = this.$store.state.releases.params
-
-        this.$store.dispatch('downloader/download', {
-          name,
-          quality,
-          fansub,
-          fromEp: 0,
-          untilEp: 20000,
-          choice: 'si'
-        })
-      },
-      async refresh () {
-        await this.$store.dispatch('releases/refresh')
-        this.updateTime()
-      },
-      print (item) {
-        console.log(`[${(new Date()).toLocaleTimeString()}]: Downloading ${item.rawName} ep. ${item.ep}.`)
-      },
-      showChoices (name) {
-        this.$store.commit('setAddToChoiceTitle', name)
-        this.$store.commit('setAddToChoice', true)
-      },
-      showMal (item) {
-        const {url} = item
-
-        item.id = +url.split('/').splice(-2, 1)[0]
-        item.episodes = item.episodes
-
-        this.$store.commit('mal/setEntry', item)
-        this.$store.commit('mal/showForm', true)
-      },
-      updateTime () {
-        const updated = this.$store.state.releases.updateTime
-        if (updated) {
-          this.lastUpdateTime = updated.fromNow()
-        }
-      },
-      searchThis (item) {
-        this.$store.commit('search/setInfo', item)
-        this.$store.commit('search/setInfoTerm', item.title)
-        this.$store.commit('search/setInfoLoading', false)
-        this.$store.commit('search/showInfo', true)
-      },
-      isFollowed (name) {
-        const malLists = this.$store.state.mal.watchLists
-        const localLists = {
-          watching: this.$store.state.watchLists.lists.watching,
-          watchList: this.$store.state.watchLists.lists.watchList
-        }
-
-        const isWatching = localLists.watching.includes(name) || this.$_.find(malLists, (o) => o.anime_title === name && o.status === 1)
-        const isPlanned = localLists.watchList.includes(name) || this.$_.find(malLists, (o) => o.anime_title === name && o.status === 2)
-
-        // If it's in both, it should say `watching`
-        if (isWatching && isPlanned) {
-          return 'Watching'
-        }
-
-        return isPlanned
-          ? 'Watch List'
-          : isWatching
-            ? 'Watching'
-            : ''
-      },
-      watch (item) {
-        this.$store.commit('streaming/play', {
-          show: true,
-          link: {
-            link: item.magnetLink,
-            name: `${item.title} - ${item.ep}`
-          }
-        })
+    isFollowed (name) {
+      const malLists = this.$store.state.mal.watchLists
+      const localLists = {
+        watching: this.$store.state.watchLists.lists.watching,
+        watchList: this.$store.state.watchLists.lists.watchList
       }
+
+      const isWatching = localLists.watching.includes(name) || this.$_.find(malLists, (o) => o.anime_title === name && o.status === 1)
+      const isPlanned = localLists.watchList.includes(name) || this.$_.find(malLists, (o) => o.anime_title === name && o.status === 2)
+
+      // If it's in both, it should say `watching`
+      if (isWatching && isPlanned) {
+        return 'Watching'
+      }
+
+      return isPlanned
+        ? 'Watch List'
+        : isWatching
+          ? 'Watching'
+          : ''
+    },
+    watch (item) {
+      this.$store.commit('streaming/play', {
+        show: true,
+        link: {
+          link: item.magnetLink,
+          name: `${item.title} - ${item.ep}`
+        }
+      })
     }
   }
+}
 </script>
 
 <style lang="stylus" scoped>

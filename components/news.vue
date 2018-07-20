@@ -16,16 +16,16 @@
 </template>
 
 <script>
-  export default {
-    props: {
-      item: Object
-    },
-    methods: {
-      open (link) {
-        this.$store.dispatch('news/openLink', link)
-      }
+export default {
+  props: {
+    item: Object
+  },
+  methods: {
+    open (link) {
+      this.$store.dispatch('news/openLink', link)
     }
   }
+}
 </script>
 
 <style lang="stylus" scoped>

@@ -92,121 +92,121 @@
 </template>
 
 <script>
-  export default {
-    data () {
-      return {
-        query: '',
-        choices: [],
-        modalTitle: '',
-        modalText: '',
-        modal: false,
-        seasonChoices: [
-          {name: 'Winter', value: 'winter'},
-          {name: 'Spring', value: 'spring'},
-          {name: 'Summer', value: 'summer'},
-          {name: 'Fall', value: 'fall'}
-        ]
-      }
+export default {
+  data () {
+    return {
+      query: '',
+      choices: [],
+      modalTitle: '',
+      modalText: '',
+      modal: false,
+      seasonChoices: [
+        {name: 'Winter', value: 'winter'},
+        {name: 'Spring', value: 'spring'},
+        {name: 'Summer', value: 'summer'},
+        {name: 'Fall', value: 'fall'}
+      ]
+    }
+  },
+  computed: {
+    seasons () {
+      return this.$store.state.seasons.seasons
     },
-    computed: {
-      seasons () {
-        return this.$store.state.seasons.seasons
-      },
-      stats () {
-        return this.$store.state.seasons.seasonsStats
-      },
-      TVs () {
-        return this.seasons.TV
-      },
-      OVAs () {
-        return this.seasons.OVAs
-      },
-      ONAs () {
-        return this.seasons.ONAs
-      },
-      Specials () {
-        return this.seasons.Specials
-      },
-      Movies () {
-        return this.seasons.Movies
-      },
-      season () {
-        return [
-          '',
-          {name: 'TV', items: this.TVs},
-          {name: 'OVA', items: this.OVAs},
-          {name: 'ONA', items: this.ONAs},
-          {name: 'Specials', items: this.Specials},
-          {name: 'Movies', items: this.Movies}
-        ]
-      },
-      computedSeason () {
-        const query = this.query.toLowerCase()
-        return query === ''
-          ? this.season
-          : this.season.map((list) => {
-            if (list.items) {
-              return {
-                name: list.name,
-                items: list.items.filter((elem) => {
-                  return elem.title.toLowerCase().indexOf(query) !== -1
-                })
-              }
-            } else return ''
-          })
-      }
+    stats () {
+      return this.$store.state.seasons.seasonsStats
     },
-    methods: {
-      getDate (string) {
-        return string.split(' ').slice(0, 3).join(' ').split(',').slice(0, 2).join(', ')
-      },
-      episode (item) {
-        const nbEp = parseInt(item.nbEp)
-        if (nbEp > 0) {
-          if (nbEp === 1) return '1 episode'
-          else return `${nbEp} episodes`
-        } else return ''
-      },
-      refreshSeason () {
-        this.$store.dispatch('seasons/refresh')
-      },
-      openModal (title, text) {
-        console.log(`[${(new Date()).toLocaleTimeString()}]Opening modal for ${title}`)
-
-        this.modalTitle = title
-        this.modalText = text
-
-        this.modal = true
-      },
-      showChoices (name) {
-        this.$store.commit('setAddToChoiceTitle', name)
-        this.$store.commit('setAddToChoice', true)
-      },
-      downloadAll (name) {
-        console.log(`[${(new Date()).toLocaleTimeString()}]: Sending a request to download all episodes of ${name}.`)
-
-        const {quality, fansub} = this.$store.state.releases.params
-
-        this.$store.dispatch('downloader/download', {
-          name,
-          quality,
-          fansub,
-          fromEp: 0,
-          untilEp: 20000,
-          choice: 'si'
+    TVs () {
+      return this.seasons.TV
+    },
+    OVAs () {
+      return this.seasons.OVAs
+    },
+    ONAs () {
+      return this.seasons.ONAs
+    },
+    Specials () {
+      return this.seasons.Specials
+    },
+    Movies () {
+      return this.seasons.Movies
+    },
+    season () {
+      return [
+        '',
+        {name: 'TV', items: this.TVs},
+        {name: 'OVA', items: this.OVAs},
+        {name: 'ONA', items: this.ONAs},
+        {name: 'Specials', items: this.Specials},
+        {name: 'Movies', items: this.Movies}
+      ]
+    },
+    computedSeason () {
+      const query = this.query.toLowerCase()
+      return query === ''
+        ? this.season
+        : this.season.map((list) => {
+          if (list.items) {
+            return {
+              name: list.name,
+              items: list.items.filter((elem) => {
+                return elem.title.toLowerCase().indexOf(query) !== -1
+              })
+            }
+          } else return ''
         })
-      },
-      showMal (item) {
-        const {link} = item
+    }
+  },
+  methods: {
+    getDate (string) {
+      return string.split(' ').slice(0, 3).join(' ').split(',').slice(0, 2).join(', ')
+    },
+    episode (item) {
+      const nbEp = parseInt(item.nbEp)
+      if (nbEp > 0) {
+        if (nbEp === 1) return '1 episode'
+        else return `${nbEp} episodes`
+      } else return ''
+    },
+    refreshSeason () {
+      this.$store.dispatch('seasons/refresh')
+    },
+    openModal (title, text) {
+      console.log(`[${(new Date()).toLocaleTimeString()}]Opening modal for ${title}`)
 
-        item.id = +link.split('/').splice(-2, 1)[0]
-        item.episodes = item.nbEp
+      this.modalTitle = title
+      this.modalText = text
 
-        this.$store.commit('mal/setEntry', item)
-        this.$store.commit('mal/showForm', true)
-      }
+      this.modal = true
+    },
+    showChoices (name) {
+      this.$store.commit('setAddToChoiceTitle', name)
+      this.$store.commit('setAddToChoice', true)
+    },
+    downloadAll (name) {
+      console.log(`[${(new Date()).toLocaleTimeString()}]: Sending a request to download all episodes of ${name}.`)
+
+      const {quality, fansub} = this.$store.state.releases.params
+
+      this.$store.dispatch('downloader/download', {
+        name,
+        quality,
+        fansub,
+        fromEp: 0,
+        untilEp: 20000,
+        choice: 'si'
+      })
+    },
+    showMal (item) {
+      const {link} = item
+
+      item.id = +link.split('/').splice(-2, 1)[0]
+      item.episodes = item.nbEp
+
+      this.$store.commit('mal/setEntry', item)
+      this.$store.commit('mal/showForm', true)
     }
   }
+}
 </script>
 
 <style lang="stylus" scoped>
@@ -228,7 +228,6 @@
     padding 20px
     font-size 16px
     white-space pre-wrap
-
 
   .refresh-button
     display flex

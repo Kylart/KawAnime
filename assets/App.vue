@@ -80,127 +80,127 @@
 </template>
 
 <script>
-  import Meta from 'mixins/global/meta'
-  import ReadMagnet from 'mixins/global/readMagnet'
-  import DragDrop from 'mixins/global/dragDrop'
+import Meta from 'mixins/global/meta'
+import ReadMagnet from 'mixins/global/readMagnet'
+import DragDrop from 'mixins/global/dragDrop'
 
-  export default {
-    mixins: [Meta, ReadMagnet, DragDrop],
-    mounted () {
-      this.isBrowser = !window.navigator.appVersion.includes('Electron')
+export default {
+  mixins: [Meta, ReadMagnet, DragDrop],
+  mounted () {
+    this.isBrowser = !window.navigator.appVersion.includes('Electron')
 
-      this.$nextTick(() => {
-        if (process.env.NODE_ENV === 'development') {
-          const devtools = document.createElement('script')
-          devtools.src = 'http://localhost:8098'
+    this.$nextTick(() => {
+      if (process.env.NODE_ENV === 'development') {
+        const devtools = document.createElement('script')
+        devtools.src = 'http://localhost:8098'
 
-          document.body.appendChild(devtools)
+        document.body.appendChild(devtools)
+      }
+    })
+  },
+  data () {
+    return {
+      searchModal: false,
+      drawer: false,
+      isBrowser: false,
+      itemGroup: [
+        {divider: true},
+        {header: 'Core'},
+        {
+          title: 'Downloading',
+          action: 'file_download',
+          group: 'core',
+          items: [
+            {
+              title: 'Downloader',
+              action: 'file_download',
+              href: '/downloader'
+            }, {
+              title: 'Latest releases',
+              action: 'access_time',
+              href: '/'
+            }
+          ]
+        }, {
+          title: 'Torrent',
+          action: 'folder_open',
+          group: 'torrent',
+          items: [
+            // {
+            //   title: 'Torrenting',
+            //   action: 'file_upload',
+            //   href: '/torrenting'
+            // },
+            {
+              title: 'Streaming',
+              action: 'tv',
+              href: '/streaming'
+            }
+          ]
+        },
+        {divider: true},
+        {header: 'Anime world'},
+        {
+          title: 'News',
+          action: 'info_outline',
+          group: 'news',
+          items: [
+            {
+              title: 'Seasons',
+              action: 'hourglass_empty',
+              href: '/seasons'
+            },
+            {
+              title: 'News',
+              action: 'more',
+              href: '/news'
+            }
+          ]
+        },
+        {divider: true},
+        {header: 'Local'},
+        {
+          title: 'Anime related',
+          action: 'folder_open',
+          group: 'local',
+          items: [
+            {
+              title: 'Animes',
+              action: 'tv',
+              href: '/localPage'
+            }, {
+              title: 'Watch list',
+              action: 'sort_by_alpha',
+              href: '/watchList'
+            }, {
+              title: 'MyAnimeList',
+              action: 'web',
+              href: '/malPage'
+            }
+          ]
+        }
+      ]
+    }
+  },
+  methods: {
+    toggleDrawer () {
+      this.$store.commit('toggleDrawer')
+    },
+    actOnWindow (action) {
+      this.$axios.get('/_win', {
+        params: {
+          action
         }
       })
     },
-    data () {
-      return {
-        searchModal: false,
-        drawer: false,
-        isBrowser: false,
-        itemGroup: [
-          {divider: true},
-          {header: 'Core'},
-          {
-            title: 'Downloading',
-            action: 'file_download',
-            group: 'core',
-            items: [
-              {
-                title: 'Downloader',
-                action: 'file_download',
-                href: '/downloader'
-              }, {
-                title: 'Latest releases',
-                action: 'access_time',
-                href: '/'
-              }
-            ]
-          }, {
-            title: 'Torrent',
-            action: 'folder_open',
-            group: 'torrent',
-            items: [
-              // {
-              //   title: 'Torrenting',
-              //   action: 'file_upload',
-              //   href: '/torrenting'
-              // },
-              {
-                title: 'Streaming',
-                action: 'tv',
-                href: '/streaming'
-              }
-            ]
-          },
-          {divider: true},
-          {header: 'Anime world'},
-          {
-            title: 'News',
-            action: 'info_outline',
-            group: 'news',
-            items: [
-              {
-                title: 'Seasons',
-                action: 'hourglass_empty',
-                href: '/seasons'
-              },
-              {
-                title: 'News',
-                action: 'more',
-                href: '/news'
-              }
-            ]
-          },
-          {divider: true},
-          {header: 'Local'},
-          {
-            title: 'Anime related',
-            action: 'folder_open',
-            group: 'local',
-            items: [
-              {
-                title: 'Animes',
-                action: 'tv',
-                href: '/localPage'
-              }, {
-                title: 'Watch list',
-                action: 'sort_by_alpha',
-                href: '/watchList'
-              }, {
-                title: 'MyAnimeList',
-                action: 'web',
-                href: '/malPage'
-              }
-            ]
-          }
-        ]
-      }
+    openInBrowser () {
+      this.$store.dispatch('openInBrowser')
     },
-    methods: {
-      toggleDrawer () {
-        this.$store.commit('toggleDrawer')
-      },
-      actOnWindow (action) {
-        this.$axios.get('/_win', {
-          params: {
-            action
-          }
-        })
-      },
-      openInBrowser () {
-        this.$store.dispatch('openInBrowser')
-      },
-      restartAndUpdate () {
-        this.$store.dispatch('update/updateApp')
-      }
+    restartAndUpdate () {
+      this.$store.dispatch('update/updateApp')
     }
   }
+}
 </script>
 
 <style lang="stylus" scoped>

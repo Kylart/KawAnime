@@ -31,50 +31,50 @@
 </template>
 
 <script>
-  export default{
-    props: {
-      item: String,
-      deleteEntry: Function,
-      select: Function,
-      selected: Object,
-      index: Number
+export default{
+  props: {
+    item: String,
+    deleteEntry: Function,
+    select: Function,
+    selected: Object,
+    index: Number
+  },
+  data () {
+    const vm = this
+    return {
+      buttons: [
+        {
+          action: 'file_download',
+          text: 'Download',
+          method: (item) => vm.download(item)
+        }, {
+          action: 'tv',
+          text: 'Watch',
+          method: (item) => vm.watch(item)
+        }, {
+          action: 'info_outline',
+          text: 'Information',
+          method: (item) => vm.$store.dispatch('search/fromName', item)
+        }, {
+          action: 'delete_sweep',
+          text: 'Delete this entry',
+          method: (item) => vm.deleteEntry(item, vm.index)
+        }
+      ]
+    }
+  },
+  methods: {
+    download (name) {
+      this.$store.dispatch('downloader/download', {
+        name,
+        isDownloader: false
+      })
     },
-    data () {
-      const vm = this
-      return {
-        buttons: [
-          {
-            action: 'file_download',
-            text: 'Download',
-            method: (item) => vm.download(item)
-          }, {
-            action: 'tv',
-            text: 'Watch',
-            method: (item) => vm.watch(item)
-          }, {
-            action: 'info_outline',
-            text: 'Information',
-            method: (item) => vm.$store.dispatch('search/fromName', item)
-          }, {
-            action: 'delete_sweep',
-            text: 'Delete this entry',
-            method: (item) => vm.deleteEntry(item, vm.index)
-          }
-        ]
-      }
-    },
-    methods: {
-      download (name) {
-        this.$store.dispatch('downloader/download', {
-          name,
-          isDownloader: false
-        })
-      },
-      watch (name) {
-        this.$router.push({path: '/streaming', query: {name}})
-      }
+    watch (name) {
+      this.$router.push({path: '/streaming', query: {name}})
     }
   }
+}
 </script>
 
 <style lang="stylus" scoped>
@@ -106,4 +106,8 @@
 
   .selected
     background-color #2E7D32
+
+  .v-input
+    padding 0
+    margin 0
 </style>

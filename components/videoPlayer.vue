@@ -85,255 +85,255 @@
 </template>
 
 <script>
-  import { fromAss } from 'assets/subtitle-parser'
-  import Subtitle from 'mixins/subtitles'
+import { fromAss } from 'assets/subtitle-parser'
+import Subtitle from 'mixins/subtitles'
 
-  export default {
-    name: 'video-player',
-    mixins: [Subtitle],
-    props: ['value', 'title'],
-    data () {
-      return {
-        waiting: false,
-        paused: true,
-        muted: false,
-        fullscreen: false,
-        buffered: [],
-        timeline: 0,
-        volume: 100,
-        currentTime: 0,
-        duration: 0,
-        controlsHidden: true,
-        autoplay: true,
-        isAss: false,
-        styles: null,
-        info: null,
-        isMagnetRe: /^magnet:\?/,
-        name: '',
-        isPrefLanguageSet: false,
-        hasAppendedToHistory: false
-      }
-    },
-    computed: {
-      config: {
-        get () {
-          return this.$store.state.config.config.video
-        },
-        set () {}
+export default {
+  name: 'video-player',
+  mixins: [Subtitle],
+  props: ['value', 'title'],
+  data () {
+    return {
+      waiting: false,
+      paused: true,
+      muted: false,
+      fullscreen: false,
+      buffered: [],
+      timeline: 0,
+      volume: 100,
+      currentTime: 0,
+      duration: 0,
+      controlsHidden: true,
+      autoplay: true,
+      isAss: false,
+      styles: null,
+      info: null,
+      isMagnetRe: /^magnet:\?/,
+      name: '',
+      isPrefLanguageSet: false,
+      hasAppendedToHistory: false
+    }
+  },
+  computed: {
+    config: {
+      get () {
+        return this.$store.state.config.config.video
       },
-      isMagnet () {
-        return this.isMagnetRe.test(this.value) || this.value.slice(-8) === '.torrent'
-      },
-      videoTitle () {
-        return this.title || this.name
-      }
+      set () {}
     },
-    async created () {
-      if (this.isMagnet) await this.$axios.get('torrent/init')
+    isMagnet () {
+      return this.isMagnetRe.test(this.value) || this.value.slice(-8) === '.torrent'
     },
-    mounted () {
-      const { video } = this.$refs
-      const textTracks = {}
+    videoTitle () {
+      return this.title || this.name
+    }
+  },
+  async created () {
+    if (this.isMagnet) await this.$axios.get('torrent/init')
+  },
+  mounted () {
+    const { video } = this.$refs
+    const textTracks = {}
 
-      video.addEventListener('loadedmetadata', () => {
-        // We need to get the subtitles only when the torrent is ready to be read.
-        // Otherwise, there is no file to get the subtitles from.
-        this.eventSource = new window.EventSource(`/tracks/${this.value}`)
-        this.setHeight()
+    video.addEventListener('loadedmetadata', () => {
+      // We need to get the subtitles only when the torrent is ready to be read.
+      // Otherwise, there is no file to get the subtitles from.
+      this.eventSource = new window.EventSource(`/tracks/${this.value}`)
+      this.setHeight()
 
-        this.eventSource.addEventListener('tracks', ({ data }) => {
-          const tracks = JSON.parse(data)
-          let isStyleSet = false
+      this.eventSource.addEventListener('tracks', ({ data }) => {
+        const tracks = JSON.parse(data)
+        let isStyleSet = false
 
-          tracks.forEach(track => {
-            const language = (track.language || 'eng').slice(0, 2)
-            const trackNumber = +track.number
-            this.allCues[trackNumber] = []
+        tracks.forEach(track => {
+          const language = (track.language || 'eng').slice(0, 2)
+          const trackNumber = +track.number
+          this.allCues[trackNumber] = []
 
-            this.numToLang[trackNumber] = language
+          this.numToLang[trackNumber] = language
 
-            if (track.type === 'ass') {
-              this.isAss = true
-              const parsedTracks = fromAss.tracks(tracks)
-              this.styles = parsedTracks.styles
-              this.info = parsedTracks.info
+          if (track.type === 'ass') {
+            this.isAss = true
+            const parsedTracks = fromAss.tracks(tracks)
+            this.styles = parsedTracks.styles
+            this.info = parsedTracks.info
 
-              // Let's suppose each track have the same style and that only the language of each changes.
-              if (!isStyleSet) {
-                fromAss.setStyles(this.styles, this.value, this.info)
-                isStyleSet = true
-              }
+            // Let's suppose each track have the same style and that only the language of each changes.
+            if (!isStyleSet) {
+              fromAss.setStyles(this.styles, this.value, this.info)
+              isStyleSet = true
             }
+          }
 
-            if (language === this.config.preferredLanguage) {
-              this.isPrefLanguageSet = true
-              this.trackNum = trackNumber
-            }
-          })
-
-          if (tracks.length === 1 && !this.isPrefLanguageSet) {
-            this.trackNum = +Object.keys(this.numToLang)[0]
+          if (language === this.config.preferredLanguage) {
+            this.isPrefLanguageSet = true
+            this.trackNum = trackNumber
           }
         })
 
-        this.eventSource.addEventListener('subtitle', ({ data }) => {
-          const { trackNumber, subtitle } = JSON.parse(data)
-          if (trackNumber in this.allCues) {
-            if (this.isAss) {
-              const cue = fromAss.subtitles(subtitle, this.styles, this.info)
-
-              this.allCues[trackNumber].push(cue)
-            } else {
-              const cue = new window.VTTCue(subtitle.time / 1000, (subtitle.time + subtitle.duration) / 1000, subtitle.text)
-              textTracks[trackNumber].addCue(cue)
-            }
-          }
-        })
-
-        if (this.title) {
-          this.addToHistory()
+        if (tracks.length === 1 && !this.isPrefLanguageSet) {
+          this.trackNum = +Object.keys(this.numToLang)[0]
         }
-
-        this.eventSource.addEventListener('name', ({ data }) => {
-          const { name } = JSON.parse(data)
-
-          this.name = name
-
-          this.addToHistory()
-        })
       })
 
-      video && !this.fullscreen && this.config.fullscreen && this.toggleFullScreen()
-    },
-    beforeDestroy () {
-      this.eventSource && this.eventSource.close()
-      this.fullscreen && this.toggleFullScreen()
+      this.eventSource.addEventListener('subtitle', ({ data }) => {
+        const { trackNumber, subtitle } = JSON.parse(data)
+        if (trackNumber in this.allCues) {
+          if (this.isAss) {
+            const cue = fromAss.subtitles(subtitle, this.styles, this.info)
 
-      // Removing cue styling from head
-      const { head } = document
-      head.removeChild(head.children[head.childElementCount - 1])
-
-      if (this.isMagnet) {
-        this.$axios.delete('torrent/remove', {
-          params: {
-            magnet: this.value
+            this.allCues[trackNumber].push(cue)
+          } else {
+            const cue = new window.VTTCue(subtitle.time / 1000, (subtitle.time + subtitle.duration) / 1000, subtitle.text)
+            textTracks[trackNumber].addCue(cue)
           }
-        })
+        }
+      })
+
+      if (this.title) {
+        this.addToHistory()
+      }
+
+      this.eventSource.addEventListener('name', ({ data }) => {
+        const { name } = JSON.parse(data)
+
+        this.name = name
+
+        this.addToHistory()
+      })
+    })
+
+    video && !this.fullscreen && this.config.fullscreen && this.toggleFullScreen()
+  },
+  beforeDestroy () {
+    this.eventSource && this.eventSource.close()
+    this.fullscreen && this.toggleFullScreen()
+
+    // Removing cue styling from head
+    const { head } = document
+    head.removeChild(head.children[head.childElementCount - 1])
+
+    if (this.isMagnet) {
+      this.$axios.delete('torrent/remove', {
+        params: {
+          magnet: this.value
+        }
+      })
+    }
+  },
+  methods: {
+    formatTime (time = 0) {
+      const minutes = ('0' + Math.floor(time / 60)).slice(-2)
+      const seconds = ('0' + Math.floor(time % 60)).slice(-2)
+
+      return `${minutes}:${seconds}`
+    },
+    togglePlay () {
+      const { video } = this.$refs
+      this.showControls()
+      this.paused ? video.play() : video.pause()
+    },
+    toggleMute () {
+      this.muted = this.$refs.video.muted = !this.muted
+    },
+    toggleFullScreen () {
+      this.$parent.toggleFullScreen()
+      this.fullscreen = !this.fullscreen
+    },
+    onTimelineChangeEvent () {
+      const { video } = this.$refs
+      if (video) {
+        this.timeline = 100 / video.duration * video.currentTime
+        this.currentTime = this.formatTime(video.currentTime)
+        this.duration = this.formatTime(video.duration)
+        this.rawTime = video.currentTime
+
+        if (this.isAss) this.updateActiveCues()
       }
     },
-    methods: {
-      formatTime (time = 0) {
-        const minutes = ('0' + Math.floor(time / 60)).slice(-2)
-        const seconds = ('0' + Math.floor(time % 60)).slice(-2)
-
-        return `${minutes}:${seconds}`
-      },
-      togglePlay () {
-        const { video } = this.$refs
-        this.showControls()
-        this.paused ? video.play() : video.pause()
-      },
-      toggleMute () {
-        this.muted = this.$refs.video.muted = !this.muted
-      },
-      toggleFullScreen () {
-        this.$parent.toggleFullScreen()
-        this.fullscreen = !this.fullscreen
-      },
-      onTimelineChangeEvent () {
-        const { video } = this.$refs
-        if (video) {
-          this.timeline = 100 / video.duration * video.currentTime
-          this.currentTime = this.formatTime(video.currentTime)
-          this.duration = this.formatTime(video.duration)
-          this.rawTime = video.currentTime
-
-          if (this.isAss) this.updateActiveCues()
+    onProgress () {
+      const { video } = this.$refs
+      if (video) {
+        const buffered = []
+        for (let i = 0, l = video.buffered.length; i < l; ++i) {
+          buffered.push([
+            video.buffered.start(i) / video.duration * 100,
+            video.buffered.end(i) / video.duration * 100
+          ])
         }
-      },
-      onProgress () {
-        const { video } = this.$refs
-        if (video) {
-          const buffered = []
-          for (let i = 0, l = video.buffered.length; i < l; ++i) {
-            buffered.push([
-              video.buffered.start(i) / video.duration * 100,
-              video.buffered.end(i) / video.duration * 100
-            ])
-          }
-          this.buffered = buffered
-        }
-      },
-      onCanPlay () {
-        this.waiting = false
-      },
-      onSeeked () {
-        this.index = 0
-      },
-      changeTimeline (value) {
-        const { video } = this.$refs
-        if (video) { video.currentTime = video.duration * ((this.timeline = value) / 100) }
-      },
-      timeForward (value) {
-        const { video } = this.$refs
+        this.buffered = buffered
+      }
+    },
+    onCanPlay () {
+      this.waiting = false
+    },
+    onSeeked () {
+      this.index = 0
+    },
+    changeTimeline (value) {
+      const { video } = this.$refs
+      if (video) { video.currentTime = video.duration * ((this.timeline = value) / 100) }
+    },
+    timeForward (value) {
+      const { video } = this.$refs
 
-        if (video) {
-          video.currentTime += value
-        }
-      },
-      changeVolume (value) {
-        if (this.$refs.video) this.$refs.video.volume = (this.volume = value) / 100
-      },
-      increaseVolume (value) {
-        const { video } = this.$refs
+      if (video) {
+        video.currentTime += value
+      }
+    },
+    changeVolume (value) {
+      if (this.$refs.video) this.$refs.video.volume = (this.volume = value) / 100
+    },
+    increaseVolume (value) {
+      const { video } = this.$refs
 
-        if (video) {
-          const currentVolume = video.volume * 100
-          let newVolume = currentVolume + value
+      if (video) {
+        const currentVolume = video.volume * 100
+        let newVolume = currentVolume + value
 
-          newVolume = newVolume >= 0 && newVolume <= 100
-            ? newVolume
-            : currentVolume
+        newVolume = newVolume >= 0 && newVolume <= 100
+          ? newVolume
+          : currentVolume
 
-          this.volume = newVolume
-          this.$refs.video.volume = newVolume / 100
-        }
-      },
-      onMouseMove (e) {
-        if (Math.abs(e.movementX) > 1 || Math.abs(e.movementY) > 1) { this.showControls() }
-      },
-      showControls () {
-        this.controlsHidden = false
-        if (this.timeoutID) clearTimeout(this.timeoutID)
-        this.timeoutID = setTimeout(() => (this.controlsHidden = true), 3000)
-      },
-      setTrack (track) {
-        const { video } = this.$refs
-        if (track.mode === 'showing') {
+        this.volume = newVolume
+        this.$refs.video.volume = newVolume / 100
+      }
+    },
+    onMouseMove (e) {
+      if (Math.abs(e.movementX) > 1 || Math.abs(e.movementY) > 1) { this.showControls() }
+    },
+    showControls () {
+      this.controlsHidden = false
+      if (this.timeoutID) clearTimeout(this.timeoutID)
+      this.timeoutID = setTimeout(() => (this.controlsHidden = true), 3000)
+    },
+    setTrack (track) {
+      const { video } = this.$refs
+      if (track.mode === 'showing') {
+        track.mode = 'hidden'
+      } else {
+        for (const track of video.textTracks) {
           track.mode = 'hidden'
-        } else {
-          for (const track of video.textTracks) {
-            track.mode = 'hidden'
-          }
-
-          track.mode = 'showing'
         }
-      },
-      actOnWindow (type) {
-        this.$parent[type]()
-      },
-      addToHistory () {
-        if (!this.hasAppendedToHistory) {
-          this.$store.dispatch('history/append', {
-            type: this.isMagnet ? 'Stream' : 'Play',
-            text: this.videoTitle
-          })
 
-          this.hasAppendedToHistory = true
-        }
+        track.mode = 'showing'
+      }
+    },
+    actOnWindow (type) {
+      this.$parent[type]()
+    },
+    addToHistory () {
+      if (!this.hasAppendedToHistory) {
+        this.$store.dispatch('history/append', {
+          type: this.isMagnet ? 'Stream' : 'Play',
+          text: this.videoTitle
+        })
+
+        this.hasAppendedToHistory = true
       }
     }
   }
+}
 </script>
 
 <style lang="stylus">

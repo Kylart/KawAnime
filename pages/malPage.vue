@@ -58,95 +58,95 @@
 </template>
 
 <script>
-  import Vuex from 'vuex'
+import Vuex from 'vuex'
 
-  export default {
-    data () {
-      return {
-        search: '',
-        rowsPerPage: [10, 15, 25, 50, 100, { text: 'All', value: -1 }],
-        headers: [
-          {
-            text: 'Image',
-            align: 'center',
-            sortable: false,
-            value: 'image'
-          }, {
-            text: 'Title',
-            align: 'left',
-            sortable: true,
-            value: 'title'
-          }, {
-            text: 'Score',
-            align: 'center',
-            sortable: true,
-            value: 'score'
-          }, {
-            text: 'Type',
-            align: 'center',
-            sortable: true,
-            value: 'type'
-          }, {
-            text: 'Progress',
-            align: 'center',
-            sortable: true,
-            value: 'progressDec'
-          }, {
-            text: 'Status',
-            align: 'center',
-            sortable: true,
-            value: 'status'
-          }, {
-            text: 'Tags',
-            align: 'center',
-            sortable: false,
-            value: 'tags'
-          }
-        ]
-      }
-    },
-    computed: {
-      ...Vuex.mapGetters('mal', [
-        'lists'
-      ]),
-      isLoading () {
-        return this.$store.state.mal.isLoading
-      },
-      tagsFilter: {
-        get () {
-          return this.$store.state.mal.tagsFilter
-        },
-        set (tags) {
-          this.$store.commit('mal/setTagsFilter', tags)
+export default {
+  data () {
+    return {
+      search: '',
+      rowsPerPage: [10, 15, 25, 50, 100, { text: 'All', value: -1 }],
+      headers: [
+        {
+          text: 'Image',
+          align: 'center',
+          sortable: false,
+          value: 'image'
+        }, {
+          text: 'Title',
+          align: 'left',
+          sortable: true,
+          value: 'title'
+        }, {
+          text: 'Score',
+          align: 'center',
+          sortable: true,
+          value: 'score'
+        }, {
+          text: 'Type',
+          align: 'center',
+          sortable: true,
+          value: 'type'
+        }, {
+          text: 'Progress',
+          align: 'center',
+          sortable: true,
+          value: 'progressDec'
+        }, {
+          text: 'Status',
+          align: 'center',
+          sortable: true,
+          value: 'status'
+        }, {
+          text: 'Tags',
+          align: 'center',
+          sortable: false,
+          value: 'tags'
         }
+      ]
+    }
+  },
+  computed: {
+    ...Vuex.mapGetters('mal', [
+      'lists'
+    ]),
+    isLoading () {
+      return this.$store.state.mal.isLoading
+    },
+    tagsFilter: {
+      get () {
+        return this.$store.state.mal.tagsFilter
       },
-      customTags: {
-        get () {
-          return this.$store.state.mal.customTags
-        },
-        set () {}
+      set (tags) {
+        this.$store.commit('mal/setTagsFilter', tags)
       }
     },
-    methods: {
-      showInfo (name, url) {
-        this.$store.dispatch('search/fromUrl', {
-          name,
-          url
-        })
+    customTags: {
+      get () {
+        return this.$store.state.mal.customTags
       },
-      showForm (id) {
-        this.$store.commit('mal/setEntry', id)
-        this.$store.commit('mal/showForm', true)
-      },
-      showSearch () {
-        this.$store.commit('mal/isAdding', true)
-        this.$store.commit('search/show', true)
-      },
-      refresh () {
-        this.$store.dispatch('mal/getWatchLists', this.$store.state.config.config.malUsername)
-      }
+      set () {}
+    }
+  },
+  methods: {
+    showInfo (name, url) {
+      this.$store.dispatch('search/fromUrl', {
+        name,
+        url
+      })
+    },
+    showForm (id) {
+      this.$store.commit('mal/setEntry', id)
+      this.$store.commit('mal/showForm', true)
+    },
+    showSearch () {
+      this.$store.commit('mal/isAdding', true)
+      this.$store.commit('search/show', true)
+    },
+    refresh () {
+      this.$store.dispatch('mal/getWatchLists', this.$store.state.config.config.malUsername)
     }
   }
+}
 </script>
 
 <style lang="stylus" scoped>
