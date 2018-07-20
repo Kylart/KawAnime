@@ -7,10 +7,10 @@
 
 const removeUnwanted = (string) => {
   return string
-    .replace(' VOSTFR', '')  // French fansubs
-    .replace(' English Subbed', '')   // CCM
-    .replace(' Episode', '')  // CCM
-    .replace('[Multiple Subtitle]', '')  // Erai-raws
+    .replace(' VOSTFR', '') // French fansubs
+    .replace(' English Subbed', '') // CCM
+    .replace(' Episode', '') // CCM
+    .replace('[Multiple Subtitle]', '') // Erai-raws
     .replace(' END', '')
     .replace(' FINAL', '')
 }

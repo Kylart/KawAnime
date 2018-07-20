@@ -90,7 +90,7 @@
       this.isBrowser = !window.navigator.appVersion.includes('Electron')
 
       this.$nextTick(() => {
-        if (window.NODE_ENV === 'development') {
+        if (process.env.NODE_ENV === 'development') {
           const devtools = document.createElement('script')
           devtools.src = 'http://localhost:8098'
 
@@ -103,9 +103,6 @@
         searchModal: false,
         drawer: false,
         isBrowser: false,
-        links: [
-          {link: 'Github', to: 'https://github.com/Kylart/KawAnime', icon: 'github-circle'}
-        ],
         itemGroup: [
           {divider: true},
           {header: 'Core'},
@@ -257,7 +254,7 @@
   .title
     overflow hidden
     padding-left 20px
-    font-family 'Hiragino Mincho Pro', 'MS PMincho', serif
+    font-family 'Hiragino Mincho Pro', 'MS PMincho', serif !important
     font-size 30px !important
     line-height 25px !important
 </style>

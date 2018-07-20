@@ -33,6 +33,7 @@ import {
   VSpeedDial,
   VSlider,
   VPagination,
+  VTextarea,
   transitions
 } from 'vuetify'
 
@@ -73,6 +74,7 @@ export default (Vue) => {
       VSpeedDial,
       VSlider,
       VPagination,
+      VTextarea,
       transitions
     },
     directives: {

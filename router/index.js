@@ -32,7 +32,7 @@ export function createRouter () {
       route('/watchList', 'watchList'),
       route('/malPage', 'malPage'),
       // Global redirect for 404
-      {path: '*', redirect: '/'}  // TODO: make a custom 404 page
+      {path: '*', redirect: '/'} // TODO: make a custom 404 page
     ]
   })
 }

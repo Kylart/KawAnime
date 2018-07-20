@@ -68,11 +68,11 @@
           div(slot='header') Advanced options
           v-layout(justify-center)
             v-flex(xs8)
-              v-select(
+              v-combobox(
                 v-model="form.tags",
                 label="Tags",
                 chips,
-                tags
+                multiple
               )
           v-layout.pa-3(justify-space-between)
             v-flex(xs2)
@@ -115,9 +115,9 @@
               )
           v-layout(justify-center)
             v-flex(xs8)
-              v-text-field(
+              v-textarea(
                 label="Comment",
-                textarea,
+                outline,
                 v-model='form.comments'
               )
       v-layout(justify-center)

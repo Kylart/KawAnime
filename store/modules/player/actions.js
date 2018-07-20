@@ -24,11 +24,11 @@ export default {
         document.player.currentTime = 0
 
         document.player.play()
-        .then(() => {
-          setTimeout(() => {
-            document.player.src = back
-          }, 2500)
-        })
+          .then(() => {
+            setTimeout(() => {
+              document.player.src = back
+            }, 2500)
+          })
       }
     }
   }

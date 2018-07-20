@@ -7,7 +7,7 @@ module.exports = (app, routes) => {
   let error
 
   autoUpdater.logger = require('electron-log')
-  autoUpdater.logger.transports.console.level = false  // There is no need to log this in the console.
+  autoUpdater.logger.transports.console.level = false // There is no need to log this in the console.
   autoUpdater.logger.transports.file.level = 'silly'
   autoUpdater.logger.transports.file.file = join(require('../utils').dir, 'error-update.log')
 

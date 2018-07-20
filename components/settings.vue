@@ -76,7 +76,7 @@
                         hint='Your MyAnimeList password',
                         v-model='mal.password',
                         :append-icon="!mal.isVisible ? 'visibility' : 'visibility_off'",
-                        :append-icon-cb="() => (mal.isVisible = !mal.isVisible)",
+                        @click:append="() => (mal.isVisible = !mal.isVisible)",
                         :type="!mal.isVisible ? 'password' : 'text'"
                       )
                     v-flex.pt-2(xs2)

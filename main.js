@@ -226,10 +226,6 @@ const newWin = () => {
 }
 
 Electron.on('ready', () => {
-  if (isDev) {
-    require('vue-devtools').install()
-  }
-
   const currentSettings = Electron.getLoginItemSettings()
   Menu.setApplicationMenu(menu)
 

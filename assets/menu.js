@@ -118,7 +118,7 @@ const template = () => {
       ]
     })
     // Edit menu.
-    menu[1].submenu.pop()   // Removing preferences from this part.
+    menu[1].submenu.pop() // Removing preferences from this part.
     menu[1].submenu.push(
       {
         type: 'separator'
