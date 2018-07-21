@@ -88,15 +88,6 @@ export default {
   mixins: [Meta, ReadMagnet, DragDrop],
   mounted () {
     this.isBrowser = !window.navigator.appVersion.includes('Electron')
-
-    this.$nextTick(() => {
-      if (process.env.NODE_ENV === 'development') {
-        const devtools = document.createElement('script')
-        devtools.src = 'http://localhost:8098'
-
-        document.body.appendChild(devtools)
-      }
-    })
   },
   data () {
     return {

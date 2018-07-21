@@ -32,8 +32,6 @@ Object.keys(Components).forEach(key => {
   Vue.component(key, Components[key])
 })
 
-if (typeof window !== 'undefined' && process.env.NODE_ENV) window.NODE_ENV = process.env.NODE_ENV
-
 // Expose a factory function that creates a fresh set of store, router,
 // app instances on each call (which is called for each SSR request)
 export function createApp (ssrContext) {
@@ -42,7 +40,7 @@ export function createApp (ssrContext) {
   const router = createRouter()
 
   // App initialization
-  store.dispatch('init')
+  if (typeof window !== 'undefined') store.dispatch('init')
   !['KawAnime-test', 'development'].includes(process.env.NODE_ENV) && store.dispatch('update/check')
 
   // sync the router with the vuex store.

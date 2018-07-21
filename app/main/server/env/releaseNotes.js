@@ -3,7 +3,7 @@ const _ = require('lodash')
 const axios = require('axios')
 const {dir} = require('../utils')
 
-const _VERSION_ = require(join(__dirname, '..', '..', 'package.json')).version
+const _VERSION_ = require(join(__dirname, '..', '..', '..', '..', 'package.json')).version
 const configPath = join(dir, 'config.json')
 const config = require(configPath)
 

@@ -7,7 +7,7 @@ const ProgressBarPlugin = require('progress-bar-webpack-plugin')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 
 const isDev = process.env.NODE_ENV === 'development'
-const resolve = (file) => path.resolve(__dirname, '..', file)
+const resolve = (file) => path.resolve(__dirname, '..', 'app', 'web', file)
 
 module.exports = {
   devtool: !isDev

@@ -5,7 +5,7 @@ const VueSSRClientPlugin = require('vue-server-renderer/client-plugin')
 
 const config = merge(base, {
   entry: {
-    app: './assets/entry-client.js'
+    app: './app/web/assets/entry-client.js'
   },
   optimization: {
     splitChunks: {
