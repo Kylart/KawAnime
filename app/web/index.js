@@ -38,8 +38,8 @@ let readyPromise
 process.app = express()
 
 if (!isDev) {
-  const bundle = require(path.join(__dirname, 'public', 'vue-ssr-server-bundle.json'))
-  const clientManifest = require(path.join(__dirname, 'public', 'vue-ssr-client-manifest.json'))
+  const bundle = require(path.join(__dirname, '..', '..', 'public', 'vue-ssr-server-bundle.json'))
+  const clientManifest = require(path.join(__dirname, '..', '..', 'public', 'vue-ssr-client-manifest.json'))
   renderer = createRenderer(bundle, {
     clientManifest
   })
@@ -63,7 +63,7 @@ process.app.use(compression({
   }
 }))
 process.app.use('/static', serve(path.join(__dirname, 'static'), true))
-process.app.use('/public', serve(path.join(__dirname, 'public'), true))
+process.app.use('/public', serve(path.join(__dirname, '..', '..', 'public'), true))
 
 // Setup the api
 // TODO: Move this call to main/index.js would be great

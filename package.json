@@ -13,7 +13,7 @@
     "dev": "cross-env NODE_ENV=development electron app",
     "start": "cross-env NODE_ENV=production electron app",
     "bstart": "npm run build && npm start",
-    "build": "rimraf app/web/public && npm run build:client && npm run build:server",
+    "build": "rimraf public && npm run build:client && npm run build:server",
     "build:client": "cross-env NODE_ENV=production webpack --config webpack/webpack.client.config.js --hide-modules",
     "build:server": "cross-env NODE_ENV=production webpack --config webpack/webpack.server.config.js --hide-modules",
     "cloc": "cloc $(git ls-files | grep -vE \".mkv|mp4|m4a|mp3|lock\")",
