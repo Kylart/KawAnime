@@ -39,7 +39,7 @@ test.before('Init server', async () => {
    * Creating .KawAnime-test directory and necessary files
    */
   const app = express()
-  require('../server')(app)
+  require('../app/main/server')(app)
 
   /**
    * Server config
