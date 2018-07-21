@@ -38,8 +38,8 @@ let readyPromise
 process.app = express()
 
 if (!isDev) {
-  const bundle = require(path.join(__dirname, '..', '..', 'public', 'vue-ssr-server-bundle.json'))
-  const clientManifest = require(path.join(__dirname, '..', '..', 'public', 'vue-ssr-client-manifest.json'))
+  const bundle = require(path.join(__dirname, 'public', 'vue-ssr-server-bundle.json'))
+  const clientManifest = require(path.join(__dirname, 'public', 'vue-ssr-client-manifest.json'))
   renderer = createRenderer(bundle, {
     clientManifest
   })
