@@ -41,36 +41,17 @@ export default {
           dispatch('news/init', null, isRoot)
 
           if (state.autoRefresh === true) dispatch('autoRefresh')
-        } else if (status === 202) {
+        } else if (status === 202 || status === 204) {
+          // If we reach this point, it means that none of the nyaa is on.
+          // We'd better check both each time.
+          commit('setChoice', 'si')
+
           log(`An error occurred while getting the latest releases. Retrying in 45 seconds.`)
           commit('setInfoSnackbar', 'Could not get the latest releases. Retrying in 45 seconds.', isRoot)
           setTimeout(() => {
             log(`Retrying to get latest releases.`)
             dispatch('init').catch(err => { void (err) })
           }, 45 * 1000)
-        } else if (status === 204) {
-          log('nyaa.pantsu.cat does not respond... Switching to HorribleSubs.')
-
-          commit('setChoice', 'si')
-
-          const {data, status} = await axios.get(`getLatest.json?quality=${state.params.quality}`)
-
-          if (status === 200) {
-            commit('set', {data})
-
-            if (state.autoRefresh === true) dispatch('autoRefresh')
-          } else if (status === 202) {
-            log(`An error occurred while getting the latest releases. Retrying in 45 seconds.`)
-            commit('setInfoSnackbar', 'Could not get the latest releases. Retrying in 45 seconds.', isRoot)
-            setTimeout(() => {
-              log(`Retrying to get latest releases.`)
-              dispatch('init').catch(err => { void (err) })
-            }, 45 * 1000)
-          } else if (status === 204) {
-            log('HorribleSubs does not respond. Retrying with nyaa.si...')
-
-            dispatch('init')
-          }
         }
       }
     } catch (e) {
@@ -111,17 +92,9 @@ export default {
     try {
       const {data, status} = await axios.get('getLatestNyaa', { params: state.params })
 
-      if (status === 200) commit('set', {data})
-      else if (status === 202) {
-        retryLater(backUp)
-      } else if (status === 204) {
-        const {data, status} = await axios.get(`getLatest.json?quality=${state.params.quality}`)
-
-        if (status === 200) commit('set', {data})
-        else if (status === 202 || status === 204) {
-          retryLater(backUp)
-        }
-      }
+      status === 200
+        ? commit('set', {data})
+        : retryLater(backUp)
     } catch (e) {
       retryLater(backUp)
     }

@@ -109,23 +109,6 @@ test('/saveConfig.json route exits and saves config and return 200', async t => 
   writeFileSync(join(DIR, 'config.json'), JSON.stringify(config), 'utf-8')
 })
 
-test('/getLatest.json exits and returns 18 elements with right keys at 720p', async t => {
-  const { data, status } = await axios.get(`${uri}/getLatest.json?quality=720p`)
-
-  if (status === 200) {
-    t.is(data.length, 18)
-    t.not(data[0].rawName, undefined)
-    t.not(data[0].researchName, undefined)
-    t.not(data[0].magnetLink, undefined)
-    t.not(data[0].picture, undefined)
-  } else if (status === 204 || status === 202) {
-    console.info('An error occurred while getting latest releases.'.yellow)
-    t.is(data.length, 0)
-  } else {
-    t.fail()
-  }
-})
-
 test('/download Mahou Shoujo Ikusei Keikaku with HorribleSubs at 720p on nyaa.pantsu.cat exits and returns' +
   ' all magnets', async t => {
   try {
@@ -227,12 +210,6 @@ test('/download Mahou Shoujo Ikusei Keikaku with HorribleSubs at 720p from ep 3 
   } else {
     t.fail()
   }
-})
-
-test('/getLatest.json exits and returns 204 status at 30p', async t => {
-  const { status } = await axios.get(`${uri}/getLatest.json?quality=30p`)
-
-  t.is(status, 204)
 })
 
 test('/getLatestNyaa exits and returns 18 elements with right keys at 720p on nyaa.si', async t => {

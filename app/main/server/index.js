@@ -13,7 +13,6 @@ const setup = (app) => {
     config: require('./config'),
     env: require('./env'),
     history: require('./history'),
-    horrible: require('./horrible'),
     local: require('./local'),
     mal: require('./mal'),
     news: require('./news'),
