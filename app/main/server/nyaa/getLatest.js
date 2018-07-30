@@ -15,7 +15,7 @@ const makeSearch = (data, res, isPantsu = false) => {
     const ep = name.split(' ').splice(-2, 1)[0]
     const link = !isPantsu ? data[i].links.magnet : data[i].magnet
 
-    malScraper.getInfoFromName(rawName)
+    malScraper.getInfoFromName(encodeURI(rawName))
       .then((item) => {
         item.rawName = rawName
         item.researchName = researchName

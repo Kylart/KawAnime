@@ -9,7 +9,7 @@ const axios = require('axios')
 const compression = require('compression')
 const resolve = file => path.resolve(__dirname, file)
 const { createBundleRenderer } = require('vue-server-renderer')
-const redirects = require(path.join(__dirname, './web/router/301.json'))
+const redirects = require(path.join(__dirname, '/web/router/301.json'))
 
 const isDev = process.env.NODE_ENV === 'development'
 const useMicroCache = process.env.MICRO_CACHE !== 'false'

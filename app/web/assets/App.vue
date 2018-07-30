@@ -117,11 +117,11 @@ export default {
           action: 'folder_open',
           group: 'torrent',
           items: [
-            // {
-            //   title: 'Torrenting',
-            //   action: 'file_upload',
-            //   href: '/torrenting'
-            // },
+            {
+              title: 'Torrenting',
+              action: 'file_upload',
+              href: '/torrenting'
+            },
             {
               title: 'Streaming',
               action: 'tv',

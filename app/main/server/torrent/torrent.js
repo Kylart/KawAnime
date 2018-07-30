@@ -6,6 +6,24 @@ const logger = new Logger('Torrent Client')
 
 // TODO Limit download speed, check https://github.com/webtorrent/webtorrent/issues/163
 
+const cleanTorrents = (torrents) => {
+  return torrents.map((torrent) => ({
+    infoHash: torrent.infoHash,
+    magnetURI: torrent.magnetURI,
+    files: torrent.files,
+    timeRemaining: torrent.timeRemaining,
+    received: torrent.received,
+    downloaded: torrent.downloaded,
+    uploaded: torrent.uploaded,
+    downloadSpeed: torrent.downloadSpeed,
+    uploadSpeed: torrent.uploadSpeed,
+    progress: torrent.progress,
+    ratio: torrent.ratio,
+    numPeers: torrent.numPeers,
+    path: torrent.path
+  }))
+}
+
 const isClientDestroyed = () => {
   const client = process.torrentClient
 
@@ -29,17 +47,21 @@ const init = (req, res) => {
     logger.info('Torrent client already instanciated.')
   }
 
-  res.send()
+  res && res.send()
 }
 
-const add = ({query: {magnet}}, res) => {
+const add = (req, res) => {
   if (isClientDestroyed()) {
-    init(null, res)
+    init(null, null)
   }
 
-  process.torrentClient.add(magnet)
+  const { query: { magnet, path } } = req
+
+  process.torrentClient.add(magnet, { path }, (torrent) => {
+    console.log('Added', torrent)
+  })
+
   logger.info(`Added magnet to torrent: ${magnet}`)
-  logger.info(`Now having ${process.torrentClient.torrents.length} torrents.`)
 
   res.send()
 }
@@ -66,56 +88,41 @@ const remove = ({query: {magnet}}, res) => {
   res.send()
 }
 
-const infoClient = (req, res) => {
-  const result = {}
-
+const info = (req, res) => {
   if (isClientDestroyed()) {
+    res.status(204).send({})
+  } else {
     const client = process.torrentClient
 
-    result.downloadSpeed = client.downloadSpeed
-    result.uploadSpeed = client.uploadSpeed
-    result.progress = client.progress
-    result.ratio = client.ratio
-    result.nbTorrents = client.torrents.length
-  }
+    const result = {
+      client: {
+        downloadSpeed: client.downloadSpeed,
+        uploadSpeed: client.uploadSpeed,
+        ratio: client.ratio,
+        progress: client.progress
+      },
+      torrents: cleanTorrents(client.torrents) || []
+    }
 
-  res.send(result)
+    res.send(result)
+  }
 }
 
-const infoTorrents = (req, res) => {
-  const result = []
+const togglePlay = ({ query: { torrent, action } }, res) => {
+  // Running this implies that there is a client.
+  const client = process.torrentClient
 
-  if (isClientDestroyed()) {
-    const torrents = process.torrentClient.torrents
+  torrent = client.get(torrent)
 
-    torrents.forEach((torrent) => {
-      result.push(Object.assign(
-        {},
-        torrent.infoHash,
-        torrent.magnetURI,
-        torrent.torrentFile,
-        torrent.files,
-        torrent.timeRemaining,
-        torrent.received,
-        torrent.downloaded,
-        torrent.uploaded,
-        torrent.downloadSpeed,
-        torrent.uploadSpeed,
-        torrent.progress,
-        torrent.ratio,
-        torrent.numPeers,
-        torrent.path
-      ))
-    })
-  }
+  torrent[action]()
 
-  res.send(result)
+  res.send()
 }
 
 module.exports = {
   init,
   add,
   remove,
-  infoClient,
-  infoTorrents
+  info,
+  togglePlay
 }

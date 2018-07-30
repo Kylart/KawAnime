@@ -3,6 +3,7 @@ export { default as update } from './update'
 
 export { default as downloader } from './downloader'
 export { default as releases } from './releases'
+export { default as torrents } from './torrents'
 export { default as streaming } from './streaming'
 export { default as seasons } from './seasons'
 export { default as news } from './news'
