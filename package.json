@@ -11,7 +11,9 @@
   "license": "MIT",
   "scripts": {
     "dev": "cross-env NODE_ENV=development electron app",
+    "dev:server": "cross-env NODE_ENV=development KAWANIME_SERVER=on node app",
     "start": "cross-env NODE_ENV=production electron app",
+    "start:server": "cross-env NODE_ENV=production KAWANIME_SERVER=on node app",
     "bstart": "npm run build && npm start",
     "build": "rimraf public && npm run build:client && npm run build:server",
     "build:client": "cross-env NODE_ENV=production webpack --config webpack/webpack.client.config.js --hide-modules",
