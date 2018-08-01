@@ -1,8 +1,8 @@
 const path = require('path')
 const webpack = require('webpack')
 const MFS = require('memory-fs')
-const clientConfig = require('./webpack.client.config')
-const serverConfig = require('./webpack.server.config')
+const clientConfig = require(path.join(__dirname, 'webpack.client.config'))
+const serverConfig = require(path.join(__dirname, 'webpack.server.config'))
 const ProgressBarPlugin = require('progress-bar-webpack-plugin')
 const chalk = require('chalk')
 
@@ -49,7 +49,7 @@ module.exports = function setupDevServer (app, cb) {
   // hot middleware
   app.use(require('webpack-hot-middleware')(clientCompiler))
 
-  // watch and update server web
+  // watch and update server renderer
   const serverCompiler = webpack(serverConfig)
   const mfs = new MFS()
   serverCompiler.outputFileSystem = mfs

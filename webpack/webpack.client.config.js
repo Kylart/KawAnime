@@ -7,9 +7,16 @@ const config = merge(base, {
   entry: {
     app: './app/web/assets/entry-client.js'
   },
-  optimization: {
-    splitChunks: {
-      name: function (module) {
+  plugins: [
+    // strip dev-only code in Vue source
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
+      'process.env.VUE_ENV': '"client"'
+    }),
+    // extract vendor chunks for better caching
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor',
+      minChunks: function (module) {
         // a module is extracted into the vendor chunk if...
         return (
           // it's inside node_modules
@@ -18,13 +25,11 @@ const config = merge(base, {
           !/\.css$/.test(module.request)
         )
       }
-    }
-  },
-  plugins: [
-    // strip dev-only code in Vue source
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
-      'process.env.VUE_ENV': '"client"'
+    }),
+    // extract webpack runtime & manifest to avoid vendor chunk hash changing
+    // on every build.
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'manifest'
     }),
     new VueSSRClientPlugin()
   ]

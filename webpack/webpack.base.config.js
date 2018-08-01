@@ -1,7 +1,8 @@
 const path = require('path')
 const chalk = require('chalk')
+const webpack = require('webpack')
 const vueConfig = require('./vue-loader.config')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 const ProgressBarPlugin = require('progress-bar-webpack-plugin')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
@@ -73,13 +74,12 @@ module.exports = {
     maxEntrypointSize: 300000,
     hints: !isDev ? 'warning' : false
   },
-  mode: isDev ? 'development' : 'production',
-  optimization: {
-    minimize: true
-  },
   plugins: !isDev
     ? [
-      new MiniCssExtractPlugin({
+      new webpack.optimize.UglifyJsPlugin({
+        compress: { warnings: false }
+      }),
+      new ExtractTextPlugin({
         filename: 'common.[chunkhash].css'
       }),
       new OptimizeCSSPlugin({
