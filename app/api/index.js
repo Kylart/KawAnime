@@ -31,7 +31,7 @@ const setup = (app) => {
 
   // auto update
   /* istanbul ignore next */
-  if (!['KawAnime-test', 'development'].includes(process.env.NODE_ENV) && !process.env.KAWANIME_SERVER === 'true') {
+  if (!['KawAnime-test', 'development'].includes(process.env.NODE_ENV) && !(process.env.KAWANIME_SERVER === 'true')) {
     routes = require('./updater')(app, routes)
   }
 
