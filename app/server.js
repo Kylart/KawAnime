@@ -145,8 +145,8 @@ app.get('*', !isDev ? render : (req, res) => {
 // Launching server
 const PORT = process.env.PORT || serverConfig.port
 
-http.createServer(app).listen(PORT)
+process.server = http.createServer(app).listen(PORT)
 
 process.appUrl = `http://localhost:${PORT}`
 
-console.log(`\n> KawAnime's server started at ${process.appUrl}!`.green)
+console.log(`${isDev ? '\n' : ''}> KawAnime's server started at ${process.appUrl}!`.green)
