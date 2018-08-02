@@ -1,8 +1,9 @@
 {
-  "name": "KawAnime",
+  "name": "kawanime",
   "description": "Desktop app for anime fans",
   "version": "0.3.1",
   "main": "app/index.js",
+  "bin": "app/bin.js",
   "repository": "https://github.com/Kylart/KawAnime.git",
   "author": {
     "name": "Kylart",
@@ -32,6 +33,7 @@
     "postinstall": "node test/nightwatch.config.js"
   },
   "dependencies": {
+    "args": "^5.0.0",
     "axios": "^0.18.0",
     "buttercup": "^1.7.1",
     "chalk": "^2.4.1",

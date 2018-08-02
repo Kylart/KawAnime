@@ -22,7 +22,7 @@ const Logger = class {
   }
 
   shouldLog () {
-    return !['production', 'KawAnime-test'].includes(process.env.NODE_ENV)
+    return process.env.NODE_ENV === 'development' || process.env.VERBOSE === 'true'
   }
 
   stringify (obj) {

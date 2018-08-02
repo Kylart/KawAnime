@@ -1,3 +1,3 @@
 module.exports = {
-  port: 49876
+  port: process.env.NODE_ENV === 'development' ? 49876 : 49875
 }
