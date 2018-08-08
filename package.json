@@ -12,19 +12,19 @@
   "license": "MIT",
   "scripts": {
     "dev": "cross-env NODE_ENV=development electron app",
-    "dev:server": "cross-env NODE_ENV=development KAWANIME_SERVER=on node app",
+    "dev:server": "cross-env NODE_ENV=development KAWANIME_SERVER=true node app",
     "start": "cross-env NODE_ENV=production electron app",
-    "start:server": "cross-env NODE_ENV=production KAWANIME_SERVER=on node app",
+    "start:server": "cross-env NODE_ENV=production KAWANIME_SERVER=true node app",
     "bstart": "npm run build && npm start",
     "build": "rimraf public && npm run build:client && npm run build:server",
     "build:client": "cross-env NODE_ENV=production webpack --config webpack/webpack.client.config.js --hide-modules",
     "build:server": "cross-env NODE_ENV=production webpack --config webpack/webpack.server.config.js --hide-modules",
     "cloc": "cloc $(git ls-files | grep -vE \".mkv|mp4|m4a|mp3|lock\")",
-    "test:server": "nyc ava --verbose --serial test/server.test.js",
+    "test:api": "cross-env NODE_ENV=\"KawAnime-test\" nyc --nycrc-path=\"test/.nycrc\" ava --verbose --serial test/api/**.test.js",
     "test:front": "npm run build && cross-env NODE_ENV=KawAnime-test nightwatch -c test/nightwatch.config.js",
     "test": "npm run lint && npm run test:front && npm run test:server",
     "coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
-    "lint": "eslint --fix --ext .js,.vue app",
+    "lint": "eslint --fix --ext .js,.vue app test",
     "pack": "build --dir",
     "dist:linux": "build --linux deb AppImage",
     "dist:win": "build --win --x64 --ia32",
@@ -45,7 +45,7 @@
     "is-online": "^7.0.0",
     "lodash": "^4.17.10",
     "lru-cache": "^4.0.2",
-    "mal-scraper": "^2.4.2",
+    "mal-scraper": "^2.4.3",
     "matroska-subtitles": "^2.0.3",
     "mime": "^2.2.0",
     "moment": "^2.22.2",
@@ -118,6 +118,7 @@
     "style-loader": "^0.21.0",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2",
+    "supertest": "^3.1.0",
     "url-loader": "^1.0.1",
     "vue-devtools": "^4.1.4",
     "vue-loader": "^14.2.3",
@@ -152,39 +153,6 @@
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true
-    }
-  },
-  "nyc": {
-    "exclude": [
-      "test",
-      "nightwatch.conf.js",
-      "**/*.test.js",
-      "**/node_modules/**",
-      "assets/serverStart.js",
-      "server/mal/index.js",
-      "server/mal/official.js",
-      "server/openExternal",
-      "server/utils",
-      "server/env",
-      "server/video"
-    ],
-    "watermarks": {
-      "lines": [
-        80,
-        95
-      ],
-      "functions": [
-        80,
-        95
-      ],
-      "branches": [
-        80,
-        95
-      ],
-      "statements": [
-        80,
-        95
-      ]
     }
   }
 }

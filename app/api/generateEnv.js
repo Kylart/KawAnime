@@ -55,6 +55,7 @@ const createConfig = () => {
     let changed = false
 
     _.each(basicConf.config, (elem, key) => {
+      /* istanbul ignore next */
       if (typeof currentConf.config[key] === 'undefined') {
         currentConf.config[key] = elem
         changed = true

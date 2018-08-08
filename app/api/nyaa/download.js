@@ -4,7 +4,9 @@ const {removeUnwanted, Logger} = require('../utils')
 const logger = new Logger('Nyaa (Download)')
 
 const sendRes = (object, res) => {
-  res.status(200).send(JSON.stringify(object))
+  res
+    .status(200)
+    .json(object)
 }
 
 const formatMagnets = (data, searchData, choice, res) => {

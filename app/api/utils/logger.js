@@ -22,7 +22,8 @@ const Logger = class {
   }
 
   shouldLog () {
-    return process.env.NODE_ENV === 'development' || process.env.VERBOSE === 'true'
+    return process.env.NODE_ENV === 'development' ||
+      process.env.VERBOSE === 'true'
   }
 
   stringify (obj) {
@@ -34,6 +35,8 @@ const Logger = class {
   }
 
   toFile (type, msg, obj) {
+    if (process.env.NODE_ENV === 'KawAnime-test') return
+
     const _msg = `${this.getDate()} ${type === 'error' ? 'ERROR' : 'INFO '} > ${this.label} ${msg} ${this.stringify(obj)}\n`
 
     if (type === 'error') {

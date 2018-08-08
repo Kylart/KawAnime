@@ -52,8 +52,7 @@ const sendFiles = (json, dir, files, res) => {
     }
   })
 
-  res.type('application/json')
-  res.status(200).send(JSON.stringify(result))
+  res.status(200).json(result)
 }
 
 const searchLocalFiles = ({query}, res) => {

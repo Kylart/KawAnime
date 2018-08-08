@@ -49,8 +49,7 @@ const getHistory = (req, res) => {
   // Getting history
   const historyFile = require(historyPath)
 
-  res.type('application/json')
-  res.status(200).send(JSON.stringify(historyFile))
+  res.status(200).json(historyFile)
 }
 
 const removeFromHistory = (req, res) => {

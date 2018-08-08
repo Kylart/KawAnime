@@ -15,7 +15,7 @@ const makeSearch = (data, res, isPantsu = false) => {
     const ep = name.split(' ').splice(-2, 1)[0]
     const link = !isPantsu ? data[i].links.magnet : data[i].magnet
 
-    malScraper.getInfoFromName(encodeURI(rawName))
+    malScraper.getInfoFromName(rawName)
       .then((item) => {
         item.rawName = rawName
         item.researchName = researchName
@@ -27,9 +27,7 @@ const makeSearch = (data, res, isPantsu = false) => {
         ++counter
         if (counter === 18) {
           logger.info('Sending Latest releases.')
-          res.writeHead(200, {'Content-type': 'application/json'})
-          res.write(JSON.stringify(toReturn))
-          res.end()
+          res.json(toReturn)
         }
       }).catch(/* istanbul ignore next */(err) => {
         logger.error('An error occurred.', err)

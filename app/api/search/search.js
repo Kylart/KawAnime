@@ -8,7 +8,7 @@ const logger = new Logger('Search')
 
 const searchTerm = ({query}, res) => {
   malScraper.getResultsFromSearch(query.term)
-    .then((data) => res.send(data))
+    .then((data) => res.json(data))
     .catch(/* istanbul ignore next */(err) => {
       logger.error('An error occurred', err)
       res.status(204).send()
@@ -17,8 +17,7 @@ const searchTerm = ({query}, res) => {
 
 const fromName = (query, res) => {
   malScraper.getInfoFromName(query.term).then((data) => {
-    res.type('application/json')
-    res.status(200).send(JSON.stringify(data))
+    res.status(200).json(data)
   }).catch(/* istanbul ignore next */(err) => {
     logger.error('An error occurred', err)
     res.status(204).send()
@@ -27,8 +26,7 @@ const fromName = (query, res) => {
 
 const fromUrl = (query, res) => {
   malScraper.getInfoFromURL(query.url).then((data) => {
-    res.type('application/json')
-    res.status(200).send(JSON.stringify(data))
+    res.status(200).json(data)
   }).catch(/* istanbul ignore next */(err) => {
     logger.error('An error occurred', err)
     res.status(204).send()

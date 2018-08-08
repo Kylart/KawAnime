@@ -19,8 +19,7 @@ exports.getSeason = ({query}, res) => {
       })
     })
 
-    res.type('application/json')
-    res.status(200).send(JSON.stringify(data))
+    res.status(200).json(data)
   }).catch((err) => {
     logger.error('An error occurred.', err)
     res.status(204).send()

@@ -14,8 +14,7 @@ const get = (req, res) => {
 
   logger.info(`Gathered lists from local.`)
 
-  res.type('application/json')
-  res.status(200).send(JSON.stringify(wlFile))
+  res.status(200).json(wlFile)
 }
 
 const save = (req, res) => {
