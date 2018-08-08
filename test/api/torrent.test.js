@@ -4,6 +4,6 @@ import test from 'ava'
 // import { makeApp } from './utils.js'
 // import clean from '../clean.js'
 
-// test.after('Cleaning', clean)
+// test.after.cb('Cleaning', clean)
 
 test.todo('Make tests?')

@@ -6,7 +6,7 @@ import { readFileSync } from 'fs'
 import { DIR, makeApp } from './utils.js'
 import clean from '../clean.js'
 
-test.after('Cleaning', clean)
+test.after.cb('Cleaning', clean)
 
 test('/getConfig.json route exits and returns json with right keys', async (t) => {
   const { body: data } = await request(makeApp())

@@ -6,7 +6,7 @@ import { join } from 'path'
 import clean from '../clean.js'
 import { makeApp, kawAnimeFilesPath } from './utils.js'
 
-test.afterEach.always(clean)
+test.afterEach.always.cb('Cleaning', clean)
 
 test('/_setupCreds route exits and creates a bcup file along the master key which are retrievable', async (t) => {
   t.plan(3)

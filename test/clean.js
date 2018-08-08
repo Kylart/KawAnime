@@ -5,10 +5,11 @@ const chalk = require('chalk')
 
 const DIR = join(homedir(), '.KawAnime-test')
 
-module.exports = () => {
+module.exports = (cb) => {
   rimraf(DIR, (err) => {
     if (err) throw err
 
     console.log(chalk.green('> Cleared testing directory.'))
+    cb && cb.end()
   })
 }

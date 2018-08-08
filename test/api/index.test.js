@@ -14,7 +14,7 @@ import clean from '../clean.js'
 
 import { makeApp, kawAnimeFilesPath } from './utils.js'
 
-test.afterEach.always('Cleaning...', clean)
+test.afterEach.always.cb('Cleaning', clean)
 
 test('KawAnime\'s needed files are generated if not there.', async (t) => {
   t.plan(5)

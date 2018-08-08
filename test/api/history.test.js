@@ -5,7 +5,7 @@ import { join } from 'path'
 import { makeApp, DIR } from './utils.js'
 import clean from '../clean.js'
 
-test.after('Cleaning', clean)
+test.after.cb('Cleaning', clean)
 
 test('/getHistory route exits and returns history file', async (t) => {
   const { body, status } = await request(makeApp()).get('/getHistory')

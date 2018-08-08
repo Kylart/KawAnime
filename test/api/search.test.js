@@ -4,7 +4,7 @@ import request from 'supertest'
 import { makeApp } from './utils.js'
 import clean from '../clean.js'
 
-test.after('Cleaning', clean)
+test.after.cb('Cleaning', clean)
 
 test.beforeEach.cb((t) => {
   setTimeout(t.end, 5 * 1000)

@@ -4,7 +4,7 @@ import request from 'supertest'
 import { makeApp } from './utils.js'
 import clean from '../clean.js'
 
-test.after('Cleaning', clean)
+test.after.cb('Cleaning', clean)
 
 test.skip('/getWatchList route exits and return an array containing entries', async t => {
   const { body, status } = await request(makeApp())

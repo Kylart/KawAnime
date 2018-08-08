@@ -6,7 +6,7 @@ import { join } from 'path'
 import { makeApp, DIR } from './utils.js'
 import clean from '../clean.js'
 
-test.after('Cleaning', clean)
+test.after.cb('Cleaning', clean)
 
 test.before((t) => {
   makeApp()
