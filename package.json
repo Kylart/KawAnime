@@ -29,8 +29,7 @@
     "dist:linux": "build --linux deb AppImage",
     "dist:win": "build --win --x64 --ia32",
     "dist:mac": "build --mac",
-    "dist:all": "npm run build && npm run dist:mac && npm run dist:win && npm run dist:linux",
-    "postinstall": "node test/nightwatch.config.js"
+    "dist:all": "npm run build && npm run dist:mac && npm run dist:win && npm run dist:linux"
   },
   "dependencies": {
     "args": "^5.0.0",
@@ -107,7 +106,6 @@
     "file-loader": "^1.1.11",
     "friendly-errors-webpack-plugin": "^1.6.1",
     "html-webpack-plugin": "^3.2.0",
-    "nightwatch": "^1.0.6",
     "nyc": "^12.0.2",
     "optimize-css-assets-webpack-plugin": "^3.2.0",
     "pre-commit": "^1.2.2",
