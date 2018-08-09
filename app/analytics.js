@@ -1,12 +1,13 @@
 const path = require('path')
 const fs = require('fs')
 const axios = require('axios')
-const { userInfo, homedir } = require('os')
+const { userInfo } = require('os')
 
 // Let's send some data to kawanime.com/_api
 const { username } = userInfo()
 
-const tokenPath = path.join(homedir(), '.KawAnime', '_token')
+const { dir } = require(path.join(__dirname, 'api', 'utils'))
+const tokenPath = path.join(dir, '_token')
 const token = fs.readFileSync(tokenPath, 'utf-8')
 
 axios.post('https://kawanime.com/_api', {

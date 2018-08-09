@@ -4,6 +4,8 @@ const _ = require('lodash')
 
 const generateEnv = require('./generateEnv.js')
 
+const isServer = process.env.KAWANIME_SERVER === 'true'
+
 const setup = (app) => {
   generateEnv()
 
@@ -17,7 +19,7 @@ const setup = (app) => {
     mal: require('./mal'),
     news: require('./news'),
     nyaa: require('./nyaa'),
-    openExternal: require('./openExternal'),
+    openExternal: isServer ? () => {} : require('./openExternal'),
     seasons: require('./seasons'),
     torrent: require('./torrent'),
     video: require('./video'),
