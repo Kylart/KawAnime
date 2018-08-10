@@ -29,3 +29,4 @@ selenium-debug.log
 coverage.lcov
 /coverage/
 screenshots
+cypress

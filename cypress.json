@@ -1,0 +1,16 @@
+{
+  "env": {
+    "KAWANIME_SERVER": true,
+    "NODE_ENV": "KawAnime-test",
+    "PORT": 8080
+  },
+  "fixturesFolder": "test/cypress/fixtures",
+  "integrationFolder": "test/cypress/integration",
+  "pluginsFolder": "test/cypress/plugins",
+  "screenshotsFolder": "test/cypress/screenshots",
+  "videosFolder": "test/cypress/videos",
+  "supportFile": "test/cypress/support",
+  "baseUrl": "http://localhost:8080",
+  "viewportHeight": 800,
+  "viewportWidth": 1200
+}
