@@ -6,7 +6,7 @@
   },
   "fixturesFolder": "test/cypress/fixtures",
   "integrationFolder": "test/cypress/integration",
-  "pluginsFolder": "test/cypress/plugins",
+  "pluginsFile": "test/cypress/plugins",
   "screenshotsFolder": "test/cypress/screenshots",
   "videosFolder": "test/cypress/videos",
   "supportFile": "test/cypress/support",

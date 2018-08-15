@@ -8,7 +8,8 @@ install:
   - npm install
 
 script:
-  - npm run test:api
+  - npm run build
+  - npm run test
   - npm run cloc
 after_success: npm run coverage
 
