@@ -5,7 +5,7 @@ node_js:
   - "9"
 
 install:
-  - npm install
+  - npm ci
 
 script:
   - npm run build
@@ -16,6 +16,8 @@ after_success: npm run coverage
 cache:
   directories:
     - "node_modules"
+    - "~/.npm"
+    - "~/.cache"
 
 notifications:
   email: false
