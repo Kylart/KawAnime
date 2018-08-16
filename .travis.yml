@@ -2,7 +2,6 @@ language: node_js
 
 node_js:
   - "10"
-  - "9"
 
 install:
   - npm ci
@@ -15,7 +14,6 @@ after_success: npm run coverage
 
 cache:
   directories:
-    - "node_modules"
     - "~/.npm"
     - "~/.cache"
 
