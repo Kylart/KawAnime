@@ -29,4 +29,5 @@ selenium-debug.log
 coverage.lcov
 /coverage/
 screenshots
-cypress
+./cypress
+test/cypress/videos
