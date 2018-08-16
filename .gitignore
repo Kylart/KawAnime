@@ -2,7 +2,6 @@
 
 # dependencies
 node_modules
-package-lock.json
 
 # logs
 npm-debug.log
@@ -29,5 +28,6 @@ selenium-debug.log
 coverage.lcov
 /coverage/
 screenshots
-./cypress
+!test/cypress
+cypress
 test/cypress/videos
