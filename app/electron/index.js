@@ -46,8 +46,12 @@ function newWin () {
     webPreferences: {
       nodeIntegration: false
     },
-    width: 1200,
-    height: 800,
+    width: userConfig.bounds.width 
+      ? userConfig.bounds.width 
+      : 1200,
+    height: userConfig.bounds.height 
+      ? userConfig.bounds.height 
+      : 800,
     titleBarStyle: 'hidden',
     frame: process.platform === 'darwin',
     show: false
@@ -55,6 +59,20 @@ function newWin () {
 
   win.once('ready-to-show', () => {
     win.show()
+  })
+
+  win.on('close', () => {
+    const bounds = win.getBounds()
+    const config = join(systemFolder, 'config.json')
+    fs.readFile(config, 'utf-8', (error, data) => {
+      if (error) {
+        // failed to read file
+      } else {
+        const json = JSON.parse(data)
+        json.config.bounds = bounds
+        fs.writeFileSync(config, JSON.stringify(json), 'utf-8')
+      }
+    })
   })
 
   win.on('closed', () => {
