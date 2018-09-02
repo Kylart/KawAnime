@@ -46,11 +46,11 @@ function newWin () {
     webPreferences: {
       nodeIntegration: false
     },
-    width: userConfig.bounds.width 
-      ? userConfig.bounds.width 
+    width: userConfig.bounds.width
+      ? userConfig.bounds.width
       : 1200,
-    height: userConfig.bounds.height 
-      ? userConfig.bounds.height 
+    height: userConfig.bounds.height
+      ? userConfig.bounds.height
       : 800,
     titleBarStyle: 'hidden',
     frame: process.platform === 'darwin',

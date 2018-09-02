@@ -7,8 +7,6 @@ import axios from 'axios'
 import _ from 'lodash'
 import Vuetify from './vuetify.js'
 
-import * as Components from 'components/_index.js'
-
 import { createStore } from 'store/index'
 import { createRouter } from 'router/index'
 import { sync } from 'vuex-router-sync'
@@ -28,9 +26,6 @@ Vue.prototype.$axios = axios
 Vue.prototype.$log = (...args) => console.log(`[${(new Date()).toLocaleTimeString()}]:`, ...args)
 
 Vue.component('vue-markdown', VueMarkdown)
-Object.keys(Components).forEach(key => {
-  Vue.component(key, Components[key])
-})
 
 // Expose a factory function that creates a fresh set of store, router,
 // app instances on each call (which is called for each SSR request)

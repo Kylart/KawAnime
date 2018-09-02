@@ -6,7 +6,10 @@ export default {
   NODE_ENV: '',
   platform: '',
   isConnected: false,
-  drawer: false,
+  drawer: {
+    left: false,
+    right: false
+  },
   infoSnackbar: {
     show: false,
     text: ''
