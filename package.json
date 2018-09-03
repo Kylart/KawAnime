@@ -68,7 +68,8 @@
     "vuetify": "^1.2.1",
     "vuex": "^3.0.1",
     "vuex-router-sync": "^5.0.0",
-    "webtorrent": "^0.101.0"
+    "webtorrent": "^0.101.0",
+    "zettai": "^2.0.0"
   },
   "devDependencies": {
     "@vue/devtools": "^1.1.0",

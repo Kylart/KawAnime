@@ -9,7 +9,7 @@
       transition(name='page', mode='out-in')
         router-view
 
-      k-footer
+      //- k-footer
 
     //- env(v-show='$store.state.NODE_ENV === "development"')
     //- overlay(v-show='overlay')

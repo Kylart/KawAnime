@@ -2,66 +2,20 @@ import {axios, log, isRoot} from 'store/utils'
 
 export default {
   async init ({rootState, state, commit, dispatch}) {
-    if (!rootState.isConnected) {
-      setTimeout(() => {
-        dispatch('init')
-      }, 30 * 1000)
+    const { data, status } = await axios.get('getLatest', {
+      params: {
+        fansub: state.params.fansub,
+        quality: state.params.quality,
+        feed: state.params.choice
+      }
+    })
 
+    if (status === 204) {
+      log('An error has occurred while getting latest releases.')
       return
     }
 
-    console.log('[INIT] Releases')
-
-    try {
-      const {data, status} = await axios.get('getLatestNyaa', { params: state.params })
-
-      if (status === 200) {
-        commit('set', {data})
-
-        dispatch('news/init', null, isRoot)
-
-        if (state.autoRefresh === true) dispatch('autoRefresh')
-      } else if (status === 202) {
-        log(`An error occurred while getting the latest releases. Retrying in 45 seconds.`)
-        commit('setInfoSnackbar', 'Could not get the latest releases. Retrying in 45 seconds.', isRoot)
-        setTimeout(() => {
-          log(`Retrying to get latest releases.`)
-          dispatch('init').catch(err => { void (err) })
-        }, 45 * 1000)
-      } else if (status === 204) {
-        log('nyaa.si does not respond... Switching to nyaa.pantsu.cat.')
-
-        commit('setChoice', 'pantsu')
-
-        const {data, status} = await axios.get('getLatestNyaa', { params: state.params })
-
-        if (status === 200) {
-          commit('set', {data})
-
-          dispatch('news/init', null, isRoot)
-
-          if (state.autoRefresh === true) dispatch('autoRefresh')
-        } else if (status === 202 || status === 204) {
-          // If we reach this point, it means that none of the nyaa is on.
-          // We'd better check both each time.
-          commit('setChoice', 'si')
-
-          log(`An error occurred while getting the latest releases. Retrying in 45 seconds.`)
-          commit('setInfoSnackbar', 'Could not get the latest releases. Retrying in 45 seconds.', isRoot)
-          setTimeout(() => {
-            log(`Retrying to get latest releases.`)
-            dispatch('init').catch(err => { void (err) })
-          }, 45 * 1000)
-        }
-      }
-    } catch (e) {
-      log(`An error occurred while getting the latest releases. Retrying in 45 seconds.`)
-      commit('setInfoSnackbar', 'Could not get the latest releases. Retrying in 45 seconds.', isRoot)
-      setTimeout(() => {
-        log(`Retrying to get latest releases.`)
-        dispatch('init').catch(err => { void (err) })
-      }, 45 * 1000)
-    }
+    commit('set', data)
   },
   async refresh ({state, rootState, commit, dispatch}) {
     const retryLater = (backUp) => {

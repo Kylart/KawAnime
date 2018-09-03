@@ -34,6 +34,7 @@ import {
   VSlider,
   VPagination,
   VTextarea,
+  VImg,
   transitions
 } from 'vuetify'
 
@@ -75,6 +76,7 @@ export default (Vue) => {
       VSlider,
       VPagination,
       VTextarea,
+      VImg,
       transitions
     },
     directives: {
