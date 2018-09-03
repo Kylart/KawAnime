@@ -33,6 +33,10 @@ const createConfig = () => {
         autoStart: false,
         toTray: false
       },
+      bounds: {
+        height: null,
+        width: null
+      },
       version: '0.0.0',
       video: {
         inside: true,
