@@ -107,7 +107,7 @@ export default {
       this.elems = {}
 
       for (let i = 0, l = this.nbElems; i < l; ++i) {
-        this.elems[keys[i]] = this.history[keys[i]]
+        if (this.history[keys[i]] !== undefined) this.elems[keys[i]] = this.history[keys[i]]
       }
     }
   },
