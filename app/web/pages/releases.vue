@@ -2,38 +2,24 @@
   v-container(
     grid-list-md, fluid
   )
-    v-layout(v-if='entries.length', row, wrap, justify-center)
-      v-flex(
-        xs3,
-        v-for='entry in entries',
-        :key='entry.links.magnet'
-      )
-        card(:info='entry.parsedName', :ref='entry.parsedName.title')
+    transition-group(name='fade', mode='out-in')
+      entries(v-if='!current && releases.length', key='entries')
 
-      v-pagination(
-        xs12,
-        v-model='page'
-        :length='6'
-      )
+      current(v-else-if='current', key='current')
 
-    v-layout(v-else, row, wrap)
-      v-flex(xs12) Loading ?
+      loading(v-else, key='loading')
 </template>
 
 <script>
 // Components
-import Card from 'components/feed/card.vue'
+import Entries from 'components/feed/entries.vue'
+import Loading from 'components/feed/loading.vue'
+import Current from 'components/feed/current.vue'
 
 export default {
   name: 'Feed',
 
-  components: { Card },
-
-  data: () => ({
-    page: 1,
-    entryPerPage: 12,
-    current: null
-  }),
+  components: { Entries, Loading, Current },
 
   computed: {
     releases: {
@@ -42,31 +28,20 @@ export default {
       },
       set () {}
     },
-    info: {
+    current: {
       get () {
-        return this.$store.state.info.info
+        return this.$store.state.releases.current
       },
       set () {}
-    },
-    fileRange () {
-      const index = this.page - 1
-
-      return {
-        inf: index * this.entryPerPage,
-        sup: (index + 1) * this.entryPerPage - 1
-      }
-    },
-    entries () {
-      return this.releases.slice(this.fileRange.inf, this.fileRange.sup + 1)
     }
-  },
-
-  methods: {
-
   }
 }
 </script>
 
 <style lang="stylus" scoped>
+  .fade-enter, .fade-leave-to
+    opacity 0
 
+  .fade-enter-active, .fade-leave
+    transition all .5s
 </style>

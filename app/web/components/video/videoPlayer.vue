@@ -85,13 +85,24 @@
 </template>
 
 <script>
+// Comps
+import PlayerSlider from 'components/video/playerSlider.vue'
+
+// Mixins and methods
 import { fromAss } from 'assets/subtitle-parser'
 import Subtitle from 'mixins/subtitles'
 
 export default {
   name: 'video-player',
+
+  components: {
+    PlayerSlider
+  },
+
   mixins: [Subtitle],
+
   props: ['value', 'title'],
+
   data () {
     return {
       waiting: false,
@@ -114,6 +125,7 @@ export default {
       hasAppendedToHistory: false
     }
   },
+
   computed: {
     config: {
       get () {
@@ -205,6 +217,7 @@ export default {
 
     video && !this.fullscreen && this.config.fullscreen && this.toggleFullScreen()
   },
+
   beforeDestroy () {
     this.eventSource && this.eventSource.close()
     this.fullscreen && this.toggleFullScreen()
@@ -221,6 +234,7 @@ export default {
       })
     }
   },
+
   methods: {
     formatTime (time = 0) {
       const minutes = ('0' + Math.floor(time / 60)).slice(-2)

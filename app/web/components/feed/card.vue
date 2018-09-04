@@ -17,11 +17,11 @@
         )
           v-layout.text(fill-height, column, justify-space-between)
             v-flex(xs2)
-              span.entry-title {{ info.title }}
+              span.entry-title {{ info.parsedName.title }}
             v-flex.text-xs-center(v-if='!picture', xs2)
               v-progress-circular(indeterminate)
             v-flex.entry-ep(xs2)
-              span Ep. {{ info.episodeOrMovieNumber }}
+              span Ep. {{ info.parsedName.episodeOrMovieNumber }}
 
         v-container.overlay(
           v-else
@@ -83,20 +83,35 @@ export default {
       this.overlay = false
     },
     watch () {
+      const { links: { magnet }, parsedName: { title, episodeOrMovieNumber: ep } } = this.info
 
+      this.$store.commit('streaming/play', {
+        show: true,
+        link: {
+          link: magnet,
+          name: `${title} - ${ep}`
+        }
+      })
     },
-    download () {
-
+    async download () {
+      await this.$axios.get('openThis', {
+        params: {
+          type: 'link',
+          link: this.info.links.magnet
+        }
+      })
     },
     more () {
-
+      this.$store.commit('releases/setCurrent', this.info.parsedName.title)
     },
     async updateInfo () {
-      if (!(this.info.title in this.allInfo)) {
-        await this.$store.dispatch('info/get', this.info.title)
+      const name = this.info.parsedName.title
+
+      if (!(name in this.allInfo)) {
+        await this.$store.dispatch('info/get', name)
       }
 
-      this.$set(this, 'animeInfo', this.allInfo[this.info.title])
+      this.$set(this, 'animeInfo', this.allInfo[name])
       this.$set(this, 'picture', this.animeInfo.picture)
     }
   }

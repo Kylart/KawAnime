@@ -5,6 +5,9 @@ export default {
     state.releases = data
     state.updateTime = moment()
   },
+  setCurrent (state, name) {
+    state.current = name
+  },
   setParams (state, data) {
     state.params = data
   },

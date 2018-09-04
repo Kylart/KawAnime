@@ -14,7 +14,7 @@
     //- env(v-show='$store.state.NODE_ENV === "development"')
     //- overlay(v-show='overlay')
     //- magnets-modal
-    //- video-modal(v-show='$store.state.streaming.player.show')
+    video-modal(v-show='$store.state.streaming.player.show')
     //- mal-form
     //- info-results
     //- choice-window
@@ -35,6 +35,9 @@ import RightDrawer from 'components/layout/rightNavigationDrawer.vue'
 import Toolbar from 'components/layout/toolbar.vue'
 import SystemBar from 'components/layout/systemBar.vue'
 
+// Global comps
+import VideoModal from 'components/video/videoModal.vue'
+
 // Mixins
 import Meta from 'mixins/global/meta'
 import ReadMagnet from 'mixins/global/readMagnet'
@@ -47,7 +50,10 @@ export default {
     LeftDrawer,
     RightDrawer,
     Toolbar,
-    SystemBar
+    SystemBar,
+
+    // Global
+    VideoModal
   },
 
   mixins: [Meta, ReadMagnet, DragDrop]

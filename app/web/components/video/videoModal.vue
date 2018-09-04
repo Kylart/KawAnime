@@ -10,8 +10,14 @@
 </template>
 
 <script>
+import VideoPlayer from 'components/video/videoPlayer.vue'
+
 export default {
   name: 'Video-Container',
+
+  components: {
+    VideoPlayer
+  },
 
   data () {
     return {
@@ -95,7 +101,7 @@ export default {
       this.isMinimized = false
 
       if (this.fullscreen) {
-        this.z = 3
+        this.z = 4
         this.width = 100
         this.height = 100
         this.bottom = 0
@@ -103,7 +109,7 @@ export default {
       } else {
         this.width = 85
         this.height = 85
-        this.z = 2
+        this.z = 3
         this.center()
       }
 
