@@ -27,28 +27,32 @@
           v-else
           fill-height,
           fluid,
-          pa-2,
+          pa-0,
           key='overlay'
         )
-          v-layout(fill-height, align-center, justify-center)
-            v-flex(xs3, justify-center, flexbox)
-              v-btn(icon, large, @click='watch')
-                v-icon(large) play_circle_outline
-            v-flex(xs3, justify-center, flexbox)
-              v-btn(icon, large, @click='download')
-                v-icon(large) file_download
-            v-flex(xs3, justify-center, flexbox)
-              v-btn(icon, large, @click='more')
-                v-icon(large) more_horiz
+          v-layout(fill-height, align-center row, wrap)
+            v-flex.overlay-icon(@click='watch', xs4, fill-height)
+              v-icon.large play_arrow
+            v-flex.pa-0.download-container(xs4, fill-height)
+              v-layout.ma-0(fill-height, column)
+                v-flex.overlay-icon(@click='download', xs6, fill-height)
+                  v-icon.large file_download
+                v-flex.overlay-icon(xs6, fill-height)
+                  v-icon.large cloud_download
+            v-flex.overlay-icon(@click='more', xs4, fill-height)
+              v-icon.large more_horiz
 
     v-card-actions
       v-spacer
+      //- We'll change the colors if the entry is in a
+      //- list.
       v-btn(icon)
         v-icon tv
       v-btn(icon)
-        v-icon favorite
+        v-icon watch_later
       v-btn(icon)
         span.mal-icon
+      v-spacer
 </template>
 
 <script>
@@ -80,7 +84,7 @@ export default {
       this.overlay = true
     },
     hideOverlay () {
-      this.overlay = false
+      this.overlay = true
     },
     watch () {
       const { links: { magnet }, parsedName: { title, episodeOrMovieNumber: ep } } = this.info
@@ -129,9 +133,27 @@ export default {
   .overlay
     background-color rgba(0, 0, 0, 0.7)
 
+  .overlay-icon
+    position relative
+    display flex
+    justify-content center
+    align-items center
+    transition all .25s
+    cursor pointer
+
+    &:hover
+      background-color rgba(255, 255, 255, 0.20)
+
+    .large
+      font-size 48px
+
+  .download-container
+    width 100%
+    height 100%
+
   // Not overlay
   .text
-    font-size 22px
+    font-size 18px
     letter-spacing 0.07em
     font-weight bold
     // Making an outline on he text
@@ -139,5 +161,5 @@ export default {
 
   .entry-ep
     text-align right
-    font-size 20px
+    font-size 16px
 </style>
