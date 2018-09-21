@@ -22,7 +22,7 @@ export default {
       fromEp: +fromEp,
       untilEp: +untilEp,
       fansub: obj.fansub || rootState.config.config.fansub,
-      choice: 'si'
+      feed: 'si'
     }
     let failed = false
 

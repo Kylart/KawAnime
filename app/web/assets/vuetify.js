@@ -35,6 +35,7 @@ import {
   VPagination,
   VTextarea,
   VImg,
+  VAutocomplete,
   transitions
 } from 'vuetify'
 
@@ -77,6 +78,7 @@ export default (Vue) => {
       VPagination,
       VTextarea,
       VImg,
+      VAutocomplete,
       transitions
     },
     directives

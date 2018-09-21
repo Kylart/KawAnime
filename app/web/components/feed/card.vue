@@ -5,7 +5,6 @@
       @mouseleave='hideOverlay',
       :src="picture || ''",
       :lazy-src="picture || ''",
-      lazy-src='~static/images/waiting.png'
       height='200px'
     )
       transition-group(name='overlay-trans', mode='out-in')
@@ -86,12 +85,12 @@ export default {
       this.overlay = false
     },
     watch () {
-      const { links: { magnet }, parsedName: { title, episodeOrMovieNumber: ep } } = this.info
+      const { links: { magnetLink }, parsedName: { title, episodeOrMovieNumber: ep }, magnet } = this.info
 
       this.$store.commit('streaming/play', {
         show: true,
         link: {
-          link: magnet,
+          link: magnet || magnetLink,
           name: `${title} - ${ep}`
         }
       })
@@ -100,7 +99,7 @@ export default {
       await this.$axios.get('openThis', {
         params: {
           type: 'link',
-          link: this.info.links.magnet
+          link: this.info.magnet || this.info.links.magnet
         }
       })
     },

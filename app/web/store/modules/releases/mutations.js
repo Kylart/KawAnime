@@ -11,16 +11,7 @@ export default {
   setParams (state, data) {
     state.params = data
   },
-  empty (state) {
-    state.releases = []
-  },
-  setQuality (state, data) {
-    state.params.quality = data
-  },
-  setFansub (state, data) {
-    state.params.fansub = data
-  },
-  setChoice (state, data) {
-    state.params.choice = data
+  refreshing (state, bool) {
+    state.isRefreshing = bool
   }
 }

@@ -6,11 +6,12 @@ export default {
   releases: [],
   autoRefresh: true,
   updateTime: moment(),
-  notLoaded: false,
+  isRefreshing: true,
   params: {
     quality: '',
     fansub: '',
-    choice: 'si'
+    feed: 'si',
+    term: ''
   },
   fansubs
 }

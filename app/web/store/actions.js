@@ -17,7 +17,7 @@ export default {
       commit('releases/setParams', {
         fansub: data.config.fansub,
         quality: data.config.quality,
-        choice: 'si'
+        feed: 'si'
       })
       commit('localFiles/setDir', data.config.localPath)
     } catch (e) { void e }
