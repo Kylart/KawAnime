@@ -4,6 +4,7 @@
       @mouseover='showOverlay',
       @mouseleave='hideOverlay',
       :src="picture || ''",
+      :lazy-src="picture || ''",
       lazy-src='~static/images/waiting.png'
       height='200px'
     )
@@ -16,8 +17,7 @@
           key='normal'
         )
           v-layout.text(fill-height, column, justify-space-between)
-            v-flex(xs2)
-              span.entry-title {{ info.parsedName.title }}
+            v-flex.entry-title(xs2) {{ info.parsedName.title }}
             v-flex.text-xs-center(v-if='!picture', xs2)
               v-progress-circular(indeterminate)
             v-flex.entry-ep(xs2)
@@ -44,8 +44,7 @@
 
     v-card-actions
       v-spacer
-      //- We'll change the colors if the entry is in a
-      //- list.
+      //- We'll change the colors if the entry is in a list.
       v-btn(icon)
         v-icon tv
       v-btn(icon)
@@ -84,7 +83,7 @@ export default {
       this.overlay = true
     },
     hideOverlay () {
-      this.overlay = true
+      this.overlay = false
     },
     watch () {
       const { links: { magnet }, parsedName: { title, episodeOrMovieNumber: ep } } = this.info
@@ -156,10 +155,17 @@ export default {
     font-size 18px
     letter-spacing 0.07em
     font-weight bold
-    // Making an outline on he text
-    text-shadow 1px 1px black, -1px -1px black, 1px -1px black, -1px 1px black
+    color white
+
+  .entry-title
+    padding 2px 4px
+    background-color rgba(0, 0, 0, 0.4)
 
   .entry-ep
     text-align right
     font-size 16px
+
+    span
+      padding 2px 4px
+      background-color rgba(0, 0, 0, 0.4)
 </style>

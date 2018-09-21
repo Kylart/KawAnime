@@ -1,17 +1,20 @@
 <template lang="pug">
-  v-layout(row, wrap, justify-center)
-    v-flex(
-      xs3,
-      v-for='entry in entries',
-      :key='entry.links.magnet'
-    )
-      card(:info='entry', :ref='entry.parsedName.title')
+  v-container(
+    grid-list-lg, fluid
+  )
+    v-layout(row, wrap, justify-center)
+      v-flex(
+        xs3,
+        v-for='entry in entries',
+        :key='entry.links.magnet'
+      )
+        card(:info='entry', :ref='entry.parsedName.title')
 
-    v-pagination(
-      xs12,
-      v-model='page'
-      :length='6'
-    )
+      v-pagination(
+        xs12,
+        v-model='page'
+        :length='6'
+      )
 </template>
 
 <script>

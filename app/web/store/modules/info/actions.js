@@ -1,7 +1,7 @@
 import { axios, log } from 'store/utils'
 
 export default {
-  async get ({ commit, state }, nameOrUrl) {
+  async get ({ commit, state, dispatch }, nameOrUrl) {
     const isUrl = /https?:\/\//.test(nameOrUrl)
 
     const params = {
@@ -12,11 +12,50 @@ export default {
 
     if (status !== 200) {
       log('error', 'An error occurred while search for', nameOrUrl)
+
+      setTimeout(() => {
+        dispatch('get', nameOrUrl)
+      }, 30 * 1000)
     }
 
     commit('add', {
       key: nameOrUrl,
       value: data
     })
+  },
+  async getEps ({ commit }, { name, id }) {
+    try {
+      const { data, status } = await axios.get('searchEpsOnMal', {
+        params: { name, id }
+      })
+
+      if (status === 204) {
+        log('error', 'An error occurred while searching for', name)
+        return
+      }
+
+      commit('addEps', { name, data })
+    } catch (e) {
+      log('error', 'Server error:', e)
+    }
+  },
+  async getEpsLinks ({ rootState, commit }, name) {
+    try {
+      const { data, status } = await axios.post('download', {
+        quality: rootState.config.config.quality,
+        name,
+        fansub: rootState.config.config.fansub,
+        choice: 'si' // TODO: Take this from the release page local configuration
+      })
+
+      if (status === 204) {
+        log('error', 'An error occurred while getting ep links for' + name)
+        return
+      }
+
+      commit('addEpsLinks', { name, data })
+    } catch (e) {
+      log('error', 'Server error:', e)
+    }
   }
 }

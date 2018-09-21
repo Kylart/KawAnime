@@ -1,6 +1,9 @@
 <template lang="pug">
-  v-layout(row, wrap)
-    v-flex(xs12) Loading..
+  v-container(
+    grid-list-md, fluid
+  )
+    v-layout(row, wrap)
+      v-flex(xs12) Loading..
 </template>
 
 <style lang="stylus" scoped>

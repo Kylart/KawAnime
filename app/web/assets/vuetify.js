@@ -38,7 +38,7 @@ import {
   transitions
 } from 'vuetify'
 
-import { Ripple } from 'vuetify/es5/directives'
+import directives from 'vuetify/es5/directives'
 
 export default (Vue) => {
   Vue.use(Vuetify, {
@@ -79,8 +79,6 @@ export default (Vue) => {
       VImg,
       transitions
     },
-    directives: {
-      Ripple
-    }
+    directives
   })
 }

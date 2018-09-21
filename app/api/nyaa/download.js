@@ -1,6 +1,7 @@
 const {si, pantsu} = require('nyaapi')
+const { parseAnime: parse } = require('zettai')
 const _ = require('lodash')
-const {removeUnwanted, Logger} = require('../utils')
+const {Logger} = require('../utils')
 const logger = new Logger('Nyaa (Download)')
 
 const sendRes = (object, res) => {
@@ -15,17 +16,16 @@ const formatMagnets = (data, searchData, choice, res) => {
   const isPantsu = choice === 'pantsu'
 
   data.forEach((elem) => {
-    elem.name = removeUnwanted(elem.name)
-    const ep = elem.name.split(' ').splice(-2, 1)[0]
-      .replace('v2', '')
-      .replace('v3', '')
-      .replace('v4', '')
+    const parsed = Object.assign({}, parse(elem.name))
+    const ep = parseInt(parsed.episodeOrMovieNumber)
+
     eps.push(ep)
 
     if (ep <= searchData.untilEp && ep >= searchData.fromEp) {
       magnets.push({
-        name: elem.name,
-        link: isPantsu ? elem.magnet : elem.links.magnet
+        name: parsed.title,
+        link: isPantsu ? elem.magnet : elem.links.magnet,
+        nb: ep
       })
     }
   })
@@ -47,8 +47,8 @@ const download = (req, res) => {
       quality: chunk.quality,
       name: chunk.name,
       fansub: chunk.fansub,
-      fromEp: chunk.fromEp,
-      untilEp: chunk.untilEp
+      fromEp: chunk.fromEp || -Infinity,
+      untilEp: chunk.untilEp || Infinity
     }
 
     logger.info('Received a download request. Choice is ' + choice, searchData)

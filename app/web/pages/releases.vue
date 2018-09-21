@@ -1,13 +1,10 @@
 <template lang="pug">
-  v-container(
-    grid-list-md, fluid
-  )
-    transition-group(name='fade', mode='out-in')
-      entries(v-if='!current && releases.length', key='entries')
+  transition-group(name='fade', mode='out-in')
+    entries(v-if='!current && releases.length', key='entries')
 
-      current(v-else-if='current', key='current')
+    current(v-else-if='current', key='current')
 
-      loading(v-else, key='loading')
+    loading(v-else, key='loading')
 </template>
 
 <script>

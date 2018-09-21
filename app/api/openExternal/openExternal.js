@@ -17,7 +17,7 @@ const sendRes = (res, data) => {
 
 const openExternal = ({query}, res) => {
   const type = query.type
-  logger.info('Got a request for external open: type is ' + type)
+  logger.info('Got a request for external open of a ' + type)
 
   switch (type) {
     case 'video':
