@@ -90,16 +90,23 @@
         v-divider
         v-flex.section-title(xs12, d-flex, align-center)
           span Episode list
-        v-flex.link(v-if="epLinks.magnets", v-for='ep in epLinks.magnets', :key='ep.nb', xs12)
+        v-flex.link(v-if="epLinks.magnets", v-for='ep in epsList', :key='ep', xs12)
           v-layout(row, wrap, align-center)
-            v-flex.aired(xs2, d-flex, justify-center) {{ getEpAired(ep.nb) }}
-            v-flex.name(xs7, d-flex, justify-center) {{ getEpName(ep.nb) }}
-            v-flex.number(xs1) Ep. {{ ep.nb }}
+            v-flex.aired(xs2, d-flex, justify-center) {{ getEpAired(ep) }}
+            v-flex.name(xs6, d-flex, justify-center) {{ getEpName(ep) }}
+            v-flex.number(xs1) Ep. {{ ep }}
+            v-flex.quality(xs1)
+              v-select(
+                :items='epQualities[ep]',
+                v-model='epsQuality[ep]',
+                label='Quality',
+                hide-details
+              )
             v-flex.actions(xs2)
               //- TODO ? Offer quality choice
-              v-btn(large, icon)
+              v-btn(large, icon, @click='watch(ep)')
                 v-icon(large) play_circle_outline
-              v-btn(large, icon)
+              v-btn(large, icon, @click='download(ep)')
                 v-icon(large) file_download
         v-flex.loading(v-else) Loading episodes...
 
@@ -114,10 +121,14 @@
 </template>
 
 <script>
+import Episodes from 'mixins/feed/currentEps.js'
+
 import { mapGetters } from 'vuex'
 
 export default {
   name: 'Current',
+
+  mixins: [Episodes],
 
   async mounted () {
     if (!this.info.hasOwnProperty('episodesInfo')) {
@@ -126,20 +137,7 @@ export default {
         id: this.info.id
       })
     }
-
-    if (!this.info.hasOwnProperty('episodesLinks')) {
-      await this.$store.dispatch('info/getEpsLinks', this.current)
-    }
-
-    // Making a computed property would probably be better
-    // but I failed to successfullly get one to refresh whenever
-    // it should so..
-    this.epLinks = this.info.episodesLinks || {}
   },
-
-  data: () => ({
-    epLinks: {}
-  }),
 
   computed: {
     ...mapGetters('info', {

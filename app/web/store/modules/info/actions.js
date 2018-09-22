@@ -39,19 +39,16 @@ export default {
       log('error', 'Server error:', e)
     }
   },
-  async getEpsLinks ({ rootState, commit }, name) {
+  async getEpsLinks ({ rootState, commit }, { name, config }) {
     try {
-      const { data, status } = await axios.post('download', {
-        quality: rootState.config.config.quality,
-        name,
-        fansub: rootState.config.config.fansub,
-        choice: 'si' // TODO: Take this from the release page local configuration
-      })
+      const { data, status } = await axios.post('download', { name, ...config })
 
       if (status === 204) {
         log('error', 'An error occurred while getting ep links for' + name)
         return
       }
+
+      console.log(data)
 
       commit('addEpsLinks', { name, data })
     } catch (e) {

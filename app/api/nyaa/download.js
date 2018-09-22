@@ -1,8 +1,9 @@
-const {si, pantsu} = require('nyaapi')
 const { parseAnime: parse } = require('zettai')
 const _ = require('lodash')
 const {Logger} = require('../utils')
 const logger = new Logger('Nyaa (Download)')
+
+const engines = require('./engines.js')
 
 const sendRes = (object, res) => {
   res
@@ -10,10 +11,10 @@ const sendRes = (object, res) => {
     .json(object)
 }
 
-const formatMagnets = (data, searchData, choice, res) => {
+const formatMagnets = (data, searchData, feed, res) => {
   const magnets = []
   const eps = []
-  const isPantsu = choice === 'pantsu'
+  const isPantsu = feed === 'pantsu'
 
   data.forEach((elem) => {
     const parsed = Object.assign({}, parse(elem.name))
@@ -25,7 +26,8 @@ const formatMagnets = (data, searchData, choice, res) => {
       magnets.push({
         name: parsed.title,
         link: isPantsu ? elem.magnet : elem.links.magnet,
-        nb: ep
+        nb: ep,
+        quality: parsed.resolution
       })
     }
   })
@@ -41,35 +43,28 @@ const download = (req, res) => {
   req.on('data', (chunk) => {
     chunk = JSON.parse(chunk)
 
-    const {choice} = chunk
+    const {feed} = chunk
 
     const searchData = {
-      quality: chunk.quality,
-      name: chunk.name,
-      fansub: chunk.fansub,
+      quality: chunk.quality || '',
+      name: chunk.name || '',
+      fansub: chunk.fansub || '',
       fromEp: chunk.fromEp || -Infinity,
       untilEp: chunk.untilEp || Infinity
     }
 
-    logger.info('Received a download request. Choice is ' + choice, searchData)
+    logger.info('Received a download request. Feed is ' + feed, searchData)
 
-    const term = `[${searchData.fansub}] ${searchData.quality || ''} ${searchData.name} ` + (choice === 'si' ? '-unofficial' : '')
+    const term = `[${searchData.fansub}] ${searchData.quality} ${searchData.name}`
 
-    if (choice === 'si') {
-      si.search(term).then((data) => {
-        formatMagnets(data, searchData, choice, res)
-      }).catch(/* istanbul ignore next */(err) => {
+    const engine = engines[feed]
+
+    engine.search(term)
+      .then((data) => formatMagnets(data, searchData, feed, res))
+      .catch(/* istanbul ignore next */(err) => {
         logger.error('An error occurred.', err)
         res.status(204).send()
       })
-    } else {
-      pantsu.search(term).then((data) => {
-        formatMagnets(data, searchData, choice, res)
-      }).catch(/* istanbul ignore next */(err) => {
-        logger.error('An error occurred.', err)
-        res.status(204).send()
-      })
-    }
   })
 }
 

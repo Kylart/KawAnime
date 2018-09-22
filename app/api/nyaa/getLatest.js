@@ -1,12 +1,8 @@
-const { si, pantsu } = require('nyaapi')
 const { parseAnime: parse } = require('zettai')
 const { Logger } = require('../utils')
 const logger = new Logger('Nyaa (Releases)')
 
-const engines = {
-  'si': si,
-  'pantsu': pantsu
-}
+const engines = require('./engines.js')
 
 const getLatest = ({ query: { feed, quality, term, fansub = '' } }, res) => {
   // This method will only return the raw feed from
