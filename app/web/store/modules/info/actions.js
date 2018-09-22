@@ -48,8 +48,6 @@ export default {
         return
       }
 
-      console.log(data)
-
       commit('addEpsLinks', { name, data })
     } catch (e) {
       log('error', 'Server error:', e)

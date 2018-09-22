@@ -73,7 +73,8 @@ export default {
         }
 
         this.epQualities[ep].push(quality)
-        this.epQualities[ep] = this.epQualities[ep].sort()
+        this.epQualities[ep] = this.epQualities[ep]
+          .sort((a, b) => parseInt(a.replace('p')) - parseInt(b.replace('p'))).reverse()
       })
     },
     setEpsQuality () {

@@ -2,7 +2,7 @@
   transition-group(name='fade', mode='out-in')
     entries(v-if='!isRefreshing && !current && releases.length', key='entries')
 
-    current(v-else-if='!isRefreshing && current', key='current')
+    current(v-else-if='current', key='current')
 
     loading(v-else, key='loading')
 </template>

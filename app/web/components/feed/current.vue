@@ -4,25 +4,32 @@
   )
     v-layout(row, wrap, fill-height, justify-center, align-center)
       v-flex(xs6, md3, pa-0)
-        v-img(:src='sanitize(info.picture)', contain, height='350', position='left top')
+        v-img(:src='sanitize(info.picture)', contain, height='370', position='left top')
       v-flex(xs12, md9)
         v-layout.top-container(align-content-space-between, column)
           .info-title {{ info.title }} (#[span.jap {{ info.japaneseTitle }}]) [{{ info.type }}]
-          v-divider
           //- TODO need to handle xs
           v-layout.synopsis-container.pa-2(row, wrap)
             v-flex(xs12, sm8, md10, d-flex, align-center)
               .synopsis {{ info.synopsis || 'No sysnopsis.' }}
             v-flex(xs12, sm4, md2)
-              .status
+              .status.bordered
                 .sentence {{ statusSentence }}
                 .score {{ info.score }} #[span / 10]
+          v-divider
+          v-layout.details-container.pt-0(row, wrap, align-center)
+            v-flex(xs12, sm6, md6, lg8, d-flex, align-center)
+              .genres Genres: #[i {{ info.genres.join(', ') }}]
+            v-flex(xs12, sm3, md3, lg2, d-flex, align-center)
+              .studios {{ studios }}
+            v-flex(xs12, sm3, md3, lg2)
+              .rating.ellipsis {{ rating }}
 
     v-divider
 
     v-layout.characters-container(row, wrap, justify-center, align-center)
       v-flex(v-for='char in info.characters', :key='char.name', xs12, sm6, md4, pt-0)
-        v-layout(row, wrap, justify-space-between)
+        v-layout(row, wrap)
           v-flex(xs3)
             v-img(contain, :src='sanitize(char.picture)', :lazy-src='sanitize(char.picture)', height='120')
               v-layout(
@@ -41,7 +48,7 @@
                   v-btn(icon, @click='openLink(char.link)')
                     v-icon open_in_new
 
-          v-flex(xs3, d-flex, justify-start)
+          v-flex(xs3, d-flex, justify-start, v-if='char.seiyuu.name')
             v-layout(column, justify-space-between)
               v-flex.name.seiyuu(xs6, d-flex, align-center, justify-end) {{ char.seiyuu.name }}
               v-flex(xs6)
@@ -49,7 +56,7 @@
                   v-btn(icon, @click='openLink(char.link)')
                     v-icon open_in_new
 
-          v-flex(xs3)
+          v-flex(xs3, v-if='char.seiyuu.name')
             v-img(contain, :src='sanitize(char.seiyuu.picture)', :lazy-src='sanitize(char.seiyuu.picture)', height='120')
               v-layout(
                 slot='placeholder',
@@ -157,6 +164,10 @@ export default {
     statusSentence () {
       const { status, premiered, source, episodes, duration } = this.info
 
+      const _source = source === 'Original'
+        ? 'is an Original'
+        : `adapted from the ${source}`
+
       const nbEpisodes = episodes === 'Unknown'
         ? 'yet an unknown number of episodes'
         : `It's been announced with ${episodes} episodes`
@@ -165,7 +176,23 @@ export default {
         ? 'of an unknown duration.'
         : `of ${duration.replace('per ep.', '')}`
 
-      return `${status}, it premiered on ${premiered} and adapted from the ${source}. ${nbEpisodes} ${_duration}`
+      return `${status}, it premiered on ${premiered} and ${_source}. ${nbEpisodes} ${_duration}`
+    },
+    studios () {
+      const list = this.info.producers
+
+      if (/None/.test(list[0])) {
+        return 'Unknown Producer'
+      }
+
+      return `By ${list.join(' and ')}`
+    },
+    rating () {
+      const { rating } = this.info
+
+      return rating === 'None'
+        ? 'For everyone'
+        : rating
     }
   },
 
@@ -207,16 +234,20 @@ export default {
 
 <style lang="stylus" scoped>
   .top-container
-    height 350px
+    height 370px
 
     .synopsis-container
-      height 80%
+      height 70%
 
     .info-title
+      height 80px
       text-align center
-      font-size 32px
+      font-size 28px
+      line-height 30px
       letter-spacing 0.04em
       font-weight 400
+      border-bottom 0.02em solid rgba(255, 255, 255, 0.4)
+      padding 10px
 
     .synopsis
       overflow-x hidden
@@ -233,6 +264,10 @@ export default {
       justify-content space-around
       align-items center
 
+      &.bordered
+        padding-left 10px
+        border-left 0.02em solid rgba(255, 255, 255, 0.4)
+
       .sentence
         font-size 14px
         font-weight 300
@@ -246,8 +281,29 @@ export default {
           font-size 18px
           font-weight 300
 
+    .details-container
+      height 10%
+      padding 5px
+
+      .genres
+        font-size 16px
+        font-weight 300
+        letter-spacing 0.03em
+
+      .studios
+        font-size 18px
+        font-style italic
+        letter-spacing 0.03em
+        font-weight 400
+        text-align right
+
+      .rating
+        padding-right 5%
+        font-size 16px
+        text-align right
+
   .characters-container
-    height 245px
+    height 250px
     overflow-x none
     overflow-y auto
 
@@ -273,7 +329,7 @@ export default {
 
     .section-title
       border-bottom 0.02em solid rgba(255, 255 ,255, 0.7)
-      min-height 50px
+      min-height 60px
 
       span
         padding-left 5%
