@@ -14,11 +14,6 @@ module.exports = {
     'description': 'Manage your anime torrenting life.',
     'keywords': 'torrent, download, list, animes'
   },
-  '/streaming': {
-    'title': 'Streaming - KawAnime',
-    'description': 'Stream any anime.',
-    'keywords': 'torrent, streaming, list, animes'
-  },
   '/seasons': {
     'title': 'Seasons - KawAnime',
     'description': 'Browse the anime seasons.',

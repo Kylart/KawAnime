@@ -26,6 +26,19 @@
 
           v-subheader.white--text(v-else-if='item.header') {{ item.header }}
           v-divider(v-else-if='item.divider')
+
+          v-list-tile(
+            v-else,
+            :key='i',
+            :to='item.href',
+            :disabled='item.disabled',
+            ripple
+          )
+            v-list-tile-action
+              v-icon {{ item.action }}
+            v-list-tile-content
+              v-list-tile-title
+                span {{ item.title }}
 </template>
 
 <script>
@@ -37,36 +50,13 @@ export default {
       {divider: true},
       {header: 'Core'},
       {
-        title: 'Downloading',
-        action: 'file_download',
-        group: 'core',
-        items: [
-          {
-            title: 'Downloader',
-            action: 'file_download',
-            href: '/downloader'
-          }, {
-            title: 'Latest releases',
-            action: 'access_time',
-            href: '/'
-          }
-        ]
+        title: 'Releases',
+        action: 'access_time',
+        href: '/'
       }, {
         title: 'Torrent',
-        action: 'folder_open',
-        group: 'torrent',
-        items: [
-          {
-            title: 'Torrenting',
-            action: 'file_upload',
-            href: '/torrenting'
-          },
-          {
-            title: 'Streaming',
-            action: 'tv',
-            href: '/streaming'
-          }
-        ]
+        action: 'file_upload',
+        href: '/torrenting'
       },
       {divider: true},
       {header: 'Anime world'},
