@@ -27,7 +27,12 @@
 
     v-divider
 
-    v-layout.characters-container(row, wrap, justify-center, align-center)
+    v-layout.characters-container(
+      row, wrap, justify-center, align-center,
+      @mouseenter='triggerDelay',
+      @mouseleave='cancelDelay',
+      :style='charHover.overflow'
+    )
       v-flex(v-for='char in info.characters', :key='char.name', xs12, sm6, md4, pt-0)
         v-layout(row, wrap)
           v-flex(xs3)
@@ -146,6 +151,16 @@ export default {
     }
   },
 
+  data: () => ({
+    charHover: {
+      timeout: null,
+      delay: 500,
+      overflow: {
+        overflowY: 'hidden'
+      }
+    }
+  }),
+
   computed: {
     ...mapGetters('info', {
       allInfo: 'getInfo'
@@ -199,6 +214,16 @@ export default {
   methods: {
     back () {
       this.$store.commit('releases/setCurrent', '')
+    },
+    triggerDelay () {
+      this.charHover.timeout = setTimeout(() => {
+        this.charHover.overflow.overflowY = 'scroll'
+      }, this.charHover.delay)
+    },
+    cancelDelay () {
+      if (this.charHover.timeout) {
+        clearTimeout(this.charHover.timeout)
+      }
     },
     sanitize (link) {
       // This redirects unwanted picture links to fallback picture

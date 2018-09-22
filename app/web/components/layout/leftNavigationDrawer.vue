@@ -29,7 +29,6 @@
 
           v-list-tile(
             v-else,
-            :key='i',
             :to='item.href',
             :disabled='item.disabled',
             ripple
