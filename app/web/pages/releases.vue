@@ -21,7 +21,14 @@ export default {
   computed: {
     releases: {
       get () {
-        return this.$store.state.releases.releases
+        const { fansub, quality, feed } = this.params
+        return this.$store.state.releases.releases[feed][fansub][quality]
+      },
+      set () {}
+    },
+    params: {
+      get () {
+        return this.$store.state.releases.params
       },
       set () {}
     },

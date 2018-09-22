@@ -3,7 +3,7 @@ import {moment} from 'store/utils.js'
 
 export default {
   current: null,
-  releases: [],
+  releases: {},
   autoRefresh: true,
   updateTime: moment(),
   isRefreshing: true,

@@ -47,8 +47,9 @@
       v-pagination(
         xs12,
         v-if='nbPages > 1',
-        v-model='page'
-        :length='nbPages'
+        v-model='page',
+        :length='nbPages',
+        total-visible='10'
       )
 </template>
 
@@ -88,7 +89,8 @@ export default {
     },
     releases: {
       get () {
-        return this.$store.state.releases.releases
+        const { fansub, quality, feed } = this.config
+        return this.$store.state.releases.releases[feed][fansub][quality]
       },
       set () {}
     },
