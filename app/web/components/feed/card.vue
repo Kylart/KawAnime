@@ -1,7 +1,7 @@
 <template lang="pug">
   v-card
     v-img(
-      @mouseover='showOverlay',
+      @mouseenter='showOverlay',
       @mouseleave='hideOverlay',
       :src="picture || ''",
       :lazy-src="picture || ''",
