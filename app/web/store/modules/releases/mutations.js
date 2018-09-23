@@ -43,6 +43,8 @@ export default {
     state.releases[params.feed][params.fansub][params.quality] = state.params.term
       ? data
       : [...data.slice(0, index), ...current]
+
+    state.instanciate = true
   },
   setCurrent (state, data) {
     state.current = data

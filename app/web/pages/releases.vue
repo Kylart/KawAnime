@@ -1,13 +1,10 @@
 <template lang="pug">
-  #releases
-    magnets-modal
+  transition-group(name='fade', mode='out-in')
+    loader(v-if='!instanciate', key='loading')
 
-    transition-group(name='fade', mode='out-in')
-      entries(v-if='!isRefreshing && !current && releases.length', key='entries')
+    entries(v-else-if='instanciate && !current', key='entries')
 
-      info-displayer(v-else-if='current', key='current', :current='current', :return-cb='resetCurrent')
-
-      loader(v-else, key='loading')
+    info-displayer(v-else-if='instanciate && current', key='current', :current='current', :return-cb='resetCurrent')
 </template>
 
 <script>
@@ -16,21 +13,12 @@ import Entries from 'components/feed/entries.vue'
 import Loader from 'components/feed/loader.vue'
 import InfoDisplayer from 'components/info/layout.vue'
 
-import MagnetsModal from 'components/magnets/modal.vue'
-
 export default {
   name: 'Feed',
 
-  components: { Entries, Loader, InfoDisplayer, MagnetsModal },
+  components: { Entries, Loader, InfoDisplayer },
 
   computed: {
-    releases: {
-      get () {
-        const { fansub, quality, feed } = this.params
-        return this.$store.state.releases.releases[feed][fansub][quality]
-      },
-      set () {}
-    },
     params: {
       get () {
         return this.$store.state.releases.params
@@ -43,9 +31,9 @@ export default {
       },
       set () {}
     },
-    isRefreshing: {
+    instanciate: {
       get () {
-        return this.$store.state.releases.isRefreshing
+        return this.$store.state.releases.instanciate
       },
       set () {}
     }

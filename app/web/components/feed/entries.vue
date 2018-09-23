@@ -2,6 +2,7 @@
   v-container(
     grid-list-lg, fluid, pt-2
   )
+    magnets-modal
     v-layout(row, wrap, justify-center)
       v-flex(xs12)
         v-layout(justify-space-between, align-center)
@@ -12,7 +13,7 @@
               label='Looking for something?'
               v-model='config.term',
               hide-details,
-              solo,
+              solo, clearable,
               :loading='isRefreshing',
               @keyup.enter='search'
             )
@@ -59,15 +60,21 @@ import { mapGetters } from 'vuex'
 
 // Components
 import Card from 'components/feed/card.vue'
+import MagnetsModal from 'components/magnets/modal.vue'
 
 export default {
   name: 'Entries',
 
-  components: { Card },
+  components: { Card, MagnetsModal },
+
+  mounted () {
+    this.update()
+  },
 
   data: () => ({
     page: 1,
     entryPerPage: 12,
+    releases: [],
     feeds: [{
       text: 'nyaa.si',
       value: 'si'
@@ -84,13 +91,6 @@ export default {
     mainConfig: {
       get () {
         return this.$store.state.config.config
-      },
-      set () {}
-    },
-    releases: {
-      get () {
-        const { fansub, quality, feed } = this.config
-        return this.$store.state.releases.releases[feed][fansub][quality]
       },
       set () {}
     },
@@ -137,11 +137,16 @@ export default {
   },
 
   methods: {
+    update () {
+      this.releases = this.$store.getters['releases/getReleases']
+    },
     async search () {
       if (this.isRefreshing) return
 
       this.$store.commit('releases/setParams', this.config)
       await this.$store.dispatch('releases/refresh')
+
+      this.$nextTick(this.update)
     },
     order (qualities) {
       // We have to clone qualities as the reverse method changes the original input,
