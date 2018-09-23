@@ -44,15 +44,19 @@
 
 <script>
 export default {
+  name: 'History',
+
   mounted () {
     this.generateHistory()
   },
+
   data () {
     return {
       nbElems: 30,
       elems: {}
     }
   },
+
   computed: {
     history () {
       return this.$store.state.history.entries
@@ -66,6 +70,7 @@ export default {
       }
     }
   },
+
   methods: {
     handleScroll () {
       const elem = document.getElementsByClassName('dialog--active')[0]
@@ -111,6 +116,7 @@ export default {
       }
     }
   },
+
   watch: {
     modal (bool) {
       if (bool) {

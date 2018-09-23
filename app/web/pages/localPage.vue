@@ -8,7 +8,7 @@
             v-flex.menu-eps(xs3, sm2, md2)
               p.menu-eps-text {{ nbEps }} {{ episodeLabel }}
             v-flex(xs4, offset-xs1, sm2, offset-sm0, md2)
-              history-modal
+              history
             v-flex(xs3, sm2, md2)
               v-switch(
                 :label="inside ? 'Inside' : 'Outside'",
@@ -106,7 +106,13 @@
 </template>
 
 <script>
+import History from 'components/history/modal'
+
 export default {
+  name: 'Local',
+
+  components: { History },
+
   mounted () {
     setTimeout(() => { this.emptyBg = true }, 300)
 
@@ -114,15 +120,18 @@ export default {
 
     this.refresh()
   },
+
   beforeDestroy () {
     this.emptyBg = false
   },
+
   data () {
     return {
       inside: true,
       emptyBg: false
     }
   },
+
   computed: {
     files () {
       return this.$store.state.localFiles.files
@@ -136,6 +145,7 @@ export default {
         : 'episodes'
     }
   },
+
   methods: {
     async playThis (item) {
       this.$log(`Requested to play ${item.name} - ${item.ep}. Sending...`)
