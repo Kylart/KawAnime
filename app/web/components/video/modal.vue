@@ -3,20 +3,20 @@
     v-scale-transition
       .video-dialog(v-show='show', :style='style')
         template(v-if='values.show')
-          video-player(ref='player', :value='values.link.link', :title='values.link.name')
+          player(ref='player', :value='values.link.link', :title='values.link.name')
 
     v-fade-transition
       .video-overlay(v-show='show && !isMinimized')
 </template>
 
 <script>
-import VideoPlayer from 'components/video/videoPlayer.vue'
+import Player from 'components/video/player.vue'
 
 export default {
   name: 'Video-Container',
 
   components: {
-    VideoPlayer
+    Player
   },
 
   data () {

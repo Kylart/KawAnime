@@ -63,12 +63,15 @@
 
 <script>
 export default {
+  name: 'Magnets-Modal',
+
   data () {
     return {
       snack: false,
       selected: []
     }
   },
+
   computed: {
     values () {
       return this.$store.state.downloader.modal
@@ -94,12 +97,7 @@ export default {
       }))
     }
   },
-  watch: {
-    show () {
-      this.show && this.$store.dispatch('player/play')
-      this.selected = this.magnets
-    }
-  },
+
   methods: {
     close () {
       this.$store.commit('downloader/closeModal')
@@ -142,7 +140,14 @@ export default {
         })
       })
     }
-  }
+  },
+
+  watch: {
+    show () {
+      this.show && this.$store.dispatch('player/play')
+      this.selected = this.magnets
+    }
+  },
 }
 </script>
 
