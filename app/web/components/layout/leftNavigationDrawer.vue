@@ -54,7 +54,7 @@ export default {
         href: '/'
       }, {
         title: 'Torrent',
-        action: 'file_upload',
+        action: 'file_download',
         href: '/torrenting'
       },
       {divider: true},
