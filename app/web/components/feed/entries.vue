@@ -27,7 +27,7 @@
                   item-value='value'
                 )
               v-flex(xs6)
-                v-autocomplete(
+                v-combobox(
                   label='Fansub',
                   :items='fansubs',
                   v-model='config.fansub'

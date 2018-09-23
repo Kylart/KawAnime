@@ -8,9 +8,12 @@ const getLatest = ({ query: { feed, quality, term, fansub = '' } }, res) => {
   // This method will only return the raw feed from
   // the source, if a search must be done, it must be done
   // after receiving those data.
+  fansub = fansub.replace('None', '')
+    ? `[${fansub}]`
+    : ''
 
   // Currently, feed can only be 'pantsu' or 'si'
-  const query = [fansub.replace('None', ''), quality, term].join(' ')
+  const query = [fansub, quality, term].join(' ')
   const engine = engines[feed]
 
   const result = []
