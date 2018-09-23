@@ -42,8 +42,8 @@ export default {
 
     state.releases[params.feed][params.fansub][params.quality] = [...data.slice(0, index), ...current]
   },
-  setCurrent (state, name) {
-    state.current = name
+  setCurrent (state, data) {
+    state.current = data
   },
   setParams (state, data) {
     state.params = data

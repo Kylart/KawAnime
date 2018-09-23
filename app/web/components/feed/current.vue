@@ -19,9 +19,9 @@
           v-divider
           v-layout.details-container.pt-0(row, wrap, align-center)
             v-flex(xs12, sm6, md6, lg8, d-flex, align-center)
-              .genres Genres: #[i {{ info.genres.join(', ') }}]
+              .genres.ellipsis Genres: #[i {{ info.genres.join(', ') }}]
             v-flex(xs12, sm3, md3, lg2, d-flex, align-center)
-              .studios {{ studios }}
+              .studios.ellipsis {{ studios }}
             v-flex(xs12, sm3, md3, lg2)
               .rating.ellipsis {{ rating }}
 
@@ -145,7 +145,7 @@ export default {
   async mounted () {
     if (!this.info.hasOwnProperty('episodesInfo')) {
       await this.$store.dispatch('info/getEps', {
-        name: this.current,
+        name: this.current.title,
         id: this.info.id
       })
     }
@@ -154,7 +154,7 @@ export default {
   data: () => ({
     charHover: {
       timeout: null,
-      delay: 500,
+      delay: 1000,
       overflow: {
         overflowY: 'hidden'
       }
@@ -169,12 +169,10 @@ export default {
       get () {
         return this.$store.state.releases.current
       },
-      set (val) {
-        this.$store.commit('releases/setCurrent', val)
-      }
+      set () {}
     },
     info () {
-      return this.allInfo[this.current] || {}
+      return this.allInfo[this.current.title] || {}
     },
     statusSentence () {
       const { status, premiered, source, episodes, duration } = this.info
@@ -213,7 +211,7 @@ export default {
 
   methods: {
     back () {
-      this.$store.commit('releases/setCurrent', '')
+      this.$store.commit('releases/setCurrent', null)
     },
     triggerDelay () {
       this.charHover.timeout = setTimeout(() => {

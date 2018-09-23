@@ -10,13 +10,13 @@ const getLatest = ({ query: { feed, quality, term, fansub = '' } }, res) => {
   // after receiving those data.
 
   // Currently, feed can only be 'pantsu' or 'si'
-  const query = [fansub, quality, term].join(' ')
+  const query = [fansub.replace('None', ''), quality, term].join(' ')
   const engine = engines[feed]
 
   const result = []
 
   // Seriously, 150 entries should suffice.
-  engine.search(query, 150, { filter: '0' })
+  engine.search(query, 150, { filter: '0', category: '1_0' })
     .then((data) => {
       data.forEach((elem) => {
         const tmp = elem

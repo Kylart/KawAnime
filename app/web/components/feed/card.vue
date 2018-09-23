@@ -19,7 +19,7 @@
             v-flex.entry-title(xs2) {{ info.parsedName.title }}
             v-flex.text-xs-center(v-if='!picture', xs2)
               v-progress-circular(indeterminate)
-            v-flex.entry-ep(xs2)
+            v-flex.entry-ep(xs2, v-if='info.parsedName.episodeOrMovieNumber')
               span Ep. {{ info.parsedName.episodeOrMovieNumber }}
 
         v-container.overlay(
@@ -42,6 +42,7 @@
               v-icon.large more_horiz
 
     v-card-actions
+      .fansub.ellipsis(v-show='!hasFansub') {{ info.parsedName.releaseGroup }}
       v-spacer
       //- We'll change the colors if the entry is in a list.
       v-btn(icon)
@@ -50,7 +51,6 @@
         v-icon watch_later
       v-btn(icon)
         span.mal-icon
-      v-spacer
 </template>
 
 <script>
@@ -74,7 +74,10 @@ export default {
   computed: {
     ...mapGetters('info', {
       allInfo: 'getInfo'
-    })
+    }),
+    hasFansub () {
+      return this.$store.state.releases.params.fansub !== 'None'
+    }
   },
 
   methods: {
@@ -104,7 +107,7 @@ export default {
       })
     },
     more () {
-      this.$store.commit('releases/setCurrent', this.info.parsedName.title)
+      this.$store.commit('releases/setCurrent', this.info.parsedName)
     },
     async updateInfo () {
       const name = this.info.parsedName.title
@@ -167,4 +170,9 @@ export default {
     span
       padding 2px 4px
       background-color rgba(0, 0, 0, 0.4)
+
+  .fansub
+    font-size 14px
+    letter-spacing 0.03em
+    font-weight 300
 </style>

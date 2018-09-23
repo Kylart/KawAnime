@@ -27,7 +27,8 @@ const formatMagnets = (data, searchData, feed, res) => {
         name: parsed.title,
         link: isPantsu ? elem.magnet : elem.links.magnet,
         nb: ep,
-        quality: parsed.resolution
+        quality: parsed.resolution,
+        fansub: parsed.releaseGroup
       })
     }
   })
@@ -48,7 +49,7 @@ const download = (req, res) => {
     const searchData = {
       quality: chunk.quality || '',
       name: chunk.name || '',
-      fansub: chunk.fansub || '',
+      fansub: chunk.fansub.replace('None', '') || '',
       fromEp: chunk.fromEp || -Infinity,
       untilEp: chunk.untilEp || Infinity
     }

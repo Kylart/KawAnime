@@ -3,9 +3,9 @@ export default {
   async mounted () {
     if (!this.info.hasOwnProperty('episodesLinks')) {
       await this.$store.dispatch('info/getEpsLinks', {
-        name: this.current,
+        name: this.current.title,
         config: {
-          fansub: this.config.fansub,
+          fansub: this.current.releaseGroup,
           feed: this.config.feed
         }
       })
@@ -101,7 +101,7 @@ export default {
     },
     watch (ep) {
       const magnet = this.getMagnet(ep)
-      const title = this.current
+      const { title } = this.current
 
       this.$store.commit('streaming/play', {
         show: true,

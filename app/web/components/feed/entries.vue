@@ -113,8 +113,8 @@ export default {
     },
     config () {
       return {
-        quality: this.mainConfig.quality,
-        fansub: this.mainConfig.fansub,
+        quality: this.$store.state.releases.params.quality,
+        fansub: this.$store.state.releases.params.fansub,
         feed: this.$store.state.releases.params.feed,
         term: this.$store.state.releases.params.term
       }
