@@ -97,12 +97,12 @@
 
     v-divider
 
-    .episodes-container
+    .episodes-container(v-if='epLinks.magnets.length')
       v-layout(row, wrap)
         v-divider
         v-flex.section-title(xs12, d-flex, align-center)
           span Episode list
-        v-flex.link(v-if="epLinks.magnets", v-for='ep in epsList', :key='ep', xs12)
+        v-flex.link(v-for='ep in epsList', :key='ep', xs12)
           v-layout(row, wrap, align-center)
             v-flex.aired(xs2, d-flex, justify-center) {{ getEpAired(ep) }}
             v-flex.name(xs6, d-flex, justify-center) {{ getEpName(ep) }}
@@ -115,19 +115,17 @@
                 hide-details
               )
             v-flex.actions(xs2)
-              //- TODO ? Offer quality choice
               v-btn(large, icon, @click='watch(ep)')
                 v-icon(large) play_circle_outline
               v-btn(large, icon, @click='download(ep)')
                 v-icon(large) file_download
-        v-flex.loading(v-else) Loading episodes...
 
     //- Return button
     v-btn(
       color='primary',
       fixed, fab
       bottom, right,
-      @click='back'
+      @click='returnCb'
     )
       v-icon chevron_left
 </template>
@@ -142,7 +140,7 @@ export default {
 
   mixins: [Episodes],
 
-  props: ['current'],
+  props: ['current', 'return-cb'],
 
   async mounted () {
     if (!this.info.hasOwnProperty('episodesInfo')) {
@@ -206,9 +204,6 @@ export default {
   },
 
   methods: {
-    back () {
-      this.$store.commit('releases/setCurrent', null)
-    },
     triggerDelay () {
       this.charHover.timeout = setTimeout(() => {
         this.charHover.overflow.overflowY = 'scroll'
@@ -367,12 +362,16 @@ export default {
     .number
       font-size 18px
       letter-spacing 0.04em
+      text-align center
+      padding 0 10px !important
 
     .name
       font-size 16px
       font-style italic
       letter-spacing 0.03em
       font-weight 300
+      padding 0 8px !important
+      text-align center
 
     .aired
       font-size 16px

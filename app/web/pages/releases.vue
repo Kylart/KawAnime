@@ -2,7 +2,7 @@
   transition-group(name='fade', mode='out-in')
     entries(v-if='!isRefreshing && !current && releases.length', key='entries')
 
-    info-displayer(v-else-if='current', key='current', :current='current')
+    info-displayer(v-else-if='current', key='current', :current='current', :return-cb='resetCurrent')
 
     loader(v-else, key='loading')
 </template>
@@ -43,6 +43,12 @@ export default {
         return this.$store.state.releases.isRefreshing
       },
       set () {}
+    }
+  },
+
+  methods: {
+    resetCurrent () {
+      this.$store.commit('releases/setCurrent', null)
     }
   }
 }

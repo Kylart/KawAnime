@@ -2,8 +2,8 @@
   v-dialog(
     v-model='show',
     lazy, absolute,
-    :fullscreen='current',
     @keydown.esc='close',
+    :fullscreen='current',
     width='700'
   )
     v-btn(
@@ -20,7 +20,8 @@
               v-model='term',
               label='Search',
               hint='Looking for an anime?',
-              @keyup.enter='search'
+              @keyup.enter='search',
+              clearable
             )
 
         v-divider(v-show='results.length')
@@ -38,16 +39,22 @@
                 )
                 .entry-title {{ entry.name }}
 
-    v-card(v-else-if='searching')
-      v-layout Searching...
+    v-card.loading(v-else-if='searching')
+      p Grabbing those data...
+      p Please bear with us for a moment.
 
     v-card(v-else)
-      layout(:current='current')
+      v-toolbar(dense, color='indigo')
+        v-spacer
+        v-btn(icon, @click='close')
+          v-icon close
+      layout(:current='current', :return-cb='back')
 </template>
 
 <script>
 import Layout from 'components/info/layout.vue'
 
+import { mapGetters } from 'vuex'
 import { debounce } from 'lodash'
 
 export default {
@@ -64,9 +71,19 @@ export default {
     current: null
   }),
 
+  computed: {
+    ...mapGetters('info', {
+      allInfo: 'getInfo'
+    })
+  },
+
   methods: {
     close () {
       this.show = false
+      this.current = null
+    },
+    back () {
+      this.current = null
     },
     getPictureUrl (url) {
       const sizeRegex = /\/r\/\d*x\d*/
@@ -95,7 +112,10 @@ export default {
     async getInfo (entry) {
       this.searching = true
 
-      await this.$store.dispatch('info/get', entry)
+      if (!this.allInfo.hasOwnProperty(entry.name)) {
+        await this.$store.dispatch('info/get', entry)
+      }
+
       this.current = {
         title: entry.name
       }
@@ -128,4 +148,15 @@ export default {
       letter-spacing 0.04em
       font-weight 300
       padding 10px
+
+  .loading
+    min-height 150px
+    text-align center
+    padding 30px
+
+    p
+      font-size 28px
+      letter-spacing 0.04em
+      font-weight 300
+      font-style italic
 </style>
