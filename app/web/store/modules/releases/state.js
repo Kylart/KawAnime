@@ -1,5 +1,5 @@
-import {fansubs} from 'store/modules/lists.js'
-import {moment} from 'store/utils.js'
+import { fansubs, qualities } from 'store/modules/lists.js'
+import { moment } from 'store/utils.js'
 
 export default {
   current: null,
@@ -13,5 +13,6 @@ export default {
     feed: 'si',
     term: ''
   },
+  qualities,
   fansubs
 }

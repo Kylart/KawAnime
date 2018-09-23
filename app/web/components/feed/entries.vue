@@ -35,7 +35,7 @@
               v-flex(xs3)
                 v-select(
                   label='Quality',
-                  :items='qualities',
+                  :items="qualities.sort((a, b) => a.replace('p', '') - b.replace('p', '')).reverse()",
                   v-model='config.quality'
                 )
       v-flex(
@@ -69,7 +69,6 @@ export default {
   data: () => ({
     page: 1,
     entryPerPage: 12,
-    qualities: ['480p', '720p', '1080p'],
     feeds: [{
       text: 'nyaa.si',
       value: 'si'
@@ -93,6 +92,12 @@ export default {
       get () {
         const { fansub, quality, feed } = this.config
         return this.$store.state.releases.releases[feed][fansub][quality]
+      },
+      set () {}
+    },
+    qualities: {
+      get () {
+        return this.$store.state.releases.qualities
       },
       set () {}
     },
