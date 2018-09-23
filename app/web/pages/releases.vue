@@ -2,21 +2,21 @@
   transition-group(name='fade', mode='out-in')
     entries(v-if='!isRefreshing && !current && releases.length', key='entries')
 
-    current(v-else-if='current', key='current')
+    info-displayer(v-else-if='current', key='current', :current='current')
 
-    loading(v-else, key='loading')
+    loader(v-else, key='loading')
 </template>
 
 <script>
 // Components
 import Entries from 'components/feed/entries.vue'
-import Loading from 'components/feed/loading.vue'
-import Current from 'components/feed/current.vue'
+import Loader from 'components/feed/loader.vue'
+import InfoDisplayer from 'components/info/layout.vue'
 
 export default {
   name: 'Feed',
 
-  components: { Entries, Loading, Current },
+  components: { Entries, Loader, InfoDisplayer },
 
   computed: {
     releases: {
