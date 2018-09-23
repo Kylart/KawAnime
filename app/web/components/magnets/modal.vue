@@ -1,15 +1,15 @@
 <template lang="pug">
   div
     v-dialog(v-model='values.show', lazy, absolute, max-width='800', @keydown.esc='close()')
-      v-card.white--text
+      v-card
         v-card-title.pb-2.pt-2
-          h2.title.white--text.mb-0.entry-title.ellipsis Results for #[strong {{ values.title }}]
+          h2.mb-0.main-title.ellipsis Results for #[strong {{ values.title }}]
           v-spacer
           v-tooltip(left)
             v-btn(
               flat, icon,
-              v-if='magnets.length',
               @click='openSelected()',
+              v-if='selected',
               slot='activator'
             )
               v-icon open_in_new
@@ -17,39 +17,43 @@
           v-tooltip(left)
             v-btn(
               flat, icon,
-              v-if='magnets.length',
-              v-clipboard="selected.join(eol)",
+              v-clipboard='selected.join(eol)',
+              v-if='selected',
               @success='snack = true',
               slot='activator'
             )
               v-icon.copy-icon content_copy
             span Copy all selected magnets
         v-divider
-        v-card-text.subheading.white--text
-          v-expansion-panel(popout, expand)
+        v-card-text.subheading
+          v-expansion-panel(popout, v-model='panels')
             v-expansion-panel-content(
               v-for='(name, index) in filteredNames',
-              :key='name',
-              :value='index === 0',
-              ripple
+              :key='index',
+              :value='index === 0'
+              ripple, lazy
             )
-              v-layout.entry-name(slot='header', justify-space-between)
-                span.vertical-centered {{ name }}
+              .entry-title(slot='header')
+                span {{ name }}
                 v-tooltip(left)
-                  v-btn.ma-0(
+                  v-btn.ma-0.mr-3(
                     icon,
                     @click.stop='selectAll(name)',
                     slot='activator'
                   )
                     v-icon select_all
                   span (un)select these magnets
-              v-layout.pt-2.pl-3.pr-3(wrap)
-                template(v-for='link in getLinks(name)')
-                  v-flex(xs11).mt-1.pa-0.ep-name {{ link.name }}
-                  v-flex(xs1)
-                    v-checkbox.pt-0.primary--text(v-model='selected', :value='link.link', label='', color='orange', hide-details)
-                  v-flex(xs1)
-                  v-flex.mt-1.mb-2.pa-0.ep-magnet.ellipsis(xs11) #[a.white--text(:href='link.link') {{ link.link }}]
+              v-divider
+              v-layout.ep-container(
+                row, wrap,
+                v-for='(magnet, subIndex) in getLinks(name)', :key='magnet.link'
+              )
+                v-flex.pt-0.pb-0(xs11, d-flex, align-center, :class='{ bordered: subIndex > 0 }')
+                  .episode {{ magnet.name }} - Ep. {{ magnet.nb }}
+                v-flex.pt-2.pb-0(xs1, d-flex, justify-center, align-center, :class='{ bordered: subIndex > 0 }')
+                  v-checkbox.mt-0(v-model='selected', :value='magnet.link', hide-details, color='primary')
+                v-flex.pt-0.pb-2.magnet(xs9, offset-xs3, d-flex, justify-end)
+                  a.ellipsis(:href='magnet.link') {{ magnet.link}}
         v-card-actions
           v-spacer
           v-btn.blue--text.darken-1(flat, @click='close()') Thanks!
@@ -68,7 +72,8 @@ export default {
   data () {
     return {
       snack: false,
-      selected: []
+      selected: [],
+      panels: []
     }
   },
 
@@ -86,14 +91,9 @@ export default {
         return '\n'
       }
     },
-    magnets () {
-      return this.values.magnets.map((magnet) => {
-        return magnet.link
-      })
-    },
     filteredNames () {
       return this.$_.uniq(this.values.magnets.map((magnet) => {
-        return magnet.name.split(' ').slice(1, -3).join(' ')
+        return magnet.name
       }))
     }
   },
@@ -103,9 +103,7 @@ export default {
       this.$store.commit('downloader/closeModal')
     },
     getLinks (name) {
-      return this.values.magnets.map((magnet) => {
-        if (magnet.name.includes(name)) return magnet
-      }).filter((e) => typeof e !== 'undefined' && e)
+      return this.values.magnets.filter((magnet) => magnet.name === name)
     },
     selectAll (name) {
       // Find all magnets with that name
@@ -147,40 +145,43 @@ export default {
       this.show && this.$store.dispatch('player/play')
       this.selected = this.magnets
     }
-  },
+  }
 }
 </script>
 
 <style lang="stylus" scoped>
-  .vertical-centered
-    display flex
-    align-items center
-
   .copy-icon
     display inline-block
     cursor copy
 
-  .entry-title
-    max-width 85%
-
-  .entry-name
-    font-size 18px
-    letter-spacing 2px
-    overflow hidden
-    text-overflow ellipsis
+  .main-title
+    padding 8px
+    font-size 24px
     font-weight 300
+    letter-spacing 0.05em
 
-  .ep-name
-    font-size 16px
-    letter-spacing 1px
-    overflow hidden
-    text-overflow ellipsis
+  .entry-title
+    display flex
+    justify-content space-between
 
-  .ep-magnet
-    font-size 16px
-    letter-spacing 1px
-    overflow hidden
-    text-overflow ellipsis
-    text-align right
-    width 100%
+    span
+      font-size 22px
+      font-weight 400
+      letter-spacing 0.04em
+
+  .ep-container
+    padding 0 3%
+
+    .bordered
+      border-top 0.02em solid rgba(255, 255, 255, 0.4)
+
+    .episode
+      padding 8px
+      font-size 18px
+      letter-spacing 1px
+
+    .magnet
+      font-size 16px
+      letter-spacing 1px
+      text-align right
 </style>

@@ -1,7 +1,8 @@
 <template lang="pug">
   v-container(
-    grid-list-lg, fluid
+    grid-list-lg, fluid, pt-2
   )
+    magnets-modal
     v-layout(row, wrap, justify-center)
       v-flex(xs12)
         v-layout(justify-space-between, align-center)
@@ -58,11 +59,12 @@ import { mapGetters } from 'vuex'
 
 // Components
 import Card from 'components/feed/card.vue'
+import MagnetsModal from 'components/magnets/modal.vue'
 
 export default {
   name: 'Entries',
 
-  components: { Card },
+  components: { Card, MagnetsModal },
 
   data: () => ({
     page: 1,

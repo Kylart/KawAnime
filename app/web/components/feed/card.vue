@@ -36,7 +36,7 @@
               v-layout.ma-0(fill-height, column)
                 v-flex.overlay-icon(@click='download', xs6, fill-height)
                   v-icon.large file_download
-                v-flex.overlay-icon(xs6, fill-height)
+                v-flex.overlay-icon(@click='downloadAll', xs6, fill-height)
                   v-icon.large cloud_download
             v-flex.overlay-icon(@click='more', xs4, fill-height)
               v-icon.large more_horiz
@@ -104,6 +104,20 @@ export default {
           type: 'link',
           link: this.info.magnet || this.info.links.magnet
         }
+      })
+    },
+    async downloadAll () {
+      const { params } = this.$store.state.releases
+
+      this.$store.dispatch('downloader/download', {
+        fansub: params.fansub === 'None'
+          ? this.$store.state.config.config.fansub
+          : params.fansub,
+        quality: params.quality,
+        name: this.info.parsedName.title,
+        fromEp: -Infinity,
+        untilEp: Infinity,
+        feed: params.feed
       })
     },
     more () {
