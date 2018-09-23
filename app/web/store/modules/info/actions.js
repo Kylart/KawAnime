@@ -1,25 +1,31 @@
 import { axios, log } from 'store/utils'
 
 export default {
-  async get ({ commit, state, dispatch }, nameOrUrl) {
-    const isUrl = /https?:\/\//.test(nameOrUrl)
+  async get ({ commit, state, dispatch }, name) {
+    let url = null
+    const backUp = name
+
+    if (typeof name === 'object') {
+      url = name.url
+      name = name.name
+    }
 
     const params = {
-      [isUrl ? 'url' : 'term']: nameOrUrl
+      [url ? 'url' : 'term']: url || name
     }
 
     const { data, status } = await axios.get('getInfoFromMal', { params })
 
     if (status !== 200) {
-      log('error', 'An error occurred while search for', nameOrUrl)
+      log('error', 'An error occurred while search for', name)
 
       setTimeout(() => {
-        dispatch('get', nameOrUrl)
+        dispatch('get', backUp)
       }, 30 * 1000)
     }
 
     commit('add', {
-      key: nameOrUrl,
+      key: name,
       value: data
     })
   },

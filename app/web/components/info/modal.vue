@@ -1,14 +1,131 @@
 <template lang="pug">
-  v-modal(fullscreen)
-    layout
+  v-dialog(
+    v-model='show',
+    lazy, absolute,
+    :fullscreen='current',
+    @keydown.esc='close',
+    width='700'
+  )
+    v-btn(
+      slot='activator',
+      icon
+    )
+      v-icon search
+    v-card(v-if='!searching && !current')
+      v-container(grid-list-md)
+        v-layout(row, wrap, justify-center)
+          v-flex(xs6)
+            v-text-field(
+              ref='input',
+              v-model='term',
+              label='Search',
+              hint='Looking for an anime?',
+              @keyup.enter='search'
+            )
+
+        v-divider(v-show='results.length')
+
+        v-layout(row, wrap, justify-center, mt-2, v-if='results.length')
+          template(v-for='entry in results')
+            v-flex(xs3, @click='getInfo(entry)')
+              v-card.entry.elevation-5(
+                ripple)
+                v-img(
+                  :src='getPictureUrl(entry.image_url)',
+                  :lazy-src='getPictureUrl(entry.image_url)',
+                  height='150',
+                  contain
+                )
+                .entry-title {{ entry.name }}
+
+    v-card(v-else-if='searching')
+      v-layout Searching...
+
+    v-card(v-else)
+      layout(:current='current')
 </template>
 
 <script>
 import Layout from 'components/info/layout.vue'
 
+import { debounce } from 'lodash'
+
 export default {
   name: 'Info-Modal',
 
-  components: { Layout }
+  components: { Layout },
+
+  data: () => ({
+    timeout: null,
+    show: false,
+    searching: false,
+    term: '',
+    results: [],
+    current: null
+  }),
+
+  methods: {
+    close () {
+      this.show = false
+    },
+    getPictureUrl (url) {
+      const sizeRegex = /\/r\/\d*x\d*/
+      const parts = url.split('.')
+
+      const completeUrl = parts.slice(0, -1).join('.').replace(sizeRegex, '') + '.jpg'
+
+      return completeUrl
+    },
+    search: debounce(async function () {
+      if (this.term.length < 3) return
+
+      const { data, status } = await this.$axios.get('searchTermOnMal', {
+        params: {
+          term: this.term
+        }
+      })
+
+      if (status === 204) {
+        this.$log('Error while getting pre-search results.')
+        return
+      }
+
+      this.results = data
+    }, 300),
+    async getInfo (entry) {
+      this.searching = true
+
+      await this.$store.dispatch('info/get', entry)
+      this.current = {
+        title: entry.name
+      }
+
+      this.searching = false
+    }
+  },
+
+  watch: {
+    term () {
+      this.search()
+    },
+    show () {
+      this.$nextTick(() => {
+        this.$refs.input.focus()
+      })
+    }
+  }
 }
 </script>
+
+<style lang="stylus" scoped>
+  .entry
+    cursor pointer
+    height 100%
+
+    .entry-title
+      font-size 18px
+      text-align center
+      letter-spacing 0.04em
+      font-weight 300
+      padding 10px
+</style>

@@ -11,11 +11,11 @@
       v-btn(icon, v-show="update", @click='restartAndUpdate', slot='activator')
         v-icon.green--text file_download
       span Update KawAnime
-    //- info-modal
     //- v-tooltip(left)
     //-   v-btn(icon, @click='openInBrowser', slot='activator')
     //-     v-icon open_in_new
     //-   span Open KawAnime in your browser
+    searcher
     settings
     v-btn(icon, @click='toggleRightDrawer')
       v-icon chevron_left
@@ -26,11 +26,12 @@
 // Components
 import Settings from 'components/global/settings.vue'
 import Logs from 'components/global/logs.vue'
+import Searcher from 'components/info/modal.vue'
 
 export default {
   name: 'Toolbar',
 
-  components: { Settings, Logs },
+  components: { Settings, Logs, Searcher },
 
   computed: {
     update: {

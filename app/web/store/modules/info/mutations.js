@@ -1,6 +1,11 @@
+const sanitize = (name) => {
+  return name
+    .replace(':', '')
+}
+
 export default {
   add (state, { key, value }) {
-    state.info[key] = value
+    state.info[sanitize(key)] = value
   },
   addEps (state, { name, data }) {
     state.info[name].episodesInfo = data

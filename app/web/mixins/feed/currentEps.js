@@ -5,7 +5,7 @@ export default {
       await this.$store.dispatch('info/getEpsLinks', {
         name: this.current.title,
         config: {
-          fansub: this.current.releaseGroup,
+          fansub: this.current.releaseGroup || this.config.fansub,
           feed: this.config.feed
         }
       })
