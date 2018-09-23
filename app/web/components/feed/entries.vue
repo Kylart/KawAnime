@@ -2,7 +2,6 @@
   v-container(
     grid-list-lg, fluid, pt-2
   )
-    magnets-modal
     v-layout(row, wrap, justify-center)
       v-flex(xs12)
         v-layout(justify-space-between, align-center)
@@ -14,6 +13,7 @@
               v-model='config.term',
               hide-details,
               solo,
+              :loading='isRefreshing',
               @keyup.enter='search'
             )
           v-flex(xs4)
@@ -35,7 +35,7 @@
               v-flex(xs3)
                 v-select(
                   label='Quality',
-                  :items="qualities.sort((a, b) => a.replace('p', '') - b.replace('p', '')).reverse()",
+                  :items='order(qualities)',
                   v-model='config.quality'
                 )
       v-flex(
@@ -45,8 +45,8 @@
       )
         card(:info='entry', :ref='entry.parsedName.title')
 
+    .pag-container
       v-pagination(
-        xs12,
         v-if='nbPages > 1',
         v-model='page',
         :length='nbPages',
@@ -59,12 +59,11 @@ import { mapGetters } from 'vuex'
 
 // Components
 import Card from 'components/feed/card.vue'
-import MagnetsModal from 'components/magnets/modal.vue'
 
 export default {
   name: 'Entries',
 
-  components: { Card, MagnetsModal },
+  components: { Card },
 
   data: () => ({
     page: 1,
@@ -92,6 +91,12 @@ export default {
       get () {
         const { fansub, quality, feed } = this.config
         return this.$store.state.releases.releases[feed][fansub][quality]
+      },
+      set () {}
+    },
+    isRefreshing: {
+      get () {
+        return this.$store.state.releases.isRefreshing
       },
       set () {}
     },
@@ -133,8 +138,16 @@ export default {
 
   methods: {
     async search () {
+      if (this.isRefreshing) return
+
       this.$store.commit('releases/setParams', this.config)
       await this.$store.dispatch('releases/refresh')
+    },
+    order (qualities) {
+      // We have to clone qualities as the reverse method changes the original input,
+      // which would cause an endless reversing loop and throws warning.
+      const copy = Array.from(qualities)
+      return copy.sort((a, b) => a.replace('p', '') - b.replace('p', '')).reverse()
     }
   }
 }
@@ -145,4 +158,9 @@ export default {
     font-size 16px
     font-weight 400
     letter-spacing 0.02em
+
+  .pag-container
+    width 100%
+    display flex
+    justify-content center
 </style>

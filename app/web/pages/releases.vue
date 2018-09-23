@@ -1,10 +1,13 @@
 <template lang="pug">
-  transition-group(name='fade', mode='out-in')
-    entries(v-if='!isRefreshing && !current && releases.length', key='entries')
+  #releases
+    magnets-modal
 
-    info-displayer(v-else-if='current', key='current', :current='current', :return-cb='resetCurrent')
+    transition-group(name='fade', mode='out-in')
+      entries(v-if='!isRefreshing && !current && releases.length', key='entries')
 
-    loader(v-else, key='loading')
+      info-displayer(v-else-if='current', key='current', :current='current', :return-cb='resetCurrent')
+
+      loader(v-else, key='loading')
 </template>
 
 <script>
@@ -13,10 +16,12 @@ import Entries from 'components/feed/entries.vue'
 import Loader from 'components/feed/loader.vue'
 import InfoDisplayer from 'components/info/layout.vue'
 
+import MagnetsModal from 'components/magnets/modal.vue'
+
 export default {
   name: 'Feed',
 
-  components: { Entries, Loader, InfoDisplayer },
+  components: { Entries, Loader, InfoDisplayer, MagnetsModal },
 
   computed: {
     releases: {

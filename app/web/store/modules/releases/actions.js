@@ -1,12 +1,12 @@
 import {axios, log} from 'store/utils'
 
 export default {
-  async init ({dispatch}) {
+  async init ({ commit, dispatch }) {
     log('[INIT] Releases')
-    dispatch('refresh')
-    dispatch('autoRefresh')
+    await dispatch('refresh')
+    await dispatch('autoRefresh')
   },
-  async refresh ({state, commit}) {
+  async refresh ({ state, commit, dispatch }) {
     commit('refreshing', true)
 
     const { data, status } = await axios.get('getLatest', {
@@ -14,7 +14,11 @@ export default {
     })
 
     if (status === 204) {
-      log('An error has occurred while getting latest releases.')
+      // This most likely mean that the user is offline.
+      log('An error has occurred while getting latest releases. Has the system access to the internet?')
+      setTimeout(() => {
+        dispatch('refresh')
+      }, 1 * 60 * 1000)
       return
     }
 

@@ -17,7 +17,7 @@
           v-tooltip(left)
             v-btn(
               flat, icon,
-              v-clipboard='selected.join(eol)',
+              v-clipboard='clipboard',
               v-if='selected',
               @success='snack = true',
               slot='activator'
@@ -95,6 +95,11 @@ export default {
       return this.$_.uniq(this.values.magnets.map((magnet) => {
         return magnet.name
       }))
+    },
+    clipboard () {
+      return this.selected.length
+        ? this.selected.join(this.eol)
+        : ''
     }
   },
 

@@ -5,7 +5,7 @@ export default {
     state.updateTime = moment()
 
     // We'll keep all the already gotten releases in memory
-    // using params as keys
+    // using params as keys if no term is present
     // 1. feed
     // 2. fansub
     // 3. quality
@@ -40,7 +40,9 @@ export default {
       }
     }
 
-    state.releases[params.feed][params.fansub][params.quality] = [...data.slice(0, index), ...current]
+    state.releases[params.feed][params.fansub][params.quality] = state.params.term
+      ? data
+      : [...data.slice(0, index), ...current]
   },
   setCurrent (state, data) {
     state.current = data

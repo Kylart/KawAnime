@@ -13,7 +13,6 @@ export default {
       commit('config/set', data.config)
 
       // Setting defaults
-      commit('downloader/setQuality', data.config.quality)
       commit('releases/setParams', {
         fansub: data.config.fansub,
         quality: data.config.quality,
