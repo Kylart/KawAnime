@@ -28,7 +28,7 @@ export default {
     dispatch('player/setUp').catch(err => { void err })
 
     // Online
-    dispatch('checkOnlineStatus').catch(err => { void err })
+    await dispatch('checkOnlineStatus').catch(err => { void err })
     dispatch('online').catch(err => { void err })
   },
   async online ({commit, dispatch}) {
