@@ -8,8 +8,8 @@
           v-tooltip(left)
             v-btn(
               flat, icon,
-              @click='openSelected()',
-              v-if='selected',
+              @click='openSelected',
+              v-if='selected.length',
               slot='activator'
             )
               v-icon open_in_new
@@ -18,7 +18,7 @@
             v-btn(
               flat, icon,
               v-clipboard='clipboard',
-              v-if='selected',
+              v-if='selected.length',
               @success='snack = true',
               slot='activator'
             )
@@ -97,8 +97,9 @@ export default {
       }))
     },
     clipboard () {
-      return this.selected.length
-        ? this.selected.join(this.eol)
+      const copy = Array.from(this.selected)
+      return copy.length
+        ? copy.join(this.eol)
         : ''
     }
   },
@@ -112,25 +113,25 @@ export default {
     },
     selectAll (name) {
       // Find all magnets with that name
-      const magnets = this.$_.map(this.values.magnets, (e) => {
-        if (e.name.includes(name)) return e.link
-      }).filter((e) => typeof e !== 'undefined' && e)
+      const magnets = this.values.magnets
+        .filter((elem) => elem.name === name)
+        .map((elem) => elem.link)
 
       // Checking if some of them are present in current selected array
-      let allSelected = false
-      let counter = 0
-      this.$_.each(magnets, (magnet) => {
-        if (this.$_.find(this.selected, (o) => o === magnet)) {
-          ++counter
-          if (counter === magnets.length) allSelected = true
-        }
-      })
+      const selected = magnets.filter((magnet) => this.selected.includes(magnet))
+      const allSelected = selected.length === magnets.length
 
       // Selecting or unselecting accordingly
-      this.$_.each(magnets, (magnet) => {
-        allSelected
-          ? this.selected = this.selected.filter((link) => link !== magnet)
-          : !this.selected.includes(magnet) && this.selected.push(magnet)
+      magnets.forEach((magnet) => {
+        const index = this.selected.indexOf(magnet)
+
+        if (allSelected) {
+          this.selected.splice(index, 1)
+        } else {
+          if (index === -1) {
+            this.selected.push(magnet)
+          }
+        }
       })
     },
     openSelected () {
@@ -148,7 +149,7 @@ export default {
   watch: {
     show () {
       this.show && this.$store.dispatch('player/play')
-      this.selected = this.magnets
+      this.selected = this.values.magnets.map((elem) => elem.link)
     }
   }
 }
