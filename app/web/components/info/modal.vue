@@ -3,7 +3,7 @@
     v-model='show',
     lazy, absolute,
     @keydown.esc='close',
-    :fullscreen='current',
+    :fullscreen='current !== null',
     width='700'
   )
     v-btn(

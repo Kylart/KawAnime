@@ -97,7 +97,7 @@
 
     v-divider
 
-    .episodes-container(v-if='epLinks.magnets.length')
+    .episodes-container(v-if='epLinks.magnets && epLinks.magnets.length')
       v-layout(row, wrap)
         v-divider
         v-flex.section-title(xs12, d-flex, align-center)
@@ -154,7 +154,7 @@ export default {
   data: () => ({
     charHover: {
       timeout: null,
-      delay: 1000,
+      delay: 750,
       overflow: {
         overflowY: 'hidden'
       }
@@ -200,6 +200,15 @@ export default {
       return rating === 'None'
         ? 'For everyone'
         : rating
+    },
+    episodesInfo () {
+      const result = {}
+
+      this.info.episodesInfo.forEach((info) => {
+        result[info.epNumber] = info
+      })
+
+      return result
     }
   },
 
@@ -230,15 +239,15 @@ export default {
     },
     getEpAired (epNumber) {
       return this.info.hasOwnProperty('episodesInfo')
-        ? this.info.episodesInfo[epNumber]
-          ? this.info.episodesInfo[epNumber].aired
+        ? this.episodesInfo[epNumber]
+          ? this.episodesInfo[epNumber].aired
           : 'N/A'
         : 'N/A'
     },
     getEpName (epNumber) {
       return this.info.hasOwnProperty('episodesInfo')
-        ? this.info.episodesInfo[epNumber]
-          ? this.info.episodesInfo[epNumber].title
+        ? this.episodesInfo[epNumber]
+          ? this.episodesInfo[epNumber].title
           : 'Unknown title'
         : 'Unknown title'
     }
