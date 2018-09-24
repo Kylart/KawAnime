@@ -1,6 +1,6 @@
 <template lang="pug">
   v-container(
-    grid-list-md, fluid, pa-0
+    grid-list-md, fluid, pt-0, pl-0, pr-2
   )
     v-layout(row, wrap, fill-height, justify-center, align-center)
       v-flex(xs6, md3, pa-0)
