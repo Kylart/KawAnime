@@ -1,12 +1,20 @@
 import {axios, log} from 'store/utils'
 
 export default {
-  async init ({ commit, dispatch }) {
+  async init ({ dispatch }) {
     log('[INIT] Releases')
     await dispatch('refresh')
     await dispatch('autoRefresh')
   },
-  async refresh ({ state, commit, dispatch }) {
+  async refresh ({ rootState, state, commit, dispatch }) {
+    if (!rootState.isConnected) {
+      log('Cancelling feed update, user is offline.')
+      setTimeout(() => {
+        dispatch('refresh')
+      }, 2 * 60 * 1000)
+      return
+    }
+
     commit('refreshing', true)
 
     const { data, status } = await axios.get('getLatest', {
