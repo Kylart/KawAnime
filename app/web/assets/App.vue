@@ -5,7 +5,7 @@
     system-bar
     toolbar
 
-    v-content
+    v-content.main-content
       transition(name='page', mode='out-in')
         router-view
 
@@ -61,4 +61,10 @@ export default {
 
 <style lang="stylus">
   @import './stylus/main'
+
+  main
+    overflow hidden
+
+  .v-content__wrap
+    overflow auto
 </style>

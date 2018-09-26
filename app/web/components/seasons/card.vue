@@ -11,18 +11,20 @@
         v-flex.pa-2.pr-3(xs8)
           v-layout(row, wrap, column)
             v-flex(xs2, d-flex, justify-space-between)
-              .entry-title.ellipsis {{ info.title }}
+              v-tooltip.entry-title.ellipsis(top, lazy)
+                span(slot='activator') {{ info.title }}
+                span {{ info.title }}
               .nb-ep.ellipsis {{ episodeLabel }}
             v-flex(xs2, d-flex, justify-space-between)
               .source.ellipsis {{ info.fromType }}
-              v-tooltip.genres.ellipsis(lazy, top, content-class="genres")
+              v-tooltip.genres.ellipsis(lazy, top)
                 span(slot='activator') {{ info.genres.join(' / ') }}
                 span {{ info.genres.join(' / ') }}
             v-divider
             v-flex(xs7)
               .synopsis {{ info.synopsis }}
             v-flex(xs1, d-flex, justify-space-between, align-end)
-              .producers By {{ info.producers.join(' and ') }}
+              .producers.ellipsis By {{ info.producers.join(' and ') }}
               .rating {{ info.score }} #[span / 10]
 </template>
 

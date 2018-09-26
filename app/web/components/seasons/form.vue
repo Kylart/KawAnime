@@ -55,6 +55,7 @@ export default {
 
   methods: {
     refresh () {
+      this.$emit('refresh')
       this.$store.dispatch('seasons/refresh')
     }
   }
