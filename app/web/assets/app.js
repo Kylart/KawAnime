@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import App from './App.vue'
 import VueClipboards from 'vue-clipboards'
-import VueLazyload from 'vue-lazyload'
 import VueMarkdown from 'vue-markdown'
 import axios from 'axios'
 import _ from 'lodash'
@@ -13,13 +12,6 @@ import { sync } from 'vuex-router-sync'
 
 Vuetify(Vue)
 Vue.use(VueClipboards)
-Vue.use(VueLazyload, {
-  preLoad: 1.3,
-  loading: 'static/Hestia.gif',
-  error: 'static/error.jpg',
-  attempt: 1,
-  lazyComponent: true
-})
 
 Vue.prototype.$_ = _
 Vue.prototype.$axios = axios

@@ -1,15 +1,14 @@
-import {log} from 'store/utils'
-
 export default {
-  setCurrentSeason (state, data) {
-    state.year = data.year
-    state.season = data.season
-  },
-  setSeasons (state, data) {
+  set (state, data) {
     state.seasons = data
-    log(`Seasons set.`)
   },
-  emptySeasons (state) {
-    state.seasons = []
+  setSeason (state, value) {
+    state.season = value
+  },
+  setYear (state, value) {
+    state.year = value
+  },
+  refreshing (state, bool) {
+    state.isRefreshing = bool
   }
 }

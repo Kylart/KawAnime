@@ -61,7 +61,6 @@
     "velocity-animate": "^2.0.5",
     "vue": "^2.5.13",
     "vue-clipboards": "^1.2.4",
-    "vue-lazyload": "^1.2.6",
     "vue-markdown": "^2.2.4",
     "vue-router": "^3.0.1",
     "vue-server-renderer": "^2.5.13",
