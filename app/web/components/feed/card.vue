@@ -121,7 +121,9 @@ export default {
       })
     },
     more () {
-      this.$store.commit('releases/setCurrent', this.info.parsedName)
+      if (this.allInfo[this.info.parsedName.title]) {
+        this.$store.commit('releases/setCurrent', this.info.parsedName)
+      }
     },
     async updateInfo () {
       const name = this.info.parsedName.title
