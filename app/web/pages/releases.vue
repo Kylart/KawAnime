@@ -1,10 +1,11 @@
 <template lang="pug">
-  transition-group(name='fade', mode='out-in')
-    loader(v-if='!instanciate', key='loading')
+  div
+    transition-group(name='fade', mode='out-in')
+      loader(v-if='!instanciate', key='loading')
 
-    entries(v-else-if='instanciate && !current', key='entries')
+      entries(v-else-if='instanciate && !current', key='entries')
 
-    info-displayer(v-else-if='instanciate && current', key='current', :current='current', :return-cb='resetCurrent')
+      info-displayer(v-else-if='instanciate && current', key='current', :current='current', :return-cb='resetCurrent')
 </template>
 
 <script>
