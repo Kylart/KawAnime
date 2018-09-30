@@ -132,6 +132,11 @@ export default {
         await this.$store.dispatch('info/get', name)
       }
 
+      if (!(name in this.allInfo)) {
+        setTimeout(this.updateInfo, 15 * 1000)
+        return
+      }
+
       this.$set(this, 'animeInfo', this.allInfo[name])
       this.$set(this, 'picture', this.animeInfo.picture)
     }

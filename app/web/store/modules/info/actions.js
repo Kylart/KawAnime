@@ -3,7 +3,6 @@ import { axios, log } from 'store/utils'
 export default {
   async get ({ commit, state, dispatch }, name) {
     let url = null
-    const backUp = name
 
     if (typeof name === 'object') {
       url = name.url
@@ -17,11 +16,8 @@ export default {
     const { data, status } = await axios.get('getInfoFromMal', { params })
 
     if (status !== 200) {
-      log('error', 'An error occurred while search for', name)
-
-      setTimeout(() => {
-        dispatch('get', backUp)
-      }, 30 * 1000)
+      log('An error occurred while searching for', name)
+      return
     }
 
     commit('add', {
@@ -36,7 +32,7 @@ export default {
       })
 
       if (status === 204) {
-        log('error', 'An error occurred while searching for', name)
+        log('An error occurred while searching for', name)
         return
       }
 
@@ -50,7 +46,7 @@ export default {
       const { data, status } = await axios.post('download', { name, ...config })
 
       if (status === 204) {
-        log('error', 'An error occurred while getting ep links for' + name)
+        log('An error occurred while getting ep links for' + name)
         return
       }
 
