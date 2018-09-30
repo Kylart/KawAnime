@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-navigation-drawer.drawer(app, fixed, v-model='show')
+  v-navigation-drawer.drawer(app, fixed, disable-resize-watcher,v-model='show')
       v-list
         template(v-for='item in itemGroup')
           v-list-group(
