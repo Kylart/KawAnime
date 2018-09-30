@@ -146,6 +146,7 @@ export default {
       this.$store.commit('releases/setParams', this.config)
       await this.$store.dispatch('releases/refresh')
 
+      this.page = 1
       this.$nextTick(this.update)
     },
     order (qualities) {
