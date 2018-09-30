@@ -102,6 +102,8 @@ function newWin () {
     }))
   }
 
+  process.win = win
+
   pollServer()
 }
 
