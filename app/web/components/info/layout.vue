@@ -27,12 +27,18 @@
 
     v-divider
 
+    .section-title
+      span Cast & Characters
+
     v-layout.characters-container(
       row, wrap, justify-center, align-center,
       @mouseenter='triggerDelay',
       @mouseleave='cancelDelay',
-      :style='charHover.overflow'
+      :style='charHover.overflow',
+      ref='chars'
     )
+      v-btn.expand(icon, large, color='indigo', v-show='!charHover.show', @click='expandChar')
+        v-icon(large) keyboard_arrow_down
       v-flex(v-for='char in info.characters', :key='char.name', xs12, sm6, md4, pt-0)
         v-layout(row, wrap)
           v-flex(xs3)
@@ -74,6 +80,9 @@
 
     v-divider
 
+    .section-title
+      span Staff
+
     v-layout.staff-container.mt-2.mb-0(row, wrap, justify-space-between)
       v-flex(v-for='member in info.staff', :key='member.link', xs12, sm6, md3, pt-0)
         v-layout(row, wrap, justify-space-between)
@@ -97,11 +106,11 @@
 
     v-divider
 
+    .section-title
+      span Episode list
+
     .episodes-container(v-if='epLinks.magnets && epLinks.magnets.length')
       v-layout(row, wrap)
-        v-divider
-        v-flex.section-title(xs12, d-flex, align-center)
-          span Episode list
         v-flex.link(v-for='ep in epsList', :key='ep', xs12)
           v-layout(row, wrap, align-center)
             v-flex.aired(xs2, d-flex, justify-center) {{ getEpAired(ep) }}
@@ -155,6 +164,7 @@ export default {
     charHover: {
       timeout: null,
       delay: 750,
+      show: false,
       overflow: {
         overflowY: 'hidden'
       }
@@ -214,9 +224,7 @@ export default {
 
   methods: {
     triggerDelay () {
-      this.charHover.timeout = setTimeout(() => {
-        this.charHover.overflow.overflowY = 'scroll'
-      }, this.charHover.delay)
+      this.charHover.timeout = setTimeout(this.expandChar, this.charHover.delay)
     },
     cancelDelay () {
       if (this.charHover.timeout) {
@@ -250,12 +258,50 @@ export default {
           ? this.episodesInfo[epNumber].title
           : 'Unknown title'
         : 'Unknown title'
+    },
+    expandChar () {
+      this.charHover.show = true
+      this.charHover.overflow.overflowY = 'scroll'
+
+      const elem = this.$refs.chars
+      const { clientHeight } = elem
+
+      // Shitty animation ?
+      let currentStep = 0
+      const step = 5
+      const necessarySteps = clientHeight / step
+
+      const scrollDown = () => {
+        elem.scrollTop += step
+      }
+
+      const timer = setInterval(() => {
+        scrollDown()
+        currentStep++
+
+        if (currentStep === necessarySteps) {
+          clearInterval(timer)
+        }
+      }, 1000 / 90)
     }
   }
 }
 </script>
 
 <style lang="stylus" scoped>
+  .section-title
+    display flex
+    align-items center
+    border-bottom 0.02em solid rgba(255, 255 ,255, 0.7)
+    min-height 60px
+
+    span
+      width 100%
+      padding-left 7.5%
+      font-size 22px
+      font-weight 400
+      letter-spacing 0.05em
+
   .top-container
     height 370px
 
@@ -326,9 +372,16 @@ export default {
         text-align right
 
   .characters-container
-    height 250px
+    height 245px
     overflow-x none
     overflow-y auto
+    position relative
+
+    .expand
+      position absolute
+      bottom 0
+      left 50%
+      transform translateX(-50%)
 
     .name
       font-size 15px
@@ -349,16 +402,6 @@ export default {
     width 100%
     padding-left 2%
     padding-right 2%
-
-    .section-title
-      border-bottom 0.02em solid rgba(255, 255 ,255, 0.7)
-      min-height 60px
-
-      span
-        padding-left 5%
-        font-size 22px
-        font-weight 400
-        letter-spacing 0.05em
 
     .link
       max-height 75px
