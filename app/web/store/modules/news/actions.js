@@ -1,48 +1,39 @@
-import {axios, log} from 'store/utils'
+import { axios, log } from 'store/utils'
 
 export default {
-  async init ({rootState, commit, dispatch}) {
+  init ({ dispatch }) {
     console.log('[INIT] News')
-    const delay = 2 * 60 * 1000
-
+    dispatch('refresh')
+    dispatch('autoRefresh')
+  },
+  async refresh ({ rootState, state, commit, dispatch }) {
     if (!rootState.isConnected) {
-      setTimeout(() => { dispatch('init') }, delay)
+      log('Cancelling news update, user is offline.')
+      setTimeout(() => { dispatch('refresh') }, 5 * 60 * 1000)
       return
     }
 
-    try {
-      const {data, status} = await axios.get('news.json')
+    commit('setRefreshing', true)
 
-      if (status === 200) {
-        commit('set', data)
-      } else {
-        log('A problem occurred while gathering the news.')
-        setTimeout(() => { dispatch('init') }, delay)
-      }
-    } catch (e) {
-      log('A problem occurred while gathering the news.')
-      setTimeout(() => { dispatch('init') }, delay)
-    }
-  },
-  async refresh ({commit, dispatch}) {
-    log(`Refreshing News...`)
-
-    commit('empty')
-
-    const {data, status} = await axios.get('news.json')
-
-    status === 200
-      ? commit('set', data)
-      : log('A problem occurred while gathering the news.') && setTimeout(() => { dispatch('refresh') }, 1 * 60 * 1000)
-  },
-  async openLink ({rootState}, link) {
-    log(`Opening ${link}.`)
-
-    await axios.get('openThis', {
+    const { data, status } = await axios.get('news', {
       params: {
-        type: rootState.config.config.inside ? 'inside' : 'link',
-        link
+        feed: state.feed
       }
     })
+
+    if (status !== 200) {
+      log('Error while updating anime news.')
+      setTimeout(() => { dispatch('refresh') }, 5 * 60 * 1000)
+    }
+
+    commit('set', data)
+    commit('setRefreshing', false)
+  },
+  async autoRefresh ({ dispatch }) {
+    // Auto refresh every 30 minutes should be enough
+    setInterval(
+      () => { dispatch('refresh') },
+      30 * 60 * 1000
+    )
   }
 }

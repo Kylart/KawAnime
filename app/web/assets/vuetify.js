@@ -36,6 +36,7 @@ import {
   VTextarea,
   VImg,
   VCombobox,
+  VHover,
   transitions
 } from 'vuetify'
 
@@ -79,6 +80,7 @@ export default (Vue) => {
       VTextarea,
       VImg,
       VCombobox,
+      VHover,
       transitions
     },
     directives
