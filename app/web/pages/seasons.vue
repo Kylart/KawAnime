@@ -1,5 +1,5 @@
 <template lang="pug">
-  div(@scroll='handleScroll')
+  div
     season-form(@refresh='resetSup')
 
     v-tabs(
@@ -38,22 +38,17 @@ import Card from 'components/seasons/card.vue'
 import SeasonForm from 'components/seasons/form.vue'
 import Loader from 'components/seasons/loader.vue'
 
+// Allows fancy lazy loading of entries
+import Reduced from 'mixins/global/reduced.js'
+
 export default {
   name: 'Season',
 
   components: { Card, SeasonForm, Loader },
 
-  mounted () {
-    this.content = document.querySelector('.v-content__wrap')
-    this.content.addEventListener('scroll', this.handleScroll)
-  },
-
-  beforeDestroy () {
-    this.content.removeEventListener('scroll', this.handleScroll)
-  },
+  mixins: [ Reduced ],
 
   data: () => ({
-    content: null,
     active: 0,
     sup: 8,
     initSup: 8
@@ -72,28 +67,11 @@ export default {
       },
       set () {}
     },
-    reduced () {
+    entries () {
       const tab = this.tabs[this.active]
       const entries = this.seasons[tab]
 
-      return entries.slice(0, this.sup)
-    }
-  },
-
-  methods: {
-    handleScroll (e) {
-      const { scrollTop, scrollHeight } = this.content
-
-      const tab = this.tabs[this.active]
-      const max = this.seasons[tab].length
-
-      const donePercent = scrollTop / scrollHeight
-      const sup = Math.round((donePercent * max) + this.initSup)
-
-      if (sup > this.sup) this.sup = sup
-    },
-    resetSup () {
-      this.sup = this.initSup
+      return entries
     }
   },
 

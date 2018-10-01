@@ -1,17 +1,24 @@
 <template lang="pug">
-  v-layout(row, wrap, justify-center)
-    v-flex(xs12, d-flex, justify-center)
-      span Now retrieving seasonal information. Please stand by for a moment.
-    v-flex(xs6, d-flex, justify-center)
-      img(src='~static/images/wait.gif')
+  .main
+    .text Now retrieving seasonal information. Please stand by for a moment.
+    .img-container
+      img(src='~static/images/news-wait.gif')
 </template>
 
 <style lang="stylus" scoped>
-  span
+  .main
+    width 100%
+    height 100%
+    text-align center
+
+  .text
     font-size 26px
     font-style italic
     font-weight 300
     letter-spacing 0.03em
     text-align center
-    padding 32px 0
+    margin 32px 0
+
+  .img-container
+    display inline-block
 </style>
