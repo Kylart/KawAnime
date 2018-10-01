@@ -9,12 +9,10 @@
       transition(name='page', mode='out-in')
         router-view
 
-    //- env(v-show='$store.state.NODE_ENV === "development"')
+    env(v-show='$store.state.NODE_ENV === "development"')
     overlay(v-show='overlay')
     video-modal(v-show='$store.state.streaming.player.show')
     //- mal-form
-    //- info-results
-    //- choice-window
 
     //- Used for displaying any info
     v-snackbar(
@@ -35,6 +33,7 @@ import SystemBar from 'components/layout/systemBar.vue'
 // Global comps
 import VideoModal from 'components/video/modal.vue'
 import Overlay from 'components/global/overlay.vue'
+import Env from 'components/global/env.vue'
 
 // Mixins
 import Meta from 'mixins/global/meta'
@@ -52,7 +51,8 @@ export default {
 
     // Global
     VideoModal,
-    Overlay
+    Overlay,
+    Env
   },
 
   mixins: [Meta, ReadMagnet, DragDrop]
