@@ -13,7 +13,7 @@ const engines = {
 const getNews = ({ query: { feed } }, res) => {
   const engine = engines[feed]
 
-  engine().then((news) => {
+  engine(120).then((news) => {
     logger.info('Successfully retrieved the news.')
 
     res.status(200).json(news)
