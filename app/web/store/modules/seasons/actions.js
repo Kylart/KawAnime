@@ -2,11 +2,6 @@ import {axios, log, isRoot} from 'store/utils'
 
 export default {
   async init ({ rootState, commit, dispatch }) {
-    if (!rootState.isConnected) {
-      setTimeout(() => { dispatch('init') }, 10 * 1000)
-      return
-    }
-
     console.log('[INIT] Seasons')
 
     const now = new Date()
@@ -24,8 +19,13 @@ export default {
 
     dispatch('refresh')
   },
-  async refresh ({state, commit, dispatch}) {
-    log(`Refreshing Seasons...`)
+  async refresh ({ rootState, state, commit, dispatch }) {
+    if (!rootState.isConnected) {
+      log('Cancelling season update, user is offline.')
+      setTimeout(() => { dispatch('refresh') }, 20 * 1000)
+      return
+    }
+
     commit('refreshing', true)
 
     const { year, season } = state
