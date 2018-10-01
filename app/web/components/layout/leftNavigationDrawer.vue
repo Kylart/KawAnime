@@ -60,21 +60,14 @@ export default {
       {divider: true},
       {header: 'Anime world'},
       {
+        title: 'Seasons',
+        action: 'hourglass_empty',
+        href: '/seasons'
+      },
+      {
         title: 'News',
-        action: 'info_outline',
-        group: 'news',
-        items: [
-          {
-            title: 'Seasons',
-            action: 'hourglass_empty',
-            href: '/seasons'
-          },
-          {
-            title: 'News',
-            action: 'more',
-            href: '/news'
-          }
-        ]
+        action: 'more',
+        href: '/news'
       },
       {divider: true},
       {header: 'Local'},
