@@ -98,7 +98,7 @@
                 v-progress-circular(indeterminate, color='grey lighten-5')
           v-flex(xs6, d-flex, justify-start)
             v-layout(column, justify-space-between, align-content-space-between)
-              v-flex(xs8, d-flex, justify-space-between, align-center)
+              v-flex.name-container(xs8)
                 .name {{ member.name }}
                 v-btn.ma-1(icon, @click='openLink(member.link)')
                   v-icon open_in_new
@@ -224,7 +224,9 @@ export default {
 
   methods: {
     triggerDelay () {
-      this.charHover.timeout = setTimeout(this.expandChar, this.charHover.delay)
+      if (!this.charHover.show) {
+        this.charHover.timeout = setTimeout(this.expandChar, this.charHover.delay)
+      }
     },
     cancelDelay () {
       if (this.charHover.timeout) {
@@ -317,6 +319,9 @@ export default {
       font-weight 400
       border-bottom 0.02em solid rgba(255, 255, 255, 0.4)
       padding 10px
+      display flex
+      align-items center
+      justify-content center
 
     .synopsis
       overflow-x hidden
@@ -393,6 +398,11 @@ export default {
 
   .staff-container
     padding 0 5%
+
+    .name-container
+      display flex
+      align-items center
+      justify-content space-between
 
     .role
       text-align right
