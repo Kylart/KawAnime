@@ -8,30 +8,26 @@
     v-toolbar-title.title.jap かわニメ
     v-spacer
     v-tooltip(left)
-      v-btn(icon, v-show="update", @click='restartAndUpdate', slot='activator')
+      v-btn(icon, v-show='update', @click='restartAndUpdate', slot='activator')
         v-icon.green--text file_download
       span Update KawAnime
-    //- v-tooltip(left)
-    //-   v-btn(icon, @click='openInBrowser', slot='activator')
-    //-     v-icon open_in_new
-    //-   span Open KawAnime in your browser
+    downloader
     searcher
     settings
     v-btn(icon, @click='toggleRightDrawer')
       v-icon chevron_left
-    //- logs
 </template>
 
 <script>
 // Components
 import Settings from 'components/global/settings.vue'
-import Logs from 'components/global/logs.vue'
 import Searcher from 'components/info/modal.vue'
+import Downloader from 'components/downloader/modal.vue'
 
 export default {
   name: 'Toolbar',
 
-  components: { Settings, Logs, Searcher },
+  components: { Settings, Searcher, Downloader },
 
   computed: {
     update: {
@@ -48,9 +44,6 @@ export default {
     },
     toggleRightDrawer () {
       this.$store.commit('setRightDrawer', true)
-    },
-    openInBrowser () {
-      this.$store.dispatch('openInBrowser')
     },
     restartAndUpdate () {
       this.$store.dispatch('update/updateApp')
