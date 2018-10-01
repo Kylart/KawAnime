@@ -1,31 +1,47 @@
 <template lang="pug">
   v-flex.entry(xs12, sm6, lg4)
-    v-card(ripple)
-      v-layout(row, wrap)
-        v-flex.pt-0.pb-0(xs4)
-          v-img(
-            :src='pictureUrl'
-            :lazy-src='pictureUrl',
-            height='260'
-          )
-        v-flex.pa-2.pr-3(xs8)
-          v-layout(row, wrap, column)
-            v-flex(xs2, d-flex, justify-space-between)
-              v-tooltip.entry-title.ellipsis(top, lazy)
-                span(slot='activator') {{ info.title }}
-                span {{ info.title }}
-              .nb-ep.ellipsis {{ episodeLabel }}
-            v-flex(xs2, d-flex, justify-space-between)
-              .source.ellipsis {{ info.fromType }}
-              v-tooltip.genres.ellipsis(lazy, top)
-                span(slot='activator') {{ info.genres.join(' / ') }}
-                span {{ info.genres.join(' / ') }}
-            v-divider
-            v-flex(xs7)
-              .synopsis {{ info.synopsis }}
-            v-flex(xs1, d-flex, justify-space-between, align-end)
-              .producers.ellipsis By {{ info.producers.join(' and ') }}
-              .rating {{ info.score }} #[span / 10]
+    v-hover
+      v-card(ripple, slot-scope='{ hover }')
+        v-layout(row, wrap)
+          v-flex.pt-0.pb-0(xs4)
+            v-img(
+              :src='pictureUrl'
+              :lazy-src='pictureUrl',
+              height='260'
+            )
+              transition(name='fade')
+                .overlay(
+                  v-if='hover',
+                  class='d-flex transition-fast-in-fast-out darken-2 v-card--reveal display-3',
+                  style='height: 100%;'
+                )
+                  div(v-for='button in listButtons', :key='button.icon')
+                    v-tooltip(top, lazy)
+                      v-btn(
+                        icon, large,
+                        slot='activator',
+                        @click='button.action'
+                      )
+                        v-icon {{ button.icon }}
+                      span {{ button.text }}
+          v-flex.pa-2.pr-3(xs8)
+            v-layout(row, wrap, column)
+              v-flex(xs2, d-flex, justify-space-between)
+                v-tooltip.entry-title.ellipsis(top, lazy)
+                  span(slot='activator') {{ info.title }}
+                  span {{ info.title }}
+                .nb-ep.ellipsis {{ episodeLabel }}
+              v-flex(xs2, d-flex, justify-space-between)
+                .source.ellipsis {{ info.fromType }}
+                v-tooltip.genres.ellipsis(lazy, top)
+                  span(slot='activator') {{ info.genres.join(' / ') }}
+                  span {{ info.genres.join(' / ') }}
+              v-divider
+              v-flex(xs7)
+                .synopsis {{ info.synopsis }}
+              v-flex(xs1, d-flex, justify-space-between, align-end)
+                .producers.ellipsis By {{ info.producers.join(' and ') }}
+                .rating {{ info.score }} #[span / 10]
 </template>
 
 <script>
@@ -33,6 +49,24 @@ export default {
   name: 'Season-Card',
 
   props: ['info'],
+
+  data () {
+    return {
+      listButtons: [{
+        text: 'Add to Plan to Watch',
+        icon: 'watch_later',
+        action: () => this.addTo('watchList')
+      }, {
+        text: 'Add to Currently watching',
+        icon: 'tv',
+        action: () => this.addTo('watching')
+      }, {
+        text: 'Add to Seen',
+        icon: 'done_all',
+        action: () => this.addTo('seen')
+      }]
+    }
+  },
 
   computed: {
     pictureUrl () {
@@ -51,6 +85,12 @@ export default {
           ? this.info.nbEp + ' eps'
           : ''
     }
+  },
+
+  methods: {
+    addTo (name) {
+
+    }
   }
 }
 </script>
@@ -58,6 +98,16 @@ export default {
 <style lang="stylus" scoped>
   .entry
     height 270px
+
+    .overlay
+      padding 32px 0
+      background-color rgba(0, 0, 0, 0.4)
+      align-items center
+      justify-content center
+      flex-direction column
+
+      div
+        text-align center
 
     .entry-title
       line-height 25px
