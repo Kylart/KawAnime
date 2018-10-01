@@ -7,7 +7,8 @@
         v-img(:src='sanitize(info.picture)', contain, height='370', position='left top')
       v-flex(xs12, md9)
         v-layout.top-container(align-content-space-between, column)
-          .info-title {{ info.title }} (#[span.jap {{ info.japaneseTitle }}]) [{{ info.type }}]
+          .info-title
+            div {{ info.title }} (#[span.jap {{ info.japaneseTitle }}]) [{{ info.type }}]
           //- TODO need to handle xs
           v-layout.synopsis-container.pa-2(row, wrap)
             v-flex(xs12, sm8, md10, d-flex, align-center)
@@ -16,6 +17,7 @@
               .status.bordered
                 .sentence {{ statusSentence }}
                 .score {{ info.score }} #[span / 10]
+                .sentence.users {{ info.scoreStats.replace('scored by', '') }}
           v-divider
           v-layout.details-container.pt-0(row, wrap, align-center)
             v-flex(xs12, sm6, md6, lg8, d-flex, align-center)
@@ -313,15 +315,17 @@ export default {
     .info-title
       height 80px
       text-align center
-      font-size 28px
-      line-height 30px
-      letter-spacing 0.04em
-      font-weight 400
       border-bottom 0.02em solid rgba(255, 255, 255, 0.4)
       padding 10px
       display flex
       align-items center
       justify-content center
+
+      div
+        font-size 28px
+        line-height 30px
+        letter-spacing 0.04em
+        font-weight 400
 
     .synopsis
       overflow-x hidden
