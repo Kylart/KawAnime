@@ -24,6 +24,7 @@ const createConfig = () => {
     config: {
       fansub: 'HorribleSubs',
       quality: '720p',
+      feed: 'si',
       localPath: join(BASE_PATH, 'Downloads'),
       sound: 'Nyanpasu',
       inside: true,

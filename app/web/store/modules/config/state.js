@@ -1,9 +1,10 @@
-import {fansubs, sounds, subtitlesLanguages} from '../lists.js'
+import { fansubs, sounds, subtitlesLanguages, qualities } from '../lists.js'
 
 export default {
   config: {
     fansub: 'HorribleSubs',
     quality: '720p',
+    feed: 'si',
     localPath: '',
     sound: 'Nyanpasu',
     inside: true,
@@ -21,6 +22,7 @@ export default {
     }
   },
   fansubs,
+  qualities,
   sounds,
   subtitlesLanguages
 }
