@@ -106,7 +106,14 @@ export default {
 
   methods: {
     close () {
-      this.$store.commit('downloader/closeModal')
+      // We erase data on close as it's not that long to get it
+      // and there is no way to open this modal but to download
+      // something.
+      this.$store.commit('downloader/setModal', {
+        show: false,
+        title: '',
+        magnets: []
+      })
     },
     getLinks (name) {
       return this.values.magnets.filter((magnet) => magnet.name === name)
