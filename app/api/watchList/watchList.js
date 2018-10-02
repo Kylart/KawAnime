@@ -2,15 +2,15 @@
  * Created by Kylart on 20/04/2017.
  */
 
-const {writeFileSync} = require('fs')
-const {join} = require('path')
-const {Logger, dir} = require('../utils')
+const { writeFileSync } = require('fs')
+const { join } = require('path')
+const { Logger, dir, readJson } = require('../utils')
 const logger = new Logger('WatchList')
 
 const wlPath = join(dir, 'lists.json')
 
 const get = (req, res) => {
-  const wlFile = require(wlPath)
+  const wlFile = readJson(wlPath)
 
   logger.info(`Gathered lists from local.`)
 
