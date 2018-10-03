@@ -75,8 +75,6 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-  @import '~stylus/functions'
-
   .news
     height 250px
 
