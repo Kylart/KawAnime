@@ -26,13 +26,15 @@ export default {
     })
   },
   async getEps ({ commit }, { name, id }) {
+    const searchName = name.replace('local/', '')
+
     try {
       const { data, status } = await axios.get('searchEpsOnMal', {
-        params: { name, id }
+        params: { name: searchName, id }
       })
 
       if (status === 204) {
-        log('An error occurred while searching for', name)
+        log('An error occurred while searching episodes for', searchName)
         return
       }
 
@@ -42,11 +44,13 @@ export default {
     }
   },
   async getEpsLinks ({ rootState, commit }, { name, config }) {
+    const searchName = name.replace('local/', '')
+
     try {
-      const { data, status } = await axios.post('download', { name, ...config })
+      const { data, status } = await axios.post('download', { name: searchName, ...config })
 
       if (status === 204) {
-        log('An error occurred while getting ep links for' + name)
+        log('An error occurred while getting ep links for', searchName)
         return
       }
 

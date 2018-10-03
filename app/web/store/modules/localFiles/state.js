@@ -1,6 +1,6 @@
 export default {
   dir: '',
+  inside: true,
   files: [],
-  resetting: false,
-  refreshing: false
+  info: {}
 }

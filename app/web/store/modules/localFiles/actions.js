@@ -1,42 +1,35 @@
-import {axios, log} from 'store/utils'
+import { axios, log } from 'store/utils'
 
 export default {
-  async init ({state, commit}) {
+  init ({ dispatch }) {
     console.log('[INIT] Local Files')
+    dispatch('update')
+  },
+  async update ({ state, commit }) {
+    const { data, status } = await axios.get('local/files', {
+      params: {
+        dir: state.dir
+      }
+    })
 
-    const {data} = await axios.get(`local.json?dir=${state.dir}`)
+    if (status !== 200) {
+      log('An error occurred while checking for the files')
+      return
+    }
 
     commit('set', data)
   },
-  async refresh ({commit, state}) {
-    log(`Refreshing Local files...`)
+  async reset (store, name) {
+    const { status } = await axios.delete('local/resetInfo', {
+      params: {
+        name
+      }
+    })
 
-    commit('toggleRefreshing')
-
-    const {data} = await axios.get(`local.json?dir=${state.dir}`)
-
-    commit('toggleRefreshing')
-    commit('set', data)
-  },
-  async reset ({state, commit, dispatch}) {
-    log(`Resetting local information...`)
-
-    commit('toggleResetting')
-
-    axios.get(`resetLocal?dir=${state.dir}`).then(() => {
-      dispatch('refresh')
-      log(`Reset completed.`)
-    }).catch((err) => {
-      log('An error occurred while resetting.\n' + err)
-    }).then(() => { commit('toggleResetting') })
-  },
-  async changePath ({commit, dispatch}) {
-    const {data} = await axios.get('openThis?type=dialog')
-
-    if (data) {
-      commit('empty')
-      commit('setDir', data.path)
-      dispatch('refresh')
+    if (status === 200) {
+      log(`Successfully erased ${name}'s information.`)
+    } else {
+      log(`An error occurred while erasing ${name}'s informaton.`)
     }
   }
 }
