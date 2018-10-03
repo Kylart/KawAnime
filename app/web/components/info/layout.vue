@@ -414,6 +414,7 @@ export default {
 
   .episodes-container
     width 100%
+    padding-top 4px
     padding-left 2%
     padding-right 2%
 
