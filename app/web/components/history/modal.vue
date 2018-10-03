@@ -30,7 +30,7 @@
                       v-flex.ellipsis.text.entry(xs7, :class='isDelete(info.type)')
                         | {{ info.text }}
                       v-flex.entry(xs1, :class='isDelete(info.type)')
-                        v-icon.delete-entry(v-ripple='true', @click.stop='clearEntry(info, item)')
+                        v-icon.delete-entry(@click.stop='clearEntry(info, item)')
                           | clear
           v-flex.empty-history(xs4, v-else) No entry yet, go watch some anime ~
       v-divider
