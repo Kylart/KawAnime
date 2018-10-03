@@ -13,7 +13,6 @@ export { default as mal } from './mal'
 
 export { default as history } from './history'
 export { default as player } from './player'
-export { default as search } from './search'
 export { default as logs } from './logs'
 export { default as overlay } from './overlay'
 

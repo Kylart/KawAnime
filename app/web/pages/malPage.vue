@@ -129,7 +129,7 @@ export default {
   },
   methods: {
     showInfo (name, url) {
-      this.$store.dispatch('search/fromUrl', {
+      this.$store.dispatch('info/get', {
         name,
         url
       })
@@ -140,7 +140,7 @@ export default {
     },
     showSearch () {
       this.$store.commit('mal/isAdding', true)
-      this.$store.commit('search/show', true)
+      // this.$store.commit('search/show', true)
     },
     refresh () {
       this.$store.dispatch('mal/getWatchLists', this.$store.state.config.config.malUsername)
