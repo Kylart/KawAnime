@@ -1,17 +1,22 @@
 <template lang="pug">
   div
-    transition(name='fade', mode='out-in')
-      //- TODO: Fix episode research on Info display
-      //- Idea: Set current as local-<title> and set info in info state for this key
+    transition-group(name='fade', mode='out-in')
       InfoDisplayer(
-        v-if='current',
+        v-if='current', key='info',
         :current='current', :return-cb='resetCurrent'
       )
 
-      v-container(v-else, fluid, grid-list-lg, pt-1)
+      v-container(v-else, fluid, grid-list-lg, pt-1, key='tools')
         tools(:nb-elems='files.length', :resetting='resetting', @reset='reset', ref='tools')
 
-        transition-group(name='list', class='trans layout row wrap justify-center', tag='div')
+        transition(name='list')
+          empty(v-if='!files.length', key='empty')
+
+        transition-group(
+          v-if='files.length',
+          key='files', name='list',
+          class='trans layout row wrap justify-center', tag='div'
+        )
           template(v-for='file in files')
             v-flex(xs12, sm6, md3, lg3, xl2, :key='`${file.title} - ${file.episodeOrMovieNumber || ""}`')
               card(:reset='resetting', :file='file', @more='setCurrent', @refresh='refresh', @reset='handleChildReset')
@@ -20,13 +25,14 @@
 <script>
 import Tools from 'components/local/tools.vue'
 import Card from 'components/local/card.vue'
+import Empty from 'components/local/empty.vue'
 
 import InfoDisplayer from 'components/info/layout.vue'
 
 export default {
   name: 'Local',
 
-  components: { Tools, Card, InfoDisplayer },
+  components: { Tools, Card, Empty, InfoDisplayer },
 
   data: () => ({
     current: null,
