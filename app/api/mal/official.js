@@ -10,8 +10,9 @@ let api
 const checkCreds = (res) => {
   api.checkCredentials()
     .then((data) => {
+      const isError = data.includes('error')
       const isOk = data.includes(api._credentials.username)
-      res.status(isOk ? 200 : 206).send()
+      res.status(isOk ? 200 : isError ? 204 : 206).send()
     })
     .catch((err) => {
       logger.error('An error occurred while checking credentials.', err)

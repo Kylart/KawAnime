@@ -10,7 +10,7 @@ const getWatchList = ({query}, res) => {
   malScraper.getWatchListFromUser(user)
     .then((data) => res.send(data.lists))
     .catch(/* istanbul ignore next */ (err) => {
-      logger.error('An error occurred while gathring watchLIst from user.', err)
+      logger.error('An error occurred while gathering watchList from user.', err.message)
       res.status(204).send()
     })
 }
