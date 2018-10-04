@@ -73,10 +73,10 @@ export default {
 
   methods: {
     handleScroll () {
-      const elem = document.getElementsByClassName('dialog--active')[0]
+      const elem = document.getElementsByClassName('v-dialog--active')[0]
 
       const modalHeight = elem.clientHeight
-      const cardHeight = document.querySelector('.dialog--active .card').clientHeight
+      const cardHeight = document.querySelector('.v-dialog--active .v-card').clientHeight
 
       const scroll = elem.scrollTop
       const maxScroll = cardHeight - modalHeight
@@ -121,11 +121,11 @@ export default {
     modal (bool) {
       if (bool) {
         this.$nextTick(() => {
-          this.elem = document.getElementsByClassName('dialog--active')[0]
+          this.elem = document.getElementsByClassName('v-dialog--active')[0]
           this.elem.addEventListener('scroll', this.handleScroll)
         })
       } else {
-        this.elem = document.getElementsByClassName('dialog--active')[0]
+        this.elem = document.getElementsByClassName('v-dialog--active')[0]
         this.elem.removeEventListener('scroll', this.handleScroll)
       }
     }
