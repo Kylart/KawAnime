@@ -1,4 +1,4 @@
-const {get, save} = require('./watchList.js')
+const { get, save } = require('./watchList.js')
 
 const routes = [
   (app) => app.get('/watchLists', get),

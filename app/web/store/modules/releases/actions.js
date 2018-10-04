@@ -1,4 +1,4 @@
-import {axios, log} from 'store/utils'
+import { axios, log } from 'store/utils'
 
 export default {
   async init ({ dispatch }) {
@@ -33,7 +33,7 @@ export default {
     commit('set', data)
     commit('refreshing', false)
   },
-  autoRefresh ({dispatch}) {
+  autoRefresh ({ dispatch }) {
     // Refresh releases every 10 minutes
     setInterval(() => {
       dispatch('refresh')

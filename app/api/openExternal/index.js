@@ -1,4 +1,4 @@
-const {openExternal, openInBrowser} = require('./openExternal.js')
+const { openExternal, openInBrowser } = require('./openExternal.js')
 
 const routes = [
   (app) => app.get('/openThis', openExternal),

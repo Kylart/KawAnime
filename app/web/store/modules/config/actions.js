@@ -1,7 +1,7 @@
-import {axios, log, isRoot} from 'store/utils'
+import { axios, log, isRoot } from 'store/utils'
 
 export default {
-  save ({state, commit}, data = null) {
+  save ({ state, commit }, data = null) {
     axios.post('saveConfig', JSON.stringify({
       config: data || state.config
     })).then((res) => {
@@ -18,8 +18,8 @@ export default {
       )
     })
   },
-  async changeDir ({commit, dispatch}) {
-    const {data} = await axios.get('openThis?type=dialog')
+  async changeDir ({ commit, dispatch }) {
+    const { data } = await axios.get('openThis?type=dialog')
 
     if (data) {
       commit('setDir', data.path)

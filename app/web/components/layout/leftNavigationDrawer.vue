@@ -46,8 +46,8 @@ export default {
 
   data: () => ({
     itemGroup: [
-      {divider: true},
-      {header: 'Core'},
+      { divider: true },
+      { header: 'Core' },
       {
         title: 'Releases',
         action: 'access_time',
@@ -57,8 +57,8 @@ export default {
         action: 'file_download',
         href: '/torrenting'
       },
-      {divider: true},
-      {header: 'Anime world'},
+      { divider: true },
+      { header: 'Anime world' },
       {
         title: 'Seasons',
         action: 'hourglass_empty',
@@ -69,8 +69,8 @@ export default {
         action: 'more',
         href: '/news'
       },
-      {divider: true},
-      {header: 'Local'},
+      { divider: true },
+      { header: 'Local' },
       {
         title: 'Anime related',
         action: 'folder_open',
@@ -91,7 +91,7 @@ export default {
           }
         ]
       },
-      {divider: true}
+      { divider: true }
     ]
   }),
 

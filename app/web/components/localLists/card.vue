@@ -68,7 +68,7 @@ export default {
       await this.$store.dispatch('downloader/download', config)
     },
     watch () {
-      this.$router.push({path: '/', query: { name: this.name }})
+      this.$router.push({ path: '/', query: { name: this.name } })
     },
     search () {
       this.$store.commit('info/setTerm', this.name)

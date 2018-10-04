@@ -132,46 +132,46 @@ export default {
     return {
       datePickers: [false, false],
       status: [
-        {text: 'Watching', value: 1},
-        {text: 'Completed', value: 2},
-        {text: 'On Hold', value: 3},
-        {text: 'Dropped', value: 4},
-        {text: 'Plan to watch', value: 6}
+        { text: 'Watching', value: 1 },
+        { text: 'Completed', value: 2 },
+        { text: 'On Hold', value: 3 },
+        { text: 'Dropped', value: 4 },
+        { text: 'Plan to watch', value: 6 }
       ],
       score: [
-        {text: 'None', value: null},
-        {text: '1 - Appalling', value: 1},
-        {text: '2 - Horrible', value: 2},
-        {text: '3 - Very bad', value: 3},
-        {text: '4 - Bad', value: 4},
-        {text: '5 - Average', value: 5},
-        {text: '6 - Fine', value: 6},
-        {text: '7 - Good', value: 7},
-        {text: '8 - Very good', value: 8},
-        {text: '9 - Great', value: 9},
-        {text: '10 - Masterpiece', value: 10}
+        { text: 'None', value: null },
+        { text: '1 - Appalling', value: 1 },
+        { text: '2 - Horrible', value: 2 },
+        { text: '3 - Very bad', value: 3 },
+        { text: '4 - Bad', value: 4 },
+        { text: '5 - Average', value: 5 },
+        { text: '6 - Fine', value: 6 },
+        { text: '7 - Good', value: 7 },
+        { text: '8 - Very good', value: 8 },
+        { text: '9 - Great', value: 9 },
+        { text: '10 - Masterpiece', value: 10 }
       ].reverse(),
       storage: [
-        {text: 'Hard Drive', value: 1},
-        {text: 'DVD / CD', value: 2},
-        {text: 'Retail DVD', value: 4},
-        {text: 'VHS', value: 5},
-        {text: 'External HD', value: 6},
-        {text: 'NAS', value: 7},
-        {text: 'Blu-ray', value: 8},
-        {text: 'None', value: 3}
+        { text: 'Hard Drive', value: 1 },
+        { text: 'DVD / CD', value: 2 },
+        { text: 'Retail DVD', value: 4 },
+        { text: 'VHS', value: 5 },
+        { text: 'External HD', value: 6 },
+        { text: 'NAS', value: 7 },
+        { text: 'Blu-ray', value: 8 },
+        { text: 'None', value: 3 }
       ],
       priority: [
-        {text: 'Low', value: 0},
-        {text: 'Medium', value: 1},
-        {text: 'High', value: 2}
+        { text: 'Low', value: 0 },
+        { text: 'Medium', value: 1 },
+        { text: 'High', value: 2 }
       ],
       rewatch: [
-        {text: 'Very low', value: 1},
-        {text: 'Low', value: 2},
-        {text: 'Medium', value: 3},
-        {text: 'High', value: 4},
-        {text: 'Very high', value: 5}
+        { text: 'Very low', value: 1 },
+        { text: 'Low', value: 2 },
+        { text: 'Medium', value: 3 },
+        { text: 'High', value: 4 },
+        { text: 'Very high', value: 5 }
       ],
       initForm: {
         status: 1,
@@ -292,14 +292,14 @@ export default {
         this.form.date_finish = obj.myEndDate === '0000-00-00' ? null : obj.myEndDate
       }
 
-      const {id} = obj
+      const { id } = obj
       if (obj.name) {
         try {
-          const {data} = await this.$axios.get(`getInfoFromMal`, {
-            params: {url: obj.url}
+          const { data } = await this.$axios.get(`getInfoFromMal`, {
+            params: { url: obj.url }
           })
 
-          this.$store.commit('mal/setEntry', {id, ...data})
+          this.$store.commit('mal/setEntry', { id, ...data })
         } catch (e) {
           console.error((new Date()).toLocaleTimeString(), e)
         }

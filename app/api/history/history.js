@@ -2,10 +2,10 @@
  * Created by Kylart on 24/04/2017.
  */
 
-const {join} = require('path')
-const {writeFileSync} = require('fs')
+const { join } = require('path')
+const { writeFileSync } = require('fs')
 
-const {Logger, dir} = require('../utils')
+const { Logger, dir } = require('../utils')
 const logger = new Logger('History')
 
 const historyPath = join(dir, 'history.json')
@@ -59,7 +59,7 @@ const removeFromHistory = (req, res) => {
     // Getting history
     const historyFile = require(historyPath)
 
-    const {date, info} = chunk
+    const { date, info } = chunk
 
     historyFile[date] = historyFile[date].filter((elem) => {
       return elem.time !== info.time

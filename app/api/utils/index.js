@@ -3,7 +3,7 @@
  */
 
 const removeUnwanted = require('./removeUnwanted')
-const {Logger} = require('./logger.js')
+const { Logger } = require('./logger.js')
 const dir = require('./dir.js')
 const readJson = require('./readJson.js')
 

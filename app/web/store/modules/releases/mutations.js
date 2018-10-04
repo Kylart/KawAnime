@@ -1,4 +1,4 @@
-import {moment} from 'store/utils.js'
+import { moment } from 'store/utils.js'
 
 export default {
   set (state, data) {

@@ -2,7 +2,7 @@ const electron = require('electron')
 const { join } = require('path')
 const { spawn } = require('child_process')
 
-function init ({verbose}) {
+function init ({ verbose }) {
   const electronProcess = spawn(electron, [join(__dirname, '..', 'index.js')])
 
   if (verbose) {

@@ -1,7 +1,7 @@
-import {axios} from 'store/utils'
+import { axios } from 'store/utils'
 
 export default {
-  async getData ({commit}) {
+  async getData ({ commit }) {
     try {
       const { data: { client, torrents }, status } = await axios.get('torrent/info')
 

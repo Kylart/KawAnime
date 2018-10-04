@@ -1,6 +1,6 @@
 const { getEpisodesList } = require('mal-scraper')
 
-const getEps = ({query}, res) => {
+const getEps = ({ query }, res) => {
   const { id, name } = query
 
   getEpisodesList({ name, id })

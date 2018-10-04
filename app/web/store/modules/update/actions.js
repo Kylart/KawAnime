@@ -1,11 +1,11 @@
-import {axios, log, isRoot} from 'store/utils'
+import { axios, log, isRoot } from 'store/utils'
 
 export default {
-  async check ({state, commit, dispatch}) {
+  async check ({ state, commit, dispatch }) {
     setTimeout(async () => {
       if (!state.isAvailable) {
         try {
-          const {data} = await axios.get('_isUpdateAvailable')
+          const { data } = await axios.get('_isUpdateAvailable')
           if (data.ok) {
             if (!state.isRunning) {
               commit('setRunning')
@@ -19,9 +19,9 @@ export default {
       }
     }, 30 * 1000)
   },
-  async isInstallable ({commit, dispatch}) {
+  async isInstallable ({ commit, dispatch }) {
     try {
-      const {data} = await axios.get('_isInstallable')
+      const { data } = await axios.get('_isInstallable')
       if (data.ok) {
         commit('setStatus')
         commit('setInfoSnackbar', 'Update available. Think about installing it~', isRoot)
@@ -33,7 +33,7 @@ export default {
       log(`Error while checking if downloadable. ${e.message}`)
     }
   },
-  async updateApp ({commit}) {
+  async updateApp ({ commit }) {
     try {
       await axios.get('_quitAndInstall')
     } catch (e) {

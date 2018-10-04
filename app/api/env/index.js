@@ -1,6 +1,6 @@
 const getEnv = require('./env.js')
 const isOnline = require('./isOnline.js')
-const {actOnWin, toggleFullScreen} = require('./win.js')
+const { actOnWin, toggleFullScreen } = require('./win.js')
 const getNotes = require('./releaseNotes.js')
 const updateReleaseVersion = require('./updateReleaseVersion.js')
 

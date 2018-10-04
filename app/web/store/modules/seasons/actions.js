@@ -1,4 +1,4 @@
-import {axios, log, isRoot} from 'store/utils'
+import { axios, log, isRoot } from 'store/utils'
 
 export default {
   async init ({ rootState, commit, dispatch }) {

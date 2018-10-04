@@ -20,7 +20,7 @@ export function createRouter () {
   return new Router({
     base: __dirname,
     mode: 'history',
-    scrollBehavior: () => ({y: 0}),
+    scrollBehavior: () => ({ y: 0 }),
     routes: [
       route('/', 'releases'),
       route('/torrenting', 'torrenting'),
@@ -30,7 +30,7 @@ export function createRouter () {
       route('/watchList', 'watchList'),
       route('/malPage', 'malPage'),
       // Global redirect for 404
-      {path: '*', redirect: '/'} // TODO: make a custom 404 page
+      { path: '*', redirect: '/' } // TODO: make a custom 404 page
     ]
   })
 }

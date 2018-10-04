@@ -27,10 +27,10 @@ export default {
 
   data: () => ({
     seasons: [
-      {name: 'Winter', value: 'winter'},
-      {name: 'Spring', value: 'spring'},
-      {name: 'Summer', value: 'summer'},
-      {name: 'Fall', value: 'fall'}
+      { name: 'Winter', value: 'winter' },
+      { name: 'Spring', value: 'spring' },
+      { name: 'Summer', value: 'summer' },
+      { name: 'Fall', value: 'fall' }
     ]
   }),
 

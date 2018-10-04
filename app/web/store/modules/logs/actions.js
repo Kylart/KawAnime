@@ -1,14 +1,14 @@
-import {axios, log} from 'store/utils'
+import { axios, log } from 'store/utils'
 
 export default {
-  async init ({rootState, commit, dispatch}) {
+  async init ({ rootState, commit, dispatch }) {
     if (!rootState.isConnected) {
       setTimeout(() => { dispatch('init') }, 60 * 1000)
       return
     }
 
     try {
-      const {data, status} = await axios.get('releaseNotes')
+      const { data, status } = await axios.get('releaseNotes')
 
       if (status === 200) {
         commit('set', data.logs)

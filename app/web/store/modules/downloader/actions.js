@@ -1,7 +1,7 @@
 import { axios, log } from 'store/utils'
 
 export default {
-  async download ({state, commit, rootState}, config) {
+  async download ({ state, commit, rootState }, config) {
     try {
       const { data, status } = await axios.post('download', config)
 

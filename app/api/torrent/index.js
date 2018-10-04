@@ -1,4 +1,4 @@
-const {init, add, remove, info, togglePlay} = require('./torrent.js')
+const { init, add, remove, info, togglePlay } = require('./torrent.js')
 
 const routes = [
   (app) => app.get('/torrent/init', init),

@@ -1,8 +1,8 @@
-import {axios, log, isRoot, _} from 'store/utils'
+import { axios, log, isRoot, _ } from 'store/utils'
 
 export default {
-  async init ({rootState, commit, dispatch}) {
-    const {malUsername} = rootState.config.config
+  async init ({ rootState, commit, dispatch }) {
+    const { malUsername } = rootState.config.config
 
     if (!rootState.isConnected) {
       setTimeout(() => {
@@ -27,16 +27,16 @@ export default {
       }
     }
   },
-  async setupAccount ({rootState, commit, dispatch, state}, credentials) {
+  async setupAccount ({ rootState, commit, dispatch, state }, credentials) {
     try {
-      const {status} = await axios.post('_setupAccount', {
+      const { status } = await axios.post('_setupAccount', {
         service: state.service,
         credentials
       })
 
       if (status === 204) throw new Error('Error while registering service.')
 
-      const {username} = credentials
+      const { username } = credentials
       rootState.config.config.malUsername = username
 
       await dispatch('init', username)
@@ -49,7 +49,7 @@ export default {
     const { malUsername } = rootState.config.config
 
     try {
-      const {status} = await axios.post('_initOfficalApi', {
+      const { status } = await axios.post('_initOfficalApi', {
         service: state.service
       })
 
@@ -69,11 +69,11 @@ export default {
       )
     }
   },
-  async getWatchLists ({state, commit}, user) {
+  async getWatchLists ({ state, commit }, user) {
     try {
       commit('isLoading', true)
 
-      const { data } = await axios.get('getWatchList', {params: {user}})
+      const { data } = await axios.get('getWatchList', { params: { user } })
 
       if (!data) return
 
@@ -93,9 +93,9 @@ export default {
       log('MyAnimeList >', e)
     }
   },
-  async actOnList ({rootState, commit, dispatch}, data) {
+  async actOnList ({ rootState, commit, dispatch }, data) {
     try {
-      const {status} = await axios.post('actOnMalList', data)
+      const { status } = await axios.post('actOnMalList', data)
 
       if (status === 204) throw new Error('Invalid request.')
 

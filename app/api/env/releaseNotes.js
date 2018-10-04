@@ -1,7 +1,7 @@
-const {join} = require('path')
+const { join } = require('path')
 const _ = require('lodash')
 const axios = require('axios')
-const {dir} = require('../utils')
+const { dir } = require('../utils')
 
 const _VERSION_ = require(join(__dirname, '..', '..', '..', 'package.json')).version
 const configPath = join(dir, 'config.json')
@@ -11,7 +11,7 @@ const mustShow = config.config.version !== _VERSION_
 
 const get = async (req, res) => {
   try {
-    const {data, status} = await axios.get('https://api.github.com/repos/Kylart/KawAnime/releases')
+    const { data, status } = await axios.get('https://api.github.com/repos/Kylart/KawAnime/releases')
 
     const toSend = {
       logs: _.find(data, (e) => e.name === `v${_VERSION_}`).body,

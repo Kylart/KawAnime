@@ -6,7 +6,7 @@ export default {
 
     dispatch('get')
   },
-  async save ({state}) {
+  async save ({ state }) {
     await axios.post('saveWatchList', JSON.stringify(state.lists))
   },
   async get ({ commit }) {

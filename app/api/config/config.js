@@ -1,7 +1,7 @@
-const {join} = require('path')
-const {writeFileSync, readFileSync} = require('fs')
+const { join } = require('path')
+const { writeFileSync, readFileSync } = require('fs')
 
-const {dir, Logger} = require('../utils')
+const { dir, Logger } = require('../utils')
 const logger = new Logger('Config')
 
 const get = (req, res) => {

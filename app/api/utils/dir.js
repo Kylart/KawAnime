@@ -1,5 +1,5 @@
-const {homedir} = require('os')
-const {join} = require('path')
+const { homedir } = require('os')
+const { join } = require('path')
 
 const BASE_PATH = homedir()
 

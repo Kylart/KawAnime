@@ -2,7 +2,7 @@ const vault = require('../vault')
 const malScraper = require('mal-scraper')
 const Api = malScraper.officialApi
 
-const {Logger} = require('../utils')
+const { Logger } = require('../utils')
 const logger = new Logger('Mal-Scraper')
 
 let api
@@ -37,7 +37,7 @@ const actOnList = (req, res) => {
   req.on('data', (chunk) => {
     chunk = JSON.parse(chunk)
 
-    const {type, opts, id} = chunk
+    const { type, opts, id } = chunk
 
     api.actOnList(type, id, opts)
       .then((data) => {

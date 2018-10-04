@@ -1,7 +1,7 @@
 const fs = require('fs')
 const { extname } = require('path')
 const WebTorrent = require('webtorrent')
-const {Logger} = require('../utils')
+const { Logger } = require('../utils')
 const logger = new Logger('Torrent Client')
 
 // TODO Limit download speed, check https://github.com/webtorrent/webtorrent/issues/163
@@ -66,7 +66,7 @@ const add = (req, res) => {
   res.send()
 }
 
-const remove = ({query: {magnet}}, res) => {
+const remove = ({ query: { magnet } }, res) => {
   // Be careful calling this one.
 
   magnet = (extname(magnet) === '.torrent' && fs.readFileSync(magnet)) || magnet

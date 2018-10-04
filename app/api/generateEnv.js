@@ -1,9 +1,9 @@
 const fs = require('fs')
-const {join} = require('path')
+const { join } = require('path')
 const _ = require('lodash')
 const randomString = require('randomstring')
 
-const {dir, Logger} = require('./utils')
+const { dir, Logger } = require('./utils')
 
 const logger = new Logger('Env')
 

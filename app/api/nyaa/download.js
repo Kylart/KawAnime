@@ -1,6 +1,6 @@
 const { parseAnime: parse } = require('zettai')
 const _ = require('lodash')
-const {Logger} = require('../utils')
+const { Logger } = require('../utils')
 const logger = new Logger('Nyaa (Download)')
 
 const engines = require('./engines.js')
@@ -44,7 +44,7 @@ const download = (req, res) => {
   req.on('data', (chunk) => {
     chunk = JSON.parse(chunk)
 
-    const {feed} = chunk
+    const { feed } = chunk
 
     const searchData = {
       quality: chunk.quality || '',

@@ -1,5 +1,5 @@
-const {save, get} = require('./config.js')
-const {setupAccount} = require('./setupAccount.js')
+const { save, get } = require('./config.js')
+const { setupAccount } = require('./setupAccount.js')
 
 const routes = [
   (app) => app.get('/getConfig.json', get),

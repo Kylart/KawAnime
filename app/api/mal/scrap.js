@@ -1,9 +1,9 @@
 const malScraper = require('mal-scraper')
-const {Logger} = require('../utils')
+const { Logger } = require('../utils')
 const logger = new Logger('Mal-Scraper')
 
-const getWatchList = ({query}, res) => {
-  const {user} = query
+const getWatchList = ({ query }, res) => {
+  const { user } = query
 
   logger.info('Looking for the watch lists of ' + user + '...')
 

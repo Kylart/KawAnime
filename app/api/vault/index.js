@@ -1,10 +1,10 @@
-const {join} = require('path')
-const {writeFileSync, readFileSync, existsSync, mkdirSync} = require('fs')
+const { join } = require('path')
+const { writeFileSync, readFileSync, existsSync, mkdirSync } = require('fs')
 const randomString = require('randomstring')
 const buttercup = require('buttercup')
-const {Archive, createCredentials, FileDatasource, EntryFinder} = buttercup
+const { Archive, createCredentials, FileDatasource, EntryFinder } = buttercup
 
-const {Logger, dir} = require('../utils')
+const { Logger, dir } = require('../utils')
 const logger = new Logger('Vault')
 
 const DIR = join(dir, 'vault')

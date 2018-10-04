@@ -3,7 +3,7 @@
  */
 
 const electron = require('electron')
-const {app} = electron
+const { app } = electron
 
 const template = () => {
   let menu = [

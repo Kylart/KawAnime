@@ -1,5 +1,5 @@
 export default {
-  setUp ({rootState}) {
+  setUp ({ rootState }) {
     try {
       const sound = rootState.config.config.sound
       document.player = new window.Audio()
@@ -13,8 +13,8 @@ export default {
       document.player.play()
     }
   },
-  testSound ({rootState}) {
-    const {sound} = rootState.config.config
+  testSound ({ rootState }) {
+    const { sound } = rootState.config.config
 
     if (sound !== 'None') {
       if (sound !== 'None') {
