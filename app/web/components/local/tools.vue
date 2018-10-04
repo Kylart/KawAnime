@@ -65,11 +65,13 @@ export default {
       this.refreshing = false
     },
     async changeDir () {
-      const { data: path } = await this.$axios.get('openThis', {
+      const { data: { path } } = await this.$axios.get('openThis', {
         params: {
           type: 'dialog'
         }
       })
+
+      if (!path) return
 
       this.$store.commit('localFiles/setDir', path)
       this.refresh()
