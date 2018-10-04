@@ -44,11 +44,15 @@
     v-card-actions
       .fansub.ellipsis(v-show='!hasFansub') {{ info.parsedName.releaseGroup }}
       v-spacer
-      //- We'll change the colors if the entry is in a list.
-      v-btn(icon)
-        v-icon tv
-      v-btn(icon)
-        v-icon watch_later
+      template(v-for='list in lists')
+        v-tooltip(top, lazy)
+          v-btn(
+            slot='activator',
+            @click='_addTo(list.list)',
+            icon
+          )
+            v-icon(:color="_isIn(list.list) ? '#66BB6A' : 'default'") {{ list.icon }}
+          span {{ _isIn(list.list) ? 'Remove from' : 'Add to' }} {{ list.name }}
       v-btn(icon)
         span.mal-icon
 </template>
@@ -56,8 +60,12 @@
 <script>
 import { mapGetters } from 'vuex'
 
+import Status from 'mixins/lists/status.js'
+
 export default {
   name: 'Feed-Card',
+
+  mixins: [ Status ],
 
   props: ['info'],
 
@@ -77,6 +85,15 @@ export default {
     }),
     hasFansub () {
       return this.$store.state.releases.params.fansub !== 'None'
+    },
+    name () {
+      return this.info.parsedName.title
+    },
+    lists: {
+      get () {
+        return this.$store.state.watchLists.listNames.filter(({ list }) => ['watchList', 'watching'].includes(list))
+      },
+      set () {}
     }
   },
 

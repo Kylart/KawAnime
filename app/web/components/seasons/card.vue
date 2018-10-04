@@ -15,15 +15,16 @@
                   class='d-flex transition-fast-in-fast-out darken-2 v-card--reveal display-3',
                   style='height: 100%;'
                 )
-                  div(v-for='button in listButtons', :key='button.icon')
+                  template(v-for='list in lists')
                     v-tooltip(top, lazy)
                       v-btn(
-                        icon, large,
                         slot='activator',
-                        @click='button.action'
+                        @click='_addTo(list.list)',
+                        :color="_isIn(list.list) ? '#66BB6A' : 'default'",
+                        icon
                       )
-                        v-icon {{ button.icon }}
-                      span {{ button.text }}
+                        v-icon {{ list.icon }}
+                      span {{ _isIn(list.list) ? 'Remove from' : 'Add to' }} {{ list.name }}
           v-flex.pa-2.pr-3(xs8)
             v-layout(row, wrap, column)
               v-flex(xs2, d-flex, justify-space-between)
@@ -45,30 +46,24 @@
 </template>
 
 <script>
+import Status from 'mixins/lists/status.js'
+
 export default {
   name: 'Season-Card',
 
+  mixins: [ Status ],
+
   props: ['info'],
 
-  data () {
-    return {
-      listButtons: [{
-        text: 'Add to Plan to Watch',
-        icon: 'watch_later',
-        action: () => this.addTo('watchList')
-      }, {
-        text: 'Add to Currently watching',
-        icon: 'tv',
-        action: () => this.addTo('watching')
-      }, {
-        text: 'Add to Seen',
-        icon: 'done_all',
-        action: () => this.addTo('seen')
-      }]
-    }
-  },
-
   computed: {
+    lists: {
+      get () {
+        return this.$store.state.watchLists.listNames.filter(
+          ({ list }) => ['watchList', 'watching', 'seen'].includes(list)
+        )
+      },
+      set () {}
+    },
     pictureUrl () {
       const url = this.info.picture
       const sizeRegex = /\/r\/\d*x\d*/
@@ -84,12 +79,6 @@ export default {
         : this.info.nbEp !== '?'
           ? this.info.nbEp + ' eps'
           : ''
-    }
-  },
-
-  methods: {
-    addTo (name) {
-
     }
   }
 }

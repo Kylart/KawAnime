@@ -45,17 +45,20 @@
             v-tooltip(top, lazy)
               v-btn(
                 slot='activator',
-                @click='addTo(list.list)',
-                :color="isIn(list.list) ? 'green' : 'default'",
+                @click='_addTo(list.list)',
                 icon
               )
-                v-icon {{ list.icon }}
-              span Add to {{ list.name }}
+                v-icon(:color="_isIn(list.list) ? '#66BB6A' : 'default'") {{ list.icon }}
+              span {{ _isIn(list.list) ? 'Remove from' : 'Add to' }} {{ list.name }}
 </template>
 
 <script>
+import Status from 'mixins/lists/status.js'
+
 export default {
   name: 'Local-Card',
+
+  mixins: [ Status ],
 
   props: ['file', 'reset'],
 
@@ -82,6 +85,10 @@ export default {
     },
     picture () {
       return (this.info && this.info.picture) || null
+    },
+    name () {
+      // Useful for list status mixins
+      return this.file.title
     }
   },
 
@@ -150,12 +157,6 @@ export default {
           }
         })
       }
-    },
-    addTo (target) {
-
-    },
-    isIn (target) {
-
     }
   },
 
