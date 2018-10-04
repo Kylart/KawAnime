@@ -12,5 +12,14 @@ export default {
   },
   addEpsLinks (state, { name, data }) {
     state.info[name].episodesLinks = data
+  },
+  showModal (state, bool) {
+    state.modal.show = bool
+  },
+  setTerm (state, value) {
+    state.modal.term = value
+  },
+  setRemote (state, bool) {
+    state.modal.isRemote = bool
   }
 }

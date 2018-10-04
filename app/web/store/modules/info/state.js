@@ -1,3 +1,8 @@
 export default {
-  info: {}
+  info: {},
+  modal: {
+    show: false,
+    term: '',
+    isRemote: false
+  }
 }

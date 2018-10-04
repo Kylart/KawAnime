@@ -64,9 +64,7 @@ export default {
 
   data: () => ({
     timeout: null,
-    show: false,
     searching: false,
-    term: '',
     results: [],
     current: null
   }),
@@ -74,13 +72,38 @@ export default {
   computed: {
     ...mapGetters('info', {
       allInfo: 'getInfo'
-    })
+    }),
+    term: {
+      get () {
+        return this.$store.state.info.modal.term
+      },
+      set (val) {
+        this.$store.commit('info/setTerm', val)
+      }
+    },
+    show: {
+      get () {
+        return this.$store.state.info.modal.show
+      },
+      set (bool) {
+        this.$store.commit('info/showModal', bool)
+      }
+    },
+    isRemote: {
+      get () {
+        return this.$store.state.info.modal.isRemote
+      },
+      set (bool) {
+        this.$store.commit('info/setRemote', bool)
+      }
+    }
   },
 
   methods: {
     close () {
       this.show = false
       this.current = null
+      this.isRemote = false
     },
     back () {
       this.current = null
@@ -108,6 +131,10 @@ export default {
       }
 
       this.results = data
+
+      // If this is started from a remote component, we shall set the first
+      // result as current.
+      this.isRemote && this.getInfo(this.results[0])
     }, 300),
     async getInfo (entry) {
       this.searching = true
