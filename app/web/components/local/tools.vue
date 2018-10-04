@@ -75,6 +75,7 @@ export default {
       this.refresh()
     },
     reset () {
+      this.$log('Refreshing local information.')
       this.$emit('reset')
     }
   }

@@ -59,7 +59,7 @@ const saveInfo = (req, res) => {
     storage[key] = info
 
     saveStorage(storage)
-    logger.info(`Saved info for ${name}.`)
+    logger.info(`Saved info for ${title}.`)
 
     res.send()
   })

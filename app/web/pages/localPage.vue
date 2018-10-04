@@ -75,6 +75,7 @@ export default {
       if (this.resetIndex === this.files.length) {
         this.resetIndex = 0
         this.resetting = false
+        this.$log('Done.')
       }
     }
   }
