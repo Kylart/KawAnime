@@ -134,6 +134,11 @@ export default {
         }
       })
 
+      this.$store.dispatch('history/append', {
+        type: 'Delete',
+        text: `${this.file.title} - ${this.file.episodeOrMovieNumber || this.file.animeType2}`
+      })
+
       this.$emit('refresh')
     },
     more () {
