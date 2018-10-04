@@ -1,5 +1,6 @@
 <template lang="pug">
   div
+    magnets
     v-tabs(
       v-model='active',
       color='indigo',
@@ -20,12 +21,13 @@
 </template>
 
 <script>
+import Magnets from 'components/magnets/modal.vue'
 import List from 'components/localLists/list.vue'
 
 export default {
   name: 'Local-Lists',
 
-  components: { List },
+  components: { List, Magnets },
 
   data: () => ({
     active: 0

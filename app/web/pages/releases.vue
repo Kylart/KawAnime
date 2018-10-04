@@ -1,6 +1,6 @@
 <template lang="pug">
   div
-    transition-group(name='fade', mode='out-in')
+    transition-group(name='list', mode='out-in')
       loader(v-if='!instanciate', key='loading')
 
       entries(v-else-if='instanciate && !current', key='entries')

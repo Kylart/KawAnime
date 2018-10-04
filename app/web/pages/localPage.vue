@@ -15,7 +15,7 @@
         transition-group(
           v-if='files.length',
           key='files', name='list',
-          class='trans layout row wrap justify-center', tag='div'
+          class='trans layout row wrap justify-space-around', tag='div'
         )
           template(v-for='file in files')
             v-flex(xs12, sm6, md3, lg3, xl2, :key='`${file.title} - ${file.episodeOrMovieNumber || ""}`')

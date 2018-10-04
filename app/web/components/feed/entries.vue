@@ -9,8 +9,8 @@
           v-flex.time(xs3) Updated {{ time }}
           v-flex(xs4)
             v-text-field(
-              name='Search'
-              label='Looking for something?'
+              name='Search', ref='term',
+              label='Looking for something?',
               v-model='config.term',
               hide-details,
               solo, clearable,
@@ -67,8 +67,18 @@ export default {
 
   components: { Card, MagnetsModal },
 
-  mounted () {
-    this.update()
+  async mounted () {
+    this.$nextTick(async () => {
+      this.$refs.term.focus()
+
+      if (this.$route.query.name) {
+        this.config.term = this.$route.query.name
+        this.$route.query.name = undefined
+        await this.search()
+      }
+
+      this.update()
+    })
   },
 
   data: () => ({

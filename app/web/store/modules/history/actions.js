@@ -1,7 +1,7 @@
 import {axios, log} from 'store/utils'
 
 export default {
-  append ({}, data) {  // eslint-disable-line
+  append (store, data) {
     axios.post('appendHistory', JSON.stringify(data)).then(() => {
       log(`Successfully appended to history.`)
     }).catch(err => {

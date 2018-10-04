@@ -8,6 +8,12 @@ export default {
       if (status !== 200) {
         log('An error occurred while downloading the following request.')
         commit('setInfoSnackbar', `An error occurred while trying to download ${config.name}.`)
+        return
+      }
+
+      if (!data.magnets.length) {
+        commit('setInfoSnackbar', `Could not find any torrent for ${config.name}.`)
+        return
       }
 
       commit('setModal', {
