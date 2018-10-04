@@ -3,10 +3,10 @@
  */
 
 const malScraper = require('mal-scraper')
-const {Logger} = require('../utils')
+const { Logger } = require('../utils')
 const logger = new Logger('Search')
 
-const searchTerm = ({query}, res) => {
+const searchTerm = ({ query }, res) => {
   malScraper.getResultsFromSearch(query.term)
     .then((data) => res.json(data))
     .catch(/* istanbul ignore next */(err) => {

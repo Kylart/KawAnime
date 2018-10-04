@@ -2,7 +2,7 @@ const fs = require('fs')
 const { extname } = require('path')
 const parseRange = require('range-parser')
 const mime = require('mime')
-const {Logger} = require('../utils')
+const { Logger } = require('../utils')
 const logger = new Logger('Torrent Streamer')
 const decode = require('urldecode')
 const MatroskaSubtitles = require('matroska-subtitles')
@@ -108,7 +108,7 @@ const tracks = (req, res) => {
 
   logger.info(`Tracks for ${type}: ${isMagnet ? magnet : path}`)
 
-  const processFile = (obj = {files: []}) => {
+  const processFile = (obj = { files: [] }) => {
     obj = obj || { files: [] }
     const { files: [torrent] } = obj
     const mimeType = mime.getType(path || torrent.name)
@@ -150,4 +150,4 @@ const tracks = (req, res) => {
   processFile(isTorrent ? process.torrentClient.get(magnet) : undefined)
 }
 
-module.exports = {stream, tracks}
+module.exports = { stream, tracks }

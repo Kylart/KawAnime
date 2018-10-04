@@ -2,12 +2,12 @@
  * Created by Kylart on 03/04/2017.
  */
 
-const {getSeason} = require('mal-scraper')
+const { getSeason } = require('mal-scraper')
 
-const {Logger} = require('../utils')
+const { Logger } = require('../utils')
 const logger = new Logger('Mal-Scraper (Seasons)')
 
-exports.getSeason = ({query}, res) => {
+exports.getSeason = ({ query }, res) => {
   getSeason(query.year, query.season).then((data) => {
     logger.info(`Now having ${query.season} ${query.year}.`)
 

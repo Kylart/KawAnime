@@ -1,27 +1,56 @@
 <template lang="pug">
   div
-    v-container(fluid v-if='!news.length')
-      loader
+    news-form
 
-    v-container(fluid v-else)
-      v-layout(row wrap).news-container
-        v-flex(xs12).refresh-button-container
-          v-btn(icon @click="refresh()").refresh-button
-            v-icon(large) refresh
-        v-flex(xs12).pr-3
-          news(v-for="item in news", :item="item", :key="item.title")
+    transition-group(name='fade', mode='out-in')
+      v-container(
+        fluid, fill-height,
+        v-if='isRefreshing', key='loading'
+      )
+        loader
+
+      v-container(
+        fluid, grid-list-md,
+        v-else, key='news'
+      )
+        v-layout(row, wrap)
+          template(v-for='entry in reduced')
+            v-flex(xs12, md6, lg4, xl3)
+              card(:info='entry')
 </template>
 
 <script>
+import Card from 'components/news/card.vue'
+import NewsForm from 'components/news/form.vue'
+import Loader from 'components/news/loader.vue'
+
+// Allows fancy lazy loading of entries
+import Reduced from 'mixins/global/reduced.js'
+
 export default {
-  methods: {
-    refresh () {
-      this.$store.dispatch('news/refresh')
-    }
-  },
+  name: 'News',
+
+  components: { Card, NewsForm, Loader },
+
+  mixins: [ Reduced ],
+
+  data: () => ({
+    sup: 8,
+    initSup: 8
+  }),
+
   computed: {
-    news () {
-      return this.$store.state.news.data
+    entries: {
+      get () {
+        return this.$store.state.news.data
+      },
+      set () {}
+    },
+    isRefreshing: {
+      get () {
+        return this.$store.state.news.refreshing
+      },
+      set () {}
     }
   }
 }

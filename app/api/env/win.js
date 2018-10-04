@@ -1,5 +1,5 @@
-const actOnWin = ({query}, res) => {
-  const {action} = query
+const actOnWin = ({ query }, res) => {
+  const { action } = query
 
   if (action === 'minimize') {
     process.win.minimize()
@@ -14,7 +14,7 @@ const actOnWin = ({query}, res) => {
   res.status(200).send()
 }
 
-const toggleFullScreen = ({query}, res) => {
+const toggleFullScreen = ({ query }, res) => {
   if (process.win && process.win.isVisible()) {
     process.win.setFullScreen(JSON.parse(query.bool))
   }

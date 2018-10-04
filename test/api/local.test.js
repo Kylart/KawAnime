@@ -49,7 +49,7 @@ test('/local.json route exists and returns three files and code 200', async (t) 
 test('/local.json route exits and returns empty array on empty directory', async (t) => {
   const { body, status } = await request(makeApp())
     .get('/local.json')
-    .query({dir: __dirname})
+    .query({ dir: __dirname })
 
   t.is(status, 200)
 

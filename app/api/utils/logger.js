@@ -2,8 +2,8 @@
  * Very basic logger as we don't need much more.
  */
 
-const {join} = require('path')
-const {appendFileSync} = require('fs')
+const { join } = require('path')
+const { appendFileSync } = require('fs')
 const chalk = require('chalk')
 
 const dir = require('./dir.js')

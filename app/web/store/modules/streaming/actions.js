@@ -1,7 +1,7 @@
-import {axios, log, isRoot} from 'store/utils'
+import { axios, log, isRoot } from 'store/utils'
 
 export default {
-  async watch ({state, commit, rootState}, obj = {}) {
+  async watch ({ state, commit, rootState }, obj = {}) {
     const { name } = obj
 
     log(`Received a request to watch ${name}. Transmitting...`)
@@ -14,7 +14,7 @@ export default {
       choice: 'si'
     }
 
-    const {data, status} = await axios.post('download', infos)
+    const { data, status } = await axios.post('download', infos)
 
     if (status === 200) {
       log(`Request fulfilled!`)
@@ -27,7 +27,7 @@ export default {
       log('nyaa.si is down, trying with nyaa.pantsu.cat')
 
       infos.choice = 'pantsu'
-      const {data, status} = await axios.post('download', infos)
+      const { data, status } = await axios.post('download', infos)
 
       if (status === 200 && data.magnets.length) {
         log(`Request fulfilled!`)

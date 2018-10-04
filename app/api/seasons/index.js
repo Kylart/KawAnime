@@ -1,4 +1,4 @@
-const {getSeason} = require('./seasons.js')
+const { getSeason } = require('./seasons.js')
 
 const routes = [
   (app) => app.get('/seasons.json', getSeason)

@@ -1,12 +1,7 @@
-import {axios, log, isRoot} from 'store/utils'
+import { axios, log, isRoot } from 'store/utils'
 
 export default {
-  async init ({rootState, commit, dispatch}) {
-    if (!rootState.isConnected) {
-      setTimeout(() => { dispatch('init') }, 10 * 1000)
-      return
-    }
-
+  async init ({ rootState, commit, dispatch }) {
     console.log('[INIT] Seasons')
 
     const now = new Date()
@@ -19,34 +14,36 @@ export default {
     else if (month > 6 && month < 10) season = 'summer'
     else if (month > 9 && month < 13) season = 'fall'
 
-    commit('setCurrentSeason', {year, season})
+    commit('setYear', year)
+    commit('setSeason', season)
 
-    try {
-      const {data} = await axios.get(`seasons.json?year=${year}&season=${season}`)
-      commit('setSeasons', data)
-    } catch (e) {
-      const msg = 'Error while getting this season data. Retrying in 10 seconds...'
-      log(msg)
-      commit('setInfoSnackbar', msg, isRoot)
-
-      setTimeout(() => dispatch('init'), 10 * 1000)
-    }
+    dispatch('refresh')
   },
-  async refresh ({state, commit, dispatch}) {
-    log(`Refreshing Seasons...`)
+  async refresh ({ rootState, state, commit, dispatch }) {
+    if (!rootState.isConnected) {
+      log('Cancelling season update, user is offline.')
+      setTimeout(() => { dispatch('refresh') }, 20 * 1000)
+      return
+    }
 
-    const {year} = state
-    const season = state.season.value || state.season
+    commit('refreshing', true)
+
+    const { year, season } = state
 
     if (year >= 1917 && (year <= (new Date()).getYear() + 1901)) {
-      commit('emptySeasons')
+      const { data, status } = await axios.get('seasons.json', {
+        params: { year, season }
+      })
 
-      const {data, status} = await axios.get(`seasons.json?year=${year}&season=${season}`)
+      if (status !== 200) {
+        log('Could not refresh seasonal information.')
+        setTimeout(() => { dispatch('refresh') }, 60 * 1000)
+        commit('refreshing', false)
+        return
+      }
 
-      status === 200
-        ? commit('setSeasons', data)
-        : dispatch('refreshSeasons')
-
+      commit('set', data)
+      commit('refreshing', false)
       log('Seasons refreshed.')
     } else {
       commit('setInfoSnackbar', `Year must be between 1917 and ${(new Date()).getYear() + 1901}`, isRoot)

@@ -1,4 +1,4 @@
-const {stream, tracks} = require('./streaming.js')
+const { stream, tracks } = require('./streaming.js')
 const sseExpress = require('sse-express')
 
 const routes = [

@@ -1,9 +1,9 @@
 const fs = require('fs')
-const {join} = require('path')
+const { join } = require('path')
 const _ = require('lodash')
 const randomString = require('randomstring')
 
-const {dir, Logger} = require('./utils')
+const { dir, Logger } = require('./utils')
 
 const logger = new Logger('Env')
 
@@ -24,6 +24,7 @@ const createConfig = () => {
     config: {
       fansub: 'HorribleSubs',
       quality: '720p',
+      feed: 'si',
       localPath: join(BASE_PATH, 'Downloads'),
       sound: 'Nyanpasu',
       inside: true,

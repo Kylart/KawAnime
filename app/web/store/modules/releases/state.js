@@ -1,15 +1,19 @@
-import {fansubs} from 'store/modules/lists.js'
-import {moment} from 'store/utils.js'
+import { fansubs, qualities } from 'store/modules/lists.js'
+import { moment } from 'store/utils.js'
 
 export default {
-  releases: [],
+  instanciate: false,
+  current: null,
+  releases: {},
   autoRefresh: true,
   updateTime: moment(),
-  notLoaded: false,
+  isRefreshing: true,
   params: {
     quality: '',
     fansub: '',
-    choice: 'si'
+    feed: 'si',
+    term: ''
   },
+  qualities,
   fansubs
 }

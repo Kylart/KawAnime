@@ -1,12 +1,12 @@
-const {join} = require('path')
-const {writeFileSync} = require('fs')
+const { join } = require('path')
+const { writeFileSync } = require('fs')
 
 const vault = require('../vault')
-const {dir} = require('../utils')
+const { dir } = require('../utils')
 
 const setupAccount = (req, res) => {
   req.on('data', (chunk) => {
-    const {service, credentials} = JSON.parse(chunk)
+    const { service, credentials } = JSON.parse(chunk)
 
     // Writting the username in the config file so no one forgets
     const p = join(dir, 'config.json')

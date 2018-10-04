@@ -4,20 +4,10 @@ module.exports = {
     'description': 'Latest anime releases.',
     'keywords': 'download, releases, animes'
   },
-  '/downloader': {
-    'title': 'Downloader - KawAnime',
-    'description': 'Download animes!',
-    'keywords': 'download, animes'
-  },
   '/torrenting': {
     'title': 'Torrenting - KawAnime',
     'description': 'Manage your anime torrenting life.',
     'keywords': 'torrent, download, list, animes'
-  },
-  '/streaming': {
-    'title': 'Streaming - KawAnime',
-    'description': 'Stream any anime.',
-    'keywords': 'torrent, streaming, list, animes'
   },
   '/seasons': {
     'title': 'Seasons - KawAnime',

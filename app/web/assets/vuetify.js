@@ -34,10 +34,13 @@ import {
   VSlider,
   VPagination,
   VTextarea,
+  VImg,
+  VCombobox,
+  VHover,
   transitions
 } from 'vuetify'
 
-import { Ripple } from 'vuetify/es5/directives'
+import directives from 'vuetify/es5/directives'
 
 export default (Vue) => {
   Vue.use(Vuetify, {
@@ -75,10 +78,11 @@ export default (Vue) => {
       VSlider,
       VPagination,
       VTextarea,
+      VImg,
+      VCombobox,
+      VHover,
       transitions
     },
-    directives: {
-      Ripple
-    }
+    directives
   })
 }

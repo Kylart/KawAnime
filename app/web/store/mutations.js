@@ -10,8 +10,11 @@ export default {
   setConnected (state, bool) {
     state.isConnected = bool
   },
-  toggleDrawer (state) {
-    state.drawer = !state.drawer
+  setLeftDrawer (state, bool) {
+    state.drawer.left = bool
+  },
+  setRightDrawer (state, bool) {
+    state.drawer.right = bool
   },
   setInfoSnackbar (state, data) {
     state.infoSnackbar.text = data

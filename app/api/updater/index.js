@@ -1,6 +1,6 @@
 module.exports = (app, routes) => {
-  const {join} = require('path')
-  const {autoUpdater} = require('electron-updater')
+  const { join } = require('path')
+  const { autoUpdater } = require('electron-updater')
   let isUpdateAvailable = false
   let isInstallable = false
   let downloadProgress

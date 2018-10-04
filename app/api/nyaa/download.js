@@ -1,7 +1,9 @@
-const {si, pantsu} = require('nyaapi')
+const { parseAnime: parse } = require('zettai')
 const _ = require('lodash')
-const {removeUnwanted, Logger} = require('../utils')
+const { Logger } = require('../utils')
 const logger = new Logger('Nyaa (Download)')
+
+const engines = require('./engines.js')
 
 const sendRes = (object, res) => {
   res
@@ -9,23 +11,24 @@ const sendRes = (object, res) => {
     .json(object)
 }
 
-const formatMagnets = (data, searchData, choice, res) => {
+const formatMagnets = (data, searchData, feed, res) => {
   const magnets = []
   const eps = []
-  const isPantsu = choice === 'pantsu'
+  const isPantsu = feed === 'pantsu'
 
   data.forEach((elem) => {
-    elem.name = removeUnwanted(elem.name)
-    const ep = elem.name.split(' ').splice(-2, 1)[0]
-      .replace('v2', '')
-      .replace('v3', '')
-      .replace('v4', '')
+    const parsed = Object.assign({}, parse(elem.name))
+    const ep = parseInt(parsed.episodeOrMovieNumber)
+
     eps.push(ep)
 
     if (ep <= searchData.untilEp && ep >= searchData.fromEp) {
       magnets.push({
-        name: elem.name,
-        link: isPantsu ? elem.magnet : elem.links.magnet
+        name: parsed.title,
+        link: isPantsu ? elem.magnet : elem.links.magnet,
+        nb: ep,
+        quality: parsed.resolution,
+        fansub: parsed.releaseGroup
       })
     }
   })
@@ -41,35 +44,28 @@ const download = (req, res) => {
   req.on('data', (chunk) => {
     chunk = JSON.parse(chunk)
 
-    const {choice} = chunk
+    const { feed } = chunk
 
     const searchData = {
-      quality: chunk.quality,
-      name: chunk.name,
-      fansub: chunk.fansub,
-      fromEp: chunk.fromEp,
-      untilEp: chunk.untilEp
+      quality: chunk.quality || '',
+      name: chunk.name || '',
+      fansub: chunk.fansub.replace('None', '') || '',
+      fromEp: chunk.fromEp || -Infinity,
+      untilEp: chunk.untilEp || Infinity
     }
 
-    logger.info('Received a download request. Choice is ' + choice, searchData)
+    logger.info('Received a download request. Feed is ' + feed, searchData)
 
-    const term = `[${searchData.fansub}] ${searchData.quality || ''} ${searchData.name} ` + (choice === 'si' ? '-unofficial' : '')
+    const term = `[${searchData.fansub}] ${searchData.quality} ${searchData.name}`
 
-    if (choice === 'si') {
-      si.search(term).then((data) => {
-        formatMagnets(data, searchData, choice, res)
-      }).catch(/* istanbul ignore next */(err) => {
+    const engine = engines[feed]
+
+    engine.search(term)
+      .then((data) => formatMagnets(data, searchData, feed, res))
+      .catch(/* istanbul ignore next */(err) => {
         logger.error('An error occurred.', err)
         res.status(204).send()
       })
-    } else {
-      pantsu.search(term).then((data) => {
-        formatMagnets(data, searchData, choice, res)
-      }).catch(/* istanbul ignore next */(err) => {
-        logger.error('An error occurred.', err)
-        res.status(204).send()
-      })
-    }
   })
 }
 

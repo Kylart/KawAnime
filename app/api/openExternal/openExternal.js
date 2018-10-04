@@ -2,8 +2,8 @@
  * Created by Kylart on 04/04/2017.
  */
 
-const {dialog, BrowserWindow, shell} = require('electron')
-const {Logger} = require('../utils')
+const { dialog, BrowserWindow, shell } = require('electron')
+const { Logger } = require('../utils')
 const logger = new Logger('Open-External')
 
 const sendEmptyRes = (res) => {
@@ -15,9 +15,9 @@ const sendRes = (res, data) => {
   res.status(200).send(JSON.stringify(data))
 }
 
-const openExternal = ({query}, res) => {
+const openExternal = ({ query }, res) => {
   const type = query.type
-  logger.info('Got a request for external open: type is ' + type)
+  logger.info('Got a request for external open of a ' + type)
 
   switch (type) {
     case 'video':
@@ -53,7 +53,7 @@ const openExternal = ({query}, res) => {
       break
 
     case 'dialog':
-      dialog.showOpenDialog({properties: ['openDirectory']}, (dirPath) => {
+      dialog.showOpenDialog({ properties: ['openDirectory'] }, (dirPath) => {
         if (dirPath !== undefined) {
           const result = {
             path: dirPath[0]

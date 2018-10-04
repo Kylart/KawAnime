@@ -1,63 +1,44 @@
-const {si, pantsu} = require('nyaapi')
-const malScraper = require('mal-scraper')
-const {removeUnwanted, Logger} = require('../utils')
+const { parseAnime: parse } = require('zettai')
+const { Logger } = require('../utils')
 const logger = new Logger('Nyaa (Releases)')
 
-const makeSearch = (data, res, isPantsu = false) => {
-  let counter = 0
-  const toReturn = []
+const engines = require('./engines.js')
 
-  for (let i = 0; i < 18; ++i) {
-    const realName = removeUnwanted(data[i].name)
-    const name = realName.split(' ').slice(1).join(' ')
-    const rawName = name.split(' ').slice(0, -3).join(' ')
-    const researchName = rawName.split(' ').join('').toLowerCase()
-    const ep = name.split(' ').splice(-2, 1)[0]
-    const link = !isPantsu ? data[i].links.magnet : data[i].magnet
+const getLatest = ({ query: { feed, quality, term, fansub = '' } }, res) => {
+  // This method will only return the raw feed from
+  // the source, if a search must be done, it must be done
+  // after receiving those data.
+  fansub = fansub.replace('None', '')
+    ? `[${fansub}]`
+    : ''
 
-    malScraper.getInfoFromName(rawName)
-      .then((item) => {
-        item.rawName = rawName
-        item.researchName = researchName
-        item.magnetLink = link
-        item.ep = ep
+  // Currently, feed can only be 'pantsu' or 'si'
+  const query = [fansub, quality, term].join(' ')
+  const engine = engines[feed]
 
-        toReturn[i] = item
+  const result = []
 
-        ++counter
-        if (counter === 18) {
-          logger.info('Sending Latest releases.')
-          res.json(toReturn)
-        }
-      }).catch(/* istanbul ignore next */(err) => {
-        logger.error('An error occurred.', err)
-        res.status(202).send()
+  // Seriously, 150 entries should suffice.
+  engine.search(query, 150, { filter: '0', category: '1_0' })
+    .then((data) => {
+      data.forEach((elem) => {
+        const tmp = elem
+
+        // We have to copy the result of `parse` so that
+        // parsedName won't be always a reference to the same
+        // variable...
+        tmp.parsedName = Object.assign({}, parse(elem.name))
+
+        result.push(tmp)
       })
-  }
-}
 
-const getLatest = ({query}, res) => {
-  const {fansub, choice, quality} = query
-
-  if (choice === 'si') {
-    si.search({
-      term: `[${fansub}] ${quality} -unofficial -batch`,
-      n: 18,
-      filter: 2
-    }).then((data) => {
-      makeSearch(data, res)
-    }).catch(/* istanbul ignore next */(err) => {
-      logger.error('An error occurred.', err)
+      logger.info('Sending latest releases.')
+      res.json(result)
+    })
+    .catch((err) => {
+      logger.error('Error while getting the releases', err)
       res.status(204).send()
     })
-  } else {
-    pantsu.search(`[${fansub}] ${quality}`, 18).then((data) => {
-      makeSearch(data, res, true)
-    }).catch(/* istanbul ignore next */(err) => {
-      logger.error('An error occurred.', err)
-      res.status(204).send()
-    })
-  }
 }
 
 module.exports = getLatest

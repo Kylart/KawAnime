@@ -1,4 +1,4 @@
-import {log} from 'store/utils'
+import { log } from 'store/utils'
 
 export default {
   set (state, data) {

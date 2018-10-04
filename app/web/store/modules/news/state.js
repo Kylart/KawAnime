@@ -1,3 +1,5 @@
 export default {
-  data: []
+  data: [],
+  refreshing: false,
+  feed: 'mal'
 }
