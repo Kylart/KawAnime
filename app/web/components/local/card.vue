@@ -32,8 +32,9 @@
             pa-0
           )
             v-layout.text(fill-height, column, justify-space-between)
-              v-flex.entry-ep(xs2, v-if='file.episodeOrMovieNumber')
-                span Ep. {{ file.episodeOrMovieNumber }}
+              v-flex.entry-ep(xs2, v-if='file.episodeOrMovieNumber || file.animeType2')
+                span(v-if='file.episodeOrMovieNumber') Ep. {{ file.episodeOrMovieNumber }}
+                span(v-else) {{ file.animeType2 }}
               v-flex.text-xs-center(v-if='!picture', xs2)
                 v-progress-circular(indeterminate)
               v-flex.entry-title(xs2)
