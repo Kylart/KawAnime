@@ -2,7 +2,7 @@ import { axios, log } from 'store/utils'
 
 export default {
   async init ({ dispatch }) {
-    log('[INIT] Releases')
+    console.log('[INIT] Releases')
     await dispatch('refresh')
     await dispatch('autoRefresh')
   },
@@ -17,21 +17,27 @@ export default {
 
     commit('refreshing', true)
 
-    const { data, status } = await axios.get('getLatest', {
-      params: state.params
-    })
+    try {
+      const { data, status } = await axios.get('getLatest', {
+        params: state.params
+      })
 
-    if (status === 204) {
-      // This most likely mean that the user is offline.
-      log('An error has occurred while getting latest releases. Has the system access to the internet?')
-      setTimeout(() => {
-        dispatch('refresh')
-      }, 1 * 60 * 1000)
-      return
+      if (status === 204) {
+        // This most likely mean that the user is offline.
+        log('An error has occurred while getting latest releases. Has the system access to the internet?')
+        commit('refreshing', false)
+        setTimeout(() => {
+          dispatch('refresh')
+        }, 1 * 60 * 1000)
+        return
+      }
+
+      commit('set', data)
+      commit('refreshing', false)
+    } catch (e) {
+      log('Error while refreshing the releases', e)
+      commit('refreshing', false)
     }
-
-    commit('set', data)
-    commit('refreshing', false)
   },
   autoRefresh ({ dispatch }) {
     // Refresh releases every 10 minutes

@@ -1,4 +1,4 @@
-import { moment } from 'store/utils.js'
+import { moment, log } from 'store/utils.js'
 
 export default {
   set (state, data) {
@@ -43,6 +43,8 @@ export default {
     state.releases[params.feed][params.fansub][params.quality] = state.params.term
       ? data
       : [...data.slice(0, index), ...current]
+
+    log('Updated releases.')
 
     state.instanciate = true
   },
