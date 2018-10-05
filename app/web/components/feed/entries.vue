@@ -78,10 +78,14 @@ export default {
       }
 
       this.update()
+      this.updateTime()
     })
+
+    setInterval(this.updateTime, 1000)
   },
 
   data: () => ({
+    time: null,
     page: 1,
     entryPerPage: 12,
     releases: [],
@@ -140,15 +144,15 @@ export default {
         feed: this.$store.state.releases.params.feed,
         term: this.$store.state.releases.params.term
       }
-    },
-    time () {
-      return this.$store.state.releases.updateTime.fromNow()
     }
   },
 
   methods: {
     update () {
       this.releases = this.$store.getters['releases/getReleases']
+    },
+    updateTime () {
+      this.time = this.$store.state.releases.updateTime.fromNow()
     },
     async search () {
       if (this.isRefreshing) return
