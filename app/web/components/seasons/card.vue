@@ -56,6 +56,9 @@ export default {
   props: ['info'],
 
   computed: {
+    name () {
+      return this.info.title
+    },
     lists: {
       get () {
         return this.$store.state.watchLists.listNames.filter(
