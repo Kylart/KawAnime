@@ -32,9 +32,9 @@
             pa-0
           )
             v-layout.text(fill-height, column, justify-space-between)
-              v-flex.entry-ep(xs2, v-if='file.episodeOrMovieNumber || file.animeType2')
+              v-flex.entry-ep(xs2)
                 span(v-if='file.episodeOrMovieNumber') Ep. {{ file.episodeOrMovieNumber }}
-                span(v-else) {{ file.animeType2 }}
+                span(v-else-if='file.animeType2') {{ file.animeType2 }}
               v-flex.text-xs-center(v-if='!picture', xs2)
                 v-progress-circular(indeterminate)
               v-flex.entry-title(xs2)
@@ -136,7 +136,7 @@ export default {
 
       this.$store.dispatch('history/append', {
         type: 'Delete',
-        text: `${this.file.title} - ${this.file.episodeOrMovieNumber || this.file.animeType2}`
+        text: `${this.file.title} - ${this.file.episodeOrMovieNumber || this.file.animeType2 || 'N/A'}`
       })
 
       this.$emit('refresh')
@@ -161,6 +161,11 @@ export default {
             type: 'video',
             path: this.file.path
           }
+        })
+
+        this.$store.dispatch('history/append', {
+          type: 'Play',
+          text: `${this.file.title} - ${this.file.episodeOrMovieNumber || this.file.animeType2 || 'N/A'}`
         })
       }
     }
