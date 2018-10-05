@@ -66,7 +66,7 @@
               v-flex.name.seiyuu(xs6, d-flex, align-center, justify-end) {{ char.seiyuu.name }}
               v-flex(xs6)
                 v-layout(row, wrap, justify-center)
-                  v-btn(icon, @click='openLink(char.link)')
+                  v-btn(icon, @click='openLink(char.seiyuu.link)')
                     v-icon open_in_new
 
           v-flex(xs3, v-if='char.seiyuu.name')
@@ -265,7 +265,7 @@ export default {
     },
     expandChar () {
       this.charHover.show = true
-      this.charHover.overflow.overflowY = 'scroll'
+      this.charHover.overflow.overflowY = 'auto'
 
       const elem = this.$refs.chars
       const { clientHeight } = elem
