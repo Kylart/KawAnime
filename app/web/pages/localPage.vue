@@ -34,6 +34,10 @@ export default {
 
   components: { Tools, Card, Empty, InfoDisplayer },
 
+  mounted () {
+    this.refresh()
+  },
+
   data: () => ({
     current: null,
     resetting: false,
