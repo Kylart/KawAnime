@@ -3,7 +3,7 @@ export default {
   async mounted () {
     if (!this.info.hasOwnProperty('episodesLinks')) {
       await this.$store.dispatch('info/getEpsLinks', {
-        name: this.current.title,
+        name: this.title,
         config: {
           fansub: this.current.releaseGroup || this.config.fansub,
           feed: this.config.feed

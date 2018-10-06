@@ -156,7 +156,7 @@ export default {
   async mounted () {
     if (!this.info.hasOwnProperty('episodesInfo')) {
       await this.$store.dispatch('info/getEps', {
-        name: this.current.title,
+        name: this.title,
         id: this.info.id
       })
     }
@@ -177,8 +177,11 @@ export default {
     ...mapGetters('info', {
       allInfo: 'getInfo'
     }),
+    title () {
+      return this.current.title.replace(':', '')
+    },
     info () {
-      return this.allInfo[this.current.title] || {}
+      return this.allInfo[this.title] || {}
     },
     statusSentence () {
       const { status, premiered, source, episodes, duration } = this.info
