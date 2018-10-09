@@ -13,7 +13,7 @@ const getLatest = ({ query: { feed, quality, term, fansub = '' } }, res) => {
     : ''
 
   // Currently, feed can only be 'pantsu' or 'si'
-  const query = [fansub, quality, term].join(' ')
+  const query = [fansub, quality.replace('p', ''), term].join(' ')
   const engine = engines[feed]
 
   const result = []

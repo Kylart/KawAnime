@@ -56,7 +56,7 @@ const download = (req, res) => {
 
     logger.info('Received a download request. Feed is ' + feed, searchData)
 
-    const term = `[${searchData.fansub}] ${searchData.quality} ${searchData.name}`
+    const term = `[${searchData.fansub}] ${searchData.quality.replace('p', '')} ${searchData.name}`
 
     const engine = engines[feed]
 
