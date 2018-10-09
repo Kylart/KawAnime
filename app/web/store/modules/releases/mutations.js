@@ -12,37 +12,40 @@ export default {
     const { params } = state
 
     // Only checking for existence
-    if (!state.releases.hasOwnProperty(params.feed)) {
-      state.releases[params.feed] = {}
+    if (!state.releases.data.hasOwnProperty(params.feed)) {
+      state.releases.data[params.feed] = {}
     }
 
-    if (!state.releases[params.feed].hasOwnProperty(params.fansub)) {
-      state.releases[params.feed][params.fansub] = {}
+    if (!state.releases.data[params.feed].hasOwnProperty(params.fansub)) {
+      state.releases.data[params.feed][params.fansub] = {}
     }
 
-    if (!state.releases[params.feed][params.fansub].hasOwnProperty(params.quality)) {
-      state.releases[params.feed][params.fansub][params.quality] = []
+    if (!state.releases.data[params.feed][params.fansub].hasOwnProperty(params.quality)) {
+      state.releases.data[params.feed][params.fansub][params.quality] = []
     }
 
     // If there are some data already, we should only add what's
     // not in there already.
-    const current = state.releases[params.feed][params.fansub][params.quality]
+    const current = state.releases.data[params.feed][params.fansub][params.quality]
     let index = data.length
 
     for (let i = 0, l = data.length; i < l; ++i) {
-      const elem = JSON.stringify(data[i])
+      const { name: refName } = data[i]
 
-      const hasElem = current.filter((e) => JSON.stringify(e) === elem).length
+      const hasElem = current.find(({ name }) => name === refName)
 
       if (hasElem) {
         index = i
-        return
+        break
       }
     }
 
-    state.releases[params.feed][params.fansub][params.quality] = state.params.term
-      ? data
-      : [...data.slice(0, index), ...current]
+    if (!params.term) {
+      state.releases.data[params.feed][params.fansub][params.quality] = [...data.slice(0, index), ...current]
+    }
+
+    // Actually updating the current releases so that it's reactive
+    state.releases.current = state.params.term ? data : [...data.slice(0, index), ...current]
 
     log('Updated releases.')
 

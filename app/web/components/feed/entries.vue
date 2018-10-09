@@ -5,9 +5,9 @@
     magnets-modal
     v-layout(row, wrap, justify-center)
       v-flex(xs12)
-        v-layout(justify-space-between, align-center)
-          v-flex.time(xs3) Updated {{ time }}
-          v-flex(xs4)
+        v-layout(row, wrap, justify-space-between, align-center)
+          v-flex.time(xs12, sm4, md3, d-flex, justify-center) Updated {{ time }}
+          v-flex(xs12, sm8, md4)
             v-text-field(
               name='Search', ref='term',
               label='Looking for something?',
@@ -17,7 +17,7 @@
               :loading='isRefreshing',
               @keyup.enter='search'
             )
-          v-flex(xs4)
+          v-flex(xs12, md4)
             v-layout(justify-space-around)
               v-flex(xs3)
                 v-select(
@@ -40,7 +40,7 @@
                   v-model='config.quality'
                 )
       v-flex(
-        xs3,
+        xs12, sm6, md3, lg3, xl2,
         v-for='(entry, i) in entries',
         :key='entry.name'
       )
@@ -77,7 +77,6 @@ export default {
         await this.search()
       }
 
-      this.update()
       this.updateTime()
     })
 
@@ -88,7 +87,6 @@ export default {
     time: null,
     page: 1,
     entryPerPage: 12,
-    releases: [],
     feeds: [{
       text: 'nyaa.si',
       value: 'si'
@@ -102,6 +100,18 @@ export default {
     ...mapGetters('info', {
       allInfo: 'getInfo'
     }),
+    releases: {
+      get () {
+        return this.$store.state.releases.releases.current
+      },
+      set () {}
+    },
+    isOnline: {
+      get () {
+        return this.$store.state.isConnected
+      },
+      set () {}
+    },
     mainConfig: {
       get () {
         return this.$store.state.config.config
@@ -148,20 +158,21 @@ export default {
   },
 
   methods: {
-    update () {
-      this.releases = this.$store.getters['releases/getReleases']
-    },
     updateTime () {
       this.time = this.$store.state.releases.updateTime.fromNow()
     },
     async search () {
+      if (!this.isOnline) {
+        this.$log('Offline, cancelling search.')
+      }
+
       if (this.isRefreshing) return
 
       this.$store.commit('releases/setParams', this.config)
       await this.$store.dispatch('releases/refresh')
 
+      this.updateTime()
       this.page = 1
-      this.$nextTick(this.update)
     },
     order (qualities) {
       // We have to clone qualities as the reverse method changes the original input,
