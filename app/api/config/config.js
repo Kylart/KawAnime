@@ -1,13 +1,12 @@
 const { join } = require('path')
-const { writeFileSync, readFileSync } = require('fs')
+const { writeFileSync } = require('fs')
 
-const { dir, Logger } = require('../utils')
+const { dir, Logger, readJson } = require('../utils')
 const logger = new Logger('Config')
 
 const get = (req, res) => {
   const configPath = join(dir, 'config.json')
-  const configFile = JSON.parse(readFileSync(configPath))
-
+  const configFile = readJson(configPath)
   res.type('application/json')
   res.send(configFile)
 }

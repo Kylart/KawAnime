@@ -5,7 +5,7 @@
 const { join } = require('path')
 const { writeFileSync } = require('fs')
 
-const { Logger, dir } = require('../utils')
+const { Logger, dir, readJson } = require('../utils')
 const logger = new Logger('History')
 
 const historyPath = join(dir, 'history.json')
@@ -17,7 +17,7 @@ const appendHistory = (req, res) => {
   const time = today.toLocaleTimeString()
 
   // Getting history
-  const historyFile = require(historyPath)
+  const historyFile = readJson(historyPath)
 
   req.on('data', (chunk) => {
     chunk = JSON.parse(chunk)
@@ -47,7 +47,7 @@ const appendHistory = (req, res) => {
 
 const getHistory = (req, res) => {
   // Getting history
-  const historyFile = require(historyPath)
+  const historyFile = readJson(historyPath)
 
   res.status(200).json(historyFile)
 }
@@ -57,7 +57,7 @@ const removeFromHistory = (req, res) => {
     chunk = JSON.parse(chunk)
 
     // Getting history
-    const historyFile = require(historyPath)
+    const historyFile = readJson(historyPath)
 
     const { date, info } = chunk
 

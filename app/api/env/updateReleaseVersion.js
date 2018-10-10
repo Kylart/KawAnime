@@ -1,8 +1,8 @@
 const { join } = require('path')
 const { writeFileSync } = require('fs')
-const { dir } = require('../utils')
+const { dir, readJson } = require('../utils')
 
-const _VERSION_ = require(join(__dirname, '..', '..', '..', 'package.json')).version
+const _VERSION_ = readJson(join(__dirname, '..', '..', '..', 'package.json')).version
 const configPath = join(dir, 'config.json')
 const config = require(configPath)
 
