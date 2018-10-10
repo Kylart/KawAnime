@@ -1,13 +1,43 @@
 <script>
 import VSlider from 'vuetify/es5/components/VSlider/VSlider'
+import { VScaleTransition } from 'vuetify/es5/components/transitions'
 
 export default {
   name: 'player-slider',
-  mixins: [VSlider],
+
+  mixins: [ VSlider ],
+
   props: {
-    buffer: Array
+    buffer: Array,
+    duration: {
+      default: '00:00'
+    },
+    // Override
+    thumbLabel: {
+      type: Boolean,
+      default: true
+    }
   },
+
+  data: () => ({
+    hover: false
+  }),
+
   computed: {
+    maxTime () {
+      if (!this.duration) return 0
+
+      const parts = this.duration.split(':')
+      const isHours = parts.length === 3
+
+      const hours = (isHours && parts[0]) || 0
+      const minutes = (isHours && parts[1]) || parts[0] || 0
+      const seconds = (isHours && parts[2]) || parts[1] || 0
+
+      const result = (parseInt(hours) * 3600) + (parseInt(minutes) * 60) + parseInt(seconds)
+
+      return result
+    },
     inputValue: {
       get () {
         return this.value
@@ -22,10 +52,49 @@ export default {
       }
     }
   },
+
   methods: {
-    genBuffers (h) {
+    // Override
+    getLabel (value) {
+      const time = (value / 100) * this.maxTime
+
+      const hours = Math.floor(time / 3600) || null
+      const minutes = Math.floor(time / 60) || null
+      const seconds = Math.floor(time % 60) || null
+
+      let result = ''
+
+      result += (hours && `${hours}:`) || ''
+      result += `0${minutes || '00'}:`.slice(-3)
+      result += `0${seconds || '00'}`.slice(-2)
+
+      return this.$createElement('span', result)
+    },
+    // Override
+    genThumbLabel (content) {
+      return this.$createElement(VScaleTransition, {
+        props: { origin: 'bottom center' }
+      }, [
+        this.$createElement(
+          'div', {
+            staticClass: 'thumb-container',
+            directives: [{
+              name: 'show',
+              value: this.isFocused || this.isActive
+            }]
+          }, [
+            this.$createElement(
+              'div', this.setBackgroundColor(this.computedThumbColor, {
+                staticClass: 'thumb-content'
+              }), [ content ]
+            )
+          ]
+        )
+      ])
+    },
+    genBuffers () {
       const ticks = this.buffer.map(([start, end]) => {
-        const span = h('span', {
+        const span = this.$createElement('span', {
           class: 'slider__buffer',
           style: {
             left: `${start}%`,
@@ -36,28 +105,34 @@ export default {
         return span
       })
 
-      return h(
+      return this.$createElement(
         'div',
         {
           class: 'slider__buffer-container'
         },
         ticks
       )
+    },
+    // Override
+    genChildren () {
+      return [
+        this.genBuffers(),
+        this.genInput(),
+        this.genTrackContainer(),
+        this.genSteps(),
+        this.genThumbContainer(
+          this.internalValue,
+          this.inputWidth,
+          this.isFocused || this.isActive,
+          this.onThumbMouseDown
+        )
+      ]
     }
-  },
-  render (h) {
-    return VSlider.render.call(this, (tag, attrs, children) => {
-      if (attrs.staticClass === 'slider') {
-        if (this.buffer) children.splice(0, 0, this.genBuffers(h))
-      }
-      return h(tag, attrs, children)
-    })
   }
 }
 </script>
 
 <style lang="stylus">
-
 .slider__buffer-container
   transform translate3d(0, -50%, 0)
   position absolute
@@ -73,4 +148,32 @@ export default {
     background-color #0D47A1
     height 2px
     position absolute
+</style>
+
+<style lang="stylus" scoped>
+  .thumb-container
+    position absolute
+    left 0
+    bottom 0
+
+  .thumb-content
+    display flex
+    align-items center
+    justify-content center
+    font-size 14px
+    font-weight 400
+    letter-spacing 0.03em
+    color #fff
+    width 48px
+    height 48px
+    border-radius 50% 50% 0
+    position absolute
+    left 0
+    bottom 100%
+    user-select none
+
+    transform translateY(-20%) translateY(-12px) translateX(-50%) rotate(45deg)
+
+    > *
+      transform rotate(-45deg)
 </style>

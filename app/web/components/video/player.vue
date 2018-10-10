@@ -19,10 +19,10 @@
 
     v-icon.video-play(dark, @click.stop='togglePlay', v-if='paused') play_arrow
 
-    v-btn.video-close(color='mablue', dark, icon, @click.stop='actOnWindow("close")', v-show='!controlsHidden')
+    v-btn.video-close(color='indigo', dark, icon, @click.stop='actOnWindow("close")', v-show='!controlsHidden')
       v-icon close
 
-    v-btn.video-size(color='mablue', dark, icon, @click.stop='actOnWindow("minimize")', v-show='!controlsHidden && !$parent.fullscreen')
+    v-btn.video-size(color='indigo', dark, icon, @click.stop='actOnWindow("minimize")', v-show='!controlsHidden && !$parent.fullscreen')
       v-icon {{ $parent.isMinimized ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}
 
     .cues-container(v-show='trackNum && isAss')
@@ -53,31 +53,36 @@
 
     v-fade-transition
       div.video-controls(v-show='!controlsHidden')
-        player-slider.timeline(dark, hide-details, color='mablue', :step='0', :buffer='buffered', :value='timeline', @input='changeTimeline')
+        player-slider.timeline(
+          dark, hide-details, color='indigo',
+          :step='0', :buffer='buffered', :value='timeline',
+          :duration='duration',
+          @input='changeTimeline'
+        )
 
-        v-btn(color='mablue', dark, icon, @click.stop='togglePlay')
+        v-btn(color='indigo', dark, icon, @click.stop='togglePlay')
           v-icon(v-html="paused ? 'play_arrow' : 'pause'")
-        v-btn(color='mablue', dark, icon, @click.stop='toggleMute')
+        v-btn(color='indigo', dark, icon, @click.stop='toggleMute')
           v-icon(v-html="muted ? 'volume_off' : 'volume_up'")
-        v-slider.volume(hide-details, color='mablue', dark, :max='100', :value='muted ? 0 : volume', thumb-label, @input='changeVolume')
+        v-slider.volume(hide-details, color='indigo', dark, :max='100', :value='muted ? 0 : volume', thumb-label, @input='changeVolume')
         div.timer {{ currentTime }}/{{ duration }}
         v-tooltip(top)
           span Rewind 5s
-          v-btn(color='mablue', dark, icon, @click.stop='timeForward(-5)', slot='activator')
+          v-btn(color='indigo', dark, icon, @click.stop='timeForward(-5)', slot='activator')
             v-icon replay_5
         v-tooltip(top)
           span Fast forward 5s
-          v-btn(color='mablue', dark, icon, @click.stop='timeForward(5)', slot='activator')
+          v-btn(color='indigo', dark, icon, @click.stop='timeForward(5)', slot='activator')
             v-icon forward_5
         v-tooltip(top)
           span Skip 1m25 (op&ed)
-          v-btn(color='mablue', dark, icon, @click.stop='timeForward(85)', slot='activator')
+          v-btn(color='indigo', dark, icon, @click.stop='timeForward(85)', slot='activator')
             v-icon fast_forward
 
-        v-btn#fullscreen.right(color='mablue', dark, icon, @click.stop='toggleFullScreen')
+        v-btn#fullscreen.right(color='indigo', dark, icon, @click.stop='toggleFullScreen')
           v-icon(v-html="fullscreen ? 'fullscreen_exit' : 'fullscreen'")
         v-menu.right(v-if='$refs.video && !controlsHidden', open-on-hover, offset-overflow, offset-y, top)
-          v-btn.subtitles(slot='activator', color='mablue', dark)
+          v-btn.subtitles(slot='activator', color='indigo', dark)
             v-icon subtitles
           v-list
             v-list-tile.video-subtitle(v-for='(num, i) in Object.keys(numToLang)', :key='i' @click='setSubLanguage(num)')
