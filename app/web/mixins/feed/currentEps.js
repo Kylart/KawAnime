@@ -14,7 +14,7 @@ export default {
     // Making a computed property would probably be better
     // but I failed to successfullly get one to refresh whenever
     // it should so..
-    this.epLinks = this.info.episodesLinks || {}
+    this.epLinks = this.info.episodesLinks || { magnets: [] }
     this.setEpQualities()
     this.setEpsQuality()
     this.groupEps()
