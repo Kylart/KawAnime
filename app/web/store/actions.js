@@ -38,6 +38,10 @@ export default {
     dispatch('seasons/init').catch(err => { void err })
 
     dispatch('mal/init').catch(err => { void err })
+
+    setInterval(() => {
+      dispatch('checkOnlineStatus')
+    }, 60 * 1000)
   },
   async getEnv ({ commit }) {
     const { data } = await axios.get('_env')
@@ -47,7 +51,7 @@ export default {
   async openInBrowser () {
     await axios.get('/_openInBrowser')
   },
-  async checkOnlineStatus ({ commit, dispatch }) {
+  async checkOnlineStatus ({ commit }) {
     try {
       const { status } = await axios.get('_isOnline')
 
@@ -55,9 +59,5 @@ export default {
 
       commit('setConnected', isOnline)
     } catch (e) { void e }
-
-    setTimeout(() => {
-      dispatch('checkOnlineStatus')
-    }, 60 * 1000)
   }
 }

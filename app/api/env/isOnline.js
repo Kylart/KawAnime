@@ -1,8 +1,25 @@
-const isOnline = require('is-online')
+const axios = require('axios')
+
+const targets = [
+  'myanimelist.net',
+  'nyaa.si',
+  'google.com'
+]
 
 const checkOnline = (req, res) => {
-  isOnline().then((online) => {
-    res.status(online ? 200 : 204).send()
+  targets.forEach((target) => {
+    axios.get(`https://${target}`)
+      .then(({ status }) => {
+        if (res) {
+          if (status === 200) {
+            res.send()
+            res = null
+          }
+        }
+      })
+      .catch(() => {
+        if (res) res.status(204).send()
+      })
   })
 }
 
