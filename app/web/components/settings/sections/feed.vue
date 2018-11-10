@@ -1,5 +1,5 @@
 <template lang="pug">
-  //- We need feed, fansub and quality choice,
+  //- We need feed, fansub and quality choice.
   v-card.elevation-12
     v-card-title.section-title Feed configuration
     v-divider

@@ -1,9 +1,74 @@
 <template lang="pug">
-  span This is local!
+  //- We need directory and inside choice.
+  v-card.elevation-12
+    v-card-title.section-title Local files configuration
+    v-divider
+    v-card-text
+      v-container(grid-list-lg, pa-0)
+        v-layout(row, wrap, justify-center, align-center)
+          v-flex(xs12, sm4, md2)
+            v-btn(flat, @click='openDialog') Change Dir
+          v-flex(xs12, sm8, md8)
+            .path.ellipsis.pl-2 {{ path }}
+          v-flex(xs12, md2)
+            v-switch.mt-0(
+              v-model='inside',
+              color='primary',
+              :label="inside ? 'Inside' : 'Outside'"
+              persistent-hint,
+              hint='Play in KawAnime?'
+            )
 </template>
 
 <script>
+// Mixins
+import Update from 'mixins/config/update.js'
+
 export default {
-  name: 'Local-Section'
+  name: 'Local-Section',
+
+  mixins: [ Update ],
+
+  computed: {
+    config: {
+      get () {
+        return this.$store.state.config.config
+      },
+      set () {}
+    },
+    inside: {
+      get () {
+        return this.$store.state.config.config.inside
+      },
+      set (val) {
+        this.setValue('inside', val)
+      }
+    },
+    path: {
+      get () {
+        return this.$store.state.config.config.localPath
+      },
+      set (val) {
+        this.setValue('localPath', val)
+      }
+    }
+  },
+
+  methods: {
+    async openDialog () {
+      const { data: { path } } = await this.$axios.get('openThis', {
+        params: { type: 'dialog' }
+      })
+
+      if (path) this.path = path
+    }
+  }
 }
 </script>
+
+<style lang="stylus" scoped>
+  .path
+    font-size 18px
+    letter-spacing 0.03em
+    font-weight 300
+</style>
