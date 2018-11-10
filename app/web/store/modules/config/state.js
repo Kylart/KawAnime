@@ -1,4 +1,4 @@
-import { fansubs, sounds, subtitlesLanguages, qualities } from '../lists.js'
+import * as Lists from '../lists.js'
 
 export default {
   config: {
@@ -21,8 +21,5 @@ export default {
       quality: '720p'
     }
   },
-  fansubs,
-  qualities,
-  sounds,
-  subtitlesLanguages
+  ...Lists
 }

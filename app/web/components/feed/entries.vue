@@ -62,10 +62,15 @@ import { mapGetters } from 'vuex'
 import Card from 'components/feed/card.vue'
 import MagnetsModal from 'components/magnets/modal.vue'
 
+// Mixins
+import Order from 'mixins/config/order.js'
+
 export default {
   name: 'Entries',
 
   components: { Card, MagnetsModal },
+
+  mixins: [ Order ],
 
   async mounted () {
     this.$nextTick(async () => {
@@ -86,14 +91,7 @@ export default {
   data: () => ({
     time: null,
     page: 1,
-    entryPerPage: 12,
-    feeds: [{
-      text: 'nyaa.si',
-      value: 'si'
-    }, {
-      text: 'pantsu',
-      value: 'pantsu'
-    }]
+    entryPerPage: 12
   }),
 
   computed: {
@@ -126,7 +124,13 @@ export default {
     },
     qualities: {
       get () {
-        return this.$store.state.releases.qualities
+        return this.$store.state.config.qualities
+      },
+      set () {}
+    },
+    feeds: {
+      get () {
+        return this.$store.state.config.feeds
       },
       set () {}
     },
@@ -142,7 +146,7 @@ export default {
       return this.releases.slice(this.fileRange.inf, this.fileRange.sup + 1)
     },
     fansubs () {
-      return ['None', ...this.$store.state.releases.fansubs]
+      return ['None', ...this.$store.state.config.fansubs]
     },
     nbPages () {
       return Math.ceil(this.releases.length / this.entryPerPage)
@@ -173,12 +177,6 @@ export default {
 
       this.updateTime()
       this.page = 1
-    },
-    order (qualities) {
-      // We have to clone qualities as the reverse method changes the original input,
-      // which would cause an endless reversing loop and throws warning.
-      const copy = Array.from(qualities)
-      return copy.sort((a, b) => a.replace('p', '') - b.replace('p', '')).reverse()
     }
   }
 }
