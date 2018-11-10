@@ -8,7 +8,8 @@ export default {
       this.save(config)
     },
     save (conf) {
-      this.$store.dispatch('config/save', conf)
+      this.$store.commit('config/set', conf)
+      this.$store.dispatch('config/save')
     }
   }
 }
