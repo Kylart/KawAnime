@@ -256,7 +256,7 @@ export default {
       this.muted = this.$refs.video.muted = !this.muted
     },
     toggleFullScreen () {
-      this.$parent.toggleFullScreen()
+      this.$emit('fullscreen')
       this.fullscreen = !this.fullscreen
     },
     onTimelineChangeEvent () {
@@ -291,7 +291,7 @@ export default {
     },
     changeTimeline (value) {
       const { video } = this.$refs
-      if (video) { video.currentTime = video.duration * ((this.timeline = value) / 100) }
+      if (video) { video.currentTime = video.duration * ((this.timeline = value) / 100).toFixed(10) }
     },
     timeForward (value) {
       const { video } = this.$refs

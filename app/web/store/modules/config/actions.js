@@ -7,7 +7,6 @@ export default {
     })).then((res) => {
       if (res.status === 200) {
         log(`Successfully updated config!`)
-        commit('setInfoSnackbar', 'Config saved successfully.', isRoot)
       }
     }).catch((err) => {
       log(`An error occurred while saving config:`, err)

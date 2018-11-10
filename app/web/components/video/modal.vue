@@ -3,7 +3,7 @@
     v-scale-transition
       .video-dialog(v-show='show', :style='style')
         template(v-if='values.show')
-          player(ref='player', :value='values.link.link', :title='values.link.name')
+          player(@fullscreen='toggleFullScreen', ref='player', :value='values.link.link', :title='values.link.name')
 
     v-fade-transition
       .video-overlay(v-show='show && !isMinimized')
