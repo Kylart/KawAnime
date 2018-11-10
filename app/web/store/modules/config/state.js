@@ -7,6 +7,7 @@ export default {
     feed: 'si',
     localPath: '',
     sound: 'Nyanpasu',
+    notificationVolume: 0.5,
     inside: true,
     magnets: false,
     system: {

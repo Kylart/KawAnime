@@ -27,6 +27,7 @@ const createConfig = () => {
       feed: 'si',
       localPath: join(BASE_PATH, 'Downloads'),
       sound: 'Nyanpasu',
+      notificationVolume: 0.5,
       inside: true,
       magnets: true,
       malUsername: '',
