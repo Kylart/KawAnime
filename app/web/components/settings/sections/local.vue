@@ -42,6 +42,7 @@ export default {
       },
       set (val) {
         this.setValue('inside', val)
+        this.$store.commit('localFiles/setInside', val)
       }
     },
     path: {
@@ -50,6 +51,7 @@ export default {
       },
       set (val) {
         this.setValue('localPath', val)
+        this.$store.commit('localFiles/setDir', val)
       }
     }
   },
