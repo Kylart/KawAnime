@@ -52,6 +52,12 @@ function newWin () {
     height: userConfig.bounds.height
       ? userConfig.bounds.height
       : 800,
+    x: userConfig.bounds.x
+      ? userConfig.bounds.x
+      : null,
+    y: userConfig.bounds.y
+      ? userConfig.bounds.y
+      : null,
     titleBarStyle: 'hidden',
     frame: process.platform === 'darwin',
     show: false

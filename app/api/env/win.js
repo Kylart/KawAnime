@@ -22,7 +22,29 @@ const toggleFullScreen = ({ query }, res) => {
   res.status(200).send()
 }
 
+const setSize = ({ query }, res) => {
+  const { width, height } = query
+
+  process.win.setSize(+width, +height, true)
+
+  res.send()
+}
+
+const setPosition = ({ query }, res) => {
+  const { x, y } = query
+
+  if (x && y) {
+    process.win.setPosition(+x, +y, true)
+    res.send()
+  } else {
+    process.win.center()
+    res.json(process.win.getBounds())
+  }
+}
+
 module.exports = {
   actOnWin,
-  toggleFullScreen
+  toggleFullScreen,
+  setPosition,
+  setSize
 }

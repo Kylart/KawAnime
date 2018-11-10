@@ -30,12 +30,6 @@ export default {
   mixins: [ Update ],
 
   computed: {
-    config: {
-      get () {
-        return this.$store.state.config.config
-      },
-      set () {}
-    },
     inside: {
       get () {
         return this.config.inside
