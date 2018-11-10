@@ -156,7 +156,7 @@ export default {
       set (val) {
         if (val >= this.minSize) {
           this.setDeepValue('bounds.height', +val)
-          this.updateSize()
+          !this.isBrowser && this.updateSize()
         }
       }
     },
@@ -167,7 +167,7 @@ export default {
       set (val) {
         if (val >= this.minSize) {
           this.setDeepValue('bounds.width', +val)
-          this.updateSize()
+          !this.isBrowser && this.updateSize()
         }
       }
     },
@@ -178,7 +178,7 @@ export default {
       set (val) {
         if (val > 0) {
           this.setDeepValue('bounds.x', +val)
-          this.updatePosition()
+          !this.isBrowser && this.updatePosition()
         }
       }
     },
@@ -189,7 +189,7 @@ export default {
       set (val) {
         if (val > 0) {
           this.setDeepValue('bounds.y', +val)
-          this.updatePosition()
+          !this.isBrowser && this.updatePosition()
         }
       }
     }
