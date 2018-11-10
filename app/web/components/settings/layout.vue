@@ -58,4 +58,10 @@ export default {
     font-size 22px
     letter-spacing 0.04em
     font-weight 500
+
+  .conditions
+    font-size 14px
+    font-style italic
+    letter-spacing 0.02em
+    font-weight 300
 </style>

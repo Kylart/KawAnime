@@ -26,6 +26,9 @@
               :items='order(qualities)',
               v-model='quality'
             )
+    v-card-actions.pr-3.pl-3
+      v-spacer
+      span.conditions * Changes will be applied after restart
 </template>
 
 <script>
