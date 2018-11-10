@@ -9,7 +9,7 @@
     width 100%
     position fixed
     top 0
-    z-index 7
+    z-index 1000
     text-align center
 
     span
