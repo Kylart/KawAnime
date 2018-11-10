@@ -105,12 +105,16 @@ export default {
       this.overlay = false
     },
     watch () {
-      const { links: { magnetLink }, parsedName: { title, episodeOrMovieNumber: ep }, magnet } = this.info
+      const { parsedName: { title, episodeOrMovieNumber: ep } } = this.info
+
+      const magnet = 'magnet' in this.info
+        ? this.info.magnet
+        : this.info.links.magnet
 
       this.$store.commit('streaming/play', {
         show: true,
         link: {
-          link: magnet || magnetLink,
+          link: magnet,
           name: `${title} - ${ep}`
         }
       })
