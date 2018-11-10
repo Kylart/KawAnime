@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-app(dark)
+  v-app(:dark='$store.state.config.config.system.darkTheme')
     left-drawer
     right-drawer
     system-bar

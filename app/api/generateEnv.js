@@ -29,15 +29,17 @@ const createConfig = () => {
       sound: 'Nyanpasu',
       notificationVolume: 0.5,
       inside: true,
-      magnets: true,
       malUsername: '',
       system: {
+        darkTheme: true,
         autoStart: false,
         toTray: false
       },
       bounds: {
         height: null,
-        width: null
+        width: null,
+        x: null,
+        y: null
       },
       version: '0.0.0',
       video: {
@@ -65,6 +67,16 @@ const createConfig = () => {
       if (typeof currentConf.config[key] === 'undefined') {
         currentConf.config[key] = elem
         changed = true
+      }
+
+      if (typeof elem === 'object') {
+        _.each(elem, (value, subKey) => {
+          // We need to check if the subKey is in elem
+          if (!(subKey in currentConf.config[key])) {
+            currentConf.config[key][subKey] = value
+            changed = true
+          }
+        })
       }
     })
 

@@ -6,23 +6,29 @@
     v-card-text
       v-container(grid-list-lg, pa-0, pb-2)
         v-layout(row, wrap, justify-space-around, align-center)
-          v-flex(xs12, sm6, md4)
+          v-flex(xs12, sm4)
             v-switch.mt-0(
-              label='Tray'
               v-model='tray',
               color='primary',
               :label="tray ? 'Yes' : 'No'"
               persistent-hint,
               hint='*Should KawAnime be in your tray?'
             )
-          v-flex(xs12, sm6, md4)
+          v-flex(xs12, sm4)
             v-switch.mt-0(
-              label='Start on boot'
               v-model='autoStart',
               color='primary',
               :label="autoStart ? 'Yes' : 'No'"
               persistent-hint,
               hint='*Should KawAnime start on boot?'
+            )
+          v-flex(xs12, sm4)
+            v-switch.mt-0(
+              v-model='darkTheme',
+              color='primary',
+              :label="darkTheme ? 'Dark' : 'Light'"
+              persistent-hint,
+              hint='Theme to apply'
             )
 
       v-container(grid-list-lg, pa-0, mt-3)
@@ -72,7 +78,7 @@
             v-switch.mt-0(
               v-model='center',
               color='primary',
-              :label="center ? 'Yes' : 'No'",
+              :label="center ? 'Center' : 'Custom'",
               persistent-hint,
               hint='Toggle to center.'
             )
@@ -133,6 +139,14 @@ export default {
       },
       set (val) {
         this.setDeepValue('system.toTray', val)
+      }
+    },
+    darkTheme: {
+      get () {
+        return this.system.darkTheme
+      },
+      set (val) {
+        this.setDeepValue('system.darkTheme', val)
       }
     },
     height: {
