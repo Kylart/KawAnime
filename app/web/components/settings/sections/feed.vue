@@ -12,19 +12,25 @@
               :items='feeds',
               v-model='feed',
               item-text='text',
-              item-value='value'
+              item-value='value',
+              persistent-hint,
+              hint='What torrent feed should be used?'
             )
           v-flex(xs12, sm6, md4)
             v-combobox(
               label='Fansub',
               :items='fansubs',
               v-model='fansub'
+              persistent-hint,
+              hint='What fansub do you want to check first?'
             )
           v-flex(xs12, sm6, md4)
             v-select(
               label='Quality',
               :items='order(qualities)',
               v-model='quality'
+              persistent-hint,
+              hint='What quality should the files have?'
             )
     v-card-actions.pr-3.pl-3
       v-spacer
