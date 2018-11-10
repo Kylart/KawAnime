@@ -20,7 +20,7 @@
 
 <script>
 // Components
-import Settings from 'components/global/settings.vue'
+import Settings from 'components/settings/modal.vue'
 import Searcher from 'components/info/modal.vue'
 import Downloader from 'components/downloader/modal.vue'
 
@@ -35,15 +35,21 @@ export default {
         return this.$store.state.update.isAvailable
       },
       set () {}
+    },
+    drawer: {
+      get () {
+        return this.$store.state.drawer
+      },
+      set () {}
     }
   },
 
   methods: {
     toggleLeftDrawer () {
-      this.$store.commit('setLeftDrawer', true)
+      this.$store.commit('setLeftDrawer', !this.drawer.left)
     },
     toggleRightDrawer () {
-      this.$store.commit('setRightDrawer', true)
+      this.$store.commit('setRightDrawer', !this.drawer.right)
     },
     restartAndUpdate () {
       this.$store.dispatch('update/updateApp')
