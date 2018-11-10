@@ -38,7 +38,7 @@ export default {
     },
     inside: {
       get () {
-        return this.$store.state.config.config.inside
+        return this.config.inside
       },
       set (val) {
         this.setValue('inside', val)
@@ -47,7 +47,7 @@ export default {
     },
     path: {
       get () {
-        return this.$store.state.config.config.localPath
+        return this.config.localPath
       },
       set (val) {
         this.setValue('localPath', val)

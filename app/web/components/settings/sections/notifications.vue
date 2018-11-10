@@ -51,7 +51,7 @@ export default {
 
     sound: {
       get () {
-        return this.$store.state.config.config.sound
+        return this.config.sound
       },
       set (val) {
         this.setValue('sound', val)
@@ -60,7 +60,7 @@ export default {
     },
     volume: {
       get () {
-        return this.$store.state.config.config.notificationVolume * 100
+        return this.config.notificationVolume * 100
       },
       set (val) {
         this.setValue('notificationVolume', val / 100)
