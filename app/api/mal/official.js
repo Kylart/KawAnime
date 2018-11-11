@@ -10,8 +10,6 @@ let api
 const getCreds = ({ query }, res) => {
   const { service } = query
 
-  console.log('Getting creds for', service)
-
   vault.getCreds(service)
     .then((credentials) => {
       res.json(credentials)
