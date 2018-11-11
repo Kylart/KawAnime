@@ -11,7 +11,6 @@ const setupAccount = (req, res) => {
     // Writting the username in the config file so no one forgets
     const p = join(dir, 'config.json')
     const conf = require(p)
-    conf.config.malUsername = credentials.username
 
     writeFileSync(p, JSON.stringify(conf), 'utf-8')
 

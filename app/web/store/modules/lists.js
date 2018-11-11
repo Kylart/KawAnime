@@ -45,7 +45,8 @@ export const sections = [
   { name: 'Feed', value: 0, icon: 'access_time' },
   { name: 'Torrent', value: 1, icon: 'file_download' },
   { name: 'Local', value: 2, icon: 'folder_open' },
-  { name: 'Video', value: 3, icon: 'play_circle_outline' },
-  { name: 'Notifications', value: 4, icon: 'add_alert' },
-  { name: 'System', value: 5, icon: 'build' }
+  { name: 'Accounts', value: 3, icon: 'supervisor_account' },
+  { name: 'Video', value: 4, icon: 'play_circle_outline' },
+  { name: 'Notifications', value: 5, icon: 'add_alert' },
+  { name: 'System', value: 6, icon: 'build' }
 ]

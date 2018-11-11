@@ -29,7 +29,6 @@ const createConfig = () => {
       sound: 'Nyanpasu',
       notificationVolume: 0.5,
       inside: true,
-      malUsername: '',
       system: {
         darkTheme: true,
         autoStart: false,

@@ -6,5 +6,6 @@ export default {
   customTags: [],
   tagsFilter: [],
   watchLists: [],
-  entry: {}
+  entry: {},
+  credentials: {}
 }

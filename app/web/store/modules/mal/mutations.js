@@ -34,5 +34,14 @@ export default {
     })
 
     state.customTags = result
+  },
+  setCredentials (state, data) {
+    state.credentials = data
+  },
+  setUsername (state, data) {
+    state.credentials.username = data
+  },
+  setPassword (state, data) {
+    state.credentials.password = data
   }
 }

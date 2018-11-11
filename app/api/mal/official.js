@@ -7,6 +7,21 @@ const logger = new Logger('Mal-Scraper')
 
 let api
 
+const getCreds = ({ query }, res) => {
+  const { service } = query
+
+  console.log('Getting creds for', service)
+
+  vault.getCreds(service)
+    .then((credentials) => {
+      res.json(credentials)
+    })
+    .catch((err) => {
+      logger.error('An error occurred while getting credentials from vault.', err)
+      res.status(204).send()
+    })
+}
+
 const checkCreds = (res) => {
   api.checkCredentials()
     .then((data) => {
@@ -53,5 +68,6 @@ const actOnList = (req, res) => {
 
 module.exports = {
   initOfficialApi,
-  actOnList
+  actOnList,
+  getCreds
 }

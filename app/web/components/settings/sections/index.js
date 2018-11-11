@@ -8,6 +8,7 @@
 export { default as Feed } from './feed.vue'
 export { default as Torrent } from './torrent.vue'
 export { default as Local } from './local.vue'
+export { default as Accounts } from './accounts.vue'
 export { default as Video } from './video.vue'
 export { default as Notifications } from './notifications.vue'
 export { default as System } from './system.vue'

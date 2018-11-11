@@ -1,10 +1,12 @@
 import { axios, log, isRoot, _ } from 'store/utils'
 
 export default {
-  async init ({ rootState, commit, dispatch }) {
-    const { malUsername } = rootState.config.config
+  async init ({ rootState, state, commit, dispatch }) {
+    const { data, status } = await axios.get(`${state.service}/credentials`, {
+      params: { service: state.service }
+    })
 
-    if (!rootState.isConnected) {
+    if (!rootState.isConnected || status === 204) {
       setTimeout(() => {
         dispatch('init')
       }, 60 * 1000)
@@ -12,11 +14,13 @@ export default {
       return
     }
 
-    if (malUsername) {
+    commit('setCredentials', data)
+
+    if ('username' in data && data.username) {
       try {
         await dispatch('initApi')
 
-        await dispatch('getWatchLists', malUsername)
+        await dispatch('getWatchLists', data.username)
       } catch (e) {
         log('MyAnimeList >', e)
         commit(
@@ -37,7 +41,6 @@ export default {
       if (status === 204) throw new Error('Error while registering service.')
 
       const { username } = credentials
-      rootState.config.config.malUsername = username
 
       await dispatch('init', username)
     } catch (e) {
@@ -45,8 +48,8 @@ export default {
       commit('setInfoSnackbar', 'An unknown error occurred. Please restart KawAnime and try again.', isRoot)
     }
   },
-  async initApi ({ rootState, state, commit }) {
-    const { malUsername } = rootState.config.config
+  async initApi ({ state, commit }) {
+    const { username } = state.credentials
 
     try {
       const { status } = await axios.post('_initOfficalApi', {
@@ -57,7 +60,7 @@ export default {
       if (status === 206) throw new Error('Invalid credentials.')
 
       log('MyAnimeList > Successfully instanciated API.')
-      log(`MyAnimeList > Logged in as ${malUsername}.`)
+      log(`MyAnimeList > Logged in as ${username}.`)
     } catch (e) {
       log('MyAnimeList >', e.message)
       const isInvalid = e.message === 'Invalid credentials.'
@@ -93,14 +96,14 @@ export default {
       log('MyAnimeList >', e)
     }
   },
-  async actOnList ({ rootState, commit, dispatch }, data) {
+  async actOnList ({ state, commit, dispatch }, data) {
     try {
       const { status } = await axios.post('actOnMalList', data)
 
       if (status === 204) throw new Error('Invalid request.')
 
       commit('setInfoSnackbar', `Entry successfully ${data.type.action === 'delete' ? 'deleted from' : 'entered to'} MyAnimeList!`, isRoot)
-      dispatch('getWatchLists', rootState.config.config.malUsername)
+      dispatch('getWatchLists', state.username)
     } catch (e) {
       log('MyAnimeList >', e)
       commit('setInfoSnackbar', 'An unknown error occurred. Please try again later.', isRoot)

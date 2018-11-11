@@ -143,7 +143,7 @@ export default {
       // this.$store.commit('search/show', true)
     },
     refresh () {
-      this.$store.dispatch('mal/getWatchLists', this.$store.state.config.config.malUsername)
+      this.$store.dispatch('mal/getWatchLists', this.$store.state.mal.credentials.username)
     }
   }
 }
