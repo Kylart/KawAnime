@@ -34,6 +34,12 @@ export default {
         return this.$store.state.releases.params
       },
       set () {}
+    },
+    videoSettings: {
+      get () {
+        return this.$store.state.config.config.video
+      },
+      set () {}
     }
   },
 
@@ -90,8 +96,8 @@ export default {
 
         const qualities = this.epQualities[ep]
 
-        this.epsQuality[ep] = qualities.includes(this.config.quality)
-          ? this.config.quality
+        this.epsQuality[ep] = qualities.includes(this.videoSettings.quality)
+          ? this.videoSettings.quality
           : qualities[Math.ceil(qualities / 2)]
       })
     },
