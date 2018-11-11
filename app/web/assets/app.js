@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import App from './App.vue'
 import VueClipboards from 'vue-clipboards'
-import VueMarkdown from 'vue-markdown'
 import axios from 'axios'
 import _ from 'lodash'
 import Vuetify from './vuetify.js'
@@ -16,8 +15,6 @@ Vue.use(VueClipboards)
 Vue.prototype.$_ = _
 Vue.prototype.$axios = axios
 Vue.prototype.$log = (...args) => console.log(`[${(new Date()).toLocaleTimeString()}]:`, ...args)
-
-Vue.component('vue-markdown', VueMarkdown)
 
 // Expose a factory function that creates a fresh set of store, router,
 // app instances on each call (which is called for each SSR request)
