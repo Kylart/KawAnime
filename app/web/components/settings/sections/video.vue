@@ -1,5 +1,4 @@
 <template lang="pug">
-  //- We need notification sound choice.
   v-card.elevation-12
     v-card-title.section-title Video configuration
     v-divider
