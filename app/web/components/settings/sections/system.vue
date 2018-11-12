@@ -98,13 +98,8 @@ export default {
 
   mixins: [ Update ],
 
-  mounted () {
-    this.center = this.windowX === null
-  },
-
   data: () => ({
-    minSize: 200,
-    center: false
+    minSize: 200
   }),
 
   computed: {
@@ -191,6 +186,15 @@ export default {
           this.setDeepValue('bounds.y', +val)
           !this.isBrowser && this.updatePosition()
         }
+      }
+    },
+    center: {
+      get () {
+        return this.system.center
+      },
+      set (val) {
+        this.setDeepValue('system.center', val)
+        !this.isBrowser && this.updatePosition()
       }
     }
   },

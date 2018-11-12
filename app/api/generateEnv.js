@@ -32,7 +32,8 @@ const createConfig = () => {
       system: {
         darkTheme: true,
         autoStart: false,
-        toTray: false
+        toTray: false,
+        center: true
       },
       bounds: {
         height: null,
