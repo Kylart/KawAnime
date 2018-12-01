@@ -44,7 +44,7 @@ export default {
         'text-shadow': this.shadow,
         'text-align': cue.textAlign,
         // We reduce the size a bit so that it's not too big on the screen :<
-        'font-size': Math.round(0.85 * cue.fontSize * +this.size.height.replace('px', '')) + 'px'
+        'font-size': Math.round(0.80 * cue.fontSize * +this.size.height.replace('px', '')) + 'px'
       }
     },
     shadow () {

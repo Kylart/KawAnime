@@ -19,6 +19,7 @@ export default {
     },
     setHeight () {
       this.videoHeight = this.getHeight()
+      this.$refs.cuesContainer.setBounds()
     }
   }
 }

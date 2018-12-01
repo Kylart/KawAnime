@@ -24,19 +24,21 @@ export default {
   ],
 
   data: () => ({
-    video: null
+    bounds: {}
   }),
 
-  computed: {
-    bounds () {
+  methods: {
+    setBounds () {
+      console.log('Setting container size')
+      const video = document.querySelector('video[name="kawanime-player"]')
       const result = {
         width: null,
         height: null
       }
 
-      if (!this.video) return result
+      if (!video) return
 
-      const { videoWidth, videoHeight, offsetWidth, offsetHeight } = this.video
+      const { videoWidth, videoHeight, offsetWidth, offsetHeight } = video
 
       // Ratio of the video's intrisic dimensions
       const videoRatio = videoWidth / videoHeight
@@ -54,7 +56,7 @@ export default {
         result.width = offsetWidth
       }
 
-      return {
+      this.bounds = {
         width: result.width + 'px',
         height: result.height + 'px'
       }
