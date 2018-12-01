@@ -1,6 +1,7 @@
 <template lang="pug">
   div.video-player(@mousemove='onMouseMove', :style='{ cursor: controlsHidden ? "none" : null }')
     video(ref='video',
+      name='kawanime-player',
       :autoplay='config.autoplay',
       @pause='paused = true',
       @play='paused = false',
@@ -25,31 +26,11 @@
     v-btn.video-size(color='indigo', dark, icon, @click.stop='actOnWindow("minimize")', v-show='!controlsHidden && !$parent.fullscreen')
       v-icon {{ $parent.isMinimized ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}
 
-    .cues-container(v-show='trackNum && isAss')
-      .cues-r-container(:style='cuesContainerStyle')
-        template(v-for='cue in activeCues')
-          transition(
-            v-if='cue.hasAnimation',
-            name='cue-transition',
-            :key='cue.masterId',
-            @before-enter='cue.beforeEnter',
-            @enter='cue.enter',
-            @leave='cue.leave',
-            :css='false'
-          )
-            .cue(
-              v-if='cue.show',
-              :class="cue.style.join(' ')",
-              :style="getStyle(cue)",
-              v-html='cue.text'
-            )
-          .cue(
-              v-else,
-              :key='cue.masterId',
-              :class="cue.style.join(' ')",
-              :style="getStyle(cue)",
-              v-html='cue.text'
-            )
+    cues-container(
+      v-show='isAss && trackNumber',
+      ref='cuesContainer',
+      :cues='currentTrack'
+    )
 
     v-fade-transition
       div.video-controls(v-show='!controlsHidden')
@@ -86,25 +67,28 @@
             v-icon subtitles
           v-list
             v-list-tile.video-subtitle(v-for='(num, i) in Object.keys(numToLang)', :key='i' @click='setSubLanguage(num)')
-              v-list-tile-title(:class="{ 'blue--text': +num === trackNum }") {{ numToLang[num] }}
+              v-list-tile-title(:class="{ 'blue--text': +num === trackNumber }") {{ numToLang[num] }}
 </template>
 
 <script>
 // Comps
 import PlayerSlider from 'components/video/playerSlider.vue'
+import CuesContainer from 'components/video/cues/container.vue'
 
 // Mixins and methods
-import { fromAss } from 'assets/subtitle-parser'
-import Subtitle from 'mixins/subtitles'
+import Tracks from 'mixins/video/tracks'
+import Subtitles from 'mixins/video/subtitles'
+import Style from 'mixins/video/getStyle'
 
 export default {
   name: 'video-player',
 
   components: {
-    PlayerSlider
+    PlayerSlider,
+    CuesContainer
   },
 
-  mixins: [Subtitle],
+  mixins: [ Tracks, Subtitles, Style ],
 
   props: ['value', 'title'],
 
@@ -121,36 +105,18 @@ export default {
       duration: 0,
       controlsHidden: true,
       autoplay: true,
-      isAss: false,
-      styles: null,
-      info: null,
       isMagnetRe: /^magnet:\?/,
       name: '',
-      isPrefLanguageSet: false,
       hasAppendedToHistory: false
     }
   },
 
-  computed: {
-    config: {
-      get () {
-        return this.$store.state.config.config.video
-      },
-      set () {}
-    },
-    isMagnet () {
-      return this.isMagnetRe.test(this.value) || this.value.slice(-8) === '.torrent'
-    },
-    videoTitle () {
-      return this.title || this.name
-    }
-  },
   async created () {
     if (this.isMagnet) await this.$axios.get('torrent/init')
   },
+
   mounted () {
     const { video } = this.$refs
-    const textTracks = {}
 
     video.addEventListener('loadedmetadata', () => {
       // We need to get the subtitles only when the torrent is ready to be read.
@@ -159,57 +125,12 @@ export default {
       this.setHeight()
 
       this.eventSource.addEventListener('tracks', ({ data }) => {
-        const tracks = JSON.parse(data)
-        let isStyleSet = false
-
-        tracks.forEach(track => {
-          const language = (track.language || 'eng').slice(0, 2)
-          const trackNumber = +track.number
-          this.allCues[trackNumber] = []
-
-          this.numToLang[trackNumber] = language
-
-          if (track.type === 'ass') {
-            this.isAss = true
-            const parsedTracks = fromAss.tracks(tracks)
-            this.styles = parsedTracks.styles
-            this.info = parsedTracks.info
-
-            // Let's suppose each track have the same style and that only the language of each changes.
-            if (!isStyleSet) {
-              fromAss.setStyles(this.styles, this.value, this.info)
-              isStyleSet = true
-            }
-          }
-
-          if (language === this.config.preferredLanguage) {
-            this.isPrefLanguageSet = true
-            this.trackNum = trackNumber
-          }
-        })
-
-        if (tracks.length === 1 && !this.isPrefLanguageSet) {
-          this.trackNum = +Object.keys(this.numToLang)[0]
-        }
+        this.handleTracks(data)
       })
 
       this.eventSource.addEventListener('subtitle', ({ data }) => {
-        const { trackNumber, subtitle } = JSON.parse(data)
-        if (trackNumber in this.allCues) {
-          if (this.isAss) {
-            const cue = fromAss.subtitles(subtitle, this.styles, this.info)
-
-            this.allCues[trackNumber].push(cue)
-          } else {
-            const cue = new window.VTTCue(subtitle.time / 1000, (subtitle.time + subtitle.duration) / 1000, subtitle.text)
-            textTracks[trackNumber].addCue(cue)
-          }
-        }
+        this.addSubtitle(data)
       })
-
-      if (this.title) {
-        this.addToHistory()
-      }
 
       this.eventSource.addEventListener('name', ({ data }) => {
         const { name } = JSON.parse(data)
@@ -218,6 +139,10 @@ export default {
 
         this.addToHistory()
       })
+
+      if (this.title) {
+        this.addToHistory()
+      }
     })
 
     video && !this.fullscreen && this.config.fullscreen && this.toggleFullScreen()
@@ -237,6 +162,21 @@ export default {
           magnet: this.value
         }
       })
+    }
+  },
+
+  computed: {
+    config: {
+      get () {
+        return this.$store.state.config.config.video
+      },
+      set () {}
+    },
+    isMagnet () {
+      return this.isMagnetRe.test(this.value) || this.value.slice(-8) === '.torrent'
+    },
+    videoTitle () {
+      return this.title || this.name
     }
   },
 
@@ -260,14 +200,15 @@ export default {
       this.fullscreen = !this.fullscreen
     },
     onTimelineChangeEvent () {
-      const { video } = this.$refs
+      const { video, cuesContainer } = this.$refs
+
       if (video) {
         this.timeline = 100 / video.duration * video.currentTime
         this.currentTime = this.formatTime(video.currentTime)
         this.duration = this.formatTime(video.duration)
-        this.rawTime = video.currentTime
+        cuesContainer.rawTime = video.currentTime
 
-        if (this.isAss) this.updateActiveCues()
+        if (this.isAss) cuesContainer.updateActiveCues()
       }
     },
     onProgress () {
@@ -285,6 +226,7 @@ export default {
     },
     onCanPlay () {
       this.waiting = false
+      this.$refs.cuesContainer.video = this.$refs.video
     },
     onSeeked () {
       this.index = 0
@@ -356,12 +298,12 @@ export default {
 </script>
 
 <style lang="stylus">
-  .cue
-    background-color rgba(0, 0, 0, 0)
-    -webkit-font-smoothing antialiased
-    width 95%
-    font-family "Open Sans", sans-serif
-    line-height 1.25
+  // .cue
+  //   background-color rgba(0, 0, 0, 0)
+  //   -webkit-font-smoothing antialiased
+  //   width 95%
+  //   font-family "Open Sans", sans-serif
+  //   line-height 1.25
 
   .video-player
     background-color black
@@ -398,23 +340,23 @@ export default {
       right 50px
       top 1%
 
-    .cues-container
-      position absolute
-      left 0
-      top 0
-      height 100%
-      width 100%
-      pointer-events: none
-      display flex
-      align-items center
-      justify-content center
+    // .cues-container
+    //   position absolute
+    //   left 0
+    //   top 0
+    //   height 100%
+    //   width 100%
+    //   pointer-events: none
+    //   display flex
+    //   align-items center
+    //   justify-content center
 
-      div
-        position absolute
+    //   div
+    //     position absolute
 
-      .cues-r-container
-        position relative
-        width 100%
+    //   .cues-r-container
+    //     position relative
+    //     width 100%
 
     .video-play
       cursor pointer

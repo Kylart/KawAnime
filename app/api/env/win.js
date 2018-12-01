@@ -16,7 +16,7 @@ const actOnWin = ({ query }, res) => {
 
 const toggleFullScreen = ({ query }, res) => {
   if (process.win && process.win.isVisible()) {
-    process.win.setFullScreen(JSON.parse(query.bool))
+    process.win.setFullScreen(query.bool === 'true')
   }
 
   res.status(200).send()

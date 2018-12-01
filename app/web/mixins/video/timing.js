@@ -1,26 +1,15 @@
+import Overlap from './checkOverlap.js'
+
 export default {
+  mixins: [ Overlap ],
+
   data: () => ({
     rawTime: 0,
-    allCues: {},
-    numToLang: {},
-    trackNum: null,
     activeCues: [],
     index: 0
   }),
 
-  computed: {
-    cues () {
-      return this.allCues[this.trackNum] || []
-    },
-    subLanguage () {
-      return this.numToLang[this.trackNum]
-    }
-  },
-
   methods: {
-    setSubLanguage (num) {
-      this.trackNum = this.trackNum === +num ? null : +num
-    },
     isActive (cue) {
       const { start, end } = cue
       const { rawTime } = this
