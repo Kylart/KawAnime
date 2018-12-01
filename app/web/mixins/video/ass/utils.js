@@ -25,6 +25,17 @@ export const percent = (value, res) => {
   return Math.round((value / res) * 100)
 }
 
+export const vbToRGBA = (vb) => {
+  // vb is like &HAABBGGRR
+  vb = vb.slice(2)
+  const a = 1 - (parseInt(vb.slice(0, 2), 16) / 256)
+  const b = parseInt(vb.slice(2, 4), 16)
+  const g = parseInt(vb.slice(4, 6), 16)
+  const r = parseInt(vb.slice(6, 8), 16)
+
+  return `rgba(${r}, ${g}, ${b}, ${a})`
+}
+
 export const getPosition = (style, info) => {
   // The idea is to reduce the resX / resY rectangle with the margins.
   // Only then, the position can be determined using the numpad alignment.

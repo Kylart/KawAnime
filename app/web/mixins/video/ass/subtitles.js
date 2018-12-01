@@ -1,5 +1,5 @@
 import handleTags from './tags.js'
-import { getPosition, getLine, getTextAlign } from './utils.js'
+import { getPosition, getLine, getTextAlign, vbToRGBA } from './utils.js'
 
 export default function (subtitle, styles, info) {
   // Following the ass-specs: http://www.cccp-project.net/stuff/ass-specs.pdf
@@ -21,6 +21,17 @@ export default function (subtitle, styles, info) {
   // font-size should be a percentage of the resY value so
   // that it can be changed accordingly.
   result.fontSize = +style.Fontsize / +info.PlayResY
+
+  // Outline and shadow should also use the resY to be displayed.
+  result.shadow = {
+    thickness: +style.Shadow / +info.PlayResY,
+    color: vbToRGBA(style.BackColour)
+  }
+
+  result.outline = {
+    color: vbToRGBA(style.OutlineColour),
+    thickness: +style.Outline / +info.PlayResY
+  }
 
   const { position, width, horiz, align } = getPosition(style, info)
   result.position = position
