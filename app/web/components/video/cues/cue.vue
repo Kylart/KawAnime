@@ -74,7 +74,7 @@ export default {
 }
 </script>
 
-<style lang="stylus" scoped>
+<style lang="stylus">
   .cue
     background-color rgba(0, 0, 0, 0)
     -webkit-font-smoothing antialiased
