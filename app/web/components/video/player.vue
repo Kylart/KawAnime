@@ -1,6 +1,10 @@
 <template lang="pug">
-  div.video-player(@mousemove='onMouseMove', :style='{ cursor: controlsHidden ? "none" : null }')
-    video(ref='video',
+  div.video-player(
+    @mousemove='onMouseMove',
+    :style='{ cursor: false ? "none" : null }'
+  )
+    video(
+      ref='video',
       name='kawanime-player',
       :autoplay='config.autoplay',
       @pause='paused = true',
@@ -12,19 +16,8 @@
       @seeked='onSeeked',
       @click='togglePlay',
       @dblclick='toggleFullScreen',
-      :src='`/stream/${value}`') Your browser does not support HTML5 video.
-
-    v-progress-circular.main-color--text.video-waiting(dark, indeterminate, v-show='waiting')
-
-    h6.video-title(v-show='!controlsHidden') {{ videoTitle }}
-
-    v-icon.video-play(dark, @click.stop='togglePlay', v-if='paused') play_arrow
-
-    v-btn.video-close(color='indigo', dark, icon, @click.stop='actOnWindow("close")', v-show='!controlsHidden')
-      v-icon close
-
-    v-btn.video-size(color='indigo', dark, icon, @click.stop='actOnWindow("minimize")', v-show='!controlsHidden && !$parent.fullscreen')
-      v-icon {{ $parent.isMinimized ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}
+      :src='`/stream/${value}`'
+    ) Your browser does not support HTML5 video.
 
     cues-container(
       v-show='isAss && trackNumber',
@@ -32,47 +25,23 @@
       :cues='currentTrack'
     )
 
-    v-fade-transition
-      div.video-controls(v-show='!controlsHidden')
-        player-slider.timeline(
-          dark, hide-details, color='indigo',
-          :step='0', :buffer='buffered', :value='timeline',
-          :duration='duration',
-          @input='changeTimeline'
-        )
-
-        v-btn(color='indigo', dark, icon, @click.stop='togglePlay')
-          v-icon(v-html="paused ? 'play_arrow' : 'pause'")
-        v-btn(color='indigo', dark, icon, @click.stop='toggleMute')
-          v-icon(v-html="muted ? 'volume_off' : 'volume_up'")
-        v-slider.volume(hide-details, color='indigo', dark, :max='100', :value='muted ? 0 : volume', thumb-label, @input='changeVolume')
-        div.timer {{ currentTime }}/{{ duration }}
-        v-tooltip(top)
-          span Rewind 5s
-          v-btn(color='indigo', dark, icon, @click.stop='timeForward(-5)', slot='activator')
-            v-icon replay_5
-        v-tooltip(top)
-          span Fast forward 5s
-          v-btn(color='indigo', dark, icon, @click.stop='timeForward(5)', slot='activator')
-            v-icon forward_5
-        v-tooltip(top)
-          span Skip 1m25 (op&ed)
-          v-btn(color='indigo', dark, icon, @click.stop='timeForward(85)', slot='activator')
-            v-icon fast_forward
-
-        v-btn#fullscreen.right(color='indigo', dark, icon, @click.stop='toggleFullScreen')
-          v-icon(v-html="fullscreen ? 'fullscreen_exit' : 'fullscreen'")
-        v-menu.right(v-if='$refs.video && !controlsHidden', open-on-hover, offset-overflow, offset-y, top)
-          v-btn.subtitles(slot='activator', color='indigo', dark)
-            v-icon subtitles
-          v-list
-            v-list-tile.video-subtitle(v-for='(num, i) in Object.keys(numToLang)', :key='i' @click='setSubLanguage(num)')
-              v-list-tile-title(:class="{ 'blue--text': +num === trackNumber }") {{ numToLang[num] }}
+    controls(
+      ref='controls',
+      :video='$refs.video',
+      :title='videoTitle',
+      :waiting='waiting',
+      :paused='paused',
+      :fullscreen='fullscreen',
+      @trackChange='setTrack',
+      @togglePlay='togglePlay',
+      @toggleFullScreen='toggleFullScreen',
+      @actOnWindow='actOnWindow'
+    )
 </template>
 
 <script>
 // Comps
-import PlayerSlider from 'components/video/playerSlider.vue'
+import Controls from 'components/video/controls.vue'
 import CuesContainer from 'components/video/cues/container.vue'
 
 // Mixins and methods
@@ -84,8 +53,8 @@ export default {
   name: 'video-player',
 
   components: {
-    PlayerSlider,
-    CuesContainer
+    CuesContainer,
+    Controls
   },
 
   mixins: [ Tracks, Subtitles, Style ],
@@ -96,15 +65,7 @@ export default {
     return {
       waiting: false,
       paused: true,
-      muted: false,
       fullscreen: false,
-      buffered: [],
-      timeline: 0,
-      volume: 100,
-      currentTime: 0,
-      duration: 0,
-      controlsHidden: true,
-      autoplay: true,
       isMagnetRe: /^magnet:\?/,
       name: '',
       hasAppendedToHistory: false
@@ -181,104 +142,43 @@ export default {
   },
 
   methods: {
-    formatTime (time = 0) {
-      const minutes = ('0' + Math.floor(time / 60)).slice(-2)
-      const seconds = ('0' + Math.floor(time % 60)).slice(-2)
-
-      return `${minutes}:${seconds}`
-    },
-    togglePlay () {
-      const { video } = this.$refs
-      this.showControls()
-      this.paused ? video.play() : video.pause()
-    },
-    toggleMute () {
-      this.muted = this.$refs.video.muted = !this.muted
-    },
-    toggleFullScreen () {
-      this.$emit('fullscreen')
-      this.fullscreen = !this.fullscreen
-    },
     onTimelineChangeEvent () {
-      const { video, cuesContainer } = this.$refs
+      const { video, cuesContainer, controls } = this.$refs
 
       if (video) {
-        this.timeline = 100 / video.duration * video.currentTime
-        this.currentTime = this.formatTime(video.currentTime)
-        this.duration = this.formatTime(video.duration)
+        controls.updateTime()
         cuesContainer.rawTime = video.currentTime
 
         if (this.isAss) cuesContainer.updateActiveCues()
       }
     },
     onProgress () {
-      const { video } = this.$refs
+      const { video, controls } = this.$refs
+
       if (video) {
-        const buffered = []
-        for (let i = 0, l = video.buffered.length; i < l; ++i) {
-          buffered.push([
-            video.buffered.start(i) / video.duration * 100,
-            video.buffered.end(i) / video.duration * 100
-          ])
-        }
-        this.buffered = buffered
+        controls.updateBuffer()
       }
     },
     onCanPlay () {
       this.waiting = false
-      this.$refs.cuesContainer.video = this.$refs.video
     },
     onSeeked () {
+      // Needed for subtitle timing
       this.index = 0
     },
-    changeTimeline (value) {
-      const { video } = this.$refs
-      if (video) { video.currentTime = video.duration * ((this.timeline = value) / 100).toFixed(10) }
-    },
-    timeForward (value) {
-      const { video } = this.$refs
-
-      if (video) {
-        video.currentTime += value
-      }
-    },
-    changeVolume (value) {
-      if (this.$refs.video) this.$refs.video.volume = (this.volume = value) / 100
-    },
-    increaseVolume (value) {
-      const { video } = this.$refs
-
-      if (video) {
-        const currentVolume = video.volume * 100
-        let newVolume = currentVolume + value
-
-        newVolume = newVolume >= 0 && newVolume <= 100
-          ? newVolume
-          : currentVolume
-
-        this.volume = newVolume
-        this.$refs.video.volume = newVolume / 100
-      }
-    },
     onMouseMove (e) {
-      if (Math.abs(e.movementX) > 1 || Math.abs(e.movementY) > 1) { this.showControls() }
+      if (Math.abs(e.movementX) > 1 || Math.abs(e.movementY) > 1) { this.$refs.controls.reveal() }
     },
-    showControls () {
-      this.controlsHidden = false
-      if (this.timeoutID) clearTimeout(this.timeoutID)
-      this.timeoutID = setTimeout(() => (this.controlsHidden = true), 3000)
-    },
-    setTrack (track) {
-      const { video } = this.$refs
-      if (track.mode === 'showing') {
-        track.mode = 'hidden'
-      } else {
-        for (const track of video.textTracks) {
-          track.mode = 'hidden'
-        }
+    togglePlay () {
+      const { video, controls } = this.$refs
 
-        track.mode = 'showing'
-      }
+      this.paused ? video.play() : video.pause()
+
+      controls.reveal()
+    },
+    toggleFullScreen () {
+      this.$emit('fullscreen')
+      this.fullscreen = !this.fullscreen
     },
     actOnWindow (type) {
       this.$parent[type]()
@@ -298,13 +198,6 @@ export default {
 </script>
 
 <style lang="stylus">
-  // .cue
-  //   background-color rgba(0, 0, 0, 0)
-  //   -webkit-font-smoothing antialiased
-  //   width 95%
-  //   font-family "Open Sans", sans-serif
-  //   line-height 1.25
-
   .video-player
     background-color black
     line-height 0px
@@ -320,99 +213,6 @@ export default {
       height 100%
       width 100%
 
-    .video-waiting
-      position absolute
-      left 50%
-      top 50%
-      height 10% !important
-      width 10% !important
-      transform translate(-50%, -50%)
-
-    .video-close
-      cursor pointer
-      position absolute
-      right 5px
-      top 1%
-
-    .video-size
-      cursor pointer
-      position absolute
-      right 50px
-      top 1%
-
-    // .cues-container
-    //   position absolute
-    //   left 0
-    //   top 0
-    //   height 100%
-    //   width 100%
-    //   pointer-events: none
-    //   display flex
-    //   align-items center
-    //   justify-content center
-
-    //   div
-    //     position absolute
-
-    //   .cues-r-container
-    //     position relative
-    //     width 100%
-
-    .video-play
-      cursor pointer
-      position absolute
-      left 50%
-      top 50%
-      transform translate(-50%, -50%)
-      height 100px
-      width 100px
-      font-size 100px
-
-    .video-title
-        position absolute
-        width 80%
-        left 10%
-        top 4%
-        text-align center
-        line-height 22px
-        font-weight 700
-        -webkit-text-stroke 1px black
-
-    .video-controls
-      background linear-gradient(to top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.07), rgba(0, 0, 0, 0.0))
-      text-align left
-      position absolute
-      width 100%
-      bottom 0
-
-      .timeline
-        padding 10px !important
-        margin-bottom 10px
-        height 10px
-
-      .volume
-        vertical-align middle
-        display inline-block
-        width 100px
-        padding 0
-
-      .timer
-        margin-left 15px
-        vertical-align middle
-        display inline-block
-        width 100px
-        padding 0
-        color white !important
-
-      .subtitles
-        min-width 0
-        width 40px
-
   .video-subtitle > .list__tile
     padding 0 8px
-
-  @media (max-width: 600px)
-    .video-controls
-      .volume
-        display none !important
 </style>

@@ -3,7 +3,7 @@ import VSlider from 'vuetify/es5/components/VSlider/VSlider'
 import { VScaleTransition } from 'vuetify/es5/components/transitions'
 
 export default {
-  name: 'player-slider',
+  name: 'progress-bar',
 
   mixins: [ VSlider ],
 

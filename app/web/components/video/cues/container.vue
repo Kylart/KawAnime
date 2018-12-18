@@ -29,7 +29,6 @@ export default {
 
   methods: {
     setBounds () {
-      console.log('Setting container size')
       const video = document.querySelector('video[name="kawanime-player"]')
       const result = {
         width: null,
