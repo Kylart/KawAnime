@@ -1,12 +1,12 @@
 <template lang="pug">
-  v-fade-transition.main-color--text.video-waiting(dark, indeterminate, v-show='waiting')
-    .controls-container
+  v-fade-transition
+    .controls-container(v-show='show')
       .controls
         //- Top title
-        h6.video-title(v-show='show') {{ title }}
+        h6.video-title {{ title }}
 
         //- Window buttons
-        v-btn.video-close(color='indigo', dark, icon, @click.stop='actOnWindow("close")', v-show='show')
+        v-btn.video-close(color='indigo', dark, icon, @click.stop='actOnWindow("close")')
           v-icon close
 
         v-btn.video-size(color='indigo', dark, icon, @click.stop='actOnWindow("minimize")', v-show='show && !fullscreen')
@@ -16,10 +16,9 @@
         v-icon.video-play(dark, @click.stop='togglePlay', v-if='paused') play_arrow
 
         //- Loading object
-        v-progress-circular
+        v-progress-circular.video-waiting(dark, indeterminate, v-show='waiting')
 
-        .bottom-container(v-show='show')
-
+        .bottom-container
           progress-bar.timeline(
             dark, hide-details, color='indigo',
             :step='0', :buffer='buffered', :value='timeline',
@@ -48,12 +47,12 @@
 
           v-btn#fullscreen.right(color='indigo', dark, icon, @click.stop='toggleFullScreen')
             v-icon(v-html="fullscreen ? 'fullscreen_exit' : 'fullscreen'")
-          v-menu.right(v-if='$refs.video && show', open-on-hover, offset-overflow, offset-y, top)
+          v-menu.right(v-show='hasTracks', open-on-hover, offset-overflow, offset-y, top)
             v-btn.subtitles(slot='activator', color='indigo', dark)
               v-icon subtitles
             v-list
-              v-list-tile.video-subtitle(v-for='(num, i) in Object.keys(numToLang)', :key='i' @click='setSubLanguage(num)')
-                v-list-tile-title(:class="{ 'blue--text': +num === trackNumber }") {{ numToLang[num] }}
+              v-list-tile.video-subtitle(v-for='(num, i) in Object.keys(numToLang)', :key='i' @click="setTrack(num)")
+                v-list-tile-title(:class="{ 'blue--text': +num === currentLang }") {{ numToLang[num] }}
 </template>
 
 <script>
@@ -83,20 +82,31 @@ export default {
     volume: 100,
     buffered: [],
     timeoutID: null,
-    isMinimized: false
+    isMinimized: false,
+
+    hasTracks: false,
+    numToLang: {},
+    currentLang: null
   }),
 
   methods: {
     reveal () {
       this.show = true
+      this.$emit('show')
 
-      // if (this.timeoutID) clearTimeout(this.timeoutID)
-      // this.timeoutID = setTimeout(this.hide, 3000)
+      if (this.timeoutID) clearTimeout(this.timeoutID)
+      this.timeoutID = setTimeout(this.hide, 3000)
     },
     hide () {
       this.show = false
+      this.$emit('hide')
     },
 
+    updateSubtitlesData () {
+      this.hasTracks = Object.keys(this.$parent.tracks).length
+      this.numToLang = this.$parent.numToLang
+      this.currentLang = this.$parent.currentLang
+    },
     updateTime () {
       const { video } = this
 
@@ -173,6 +183,7 @@ export default {
     },
     setTrack (track) {
       this.$emit('trackChange', track)
+      this.updateSubtitlesData()
     }
   }
 }

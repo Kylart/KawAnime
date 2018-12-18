@@ -1,7 +1,7 @@
 <template lang="pug">
-  div.video-player(
+  .video-player(
     @mousemove='onMouseMove',
-    :style='{ cursor: false ? "none" : null }'
+    :style='{ cursor: !controlsShow ? "none" : null }'
   )
     video(
       ref='video',
@@ -35,7 +35,9 @@
       @trackChange='setTrack',
       @togglePlay='togglePlay',
       @toggleFullScreen='toggleFullScreen',
-      @actOnWindow='actOnWindow'
+      @actOnWindow='actOnWindow',
+      @show='controlsShow = true',
+      @hide='controlsShow = false',
     )
 </template>
 
@@ -66,6 +68,7 @@ export default {
       waiting: false,
       paused: true,
       fullscreen: false,
+      controlsShow: true,
       isMagnetRe: /^magnet:\?/,
       name: '',
       hasAppendedToHistory: false
@@ -77,16 +80,18 @@ export default {
   },
 
   mounted () {
-    const { video } = this.$refs
+    const { video, controls } = this.$refs
 
     video.addEventListener('loadedmetadata', () => {
       // We need to get the subtitles only when the torrent is ready to be read.
       // Otherwise, there is no file to get the subtitles from.
       this.eventSource = new window.EventSource(`/tracks/${this.value}`)
       this.setHeight()
+      controls.reveal()
 
       this.eventSource.addEventListener('tracks', ({ data }) => {
         this.handleTracks(data)
+        controls.updateSubtitlesData()
       })
 
       this.eventSource.addEventListener('subtitle', ({ data }) => {
