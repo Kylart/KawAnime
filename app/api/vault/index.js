@@ -53,6 +53,11 @@ const setupCreds = (service, creds) => {
 
 const getCreds = (service) => {
   return new Promise((resolve, reject) => {
+    if (!existsSync(DIR)) {
+      logger.info('No vault instanciated for current user.')
+      return resolve({})
+    }
+
     const fileDatasource = new FileDatasource(join(DIR, service + '.bcup'))
     const key = readFileSync(keyPath, 'utf-8')
 
