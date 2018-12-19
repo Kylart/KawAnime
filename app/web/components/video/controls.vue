@@ -52,7 +52,7 @@
               v-icon subtitles
             v-list
               v-list-tile.video-subtitle(v-for='(num, i) in Object.keys(numToLang)', :key='i' @click="setTrack(num)")
-                v-list-tile-title(:class="{ 'blue--text': +num === currentLang }") {{ numToLang[num] }}
+                v-list-tile-title(:class="{ 'blue--text': numToLang[num] === currentLang }") {{ numToLang[num] }}
 </template>
 
 <script>
