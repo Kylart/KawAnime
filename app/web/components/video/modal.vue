@@ -116,10 +116,10 @@ export default {
       this.$nextTick(() => this.$refs.player.setHeight())
     },
     forward (value) {
-      this.$refs.player.timeForward(value)
+      this.$refs.player.$refs.controls.timeForward(value)
     },
     increaseVolume (value) {
-      this.$refs.player.increaseVolume(value)
+      this.$refs.player.$refs.controls.increaseVolume(value)
     },
     togglePlay () {
       this.$refs.player.togglePlay()

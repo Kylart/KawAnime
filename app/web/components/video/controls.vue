@@ -167,7 +167,7 @@ export default {
       if (this.video) this.video.volume = (this.volume = value) / 100
     },
     increaseVolume (value) {
-      const { video } = this.$refs
+      const { video } = this
 
       if (video) {
         const currentVolume = video.volume * 100
