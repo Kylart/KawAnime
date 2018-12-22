@@ -28,6 +28,15 @@ export default {
   }),
 
   methods: {
+    updateTimeline (currentTime) {
+      // This comes from timing mixin
+      const { rawTime } = this
+
+      // If the time went backward, we need to reset the index
+      if (currentTime < rawTime) this.index = 0
+
+      this.rawTime = currentTime
+    },
     setBounds () {
       const video = document.querySelector('video[name="kawanime-player"]')
       const result = {

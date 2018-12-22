@@ -14,6 +14,7 @@
       @canplay='onCanPlay',
       @progress='onProgress',
       @seeked='onSeeked',
+      @ended='onEnded',
       @click='togglePlay',
       @dblclick='toggleFullScreen',
       :src='`/stream/${value}`'
@@ -152,7 +153,7 @@ export default {
 
       if (video) {
         controls.updateTime()
-        cuesContainer.rawTime = video.currentTime
+        cuesContainer.updateTimeline(video.currentTime)
 
         if (this.isAss) cuesContainer.updateActiveCues()
       }
@@ -170,6 +171,9 @@ export default {
     onSeeked () {
       // Needed for subtitle timing
       this.index = 0
+    },
+    onEnded () {
+
     },
     onMouseMove (e) {
       if (Math.abs(e.movementX) > 1 || Math.abs(e.movementY) > 1) { this.$refs.controls.reveal() }
