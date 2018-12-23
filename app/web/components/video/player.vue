@@ -173,7 +173,12 @@ export default {
       this.index = 0
     },
     onEnded () {
+      const { neighbours } = this.$store.state.streaming.player
 
+      if (neighbours) {
+        const { next } = neighbours
+        this.$emit('sendNext', next)
+      }
     },
     onMouseMove (e) {
       if (Math.abs(e.movementX) > 1 || Math.abs(e.movementY) > 1) { this.$refs.controls.reveal() }

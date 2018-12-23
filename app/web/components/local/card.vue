@@ -152,7 +152,8 @@ export default {
           show: true,
           link: {
             link: this.file.path,
-            name: `${this.file.title} - ${this.file.episodeOrMovieNumber}`
+            name: `${this.file.title} - ${this.file.episodeOrMovieNumber}`,
+            neighbours: null
           }
         })
       } else {

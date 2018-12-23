@@ -2,6 +2,9 @@ export default {
   play (state, data) {
     state.player = data
   },
+  setNeighbours (state, data) {
+    state.player.neighbours = data
+  },
   close (state) {
     state.player.show = false
   },

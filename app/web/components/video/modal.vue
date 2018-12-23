@@ -3,7 +3,13 @@
     v-scale-transition
       .video-dialog(v-show='show', :style='style')
         template(v-if='values.show')
-          player(@fullscreen='toggleFullScreen', ref='player', :value='values.link.link', :title='values.link.name')
+          player(
+            @sendNext='setNext',
+            @fullscreen='toggleFullScreen',
+            ref='player',
+            :value='values.link.link',
+            :title='values.link.name'
+          )
 
     v-fade-transition
       .video-overlay(v-show='show && !isMinimized')
@@ -126,11 +132,23 @@ export default {
     },
     addListeners (e) {
       if (this.listeners.hasOwnProperty(e.keyCode)) this.listeners[e.keyCode]()
+    },
+    async setNext (next) {
+      this.$store.commit('streaming/play', {
+        show: true,
+        link: {
+          link: next.path,
+          name: `${next.title} - ${next.episodeOrMovieNumber}`,
+          neighbours: null
+        }
+      })
+
+      await this.$store.dispatch('streaming/getNeighbours')
     }
   },
 
   watch: {
-    show (val) {
+    async show (val) {
       if (val) {
         this.center()
 
@@ -139,6 +157,8 @@ export default {
         }
 
         window.addEventListener('keydown', this.addListeners)
+
+        await this.$store.dispatch('streaming/getNeighbours')
       } else {
         window.removeEventListener('keydown', this.addListeners)
       }

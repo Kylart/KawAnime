@@ -1,6 +1,8 @@
 export default {
   player: {
-    show: false
+    show: false,
+    link: {},
+    neighbours: null
   },
   page: {
     infos: {},
