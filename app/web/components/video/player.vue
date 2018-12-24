@@ -1,7 +1,7 @@
 <template lang="pug">
   .video-player(
     @mousemove='onMouseMove',
-    :style='{ cursor: !controlsShow ? "none" : null }'
+    :style='{ cursor: !layoutShow ? "none" : null }'
   )
     video(
       ref='video',
@@ -26,8 +26,8 @@
       :cues='currentTrack'
     )
 
-    controls(
-      ref='controls',
+    layout(
+      ref='layout',
       :video='$refs.video',
       :title='videoTitle',
       :waiting='waiting',
@@ -37,14 +37,14 @@
       @togglePlay='togglePlay',
       @toggleFullScreen='toggleFullScreen',
       @actOnWindow='actOnWindow',
-      @show='controlsShow = true',
-      @hide='controlsShow = false',
+      @show='layoutShow = true',
+      @hide='layoutShow = false',
     )
 </template>
 
 <script>
 // Comps
-import Controls from 'components/video/controls.vue'
+import Layout from 'components/video/layout.vue'
 import CuesContainer from 'components/video/cues/container.vue'
 
 // Mixins and methods
@@ -57,7 +57,7 @@ export default {
 
   components: {
     CuesContainer,
-    Controls
+    Layout
   },
 
   mixins: [ Tracks, Subtitles, Style ],
@@ -69,7 +69,7 @@ export default {
       waiting: false,
       paused: true,
       fullscreen: false,
-      controlsShow: true,
+      layoutShow: true,
       isMagnetRe: /^magnet:\?/,
       name: '',
       hasAppendedToHistory: false
@@ -81,18 +81,18 @@ export default {
   },
 
   mounted () {
-    const { video, controls } = this.$refs
+    const { video, layout } = this.$refs
 
     video.addEventListener('loadedmetadata', () => {
       // We need to get the subtitles only when the torrent is ready to be read.
       // Otherwise, there is no file to get the subtitles from.
       this.eventSource = new window.EventSource(`/tracks/${this.value}`)
       this.setHeight()
-      controls.reveal()
+      layout.reveal()
 
       this.eventSource.addEventListener('tracks', ({ data }) => {
         this.handleTracks(data)
-        controls.updateSubtitlesData()
+        layout.updateSubtitlesData()
       })
 
       this.eventSource.addEventListener('subtitle', ({ data }) => {
@@ -149,20 +149,20 @@ export default {
 
   methods: {
     onTimelineChangeEvent () {
-      const { video, cuesContainer, controls } = this.$refs
+      const { video, cuesContainer, layout } = this.$refs
 
       if (video) {
-        controls.updateTime()
+        layout.updateTime()
         cuesContainer.updateTimeline(video.currentTime)
 
         if (this.isAss) cuesContainer.updateActiveCues()
       }
     },
     onProgress () {
-      const { video, controls } = this.$refs
+      const { video, layout } = this.$refs
 
       if (video) {
-        controls.updateBuffer()
+        layout.updateBuffer()
       }
     },
     onCanPlay () {
@@ -181,14 +181,14 @@ export default {
       }
     },
     onMouseMove (e) {
-      if (Math.abs(e.movementX) > 1 || Math.abs(e.movementY) > 1) { this.$refs.controls.reveal() }
+      if (Math.abs(e.movementX) > 1 || Math.abs(e.movementY) > 1) { this.$refs.layout.reveal() }
     },
     togglePlay () {
-      const { video, controls } = this.$refs
+      const { video, layout } = this.$refs
 
       this.paused ? video.play() : video.pause()
 
-      controls.reveal()
+      layout.reveal()
     },
     toggleFullScreen () {
       this.$emit('fullscreen')

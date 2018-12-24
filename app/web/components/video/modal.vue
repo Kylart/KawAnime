@@ -4,6 +4,7 @@
       .video-dialog(v-show='show', :style='style')
         template(v-if='values.show')
           player(
+            :key='playerKey',
             @sendNext='setNext',
             @fullscreen='toggleFullScreen',
             ref='player',
@@ -27,6 +28,7 @@ export default {
 
   data () {
     return {
+      playerKey: Math.random(),
       fullscreen: false,
       height: 85,
       width: 85,
@@ -122,10 +124,10 @@ export default {
       this.$nextTick(() => this.$refs.player.setHeight())
     },
     forward (value) {
-      this.$refs.player.$refs.controls.timeForward(value)
+      this.$refs.player.$refs.layout.timeForward(value)
     },
     increaseVolume (value) {
-      this.$refs.player.$refs.controls.increaseVolume(value)
+      this.$refs.player.$refs.layout.increaseVolume(value)
     },
     togglePlay () {
       this.$refs.player.togglePlay()
@@ -142,6 +144,10 @@ export default {
           neighbours: null
         }
       })
+
+      // Doing this allows us to rebuild the player from scratch, making
+      // all the work needed for the subtitles, history and stuff...
+      this.playerKey = Math.random()
 
       await this.$store.dispatch('streaming/getNeighbours')
     }
