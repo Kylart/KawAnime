@@ -58,7 +58,7 @@ export default {
     listeners () {
       return {
         32: () => this.togglePlay(),
-        27: () => this.close(),
+        27: () => this.fullscreen ? this.toggleFullScreen() : this.close(),
         37: () => this.forward(-5),
         39: () => this.forward(5),
         38: () => this.increaseVolume(5),

@@ -1,58 +1,55 @@
 <template lang="pug">
-  v-fade-transition
-    .controls-container(v-show='show')
-      .controls
-        //- Top title
-        h6.video-title {{ title }}
+  .controls-container
+    v-container(grid-list-xs, fill-height, pa-0)
+      v-layout(column, row, wrap, align-center, justify-center)
+        v-flex.wide.actions-container.pt-2(xs7, d-flex, align-center)
+          v-container(pa-0, grid-list-xs)
+            v-layout(row, wrap, justify-space-between, align-center)
+              v-flex(xs3, d-flex, justify-center, align-center)
+                v-icon(@click='toggleMute', v-html="muted ? 'volume_off' : 'volume_up'")
+                v-slider.volume.ma-0.ml-1.text--accent-2(
+                  thumb-label,
+                  hide-details, dark,
+                  color='indigo',
+                  max='100',
+                  :value='muted ? 0 : volume',
+                  @input='changeVolume',
+                )
 
-        //- Window buttons
-        v-btn.video-close(color='indigo', dark, icon, @click.stop='actOnWindow("close")')
-          v-icon close
+              v-flex(xs4, justify-space-around, align-center, d-flex)
+                v-tooltip(top)
+                  span Rewind 5s
+                  v-icon(@click='timeForward(-5)', slot='activator') replay_5
+                v-icon(large, @click='togglePlay', v-html='paused ? "play_arrow" : "pause"')
+                v-tooltip(top)
+                  span Fast forward 5s
+                  v-icon(@click='timeForward(5)', slot='activator') forward_5
+                v-tooltip(top)
+                  span Skip 1m25 (op & ed)
+                  v-icon(@click='timeForward(85)', slot='activator') fast_forward
 
-        v-btn.video-size(color='indigo', dark, icon, @click.stop='actOnWindow("minimize")', v-show='show && !fullscreen')
-          v-icon {{ isMinimized ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}
+              v-flex(xs2)
+                v-menu(v-show='hasTracks', offset-overflow, offset-y, top)
+                  v-btn.subtitles.ma-0.text--accent-2(slot='activator', small, outline, icon, color='indigo')
+                    v-icon(small) subtitles
+                  v-list.subtitle-lang
+                    v-list-tile(v-for='(num, i) in Object.keys(numToLang)', :key='i' @click="setTrack(num)")
+                      v-list-tile-title(:class="{ 'blue--text': numToLang[num] === currentLang }") {{ numToLang[num] }}
+                v-btn.fullscreen.ma-0.ml-2.text--accent-2(color='indigo', small, outline, icon, @click='toggleFullScreen')
+                  v-icon(v-html="fullscreen ? 'fullscreen_exit' : 'fullscreen'")
 
-        //- Center play button
-        v-icon.video-play(dark, @click.stop='togglePlay', v-if='paused') play_arrow
-
-        //- Loading object
-        v-progress-circular.video-waiting(dark, indeterminate, v-show='waiting')
-
-        .bottom-container
-          progress-bar.timeline(
-            dark, hide-details, color='indigo',
-            :step='0', :buffer='buffered', :value='timeline',
-            :duration='duration',
-            @input='changeTimeline'
-          )
-
-          v-btn(color='indigo', dark, icon, @click.stop='togglePlay')
-            v-icon(v-html="paused ? 'play_arrow' : 'pause'")
-          v-btn(color='indigo', dark, icon, @click.stop='toggleMute')
-            v-icon(v-html="muted ? 'volume_off' : 'volume_up'")
-          v-slider.volume(hide-details, color='indigo', dark, :max='100', :value='muted ? 0 : volume', thumb-label, @input='changeVolume')
-          div.timer {{ currentTime }}/{{ duration }}
-          v-tooltip(top)
-            span Rewind 5s
-            v-btn(color='indigo', dark, icon, @click.stop='timeForward(-5)', slot='activator')
-              v-icon replay_5
-          v-tooltip(top)
-            span Fast forward 5s
-            v-btn(color='indigo', dark, icon, @click.stop='timeForward(5)', slot='activator')
-              v-icon forward_5
-          v-tooltip(top)
-            span Skip 1m25 (op&ed)
-            v-btn(color='indigo', dark, icon, @click.stop='timeForward(85)', slot='activator')
-              v-icon fast_forward
-
-          v-btn#fullscreen.right(color='indigo', dark, icon, @click.stop='toggleFullScreen')
-            v-icon(v-html="fullscreen ? 'fullscreen_exit' : 'fullscreen'")
-          v-menu.right(v-show='hasTracks', open-on-hover, offset-overflow, offset-y, top)
-            v-btn.subtitles(slot='activator', color='indigo', dark)
-              v-icon subtitles
-            v-list
-              v-list-tile.video-subtitle(v-for='(num, i) in Object.keys(numToLang)', :key='i' @click="setTrack(num)")
-                v-list-tile-title(:class="{ 'blue--text': numToLang[num] === currentLang }") {{ numToLang[num] }}
+        v-flex.wide.progress-bar-container(xs5, d-flex, align-center)
+          v-container(pa-0, grid-list-xs)
+            v-layout(row, wrap, justify-center, align-center)
+              v-flex(xs9)
+                progress-bar.ma-0.text--accent-2(
+                  dark, hide-details, color='indigo',
+                  :step='0', :buffer='buffered', :value='timeline',
+                  :duration='duration',
+                  @input='changeTimeline'
+                )
+              v-flex(xs3, justify-center)
+                .timer {{ currentTime }} / {{ duration }}
 </template>
 
 <script>
@@ -61,101 +58,24 @@ import ProgressBar from 'components/video/progressBar.vue'
 export default {
   name: 'Player-Controls',
 
-  components: {
-    ProgressBar
-  },
+  components: { ProgressBar },
 
   props: [
-    'video',
-    'title',
-    'waiting',
+    'muted',
+    'timeline',
+    'currentTime',
+    'duration',
+    'volume',
+    'buffered',
+    'hasTracks',
+    'numToLang',
+    'currentLang',
     'paused',
-    'fullscreen'
+    'fullscreen',
+    'video'
   ],
 
-  data: () => ({
-    show: true,
-    muted: false,
-    timeline: 0,
-    currentTime: 0,
-    duration: 0,
-    volume: 100,
-    buffered: [],
-    timeoutID: null,
-    isMinimized: false,
-
-    hasTracks: false,
-    numToLang: {},
-    currentLang: null
-  }),
-
   methods: {
-    reveal () {
-      this.show = true
-      this.$emit('show')
-
-      if (this.timeoutID) clearTimeout(this.timeoutID)
-      this.timeoutID = setTimeout(this.hide, 3000)
-    },
-    hide () {
-      this.show = false
-      this.$emit('hide')
-    },
-
-    updateSubtitlesData () {
-      this.hasTracks = Object.keys(this.$parent.tracks).length
-      this.numToLang = this.$parent.numToLang
-      this.currentLang = this.$parent.currentLang
-    },
-    updateTime () {
-      const { video } = this
-
-      if (video) {
-        this.currentTime = this.formatTime(video.currentTime)
-        this.timeline = 100 / video.duration * video.currentTime
-        this.duration = this.formatTime(video.duration)
-      }
-    },
-    updateBuffer () {
-      const { video } = this
-
-      if (video) {
-        const buffered = []
-
-        for (let i = 0, l = video.buffered.length; i < l; ++i) {
-          buffered.push([
-            video.buffered.start(i) / video.duration * 100,
-            video.buffered.end(i) / video.duration * 100
-          ])
-        }
-
-        this.buffered = buffered
-      }
-    },
-    formatTime (time = 0) {
-      const minutes = ('0' + Math.floor(time / 60)).slice(-2)
-      const seconds = ('0' + Math.floor(time % 60)).slice(-2)
-
-      return `${minutes}:${seconds}`
-    },
-    togglePlay () {
-      this.$emit('togglePlay')
-    },
-    toggleFullScreen () {
-      this.$emit('toggleFullScreen')
-    },
-    toggleMute () {
-      this.muted = this.video.muted = !this.muted
-    },
-    actOnWindow (action) {
-      this.$emit('actOnWindow', action)
-
-      if (action === 'minimize') this.isMinimized = !this.isMinimized
-    },
-    changeTimeline (value) {
-      const { video } = this
-      if (video) { video.currentTime = video.duration * ((this.timeline = value) / 100).toFixed(10) }
-    },
     timeForward (value) {
       const { video } = this
 
@@ -163,122 +83,66 @@ export default {
         video.currentTime += value
       }
     },
+    // Because I'm lazy
+    changeTimeline (value) {
+      this.$parent.changeTimeline(value)
+    },
     changeVolume (value) {
-      if (this.video) this.video.volume = (this.volume = value) / 100
+      this.$parent.changeVolume(value)
     },
-    increaseVolume (value) {
-      const { video } = this
-
-      if (video) {
-        const currentVolume = video.volume * 100
-        let newVolume = currentVolume + value
-
-        newVolume = newVolume >= 0 && newVolume <= 100
-          ? newVolume
-          : currentVolume
-
-        this.volume = newVolume
-        this.video.volume = newVolume / 100
-      }
+    togglePlay () {
+      this.$parent.togglePlay()
     },
-    setTrack (track) {
-      this.$emit('trackChange', track)
-      this.updateSubtitlesData()
+    toggleFullScreen () {
+      this.$parent.toggleFullScreen()
+    },
+    toggleMute () {
+      this.$parent.toggleMute()
+    },
+    setTrack (num) {
+      this.$parent.setTrack(num)
     }
   }
 }
 </script>
 
-<style lang="stylus">
+<style lang="stylus" scoped>
   .controls-container
+    pointer-events all
     position absolute
-    top 0
-    left 0
-    width 100%
-    height 100%
-    z-index 2
-    pointer-events none
+    top 65%
+    left 50%
+    width 450px
+    height 80px
+    transform translateX(-50%)
+    background-color rgba(60, 60, 60, 0.8)
+    border-radius 5px
+    padding 0
 
-    .controls
+    .wide
       width 100%
-      height 100%
 
-    .video-title
-      position absolute
-      width 80%
-      left 10%
-      top 4%
+    .progress-bar-container
+      padding 0 12px 4px 20px !important
+
+    .actions-container
+      padding 0 12px !important
+
+    .timer
+      padding 0 4px
+      font-size 14px
+      line-height 15px
+      letter-spacing 0.04em
+      font-weight 300
       text-align center
-      line-height 22px
-      font-weight 700
-      -webkit-text-stroke 1px black
 
-    .video-close
-      cursor pointer
-      pointer-events all
-      position absolute
-      right 5px
-      top 1%
+    .volume
+      vertical-align middle
+      display inline-block
+      width 70%
+      padding 0
 
-    .video-size
-      cursor pointer
-      pointer-events all
-      position absolute
-      right 50px
-      top 1%
-
-    .video-waiting
-      position absolute
-      left 50%
-      top 50%
-      height 10% !important
-      width 10% !important
-      transform translate(-50%, -50%)
-
-    .video-play
-      cursor pointer
-      pointer-events all
-      position absolute
-      left 50%
-      top 50%
-      transform translate(-50%, -50%)
-      height 100px
-      width 100px
-      font-size 100px
-
-    .bottom-container
-      background linear-gradient(to top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.07), rgba(0, 0, 0, 0.0))
-      text-align left
-      position absolute
-      width 100%
-      bottom 0
-      pointer-events all
-
-      .timeline
-        padding 10px !important
-        margin-bottom 10px
-        height 10px
-
-      .volume
-        vertical-align middle
-        display inline-block
-        width 100px
-        padding 0
-
-      .timer
-        margin-left 15px
-        vertical-align middle
-        display inline-block
-        width 100px
-        padding 0
-        color white !important
-
-      .subtitles
-        min-width 0
-        width 40px
-
-  @media (max-width: 600px)
-    .bottom-container
-      .volume
-        display none !important
+    .subtitles
+      min-width 0
+      width 30px
 </style>

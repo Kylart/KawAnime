@@ -1,68 +1,37 @@
 <template lang="pug">
   v-fade-transition
-    .controls-container(v-show='show')
-      .controls
-        //- Top title
-        h6.video-title {{ title }}
+    .layout-container(v-show='show')
+      //- Top title
+      h6.video-title {{ title }}
 
-        //- Window buttons
-        v-btn.video-close(color='indigo', dark, icon, @click.stop='actOnWindow("close")')
-          v-icon close
+      //- Window buttons
+      v-btn.video-close(color='indigo', dark, icon, @click.stop='actOnWindow("close")')
+        v-icon close
 
-        v-btn.video-size(color='indigo', dark, icon, @click.stop='actOnWindow("minimize")', v-show='show && !fullscreen')
-          v-icon {{ isMinimized ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}
+      v-btn.video-size(color='indigo', dark, icon, @click.stop='actOnWindow("minimize")', v-show='show && !fullscreen')
+        v-icon {{ isMinimized ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}
 
-        //- Center play button
-        v-icon.video-play(dark, @click.stop='togglePlay', v-if='paused') play_arrow
+      //- Center play button
+      v-icon.video-play(dark, @click.stop='togglePlay', v-if='paused') play_arrow
 
-        //- Loading object
-        v-progress-circular.video-waiting(dark, indeterminate, v-show='waiting')
+      //- Loading object
+      v-progress-circular.video-waiting(dark, indeterminate, v-show='waiting')
 
-        .bottom-container
-          progress-bar.timeline(
-            dark, hide-details, color='indigo',
-            :step='0', :buffer='buffered', :value='timeline',
-            :duration='duration',
-            @input='changeTimeline'
-          )
-
-          v-btn(color='indigo', dark, icon, @click.stop='togglePlay')
-            v-icon(v-html="paused ? 'play_arrow' : 'pause'")
-          v-btn(color='indigo', dark, icon, @click.stop='toggleMute')
-            v-icon(v-html="muted ? 'volume_off' : 'volume_up'")
-          v-slider.volume(hide-details, color='indigo', dark, :max='100', :value='muted ? 0 : volume', thumb-label, @input='changeVolume')
-          div.timer {{ currentTime }}/{{ duration }}
-          v-tooltip(top)
-            span Rewind 5s
-            v-btn(color='indigo', dark, icon, @click.stop='timeForward(-5)', slot='activator')
-              v-icon replay_5
-          v-tooltip(top)
-            span Fast forward 5s
-            v-btn(color='indigo', dark, icon, @click.stop='timeForward(5)', slot='activator')
-              v-icon forward_5
-          v-tooltip(top)
-            span Skip 1m25 (op&ed)
-            v-btn(color='indigo', dark, icon, @click.stop='timeForward(85)', slot='activator')
-              v-icon fast_forward
-
-          v-btn#fullscreen.right(color='indigo', dark, icon, @click.stop='toggleFullScreen')
-            v-icon(v-html="fullscreen ? 'fullscreen_exit' : 'fullscreen'")
-          v-menu.right(v-show='hasTracks', open-on-hover, offset-overflow, offset-y, top)
-            v-btn.subtitles(slot='activator', color='indigo', dark)
-              v-icon subtitles
-            v-list
-              v-list-tile.video-subtitle(v-for='(num, i) in Object.keys(numToLang)', :key='i' @click="setTrack(num)")
-                v-list-tile-title(:class="{ 'blue--text': numToLang[num] === currentLang }") {{ numToLang[num] }}
+      player-controls(
+        v-bind='controls',
+        :paused='paused',
+        :fullscreen='fullscreen'
+      )
 </template>
 
 <script>
-import ProgressBar from 'components/video/progressBar.vue'
+import PlayerControls from 'components/video/controls.vue'
 
 export default {
-  name: 'Player-Controls',
+  name: 'Player-Layout',
 
   components: {
-    ProgressBar
+    PlayerControls
   },
 
   props: [
@@ -75,19 +44,39 @@ export default {
 
   data: () => ({
     show: true,
+    timeoutID: null,
+    isMinimized: false,
+
+    // Controls
     muted: false,
     timeline: 0,
     currentTime: 0,
     duration: 0,
     volume: 100,
     buffered: [],
-    timeoutID: null,
-    isMinimized: false,
-
     hasTracks: false,
     numToLang: {},
     currentLang: null
   }),
+
+  computed: {
+    controls () {
+      return {
+        muted: this.muted,
+        timeline: this.timeline,
+        currentTime: this.currentTime,
+        duration: this.duration,
+        volume: this.volume,
+        buffered: this.buffered,
+
+        hasTracks: this.hasTracks,
+        numToLang: this.numToLang,
+        currentLang: this.currentLang,
+
+        video: this.video
+      }
+    }
+  },
 
   methods: {
     reveal () {
@@ -190,7 +179,7 @@ export default {
 </script>
 
 <style lang="stylus">
-  .controls-container
+  .layout-container
     position absolute
     top 0
     left 0
@@ -198,10 +187,6 @@ export default {
     height 100%
     z-index 2
     pointer-events none
-
-    .controls
-      width 100%
-      height 100%
 
     .video-title
       position absolute
@@ -245,40 +230,4 @@ export default {
       height 100px
       width 100px
       font-size 100px
-
-    .bottom-container
-      background linear-gradient(to top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.07), rgba(0, 0, 0, 0.0))
-      text-align left
-      position absolute
-      width 100%
-      bottom 0
-      pointer-events all
-
-      .timeline
-        padding 10px !important
-        margin-bottom 10px
-        height 10px
-
-      .volume
-        vertical-align middle
-        display inline-block
-        width 100px
-        padding 0
-
-      .timer
-        margin-left 15px
-        vertical-align middle
-        display inline-block
-        width 100px
-        padding 0
-        color white !important
-
-      .subtitles
-        min-width 0
-        width 40px
-
-  @media (max-width: 600px)
-    .bottom-container
-      .volume
-        display none !important
 </style>
