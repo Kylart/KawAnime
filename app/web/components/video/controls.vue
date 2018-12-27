@@ -7,10 +7,10 @@
             v-layout(row, wrap, justify-space-between, align-center)
               v-flex(xs3, d-flex, justify-center, align-center)
                 v-icon(@click='toggleMute', v-html="muted ? 'volume_off' : 'volume_up'")
-                v-slider.volume.ma-0.ml-1.text--accent-2(
+                v-slider.volume.ma-0.ml-1(
                   thumb-label,
                   hide-details, dark,
-                  color='indigo',
+                  color='indigo accent-2',
                   max='100',
                   :value='muted ? 0 : volume',
                   @input='changeVolume',
@@ -30,20 +30,20 @@
 
               v-flex(xs2)
                 v-menu(v-show='hasTracks', offset-overflow, offset-y, top)
-                  v-btn.subtitles.ma-0.text--accent-2(slot='activator', small, outline, icon, color='indigo')
+                  v-btn.subtitles.ma-0(slot='activator', small, outline, icon, color='indigo accent-2')
                     v-icon(small) subtitles
                   v-list.subtitle-lang
                     v-list-tile(v-for='(num, i) in Object.keys(numToLang)', :key='i' @click="setTrack(num)")
                       v-list-tile-title(:class="{ 'blue--text': numToLang[num] === currentLang }") {{ numToLang[num] }}
-                v-btn.fullscreen.ma-0.ml-2.text--accent-2(color='indigo', small, outline, icon, @click='toggleFullScreen')
+                v-btn.fullscreen.ma-0.ml-2(color='indigo accent-2', small, outline, icon, @click='toggleFullScreen')
                   v-icon(v-html="fullscreen ? 'fullscreen_exit' : 'fullscreen'")
 
         v-flex.wide.progress-bar-container(xs5, d-flex, align-center)
           v-container(pa-0, grid-list-xs)
             v-layout(row, wrap, justify-center, align-center)
               v-flex(xs9)
-                progress-bar.ma-0.text--accent-2(
-                  dark, hide-details, color='indigo',
+                progress-bar.ma-0(
+                  dark, hide-details, color='indigo accent-2',
                   :step='0', :buffer='buffered', :value='timeline',
                   :duration='duration',
                   @input='changeTimeline'
