@@ -51,7 +51,7 @@ const re = {
     name: /(\\fn.+(?=\\)|\\fn.+(?=}))/g,
     size: /\\fs\s?[0-9]{1,3}/g
   },
-  color: /\\\d?c&H?[0-9A-Za-z]{2,6}&/,
+  color: /\\\d?c(&H[0-9A-Za-z]{2,6}&)?/,
   alignment: /\\an?\d{1,2}/g,
   fade: /\\fad\(\d*\.?\d+,\d*\.?\d+\)?/,
   pos: /\\pos\(\d*\.?\d+,\d*\.?\d+\)?/,
