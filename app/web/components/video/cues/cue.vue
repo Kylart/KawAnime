@@ -73,13 +73,3 @@ export default {
   }
 }
 </script>
-
-<style lang="stylus">
-  .cue
-    background-color rgba(0, 0, 0, 0)
-    -webkit-font-smoothing antialiased
-    width 95%
-    font-family "Open Sans", sans-serif
-    font-weight 500
-    line-height 1.25
-</style>

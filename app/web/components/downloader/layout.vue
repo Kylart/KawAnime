@@ -52,7 +52,7 @@ export default {
       type: 'text',
       required: true
     }, {
-      placeholder: 'From where?',
+      placeholder: 'From when?',
       label: 'Min episode',
       model: '',
       type: 'number',
