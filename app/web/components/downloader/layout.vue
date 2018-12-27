@@ -142,7 +142,7 @@ export default {
       padding 16px 8px
 
     .quality-container
-      padding 16px 0
+      padding 16px 40px
       width 80%
       display flex
       justify-content space-between
