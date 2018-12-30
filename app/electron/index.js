@@ -96,18 +96,18 @@ function newWin () {
   })
 
   if (!isDev) {
-    return win.loadURL(_APP_URL_)
+    win.loadURL(_APP_URL_)
   } else {
     win.loadURL(url.format({
       pathname: join(__dirname, 'index.html'),
       protocol: 'file:',
       slashes: true
     }))
+
+    pollServer()
   }
 
   process.win = win
-
-  pollServer()
 }
 
 /**
