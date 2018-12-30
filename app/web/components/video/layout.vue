@@ -5,10 +5,10 @@
       h6.video-title {{ title }}
 
       //- Window buttons
-      v-btn.video-close(color='indigo', dark, icon, @click.stop='actOnWindow("close")')
+      v-btn.video-close(color='indigo', dark, icon, outline, @click.stop='actOnWindow("close")')
         v-icon close
 
-      v-btn.video-size(color='indigo', dark, icon, @click.stop='actOnWindow("minimize")', v-show='show && !fullscreen')
+      v-btn.video-size(color='indigo', dark, icon, outline, @click.stop='actOnWindow("minimize")', v-show='show && !fullscreen')
         v-icon {{ isMinimized ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}
 
       //- Center play button
@@ -39,13 +39,13 @@ export default {
     'title',
     'waiting',
     'paused',
-    'fullscreen'
+    'fullscreen',
+    'isMinimized'
   ],
 
   data: () => ({
     show: true,
     timeoutID: null,
-    isMinimized: false,
 
     // Controls
     muted: false,
@@ -138,8 +138,6 @@ export default {
     },
     actOnWindow (action) {
       this.$emit('actOnWindow', action)
-
-      if (action === 'minimize') this.isMinimized = !this.isMinimized
     },
     changeTimeline (value) {
       const { video } = this

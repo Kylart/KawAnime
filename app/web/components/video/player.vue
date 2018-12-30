@@ -33,6 +33,7 @@
       :waiting='waiting',
       :paused='paused',
       :fullscreen='fullscreen',
+      :isMinimized='isMinimized',
       @trackChange='setTrack',
       @togglePlay='togglePlay',
       @toggleFullScreen='toggleFullScreen',
@@ -62,13 +63,12 @@ export default {
 
   mixins: [ Tracks, Subtitles, Style ],
 
-  props: ['value', 'title'],
+  props: ['value', 'title', 'fullscreen', 'isMinimized'],
 
   data () {
     return {
       waiting: false,
       paused: true,
-      fullscreen: false,
       layoutShow: true,
       isMagnetRe: /^magnet:\?/,
       name: '',
@@ -117,7 +117,6 @@ export default {
 
   beforeDestroy () {
     this.eventSource && this.eventSource.close()
-    this.fullscreen && this.toggleFullScreen()
 
     // Removing cue styling from head
     const { head } = document
@@ -178,6 +177,8 @@ export default {
       if (neighbours) {
         const { next } = neighbours
         this.$emit('sendNext', next)
+      } else {
+        this.fullscreen && this.toggleFullScreen()
       }
     },
     onMouseMove (e) {
@@ -192,7 +193,6 @@ export default {
     },
     toggleFullScreen () {
       this.$emit('fullscreen')
-      this.fullscreen = !this.fullscreen
     },
     actOnWindow (type) {
       this.$parent[type]()

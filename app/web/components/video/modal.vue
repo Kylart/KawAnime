@@ -9,7 +9,9 @@
             @fullscreen='toggleFullScreen',
             ref='player',
             :value='values.link.link',
-            :title='values.link.name'
+            :title='values.link.name',
+            :fullscreen='fullscreen',
+            :isMinimized='isMinimized'
           )
 
     v-fade-transition
