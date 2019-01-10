@@ -53,9 +53,16 @@ const saveInfo = (req, res) => {
 
   req.on('end', () => {
     const storage = readJson(storagePath)
-    const { title, info } = JSON.parse(data)
+    const { title, info, isUpdate } = JSON.parse(data)
 
     const key = hashName(title)
+
+    // If asked for an update but the key is not in storage,
+    // we simply exit return 200 status code.
+    if (isUpdate && !storage.hasOwnProperty(key)) {
+      return res.send()
+    }
+
     storage[key] = info
 
     saveStorage(storage)

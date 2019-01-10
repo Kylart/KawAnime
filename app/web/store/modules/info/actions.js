@@ -1,6 +1,25 @@
 import { axios, log } from 'store/utils'
 
 export default {
+  async saveLocalInfo ({ state, commit }, data) {
+    try {
+      const { isUpdate, title, info } = data
+
+      await axios.post('local/save', data)
+
+      // We update the store data too.
+      const key = `local/${title}`
+
+      if (isUpdate && state.info.hasOwnProperty(key)) {
+        commit('set', {
+          key,
+          value: info
+        })
+      }
+    } catch (e) {
+      log('An error occurred while saving / updating local informaton.', e)
+    }
+  },
   async get ({ commit, state, dispatch }, name) {
     let url = null
 
@@ -20,7 +39,7 @@ export default {
       return
     }
 
-    commit('add', {
+    commit('set', {
       key: name,
       value: data
     })

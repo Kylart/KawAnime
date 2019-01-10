@@ -57,7 +57,7 @@ export default {
     setCurrent (info, file) {
       const key = `local/${file.title}`
 
-      this.$store.commit('info/add', {
+      this.$store.commit('info/set', {
         key,
         value: info
       })

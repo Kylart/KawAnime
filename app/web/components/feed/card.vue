@@ -160,6 +160,12 @@ export default {
 
       this.$set(this, 'animeInfo', this.allInfo[name])
       this.$set(this, 'picture', this.animeInfo.picture)
+
+      await this.$store.dispatch('info/saveLocalInfo', {
+        title: name,
+        info: this.allInfo[name],
+        isUpdate: true
+      })
     }
   }
 }

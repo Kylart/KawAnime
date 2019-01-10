@@ -4,7 +4,7 @@ const sanitize = (name) => {
 }
 
 export default {
-  add (state, { key, value }) {
+  set (state, { key, value }) {
     state.info[sanitize(key)] = value
   },
   addEps (state, { name, data }) {
