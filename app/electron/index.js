@@ -15,9 +15,9 @@ const url = require('url')
 const systemFolder = join(homedir(), '.KawAnime')
 
 const userConfig = require(join(systemFolder, 'config.json')).config
-const serverConfig = require('../config.js')
+const serverConfig = require(join(__dirname, '..', 'config.js'))
 
-const menuFile = require('./resources/menu.js')
+const menuFile = require(join(__dirname, 'resources', 'menu.js'))
 const menu = Menu.buildFromTemplate(menuFile.menu)
 
 const isDev = process.env.NODE_ENV === 'development'
@@ -132,7 +132,7 @@ app.on('ready', () => {
     if (process.platform === 'darwin') {
       app.dock.hide()
     }
-    tray = new Tray('./resources/tray.png')
+    tray = new Tray(join(__dirname, 'resources', 'tray.png'))
     const contextMenu = Menu.buildFromTemplate([
       {
         label: 'New window',
