@@ -9,7 +9,7 @@ export default function (styles, name, info) {
   _.each(styles, (style) => {
     const isItalic = +style.Italic ? 'italic' : 'unset'
     const isUnderline = -+style.Underline ? 'underline' : null
-    const bold = -+style.Bold ? 'font-weight: bolder;' : ''
+    const bold = -+style.Bold ? 'font-weight: bold;' : ''
     const strikeOut = +style.Strikeout ? 'line-through' : null
     const primaryColor = vbToRGBA(style.PrimaryColour)
     const spacing = +style.Spacing ? `letter-spacing: ${style.Spacing}px;` : ''
