@@ -5,7 +5,7 @@ let Velocity = null
 if (typeof window !== 'undefined') Velocity = require('velocity-animate').default
 
 const re = {
-  delimiter: /({|})/g,
+  delimiter: /{.*?}/,
   newline: /\\N/g,
   bold: {
     start: {
@@ -13,7 +13,7 @@ const re = {
       to: '<b>'
     },
     end: {
-      from: /\\b0?/g,
+      from: /\\b0/g,
       to: '</b>'
     }
   },
@@ -78,119 +78,92 @@ const re = {
   ]
 }
 
-// Need to clean up {}s after. Also, unsupported tags.
+// Need to clean up unsupported tags.
 const clean = (string) => {
   re.notSupported.forEach((_re) => {
     string = string.replace(_re, '')
   })
 
-  return string.replace(re.delimiter, '').replace(re.font.name, '')
+  return string
 }
 
 const handleHardSpace = (string) => {
   return string.replace(re.hardSpace, '&nbsp;')
 }
+const handleNewline = (string) => {
+  return string.replace(re.newline, '<br>')
+}
 
 const handleCommon = (type, string) => {
   // Handles bold, italic and underline
   const re_ = re[type]
+  let tag = null
 
   if (re_.start.from.test(string)) {
-    string = string.replace(re_.start.from, re_.start.to)
-
-    re_.end.from.test(string)
-      ? string = string.replace(re_.end.from, re_.end.to)
-      : string += re_.end.to
+    return re_.start.to
   }
 
-  return string.replace(re_.start.from, '').replace(re_.end.from, '')
+  if (re_.end.from.test(string)) {
+    return re_.end.to
+  }
+
+  return tag
 }
 
-const handleFontSize = (cue, info) => {
-  const string = cue.text
+const handleFontSize = (string, info) => {
   const fontType = re.font.size.test(string) && string.match(re.font.size)[0]
 
   if (fontType) {
     const { PlayResY: resY } = info
     const size = fontType.slice(3) / resY
 
-    cue.fontSize = size
-
-    cue.text = string.replace(re.font.size, '')
+    return size
   }
 
-  return cue
+  return null
 }
 
-const setColorStyle = (type, colorTag, string, style) => {
-  const color = colorTag.replace(/\\\d?c/g, '').slice(2, 8)
-  const r = color.slice(4, 6)
-  const g = color.slice(2, 4)
-  const b = color.slice(0, 2)
-  const hexColor = `#${r}${g}${b}`
+const handleColor = (string, cue) => {
+  const colorTag = re.color.test(string) && string.match(re.color)[0]
+  const { clientHeight } = document.getElementsByTagName('video')[0]
+  let cssStyle = document.head.children[document.head.childElementCount - 1]
 
-  const colorClass = `${type}${color}`
+  if (colorTag) {
+    const isPrimary = colorTag[1] === '1' || colorTag[1] === 'c'
+    const color = colorTag.replace(/\\\d?c/g, '').slice(2, 8)
+    const r = color.slice(4, 6)
+    const g = color.slice(2, 4)
+    const b = color.slice(0, 2)
+    const hexColor = `#${r}${g}${b}`
+    const className = color
+    let type = 'p'
 
-  const typeToProperty = {
-    'c': {
-      property: 'color',
-      rule: hexColor
-    },
-    'b': {
-      property: '-webkit-text-stroke',
-      rule: `1.5px ${hexColor},`
-    }
-  }
+    if (isPrimary) {
+      cssStyle.appendChild(document.createTextNode(`.${type}${className} { color: ${hexColor} !important; }`))
+    } else {
+      const _type = colorTag[1]
 
-  // Check if class is in style. If not, includes it.
-  let current = style.innerHTML
-  if (!current.includes(`.${colorClass}`)) {
-    style.innerHTML += `.video-player p.${colorClass} {${typeToProperty[type].property}:${typeToProperty[type].rule};}`
-  }
+      if (_type === '2' || _type === '4') return null
 
-  return string.replace(re.color, `<p class="${colorClass}" style="display: inline;">`)
-}
+      if (_type === '3') {
+        const { thickness = 0.0075 } = cue.outline
+        const color = `0 0 ${1.8 * thickness * clientHeight * 2}px ${hexColor}, `.repeat(8).slice(0, -2)
+        type = 'ts'
 
-const handleColor = (string, style) => {
-  if (re.color.test(string)) {
-    const globalRe = new RegExp(re.color, ['g'])
-
-    for (let i = 0, l = string.match(globalRe).length; i < l; ++i) {
-      const colorTag = string.match(re.color)[0]
-      const isPrimary = colorTag[1] === 'c' || colorTag[1] === '1'
-
-      if (isPrimary) {
-        string = setColorStyle('c', colorTag, string, style)
-
-        if (re.color.test(string)) {
-          // Meaning there is another color tag in the string so the closing tag should be
-          // before the next color tag
-          const match = string.match(re.color)[0]
-          const index = string.indexOf(match)
-          string = string.slice(0, index) + '</p>' + string.slice(index)
-        } else {
-          string += '</p>'
-        }
-      } else {
-        // Hopefully temporary
-        // Support only for border color
-        if (colorTag[1] === '3') {
-          string = setColorStyle('b', colorTag, string, style)
-        }
+        cssStyle.appendChild(document.createTextNode(`.${type}${className} { text-shadow: ${color} !important; }`))
       }
     }
+
+    return `<span class="${type}${className}">`
   }
 
-  return string
+  return null
 }
 
-const handleFade = (cue, style) => {
-  let string = cue.text
-
+const handleFade = (string, cue) => {
   if (re.fade.test(string)) {
     const fadeTag = string.match(re.fade)[0]
-
-    cue.text = string.replace(fadeTag, '')
+    const result = {}
 
     // We can handle only appearing fade animation atm.
     // The time is in ms, we need it in seconds.
@@ -199,40 +172,42 @@ const handleFade = (cue, style) => {
 
     // So if idea is to trigger a show property so that a Vue transition
     // can be instanciated. Velocity will help us make the fade effect.
-    cue.hasAnimation = true
-    cue.show = false
+    result.hasAnimation = true
+    result.show = false
 
     // As the fade out effect has to be finished before the end of the cue,
     // we can simply remove its duration from the cue's end time.
-    cue.end = cue.end - outDuration / 1000
+    result.end = cue.end - outDuration / 1000
 
-    cue.beforeEnter = (el) => {
+    result.beforeEnter = (el) => {
       el.style.opacity = 0
     }
 
-    cue.enter = (el, done) => {
+    result.enter = (el, done) => {
       Velocity(el, { opacity: 1 }, { duration: inDuration, complete: done })
     }
 
-    cue.leave = (el, done) => {
+    result.leave = (el, done) => {
       const complete = () => {
         done()
 
         // We need to re-hide the cue on leave so that the show can
         // still be triggered if the user rewinds the player.
-        cue.show = false
+        result.show = false
       }
 
       Velocity(el, { opacity: 0 }, { duration: outDuration, complete })
     }
+
+    return result
   }
 
-  return cue
+  return null
 }
 
-const handlePos = (cue, style, info) => {
-  const string = cue.text
+const handlePos = (string, style, info) => {
   const { PlayResX: resX, PlayResY: resY } = info
+  const result = {}
 
   if (re.pos.test(string)) {
     const posTag = string.match(re.pos)[0]
@@ -256,33 +231,32 @@ const handlePos = (cue, style, info) => {
     const y = Math.round((xy[1] / resY) * 100)
 
     // Horizontal
-    if (alignDir.middle.includes(alignment_)) cue.align = -50
+    if (alignDir.middle.includes(alignment_)) result.align = -50
 
-    cue.horiz = alignDir.right.includes(alignment_)
+    result.horiz = alignDir.right.includes(alignment_)
       ? 'right'
       : 'left'
 
-    cue.position = x
+    result.position = x
 
     // Vertical
-    if (alignDir.vCenter.includes(alignment_)) cue.vAlign = 50
+    if (alignDir.vCenter.includes(alignment_)) result.vAlign = 50
 
-    cue.vert = alignDir.top.includes(alignment_)
+    result.vert = alignDir.top.includes(alignment_)
       ? 'top'
       : 'bottom'
 
-    cue.line = y
+    result.line = y
 
-    cue.text = string.replace(posTag, '')
+    return string
   }
 
-  return cue
+  return null
 }
 
-const handleRotation = (cue) => {
-  const string = cue.text
-
+const handleRotation = (string) => {
   if (re.rot.test(string)) {
+    const result = {}
     const rotateTag = string.match(re.rot)
     let axis = rotateTag.replace('\\fr', '').slice(0, 1)
 
@@ -294,19 +268,19 @@ const handleRotation = (cue) => {
 
     const degrees = rotateTag.replace(`\\fr${axis}`, '')
 
-    cue.rotate = ` rotate${axis.toUpperCase}(${-+degrees}deg)`
+    result.rotate = ` rotate${axis.toUpperCase}(${-+degrees}deg)`
 
-    cue.text = string.replace(rotateTag, '')
+    return result
   }
 
-  return cue
+  return null
 }
 
-const handleAlignment = (cue, style, info) => {
-  const string = cue.text
+const handleAlignment = (string, style, info) => {
   const alignmentTag = re.alignment.test(string) && string.match(re.alignment)[0] // Only the first tag matters
 
   if (alignmentTag) {
+    const result = {}
     const isNumpad = alignmentTag[2] === 'n'
 
     const align = isNumpad
@@ -322,66 +296,124 @@ const handleAlignment = (cue, style, info) => {
 
     // Horizontal
     if (alignDir.middle.includes(align)) {
-      cue.position = (left + 100 - right) / 2
-      cue.horiz = 'left'
-      cue.align = -50
-      cue.textAlign = 'center'
+      result.position = (left + 100 - right) / 2
+      result.horiz = 'left'
+      result.align = -50
+      result.textAlign = 'center'
     } else {
       const isLeft = alignDir.left.includes(align)
-      cue.position = isLeft ? left : right
-      cue.horiz = isLeft ? 'left' : 'right'
-      cue.align = 0
-      cue.textAlign = cue.horiz
+      result.position = isLeft ? left : right
+      result.horiz = isLeft ? 'left' : 'right'
+      result.align = 0
+      result.textAlign = result.horiz
     }
 
     // Vertical
     if (alignDir.vCenter.includes(align)) {
-      cue.vAlign = 50
-      cue.vert = 'bottom'
-      cue.line = 50
+      result.vAlign = 50
+      result.vert = 'bottom'
+      result.line = 50
     } else {
-      cue.vAlign = 0
-      cue.line = vert
-      cue.vert = alignDir.top.includes(align) ? 'top' : 'bottom'
+      result.vAlign = 0
+      result.line = vert
+      result.vert = alignDir.top.includes(align) ? 'top' : 'bottom'
     }
 
-    cue.text = string.replace(re.alignment, '')
+    return result
   }
 
-  return cue
+  return null
+}
+
+const getEnclosedTags = (string) => {
+  const enclosedTags = []
+
+  while (re.delimiter.test(string)) {
+    const tags = string.match(re.delimiter)[0]
+    const index = string.indexOf(tags)
+
+    // We keep index but remove delimiters from tag
+    enclosedTags.push({ tags, index })
+
+    // then we have to remove it from string
+    string = string.slice(0, index) + string.slice(index + tags.length)
+  }
+
+  return { enclosedTags, clearedString: string }
+}
+
+const handleEnclosedTags = (enclosedTags, cue, style, info) => {
+  const cueStyle = {}
+
+  return enclosedTags.map(({ tags, index }, k) => {
+    // Removing unsupported tags
+    let string = clean(tags)
+
+    // Handling common tags
+    const types = ['bold', 'italic', 'underline', 'strike']
+    types.forEach((type) => {
+      const tag = handleCommon(type, string)
+
+      if (!tag) return
+
+      const l = tag.length
+
+      cue.text = cue.text.slice(0, index) + tag + cue.text.slice(index)
+
+      if (k !== enclosedTags.length - 1) {
+        enclosedTags[k + 1].index += l
+      }
+    })
+
+    // Font
+    Object.assign(cueStyle, handleFontSize(string, info))
+
+    // Color
+    const colorTag = handleColor(string, cue) || undefined
+
+    // Animations
+    Object.assign(cueStyle, handleFade(string, cue))
+
+    // Position things
+    Object.assign(cueStyle, handlePos(string, style, info))
+    Object.assign(cueStyle, handleRotation(string))
+    Object.assign(cueStyle, handleAlignment(string, style, info))
+
+    return {
+      colorTag,
+      index,
+      cueStyle
+    }
+  })
 }
 
 export default function (cue, style, info) {
-  const cssStyle = document.head.children[document.head.childElementCount - 1]
+  let string = handleHardSpace(cue.text)
+  string = handleNewline(string)
 
-  let string = cue.text
+  // Finding enclosed tags and keeping track of indexes
+  const { enclosedTags, clearedString } = getEnclosedTags(string)
+  cue.text = clearedString
 
-  // Special characters
-  string = handleHardSpace(string)
-  string = string.replace(/\\n/g, '') // We don't support wrapping style anyway
+  // Treating those tags
+  const handledTags = handleEnclosedTags(enclosedTags, cue, style, info)
 
-  if (/\{/g.test(string)) {
-    string = handleCommon('bold', string)
-    string = handleCommon('italic', string)
-    string = handleCommon('underline', string)
-    string = handleCommon('strike', string)
+  handledTags
+    .forEach(({ index, colorTag, cueStyle }, k) => {
+      if (colorTag) {
+        string = string.slice(0, index) + colorTag + string.slice(index)
+        cue.text = string
 
-    // Most of the time the font name would not be supported,
-    // we'll postpone that to another day.
-    // string = handleFont('name', string, cssStyle)
+        if (k !== handledTags.length - 1) {
+          handledTags[k + 1].index += index + colorTag.length - (k + 1)
+        }
+      }
 
-    string = handleColor(string, cssStyle)
-
-    cue.text = string
-
-    cue = handleFontSize(cue, info)
-    cue = handlePos(cue, style, info)
-    cue = handleRotation(cue)
-    cue = handleAlignment(cue, style, info)
-    cue = handleFade(cue, cssStyle)
-
-    cue.text = clean(cue.text)
-  }
+      cue = {
+        ...cue,
+        ...cueStyle
+      }
+    })
 
   return cue
 }
