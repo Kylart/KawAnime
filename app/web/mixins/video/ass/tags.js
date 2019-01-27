@@ -393,7 +393,7 @@ export default function (cue, style, info) {
 
   // Finding enclosed tags and keeping track of indexes
   const { enclosedTags, clearedString } = getEnclosedTags(string)
-  cue.text = clearedString
+  string = cue.text = clearedString
 
   // Treating those tags
   const handledTags = handleEnclosedTags(enclosedTags, cue, style, info)
