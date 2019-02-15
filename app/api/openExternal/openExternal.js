@@ -53,10 +53,15 @@ const openExternal = ({ query }, res) => {
       break
 
     case 'dialog':
-      dialog.showOpenDialog({ properties: ['openDirectory'] }, (dirPath) => {
+      dialog.showOpenDialog({
+        properties: query.properties || ['openDirectory'],
+        filters: (query.filters && JSON.parse(query.filters))
+      }, (dirPath) => {
         if (dirPath !== undefined) {
           const result = {
-            path: dirPath[0]
+            path: dirPath.length === 1
+              ? dirPath[0]
+              : dirPath
           }
 
           sendRes(res, result)

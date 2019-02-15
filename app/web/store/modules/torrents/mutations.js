@@ -4,5 +4,8 @@ export default {
   },
   setClient (state, data) {
     state.client = data
+  },
+  showDialog (state, bool) {
+    state.dialog.show = bool
   }
 }

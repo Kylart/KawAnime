@@ -18,14 +18,9 @@ export default {
       const text = e.clipboardData.getData('text')
 
       if (/magnet:\?/.test(text)) {
-        e.preventDefault()
+        if (!this.isClientPage) {
+          e.preventDefault()
 
-        if (this.isClientPage) {
-          this.$axios.post('torrent/add', {
-            magnet: text,
-            path: '/Users/Kylart/Downloads'
-          })
-        } else {
           this.$store.commit('streaming/play', {
             show: true,
             link: {

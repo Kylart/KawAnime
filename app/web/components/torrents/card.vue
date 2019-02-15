@@ -2,7 +2,7 @@
   v-card
     v-layout(row, wrap, column)
       v-flex.ellipsis(xs2)
-        span(v-show='torrent && torrent.files && torrent.files.length').torrent-title {{ torrent.files[0].name }}
+        span(v-show='torrent && torrent.files && torrent.files[0]').torrent-title {{ torrent.files[0].name }}
 
       v-flex(xs7, pl-4, pt-2)
         v-layout(
@@ -37,7 +37,7 @@
       v-flex(xs2)
         v-layout(justify-space-around, pl-4, pr-4)
           template(v-for='action in actions')
-            v-btn(icon, @click='action.action')
+            v-btn(v-show='action.condition', icon, @click='action.action')
               v-icon(:color='action.color') {{ action.icon }}
 </template>
 
@@ -51,6 +51,7 @@ export default {
 
   data () {
     return {
+      isPaused: false,
       creationDate: null,
       timeRemaining: '',
       speeds: ['download', 'upload'],
@@ -64,18 +65,22 @@ export default {
       actions: [{
         icon: 'play_arrow',
         color: '',
+        condition: this.isPaused,
         action: () => this.actOnTorrent('resume')
       }, {
         icon: 'stop',
         color: '',
+        condition: !this.isPaused,
         action: () => this.actOnTorrent('pause')
       }, {
         icon: 'delete',
         color: 'red',
+        condition: true,
         action: () => this.actOnTorrent('destroy')
       }, {
         icon: 'info',
         color: '',
+        condition: true,
         action: this.displayInfo
       }]
     }
@@ -138,9 +143,9 @@ export default {
         }
       })
 
-      if (action === 'destroy') {
-        this.$destroy()
-      }
+      if (action === 'destroy') this.actOnTorrent('pause').then(this.$destroy)
+      else if (action === 'pause') this.isPaused = true
+      else if (action === 'resume') this.isPaused = false
     },
     displayInfo () {
 

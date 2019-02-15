@@ -9,6 +9,7 @@
       transition(name='page', mode='out-in')
         router-view
 
+    torrent-dialog
     env(v-show='$store.state.NODE_ENV === "development"')
     overlay(v-show='overlay')
     video-modal(v-show='$store.state.streaming.player.show')
@@ -31,6 +32,7 @@ import Toolbar from 'components/layout/toolbar.vue'
 import SystemBar from 'components/layout/systemBar.vue'
 
 // Global comps
+import TorrentDialog from 'components/torrents/dialog.vue'
 import VideoModal from 'components/video/modal.vue'
 import Overlay from 'components/global/overlay.vue'
 import Env from 'components/global/env.vue'
@@ -50,6 +52,7 @@ export default {
     SystemBar,
 
     // Global
+    TorrentDialog,
     VideoModal,
     Overlay,
     Env

@@ -4,7 +4,8 @@ export default {
   config: {
     bounds: {},
     system: {},
-    video: {}
+    video: {},
+    torrentClient: {}
   },
   ...Lists
 }

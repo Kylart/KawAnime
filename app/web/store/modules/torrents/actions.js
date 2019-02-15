@@ -11,12 +11,11 @@ export default {
       }
     } catch (e) { void e }
   },
-  async addTorrent (state, torrent) {
+  async add ({ rootState }, { torrent, path }) {
     try {
-      const path = '/Users/Kylart/Downloads'
       await axios.post('torrent/add', {
         magnet: torrent,
-        path
+        path: path || rootState.config.config.torrentClient.defaultPath
       })
     } catch (e) {
       log('An error occurred while adding a torrent:', e.message)

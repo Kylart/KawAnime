@@ -48,6 +48,9 @@ const createConfig = () => {
         fullscreen: false,
         preferredLanguage: 'en',
         quality: '720p'
+      },
+      torrentClient: {
+        defaultPath: join(BASE_PATH, 'Downloads')
       }
     }
   }

@@ -1,4 +1,7 @@
 export default {
   torrents: [],
-  client: {}
+  client: {},
+  dialog: {
+    show: false
+  }
 }

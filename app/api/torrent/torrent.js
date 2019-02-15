@@ -49,7 +49,7 @@ const init = (req, res) => {
     })
 
     process.torrentClient.on('error', (err) => {
-      logger.error('Client encounered an error.', err)
+      logger.error('Client encountered an error.', err)
     })
   } else {
     logger.info('Torrent client already instanciated.')
