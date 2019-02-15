@@ -53,8 +53,8 @@
           )
             v-icon(:color="_isIn(list.list) ? '#66BB6A' : 'default'") {{ list.icon }}
           span {{ _isIn(list.list) ? 'Remove from' : 'Add to' }} {{ list.name }}
-      v-btn(icon)
-        span.mal-icon
+      //- v-btn(icon)
+      //-   span.mal-icon
 </template>
 
 <script>

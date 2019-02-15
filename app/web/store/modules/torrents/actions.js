@@ -1,4 +1,4 @@
-import { axios } from 'store/utils'
+import { axios, log } from 'store/utils'
 
 export default {
   async getData ({ commit }) {
@@ -10,5 +10,16 @@ export default {
         commit('setClient', client)
       }
     } catch (e) { void e }
+  },
+  async addTorrent (state, torrent) {
+    try {
+      const path = '/Users/Kylart/Downloads'
+      await axios.post('torrent/add', {
+        magnet: torrent,
+        path
+      })
+    } catch (e) {
+      log('An error occurred while adding a torrent:', e.message)
+    }
   }
 }

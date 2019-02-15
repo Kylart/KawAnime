@@ -6,11 +6,12 @@ const logger = new Logger('Torrent Client')
 
 // TODO Limit download speed, check https://github.com/webtorrent/webtorrent/issues/163
 
+const peersMap = {}
+
 const cleanTorrents = (torrents) => {
   return torrents.map((torrent) => ({
     infoHash: torrent.infoHash,
     magnetURI: torrent.magnetURI,
-    files: torrent.files,
     timeRemaining: torrent.timeRemaining,
     received: torrent.received,
     downloaded: torrent.downloaded,
@@ -20,7 +21,14 @@ const cleanTorrents = (torrents) => {
     progress: torrent.progress,
     ratio: torrent.ratio,
     numPeers: torrent.numPeers,
-    path: torrent.path
+    path: torrent.path,
+    ready: torrent.ready,
+    files: torrent.files.map((file) => ({
+      name: file.name,
+      path: file.path,
+      done: file.done,
+      progress: file.progress
+    }))
   }))
 }
 
@@ -51,24 +59,27 @@ const init = (req, res) => {
 }
 
 const add = (req, res) => {
-  if (isClientDestroyed()) {
-    init(null, null)
-  }
+  let data = ''
 
-  const { query: { magnet, path } } = req
+  req.on('data', (chunk) => (data += chunk))
 
-  process.torrentClient.add(magnet, { path }, (torrent) => {
-    console.log('Added', torrent)
+  req.on('end', () => {
+    if (isClientDestroyed()) {
+      init(null, null)
+    }
+
+    const { magnet, path } = JSON.parse(data)
+
+    process.torrentClient.add(magnet, { path }, (torrent) => {
+      logger.info(`Added ${torrent.infoHash}.`)
+    })
+
+    res.send()
   })
-
-  logger.info(`Added magnet to torrent: ${magnet}`)
-
-  res.send()
 }
 
 const remove = ({ query: { magnet } }, res) => {
   // Be careful calling this one.
-
   magnet = (extname(magnet) === '.torrent' && fs.readFileSync(magnet)) || magnet
 
   process.torrentClient.remove(magnet, (err) => {
@@ -85,7 +96,7 @@ const remove = ({ query: { magnet } }, res) => {
     }
   })
 
-  res.send()
+  res && res.send()
 }
 
 const info = (req, res) => {
@@ -108,13 +119,48 @@ const info = (req, res) => {
   }
 }
 
-const togglePlay = ({ query: { torrent, action } }, res) => {
+const actOnTorrent = ({ query: { magnet, action } }, res) => {
   // Running this implies that there is a client.
   const client = process.torrentClient
+  const _torrent = client.get(magnet)
 
-  torrent = client.get(torrent)
+  switch (action) {
+    case 'resume':
+      // Reconnecting old torrent
+      _torrent.resume()
 
-  torrent[action]()
+      // Reconnecting peers
+      if (peersMap[magnet]) {
+        peersMap[magnet].forEach((peerId) => _torrent.addPeer(peerId))
+      }
+
+      break
+
+    case 'pause':
+      // Only stops connection to new peers, must delete all existing peers now
+      _torrent.pause()
+
+      // Removing all connected peers
+      Object.keys(_torrent._peers).forEach((peerId) => {
+        if (!peersMap[magnet]) peersMap[magnet] = []
+
+        peersMap[magnet].push(peerId)
+
+        _torrent.removePeer(peerId)
+      })
+
+      break
+
+    case 'destroy':
+      remove({ query: { magnet } })
+
+      break
+
+    default:
+      break
+  }
+
+  _torrent[action]()
 
   res.send()
 }
@@ -124,5 +170,5 @@ module.exports = {
   add,
   remove,
   info,
-  togglePlay
+  actOnTorrent
 }

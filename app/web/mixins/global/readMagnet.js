@@ -21,11 +21,9 @@ export default {
         e.preventDefault()
 
         if (this.isClientPage) {
-          this.$axios.get('torrent/add', {
-            params: {
-              magnet: text,
-              path: '/Users/Kylart/Downloads'
-            }
+          this.$axios.post('torrent/add', {
+            magnet: text,
+            path: '/Users/Kylart/Downloads'
           })
         } else {
           this.$store.commit('streaming/play', {

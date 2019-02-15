@@ -37,6 +37,9 @@ import {
   VImg,
   VCombobox,
   VHover,
+  VSheet,
+  VSparkline,
+  VProgressLinear,
   transitions
 } from 'vuetify'
 
@@ -81,6 +84,9 @@ export default (Vue) => {
       VImg,
       VCombobox,
       VHover,
+      VSheet,
+      VSparkline,
+      VProgressLinear,
       transitions
     },
     directives
