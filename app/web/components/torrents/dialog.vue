@@ -75,7 +75,7 @@ export default {
       return this.$store.state.platform === 'win32'
         ? '\r\n'
         : '\n'
-    },
+    }
   },
 
   methods: {

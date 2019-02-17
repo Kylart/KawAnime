@@ -2,24 +2,29 @@
   v-container(grid-list-md, fluid)
     v-layout(row, wrap, justify-center, align-center)
       torrent-header(:client='client')
-      v-flex(v-for='(torrent, index) in torrents', :key='index', xs12, sm6, xl4)
-        card(:torrent='torrent')
+      template(v-if='torrents.length')
+        v-flex(v-for='(torrent, index) in torrents', :key='index', xs12, sm6, xl4)
+          card(:torrent='torrent')
+      template(v-else)
+        empty
 </template>
 
 <script>
 import Card from 'components/torrents/card.vue'
 import TorrentHeader from 'components/torrents/header.vue'
+import Empty from 'components/torrents/empty.vue'
 
 export default {
   name: 'Torrent-Page',
 
   components: {
     Card,
-    TorrentHeader
+    TorrentHeader,
+    Empty
   },
 
   async mounted () {
-    setInterval(this.getInfo, 500)
+    setInterval(this.getInfo, 1000)
   },
 
   computed: {
