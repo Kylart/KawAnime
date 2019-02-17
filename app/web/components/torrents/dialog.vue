@@ -17,7 +17,7 @@
           v-tooltip(top)
             .path.ellipsis.pl-2(slot='activator') {{ currentPath }}
             span {{ currentPath }}
-          v-btn(flat, @click='openDirectoryDialog') Change
+          v-btn(flat, color='blue', @click='openDirectoryDialog') Change
           v-btn(icon, flat, large)
             v-icon(large, color='blue', @click='addEntry') add_circle
 
@@ -25,7 +25,7 @@
           template(v-for='(entry, index) in torrents')
             template(v-if='entry.show')
               v-layout(justify-space-between, align-center)
-                v-text-field(v-model='entry.torrent')
+                v-text-field(v-model='entry.torrent', @paste='handlePaste')
                 v-btn(icon)
                   v-icon(@click='removeEntry(index)') close
             template(v-else)
@@ -70,7 +70,12 @@ export default {
     },
     currentPath () {
       return this.path || this.config.defaultPath || ''
-    }
+    },
+    eol () {
+      return this.$store.state.platform === 'win32'
+        ? '\r\n'
+        : '\n'
+    },
   },
 
   methods: {
@@ -135,6 +140,21 @@ export default {
 
         this.close()
       }))
+
+      await this.$store.dispatch('torrents/getData')
+    },
+    handlePaste (e) {
+      const text = e.clipboardData.getData('text')
+
+      if (text.includes(this.eol)) {
+        e.preventDefault()
+
+        this.torrents.pop()
+
+        text.split(this.eol).forEach((magnet) => {
+          this.torrents.push({ torrent: magnet, show: true })
+        })
+      }
     }
   }
 }
@@ -152,4 +172,3 @@ export default {
     .choice
       padding 0 15%
 </style>
-
