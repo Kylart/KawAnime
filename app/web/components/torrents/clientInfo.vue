@@ -1,31 +1,37 @@
 <template lang="pug">
-  v-flex(xs12, pb-4)
-    v-layout(
-      column,
-      align-start
-    )
+  v-flex(xs12, mb-2)
+    v-card.pt-0.pl-4.pr-4.pb-4
+      v-card-title.title-text.text-uppercase Overall information
 
-      v-layout.speeds-container(justify-space-between)
-        template(v-for='speedName in speeds')
-          div.captions
-            caption.grey--text.text-uppercase {{ speedName.text }}
+      v-divider
 
-            div
-              span.display-2.font-weight-black {{ currentSpeed[speedName.value].value }}
-              strong(v-if='currentSpeed[speedName.value]') {{ currentSpeed[speedName.value].unit }}
+      v-layout(
+        column,
+        align-start,
+        pt-4
+      )
 
-      div.graph
-        v-sparkline(
-          height='100',
-          :key='graph.current',
-          :smooth='16',
-          :gradient='["#f72047", "#ffd200", "#1feaea"]',
-          :line-width='1',
-          :value='graph.values',
-          :fill='graph.fill',
-          auto-draw,
-          stroke-linecap='round'
-        )
+        v-layout.speeds-container(justify-space-between)
+          template(v-for='speedName in speeds')
+            div.captions
+              caption.grey--text.text-uppercase {{ speedName.text }}
+
+              div
+                span.display-1.font-weight-black {{ currentSpeed[speedName.value].value }}
+                strong(v-if='currentSpeed[speedName.value]') {{ currentSpeed[speedName.value].unit }}
+
+        .graph
+          v-sparkline(
+            height='75',
+            :key='graph.current',
+            :smooth='16',
+            :gradient='["#f72047", "#ffd200", "#1feaea"]',
+            :line-width='1',
+            :value='graph.values',
+            :fill='graph.fill',
+            auto-draw,
+            stroke-linecap='round'
+          )
 </template>
 
 <script>
@@ -97,6 +103,12 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+  .title-text
+    font-size 24px
+    letter-spacing 0.04em
+    text-align center
+    font-weight 500
+
   .speeds-container
     width 100%
     padding 0 15%

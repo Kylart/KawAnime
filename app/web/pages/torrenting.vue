@@ -4,7 +4,7 @@
       torrent-header
       template(v-if='torrents.length')
         client-info
-        v-flex(v-for='(torrent, index) in torrents', :key='index', xs12, sm6, xl4)
+        v-flex(v-for='(torrent, index) in torrents', :key='index', xs12, sm6, md4, xl3)
           card(:torrent='torrent')
       template(v-else)
         empty

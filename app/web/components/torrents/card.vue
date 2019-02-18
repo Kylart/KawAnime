@@ -1,18 +1,19 @@
 <template lang="pug">
-  v-card
+  v-card.pa-2
     v-layout(row, wrap, column)
-      v-flex.ellipsis(xs2)
-        span(v-show='torrent && torrent.files && torrent.files[0]').torrent-title {{ torrent.files[0].name }}
+      v-tooltip(top, lazy, v-show='torrent && torrent.files && torrent.files[0]')
+        .torrent-title.ellipsis.pt-2(slot='activator') {{ torrent.files[0].name }}
+        span {{ torrent.files[0].name }}
 
-      v-flex(xs1, pl-4, pr-2, d-flex, justify-space-between, align-center)
-        v-progress-linear(v-model='progress', height='5', color='indigo')
+      v-flex(pl-4, pr-2, d-flex, justify-space-between, align-center)
+        v-progress-linear(v-model='progress', height='12', color='green')
         span.progress-text {{ progress }}%
         span.progress-text {{ timeRemaining }}
-      v-flex(xs2)
-        v-layout(justify-space-around, pl-4, pr-4)
-          template(v-for='action in actions')
-            v-btn(icon, @click='action.action')
-              v-icon(:color='action.color') {{ action.icon }}
+
+      v-layout(justify-space-around, pl-4, pr-4)
+        template(v-for='action in actions')
+          v-btn(icon, @click='action.action', large)
+            v-icon(:color='action.color', large) {{ action.icon }}
 </template>
 
 <script>
