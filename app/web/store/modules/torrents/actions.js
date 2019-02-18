@@ -1,6 +1,11 @@
 import { axios, log } from 'store/utils'
 
 export default {
+  async init ({ dispatch }) {
+    setInterval(() => {
+      dispatch('getData')
+    }, 500)
+  },
   async getData ({ commit }) {
     try {
       const { data: { client, torrents }, status } = await axios.get('torrent/info')

@@ -26,6 +26,7 @@ export default {
     dispatch('watchLists/init').catch(err => { void err })
     dispatch('history/get').catch(err => { void err })
     dispatch('player/setUp').catch(err => { void err })
+    dispatch('torrents/init').catch(err => { void err })
 
     // Online
     await dispatch('checkOnlineStatus').catch(err => { void err })
