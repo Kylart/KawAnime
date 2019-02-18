@@ -1,13 +1,15 @@
 <template lang="pug">
   v-container(grid-list-md, fluid)
-    v-layout(row, wrap, justify-center, align-center)
-      torrent-header
+    torrent-header
+    transition(name='fade', mode='out-in', tag='div').layout.row.wrap.justify-center.align-center
       template(v-if='torrents.length')
-        client-info
-        v-flex(v-for='(torrent, index) in torrents', :key='index', xs12, sm6, md4, xl3)
-          card(:torrent='torrent')
+        .layout.row.wrap.justify-center.align-center
+          client-info(key='client-info')
+          transition-group(name='list', mode='out-in', tag='div').layout.row.wrap.justify-center.align-center
+            v-flex(v-for='(torrent, index) in torrents', :key='torrent.infoHash', xs12, sm6, md4, xl3)
+              card(:torrent='torrent')
       template(v-else)
-        empty
+        empty(key='empty')
 </template>
 
 <script>
