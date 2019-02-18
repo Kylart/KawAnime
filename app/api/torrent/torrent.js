@@ -110,7 +110,8 @@ const info = (req, res) => {
         downloadSpeed: client.downloadSpeed,
         uploadSpeed: client.uploadSpeed,
         ratio: client.ratio,
-        progress: client.progress
+        progress: client.progress,
+        nbTorrents: client.torrents.length
       },
       torrents: cleanTorrents(client.torrents) || []
     }

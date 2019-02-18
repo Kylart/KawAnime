@@ -1,8 +1,9 @@
 <template lang="pug">
   v-container(grid-list-md, fluid)
     v-layout(row, wrap, justify-center, align-center)
-      torrent-header(:client='client')
+      torrent-header
       template(v-if='torrents.length')
+        client-info
         v-flex(v-for='(torrent, index) in torrents', :key='index', xs12, sm6, xl4)
           card(:torrent='torrent')
       template(v-else)
@@ -12,6 +13,7 @@
 <script>
 import Card from 'components/torrents/card.vue'
 import TorrentHeader from 'components/torrents/header.vue'
+import ClientInfo from 'components/torrents/clientInfo.vue'
 import Empty from 'components/torrents/empty.vue'
 
 export default {
@@ -20,11 +22,8 @@ export default {
   components: {
     Card,
     TorrentHeader,
+    ClientInfo,
     Empty
-  },
-
-  async mounted () {
-    setInterval(this.getInfo, 1000)
   },
 
   computed: {
@@ -39,12 +38,6 @@ export default {
         return this.$store.state.torrents.torrents
       },
       set () {}
-    }
-  },
-
-  methods: {
-    async getInfo () {
-      await this.$store.dispatch('torrents/getData')
     }
   }
 }
