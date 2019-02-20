@@ -50,6 +50,14 @@ export default {
     torrents: [{ torrent: '', show: false }]
   }),
 
+  mounted () {
+    const { torrent } = this.$route.query
+
+    if (torrent) {
+      this.addTorrentFromPath(torrent)
+    }
+  },
+
   computed: {
     config: {
       get () {
@@ -79,6 +87,14 @@ export default {
   },
 
   methods: {
+    addTorrentFromPath (torrent) {
+      this.$nextTick(() => {
+        this.show = true
+
+        this.torrents[0].torrent = torrent
+        this.torrents[0].show = true
+      })
+    },
     close () {
       this.show = false
     },
@@ -155,6 +171,12 @@ export default {
           this.torrents.push({ torrent: magnet, show: true })
         })
       }
+    }
+  },
+
+  watch: {
+    '$route.query.torrent': function (val) {
+      val && this.addTorrentFromPath(val)
     }
   }
 }

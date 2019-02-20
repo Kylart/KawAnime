@@ -153,6 +153,10 @@
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true
-    }
+    },
+    "fileAssociations": [{
+      "ext": "torrent",
+      "name": "Torrent files"
+    }]
   }
 }

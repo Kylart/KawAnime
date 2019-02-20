@@ -17,16 +17,20 @@ const systemFolder = join(homedir(), '.KawAnime')
 const userConfig = require(join(systemFolder, 'config.json')).config
 const serverConfig = require(join(__dirname, '..', 'config.js'))
 
+const eventsHandler = require(join(__dirname, 'events.js'))
+
 const menuFile = require(join(__dirname, 'resources', 'menu.js'))
 const menu = Menu.buildFromTemplate(menuFile.menu)
 
 const isDev = process.env.NODE_ENV === 'development'
 const PORT = process.env.PORT || serverConfig.port
 
-const _APP_URL_ = `http://localhost:${PORT}`
+const _APP_URL_ = process.appUrl = `http://localhost:${PORT}`
 
 let win = null
 let tray = null
+
+const gotTheLock = app.requestSingleInstanceLock()
 
 /**
  * Util methods
@@ -42,6 +46,8 @@ function pollServer () {
 }
 
 function newWin () {
+  if (win) return
+
   win = new BrowserWindow({
     webPreferences: {
       nodeIntegration: false
@@ -82,21 +88,12 @@ function newWin () {
     win = null
   })
 
-  win.webContents.on('crashed', (event) => {
-    console.error('Main window crashed')
-    console.error('Event is ', event)
-  })
-
-  win.on('unresponsive', () => {
-    console.warn('Main window is unresponsive...')
-  })
-
-  win.on('session-end', () => {
-    console.info('Session logged off.')
-  })
-
   if (!isDev) {
-    win.loadURL(_APP_URL_)
+    win.loadURL(
+      process.startUp
+        ? `${_APP_URL_}/torrenting?torrent=${process.startUp.torrent}`
+        : _APP_URL_
+    )
   } else {
     win.loadURL(url.format({
       pathname: join(__dirname, 'index.html'),
@@ -119,64 +116,79 @@ dialog.showErrorBox = (title, content) => {
   console.log(`${title}\n${content}`)
 }
 
-app.on('ready', () => {
-  const currentSettings = app.getLoginItemSettings()
-  Menu.setApplicationMenu(menu)
+app.on('open-file', eventsHandler.onOpen)
+app.on('open-url', eventsHandler.onOpen)
 
-  // Devtools
-  if (isDev) {
-    require('vue-devtools').install()
-  }
-
-  if (userConfig.system.toTray) {
-    if (process.platform === 'darwin') {
-      app.dock.hide()
+if (!gotTheLock) {
+  app.quit()
+} else {
+  app.on('second-instance', (event, commandLine, workingDirectory) => {
+    // Someone tried to run a second instance, we should focus our window.
+    if (win) {
+      if (win.isMinimized()) win.restore()
+      win.focus()
     }
-    tray = new Tray(join(__dirname, 'resources', 'tray.png'))
-    const contextMenu = Menu.buildFromTemplate([
-      {
-        label: 'New window',
-        click: () => {
-          win === null
-            ? newWin()
-            : win.show()
+  })
+
+  app.on('ready', () => {
+    const currentSettings = app.getLoginItemSettings()
+    Menu.setApplicationMenu(menu)
+
+    // Devtools
+    if (isDev) {
+      require('vue-devtools').install()
+    }
+
+    if (userConfig.system.toTray) {
+      if (process.platform === 'darwin') {
+        app.dock.hide()
+      }
+      tray = new Tray(join(__dirname, 'resources', 'tray.png'))
+      const contextMenu = Menu.buildFromTemplate([
+        {
+          label: 'New window',
+          click: () => {
+            win === null
+              ? newWin()
+              : win.show()
+          },
+          accelerator: 'CommandOrControl+N'
         },
-        accelerator: 'CommandOrControl+N'
-      },
-      { label: 'Show current window', click: () => { win.show() } },
-      { label: 'Close current window', role: 'close', accelerator: 'CommandOrControl+W' },
-      { type: 'separator' },
-      { label: 'Quit', role: 'quit', accelerator: 'CommandOrControl+Q' }
-    ])
-    tray.setToolTip('The ultimate otaku software.')
-    tray.setContextMenu(contextMenu)
-  }
+        { label: 'Show current window', click: () => { win.show() } },
+        { label: 'Close current window', role: 'close', accelerator: 'CommandOrControl+W' },
+        { type: 'separator' },
+        { label: 'Quit', role: 'quit', accelerator: 'CommandOrControl+Q' }
+      ])
+      tray.setToolTip('The ultimate otaku software.')
+      tray.setContextMenu(contextMenu)
+    }
 
-  if (userConfig.system.autoStart) {
-    app.setLoginItemSettings({
-      openAtLogin: true
-    })
-  } else {
-    if (currentSettings.openAtLogin) {
+    if (userConfig.system.autoStart) {
       app.setLoginItemSettings({
-        openAtLogin: false
+        openAtLogin: true
       })
+    } else {
+      if (currentSettings.openAtLogin) {
+        app.setLoginItemSettings({
+          openAtLogin: false
+        })
+      }
     }
-  }
 
-  newWin()
-})
+    newWin()
+  })
 
-// Quit when all windows are closed.
-app.on('window-all-closed', function () {
-  // On OS X it is common for applications and their menu bar
-  // to stay active until the user quits explicitly with Cmd + Q
-  if (process.platform !== 'darwin') {
-    if (!tray) {
-      app.quit()
+  // Quit when all windows are closed.
+  app.on('window-all-closed', function () {
+    // On OS X it is common for applications and their menu bar
+    // to stay active until the user quits explicitly with Cmd + Q
+    if (process.platform !== 'darwin') {
+      if (!tray) {
+        app.quit()
+      }
     }
-  }
-})
+  })
+}
 
 app.on('quit', () => {
   // We remove logs files every once in a while

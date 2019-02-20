@@ -49,7 +49,7 @@ export default {
     sizes: ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
     graph: {
       current: null,
-      values: [0, 0]
+      values: [0, 'Download speed']
     }
   }),
 
