@@ -17,7 +17,7 @@
           key='files', name='list',
           class='trans layout row wrap justify-space-around', tag='div'
         )
-          template(v-for='file in files')
+          template(v-for='file in groupedFiles')
             v-flex(xs12, sm6, md3, lg3, xl2, :key='`${file.title} - ${file.episodeOrMovieNumber || ""}`')
               card(:reset='resetting', :file='file', @more='setCurrent', @refresh='refresh', @reset='handleChildReset')
 </template>
@@ -50,6 +50,33 @@ export default {
         return this.$store.state.localFiles.files
       },
       set () {}
+    },
+    groupedFiles () {
+      const { files = [] } = this
+
+      return files.reduce((acc, file) => {
+        if (!file.episodeOrMovieNumber) {
+          acc.push(file)
+          return acc
+        }
+
+        const isIn = acc.find((f) => f.title === file.title)
+        const epInfo = {
+          episodeOrMovieNumber: file.episodeOrMovieNumber,
+          path: file.path
+        }
+
+        if (isIn) {
+          isIn.eps.push(epInfo)
+        } else {
+          acc.push({
+            ...file,
+            eps: [epInfo]
+          })
+        }
+
+        return acc
+      }, [])
     }
   },
 

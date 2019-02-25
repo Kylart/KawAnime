@@ -1,60 +1,76 @@
 <template lang="pug">
-  v-hover
-    v-card(hover, slot-scope='{ hover }')
-      v-img(
-          :src="picture || ''",
-          :lazy-src="picture || ''",
-          height='250px'
+  v-card
+    v-img(
+        :src="picture || ''",
+        :lazy-src="picture || ''",
+        height='250px',
+        @mouseenter='showOverlay',
+        @mouseleave='hideOverlay'
+      )
+      transition-group(name='overlay-trans')
+        v-container.overlay(
+          v-if='hover',
+          key='overlay',
+          fill-height,
+          fluid,
+          pa-0
         )
-        transition-group(name='overlay-trans')
-          v-container.overlay(
-            v-if='hover',
-            key='overlay',
-            fill-height,
-            fluid,
-            pa-0
-          )
-            v-layout(fill-height, align-center row, wrap)
-              v-flex.overlay-icon(@click='play', xs6, fill-height)
-                v-icon.large play_arrow
-              v-flex.pa-0.download-container(xs6, fill-height)
-                v-layout.ma-0(fill-height, column)
-                  v-flex.overlay-icon(@click='more', xs6, fill-height)
-                    v-icon.large more_horiz
-                  v-flex.overlay-icon.delete(@click='remove', xs6, fill-height)
-                    v-icon.large(color='#EF5350') delete
+          v-layout(fill-height, align-center row, wrap)
+            v-flex.overlay-icon(@click='play', xs6, fill-height)
+              v-icon.large play_arrow
+            v-flex.pa-0.download-container(xs6, fill-height)
+              v-layout.ma-0(fill-height, column)
+                v-flex.overlay-icon(@click='more', xs6, fill-height)
+                  v-icon.large more_horiz
+                v-flex.overlay-icon.delete(@click='remove', xs6, fill-height)
+                  v-icon.large(color='#EF5350') delete
 
-          v-container(
-            v-else,
-            key='main'
-            fill-height,
-            fluid,
-            pa-0
-          )
-            v-layout.text(fill-height, column, justify-space-between)
+        v-container(
+          v-else,
+          key='main'
+          fill-height,
+          fluid,
+          pa-0
+        )
+          v-layout.text(fill-height, column, justify-space-between)
+            template(v-if='file.eps')
+              v-flex(xs2, pt-0)
+                .entry-eps
+                  div(
+                    @mouseenter='setEpHover(true)',
+                    @mouseleave='setEpHover(false)',
+                  )
+                    v-select(
+                      label='Episode',
+                      v-model='currentEp',
+                      :items='eps',
+                      hide-details,
+                      dense
+                    )
+            template(v-else)
               v-flex.entry-ep(xs2)
-                span(v-if='file.episodeOrMovieNumber') Ep. {{ file.episodeOrMovieNumber }}
-                span(v-else-if='file.animeType2') {{ file.animeType2 }}
-              v-flex.text-xs-center(v-if='!picture', xs2)
-                v-progress-circular(indeterminate)
-              v-flex.entry-title(xs2)
-                div {{ file.title }}
+                span {{ file.animeType2 }}
+            v-flex.text-xs-center(v-if='!picture', xs2)
+              v-progress-circular(indeterminate)
+            v-flex.entry-title(xs2)
+              div {{ file.title }}
 
-      v-card-actions
-        v-layout.actions(justify-space-around)
-          template(v-for='list in lists')
-            v-tooltip(top, lazy)
-              v-btn(
-                slot='activator',
-                @click='_addTo(list.list)',
-                icon
-              )
-                v-icon(:color="_isIn(list.list) ? '#66BB6A' : 'default'") {{ list.icon }}
-              span {{ _isIn(list.list) ? 'Remove from' : 'Add to' }} {{ list.name }}
+    v-card-actions
+      v-layout.actions(justify-space-around)
+        template(v-for='list in lists')
+          v-tooltip(top, lazy)
+            v-btn(
+              slot='activator',
+              @click='_addTo(list.list)',
+              icon
+            )
+              v-icon(:color="_isIn(list.list) ? '#66BB6A' : 'default'") {{ list.icon }}
+            span {{ _isIn(list.list) ? 'Remove from' : 'Add to' }} {{ list.name }}
 </template>
 
 <script>
 import Status from 'mixins/lists/status.js'
+import { debounce } from 'lodash'
 
 export default {
   name: 'Local-Card',
@@ -65,10 +81,15 @@ export default {
 
   mounted () {
     this.getInfo()
+
+    if (this.file.eps) this.currentEp = this.file.eps[0].episodeOrMovieNumber
   },
 
   data: () => ({
-    info: null
+    epHover: false,
+    hover: false,
+    info: null,
+    currentEp: null
   }),
 
   computed: {
@@ -90,10 +111,23 @@ export default {
     name () {
       // Useful for list status mixins
       return this.file.title
+    },
+    eps () {
+      return (this.file.eps || [])
+        .map((e) => e.episodeOrMovieNumber)
     }
   },
 
   methods: {
+    showOverlay: debounce(function () {
+      if (!this.epHover) this.hover = true
+    }, 0),
+    setEpHover (bool) {
+      this.epHover = bool
+    },
+    hideOverlay () {
+      this.hover = false
+    },
     async searchInfo () {
       this.$log(`No local information for ${this.file.title}, retrieving...`)
       await this.$store.dispatch('info/get', this.file.title)
@@ -147,12 +181,17 @@ export default {
       }
     },
     async play () {
+      const title = `${this.file.title} - ${this.currentEp || this.file.episodeOrMovieNumber || this.file.animeType2 || 'N/A'}`
+      const path = this.currentEp
+        ? this.file.eps.find((ep) => ep.episodeOrMovieNumber === this.currentEp).path
+        : this.file.path
+
       if (this.inside) {
         this.$store.commit('streaming/play', {
           show: true,
           link: {
-            link: this.file.path,
-            name: `${this.file.title} - ${this.file.episodeOrMovieNumber}`,
+            link: path,
+            name: title,
             neighbours: null
           }
         })
@@ -160,13 +199,13 @@ export default {
         await this.$axios.get('openThis', {
           params: {
             type: 'video',
-            path: this.file.path
+            path
           }
         })
 
         this.$store.dispatch('history/append', {
           type: 'Play',
-          text: `${this.file.title} - ${this.file.episodeOrMovieNumber || this.file.animeType2 || 'N/A'}`
+          text: title
         })
       }
     }
@@ -233,6 +272,16 @@ export default {
       font-size 20px
       padding 8px
       text-align center
+
+  .entry-eps
+    text-align right
+
+    &>div
+      padding 0 10px 8px
+      display inline-block
+      width 30%
+      border-radius 0 0 0 3px
+      background-color rgba(0, 0, 0, 0.6)
 
   .entry-ep
     text-align right
