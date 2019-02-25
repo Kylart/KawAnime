@@ -32,7 +32,7 @@
                 v-menu(v-show='hasTracks', offset-overflow, offset-y, top)
                   v-btn.subtitles.ma-0(slot='activator', small, outline, icon, color='indigo accent-2')
                     v-icon(small) subtitles
-                  v-list.subtitle-lang
+                  v-list(dense).subtitle-lang
                     v-list-tile(v-for='(num, i) in Object.keys(numToLang)', :key='i' @click="setTrack(num)")
                       v-list-tile-title(:class="{ 'blue--text': numToLang[num] === currentLang }") {{ numToLang[num] }}
                 v-btn.fullscreen.ma-0.ml-2(color='indigo accent-2', small, outline, icon, @click='toggleFullScreen')
