@@ -115,6 +115,14 @@ export default {
     eps () {
       return (this.file.eps || [])
         .map((e) => e.episodeOrMovieNumber)
+    },
+    title () {
+      return `${this.file.title} - ${this.currentEp || this.file.episodeOrMovieNumber || this.file.animeType2 || 'N/A'}`
+    },
+    path () {
+      return this.currentEp
+        ? this.file.eps.find((ep) => ep.episodeOrMovieNumber === this.currentEp).path
+        : this.file.path
     }
   },
 
@@ -164,13 +172,13 @@ export default {
       await this.$axios.get('openThis', {
         params: {
           type: 'delete',
-          path: this.file.path
+          path: this.path
         }
       })
 
       this.$store.dispatch('history/append', {
         type: 'Delete',
-        text: `${this.file.title} - ${this.file.episodeOrMovieNumber || this.file.animeType2 || 'N/A'}`
+        text: this.title
       })
 
       this.$emit('refresh')
@@ -181,17 +189,12 @@ export default {
       }
     },
     async play () {
-      const title = `${this.file.title} - ${this.currentEp || this.file.episodeOrMovieNumber || this.file.animeType2 || 'N/A'}`
-      const path = this.currentEp
-        ? this.file.eps.find((ep) => ep.episodeOrMovieNumber === this.currentEp).path
-        : this.file.path
-
       if (this.inside) {
         this.$store.commit('streaming/play', {
           show: true,
           link: {
-            link: path,
-            name: title,
+            link: this.path,
+            name: this.title,
             neighbours: null
           }
         })
@@ -199,13 +202,13 @@ export default {
         await this.$axios.get('openThis', {
           params: {
             type: 'video',
-            path
+            path: this.path
           }
         })
 
         this.$store.dispatch('history/append', {
           type: 'Play',
-          text: title
+          text: this.title
         })
       }
     }
