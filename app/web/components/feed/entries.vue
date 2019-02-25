@@ -2,7 +2,6 @@
   v-container(
     grid-list-lg, fluid, pt-2
   )
-    magnets-modal
     v-layout(row, wrap, justify-center)
       v-flex(xs12)
         v-layout(row, wrap, justify-space-between, align-center)
@@ -60,7 +59,6 @@ import { mapGetters } from 'vuex'
 
 // Components
 import Card from 'components/feed/card.vue'
-import MagnetsModal from 'components/magnets/modal.vue'
 
 // Mixins
 import Order from 'mixins/config/order.js'
@@ -68,7 +66,7 @@ import Order from 'mixins/config/order.js'
 export default {
   name: 'Entries',
 
-  components: { Card, MagnetsModal },
+  components: { Card },
 
   mixins: [ Order ],
 

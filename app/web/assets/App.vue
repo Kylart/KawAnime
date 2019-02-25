@@ -13,6 +13,7 @@
     env(v-show='$store.state.NODE_ENV === "development"')
     overlay(v-show='overlay')
     video-modal(v-show='$store.state.streaming.player.show')
+    magnets-modal
     //- mal-form
 
     //- Used for displaying any info
@@ -33,6 +34,7 @@ import SystemBar from 'components/layout/systemBar.vue'
 
 // Global comps
 import TorrentDialog from 'components/torrents/dialog.vue'
+import MagnetsModal from 'components/magnets/modal.vue'
 import VideoModal from 'components/video/modal.vue'
 import Overlay from 'components/global/overlay.vue'
 import Env from 'components/global/env.vue'
@@ -53,6 +55,7 @@ export default {
 
     // Global
     TorrentDialog,
+    MagnetsModal,
     VideoModal,
     Overlay,
     Env
