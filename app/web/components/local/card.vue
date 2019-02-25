@@ -70,7 +70,6 @@
 
 <script>
 import Status from 'mixins/lists/status.js'
-import { debounce } from 'lodash'
 
 export default {
   name: 'Local-Card',
@@ -88,6 +87,7 @@ export default {
   data: () => ({
     epHover: false,
     hover: false,
+    wantsHover: false,
     info: null,
     currentEp: null
   }),
@@ -127,14 +127,24 @@ export default {
   },
 
   methods: {
-    showOverlay: debounce(function () {
-      if (!this.epHover) this.hover = true
-    }, 0),
+    showOverlay () {
+      this.wantsHover = true
+
+      setImmediate(() => {
+        if (!this.epHover) this.hover = true
+      })
+    },
     setEpHover (bool) {
       this.epHover = bool
+
+      setImmediate(() => {
+        if (!bool && this.wantsHover) this.showOverlay()
+      })
     },
     hideOverlay () {
-      this.hover = false
+      this.wantsHover = false
+
+      setImmediate(() => { this.hover = false })
     },
     async searchInfo () {
       this.$log(`No local information for ${this.file.title}, retrieving...`)
