@@ -40,7 +40,7 @@
                     @mouseenter='setEpHover(true)',
                     @mouseleave='setEpHover(false)',
                   )
-                    v-select(
+                    v-autocomplete(
                       label='Episode',
                       v-model='currentEp',
                       :items='eps',
@@ -115,6 +115,7 @@ export default {
     eps () {
       return (this.file.eps || [])
         .map((e) => e.episodeOrMovieNumber)
+        .reverse()
     },
     title () {
       return `${this.file.title} - ${this.currentEp || this.file.episodeOrMovieNumber || this.file.animeType2 || 'N/A'}`

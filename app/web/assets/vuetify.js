@@ -40,6 +40,7 @@ import {
   VSheet,
   VSparkline,
   VProgressLinear,
+  VAutocomplete,
   transitions
 } from 'vuetify'
 
@@ -87,6 +88,7 @@ export default (Vue) => {
       VSheet,
       VSparkline,
       VProgressLinear,
+      VAutocomplete,
       transitions
     },
     directives
