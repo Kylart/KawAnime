@@ -2,10 +2,12 @@
 import VSlider from 'vuetify/es5/components/VSlider/VSlider'
 import { VScaleTransition } from 'vuetify/es5/components/transitions'
 
+import Hover from 'mixins/video/hover'
+
 export default {
   name: 'progress-bar',
 
-  mixins: [ VSlider ],
+  mixins: [ VSlider, Hover ],
 
   props: {
     buffer: Array,
@@ -18,10 +20,6 @@ export default {
       default: true
     }
   },
-
-  data: () => ({
-    hover: false
-  }),
 
   computed: {
     maxTime () {
@@ -54,8 +52,19 @@ export default {
   },
 
   methods: {
-    // Override
-    getLabel (value) {
+    genListeners () {
+      return {
+        mouseenter: this.onMouseEnter,
+        mouseleave: this.onMouseLeave,
+        mousemove: this.onMouseOver,
+        blur: this.onBlur,
+        click: this.onSliderClick,
+        focus: this.onFocus,
+        keydown: this.onKeyDown,
+        keyup: this.onKeyUp
+      }
+    },
+    formatLabel (value) {
       const time = (value / 100) * this.maxTime
 
       const hours = Math.floor(time / 3600) || null
@@ -68,7 +77,11 @@ export default {
       result += `0${minutes || '00'}:`.slice(-3)
       result += `0${seconds || '00'}`.slice(-2)
 
-      return this.$createElement('span', result)
+      return result
+    },
+    // Override
+    getLabel (value) {
+      return this.$createElement('span', this.formatLabel(value))
     },
     // Override
     genThumbLabel (content) {
@@ -120,6 +133,7 @@ export default {
         this.genInput(),
         this.genTrackContainer(),
         this.genSteps(),
+        this.genHoverThumbContainer(),
         this.genThumbContainer(
           this.internalValue,
           this.inputWidth,
@@ -151,6 +165,31 @@ export default {
 </style>
 
 <style lang="stylus" scoped>
+  .video-thumb-container
+    height 120px
+    position absolute
+    background-color rgb(30, 30, 30)
+    transform translate(-50%)
+    text-align center
+    border-radius 2px
+    border 1px solid rgba(255, 255, 255, 0.4)
+
+    .video-thumb-preview
+      margin-bottom 0
+
+    .video-thumb-text-container
+      height 20px
+      padding 0 0 3px
+      border-top 1px solid rgba(255, 255, 255, 0.3)
+      letter-spacing 0.04em
+      font-size 14px
+      line-height 14px
+      font-weight 400
+
+      display flex
+      justify-content center
+      align-items center
+
   .thumb-container
     position absolute
     left 0

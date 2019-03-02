@@ -1,6 +1,6 @@
 <template lang="pug">
   v-fade-transition
-    .layout-container(v-show='show')
+    .layout-container(v-show='true')
       //- Top title
       h6.video-title {{ title }}
 

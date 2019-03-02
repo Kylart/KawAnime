@@ -7,6 +7,8 @@ const logger = new Logger('Torrent Streamer')
 const decode = require('urldecode')
 const MatroskaSubtitles = require('matroska-subtitles')
 
+const isDev = process.env.NODE_ENV === 'development'
+
 const stream = (req, res) => {
   const info = decode(req.url.slice('/stream/'.length))
   const isTorrentFile = extname(info) === '.torrent'
@@ -23,7 +25,7 @@ const stream = (req, res) => {
 
   const stat = path && fs.statSync(path)
 
-  logger.info(`Streaming ${type}: ${isMagnet ? magnet : path}`)
+  isDev && logger.info(`Streaming ${type}: ${isMagnet ? magnet : path}`)
 
   const processFile = (obj = { files: [] }) => {
     obj = obj || { files: [] }
@@ -62,7 +64,7 @@ const stream = (req, res) => {
 
       const close = () => {
         if (stream) {
-          logger.info(`Closing stream of range: ${JSON.stringify(range)} for ${type}: ${isMagnet ? magnet : path}`)
+          isDev && logger.info(`Closing stream of range: ${JSON.stringify(range)} for ${type}: ${isMagnet ? magnet : path}`)
           stream.destroy()
           stream = null
         }
@@ -132,7 +134,7 @@ const tracks = (req, res) => {
 
       const close = () => {
         if (stream) {
-          logger.info(`Closing stream for ${type} tracks: ${isTorrent ? magnet : path}`)
+          isDev && logger.info(`Closing stream for ${type} tracks: ${isTorrent ? magnet : path}`)
           stream.destroy()
           stream = null
         }
