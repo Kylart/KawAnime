@@ -186,6 +186,8 @@ export default {
     user-select none
 
     .video-dialog
+      min-height 320px
+      min-width 500px
       position absolute
       transition bottom 0.25s ease, right 0.25s ease
       pointer-events all
