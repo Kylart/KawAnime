@@ -1,12 +1,10 @@
 <template lang="pug">
   v-layout(row, wrap, justify-space-between, align-center)
-    v-flex(xs4, sm2, md1)
+    v-flex.left(xs12, sm6, md5, lg4, xl3, d-flex, justify-space-around, align-center)
       span.label(v-show='hasFiles') {{ nbElems }} {{ label }}
 
-    v-flex(xs4, sm2, md2)
       history
 
-    v-flex(xs4, sm2, md5)
       v-switch.mt-0(
         v-show='hasFiles',
         v-model='inside',
@@ -89,6 +87,12 @@ export default {
     display flex
     justify-content space-around
     align-items center
+
+  .left
+
+    & > *
+      display flex !important
+      justify-content center
 
   .label
     font-size 14px
