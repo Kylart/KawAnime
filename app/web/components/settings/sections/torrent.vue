@@ -10,6 +10,8 @@
             v-btn(flat, @click='openDialog') Change Dir
           v-flex(xs12, sm8, md8)
             .path.ellipsis.pl-2 {{ path }}
+          v-flex(xs12, sm6, md4)
+            v-btn(:disabled='isDefault', @click='setDefault') {{ defaultLabel }}
 </template>
 
 <script>
@@ -21,6 +23,14 @@ export default {
 
   mixins: [ Update ],
 
+  data: () => ({
+    isDefault: false
+  }),
+
+  async mounted () {
+    this.isDefault = (await this.$axios.get('protocols/isDefault')).data
+  },
+
   computed: {
     path: {
       get () {
@@ -29,6 +39,11 @@ export default {
       set (val) {
         this.setDeepValue('torrentClient.defaultPath', val)
       }
+    },
+    defaultLabel () {
+      return this.isDefault
+        ? 'KawAnime is already your default client!'
+        : 'Set as default client'
     }
   },
 
@@ -39,6 +54,19 @@ export default {
       })
 
       if (path) this.path = path
+    },
+    async setDefault () {
+      this.$log('Registering as default torrent app...')
+
+      const { status } = await this.$axios.post('protocols/register')
+
+      if (status === 200) {
+        this.$log('Success!')
+        this.isDefault = true
+      } else {
+        this.$log('Failure.')
+        this.$store.commit('setInfoSnackbar', 'Could not register as default torrent client...')
+      }
     }
   }
 }
