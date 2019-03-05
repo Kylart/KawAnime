@@ -9,6 +9,10 @@ const onOpen = (e, torrentId) => {
 
   if (win) {
     win.loadURL(`${process.appUrl}/torrenting?torrent=${torrentId}`)
+
+    setTimeout(() => {
+      win.focus()
+    }, 100)
   } else {
     process.startUp = {
       torrent: torrentId

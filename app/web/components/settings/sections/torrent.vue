@@ -11,7 +11,7 @@
           v-flex(xs12, sm8, md8)
             .path.ellipsis.pl-2 {{ path }}
           v-flex(xs12, sm6, md4)
-            v-btn(:disabled='isDefault', @click='setDefault') {{ defaultLabel }}
+            v-btn(:disabled='isDefault', :loading='defaultLoading', @click='setDefault') {{ defaultLabel }}
 </template>
 
 <script>
@@ -24,7 +24,8 @@ export default {
   mixins: [ Update ],
 
   data: () => ({
-    isDefault: false
+    isDefault: false,
+    defaultLoading: false
   }),
 
   async mounted () {
@@ -57,6 +58,7 @@ export default {
     },
     async setDefault () {
       this.$log('Registering as default torrent app...')
+      this.defaultLoading = true
 
       const { status } = await this.$axios.post('protocols/register')
 
@@ -67,6 +69,8 @@ export default {
         this.$log('Failure.')
         this.$store.commit('setInfoSnackbar', 'Could not register as default torrent client...')
       }
+
+      this.defaultLoading = false
     }
   }
 }
