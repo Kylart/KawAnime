@@ -1,6 +1,6 @@
 <template lang="pug">
   v-container(grid-list-md, fluid)
-    torrent-header
+    torrent-header.mb-2
     transition(name='fade', mode='out-in', tag='div').layout.row.wrap.justify-center.align-center
       template(v-if='torrents.length')
         .layout.row.wrap.justify-center.align-center
