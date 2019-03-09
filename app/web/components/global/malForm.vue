@@ -214,13 +214,13 @@ export default {
       return this.$store.state.mal.entry
     },
     entryTitle () {
-      return ': ' + (this.entry.title || this.entry.name)
+      return ': ' + (this.entry.animeTitle || this.entry.name)
     },
     nbEpisodes () {
-      return this.entry.nbEpisodes || this.entry.episodes
+      return this.entry.animeNumEpisodes || this.entry.episodes
     },
     isEdit () {
-      return this.entry.lastUpdate
+      return !!this.entry.animeTitle
     },
     addOrEdit () {
       return this.isEdit ? 'Edit' : 'Add'
@@ -232,7 +232,7 @@ export default {
       this.form = this.initForm
     },
     submit () {
-      const id = this.entry.id
+      const id = this.entry.id || this.entry.animeId
       const opts = this.$_.clone(this.form)
 
       opts.tags = opts.tags.join(', ')
@@ -284,12 +284,10 @@ export default {
       if (this.isEdit) {
         this.form.status = obj.status
         this.form.score = obj.score || null
-        this.form.episode = obj.nbWatchedEpisode || null
-        this.form.date_start = obj.startDate || null
-        this.form.date_finish = obj.endDate || null
+        this.form.episode = obj.numWatchedEpisodes || null
         this.form.tags = obj.tags.length ? obj.tags.split(', ') : []
-        this.form.date_start = obj.myStartDate === '0000-00-00' ? null : obj.myStartDate
-        this.form.date_finish = obj.myEndDate === '0000-00-00' ? null : obj.myEndDate
+        this.form.date_start = obj.startDateString === '0000-00-00' ? null : obj.startDateString
+        this.form.date_finish = obj.endDateString === '0000-00-00' ? null : obj.endDateString
       }
 
       const { id } = obj

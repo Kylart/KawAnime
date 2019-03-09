@@ -48,7 +48,7 @@
     "express": "^4.16.4",
     "lodash": "^4.17.11",
     "lru-cache": "^4.1.3",
-    "mal-scraper": "^2.4.5",
+    "mal-scraper": "^2.5.0",
     "matroska-subtitles": "^2.0.3",
     "mime": "^2.4.0",
     "moment": "^2.23.0",
@@ -154,9 +154,11 @@
       "oneClick": false,
       "allowToChangeInstallationDirectory": true
     },
-    "fileAssociations": [{
-      "ext": "torrent",
-      "name": "Torrent files"
-    }]
+    "fileAssociations": [
+      {
+        "ext": "torrent",
+        "name": "Torrent files"
+      }
+    ]
   }
 }

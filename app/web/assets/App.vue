@@ -14,7 +14,7 @@
     overlay(v-show='overlay')
     video-modal(v-show='$store.state.streaming.player.show')
     magnets-modal
-    //- mal-form
+    mal-form
 
     //- Used for displaying any info
     v-snackbar(
@@ -38,6 +38,7 @@ import MagnetsModal from 'components/magnets/modal.vue'
 import VideoModal from 'components/video/modal.vue'
 import Overlay from 'components/global/overlay.vue'
 import Env from 'components/global/env.vue'
+import MalForm from 'components/global/malForm.vue'
 
 // Mixins
 import Meta from 'mixins/global/meta'
@@ -55,6 +56,7 @@ export default {
 
     // Global
     TorrentDialog,
+    MalForm,
     MagnetsModal,
     VideoModal,
     Overlay,

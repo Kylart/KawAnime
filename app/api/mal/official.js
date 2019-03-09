@@ -54,6 +54,8 @@ const actOnList = (req, res) => {
 
     api.actOnList(type, id, opts)
       .then((data) => {
+        if (data.includes('404 Not Found')) throw new Error(404)
+
         logger.info('(Act on List):' + data)
         res.status(typeof data === 'string' ? 200 : 204).send()
       })

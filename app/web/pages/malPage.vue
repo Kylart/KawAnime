@@ -4,14 +4,15 @@
       v-flex.centered(xs12, sm2)
         .headline.pl-4 MyAnimeList
       v-flex.centered.pr-2(xs10, sm3, md3, offset-sm1)
-        v-select(
+        v-autocomplete(
           v-model='tagsFilter',
           :items='customTags',
           label='Tags',
           persistent-hint,
           hint='Looking for special tags?',
           single-line,
-          clearable, dense, chips, tags
+          clearable, dense,
+          multiple, deletable-chips, small-chips
         )
       v-flex.centered.pl-2(xs8, sm3, md3, offset-md1)
         v-text-field(
@@ -38,19 +39,19 @@
       :rows-per-page-items='rowsPerPage'
     )
       template(slot='items', slot-scope='props')
-        td.text-xs-center
+        td.pa-0.text-xs-center
           img.entry-image(:src='props.item.image')
-        td.text-xs-left.entry-title
+        td.pa-0.text-xs-left.entry-title
           span.pl-3 {{ props.item.title }}
-        td.text-xs-center {{ props.item.score }}
-        td.text-xs-center {{ props.item.type }}
-        td.text-xs-center {{ props.item.progress }}
-        td.text-xs-center {{ props.item.status }}
-        td.text-xs-center.ellipsis.entry-tags
+        td.pa-0.text-xs-center {{ props.item.score }}
+        td.pa-0.text-xs-center {{ props.item.type }}
+        td.pa-0.text-xs-center {{ props.item.progress }}
+        td.pa-0.text-xs-center {{ props.item.status }}
+        td.pa-0.text-xs-center.ellipsis.entry-tags
           v-tooltip(top)
             span(slot='activator') {{ props.item.tags }}
             span {{ props.item.tags }}
-        td
+        td.pa-0
           v-btn.blue--text.darken-1(icon, flat, @click.stop='showForm(props.item.id)')
             v-icon edit
           v-btn.blue--text.darken-1(icon, flat, @click.stop='showInfo(props.item.title, props.item.link)')

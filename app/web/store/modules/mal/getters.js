@@ -10,30 +10,23 @@ export default {
       4: 'Dropped',
       6: 'Plan to watch'
     }
-    const types = {
-      1: 'TV',
-      2: 'OVA',
-      3: 'Movie',
-      4: 'Special',
-      5: 'ONA'
-    }
 
     _.each(state.watchLists, (entry) => {
-      const dec = (+entry.nbWatchedEpisode / +entry.nbEpisodes) || 1
+      const dec = (+entry.numWatchedEpisodes / +entry.animeNumEpisodes) || 1
 
       const toAdd = {
         score: entry.score || 'N/A',
-        progress: (entry.nbWatchedEpisode || '??') + ' / ' + (entry.nbEpisodes || '??'),
-        progressDec: (dec === 1 ? entry.nbWatchedEpisode : dec),
-        title: entry.title,
-        type: types[entry.type],
-        image: entry.picture,
-        id: entry.id,
+        progress: (entry.numWatchedEpisodes || '??') + ' / ' + (entry.animeNumEpisodes || '??'),
+        progressDec: (dec === 1 ? entry.numWatchedEpisodes : dec),
+        title: entry.animeTitle,
+        type: entry.animeMediaTypeString,
+        image: entry.animeImagePath,
+        id: entry.animeId,
         status: status[entry.status],
         statusNum: entry.status,
-        start: entry.myStartDate === '0000-00-00' ? null : entry.myStartDate,
-        end: entry.myEndDate === '0000-00-00' ? null : entry.myEndDate,
-        link: 'https://myanimelist.net/anime/' + entry.id + '/' + entry.title,
+        start: entry.startDateString === '0000-00-00' ? null : entry.startDateString,
+        end: entry.endDateString === '0000-00-00' ? null : entry.endDateString,
+        link: 'https://myanimelist.net' + entry.animeUrl,
         tags: entry.tags || 'No tags',
         nbCorrespondingTags: 0
       }
