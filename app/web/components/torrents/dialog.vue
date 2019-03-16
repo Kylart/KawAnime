@@ -54,7 +54,7 @@ export default {
     const { torrent } = this.$route.query
 
     if (torrent) {
-      this.addTorrentFromPath(torrent)
+      this.addTorrentsFromPath([torrent])
     }
   },
 
@@ -87,13 +87,22 @@ export default {
   },
 
   methods: {
-    addTorrentFromPath (torrent) {
-      this.$nextTick(() => {
-        this.show = true
-
-        this.torrents[0].torrent = torrent
-        this.torrents[0].show = true
-      })
+    addTorrentsFromPath (torrents) {
+      if (!this.torrents[0].torrent) {
+        // Means it's a first open
+        this.torrents = torrents.map((torrent) => ({
+          show: true,
+          torrent
+        }))
+      } else {
+        // Meaning some magnets are already there and we probably should not remove them
+        torrents.forEach((torrent) => {
+          this.torrents.push({
+            torrent,
+            show: true
+          })
+        })
+      }
     },
     close () {
       this.show = false
@@ -158,6 +167,8 @@ export default {
       }))
 
       await this.$store.dispatch('torrents/getData')
+
+      this.torrents = [{ torrent: '', show: false }]
     },
     handlePaste (e) {
       const text = e.clipboardData.getData('text')
@@ -175,8 +186,10 @@ export default {
   },
 
   watch: {
-    '$route.query.torrent': function (val) {
-      val && this.addTorrentFromPath(val)
+    '$route.query.torrents': function (torrents) {
+      if (torrents && torrents.length) {
+        this.addTorrentsFromPath(torrents)
+      }
     }
   }
 }

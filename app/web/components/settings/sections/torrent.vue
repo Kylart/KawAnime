@@ -35,7 +35,7 @@ export default {
   computed: {
     path: {
       get () {
-        return this.config.localPath
+        return this.config.torrentClient.defaultPath
       },
       set (val) {
         this.setDeepValue('torrentClient.defaultPath', val)

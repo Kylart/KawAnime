@@ -44,6 +44,7 @@ import MalForm from 'components/global/malForm.vue'
 import Meta from 'mixins/global/meta'
 import ReadMagnet from 'mixins/global/readMagnet'
 import DragDrop from 'mixins/global/dragDrop'
+import externalOpen from 'mixins/global/externalOpen'
 
 export default {
   name: 'KawAnime',
@@ -63,7 +64,7 @@ export default {
     Env
   },
 
-  mixins: [Meta, ReadMagnet, DragDrop]
+  mixins: [Meta, ReadMagnet, DragDrop, externalOpen]
 }
 </script>
 

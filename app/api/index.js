@@ -24,7 +24,8 @@ const setup = (app) => {
     torrent: require('./torrent'),
     video: require('./video'),
     search: require('./search'),
-    wl: require('./watchList')
+    wl: require('./watchList'),
+    external: require('./external')
   }
 
   _.each(features, (feature) => {

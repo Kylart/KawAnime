@@ -61,7 +61,7 @@ export default {
       }, {
         icon: 'delete',
         color: 'red',
-        action: () => this.actOnTorrent('destroy')
+        action: this.stop
       }, {
         icon: 'info',
         color: '',
@@ -71,6 +71,10 @@ export default {
   },
 
   methods: {
+    async stop () {
+      await this.actOnTorrent('pause')
+      await this.actOnTorrent('destroy')
+    },
     setRemainingTime (torrent) {
       if (torrent.progress === 1) {
         this.timeRemaining = 'Done'
@@ -92,8 +96,7 @@ export default {
         }
       })
 
-      if (action === 'destroy') this.actOnTorrent('pause').then(this.$destroy)
-      else if (action === 'pause') this.isPaused = true
+      if (action === 'pause') this.isPaused = true
       else if (action === 'resume') this.isPaused = false
     },
     displayInfo () {
