@@ -55,6 +55,7 @@ export default {
 
     if (torrent) {
       this.addTorrentsFromPath([torrent])
+      this.show = true
     }
   },
 
