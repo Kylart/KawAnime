@@ -1,33 +1,28 @@
-!.gitkeep
-
-# dependencies
-node_modules
-
-# logs
-npm-debug.log
-
-# Mac OS
 .DS_Store
+node_modules
+/dist
 
-# Idea directory
+/tests/e2e/videos/
+/tests/e2e/screenshots/
+
+# local env files
+.env.local
+.env.*.local
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor directories and files
 .idea
-
-# vscode directory
 .vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw*
 
-#dist
-dist/*
-
-# webpack
-public
-
-# tests
-.nyc_output
-reports
-selenium-debug.log
-coverage.lcov
-/coverage/
-screenshots
-!test/cypress
-cypress
-test/cypress/videos
+#Electron-builder output
+/dist_electron
+/dist

@@ -1,0 +1,57 @@
+// Custom rules which will be applied globally, allows overriding
+
+main
+    overflow-y scroll
+    overflow-x hidden
+    height calc(100vh - (48px + 24px))
+
+html
+  overflow hidden
+
+h3
+  font-size 42px
+  font-weight 500
+
+h4
+  font-size 36px
+  font-weight 400
+
+h5
+  font-size 24px
+  font-weight 400
+  letter-spacing .02em
+
+h6
+  font-size 20px
+  font-weight 500
+  letter-spacing .02em
+
+.ellipsis
+  overflow hidden
+  text-overflow ellipsis
+  white-space nowrap
+
+.jap
+    font-family 'Hiragino Mincho Pro', 'MS PMincho', serif !important
+
+.not-selectable
+  -webkit-user-select none
+  -moz-user-select none
+  -ms-user-select none
+  user-select none
+
+.mal-icon
+  margin 2px 0 0 2px
+  height 24px
+  width 24px
+  background-image url('./assets/images/mal.png')
+  display block
+
+// VUETIFY OVERRIDDING
+
+// This is for radio groupd to take up all the available space
+.quality-container .v-input__control
+  width 100% !important
+
+.v-input--radio-group__input
+  justify-content space-between
