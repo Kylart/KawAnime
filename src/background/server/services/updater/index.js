@@ -34,6 +34,12 @@ autoUpdater.on('update-downloaded', () => {
   sendToWIndows(events.installable.success)
 })
 
+function install () {
+  logger.info('Restarting to update...')
+
+  autoUpdater.quitAndInstall()
+}
+
 autoUpdater.checkForUpdates()
 
 // Checking for updates every 10 minutes
@@ -41,5 +47,5 @@ setInterval(autoUpdater.checkForUpdates, 10 * 60 * 1000)
 
 export default {
   eventName: events.install.main,
-  handler: autoUpdater.quitAndInstall
+  handler: install
 }
