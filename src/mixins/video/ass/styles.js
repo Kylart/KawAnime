@@ -1,12 +1,12 @@
 import { vbToRGBA } from './utils.js'
-import _ from 'lodash'
+import { each } from 'lodash'
 
-export default function (styles, name, info) {
+export default function (styles, name) {
   const styleTag = document.createElement('style')
-  styleTag.type = 'text/css'
-  styleTag.name = name
+  styleTag.setAttribute('type', 'text/css')
+  styleTag.setAttribute('name', name)
 
-  _.each(styles, (style) => {
+  each(styles, (style) => {
     const isItalic = +style.Italic ? 'italic' : 'unset'
     const isUnderline = -+style.Underline ? 'underline' : null
     const bold = -+style.Bold ? 'font-weight: bold;' : ''

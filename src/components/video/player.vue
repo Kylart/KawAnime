@@ -99,8 +99,8 @@ export default {
     this.eventSource && this.eventSource.close()
 
     // Removing cue styling from head
-    const { head } = document
-    head.removeChild(head.children[head.childElementCount - 1])
+    const styleTag = document.querySelector(`style[name="${this.value}"]`)
+    document.head.removeChild(styleTag)
 
     this.isMagnet
       ? this.$ipc.send(this.$eventsList.torrent.destroy.main, this.$store.state.streaming.player.torrent)
