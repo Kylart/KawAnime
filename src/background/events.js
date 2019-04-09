@@ -13,5 +13,7 @@ export default function (e, args) {
 
   sendToWindows(eventsList.externalOpen.success, Array.isArray(args) ? args : [args])
 
-  setTimeout(BrowserWindow.getAllWindows()[0].focus, 100)
+  setTimeout(() => {
+    BrowserWindow.getAllWindows()[0].focus()
+  }, 100)
 }

@@ -32,7 +32,7 @@ export default {
   mounted () {
     const { app } = this.$electron.remote
 
-    this.isDefault = this.protocols.some((protocol) => app.isDefaultProtocolClient(protocol))
+    this.isDefault = this.protocols.every((protocol) => app.isDefaultProtocolClient(protocol))
   },
 
   computed: {

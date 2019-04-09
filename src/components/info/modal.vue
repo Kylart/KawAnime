@@ -44,6 +44,11 @@
       p Grabbing those data...
       p Please bear with us for a moment.
 
+      v-divider
+      v-card-actions
+        v-spacer
+        v-btn(@click='back') Cancel
+
     v-card(v-else)
       v-toolbar(dense, color='indigo')
         v-spacer
@@ -114,6 +119,7 @@ export default {
       this.isRemote = false
     },
     back () {
+      this.searching = false
       this.current = null
     },
     getPictureUrl (url) {

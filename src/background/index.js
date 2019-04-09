@@ -58,6 +58,8 @@ function createWindow () {
 
   win.once('ready-to-show', () => {
     win.show()
+
+    if (process.argv.length) external(null, process.argv)
   })
 
   win.on('close', () => {
@@ -87,6 +89,8 @@ if (!gotTheLock) {
     if (win) {
       if (win.isMinimized()) win.restore()
       win.focus()
+
+      if (process.argv.length) external(null, process.argv)
     }
   })
 
@@ -172,8 +176,6 @@ app.on('quit', () => {
     })
   })
 })
-
-if (process.argv.length) external(null, process.argv)
 
 app.on('open-file', external)
 app.on('open-url', external)

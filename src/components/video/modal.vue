@@ -28,10 +28,6 @@ export default {
     Player
   },
 
-  beforeDestroy () {
-    this.$ipc.send(this.$eventsList.video.close.main)
-  },
-
   data () {
     return {
       videoPort: null,

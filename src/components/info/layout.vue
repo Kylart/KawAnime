@@ -142,10 +142,10 @@
 </template>
 
 <script>
+import NotFoundImage from '../../../public/images/not-found.png'
 import Episodes from '@/mixins/info/currentEps.js'
 
 import { mapGetters } from 'vuex'
-import { join } from 'path'
 
 export default {
   name: 'Info-Displayer',
@@ -242,7 +242,7 @@ export default {
     sanitize (link) {
       // This redirects unwanted picture links to fallback picture
       return /(questionmark)/.test(link)
-        ? join(process.env.BASE_URL, 'images', 'not-found.png')
+        ? NotFoundImage
         : link
     },
     openLink (link) {

@@ -52,9 +52,12 @@ export default {
 
   created () {
     this.$ipc.on(this.$eventsList.externalOpen.success, (e, args) => {
-      const toAdd = args.filter((e) => ['magnet', '.torrent'].includes(e))
+      const toAdd = args.filter(
+        (e) => ['magnet:', '.torrent'].some((id) => e.includes(id))
+      )
 
       if (toAdd.length) {
+        this.$log('External torrents opening', toAdd)
         this.addTorrentsFromPath(toAdd)
         this.show = true
       }
