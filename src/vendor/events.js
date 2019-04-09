@@ -19,7 +19,8 @@ const getOnly = [
 
   // Internal
   'env',
-  'isOnline'
+  'isOnline',
+  'externalOpen'
 ]
 
 const updatable = [

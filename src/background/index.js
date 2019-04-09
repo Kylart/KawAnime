@@ -12,6 +12,7 @@ import './startUp'
 import './server'
 import { dir } from './server/utils'
 import { localFiles } from './server/externals'
+import external from './events'
 import menuTemplate from './menu'
 
 const isDevelopment = process.env.NODE_ENV !== 'production'
@@ -171,6 +172,11 @@ app.on('quit', () => {
     })
   })
 })
+
+if (process.argv.length) external(null, process.argv)
+
+app.on('open-file', external)
+app.on('open-url', external)
 
 app.on('activate', () => {
   win === null

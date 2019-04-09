@@ -50,13 +50,15 @@ export default {
     torrents: [{ torrent: '', show: false }]
   }),
 
-  mounted () {
-    const { torrent } = this.$route.query
+  created () {
+    this.$ipc.on(this.$eventsList.externalOpen.success, (e, args) => {
+      const toAdd = args.filter((e) => ['magnet', '.torrent'].includes(e))
 
-    if (torrent) {
-      this.addTorrentsFromPath([torrent])
-      this.show = true
-    }
+      if (toAdd.length) {
+        this.addTorrentsFromPath(toAdd)
+        this.show = true
+      }
+    })
   },
 
   computed: {

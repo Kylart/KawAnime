@@ -1,5 +1,3 @@
-import { debounce } from 'lodash'
-
 export default {
   data: () => ({
     hover: {
@@ -21,7 +19,7 @@ export default {
   },
 
   methods: {
-    onMouseOver: debounce(function (e) {
+    onMouseOver (e) {
       const { value, isInsideTrack } = this.parseMouseMove(e)
 
       if (isInsideTrack) {
@@ -31,7 +29,7 @@ export default {
       } else {
         this.hover.show = false
       }
-    }, 50),
+    },
     onMouseEnter () {
       this.hover.show = true
     },

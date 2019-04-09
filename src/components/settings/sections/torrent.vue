@@ -25,11 +25,14 @@ export default {
 
   data: () => ({
     isDefault: false,
-    defaultLoading: false
+    defaultLoading: false,
+    protocols: ['magnet', 'stream-magnet']
   }),
 
-  async mounted () {
-    this.isDefault = (await this.$axios.get('protocols/isDefault')).data
+  mounted () {
+    const { app } = this.$electron.remote
+
+    this.isDefault = this.protocols.some((protocol) => app.isDefaultProtocolClient(protocol))
   },
 
   computed: {
@@ -54,13 +57,16 @@ export default {
 
       if (path) this.path = path
     },
-    async setDefault () {
+    setDefault () {
       this.$log('Registering as default torrent app...')
       this.defaultLoading = true
+      const { app } = this.$electron.remote
 
-      const { status } = await this.$axios.post('protocols/register')
+      const isOk = this.protocols
+        .map((protocol) => app.setAsDefaultProtocolClient(protocol))
+        .every(Boolean)
 
-      if (status === 200) {
+      if (isOk) {
         this.$log('Success!')
         this.isDefault = true
       } else {
