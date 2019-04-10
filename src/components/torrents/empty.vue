@@ -1,13 +1,10 @@
 <template lang="pug">
   .main
-    .text Don't look at me like this!
-    .text
-      | Go #[router-link.please(to='/') watch some anime]
-      | or
-      | #[a(@click='openDialog') download some torrent!]
+    .text So you've come to me to get your animes once again?
+    .text How cute.
     .img-container
       video(muted, autoplay, loop)
-        source(src='@/assets/images/local-empty.mp4', type='video/mp4')
+        source(src='@/assets/images/torrent-empty.mp4', type='video/mp4')
 </template>
 
 <script>
@@ -38,6 +35,9 @@ export default {
 
   .img-container
     display inline-block
+
+    video
+      width 90%
 
   .please
     text-decoration none
