@@ -59,7 +59,7 @@ function createWindow () {
   win.once('ready-to-show', () => {
     win.show()
 
-    if (process.argv.length) external(null, process.argv)
+    if (process.platform !== 'darwin' && process.platform !== 'darwin' && process.argv.length) external(null, process.argv)
   })
 
   win.on('close', () => {
@@ -90,7 +90,7 @@ if (!gotTheLock) {
       if (win.isMinimized()) win.restore()
       win.focus()
 
-      if (process.argv.length) external(null, process.argv)
+      if (process.platform !== 'darwin' && process.argv.length) external(null, process.argv)
     }
   })
 
