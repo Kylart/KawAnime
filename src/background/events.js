@@ -10,7 +10,7 @@ function open (e, args) {
 
   if (!hasWin) {
     app.on('web-contents-created', (e, webContents) => {
-      webContents.on('dom-ready', () => {
+      webContents.once('dom-ready', () => {
         sendToWindows(eventsList.externalOpen.success, Array.isArray(args) ? args : [args])
       })
     })
