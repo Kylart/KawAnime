@@ -28,6 +28,8 @@
                 v-text-field(v-model='entry.torrent', @paste='handlePaste')
                 v-btn(icon)
                   v-icon(@click='removeEntry(index)') close
+                v-btn(icon)
+                  v-icon(@click='playEntry(index)') play_circle_outline
             template(v-else)
               v-layout.choice(justify-space-between, align-center)
                 v-btn(@click='openDialog(index)') Open file
@@ -79,6 +81,9 @@ export default {
         this.$store.commit('torrents/showDialog', val)
       }
     },
+    links () {
+      return this.torrents.map(({ torrent }) => torrent).filter(Boolean)
+    },
     entries () {
       return this.torrents.length
     },
@@ -123,6 +128,18 @@ export default {
         if (this.entries === 0) this.torrents = [{ torrent: '', show: false }]
       })
     },
+    playEntry (index) {
+      const torrent = this.torrents[index].torrent
+
+      if (torrent) {
+        this.$store.dispatch('streaming/play', {
+          link: torrent,
+          isTorrent: true
+        })
+
+        this.close()
+      }
+    },
     showEntry (index) {
       this.torrents[index].show = true
     },
@@ -154,9 +171,7 @@ export default {
       }
     },
     async download () {
-      await Promise.all(this.torrents.map(async ({ torrent }) => {
-        if (!torrent) return
-
+      await Promise.all(this.links.map(async (torrent) => {
         await this.$store.dispatch('torrents/add', {
           torrent,
           path: this.path || this.config.defaultPath
