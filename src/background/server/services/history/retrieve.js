@@ -11,7 +11,7 @@ const events = eventsList.history.get
 async function retrieve (event) {
   try {
     const result = localFiles.getFile(FILE_NAME)
-    event.sender.send(events.success, JSON.stringify(result))
+    event.sender.send(events.success, result)
   } catch (e) /* istanbul ignore next */ {
     logger.error('An error occurred.', e.stack)
     event.sender.send(events.error, e.message)

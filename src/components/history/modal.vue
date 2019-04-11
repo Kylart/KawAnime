@@ -108,7 +108,7 @@ export default {
     },
     generateHistory () {
       // This is still improvable
-      const keys = this.$_.keys(this.history).reverse()
+      const keys = Object.keys(this.history).sort((a, b) => (new Date(b)) - (new Date(a)))
       this.elems = {}
 
       for (let i = 0, l = this.nbElems; i < l; ++i) {
