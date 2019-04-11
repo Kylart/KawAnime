@@ -40,7 +40,7 @@
                 )
                 .entry-title {{ entry.name }}
 
-    v-card.loading(v-else-if='searching')
+    v-card.loading.pb-2(v-else-if='searching')
       p Grabbing those data...
       p Please bear with us for a moment.
 
@@ -156,11 +156,13 @@ export default {
     getInfo (entry) {
       this.searching = true
 
-      this.$ipc.on(this.$eventsList.search.url.success, this.ipcSuccess)
-      this.$ipc.on(this.$eventsList.search.url.error, this.ipcError)
-
       if (!this.allInfo.hasOwnProperty(entry.name)) {
+        this.$ipc.on(this.$eventsList.search.url.success, this.ipcSuccess)
+        this.$ipc.on(this.$eventsList.search.url.error, this.ipcError)
+
         this.$store.dispatch('info/get', entry)
+      } else {
+        this.ipcSuccess(null, { info: this.allInfo[entry.name] })
       }
     },
     ipcSuccess (e, { info }) {
