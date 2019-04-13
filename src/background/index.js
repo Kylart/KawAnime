@@ -81,7 +81,9 @@ dialog.showErrorBox = (title, content) => {
   console.log(`${title}\n${content}`)
 }
 
-if (!gotTheLock) {
+if (process.platform !== 'darwin' && process.argv.length) external(null, process.argv)
+
+if (!isDevelopment && !gotTheLock) {
   app.quit()
 } else {
   app.on('second-instance', (event, commandLine, workingDirectory) => {
@@ -89,8 +91,6 @@ if (!gotTheLock) {
     if (win) {
       if (win.isMinimized()) win.restore()
       win.focus()
-
-      if (process.platform !== 'darwin' && process.argv.length) external(null, process.argv)
     }
   })
 

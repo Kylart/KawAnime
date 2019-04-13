@@ -1,6 +1,6 @@
 import WebTorrent from 'webtorrent'
-import { extname } from 'path'
-import { readFileSync } from 'fs'
+import { extname, join } from 'path'
+import { readFileSync, createReadStream, watchFile, unwatchFile } from 'fs'
 import { BrowserWindow } from 'electron'
 
 import generateServer from '../video/createServer'
@@ -20,6 +20,7 @@ let client = null
 let infoIntervalID = null
 let streamServer = null
 let subtitleStream = null
+let streamingFilePath = null
 
 const isClientDestroyed = () => !client || (client && client.destroyed)
 
@@ -68,6 +69,7 @@ function remove (event, magnet) {
   // If it comes from streaming, we have to close the streams
   streamServer && streamServer.close()
   subtitleStream = null
+  streamingFilePath = null
 
   // Be careful calling this one.
   magnet = (extname(magnet) === '.torrent' && readFileSync(magnet)) || magnet
@@ -169,8 +171,18 @@ function play (event, { link: id }) {
 
     event.sender.send(events.play.success, { torrent: id, name: torrent.name, port: address.port })
 
-    subtitleStream = torrent.files[0].createReadStream()
-    parseSubtitles(event, subtitleStream)
+    const filePath = streamingFilePath = join(torrent.path, torrent.files[0].path)
+
+    watchFile(filePath, (current) => {
+      if (current.size === 0) return
+
+      subtitleStream = createReadStream(streamingFilePath)
+      parseSubtitles(event, subtitleStream)
+
+      subtitleStream.read()
+
+      unwatchFile(streamingFilePath)
+    })
   }
 
   if (!torrent) {
