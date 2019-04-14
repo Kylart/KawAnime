@@ -108,7 +108,7 @@ export default {
       } else {
         // Meaning some magnets are already there and we probably should not remove them
         torrents.forEach((torrent) => {
-          this.torrents.push({
+          !this.links.includes(torrent) && this.torrents.push({
             torrent,
             show: true
           })
