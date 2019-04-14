@@ -5,14 +5,15 @@ import { each } from 'lodash'
 import { dir, Logger } from '../server/utils'
 import { localFiles } from '../server/externals'
 import * as templates from './templates'
+import migrate from './migration'
 
 const logger = new Logger('Init')
 
 function checkDir () {
   if (!existsSync(dir)) {
-    logger.info('Creating main directory.')
-
     mkdirSync(dir)
+
+    logger.info('Created main directory.')
   }
 }
 
@@ -86,6 +87,7 @@ function checkToken () {
 }
 
 checkDir()
+migrate()
 checkConfig()
 checkFiles()
 checkToken()
