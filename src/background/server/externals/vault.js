@@ -5,6 +5,7 @@ import localFiles from './localFiles'
 
 const DIR_NAME = 'KawVault'
 const KEY_NAME = 'Schwi'
+const BCUP_FILE_NAME = 'Hestia.bcup'
 
 const DIR = localFiles.getPath(DIR_NAME)
 const keyPath = localFiles.getPath(DIR_NAME, KEY_NAME)
@@ -32,7 +33,7 @@ export async function setupCreds (service, creds) {
   try {
     checkDir()
 
-    const fileDatasource = new FileDatasource(localFiles.getPath(DIR_NAME, service + '.bcup'))
+    const fileDatasource = new FileDatasource(localFiles.getPath(DIR_NAME, BCUP_FILE_NAME))
     const key = readFileSync(keyPath, 'utf-8')
 
     const archive = Archive.createWithDefaults()
@@ -52,13 +53,13 @@ export async function setupCreds (service, creds) {
 
 export async function getCreds (service) {
   try {
-    const servicePath = localFiles.getPath(DIR_NAME, service + '.bcup')
+    const _path = localFiles.getPath(DIR_NAME, BCUP_FILE_NAME)
 
-    if (!existsSync(servicePath)) {
+    if (!existsSync(_path)) {
       return 0
     }
 
-    const fileDatasource = new FileDatasource(servicePath)
+    const fileDatasource = new FileDatasource(_path)
     const key = readFileSync(keyPath, 'utf-8')
 
     const credentials = Credentials.fromPassword(key)
@@ -71,7 +72,6 @@ export async function getCreds (service) {
     const entries = group.getEntries()
 
     // Finding the right entry.
-    // There should be only one entry anyway but you never know
     const entry = entries.find((entry) => entry.getProperty('title') === service)
 
     if (!entry) throw new Error('No service credentials for ' + service)
