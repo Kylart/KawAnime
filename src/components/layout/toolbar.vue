@@ -9,13 +9,13 @@
     v-spacer
     v-tooltip(left)
       v-btn(icon, v-show='update', @click='restartAndUpdate', slot='activator')
-        v-icon.green--text file_download
+        v-icon.green--text update
       span Update KawAnime
-    downloader
     searcher
+    downloader
     settings
-    v-btn(icon, @click='toggleRightDrawer')
-      v-icon chevron_left
+    // v-btn(icon, @click='toggleRightDrawer')
+    //   v-icon chevron_left
 </template>
 
 <script>

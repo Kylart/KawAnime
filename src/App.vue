@@ -1,7 +1,7 @@
 <template lang="pug">
   v-app(:dark='$store.state.config.config.system.darkTheme')
     left-drawer
-    right-drawer
+    // right-drawer
     system-bar
     toolbar
 
