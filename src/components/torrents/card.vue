@@ -18,29 +18,29 @@
 
       v-layout(justify-space-around, pl-4, pr-4)
         template(v-for='action in actions')
-          v-btn(icon, @click='action.action', large)
+          v-btn(v-if='!action.displayInfo', icon, @click='action.action', large)
             v-icon(:color='action.color', large) {{ action.icon }}
+
+        torrent-info(:torrent='torrent')
 </template>
 
 <script>
 import moment from 'moment'
 
+import TorrentInfo from '@/components/torrents/torrentInfo.vue'
+
 export default {
   name: 'Torrent-Card',
 
+  components: { TorrentInfo },
+
   props: ['torrent'],
 
-  data () {
-    return {
-      isPaused: false,
-      creationDate: null,
-      timeRemaining: ''
-    }
-  },
-
-  created () {
-    this.creationDate = moment()
-  },
+  data: () => ({
+    isPaused: false,
+    creationDate: moment(),
+    timeRemaining: ''
+  }),
 
   computed: {
     torrentName () {
@@ -62,10 +62,6 @@ export default {
         icon: 'delete',
         color: 'red',
         action: this.stop
-      }, {
-        icon: 'info',
-        color: '',
-        action: this.displayInfo
       }]
     }
   },
@@ -96,9 +92,6 @@ export default {
 
       if (action === 'pause') this.isPaused = true
       else if (action === 'resume') this.isPaused = false
-    },
-    displayInfo () {
-
     }
   },
 

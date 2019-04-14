@@ -72,7 +72,7 @@ export default {
   },
 
   methods: {
-    formatBytes (bytes, decimals) {
+    formatBytes (bytes) {
       // https://stackoverflow.com/questions/1590i88888340485/correct-way-to-convert-size-in-bytes-to-kb-mb-gb-in-javascript
       if (bytes === 0) return { value: 0, unit: 'Bytes' }
 
