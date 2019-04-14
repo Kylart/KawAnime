@@ -8,7 +8,7 @@ export default {
     state.info[sanitize(key)] = value
   },
   addEps (state, { name, data }) {
-    state.info[name].episodesInfo = data
+    state.info[sanitize(name)].episodesInfo = data
   },
   addEpsLinks (state, { name, data }) {
     state.info[name].episodesLinks = data
