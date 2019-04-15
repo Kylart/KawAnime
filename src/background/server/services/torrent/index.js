@@ -1,12 +1,13 @@
 import WebTorrent from 'webtorrent'
 import { extname, join } from 'path'
 import { readFileSync, createReadStream, watchFile, unwatchFile } from 'fs'
-import { BrowserWindow } from 'electron'
+import { BrowserWindow, app } from 'electron'
 
 import generateServer from '../video/createServer'
 import { parseSubtitles } from '../../externals'
 import { eventsList } from '../../../../vendor'
 import cleanTorrents from './format'
+import { save, load } from './storage'
 import { Logger } from '../../utils'
 
 const logger = new Logger('Torrent')
@@ -22,9 +23,15 @@ let streamServer = null
 let subtitleStream = null
 let streamingFilePath = null
 
+app.on('quit', () => {
+  client && save(client)
+})
+
+app.once('ready', () => init(load))
+
 const isClientDestroyed = () => !client || (client && client.destroyed)
 
-function init () {
+function init (cb = () => {}) {
   if (isClientDestroyed()) {
     client = new WebTorrent()
     logger.info('Instanciated torrent client.')
@@ -37,6 +44,8 @@ function init () {
     client.on('error', (err) => {
       logger.error('Client encountered an error.', err)
     })
+
+    cb(client)
 
     // Sending client information to windows every second
     infoIntervalID = setInterval(() => {
