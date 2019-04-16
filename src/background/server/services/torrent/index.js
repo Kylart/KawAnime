@@ -27,11 +27,11 @@ app.on('quit', () => {
   client && save(client)
 })
 
-app.once('ready', () => init(load))
+app.once('ready', () => load(client, init))
 
 const isClientDestroyed = () => !client || (client && client.destroyed)
 
-function init (cb = () => {}) {
+function init () {
   if (isClientDestroyed()) {
     client = new WebTorrent()
     logger.info('Instanciated torrent client.')
@@ -44,8 +44,6 @@ function init (cb = () => {}) {
     client.on('error', (err) => {
       logger.error('Client encountered an error.', err)
     })
-
-    cb(client)
 
     // Sending client information to windows every second
     infoIntervalID = setInterval(() => {
