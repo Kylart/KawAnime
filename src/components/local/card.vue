@@ -107,7 +107,7 @@ export default {
       set () {}
     },
     picture () {
-      return (this.info && this.info.picture) || null
+      return (this.info && this.info.img) || null
     },
     name () {
       // Useful for list status mixins

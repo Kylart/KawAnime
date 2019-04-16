@@ -150,7 +150,7 @@ export default {
     },
     setInfo () {
       this.$set(this, 'animeInfo', this.allInfo[this.name])
-      this.$set(this, 'picture', this.animeInfo.picture)
+      this.$set(this, 'picture', this.animeInfo.img)
 
       this.$store.dispatch('info/saveLocalInfo', {
         title: this.name,
