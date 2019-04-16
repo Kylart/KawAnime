@@ -1,8 +1,5 @@
+import Velocity from 'velocity-animate'
 import { alignment, alignDir, percent } from './utils.js'
-
-let Velocity = null
-
-if (typeof window !== 'undefined') Velocity = require('velocity-animate').default
 
 const re = {
   delimiter: /{.*?}/,
