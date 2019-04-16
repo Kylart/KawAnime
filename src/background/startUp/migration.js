@@ -14,7 +14,6 @@ export default function () {
     [
       'config.json',
       'lists.json',
-      'locals.json',
       'history.json',
       '_token'
     ].forEach((file) => {

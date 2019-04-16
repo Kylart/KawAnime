@@ -4,28 +4,28 @@
   )
     v-layout(row, wrap, fill-height, justify-center, align-center)
       v-flex(xs6, md3, pa-0)
-        v-img(:src='sanitize(info.picture)', contain, height='370', position='left top')
+        v-img(:src='sanitize(info.img)', contain, height='370', position='left top')
       v-flex(xs12, md9)
         v-layout.top-container(align-content-space-between, column)
           .info-title
-            div {{ info.title }} (#[span.jap {{ info.japaneseTitle }}]) [{{ info.type }}]
+            div {{ info.title.en }} (#[span.jap {{ info.title.jp }}]) [{{ info.type }}]
           //- TODO need to handle xs
           v-layout.synopsis-container.pa-2(row, wrap)
             v-flex(xs12, sm8, md10, d-flex, align-center)
               .synopsis {{ info.synopsis || 'No sysnopsis.' }}
             v-flex(xs12, sm4, md2)
               .status.bordered
-                .sentence {{ statusSentence }}
-                .score {{ info.score }} #[span / 10]
-                .sentence.users {{ info.scoreStats.replace('scored by', '') }}
+                .sentence {{ info.sentence }}
+                .score {{ info.score }} #[span / {{ info.scoreOutOf }}]
+                .sentence.users {{ info.nbVotes }}
           v-divider
           v-layout.details-container.pt-0(row, wrap, align-center)
             v-flex(xs12, sm6, md6, lg8, d-flex, align-center)
               .genres.ellipsis Genres: #[i {{ info.genres.join(', ') }}]
             v-flex(xs12, sm3, md3, lg2, d-flex, align-center)
-              .studios.ellipsis {{ studios }}
+              .studios.ellipsis {{ info.studios }}
             v-flex(xs12, sm3, md3, lg2)
-              .rating.ellipsis {{ rating }}
+              .rating.ellipsis {{ info.rating }}
 
     v-divider
 
@@ -44,7 +44,7 @@
       v-flex(v-for='char in info.characters', :key='char.link', xs12, sm6, md4, pt-0)
         v-layout(row, wrap)
           v-flex(xs3)
-            v-img(contain, :src='sanitize(char.picture)', :lazy-src='sanitize(char.picture)', height='120')
+            v-img(contain, :src='sanitize(char.img)', :lazy-src='sanitize(char.img)', height='120')
               v-layout(
                 slot='placeholder',
                 fill-height,
@@ -70,7 +70,7 @@
                     v-icon open_in_new
 
           v-flex(xs3, v-if='char.seiyuu.name')
-            v-img(contain, :src='sanitize(char.seiyuu.picture)', :lazy-src='sanitize(char.seiyuu.picture)', height='120')
+            v-img(contain, :src='sanitize(char.seiyuu.img)', :lazy-src='sanitize(char.seiyuu.img)', height='120')
               v-layout(
                 slot='placeholder',
                 fill-height,
@@ -89,7 +89,7 @@
       v-flex(v-for='member in info.staff', :key='member.link', xs12, sm6, md3, pt-0)
         v-layout(row, wrap, justify-space-between)
           v-flex(xs6)
-            v-img(contain, :src='sanitize(member.picture)', :lazy-src='sanitize(member.picture)', height='120')
+            v-img(contain, :src='sanitize(member.img)', :lazy-src='sanitize(member.img)', height='120')
               v-layout(
                 slot='placeholder',
                 fill-height,
@@ -183,39 +183,6 @@ export default {
     },
     info () {
       return this.allInfo[this.title] || {}
-    },
-    statusSentence () {
-      const { status, premiered, source, episodes, duration } = this.info
-
-      const _source = source === 'Original'
-        ? 'is an Original'
-        : `adapted from the ${source}`
-
-      const nbEpisodes = episodes === 'Unknown'
-        ? 'yet an unknown number of episodes'
-        : `It's been announced with ${episodes} episodes`
-
-      const _duration = duration === 'Unknown'
-        ? 'of an unknown duration.'
-        : `of ${duration.replace('per ep.', '')}`
-
-      return `${status}, it premiered on ${premiered} and ${_source}. ${nbEpisodes} ${_duration}`
-    },
-    studios () {
-      const list = this.info.producers
-
-      if (/None/.test(list[0])) {
-        return 'Unknown Producer'
-      }
-
-      return `By ${list.join(' and ')}`
-    },
-    rating () {
-      const { rating } = this.info
-
-      return rating === 'None'
-        ? 'For everyone'
-        : rating
     },
     episodesInfo () {
       const result = {}

@@ -1,15 +1,29 @@
 import { getResultsFromSearch, getInfoFromName, getInfoFromURL } from 'mal-scraper'
 
+import { formatInfo } from './helpers'
+
 async function searchTerm (term) {
   return getResultsFromSearch(term)
 }
 
 async function fromName (term) {
-  return getInfoFromName(term, false)
+  try {
+    const rawData = await getInfoFromName(term, false)
+
+    return formatInfo(rawData)
+  } catch (e) {
+    throw e
+  }
 }
 
 async function fromUrl (url) {
-  return getInfoFromURL(url)
+  try {
+    const rawData = await getInfoFromURL(url)
+
+    return formatInfo(rawData)
+  } catch (e) {
+    throw e
+  }
 }
 
 export default {
