@@ -96,7 +96,7 @@ async function getProd (url) {
         })
     )
 
-    return `By ${studios.join(', ')}`
+    return studios.length ? `By ${studios.join(', ')}` : 'Unknwon studios'
   } catch (e) {
     return []
   }
@@ -112,7 +112,7 @@ export async function formatInfo (data) {
 
   return {
     title: {
-      en: data.attributes.titles.en,
+      en: data.attributes.titles.en || data.attributes.titles.en_jp,
       jp: data.attributes.titles['jp_jp']
     },
     img: data.attributes.posterImage.original,

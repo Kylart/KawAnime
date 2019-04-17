@@ -29,107 +29,110 @@
 
     v-divider
 
-    .section-title
-      span Cast & Characters
+    template(v-if='info.characters.length')
+      .section-title
+        span Cast & Characters
 
-    v-layout.characters-container(
-      row, wrap, justify-center, align-center,
-      @mouseenter='triggerDelay',
-      @mouseleave='cancelDelay',
-      :style='charHover.overflow',
-      ref='chars'
-    )
-      v-btn.expand(icon, large, color='indigo', v-show='!charHover.show', @click='expandChar')
-        v-icon(large) keyboard_arrow_down
-      v-flex(v-for='char in info.characters', :key='char.link', xs12, sm6, md4, pt-0)
+      v-layout.characters-container(
+        row, wrap, justify-center, align-center,
+        @mouseenter='triggerDelay',
+        @mouseleave='cancelDelay',
+        :style='charHover.overflow',
+        ref='chars'
+      )
+        v-btn.expand(icon, large, color='indigo', v-show='!charHover.show', @click='expandChar')
+          v-icon(large) keyboard_arrow_down
+        v-flex(v-for='char in info.characters', :key='char.link', xs12, sm6, md4, pt-0)
+          v-layout(row, wrap)
+            v-flex(xs3)
+              v-img(contain, :src='sanitize(char.img)', :lazy-src='sanitize(char.img)', height='120')
+                v-layout(
+                  slot='placeholder',
+                  fill-height,
+                  align-center,
+                  justify-center,
+                  ma-0
+                )
+                  v-progress-circular(indeterminate, color='grey lighten-5')
+            v-flex(xs3, d-flex, justify-start)
+              v-layout(column, justify-space-between)
+                v-flex.name(xs6, d-flex, align-center) {{ char.name }}
+                v-flex(xs6)
+                  v-layout(row, wrap, justify-center, align-center)
+                    v-btn(icon, @click='openLink(char.link)')
+                      v-icon open_in_new
+
+            v-flex(xs3, d-flex, justify-start, v-if='char.seiyuu.name')
+              v-layout(column, justify-space-between)
+                v-flex.name.seiyuu(xs6, d-flex, align-center, justify-end) {{ char.seiyuu.name }}
+                v-flex(xs6)
+                  v-layout(row, wrap, justify-center)
+                    v-btn(icon, @click='openLink(char.seiyuu.link)')
+                      v-icon open_in_new
+
+            v-flex(xs3, v-if='char.seiyuu.name')
+              v-img(contain, :src='sanitize(char.seiyuu.img)', :lazy-src='sanitize(char.seiyuu.img)', height='120')
+                v-layout(
+                  slot='placeholder',
+                  fill-height,
+                  align-center,
+                  justify-center,
+                  ma-0
+                )
+                  v-progress-circular(indeterminate, color='grey lighten-5')
+
+    template(v-if='info.staff.length')
+      v-divider
+
+      .section-title
+        span Staff
+
+      v-layout.staff-container.mt-2.mb-0(row, wrap, justify-space-between)
+        v-flex(v-for='member in info.staff', :key='member.link', xs12, sm6, md3, pt-0)
+          v-layout(row, wrap, justify-space-between)
+            v-flex(xs6)
+              v-img(contain, :src='sanitize(member.img)', :lazy-src='sanitize(member.img)', height='120')
+                v-layout(
+                  slot='placeholder',
+                  fill-height,
+                  align-center,
+                  justify-center,
+                  ma-0
+                )
+                  v-progress-circular(indeterminate, color='grey lighten-5')
+            v-flex(xs6, d-flex, justify-start)
+              v-layout(column, justify-space-between, align-content-space-between)
+                v-flex.name-container(xs8)
+                  .name {{ member.name }}
+                  v-btn.ma-1(icon, @click='openLink(member.link)')
+                    v-icon open_in_new
+                v-flex.name.role(xs4, d-flex, align-center) {{ member.role }}
+
+    template(v-if='epLinks.magnets && epLinks.magnets.length')
+      v-divider
+
+      .section-title
+        span Episode list
+
+      .episodes-container
         v-layout(row, wrap)
-          v-flex(xs3)
-            v-img(contain, :src='sanitize(char.img)', :lazy-src='sanitize(char.img)', height='120')
-              v-layout(
-                slot='placeholder',
-                fill-height,
-                align-center,
-                justify-center,
-                ma-0
-              )
-                v-progress-circular(indeterminate, color='grey lighten-5')
-          v-flex(xs3, d-flex, justify-start)
-            v-layout(column, justify-space-between)
-              v-flex.name(xs6, d-flex, align-center) {{ char.name }}
-              v-flex(xs6)
-                v-layout(row, wrap, justify-center, align-center)
-                  v-btn(icon, @click='openLink(char.link)')
-                    v-icon open_in_new
-
-          v-flex(xs3, d-flex, justify-start, v-if='char.seiyuu.name')
-            v-layout(column, justify-space-between)
-              v-flex.name.seiyuu(xs6, d-flex, align-center, justify-end) {{ char.seiyuu.name }}
-              v-flex(xs6)
-                v-layout(row, wrap, justify-center)
-                  v-btn(icon, @click='openLink(char.seiyuu.link)')
-                    v-icon open_in_new
-
-          v-flex(xs3, v-if='char.seiyuu.name')
-            v-img(contain, :src='sanitize(char.seiyuu.img)', :lazy-src='sanitize(char.seiyuu.img)', height='120')
-              v-layout(
-                slot='placeholder',
-                fill-height,
-                align-center,
-                justify-center,
-                ma-0
-              )
-                v-progress-circular(indeterminate, color='grey lighten-5')
-
-    v-divider
-
-    .section-title
-      span Staff
-
-    v-layout.staff-container.mt-2.mb-0(row, wrap, justify-space-between)
-      v-flex(v-for='member in info.staff', :key='member.link', xs12, sm6, md3, pt-0)
-        v-layout(row, wrap, justify-space-between)
-          v-flex(xs6)
-            v-img(contain, :src='sanitize(member.img)', :lazy-src='sanitize(member.img)', height='120')
-              v-layout(
-                slot='placeholder',
-                fill-height,
-                align-center,
-                justify-center,
-                ma-0
-              )
-                v-progress-circular(indeterminate, color='grey lighten-5')
-          v-flex(xs6, d-flex, justify-start)
-            v-layout(column, justify-space-between, align-content-space-between)
-              v-flex.name-container(xs8)
-                .name {{ member.name }}
-                v-btn.ma-1(icon, @click='openLink(member.link)')
-                  v-icon open_in_new
-              v-flex.name.role(xs4, d-flex, align-center) {{ member.role }}
-
-    v-divider
-
-    .section-title
-      span Episode list
-
-    .episodes-container(v-if='epLinks.magnets && epLinks.magnets.length')
-      v-layout(row, wrap)
-        v-flex.link(v-for='ep in epsList', :key='ep', xs12)
-          v-layout(row, wrap, align-center)
-            v-flex.aired(xs2, d-flex, justify-center) {{ getEpAired(ep) }}
-            v-flex.name(xs6, d-flex, justify-center) {{ getEpName(ep) }}
-            v-flex.number(xs1) Ep. {{ ep }}
-            v-flex.quality(xs1)
-              v-select(
-                :items='epQualities[ep]',
-                v-model='epsQuality[ep]',
-                label='Quality',
-                hide-details
-              )
-            v-flex.actions(xs2)
-              v-btn(large, icon, @click='watch(ep)')
-                v-icon(large) play_circle_outline
-              v-btn(large, icon, @click='download(ep)')
-                v-icon(large) file_download
+          v-flex.link(v-for='ep in epsList', :key='ep', xs12)
+            v-layout(row, wrap, align-center)
+              v-flex.aired(xs2, d-flex, justify-center) {{ getEpAired(ep) }}
+              v-flex.name(xs6, d-flex, justify-center) {{ getEpName(ep) }}
+              v-flex.number(xs1) Ep. {{ ep }}
+              v-flex.quality(xs1)
+                v-select(
+                  :items='epQualities[ep]',
+                  v-model='epsQuality[ep]',
+                  label='Quality',
+                  hide-details
+                )
+              v-flex.actions(xs2)
+                v-btn(large, icon, @click='watch(ep)')
+                  v-icon(large) play_circle_outline
+                v-btn(large, icon, @click='download(ep)')
+                  v-icon(large) file_download
 
     //- Return button
     v-btn(
