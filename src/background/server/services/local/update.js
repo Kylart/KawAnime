@@ -37,7 +37,7 @@ function handler (event, data) {
     // If asked for an update but the key is not in storage,
     // we simply exit return success.
     if (isUpdate && !storage.hasOwnProperty(key)) {
-      return event.sender.send(events.success, data)
+      return
     }
 
     storage[key] = info

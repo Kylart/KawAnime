@@ -33,8 +33,8 @@
               v-card.entry.elevation-5(
                 ripple)
                 v-img(
-                  :src='getPictureUrl(entry.image_url)',
-                  :lazy-src='getPictureUrl(entry.image_url)',
+                  :src='entry.img',
+                  :lazy-src='entry.img',
                   height='150',
                   contain
                 )
@@ -122,14 +122,6 @@ export default {
       this.searching = false
       this.current = null
     },
-    getPictureUrl (url) {
-      const sizeRegex = /\/r\/\d*x\d*/
-      const parts = url.split('.')
-
-      const completeUrl = parts.slice(0, -1).join('.').replace(sizeRegex, '') + '.jpg'
-
-      return completeUrl
-    },
     search: debounce(function () {
       if (this.term.length < 3) return
 
@@ -157,20 +149,20 @@ export default {
       this.searching = true
 
       if (!this.allInfo.hasOwnProperty(entry.name)) {
-        this.$ipc.on(this.$eventsList.search.url.success, this.ipcSuccess)
-        this.$ipc.on(this.$eventsList.search.url.error, this.ipcError)
+        this.$ipc.on(this.$eventsList.search[entry.next.method].success, this.ipcSuccess)
+        this.$ipc.on(this.$eventsList.search[entry.next.method].error, this.ipcError)
 
-        this.$store.dispatch('info/get', entry)
+        this.$store.dispatch('info/get', entry.next)
       } else {
         this.ipcSuccess(null, { info: this.allInfo[entry.name] })
       }
     },
     ipcSuccess (e, { info }) {
-      this.$store.commit('info/set', { key: info.title, value: info })
+      this.$store.commit('info/set', { key: info.title.en, value: info })
       this.searching = false
 
       this.current = {
-        title: info.title
+        title: info.title.en
       }
 
       this.searching = false

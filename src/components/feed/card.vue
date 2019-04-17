@@ -146,7 +146,7 @@ export default {
 
       name in this.allInfo
         ? this.setInfo()
-        : this.$store.dispatch('info/get', name)
+        : this.$store.dispatch('info/get', { method: 'name', args: name })
     },
     setInfo () {
       this.$set(this, 'animeInfo', this.allInfo[this.name])

@@ -46,12 +46,22 @@ function generateSentence (data) {
   return `${status}, it premiered on ${premiered} and ${_source}. ${nbEpisodes} ${_duration}`
 }
 
+function getPictureUrl (url) {
+  const sizeRegex = /\/r\/\d*x\d*/
+  const parts = url.split('.')
+
+  const completeUrl = parts.slice(0, -1).join('.').replace(sizeRegex, '') + '.jpg'
+
+  return completeUrl
+}
+
 export function formatInfo (data) {
   return {
     title: {
       en: data.title,
       jp: data.japaneseTitle
     },
+    id: data.id,
     img: data.picture,
     type: data.type,
     synopsis: data.synopsis,
@@ -71,4 +81,18 @@ export function formatInfo (data) {
     characters: formatCharacters(data.characters),
     staff: formatStaff(data.staff)
   }
+}
+
+export function formatSearch (data) {
+  return data.map((entry) => ({
+    img: getPictureUrl(entry.thumbnail),
+    name: entry.title,
+    next: {
+      method: 'url',
+      args: {
+        url: entry.url,
+        name: entry.title
+      }
+    }
+  }))
 }

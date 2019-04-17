@@ -1,9 +1,18 @@
-import { getResultsFromSearch, getInfoFromName, getInfoFromURL } from 'mal-scraper'
+import { search, getInfoFromName, getInfoFromURL } from 'mal-scraper'
 
-import { formatInfo } from './helpers'
+import { formatInfo, formatSearch } from './helpers'
 
 async function searchTerm (term) {
-  return getResultsFromSearch(term)
+  try {
+    const data = await search.search('anime', {
+      term,
+      maxResults: 10
+    })
+
+    return formatSearch(data.slice(0, 10))
+  } catch (e) {
+    throw e
+  }
 }
 
 async function fromName (term) {
@@ -16,7 +25,7 @@ async function fromName (term) {
   }
 }
 
-async function fromUrl (url) {
+async function fromUrl ({ url }) {
   try {
     const rawData = await getInfoFromURL(url)
 

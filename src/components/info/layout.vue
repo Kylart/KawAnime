@@ -157,7 +157,7 @@ export default {
   mounted () {
     if (!this.info.hasOwnProperty('episodesInfo')) {
       this.$store.dispatch('info/getEps', {
-        name: this.title,
+        name: this.info.title.en,
         id: this.info.id
       })
     }
