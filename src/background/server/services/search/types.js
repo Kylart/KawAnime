@@ -1,13 +1,15 @@
-import { mal } from '../../externals'
+import { mal, kitsu } from '../../externals'
 
 export default {
   'url': {
     mal: mal.fromUrl
   },
   'name': {
-    mal: mal.fromName
+    mal: mal.fromName,
+    kitsu: kitsu.fromName
   },
   'term': {
-    mal: mal.searchTerm
+    mal: mal.searchTerm,
+    kitsu: kitsu.searchTerm
   }
 }
