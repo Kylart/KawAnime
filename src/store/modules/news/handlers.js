@@ -7,5 +7,5 @@ export function success (commit, data) {
 
 export function error (commit, msg) {
   log('Error while updating anime news.', msg)
-  commit('refreshing', false)
+  commit('setRefreshing', false)
 }
