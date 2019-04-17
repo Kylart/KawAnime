@@ -8,15 +8,16 @@ import { FILENAME } from './utils'
 const logger = new Logger('Torrents:load')
 const path = join(dir, FILENAME)
 
-export default function (client) {
+export default function (client, init) {
   if (!existsSync(path)) return
 
   logger.info('User left torrents in clients. Restoring.')
 
+  init()
+
   const torrents = localFiles.getFile(FILENAME)
 
   for (const { magnet, path } of torrents) {
-    console.log(magnet, path)
     client.add(magnet, { path })
   }
 
