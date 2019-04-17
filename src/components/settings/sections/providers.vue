@@ -58,11 +58,11 @@ export default {
 
   data: () => ({
     excludes: {
-      search: [],
-      info: [],
-      episodes: [],
+      search: [ 'ann' ],
+      info: [ 'ann' ],
+      episodes: [ 'ann' ],
       news: [ 'kitsu' ],
-      seasons: [ 'kitsu' ]
+      seasons: [ 'kitsu', 'ann' ]
     }
   }),
 
