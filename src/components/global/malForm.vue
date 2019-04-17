@@ -299,7 +299,7 @@ export default {
       if (name) {
         this.$ipc.on(this.$eventsList.search.url.main, handler)
         this.$ipc.send(this.$eventsList.search.url.main, {
-          provider: this.$store.state.config.config.infoProvider,
+          provider: 'mal',
           toSearch: url
         })
       }

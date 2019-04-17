@@ -57,6 +57,15 @@ function checkConfig () {
     if (typeof currentConf.config[key] === 'undefined') {
       currentConf.config[key] = elem
       changed = true
+
+      return
+    }
+
+    if (typeof currentConf.config[key] !== typeof elem) {
+      currentConf.config[key] = elem
+      changed = true
+
+      return
     }
 
     if (typeof elem === 'object') {

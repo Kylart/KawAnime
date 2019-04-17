@@ -1,5 +1,7 @@
 import { app } from 'electron'
 
+const defaultProvider = 'mal'
+
 export default {
   filename: 'config.json',
   template: {
@@ -7,7 +9,13 @@ export default {
       fansub: 'HorribleSubs',
       quality: '720p',
       feed: 'si',
-      infoProvider: 'mal',
+      infoProvider: {
+        episodes: defaultProvider,
+        info: defaultProvider,
+        search: defaultProvider,
+        seasons: defaultProvider,
+        news: defaultProvider
+      },
       localPath: app.getPath('downloads'),
       sound: 'Nyanpasu',
       notificationVolume: 0.5,

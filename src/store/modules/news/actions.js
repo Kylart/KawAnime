@@ -13,7 +13,7 @@ export default {
       return
     }
 
-    const provider = rootState.config.config.infoProvider
+    const provider = rootState.config.config.infoProvider.news
 
     commit('setRefreshing', true)
 

@@ -82,7 +82,7 @@ export default {
     }),
     provider: {
       get () {
-        return this.$store.state.config.config.infoProvider
+        return this.$store.state.config.config.infoProvider.search
       },
       set () {}
     },

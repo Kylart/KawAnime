@@ -2,11 +2,12 @@
   .sections-container.elevation-12.indigo.pt-2.pb-2
     v-list-tile(
       v-for='section in sections', :key='section.value',
-      @click='setRoute(section.value)'
+      @click='setRoute(section.value)',
+      :color='getColor(section.value)',
       ripple
     )
       v-list-tile-action
-        v-icon {{ section.icon }}
+        v-icon(:color='getColor(section.value)') {{ section.icon }}
       v-list-tile-content
         v-list-tile-title
           span {{ section.name }}
@@ -15,6 +16,8 @@
 <script>
 export default {
   name: 'Setting-Drawer',
+
+  props: ['indexKey'],
 
   computed: {
     sections: {
@@ -28,6 +31,11 @@ export default {
   methods: {
     setRoute (val) {
       this.$emit('routeUpdate', val)
+    },
+    getColor (val) {
+      return this.indexKey === val
+        ? 'primary'
+        : 'default'
     }
   }
 }

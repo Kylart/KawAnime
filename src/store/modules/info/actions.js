@@ -21,7 +21,7 @@ export default {
     }
 
     const params = {
-      provider: rootState.config.config.infoProvider,
+      provider: rootState.config.config.infoProvider.info,
       toSearch: url || name
     }
 
@@ -29,7 +29,7 @@ export default {
   },
   getEps ({ rootState }, { name, id }) {
     const searchName = name.replace('local/', '')
-    const provider = rootState.config.config.infoProvider
+    const provider = rootState.config.config.infoProvider.episodes
 
     ipcRenderer.send(eventsList.episodes.main, { provider, name: searchName, id })
   },

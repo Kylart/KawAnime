@@ -28,7 +28,7 @@ export default {
     commit('refreshing', true)
 
     const { year, season } = state
-    const provider = rootState.config.config.infoProvider
+    const provider = rootState.config.config.infoProvider.seasons
 
     if (year >= 1917 && (year <= (new Date()).getYear() + 1901)) {
       ipcRenderer.send(eventsList.seasons.main, { provider, year, season })

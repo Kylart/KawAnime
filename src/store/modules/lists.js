@@ -41,12 +41,20 @@ export const subtitlesLanguages = [
   { value: 'ru', text: 'Russian' }
 ]
 
+export const providers = [
+  { value: 'mal', text: 'MyAnimeList.net' },
+  { value: 'anidb', text: 'AniDB' },
+  { value: 'kitsu', text: 'Kitsu.io' }
+  // { value: 'ann', text: 'AnimeNewsNetwork' }
+]
+
 export const sections = [
-  { name: 'Feed', value: 0, icon: 'access_time' },
-  { name: 'Torrent', value: 1, icon: 'file_download' },
-  { name: 'Local', value: 2, icon: 'folder_open' },
-  { name: 'Accounts', value: 3, icon: 'supervisor_account' },
-  { name: 'Video', value: 4, icon: 'play_circle_outline' },
-  { name: 'Notifications', value: 5, icon: 'add_alert' },
-  { name: 'System', value: 6, icon: 'build' }
+  { name: 'Information Providers', value: 0, icon: 'search' },
+  { name: 'Feed', value: 1, icon: 'access_time' },
+  { name: 'Torrent', value: 2, icon: 'file_download' },
+  { name: 'Local', value: 3, icon: 'folder_open' },
+  { name: 'Accounts', value: 4, icon: 'supervisor_account' },
+  { name: 'Video', value: 5, icon: 'play_circle_outline' },
+  { name: 'Notifications', value: 6, icon: 'add_alert' },
+  { name: 'System', value: 7, icon: 'build' }
 ]
