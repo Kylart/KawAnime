@@ -1,13 +1,16 @@
 import { https } from '../../utils'
 import { BASE_URL } from './utils'
 
-import { formatInfo } from './helpers'
+import { formatInfo, formatSearch } from './helpers'
 
 async function searchTerm (term) {
   try {
-    const data = await https.get(BASE_URL, [{ name: 'filter[text]', value: term }])
+    const { data } = await https.get(BASE_URL, [
+      { name: 'filter[text]', value: term },
+      { name: 'page[limit]', value: 10 }
+    ])
 
-    return data
+    return formatSearch(data)
   } catch (e) {
     throw e
   }

@@ -130,3 +130,14 @@ export async function formatInfo (data) {
     staff
   }
 }
+
+export function formatSearch (data) {
+  return data.map((entry) => ({
+    img: entry.attributes.posterImage.original,
+    name: entry.attributes.titles.en || entry.attributes.titles.en_jp,
+    next: {
+      method: 'name',
+      args: entry.attributes.titles.en || entry.attributes.titles.en_jp
+    }
+  }))
+}
