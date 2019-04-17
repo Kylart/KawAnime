@@ -115,6 +115,7 @@ export async function formatInfo (data) {
       en: data.attributes.titles.en || data.attributes.titles.en_jp,
       jp: data.attributes.titles['jp_jp']
     },
+    id: data.id,
     img: data.attributes.posterImage.original,
     type: data.attributes.showType,
     synopsis: data.attributes.synopsis,
