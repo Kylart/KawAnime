@@ -1,11 +1,14 @@
-import { https } from '../../utils'
-import { BASE_URL } from './utils'
+import { graphql } from '../../utils'
+import { GRAPHQL_ENDPOINT } from './utils'
+import * as queries from './queries'
 
-import { formatInfo, formatSearch } from './helpers'
+import { formatSearch } from './helpers'
 
 async function searchTerm (term) {
   try {
+    const { data } = await graphql(GRAPHQL_ENDPOINT, queries.search(term))
 
+    return formatSearch(data)
   } catch (e) {
     throw e
   }

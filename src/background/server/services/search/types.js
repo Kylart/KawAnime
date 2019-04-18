@@ -1,4 +1,4 @@
-import { mal, kitsu } from '../../externals'
+import { mal, kitsu, anilist } from '../../externals'
 
 export default {
   'url': {
@@ -10,6 +10,7 @@ export default {
   },
   'term': {
     mal: mal.searchTerm,
-    kitsu: kitsu.searchTerm
+    kitsu: kitsu.searchTerm,
+    anilist: anilist.searchTerm
   }
 }

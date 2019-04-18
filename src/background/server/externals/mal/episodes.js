@@ -1,14 +1,14 @@
 import { getEpisodesList, getInfoFromName } from 'mal-scraper'
 
-export default async function ({ infoProvider, id, name }) {
+export default async function ({ infoProvider, malId, id, name }) {
   try {
-    if (infoProvider !== 'mal') {
+    if (infoProvider !== 'mal' && !malId) {
       const { id: _id, title } = await getInfoFromName(name, false)
 
       return getEpisodesList({ id: _id, name: title })
     }
 
-    return getEpisodesList({ id, name })
+    return getEpisodesList({ id: id || malId, name })
   } catch (e) {
     throw e
   }
