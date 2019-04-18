@@ -146,7 +146,7 @@ export default {
 
       name in this.allInfo
         ? this.setInfo()
-        : this.$store.dispatch('info/get', { method: 'name', args: name })
+        : this.$store.dispatch('info/get', { name })
     },
     setInfo () {
       this.$set(this, 'animeInfo', this.allInfo[this.name])
@@ -160,6 +160,7 @@ export default {
     },
     ipcHandler (e, data) {
       const { name, info } = data
+      console.log(this.name, data)
 
       if (!name || name !== this.name) return
 

@@ -101,7 +101,7 @@ export async function formatInfo (rawData) {
     id: info.id,
     img: info.posterImage.original.url,
     type: rawData[0].attributes.showType,
-    synopsis: info.synopsis,
+    synopsis: info.synopsis.en,
     score: info.averageRating,
     scoreOutOf: 100,
     nbVotes: info.userCount + ' votes',
@@ -120,8 +120,7 @@ export function formatSearch (data) {
     img: entry.attributes.posterImage.original,
     name: entry.attributes.titles.en || entry.attributes.titles.en_jp,
     next: {
-      method: 'name',
-      args: entry.attributes.titles.en || entry.attributes.titles.en_jp
+      name: entry.attributes.titles.en || entry.attributes.titles.en_jp
     }
   }))
 }

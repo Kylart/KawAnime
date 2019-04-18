@@ -88,11 +88,8 @@ export function formatSearch (data) {
     img: getPictureUrl(entry.thumbnail),
     name: entry.title,
     next: {
-      method: 'url',
-      args: {
-        url: entry.url,
-        name: entry.title
-      }
+      url: entry.url,
+      name: entry.title
     }
   }))
 }

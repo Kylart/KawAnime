@@ -2,13 +2,23 @@ import { request } from 'https'
 
 import formUrl from './formUrl'
 import Logger from '../logger'
+import Cache from '../cache'
 
 const logger = new Logger('Http:Post')
+const cache = new Cache()
 
 export default function (url, data, params = []) {
   return new Promise((resolve, reject) => {
     const _url = formUrl(url, params)
     const _data = typeof data === 'string' ? data : JSON.stringify(data)
+    const cacheKey = [ _url, _data ].join('|')
+
+    if (cache.has(cacheKey)) {
+      logger.info('Retrieved info from cache!')
+      resolve(cache.get(cacheKey))
+
+      return
+    }
 
     logger.info(`Sending to ${_url}`)
 
@@ -24,7 +34,10 @@ export default function (url, data, params = []) {
       res.on('data', (chunk) => { response += chunk })
 
       res.on('end', () => {
-        resolve(JSON.parse(response))
+        const result = JSON.parse(response)
+
+        cache.set(cacheKey, result)
+        resolve(result)
       })
     })
 

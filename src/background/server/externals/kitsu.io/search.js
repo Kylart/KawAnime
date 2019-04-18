@@ -16,10 +16,10 @@ async function searchTerm (term) {
   }
 }
 
-async function fromName (term) {
+async function fromName ({ name }) {
   try {
     const { data } = await https.get(BASE_URL, [
-      { name: 'filter[text]', value: term },
+      { name: 'filter[text]', value: name },
       { name: 'page[limit]', value: 1 }
     ])
     const info = await formatInfo(data)

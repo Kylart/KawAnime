@@ -7,7 +7,7 @@ export default class {
   set (key, value, ttl = this.defaultTtl) {
     this.map.set(key, {
       value,
-      expireAt: (new Date()) + ttl,
+      expireAt: (new Date()).getTime() + ttl,
       timeout: setTimeout(() => {
         this.clear(key)
       }, ttl)
@@ -22,7 +22,7 @@ export default class {
     return this.map.has(key)
   }
 
-  get (key, value) {
-    return this.has(key) && this.map.get(key)
+  get (key) {
+    return this.has(key) && this.map.get(key).value
   }
 }

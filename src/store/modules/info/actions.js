@@ -12,13 +12,13 @@ export default {
   getLocalInfo (store, data) {
     ipcRenderer.send(eventsList.local.get.main, data)
   },
-  get ({ rootState }, obj) {
+  get ({ rootState }, args) {
     const params = {
       provider: rootState.config.config.infoProvider.info,
-      toSearch: obj.args
+      toSearch: args
     }
 
-    ipcRenderer.send(eventsList.search[obj.method].main, params)
+    ipcRenderer.send(eventsList.search[args.url ? 'url' : 'name'].main, params)
   },
   getEps ({ rootState }, { name, id }) {
     const searchName = name.replace('local/', '')

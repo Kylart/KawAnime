@@ -149,15 +149,17 @@ export default {
       this.searching = true
 
       if (!this.allInfo.hasOwnProperty(entry.name)) {
-        this.$ipc.on(this.$eventsList.search[entry.next.method].success, this.ipcSuccess)
-        this.$ipc.on(this.$eventsList.search[entry.next.method].error, this.ipcError)
+        const method = entry.next.url ? 'url' : 'name'
+        this.$ipc.on(this.$eventsList.search[method].success, this.ipcSuccess)
+        this.$ipc.on(this.$eventsList.search[method].error, this.ipcError)
 
         this.$store.dispatch('info/get', entry.next)
       } else {
         this.ipcSuccess(null, { info: this.allInfo[entry.name] })
       }
     },
-    ipcSuccess (e, { info }) {
+    ipcSuccess (e, { name, info }) {
+      const method = /https?:\/\//.test(name) ? 'url' : 'name'
       this.$store.commit('info/set', { key: info.title.en, value: info })
       this.searching = false
 
@@ -166,8 +168,8 @@ export default {
       }
 
       this.searching = false
-      this.$ipc.removeListener(this.$eventsList.search.url.success, this.ipcSuccess)
-      this.$ipc.removeListener(this.$eventsList.search.url.error, this.ipcError)
+      this.$ipc.removeListener(this.$eventsList.search[method].success, this.ipcSuccess)
+      this.$ipc.removeListener(this.$eventsList.search[method].error, this.ipcError)
     },
     ipcError (e, { name, msg }) {
       this.$log(`Could not find any data for ${name}.`, msg)

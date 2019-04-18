@@ -15,9 +15,9 @@ async function searchTerm (term) {
   }
 }
 
-async function fromName (term) {
+async function fromName ({ name }) {
   try {
-    const rawData = await getInfoFromName(term, false)
+    const rawData = await getInfoFromName(name, false)
 
     return formatInfo(rawData)
   } catch (e) {

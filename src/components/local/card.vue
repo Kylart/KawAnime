@@ -150,7 +150,7 @@ export default {
     },
     updateInfo () {
       this.$log(`No local information for ${this.file.title}, retrieving...`)
-      this.$store.dispatch('info/get', this.file.title)
+      this.$store.dispatch('info/get', { name: this.file.title })
     },
     setInfo () {
       this.$set(this, 'info', this.$store.state.info.info['local/' + this.file.title])
