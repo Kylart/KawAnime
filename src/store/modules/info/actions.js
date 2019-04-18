@@ -23,8 +23,9 @@ export default {
   getEps ({ rootState }, { name, id }) {
     const searchName = name.replace('local/', '')
     const provider = rootState.config.config.infoProvider.episodes
+    const infoProvider = rootState.config.config.infoProvider.info
 
-    ipcRenderer.send(eventsList.episodes.main, { provider, name: searchName, id })
+    ipcRenderer.send(eventsList.episodes.main, { infoProvider, provider, name: searchName, id })
   },
   getEpsLinks (store, { name, config }) {
     const searchName = name.replace('local/', '')

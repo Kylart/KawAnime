@@ -1,5 +1,5 @@
 import { eventsList } from '../../../../vendor'
-import { mal } from '../../externals'
+import { mal, kitsu } from '../../externals'
 import { Logger } from '../../utils'
 
 const events = eventsList.episodes
@@ -7,14 +7,15 @@ const events = eventsList.episodes
 const logger = new Logger('Episodes')
 
 const providers = {
-  mal: mal.episodes
+  mal: mal.episodes,
+  kitsu: kitsu.episodes
 }
 
-async function episodes (event, { provider, id, name }) {
+async function episodes (event, { infoProvider, provider, id, name }) {
   try {
     if (!Object.keys(providers).includes(provider)) throw new Error('This provider is not handled.')
 
-    const data = await providers[provider]({ id, name })
+    const data = await providers[provider]({ infoProvider, id, name })
 
     logger.info(`Successfully retrieved episodes information for ${name}.`)
 

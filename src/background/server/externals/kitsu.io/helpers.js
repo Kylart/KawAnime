@@ -86,6 +86,16 @@ function getStaff (info) {
     .filter(Boolean)
 }
 
+export function formatEps (rawData) {
+  return rawData.map(({ attributes }) => ({
+    aired: attributes.airdate,
+    epNumber: attributes.number,
+    title: attributes.canonicalTitle || attributes.titles.en_us || attributes.titles.en_jp || attributes.titles.en,
+    japaneseTitle: attributes.titles.ja_jp,
+    img: attributes.thumbnail.original
+  }))
+}
+
 export async function formatInfo (rawData) {
   const [ { data: { anime: { nodes: [ info ] } } }, studios, genres ] = await Promise.all([
     getInfo(rawData[0].id),

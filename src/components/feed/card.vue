@@ -160,7 +160,6 @@ export default {
     },
     ipcHandler (e, data) {
       const { name, info } = data
-      console.log(this.name, data)
 
       if (!name || name !== this.name) return
 
