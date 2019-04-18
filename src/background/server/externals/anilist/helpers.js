@@ -51,10 +51,6 @@ function getStaff (staff) {
   })
 }
 
-export function formatEps (data) {
-
-}
-
 export function formatInfo (rawData) {
   const data = rawData.Media
 

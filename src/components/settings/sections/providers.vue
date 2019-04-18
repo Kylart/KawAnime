@@ -60,7 +60,7 @@ export default {
     excludes: {
       search: [],
       info: [],
-      episodes: [],
+      episodes: [ 'anilist' ],
       news: [ 'kitsu', 'anilist' ],
       seasons: [ 'kitsu' ]
     }
