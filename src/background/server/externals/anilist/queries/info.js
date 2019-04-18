@@ -23,7 +23,7 @@ export default function (name) {
       startDate {
         year
       }
-      description
+      description (asHtml: false)
       episodes
       duration
       genres
@@ -33,7 +33,7 @@ export default function (name) {
         }
       }
       isAdult
-      staff {
+      staff (perPage: 4) {
         edges {
           node {
             name {

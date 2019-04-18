@@ -161,7 +161,8 @@ export default {
     if (!this.info.hasOwnProperty('episodesInfo')) {
       this.$store.dispatch('info/getEps', {
         name: this.info.title.en,
-        id: this.info.id
+        id: this.info.id,
+        malId: this.info.malId
       })
     }
   },

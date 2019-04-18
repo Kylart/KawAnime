@@ -1,9 +1,86 @@
+function capitalize (word) {
+  return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+}
+
+function generateSentence (data) {
+  const { status, season, startDate, episodes, duration } = data
+
+  const nbEpisodes = episodes
+    ? 'Yet an unknown number of episodes'
+    : `It's been announced with ${episodes} episodes`
+
+  const _duration = duration
+    ? 'of an unknown duration.'
+    : `of ${duration} minutes`
+
+  const _status = status ? capitalize(status) : ''
+  const _season = season && startDate
+    ? `, released in ${capitalize(season)} ${startDate.year}`
+    : ''
+
+  return `${_status} ${_season}. ${nbEpisodes} ${_duration}`
+}
+
+function getChars (chars) {
+  try {
+    return chars.map((char) => ({
+      name: [char.node.name.first, char.node.name.last].join(' '),
+      img: char.node.image.large,
+      link: char.node.siteUrl,
+      seiyuu: {
+        name: [char.voiceActors[0].name.first, char.voiceActors[0].name.last].join(' '),
+        img: char.voiceActors[0].image.large,
+        link: char.voiceActors[0].siteUrl
+      }
+    }))
+  } catch (e) {
+    return []
+  }
+}
+
+function getStaff (staff) {
+  return staff.map(({ node, role }) => {
+    if (!node) return {}
+
+    return {
+      name: [node.name.first, node.name.last].join(' '),
+      link: node.siteUrl,
+      img: node.image.large,
+      role
+    }
+  })
+}
+
 export function formatEps (data) {
 
 }
 
 export function formatInfo (rawData) {
+  const data = rawData.Media
 
+  return {
+    title: {
+      en: data.title.userPreferred || data.title.english || data.title.romaji,
+      jp: data.title.native
+    },
+    id: data.id,
+    malId: data.idMal,
+    img: data.coverImage.extraLarge || data.coverImage.large,
+    type: data.format,
+    synopsis: data.description.replace(/<br>/g, ''),
+    score: data.averageScore,
+    scoreOutOf: 100,
+    nbVotes: data.stats.scoreDistribution.reduce((acc, { amount }) => (acc + amount), 0),
+    nbEpisodes: data.episodes,
+    sentence: generateSentence(data),
+    rating: data.isAdult ? 'NSFW' : 'SFW',
+    genres: data.genres,
+    studios: data.studios.nodes
+      ? 'By ' + data.studios.nodes.map(({ name }) => name).join(', ')
+      : 'Unknown studios',
+    characters: getChars(data.characters.edges),
+    staff: getStaff(data.staff.edges)
+  }
 }
 
 export function formatSearch (data) {

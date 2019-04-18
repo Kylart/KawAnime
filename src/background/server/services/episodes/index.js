@@ -11,11 +11,11 @@ const providers = {
   kitsu: kitsu.episodes
 }
 
-async function episodes (event, { infoProvider, provider, id, name }) {
+async function episodes (event, { infoProvider, provider, id, name, malId }) {
   try {
     if (!Object.keys(providers).includes(provider)) throw new Error('This provider is not handled.')
 
-    const data = await providers[provider]({ infoProvider, id, name })
+    const data = await providers[provider]({ infoProvider, id, name, malId })
 
     logger.info(`Successfully retrieved episodes information for ${name}.`)
 

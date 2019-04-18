@@ -6,7 +6,8 @@ export default {
   },
   'name': {
     mal: mal.fromName,
-    kitsu: kitsu.fromName
+    kitsu: kitsu.fromName,
+    anilist: anilist.fromName
   },
   'term': {
     mal: mal.searchTerm,
