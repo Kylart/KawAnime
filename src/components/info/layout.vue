@@ -58,19 +58,19 @@
               v-layout(column, justify-space-between)
                 v-flex.name(xs6, d-flex, align-center) {{ char.name }}
                 v-flex(xs6)
-                  v-layout(row, wrap, justify-center, align-center)
+                  v-layout(v-if='char.link', row, wrap, justify-center, align-center)
                     v-btn(icon, @click='openLink(char.link)')
                       v-icon open_in_new
 
-            v-flex(xs3, d-flex, justify-start, v-if='char.seiyuu.name')
+            v-flex(xs3, d-flex, justify-start, v-if='char.seiyuu')
               v-layout(column, justify-space-between)
                 v-flex.name.seiyuu(xs6, d-flex, align-center, justify-end) {{ char.seiyuu.name }}
                 v-flex(xs6)
-                  v-layout(row, wrap, justify-center)
+                  v-layout(v-if='char.seiyuu.link', row, wrap, justify-center)
                     v-btn(icon, @click='openLink(char.seiyuu.link)')
                       v-icon open_in_new
 
-            v-flex(xs3, v-if='char.seiyuu.name')
+            v-flex(xs3, v-if='char.seiyuu')
               v-img(contain, :src='sanitize(char.seiyuu.img)', :lazy-src='sanitize(char.seiyuu.img)', height='120')
                 v-layout(
                   slot='placeholder',
@@ -104,7 +104,7 @@
               v-layout(column, justify-space-between, align-content-space-between)
                 v-flex.name-container(xs8)
                   .name {{ member.name }}
-                  v-btn.ma-1(icon, @click='openLink(member.link)')
+                  v-btn.ma-1(v-if='member.link', icon, @click='openLink(member.link)')
                     v-icon open_in_new
                 v-flex.name.role(xs4, d-flex, align-center) {{ member.role }}
 
@@ -211,7 +211,7 @@ export default {
     },
     sanitize (link) {
       // This redirects unwanted picture links to fallback picture
-      return /(questionmark)/.test(link)
+      return /(questionmark|missing)/.test(link)
         ? NotFoundImage
         : link
     },

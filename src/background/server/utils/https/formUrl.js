@@ -4,5 +4,5 @@ export default function (base, params) {
     params
       .map(({ name, value }) => encodeURIComponent([name, value].join('=')))
       .join('&')
-  ].join('?')
+  ].join(params.length ? '?' : '')
 }

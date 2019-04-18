@@ -18,8 +18,11 @@ async function searchTerm (term) {
 
 async function fromName (term) {
   try {
-    const { data } = await https.get(BASE_URL, [{ name: 'filter[text]', value: term }])
-    const info = await formatInfo(data[0])
+    const { data } = await https.get(BASE_URL, [
+      { name: 'filter[text]', value: term },
+      { name: 'page[limit]', value: 1 }
+    ])
+    const info = await formatInfo(data)
 
     return info
   } catch (e) {

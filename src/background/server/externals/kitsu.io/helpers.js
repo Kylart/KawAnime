@@ -1,9 +1,11 @@
-import { https } from '../../utils'
+import { https, graphql } from '../../utils'
+import * as queries from './queries'
+import { GRAPHQL_ENDPOINT } from './utils'
 
 function generateSentence (data) {
   const { status, startDate, endDate, episodeCount: episodes, episodeLength: duration } = data
 
-  const nbEpisodes = episodes === 'Unknown'
+  const nbEpisodes = episodes
     ? 'Yet an unknown number of episodes'
     : `It's been announced with ${episodes} episodes`
 
@@ -11,10 +13,21 @@ function generateSentence (data) {
     ? 'of an unknown duration.'
     : `of ${duration} minutes`
 
-  const _status = status.charAt(0).toUpperCase() + status.slice(1)
+  const _status = status.charAt(0).toUpperCase() + status.slice(1).toLowerCase()
   const _end = endDate ? `to ${endDate}` : ''
 
   return `${_status}, releases from ${startDate} ${_end}. ${nbEpisodes} ${_duration}`
+}
+
+async function getInfo (id) {
+  try {
+    const data = await graphql(GRAPHQL_ENDPOINT, queries.info(id))
+
+    return data
+  } catch (e) {
+    console.error('info error', e)
+    throw e
+  }
 }
 
 async function getGenres (url) {
@@ -22,61 +35,6 @@ async function getGenres (url) {
     const genres = await https.get(url)
 
     return genres.data.map((genre) => genre.attributes.name)
-  } catch (e) {
-    return []
-  }
-}
-
-async function getChars (url) {
-  try {
-    const { data } = await https.get(url)
-
-    const charsInfo = await Promise.all(
-      data.map(async ({ relationships }) => {
-        const { data: charInfo } = await https.get(relationships.character.links.related)
-        const { data: seiyuuInfo } = await https.get(
-          relationships.voices.links.related
-            .replace('media-characters', 'character-voices')
-            .replace('voices', 'person')
-        )
-
-        return {
-          img: charInfo.attributes.image.original,
-          name: charInfo.attributes.names.en,
-          link: `https://myanimelist.net/character/${charInfo.malId}`,
-          seiyuu: {
-            img: seiyuuInfo.attributes.image.original,
-            name: seiyuuInfo.attributes.name,
-            link: `https://myanimelist.net/people/${charInfo.malId}`
-          }
-        }
-      })
-    )
-
-    return charsInfo
-  } catch (e) {
-    return []
-  }
-}
-
-async function getStaff (url) {
-  try {
-    const { data } = await https.get(url)
-
-    const staff = await Promise.all(
-      data.map(async ({ relationships, attributes: { role } }) => {
-        const { data: person } = await https.get(relationships.person.links.related)
-
-        return {
-          img: person.attributes.image.original,
-          name: person.attributes.name,
-          link: `https://myanimelist.net/people/${person.attributes.malId}`,
-          role
-        }
-      })
-    )
-
-    return staff
   } catch (e) {
     return []
   }
@@ -102,33 +60,58 @@ async function getProd (url) {
   }
 }
 
-export async function formatInfo (data) {
-  const [ genres, characters, staff, studios ] = await Promise.all([
-    getGenres(data.relationships.genres.links.related),
-    getChars(data.relationships.characters.links.related),
-    getStaff(data.relationships.staff.links.related),
-    getProd(data.relationships.productions.links.related)
+function getCharacters (info) {
+  return info.characters.nodes
+    .map((char) => ({
+      name: char.character.canonical || char.character.names.localized.en || char.character.names.localized.en_jp,
+      img: char.character.image && char.character.image.original.url,
+      seiyuu: char.voices.nodes[0]
+        ? {
+          name: char.voices.nodes[0].person.canonical || char.voices.nodes[0].person.names.localized.en || char.voices.nodes[0].person.names.localized.en,
+          img: char.voices.nodes[0].person.image && char.voices.nodes[0].person.image.original.url
+        }
+        : null
+    }))
+}
+
+function getStaff (info) {
+  return info.staff.nodes
+    .map(({ role, person }) => {
+      return {
+        name: person.names.localized.en || person.names.localized.en_jp,
+        img: person.image && person.image.original.url,
+        role
+      }
+    })
+    .filter(Boolean)
+}
+
+export async function formatInfo (rawData) {
+  const [ { data: { anime: { nodes: [ info ] } } }, studios, genres ] = await Promise.all([
+    getInfo(rawData[0].id),
+    getProd(rawData[0].relationships.productions.links.related),
+    getGenres(rawData[0].relationships.genres.links.related)
   ])
 
   return {
     title: {
-      en: data.attributes.titles.en || data.attributes.titles.en_jp,
-      jp: data.attributes.titles['jp_jp']
+      en: info.titles.canonical || info.titles.localized.en_jp || info.titles.localized.en,
+      jp: info.titles.localized.ja_jp
     },
-    id: data.id,
-    img: data.attributes.posterImage.original,
-    type: data.attributes.showType,
-    synopsis: data.attributes.synopsis,
-    score: data.attributes.averageRating,
+    id: info.id,
+    img: info.posterImage.original.url,
+    type: rawData[0].attributes.showType,
+    synopsis: info.synopsis,
+    score: info.averageRating,
     scoreOutOf: 100,
-    nbVotes: data.attributes.userCount + ' votes',
-    nbEpisodes: data.attributes.episodeCount,
-    sentence: generateSentence(data.attributes),
-    rating: [data.attributes.ageRating, data.attributes.ageRatingGuide].join(' - '),
+    nbVotes: info.userCount + ' votes',
+    nbEpisodes: info.episodeCount,
+    sentence: generateSentence(info),
+    rating: [info.ageRating, info.ageRatingGuide].join(' - '),
     genres,
     studios,
-    characters,
-    staff
+    characters: getCharacters(info),
+    staff: getStaff(info)
   }
 }
 

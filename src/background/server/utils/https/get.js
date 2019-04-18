@@ -2,12 +2,21 @@ import { get } from 'https'
 
 import formUrl from './formUrl'
 import Logger from '../logger'
+import Cache from '../cache'
 
 const logger = new Logger('Http:Get')
+const cache = new Cache()
 
 export default function (url, params = [], headers = {}) {
   return new Promise((resolve, reject) => {
     const _url = formUrl(url, params)
+
+    if (cache.has(_url)) {
+      logger.info(`Retrieved info from cache for ${_url}!`)
+      resolve(cache.get(_url))
+
+      return
+    }
 
     logger.info(`Retrieving info from ${_url}`)
 
@@ -22,7 +31,12 @@ export default function (url, params = [], headers = {}) {
 
       res.on('data', (chunk) => { data += chunk })
 
-      res.once('end', () => resolve(JSON.parse(data)))
+      res.once('end', () => {
+        const result = JSON.parse(data)
+
+        cache.set(_url, result)
+        resolve(result)
+      })
     }).on('error', (err) => reject(err))
   })
 }
