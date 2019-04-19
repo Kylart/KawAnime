@@ -11,7 +11,7 @@
               :items='without(excludes.search)',
               v-model='search'
               persistent-hint,
-              hint='Where does the anime information should be fetched.'
+              hint='What search engine is the best for you?.'
             )
           v-flex(xs12, sm6, md4, lg3)
             v-select(
@@ -19,7 +19,7 @@
               :items='without(excludes.info)',
               v-model='info'
               persistent-hint,
-              hint='Where does the anime information should be fetched.'
+              hint='Where does the core anime information should be fetched.'
             )
           v-flex(xs12, sm6, md4, lg3)
             v-select(
@@ -27,7 +27,7 @@
               :items='without(excludes.episodes)',
               v-model='episodes'
               persistent-hint,
-              hint='Where does the anime information should be fetched.'
+              hint='Where the episodes information (names, date,...) come from.'
             )
           v-flex(xs12, sm6, md4, lg3)
             v-select(
@@ -35,7 +35,7 @@
               :items='without(excludes.seasons)',
               v-model='seasons'
               persistent-hint,
-              hint='Where does the anime information should be fetched.'
+              hint='Which one gives the best seasonal chart?'
             )
           v-flex(xs12, sm6, md4, lg3)
             v-select(
@@ -43,7 +43,7 @@
               :items='without(excludes.news)',
               v-model='news'
               persistent-hint,
-              hint='Where does the anime information should be fetched.'
+              hint='Preferred news feed.'
             )
 </template>
 

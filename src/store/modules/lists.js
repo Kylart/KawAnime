@@ -44,7 +44,7 @@ export const subtitlesLanguages = [
 export const providers = [
   { value: 'mal', text: 'MyAnimeList.net' },
   { value: 'anilist', text: 'Anilist' },
-  { value: 'anidb', text: 'AniDB' },
+  // { value: 'anidb', text: 'AniDB' },
   { value: 'kitsu', text: 'Kitsu.io' }
 ]
 
