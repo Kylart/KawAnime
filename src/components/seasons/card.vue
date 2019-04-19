@@ -68,6 +68,8 @@ export default {
       set () {}
     },
     pictureUrl () {
+      if (this.$store.state.config.config.infoProvider.seasons !== 'mal') return this.info.picture
+
       const url = this.info.picture
       const sizeRegex = /\/r\/\d*x\d*/
       const parts = url.split('.')

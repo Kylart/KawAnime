@@ -1,5 +1,5 @@
 import { eventsList } from '../../../../vendor'
-import { mal } from '../../externals'
+import { mal, anilist } from '../../externals'
 import { Logger } from '../../utils'
 
 const events = eventsList.seasons
@@ -7,7 +7,8 @@ const events = eventsList.seasons
 const logger = new Logger('Seasons')
 
 const providers = {
-  mal: mal.season
+  mal: mal.season,
+  anilist: anilist.season
 }
 
 async function seasons (event, { provider, year, season }) {

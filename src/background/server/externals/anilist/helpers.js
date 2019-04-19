@@ -94,3 +94,23 @@ export function formatSearch (data) {
     }))
     : []
 }
+
+export function formatSeason (data) {
+  return Object.keys(data).reduce(
+    (acc, key) => {
+      acc[key] = data[key].media.map((entry) => ({
+        title: entry.title.userPreferred || entry.title.english || entry.title.romaji,
+        nbEp: entry.episodes || '?',
+        fromType: entry.source ? capitalize(entry.source) : '',
+        genres: entry.genres,
+        synopsis: entry.description ? entry.description.replace(/<br>/g, '') : 'No synopsis yet.',
+        score: entry.averageScore,
+        picture: entry.coverImage.extraLarge || entry.coverImage.large,
+        producers: entry.studios.nodes.map(({ name }) => name)
+      }))
+
+      return acc
+    },
+    {}
+  )
+}
