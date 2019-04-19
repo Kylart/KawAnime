@@ -8,7 +8,7 @@ export default async function ({ infoProvider, malId, id, name }) {
       return getEpisodesList({ id: _id, name: title })
     }
 
-    return getEpisodesList({ id: id || malId, name })
+    return getEpisodesList({ id: malId || id, name })
   } catch (e) {
     throw e
   }
