@@ -23,7 +23,7 @@
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
-    "buttercup": "^2.11.0",
+    "buttercup": "^2.12.0",
     "chalk": "^2.4.2",
     "electron-updater": "^4.0.6",
     "lodash": "^4.17.11",

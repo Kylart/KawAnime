@@ -2,15 +2,18 @@ import { existsSync, mkdirSync, readFileSync } from 'fs'
 import { Archive, Credentials, Datasources } from 'buttercup'
 
 import localFiles from './localFiles'
+import { Logger } from '../utils'
 
 const DIR_NAME = 'KawVault'
 const KEY_NAME = 'Schwi'
 const BCUP_FILE_NAME = 'Hestia.bcup'
+const GROUP_NAME = 'Haruka'
 
 const DIR = localFiles.getPath(DIR_NAME)
 const keyPath = localFiles.getPath(DIR_NAME, KEY_NAME)
 
 const { FileDatasource } = Datasources
+const logger = new Logger('Vault')
 
 function generateToken () {
   return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
@@ -29,23 +32,55 @@ function checkDir () {
   }
 }
 
+async function getArchive (fileDatasource) {
+  const key = readFileSync(keyPath, 'utf-8')
+
+  const credentials = Credentials.fromPassword(key)
+
+  const dataSource = await fileDatasource.load(credentials)
+  const archive = await Archive.createFromHistory(dataSource)
+
+  return archive
+}
+
+async function getGroup (fileDatasource) {
+  const archive = await getArchive(fileDatasource)
+
+  return archive.getGroups().find((g) => g.getTitle() === GROUP_NAME)
+}
+
 export async function setupCreds (service, creds) {
   try {
     checkDir()
 
-    const fileDatasource = new FileDatasource(localFiles.getPath(DIR_NAME, BCUP_FILE_NAME))
+    const _path = localFiles.getPath(DIR_NAME, BCUP_FILE_NAME)
+    const fileDatasource = new FileDatasource(_path)
+    const hasPath = existsSync(_path)
     const key = readFileSync(keyPath, 'utf-8')
-
-    const archive = Archive.createWithDefaults()
-    archive
-      .createGroup('Websites')
-      .createEntry(service)
-      .setProperty('username', creds.username)
-      .setProperty('password', creds.password)
-
     const credentials = Credentials.fromPassword(key)
 
-    await fileDatasource.save(archive.getHistory(), credentials)
+    if (hasPath) {
+      const archive = await getArchive(fileDatasource)
+      const group = archive.getGroups().find((g) => g.getTitle() === GROUP_NAME)
+      const entry = group.getEntries().find((_entry) => _entry.getProperty('title') === service)
+      const elem = entry || group.createEntry(service)
+
+      elem
+        .setProperty('username', creds.username)
+        .setProperty('password', creds.password)
+
+      await fileDatasource.save(archive.getHistory(), credentials)
+    } else {
+      const archive = Archive.createWithDefaults()
+
+      archive
+        .createGroup(GROUP_NAME)
+        .createEntry(service)
+        .setProperty('username', creds.username)
+        .setProperty('password', creds.password)
+
+      await fileDatasource.save(archive.getHistory(), credentials)
+    }
   } catch (e) {
     throw e
   }
@@ -60,21 +95,15 @@ export async function getCreds (service) {
     }
 
     const fileDatasource = new FileDatasource(_path)
-    const key = readFileSync(keyPath, 'utf-8')
-
-    const credentials = Credentials.fromPassword(key)
-
-    const archive = await Archive.createFromHistory(
-      await fileDatasource.load(credentials)
-    )
-
-    const group = archive.findGroupsByTitle('Websites')[0]
+    const group = await getGroup(fileDatasource)
     const entries = group.getEntries()
 
     // Finding the right entry.
     const entry = entries.find((entry) => entry.getProperty('title') === service)
 
     if (!entry) throw new Error('No service credentials for ' + service)
+
+    logger.info(`Retrieved credentials for ${service}.`)
 
     return {
       username: entry.getProperty('username'),
