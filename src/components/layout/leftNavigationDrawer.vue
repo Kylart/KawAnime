@@ -58,6 +58,13 @@ export default {
         href: '/torrenting'
       },
       { divider: true },
+      { header: 'Library' },
+      {
+        title: 'Animes',
+        action: 'tv',
+        href: '/localPage'
+      },
+      { divider: true },
       { header: 'Anime world' },
       {
         title: 'Seasons',
@@ -86,22 +93,8 @@ export default {
             title: 'Anilist',
             action: 'sort_by_alpha',
             href: '/services/anilist'
-          }
-        ]
-      },
-      { divider: true },
-      { header: 'Local' },
-      {
-        title: 'Anime related',
-        action: 'folder_open',
-        group: 'local',
-        items: [
-          {
-            title: 'Animes',
-            action: 'tv',
-            href: '/localPage'
           }, {
-            title: 'Watch list',
+            title: 'Local lists',
             action: 'sort_by_alpha',
             href: '/watchList'
           }
