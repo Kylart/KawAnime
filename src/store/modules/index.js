@@ -9,10 +9,10 @@ export { default as seasons } from './seasons'
 export { default as news } from './news'
 export { default as localFiles } from './localFiles'
 export { default as watchLists } from './watchLists'
-export { default as mal } from './mal'
 
 export { default as history } from './history'
 export { default as player } from './player'
 export { default as overlay } from './overlay'
 
 export { default as info } from './info'
+export { default as services } from './services'

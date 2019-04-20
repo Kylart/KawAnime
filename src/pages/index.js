@@ -22,13 +22,13 @@ export default [
     name: 'watchList',
     component: () => import(/* webpackChunkName: "localLists" */ './watchList.vue')
   }, {
-    path: '/malPage',
-    name: 'malPage',
-    component: () => import(/* webpackChunkName: "malPage" */ './malPage.vue')
-  }, {
     path: '/seasons',
     name: 'seasons',
     component: () => import(/* webpackChunkName: "seasons" */ './seasons.vue')
+  }, {
+    path: '/services/:provider',
+    name: 'services',
+    component: () => import(/* webpackChunkName: "seasons" */ './services.vue')
   },
   // Global redirect for 404
   { path: '*', redirect: '/' } // TODO: make a custom 404 page

@@ -2,7 +2,10 @@ import { eventsList } from '../../../../vendor'
 import { Logger } from '../../utils'
 import { getCreds } from '../../externals'
 
-const events = eventsList.vault.get
+const events = {
+  get: eventsList.vault.get,
+  has: eventsList.vault.has
+}
 
 const logger = new Logger('Vault (Get)')
 
@@ -19,7 +22,21 @@ async function getCredentials (event, service) {
   }
 }
 
-export default {
-  eventName: events.main,
-  handler: getCredentials
+async function hasCredentials (event, service) {
+  try {
+    const data = await getCreds(service)
+
+    event.returnValue = !!data
+  } catch (e) {
+    logger.error(`Could not retrieve credentials for ${service}`)
+    event.returnValue = { error: e.message }
+  }
 }
+
+export default [{
+  eventName: events.get.main,
+  handler: getCredentials
+}, {
+  eventName: events.has.main,
+  handler: hasCredentials
+}]

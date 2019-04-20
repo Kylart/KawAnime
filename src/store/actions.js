@@ -24,8 +24,6 @@ export default {
     dispatch('news/init')
     dispatch('seasons/init')
 
-    dispatch('mal/init')
-
     setInterval(() => {
       dispatch('checkOnlineStatus')
     }, 60 * 1000)
@@ -46,8 +44,6 @@ export default {
         dispatch('releases/refresh')
         dispatch('news/refresh')
         dispatch('seasons/refresh')
-
-        // dispatch('mal/get')
       }
     })
 

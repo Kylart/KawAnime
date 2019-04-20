@@ -34,7 +34,7 @@ const customs = {
   history: [ 'append', 'remove', 'get' ],
   search: [ 'url', 'name', 'term' ],
   services: [ 'connect', 'act' ],
-  vault: [ 'get', 'update', 'check' ],
+  vault: [ 'get', 'update', 'check', 'has' ],
   video: [ 'init', 'stop', 'subtitles', 'tracks', 'name' ],
   update: [ 'available', 'installable', 'install', 'progress' ]
 }

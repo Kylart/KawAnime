@@ -8,11 +8,11 @@ const logger = new Logger('Vault (Update)')
 
 async function setCredentials (event, { service, credentials }) {
   try {
-    const data = await setupCreds(service, credentials)
+    await setupCreds(service, credentials)
 
     logger.info(`Successfully registered credentials for ${service}.`)
 
-    event.returnValue = data
+    event.sender.send(events.success, service)
   } catch (e) {
     logger.error(`Could not register credentials for ${service}`)
     event.returnValue = { error: e.message }

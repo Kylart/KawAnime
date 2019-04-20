@@ -43,13 +43,32 @@ export default {
   mixins: [ Update ],
 
   data () {
-    const vm = this
-
     return {
       websites: [{
         title: 'MyAnimeList.net',
         service: 'mal',
-        credentials: vm.$store.state.mal.credentials,
+        credentials: {
+          username: '',
+          password: ''
+        },
+        show: false,
+        isOn: false
+      }, {
+        title: 'Kitsu.io',
+        service: 'kitsu',
+        credentials: {
+          username: '',
+          password: ''
+        },
+        show: false,
+        isOn: false
+      }, {
+        title: 'Anilist',
+        service: 'anilist',
+        credentials: {
+          username: '',
+          password: ''
+        },
         show: false,
         isOn: false
       }]
@@ -58,14 +77,11 @@ export default {
 
   methods: {
     updateCreds (website) {
-      // Gotta find the right website in data
-      const { credentials, service } = website
-
       // Setting those credentials for this service
-      this.$store.commit(`${service}/setCredentials`, credentials)
+      this.$store.dispatch(`services/set`, website)
 
       // Instanciating API with those new credentials
-      this.$store.dispatch(`${service}/setupAccount`, credentials)
+      // this.$store.dispatch(`credentials/`, credentials)
     }
   }
 }

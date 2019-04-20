@@ -69,6 +69,26 @@ export default {
         action: 'more',
         href: '/news'
       },
+      {
+        title: 'Watch lists',
+        action: 'web',
+        group: 'services',
+        items: [
+          {
+            title: 'MyAnimeList.net',
+            action: 'tv',
+            href: '/services/mal'
+          }, {
+            title: 'Kitsu.io',
+            action: 'sort_by_alpha',
+            href: '/services/kitsu'
+          }, {
+            title: 'Anilist',
+            action: 'sort_by_alpha',
+            href: '/services/anilist'
+          }
+        ]
+      },
       { divider: true },
       { header: 'Local' },
       {
@@ -84,10 +104,6 @@ export default {
             title: 'Watch list',
             action: 'sort_by_alpha',
             href: '/watchList'
-          }, {
-            title: 'MyAnimeList',
-            action: 'web',
-            href: '/malPage'
           }
         ]
       },
