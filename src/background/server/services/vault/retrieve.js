@@ -17,19 +17,18 @@ async function getCredentials (event, service) {
 
     event.returnValue = data
   } catch (e) {
-    logger.error(`Could not retrieve credentials for ${service}`)
+    logger.error(`Could not retrieve credentials for ${service}.`)
     event.returnValue = { error: e.message }
   }
 }
 
 async function hasCredentials (event, service) {
   try {
-    const data = await getCreds(service)
+    const { username } = await getCreds(service)
 
-    event.returnValue = !!data
+    event.sender.send(events.has.success, { username, service })
   } catch (e) {
-    logger.error(`Could not retrieve credentials for ${service}`)
-    event.returnValue = { error: e.message }
+    logger.error(`Could not retrieve credentials for ${service}.`)
   }
 }
 

@@ -1,10 +1,14 @@
 import { providers } from '../lists.js'
 
 export default {
-  ...providers.map(({ value }) => ({
-    [value]: {
-      username: '',
-      password: ''
+  ...providers.reduce((acc, { value }) => {
+    acc[value] = {
+      has: false,
+      username: null,
+      list: null,
+      error: null
     }
-  }))
+
+    return acc
+  }, {})
 }

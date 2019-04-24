@@ -11,6 +11,7 @@ import torrent from './torrent'
 import video from './video'
 import isOnline from './isOnline'
 import vault from './vault'
+import watchLists from './watchLists'
 
 const services = [
   ...config,
@@ -25,7 +26,8 @@ const services = [
   news,
   seasons,
   episodes,
-  isOnline
+  isOnline,
+  watchLists
 ]
 
 // auto update

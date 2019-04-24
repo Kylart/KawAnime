@@ -21,31 +21,28 @@ export default {
   components: { Header, Empty, List },
 
   mounted () {
-    for (const service of this.providers) {
-      this.creds[service] = this.$ipc.sendSync(this.$eventsList.vault.has.main, service)
-    }
+    this.$store.dispatch('services/getList', { service: this.provider })
   },
 
   data: () => ({
-    creds: {
-      mal: false,
-      kitsu: false,
-      anilist: false
-    }
+
   }),
 
   computed: {
-    providers () {
-      return Object.keys(this.creds)
+    creds: {
+      get () {
+        return this.$store.state.services[this.provider]
+      },
+      set () {}
     },
     provider () {
       return this.$route.params.provider
     },
     hasList () {
-      return false
+      return !!this.creds.lists
     },
     hasCreds () {
-      return this.creds[this.provider]
+      return this.creds.has
     }
   }
 }
