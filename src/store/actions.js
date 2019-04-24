@@ -13,7 +13,6 @@ export default {
     dispatch('info/init')
     dispatch('downloader/init')
     dispatch('torrents/init')
-    dispatch('services/init')
 
     dispatch('setEvents')
 
@@ -24,6 +23,7 @@ export default {
     dispatch('releases/init')
     dispatch('news/init')
     dispatch('seasons/init')
+    dispatch('services/init')
 
     setInterval(() => {
       dispatch('checkOnlineStatus')

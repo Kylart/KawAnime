@@ -18,7 +18,7 @@ async function lists (event, { service: provider, user }) {
 
     const data = await providers[provider](user)
 
-    logger.info(`Successfully retrieved ${user}'s watch lists.`)
+    logger.info(`Successfully retrieved ${user}'s watch lists with ${provider}.`)
 
     event.sender.send(events.success, { service: provider, list: data })
   } catch (e) {

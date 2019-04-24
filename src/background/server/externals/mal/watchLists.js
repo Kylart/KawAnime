@@ -1,4 +1,5 @@
 import { getWatchListFromUser } from 'mal-scraper'
+import { formatList } from './helpers'
 
 export default async function (username) {
   try {
@@ -12,12 +13,18 @@ export default async function (username) {
         offset += data.length
 
         result = [ ...result, ...data ]
+
+        // MAL max page result is 300, so we look for the next entries
+        // only if there are 300 entries.
+        if (data.length !== 300) {
+          break
+        }
       } else {
         break
       }
     }
 
-    return result
+    return formatList(result)
   } catch (e) {
     throw e
   }

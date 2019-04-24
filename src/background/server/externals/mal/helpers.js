@@ -93,3 +93,17 @@ export function formatSearch (data) {
     }
   }))
 }
+
+export function formatList (data) {
+  return data.map((entry) => ({
+    ...entry,
+    id: entry.animeId,
+    title: entry.animeTitle,
+    score: entry.score,
+    progress: entry.numWatchedEpisodes,
+    status: entry.status,
+    nbEp: entry.animeNumEpisodes,
+    format: entry.format,
+    tags: entry.tags
+  }))
+}

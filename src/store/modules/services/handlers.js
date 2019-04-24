@@ -12,8 +12,10 @@ export const watchLists = {
 }
 
 export const has = {
-  success (commit, { service, username }) {
+  success ({ state, commit, dispatch }, { service, username }) {
     username && commit('setUser', { service, username })
     commit('hasUser', service)
+
+    if (!state[service].list) dispatch('getList', { service })
   }
 }

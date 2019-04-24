@@ -117,6 +117,7 @@ export function formatSeason (data) {
 
 export function formatList (data) {
   return data.MediaListCollection.lists[0].entries.map((entry) => ({
+    ...entry,
     id: entry.media.id,
     title: entry.media.title.userPreferred || entry.media.title.english || entry.media.title.romaji,
     score: entry.score,

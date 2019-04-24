@@ -20,10 +20,6 @@ export default {
 
   components: { Header, Empty, List },
 
-  mounted () {
-    this.$store.dispatch('services/getList', { service: this.provider })
-  },
-
   data: () => ({
 
   }),
