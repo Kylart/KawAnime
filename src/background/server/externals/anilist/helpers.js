@@ -63,7 +63,7 @@ export function formatInfo (rawData) {
     malId: data.idMal,
     img: data.coverImage.extraLarge || data.coverImage.large,
     type: data.format,
-    synopsis: data.description.replace(/<br>/g, ''),
+    synopsis: data.description && data.description.replace(/<br>/g, ''),
     score: data.averageScore,
     scoreOutOf: 100,
     nbVotes: data.stats.scoreDistribution.reduce((acc, { amount }) => (acc + amount), 0),
@@ -113,4 +113,17 @@ export function formatSeason (data) {
     },
     {}
   )
+}
+
+export function formatList (data) {
+  return data.MediaListCollection.lists[0].entries.map((entry) => ({
+    id: entry.media.id,
+    title: entry.media.title.userPreferred || entry.media.title.english || entry.media.title.romaji,
+    score: entry.score,
+    progress: entry.progress,
+    note: entry.notes,
+    status: capitalize(entry.status || ''),
+    nbEp: entry.media.episodes,
+    format: entry.media.format
+  }))
 }

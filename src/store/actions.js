@@ -13,6 +13,7 @@ export default {
     dispatch('info/init')
     dispatch('downloader/init')
     dispatch('torrents/init')
+    dispatch('services/init')
 
     dispatch('setEvents')
 
