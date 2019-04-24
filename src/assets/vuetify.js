@@ -60,7 +60,8 @@ import Vuetify, {
   VAutocomplete,
   VSpacer,
   VFadeTransition,
-  VScaleTransition
+  VScaleTransition,
+  VExpandTransition
 } from 'vuetify/lib'
 
 import directives from 'vuetify/lib/directives'
@@ -128,7 +129,8 @@ export default (Vue) => {
       VAutocomplete,
       VSpacer,
       VFadeTransition,
-      VScaleTransition
+      VScaleTransition,
+      VExpandTransition
     },
     directives
   })

@@ -19,7 +19,8 @@
                 ripple
               )
                 v-list-tile-action
-                  v-icon {{ subItem.action }}
+                  v-icon(v-if='!subItem.custom') {{ subItem.action }}
+                  div(v-else, :class='subItem.custom')
                 v-list-tile-content
                   v-list-tile-title
                     span {{ subItem.title }}
@@ -82,16 +83,16 @@ export default {
         group: 'services',
         items: [
           {
+            custom: { 'provider-icon': true, 'mal-icon': true },
             title: 'MyAnimeList.net',
-            action: 'tv',
             href: '/services/mal'
           }, {
+            custom: { 'provider-icon': true, 'kitsu-icon': true },
             title: 'Kitsu.io',
-            action: 'sort_by_alpha',
             href: '/services/kitsu'
           }, {
+            custom: { 'provider-icon': true, 'anilist-icon': true },
             title: 'Anilist',
-            action: 'sort_by_alpha',
             href: '/services/anilist'
           }, {
             title: 'Local lists',
