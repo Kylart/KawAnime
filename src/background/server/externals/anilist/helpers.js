@@ -3,22 +3,26 @@ function capitalize (word) {
 }
 
 function generateSentence (data) {
-  const { status, season, startDate, episodes, duration } = data
+  const { status, source, season, startDate, episodes, duration } = data
+
+  const _source = source === 'ORIGINAL'
+    ? 'is an Original'
+    : `adapted from the ${source.toLowerCase()}`
 
   const nbEpisodes = episodes
-    ? 'Yet an unknown number of episodes'
-    : `It's been announced with ${episodes} episodes`
+    ? `It's been announced with ${episodes} episodes`
+    : 'Yet an unknown number of episodes'
 
   const _duration = duration
-    ? 'of an unknown duration.'
-    : `of ${duration} minutes`
+    ? `of ${duration} minutes`
+    : 'of an unknown duration.'
 
   const _status = status ? capitalize(status) : ''
   const _season = season && startDate
     ? `, released in ${capitalize(season)} ${startDate.year}`
     : ''
 
-  return `${_status} ${_season}. ${nbEpisodes} ${_duration}`
+  return `${_status}${_season} and ${_source}. ${nbEpisodes} ${_duration}`
 }
 
 function getChars (chars) {
@@ -66,7 +70,9 @@ export function formatInfo (rawData) {
     synopsis: data.description && data.description.replace(/<br>/g, ''),
     score: data.averageScore,
     scoreOutOf: 100,
-    nbVotes: data.stats.scoreDistribution.reduce((acc, { amount }) => (acc + amount), 0),
+    nbVotes: data.stats.scoreDistribution
+      ? data.stats.scoreDistribution.reduce((acc, { amount }) => (acc + amount), 0) + ' votes'
+      : '',
     nbEpisodes: data.episodes,
     sentence: generateSentence(data),
     rating: data.isAdult ? 'NSFW' : 'SFW',
