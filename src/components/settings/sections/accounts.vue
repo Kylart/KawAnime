@@ -30,7 +30,9 @@
                 v-btn(flat, @click='updateCreds(website)') Update
         v-card-actions
           v-spacer
-          .conditions Erase both fields to remove the account
+          v-layout(column, align-end)
+            .conditions If you only need to see you watch lists, only setup your username
+            .conditions To remove an account, remove the username and press Update
 </template>
 
 <script>
@@ -48,7 +50,7 @@ export default {
         title: 'MyAnimeList.net',
         service: 'mal',
         credentials: {
-          username: '',
+          username: this.$store.state.services.mal.username || '',
           password: ''
         },
         show: false,
@@ -57,7 +59,7 @@ export default {
         title: 'Kitsu.io',
         service: 'kitsu',
         credentials: {
-          username: '',
+          username: this.$store.state.services.kitsu.username || '',
           password: ''
         },
         show: false,
@@ -66,7 +68,7 @@ export default {
         title: 'Anilist',
         service: 'anilist',
         credentials: {
-          username: '',
+          username: this.$store.state.services.anilist.username || '',
           password: ''
         },
         show: false,
