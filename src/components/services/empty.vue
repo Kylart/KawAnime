@@ -16,7 +16,7 @@ export default {
       return this.$route.params.provider
     },
     providerName () {
-      const _provider = this.$store.providers.find(({ value }) => value === this.provider)
+      const _provider = this.$store.state.config.providers.find(({ value }) => value === this.provider)
 
       return _provider ? _provider.text : ''
     }

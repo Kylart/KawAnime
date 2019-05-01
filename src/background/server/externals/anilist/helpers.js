@@ -131,6 +131,7 @@ export function formatList (data) {
     note: entry.notes,
     status: capitalize(entry.status || ''),
     nbEp: entry.media.episodes,
-    format: entry.media.format
+    format: entry.media.format,
+    img: entry.media.coverImage.extraLarge || entry.media.coverImage.large
   }))
 }

@@ -1,25 +1,24 @@
 <template lang="pug">
-  div
-    v-container(fluid)
-      transition(name='fade', mode='out-in')
-        template(v-if='hasCreds || hasList')
-          v-layout(column, key='list')
-            tools(
-              :provider='provider',
-              :hasTags='hasTags',
-              @tags='setTags',
-              @term='setTerm'
-            )
+  v-container(fluid, pt-0)
+    transition(name='fade', mode='out-in')
+      template(v-if='hasCreds || hasList')
+        v-layout(column, key='list')
+          tools(
+            :provider='provider',
+            :hasTags='hasTags',
+            @tags='setTags',
+            @term='setTerm'
+          )
 
-            list(
-              ref='list',
-              :hasTags='hasTags',
-              :tags='search.tags',
-              :term='search.term',
-              :list='creds.list'
-            )
+          list(
+            ref='list',
+            :hasTags='hasTags',
+            :tags='search.tags',
+            :term='search.term',
+            :list='creds.list'
+          )
 
-        empty(v-else, key='empty')
+      empty(v-else, key='empty')
 </template>
 
 <script>

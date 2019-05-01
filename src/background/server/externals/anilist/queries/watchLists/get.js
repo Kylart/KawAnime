@@ -10,6 +10,10 @@ export default function (username) {
           notes
           media {
             id
+            coverImage {
+              extraLarge
+              large
+            }
             title {
               userPreferred
               native

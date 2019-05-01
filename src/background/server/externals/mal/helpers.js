@@ -1,3 +1,11 @@
+const STATUS = {
+  1: 'Watching',
+  2: 'Completed',
+  3: 'On Hold',
+  4: 'Dropped',
+  6: 'Plan to watch'
+}
+
 function formatCharacters (characters) {
   return characters.map((char) => ({
     link: char.link,
@@ -101,9 +109,10 @@ export function formatList (data) {
     title: entry.animeTitle,
     score: entry.score,
     progress: entry.numWatchedEpisodes,
-    status: entry.status,
+    status: STATUS[entry.status],
     nbEp: entry.animeNumEpisodes,
     format: entry.animeMediaTypeString,
-    tags: entry.tags
+    tags: entry.tags,
+    img: getPictureUrl(entry.animeImagePath)
   }))
 }

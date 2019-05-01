@@ -1,19 +1,40 @@
 <template lang="pug">
-  v-data-table(
+  v-data-table.mt-3(
     v-model='selected',
     :headers='headers',
-    :items='list',
+    :items='list || []',
     :search='term',
     item-key='id',
+    rows-per-page-text='Anime per page:',
+    :rows-per-page-items="[10, 15, 25, 50, 100, { text: 'All', value: -1 }]",
     class='elevation-1'
   )
     template(v-slot:items='props')
-      td {{ props.item.title }}
-      td.text-xs-right {{ props.item.score }}
-      td.text-xs-right {{ props.item.progress }}
-      td.text-xs-right {{ props.item.status }}
-      td.text-xs-center {{ props.item.format }}
-      td.text-xs-right {{ props.item[hasTags ? 'tags' : 'note'] }}
+      td
+        v-img(
+          :src='props.item.img',
+          :lazy-src='props.item.img',
+          aspect-ratio='1',
+          :max-height='70',
+          contain
+        )
+          template(v-slot:placeholder)
+            v-layout(
+              fill-height,
+              align-center,
+              justify-center,
+              ma-0
+            )
+              v-progress-circular(indeterminate)
+      td.entry-title {{ props.item.title }}
+      td.text-xs-right.normal-text {{ props.item.status }}
+      td.text-xs-right.normal-text {{ props.item.format }}
+      td.text-xs-right.normal-text {{ props.item.score }}
+      td.text-xs-right.normal-text.ellipsis {{ props.item[hasTags ? 'tags' : 'note'] }}
+      td
+        v-layout(column, align-center, justify-center)
+          span.pb-1 {{ props.item.progress }} / {{ props.item.nbEp }}
+          v-progress-linear.ma-0(:value='(props.item.progress / props.item.nbEp) * 100', :max='props.item.nbEp')
 </template>
 
 <script>
@@ -26,20 +47,22 @@ export default {
     return {
       selected: [],
       headers: [
+        { text: 'Thumbnail', value: 'img', sortable: false, align: 'center' },
         {
           text: 'Title',
           align: 'left',
-          sortable: false,
           value: 'title'
         },
-        { text: 'Score', value: 'score' },
-        { text: 'Progress', value: 'progress' },
-        { text: 'Status', value: 'status' },
-        { text: 'Format', value: 'format' },
+        { text: 'Status', value: 'status', align: 'right' },
+        { text: 'Format', value: 'format', align: 'right' },
+        { text: 'Score', value: 'score', align: 'right' },
         {
           text: this.hasTags ? 'Tags' : 'Note',
-          value: this.hasTags ? 'tags' : 'note'
-        }
+          value: this.hasTags ? 'tags' : 'note',
+          sortable: false,
+          align: 'right'
+        },
+        { text: 'Progress', value: 'progress', align: 'center' }
       ]
     }
   },
@@ -51,3 +74,14 @@ export default {
   }
 }
 </script>
+
+<style lang="stylus" scoped>
+  .entry-title
+    font-size 15px
+    font-weight 200
+    letter-spacing 0.04em
+
+  .normal-text
+    letter-spacing 0.02em
+    max-width 15%
+</style>

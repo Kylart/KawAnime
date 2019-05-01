@@ -67,7 +67,7 @@ export default {
       this.$store.commit('services/showForm', { service: this.provider, bool: true })
     },
     refresh () {
-      this.$store.commit('services/getList', { service: this.provider })
+      this.$store.dispatch('services/getList', { service: this.provider })
     }
   },
 
