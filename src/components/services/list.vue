@@ -30,7 +30,10 @@
       td.text-xs-right.normal-text {{ props.item.status }}
       td.text-xs-right.normal-text {{ props.item.format }}
       td.text-xs-right.normal-text {{ props.item.score }}
-      td.text-xs-right.normal-text.ellipsis {{ props.item[hasTags ? 'tags' : 'note'] }}
+      td
+        v-tooltip(top, lazy)
+          .text-xs-right.normal-text.ellipsis(slot='activator') {{ props.item[hasTags ? 'tags' : 'note'] }}
+          span {{ props.item[hasTags ? 'tags' : 'note'] }}
       td
         v-layout(column, align-center, justify-center)
           span.pb-1 {{ props.item.progress }} / {{ props.item.nbEp }}
@@ -90,5 +93,5 @@ export default {
 
   .normal-text
     letter-spacing 0.02em
-    max-width 15%
+    max-width 250px
 </style>

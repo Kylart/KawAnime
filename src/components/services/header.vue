@@ -1,7 +1,8 @@
 <template lang="pug">
   //- We just need a refresh and add button, tag research and name research fields
   v-container(grid-list-xl, pa-0)
-    v-layout(justify-end, align-center)
+    v-layout(justify-space-around, align-center)
+      .provider-name {{ providerName }}
       v-flex(
         xs12, sm6, md4,
         v-show='hasTags'
@@ -43,11 +44,14 @@ export default {
   }),
 
   computed: {
+    providerName () {
+      return this.$store.state.config.providers.find(({ value }) => value === this.provider).text
+    },
     canAdd () {
       return this.$store.state.services[this.provider].isConnected
     },
     availableTags () {
-      if (!this.hasTags) return
+      if (!this.hasTags || !this.list || !this.list.length) return []
 
       return this.list
         .reduce((acc, { tags }) => [ ...acc, ...tags.split(', ') ], [])
@@ -82,3 +86,11 @@ export default {
   }
 }
 </script>
+
+<style lang="stylus" scoped>
+  .provider-name
+    font-size 24px
+    font-weight 300
+    letter-spacing 0.03em
+    padding 0 24px 0 0
+</style>
