@@ -1,4 +1,4 @@
-import { ipcRenderer } from '@/store/utils'
+import { ipcRenderer, log } from '@/store/utils'
 import { eventsList } from '@/vendor'
 import * as handlers from './handlers'
 import { providers } from '../lists.js'
@@ -17,6 +17,8 @@ export default {
     ipcRenderer.send(eventsList.vault.has.main, service)
   },
   getList ({ state }, { service, username }) {
+    log(`Retrieving list for ${service}.`)
+
     ipcRenderer.send(eventsList.watchLists.main, {
       service,
       user: username || state[service].username

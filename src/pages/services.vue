@@ -1,27 +1,43 @@
 <template lang="pug">
   div
-    v-container(grid-list-md)
-      v-layout(column)
-        header
+    v-container(fluid)
+      transition(name='fade', mode='out-in')
+        template(v-if='hasCreds || hasList')
+          v-layout(column, key='list')
+            tools(
+              :provider='provider',
+              :hasTags='hasTags',
+              @tags='setTags',
+              @term='setTerm'
+            )
 
-        transition(name='fade', mode='out-in')
-          list(v-if='hasCreds || hasList', ref='list', key='list')
+            list(
+              ref='list',
+              :hasTags='hasTags',
+              :tags='search.tags',
+              :term='search.term',
+              :list='creds.list'
+            )
 
-          empty(v-else, key='empty')
+        empty(v-else, key='empty')
 </template>
 
 <script>
-import Header from '@/components/services/header.vue'
+import Tools from '@/components/services/header.vue'
 import Empty from '@/components/services/empty.vue'
 import List from '@/components/services/list.vue'
 
 export default {
   name: 'Services',
 
-  components: { Header, Empty, List },
+  components: { Tools, Empty, List },
 
   data: () => ({
-
+    providerHasTags: ['mal'],
+    search: {
+      term: '',
+      tags: []
+    }
   }),
 
   computed: {
@@ -37,8 +53,20 @@ export default {
     hasList () {
       return !!this.creds.lists
     },
+    hasTags () {
+      return this.providerHasTags.includes(this.provider)
+    },
     hasCreds () {
       return this.creds.has
+    }
+  },
+
+  methods: {
+    setTags (arr) {
+      this.search.tags = arr
+    },
+    setTerm (term) {
+      this.search.term = term
     }
   }
 }

@@ -130,6 +130,7 @@
 export default {
   data () {
     return {
+      service: 'mal',
       datePickers: [false, false],
       status: [
         { text: 'Watching', value: 1 },
@@ -204,17 +205,19 @@ export default {
   computed: {
     show: {
       get () {
-        return this.$store.state.mal.form
+        return this.$store.state.services[this.service].form.show
       },
       set (bool) {
-        this.$store.commit('mal/showForm', bool)
+        this.$store.commit('services/showForm', { service: this.service, bool })
       }
     },
     entry () {
-      return this.$store.state.mal.entry
+      return this.$store.state.services[this.service].form.entry
     },
     entryTitle () {
-      return ': ' + (this.entry.animeTitle || this.entry.name)
+      return this.entry.animeTitle
+        ? ': ' + (this.entry.animeTitle || this.entry.name)
+        : ''
     },
     nbEpisodes () {
       return this.entry.animeNumEpisodes || this.entry.episodes
@@ -228,12 +231,12 @@ export default {
   },
   methods: {
     close () {
-      this.$store.commit('mal/showForm', false)
+      this.$store.commit('services/showForm', { service: this.service, bool: false })
       this.form = this.initForm
     },
     submit () {
-      const id = this.entry.id || this.entry.animeId
-      const opts = this.$_.clone(this.form)
+      // const id = this.entry.id || this.entry.animeId
+      const opts = { ...this.form }
 
       opts.tags = opts.tags.join(', ')
 
@@ -253,29 +256,29 @@ export default {
       opts.date_start = formatDate(opts.date_start)
       opts.date_finish = formatDate(opts.date_finish)
 
-      this.$store.dispatch('mal/actOnList', {
-        type: {
-          support: 'anime',
-          action: this.isEdit ? 'update' : 'add'
-        },
-        id,
-        opts
-      })
+      // this.$store.dispatch('mal/actOnList', {
+      //   type: {
+      //     support: 'anime',
+      //     action: this.isEdit ? 'update' : 'add'
+      //   },
+      //   id,
+      //   opts
+      // })
 
       this.close()
     },
     deleteEntry () {
-      const id = this.entry.id
+      // const { id } = this.entry
 
-      this.$store.dispatch('mal/actOnList', {
-        type: {
-          support: 'anime',
-          action: 'delete'
-        },
-        id
-      })
+      // this.$store.dispatch('mal/actOnList', {
+      //   type: {
+      //     support: 'anime',
+      //     action: 'delete'
+      //   },
+      //   id
+      // })
 
-      this.$store.commit('mal/removeFromLists', id)
+      // this.$store.commit('services/removeFromList', id)
       this.close()
     }
   },
@@ -292,7 +295,7 @@ export default {
 
       const { id, name, url } = obj
       const handler = (e, data) => {
-        this.$store.commit('mal/setEntry', { id, ...data })
+        this.$store.commit('services/setFormEntry', { id, ...data })
         this.$ipc.removeListener(this.$eventsList.search.url.main, handler)
       }
 

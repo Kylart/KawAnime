@@ -11,5 +11,11 @@ export default {
   },
   setError (state, { service, msg }) {
     state[service].error = msg
+  },
+  showForm (state, { service, bool }) {
+    state[service].form.show = bool
+  },
+  setFormEntry (state, { service, entry }) {
+    state[service].form.entry = entry
   }
 }

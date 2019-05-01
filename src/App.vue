@@ -14,7 +14,7 @@
     overlay(v-show='overlay')
     video-modal(v-show='$store.state.streaming.player.show')
     magnets-modal
-    // mal-form
+    mal-form
 
     //- Used for displaying any info
     v-snackbar(

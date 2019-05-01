@@ -103,7 +103,7 @@ export function formatList (data) {
     progress: entry.numWatchedEpisodes,
     status: entry.status,
     nbEp: entry.animeNumEpisodes,
-    format: entry.format,
+    format: entry.animeMediaTypeString,
     tags: entry.tags
   }))
 }
