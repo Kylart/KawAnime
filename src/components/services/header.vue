@@ -35,7 +35,7 @@
 export default {
   name: 'Service-Header',
 
-  props: ['provider', 'hasTags'],
+  props: ['provider', 'hasTags', 'list'],
 
   data: () => ({
     selectedTags: [],
@@ -49,7 +49,11 @@ export default {
     availableTags () {
       if (!this.hasTags) return
 
-      return []
+      return this.list
+        .reduce((acc, { tags }) => [ ...acc, ...tags.split(', ') ], [])
+        .filter(({ tag }, index, arr) => !arr.includes(tag))
+        .filter(Boolean)
+        .sort()
     },
     term: {
       get () {

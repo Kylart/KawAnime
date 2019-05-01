@@ -6,6 +6,7 @@
           tools(
             :provider='provider',
             :hasTags='hasTags',
+            :list='creds.list',
             @tags='setTags',
             @term='setTerm'
           )

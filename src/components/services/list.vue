@@ -2,7 +2,7 @@
   v-data-table.mt-3(
     v-model='selected',
     :headers='headers',
-    :items='list || []',
+    :items='filteredList',
     :search='term',
     item-key='id',
     rows-per-page-text='Anime per page:',
@@ -70,6 +70,13 @@ export default {
   computed: {
     isEmpty () {
       return this.list && this.list.length
+    },
+    filteredList () {
+      if (!this.hasTags || !this.tags || !this.tags.length) return this.list || []
+
+      return this.list.filter(
+        ({ tags }) => tags.split(', ').some((tag) => this.tags.includes(tag))
+      )
     }
   }
 }
