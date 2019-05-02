@@ -5,7 +5,7 @@ import eventsList from './events'
 
 const { ipcRenderer: ipc, remote } = electron
 
-ipc.setMaxListeners(30)
+ipc.setMaxListeners(40)
 
 function log (...args) {
   console.log(`[${(new Date()).toLocaleTimeString()}]:`, ...args)
