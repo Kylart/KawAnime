@@ -4,7 +4,7 @@ import { readFileSync, createReadStream, watchFile, unwatchFile } from 'fs'
 import { BrowserWindow, app } from 'electron'
 
 import generateServer from '../video/createServer'
-import { parseSubtitles } from '../../externals'
+import { parseSubtitles, localFiles } from '../../externals'
 import { eventsList } from '../../../../vendor'
 import cleanTorrents from './format'
 import { save, load } from './storage'
@@ -193,7 +193,8 @@ function play (event, { link: id }) {
   }
 
   if (!torrent) {
-    client.add(isFile ? readFileSync(id) : id, createServers)
+    const { config: { torrentClient: { streamingPath } } } = localFiles.getFile('config.json')
+    client.add(isFile ? readFileSync(id) : id, { path: streamingPath }, createServers)
   } else {
     torrent.ready
       ? createServers(torrent)

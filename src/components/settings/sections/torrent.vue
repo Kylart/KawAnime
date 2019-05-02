@@ -1,17 +1,42 @@
 <template lang="pug">
-  //- We need directory and inside choice.
-  v-card.elevation-12
-    v-card-title.section-title Torrent client configuration
-    v-divider
-    v-card-text
-      v-container(grid-list-lg, pa-0)
-        v-layout(row, wrap, justify-center, align-center)
-          v-flex(xs12, sm4, md2)
-            v-btn(flat, @click='openDialog') Change Dir
-          v-flex(xs12, sm8, md8)
-            .path.ellipsis.pl-2 {{ path }}
-          v-flex(xs12, sm6, md4)
-            v-btn(:disabled='isDefault', :loading='defaultLoading', @click='setDefault') {{ defaultLabel }}
+  div
+    v-card.elevation-12.mb-3
+      v-card-title.section-title Torrent client configuration
+
+    v-card.elevation-12.mb-3
+      v-card-title.section-title Download settings
+      v-divider
+      v-card-text
+        v-container(grid-list-lg, pa-0)
+          v-layout(row, wrap, justify-center, align-center)
+            v-flex(xs12, sm4, md2)
+              v-btn(flat, @click='openDialog') Change Dir
+            v-flex(xs12, sm8, md8)
+              .path.ellipsis.pl-2 {{ path }}
+            v-flex(xs12, sm6, md4)
+              v-btn(:disabled='isDefault', :loading='defaultLoading', @click='setDefault') {{ defaultLabel }}
+
+    v-card.elevation-12
+      v-card-title.section-title Streaming settings
+      v-divider
+      v-card-text
+        v-container(grid-list-lg, pa-0)
+          v-layout(justify-space-around, align-center)
+            v-btn(flat, @click="openDialog('streaming')") Change Dir
+            .path.ellipsis.pl-2 {{ streamingPath }}
+            v-tooltip(top, lazy)
+              v-btn(icon, slot='activator', @click='openStreamingFolder')
+                v-icon open_in_new
+              span Open
+            v-tooltip(top, lazy)
+              v-btn(icon, slot='activator', @click='resetToTmp')
+                v-icon(large) refresh
+              span Reset to temporary folder
+      v-card-actions
+        v-spacer
+        v-layout(column, align-end)
+          .conditions When streaming, the file is temporarely kept on your computer
+          .conditions You can keep those if you choose another folder that the temporary one
 </template>
 
 <script>
@@ -39,6 +64,14 @@ export default {
   },
 
   computed: {
+    streamingPath: {
+      get () {
+        return this.config.torrentClient.streamingPath
+      },
+      set (val) {
+        this.setDeepValue('torrentClient.streamingPath', val)
+      }
+    },
     path: {
       get () {
         return this.config.torrentClient.defaultPath
@@ -55,10 +88,16 @@ export default {
   },
 
   methods: {
-    async openDialog () {
+    resetToTmp () {
+      this.streamingPath = this.$electron.remote.app.getPath('temp')
+    },
+    openStreamingFolder () {
+      this.$electron.shell.openItem(this.streamingPath)
+    },
+    async openDialog (typ) {
       const path = await this.$openDialog()
 
-      if (path) this.path = path
+      if (path) this[typ === 'streaming' ? 'streamingPath' : 'path'] = path
     },
     async setDefault () {
       this.$log('Registering as default torrent app...')

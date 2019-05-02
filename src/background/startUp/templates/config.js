@@ -1,6 +1,8 @@
 import { app } from 'electron'
 
 const defaultProvider = 'mal'
+const downloadPath = app.getPath('downloads')
+const tmpPath = app.getPath('temp')
 
 export default {
   filename: 'config.json',
@@ -16,7 +18,7 @@ export default {
         seasons: defaultProvider,
         news: defaultProvider
       },
-      localPath: app.getPath('downloads'),
+      localPath: downloadPath,
       sound: 'Nyanpasu',
       notificationVolume: 0.5,
       inside: true,
@@ -41,7 +43,8 @@ export default {
         quality: '720p'
       },
       torrentClient: {
-        defaultPath: app.getPath('downloads')
+        defaultPath: downloadPath,
+        streamingPath: tmpPath
       }
     }
   }
