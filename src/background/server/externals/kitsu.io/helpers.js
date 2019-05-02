@@ -2,6 +2,10 @@ import { https, graphql } from '../../utils'
 import * as queries from './queries'
 import { GRAPHQL_ENDPOINT } from './utils'
 
+function capitalize (word) {
+  return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+}
+
 function generateSentence (data) {
   const { status, startDate, endDate, episodeCount: episodes, episodeLength: duration } = data
 
@@ -133,4 +137,36 @@ export function formatSearch (data) {
       name: entry.attributes.titles.en || entry.attributes.titles.en_jp
     }
   }))
+}
+
+export function formatList (data) {
+  const { entries, animes } = data.included.reduce(
+    (acc, elem) => {
+      elem.type === 'libraryEntries'
+        ? acc.entries.push(elem)
+        : acc.animes.push(elem)
+
+      return acc
+    }, {
+      entries: [],
+      animes: []
+    }
+  )
+
+  return entries.map(({ attributes: entry }, index) => {
+    const anime = animes[index].attributes
+
+    return {
+      ...entry,
+      ...anime,
+      title: anime.titles.en_jp || anime.canonicalTitle || anime.titles.en || anime.titles.en_us,
+      score: entry.ratingTwenty,
+      progress: entry.progress,
+      note: entry.notes,
+      status: capitalize(entry.status),
+      nbEp: anime.episodeCount,
+      format: anime.subtype,
+      img: anime.posterImage.original || anime.posterImage.large || anime.posterImage.medium
+    }
+  })
 }
