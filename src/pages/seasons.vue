@@ -20,8 +20,16 @@
         transition(name='fade', mode='out-in')
           v-container(
             key='season', v-if='!refreshing',
-            fluid, grid-list-md
+            fluid, grid-list-md, pt-0
           )
+            v-layout(justify-baseline, align-center, pa-3)
+              v-flex(xs12, sm8, md4, lg2)
+                v-text-field(
+                  label='Search'
+                  v-model='term',
+                  hide-details,
+                  clearable
+                )
             v-layout(row, wrap)
               template(v-for='entry in reduced')
                 card(:info='entry')
@@ -51,7 +59,8 @@ export default {
   data: () => ({
     active: 0,
     sup: 8,
-    initSup: 8
+    initSup: 8,
+    term: ''
   }),
 
   computed: {
@@ -70,6 +79,7 @@ export default {
     entries () {
       const tab = this.tabs[this.active]
       const entries = this.seasons[tab]
+        .filter(({ title }) => title.toLowerCase().includes(this.term.toLowerCase()))
 
       return entries
     }
