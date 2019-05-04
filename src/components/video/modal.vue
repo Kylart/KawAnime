@@ -145,17 +145,19 @@ export default {
       if (this.listeners.hasOwnProperty(e.keyCode)) this.listeners[e.keyCode]()
     },
     setNext (next) {
-      this.$store.dispatch('streaming/play', {
-        link: next.path,
-        name: `${next.title} - ${next.episodeOrMovieNumber}`,
-        neighbours: null
-      })
-
       // Doing this allows us to rebuild the player from scratch, making
       // all the work needed for the subtitles, history and stuff...
       this.playerKey = Math.random()
 
-      this.$store.dispatch('streaming/getNeighbours')
+      this.$nextTick(() => {
+        this.$store.dispatch('streaming/play', {
+          link: next.path,
+          name: `${next.title} - ${next.episodeOrMovieNumber}`,
+          neighbours: null
+        })
+
+        this.$store.dispatch('streaming/getNeighbours')
+      })
     }
   },
 

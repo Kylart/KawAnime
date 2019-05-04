@@ -17,6 +17,8 @@ function closeServer (event) {
     subtitleStream && subtitleStream.close()
 
     event.sender.send(events.stop.success)
+
+    logger.info('Closed local video server.')
   } catch (e) {
     logger.error('Could not close server.', e)
   }

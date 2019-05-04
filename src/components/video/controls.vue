@@ -85,7 +85,7 @@ export default {
     },
     // Because I'm lazy
     changeTimeline (value) {
-      this.$parent.changeTimeline(value)
+      value && this.$parent.changeTimeline(value)
     },
     changeVolume (value) {
       this.$parent.changeVolume(value)
