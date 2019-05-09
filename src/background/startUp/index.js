@@ -1,3 +1,4 @@
+import { app } from 'electron'
 import { writeFileSync, existsSync, mkdirSync } from 'fs'
 import { join } from 'path'
 import { each } from 'lodash'
@@ -10,6 +11,10 @@ import migrate from './migration'
 const logger = new Logger('Init')
 
 function checkDir () {
+  if (!existsSync(app.getPath('userData'))) {
+    mkdirSync(app.getPath('userData'))
+  }
+
   if (!existsSync(dir)) {
     mkdirSync(dir)
 
