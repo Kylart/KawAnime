@@ -100,7 +100,7 @@ export default {
 
     // Removing cue styling from head
     const styleTag = document.querySelector(`style[name="${this.value}"]`)
-    document.head.removeChild(styleTag)
+    styleTag instanceof Node && document.head.removeChild(styleTag)
 
     this.isMagnet
       ? this.$ipc.send(this.$eventsList.torrent.destroy.main, this.$store.state.streaming.player.torrent)
