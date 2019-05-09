@@ -151,7 +151,8 @@ export default {
 
       this.$nextTick(() => {
         this.$store.dispatch('streaming/play', {
-          link: next.path,
+          isTorrent: next.hasOwnProperty('link'),
+          link: next.path || next.link,
           name: `${next.title} - ${next.episodeOrMovieNumber}`,
           neighbours: null
         })

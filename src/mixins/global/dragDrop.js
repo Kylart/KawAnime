@@ -1,3 +1,5 @@
+import { parseAnime } from 'zettai'
+
 export default {
   data: () => ({
     el: 'app',
@@ -61,12 +63,12 @@ export default {
       const fileExtension = path.split('.').slice(-1)[0]
 
       if (this.isValidFile(fileExtension)) {
-        const name = fullName.split(' ').slice(1, -1).join(' ') // nyanparser pls
+        const { title, episodeOrMovieNumber: ep } = Object.assign({}, parseAnime(fullName))
 
         this.$store.dispatch('streaming/play', {
           link: path,
           isTorrent: this.torrentExtension.includes(fileExtension),
-          name,
+          name: `${title} - ${ep}`,
           neighbours: null
         })
       }

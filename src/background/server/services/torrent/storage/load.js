@@ -8,12 +8,12 @@ import { FILENAME } from './utils'
 const logger = new Logger('Torrents:load')
 const path = join(dir, FILENAME)
 
-export default function (client, init) {
+export default function (init) {
   if (!existsSync(path)) return
 
   logger.info('User left torrents in clients. Restoring.')
 
-  init()
+  const client = init()
 
   const torrents = localFiles.getFile(FILENAME)
 

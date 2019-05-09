@@ -16,6 +16,11 @@ async function lists (event, { service: provider, user }) {
   try {
     if (!Object.keys(providers).includes(provider)) throw new Error('This provider is not handled.')
 
+    if (!user) {
+      logger.info('No user, returning.')
+      return
+    }
+
     const data = await providers[provider](user)
 
     logger.info(`Successfully retrieved ${user}'s watch lists with ${provider}.`)

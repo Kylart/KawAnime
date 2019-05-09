@@ -124,6 +124,7 @@ export default {
       const { title } = this.current
 
       this.$store.dispatch('streaming/play', {
+        isTorrent: true,
         link: magnet,
         name: `${title} - ${ep}`
       })

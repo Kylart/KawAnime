@@ -14,11 +14,11 @@ export default {
     ipcRenderer.on(event.success, handler)
     ipcRenderer.send(event.main, opts)
   },
-  getNeighbours ({ state, commit }) {
+  getNeighbours ({ rootState, state, commit }) {
     try {
       // Delivers the previous and the next file to be read by the player
       // First we need to get the currently read file path
-      const { player: { path, torrent } } = state
+      const { player: { path, torrent, name } } = state
       const link = path || torrent
 
       log('Setting neighbours for current file:', link)
@@ -26,10 +26,102 @@ export default {
       // We need to know if the link is a magnet link or if it's a local path
       const isMagnet = /^magnet/.test(link)
 
-      // Cannot handle auto next magnet finding just yet
+      // If the user is playing a magnet, we'll follow the following strategy to find
+      // what he's gonna watch next:
+      //
+      // 1. Check if we have all the episodes in the info state;
+      // 2. Check the watching episodes in the feed and simply take the next one;
+      // 3. (Later) Skip the already seen episodes.
       if (isMagnet) {
-        log('File is a magnet, returning.')
-        commit('setNeighbours', null)
+        const [ title, ep ] = name.split(' - ')
+
+        log('Setting neighbours for magnet', name)
+
+        if (!title && !ep) {
+          commit('setNeighbours', null)
+          return
+        }
+
+        const info = rootState.info.info[title]
+        let next
+        let previous
+
+        // Looking for neighbours in info state.
+        if (info.episodesLinks) {
+          log('We have episode links, trying to set neighbours with it.')
+
+          const preferrredQuality = rootState.config.config.video.quality
+          const magnets = info.episodesLinks.magnets
+
+          const hasNext = magnets.filter(({ nb }) => nb === +ep + 1)
+          const hasPrevious = magnets.filter(({ nb }) => nb === +ep - 1)
+
+          if (hasNext.length) next = hasNext.find(({ quality }) => quality === preferrredQuality) || hasNext[0]
+          if (hasPrevious.length) previous = hasPrevious.find(({ quality }) => quality === preferrredQuality) || hasPrevious[0]
+
+          if (next && previous) {
+            commit('setNeighbours', {
+              previous: {
+                link: previous.link,
+                title,
+                episodeOrMovieNumber: +ep - 1
+              },
+              next: {
+                link: next.link,
+                title,
+                episodeOrMovieNumber: +ep + 1
+              }
+            })
+
+            return
+          }
+        }
+
+        // Searching for candidates in the feed entries that are in the user's
+        // watching list.
+        const currentEntries = rootState.releases.releases.current
+        const watching = [
+          ...rootState.watchLists.lists.watching,
+          ...(rootState.services.mal.lists || []).map(({ title }) => title),
+          ...(rootState.services.anilist.lists || []).map(({ title }) => title),
+          ...(rootState.services.kitsu.lists || []).map(({ title }) => title)
+        ]
+
+        const candidates = currentEntries.filter(({ parsedName }) => watching.includes(parsedName.title))
+
+        if (!candidates.length) {
+          log('No candidates, returning...')
+          commit('setNeighbours', null)
+          return
+        }
+
+        const currentIndex = candidates.findIndex(({ parsedName }) => parsedName.title === title)
+
+        next = currentIndex === -1
+          ? candidates[0]
+          : currentIndex === 0
+            ? null
+            : candidates[currentIndex - 1] || candidates[0]
+
+        previous = currentIndex === -1
+          ? candidates[0]
+          : candidates[currentIndex + 1] || candidates[0]
+
+        commit('setNeighbours', {
+          previous: {
+            link: previous.links.magnet,
+            title: previous.parsedName.title,
+            episodeOrMovieNumber: previous.parsedName.episodeOrMovieNumber
+          },
+          next: next
+            ? {
+              link: next.links.magnet,
+              title: next.parsedName.title,
+              episodeOrMovieNumber: next.parsedName.episodeOrMovieNumber
+            }
+            : null
+        })
+
         return
       }
 

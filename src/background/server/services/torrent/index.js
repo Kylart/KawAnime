@@ -27,7 +27,7 @@ app.on('quit', () => {
   client && save(client)
 })
 
-app.once('ready', () => load(client, init))
+app.once('ready', () => load(init))
 
 const isClientDestroyed = () => !client || (client && client.destroyed)
 
@@ -54,6 +54,8 @@ function init () {
   } else {
     logger.info('Torrent client already instanciated.')
   }
+
+  return client
 }
 
 function add (event, { magnet, path }) {
@@ -162,7 +164,7 @@ function actOnTorrent (event, { magnet, action }) {
   event.sender.send(events.act.success)
 }
 
-function play (event, { link: id }) {
+function play (event, { link: id, name }) {
   if (isClientDestroyed()) init()
 
   const isFile = !/^magnet/.test(id)
@@ -176,7 +178,7 @@ function play (event, { link: id }) {
 
     logger.info(`Created video server for ${id} at ${address.port}`)
 
-    event.sender.send(events.play.success, { torrent: id, name: torrent.name, port: address.port })
+    event.sender.send(events.play.success, { torrent: id, name: name || torrent.name, port: address.port })
 
     const filePath = streamingFilePath = join(torrent.path, torrent.files[0].path)
 

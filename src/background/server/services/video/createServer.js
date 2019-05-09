@@ -45,7 +45,7 @@ function handleFile (id) {
   }
 }
 
-function handleRequest (id, client) {
+function handleRequest (id) {
   return (req, res) => {
     // CORS
     res.setHeader('Access-Control-Allow-Origin', '*')
@@ -102,7 +102,7 @@ function handleRequest (id, client) {
       }
 
       const stream = isTorrent
-        ? torrent.createReadStream(range)
+        ? torrent && torrent.createReadStream(range)
         : createReadStream(id, range)
 
       const close = () => {
