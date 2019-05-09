@@ -1,39 +1,124 @@
-# electron-test
+<h1 align="center">KawAnime</h1>
 
-## Project setup
+<p align="center">
+  <a href="http://forthebadge.com/" target="_blank">
+    <img src="http://forthebadge.com/images/badges/built-with-love.svg"/>
+  </a>
+</p>
+
+<p align="center">
+  <a href="https://standardjs.com/" target="_blank">
+    <img src="https://cdn.rawgit.com/feross/standard/master/badge.svg" />
+  </a>
+</p>
+
+<p align="center">
+  <a href="https://opensource.org/licenses/MIT" target="_blank">
+    <img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License">
+  </a>
+  <a href="https://discord.gg/sdArN2Z" target="_blank">
+    <img src="https://img.shields.io/badge/chat-on%20discord-7289da.svg" alt="Chat">
+  </a>
+</p>
+
+<p align="center"><img width="80%" src="https://imgur.com/OpSfhDn.png"/></p>
+
+# Features
+Disclaimer : KawAnime is built for otaku/anime-fans. The software will contain images and sounds sourced from anime. Do not try if you're not prepared.
+
+Use KawAnime to:
+* Manage your pirate anime life with a single software.
+* Get updated on anime releases as soon as they are subbed (or not).
+* Download or stream your torrents easily (in-app torrent client included!).
+* Magnet links for all episodes can be generated through the Downloader.
+* Get anime information, news, and seasonal information from your preferred anime information source (Anilist, Kitsu.io, MAL).
+* Manage your anime files (watch and delete on click).
+* Manage local watch lists as well as those from your preffered provider (Anilist, Kitsu.io, MAL).
+* Keep track of what you watched with the History.
+* Easily binge watch your local anime or while streaming.
+
+Feel free to check the official website for [a demo of all the available features.](https://kawanime.com/features)
+
+## About OS
+_KawAnime_ is completely cross-platform.
+
+If you have any problems installing for your OS, you can contact me anytime in the `issues` section.
+
+## Installation
+Be sure that Npm is installed. You can find how to install npm (node) [here](https://nodejs.org/en/).
+```
+git clone https://github.com/Kylart/KawAnime
+```
+```
+cd KawAnime/
+```
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+## Run in dev
+
+##### Start app
 ```
-npm run serve
+npm run dev
 ```
 
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Run your tests
-```
-npm run test
-```
-
-### Lints and fixes files
+##### Lint
 ```
 npm run lint
 ```
 
-### Run your end-to-end tests
+#### Testing
+Testing is not implemented yet as it takes time :(
+
+Two types are setup though:
+1. e2e with Cypress (see tests/e2e)
+1. Unit tests (see tests/unit)
+
+## Generating distributable apps
+This feature uses [electron-builder](https://github.com/electron-userland/electron-builder).
+
+Find help to use it on your platform
+[here](https://github.com/electron-userland/electron-builder/wiki/Multi-Platform-Build).
+
+#### For every OS
 ```
-npm run test:e2e
+npm run dist
 ```
 
-### Run your unit tests
+#### For Mac OS only
 ```
-npm run test:unit
+npm run dist:mac
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+#### For Linux OS only
+```
+npm run dist:linux
+```
+
+#### For Windows OS only
+```
+npm run dist:win
+```
+
+Distributable will then be in the `dist` folder.
+
+## Contributing
+Any contribution is appreciated.
+
+1. Fork it!
+2. Create your feature branch: `git checkout -b my-new-feature`
+3. Commit your changes: `git commit -am 'Add some feature'`
+4. Push to the branch: `git push origin my-new-feature`
+5. Submit a pull request.
+
+## Thanks
+KawAnime is developed using the following technologies, many thanks to
+* [Electron](https://electron.atom.io)
+* [Vue.js](https://vuejs.org)
+* [Vuetify](https://vuetifyjs.com)
+
+## License
+MIT License
+
+Copyright (c) Kylart
