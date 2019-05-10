@@ -1,4 +1,7 @@
 export default {
+  form: {
+    show: false
+  },
   lists: {
     watchList: [],
     watching: [],

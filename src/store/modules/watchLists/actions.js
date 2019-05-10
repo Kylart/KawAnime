@@ -10,8 +10,8 @@ export default {
   get () {
     ipcRenderer.send(eventsList.localLists.get.main)
   },
-  save ({ state }) {
-    ipcRenderer.send(eventsList.localLists.update.main, state.lists)
+  add (store, entry) {
+    ipcRenderer.send(eventsList.localLists.update.main, entry)
   },
 
   setEvents ({ commit }) {

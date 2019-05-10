@@ -18,13 +18,9 @@
         v-btn(icon, color='red', @click="$emit('deleteSelected')")
           v-icon delete
       v-flex.label(xs12, sm3, md2, lg1) {{ nbElems }} {{ label }}
-      v-flex(xs12, sm4, md3, offset-md3, lg2, offset-lg7, d-flex, justify-end, align-center)
-        v-text-field(
-          v-model='term',
-          placeholder='Add entry',
-          @keyup.enter='add'
-        )
-        v-btn(@click='add') Add
+      v-flex(xs12, sm4, md3, offset-md3, lg2, offset-lg7)
+        v-btn(large, icon, @click='showForm')
+          v-icon(large) add
 </template>
 
 <script>
@@ -52,9 +48,8 @@ export default {
   },
 
   methods: {
-    add () {
-      this.$emit('add', this.term)
-      this.term = ''
+    showForm () {
+      this.$store.commit('watchLists/toggleForm', true)
     }
   }
 }
