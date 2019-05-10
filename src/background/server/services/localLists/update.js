@@ -1,5 +1,5 @@
 import { eventsList } from '../../../../vendor'
-import { Logger } from '../../utils'
+import { Logger, hashName } from '../../utils'
 import { localFiles } from '../../externals'
 
 const logger = new Logger('Local Lists (Update)')
@@ -17,6 +17,9 @@ function handler (event, { type, data }) {
 
     const index = currentList.findIndex(({ name }) => name === data.name)
     const isUpdate = index !== -1
+
+    // Setting up data key
+    data.key = hashName(data.name)
 
     if (isUpdate) {
       const current = currentList[index]

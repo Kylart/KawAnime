@@ -24,7 +24,6 @@ const getOnly = [
 ]
 
 const updatable = [
-  'localLists',
   'config',
   'local'
 ]
@@ -36,7 +35,8 @@ const customs = {
   services: [ 'connect', 'act' ],
   vault: [ 'get', 'update', 'check', 'has' ],
   video: [ 'init', 'stop', 'subtitles', 'tracks', 'name' ],
-  update: [ 'available', 'installable', 'install', 'progress' ]
+  update: [ 'available', 'installable', 'install', 'progress' ],
+  localLists: [ 'get', 'update', 'info' ]
 }
 
 export default {
