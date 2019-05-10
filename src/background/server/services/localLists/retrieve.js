@@ -4,14 +4,14 @@ import { Logger } from '../../utils'
 
 const logger = new Logger('Local Lists (Get)')
 
-const FILE_NAME = 'lists.json'
-
+const FILE_NAME = 'localLists.json'
 const events = eventsList.localLists.get
 
 async function retrieve (event) {
   try {
-    const result = localFiles.getFile(FILE_NAME)
-    event.sender.send(events.success, JSON.stringify(result))
+    const storage = localFiles.getFile(FILE_NAME)
+
+    event.sender.send(events.success, storage)
   } catch (e) /* istanbul ignore next */ {
     logger.error('An error occurred.', e.stack)
     event.sender.send(events.error, e.message)

@@ -8,7 +8,7 @@ const { ipcRenderer: ipc, remote } = electron
 ipc.setMaxListeners(40)
 
 function log (...args) {
-  console.log(`[${(new Date()).toLocaleTimeString()}]:`, ...args)
+  console.log(`[${(new Date()).toLocaleTimeString()}]:`, ...args) // eslint-disable-line no-console
 }
 
 function setFullScreen (bool) {

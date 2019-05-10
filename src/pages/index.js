@@ -31,5 +31,5 @@ export default [
     component: () => import(/* webpackChunkName: "seasons" */ './services.vue')
   },
   // Global redirect for 404
-  { path: '*', redirect: '/' } // TODO: make a custom 404 page
+  { path: '*', redirect: '/' }
 ]

@@ -5,7 +5,7 @@
         list-form(
           :name='name', :nb-elems='entries.length',
           @selectAll='selectAll', @move='move',
-          @add='add', @deleteSelected='deleteSelected'
+          @deleteSelected='deleteSelected'
         )
 
       transition-group(name='list', tag='div', class='trans layout row wrap')
@@ -17,7 +17,7 @@
             card(
               @clicked='select(entry)',
               @delete='remove(entry)',
-              :name='entry',
+              :entry='entry',
               :selected='isSelected(entry)'
             )
 </template>

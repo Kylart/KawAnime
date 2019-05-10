@@ -11,7 +11,7 @@ export const get = {
     commit('releases/setParams', {
       fansub: data.config.fansub,
       quality: data.config.quality,
-      feed: 'si' // TODO
+      feed: data.config.feed
     }, isRoot)
   },
   error (commit, msg) {

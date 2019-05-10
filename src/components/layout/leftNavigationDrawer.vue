@@ -83,6 +83,10 @@ export default {
         group: 'services',
         items: [
           {
+            title: 'Local lists',
+            action: 'sort_by_alpha',
+            href: '/watchList'
+          }, {
             custom: { 'provider-icon': true, 'mal-icon': true },
             title: 'MyAnimeList.net',
             href: '/services/mal'
@@ -94,10 +98,6 @@ export default {
             custom: { 'provider-icon': true, 'anilist-icon': true },
             title: 'Anilist',
             href: '/services/anilist'
-          }, {
-            title: 'Local lists',
-            action: 'sort_by_alpha',
-            href: '/watchList'
           }
         ]
       },

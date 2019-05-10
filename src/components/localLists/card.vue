@@ -6,8 +6,8 @@
           v-checkbox(v-model='selected', hide-details, disabled, height='10')
         .name(@click='handleClick')
           v-tooltip.ellipsis(top, lazy)
-            span(slot='activator') {{ name }}
-            span {{ name }}
+            span(slot='activator') {{ entry.name }}
+            span {{ entry.name }}
         .menu
           v-menu(transition='slide-x-transition')
             v-btn(slot='activator', icon)
@@ -27,7 +27,7 @@
 export default {
   name: 'List-Card',
 
-  props: ['name', 'selected'],
+  props: ['entry', 'selected'],
 
   data () {
     return {

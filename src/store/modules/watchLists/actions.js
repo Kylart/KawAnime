@@ -11,7 +11,7 @@ export default {
     ipcRenderer.send(eventsList.localLists.get.main)
   },
   add (store, entry) {
-    ipcRenderer.send(eventsList.localLists.update.main, entry)
+    ipcRenderer.send(eventsList.localLists.update.main, { type: entry.list, data: entry })
   },
 
   setEvents ({ commit }) {
@@ -22,8 +22,8 @@ export default {
       handlers.get.error(msg)
     })
 
-    ipcRenderer.on(eventsList.localLists.update.success, () => {
-      handlers.update.success()
+    ipcRenderer.on(eventsList.localLists.update.success, (e, data) => {
+      handlers.update.success(commit, data)
     })
     ipcRenderer.on(eventsList.localLists.update.error, (e, msg) => {
       handlers.update.error(msg)

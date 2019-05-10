@@ -1,5 +1,5 @@
 export default {
-  filename: 'lists.json',
+  filename: 'localLists.json',
   template: {
     watchList: [],
     seen: [],
