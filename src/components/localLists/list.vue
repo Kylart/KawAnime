@@ -56,7 +56,7 @@ export default {
 
   methods: {
     isSelected (entry) {
-      return this.selected.find(({ name }) => entry.name)
+      return this.selected.findIndex(({ key }) => key === entry.key) > -1
     },
     add (entry, target = null) {
       this.$store.dispatch('watchLists/add', {
