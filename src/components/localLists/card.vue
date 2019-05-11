@@ -1,26 +1,49 @@
 <template lang="pug">
-  v-card(hover, ripple, :class="{ 'green darken-1': selected }")
-    v-container(fluid, fill-height, pt-0, pb-0)
-      v-layout.pa-1(justify-space-between)
+  v-card.card(
+    hover,
+    ripple,
+    :class="{ 'green darken-1': selected }",
+    :style='cardStyle'
+  )
+    .card-container
+      v-img.img(
+        @click='handleClick',
+        :src='img',
+        :lazy-src='img',
+        :loading='!img',
+        contain,
+        position='left center'
+      )
+
+      .center-container(@click='handleClick')
+        v-tooltip.ellipsis(top, lazy)
+          span.text(slot='activator') {{ entry.name }}
+          span {{ entry.name }}
+
+        .progress
+          v-progress-linear(
+            :value='progress.value',
+            :indeterminate='!entry.progress',
+            height='15'
+          )
+          span.text {{ progress.text }}
+
+      .menu
         .checkbox(@click='handleClick')
-          v-checkbox(v-model='selected', hide-details, disabled, height='10')
-        .name(@click='handleClick')
-          v-tooltip.ellipsis(top, lazy)
-            span(slot='activator') {{ entry.name }}
-            span {{ entry.name }}
-        .menu
-          v-menu(transition='slide-x-transition')
-            v-btn(slot='activator', icon)
-              v-icon more_vert
-            v-list
-              v-list-tile(
-                v-for='option in menus'
-                :key='option.icon'
-                @click='option.method'
-              )
-                v-list-tile-avatar
-                  v-icon {{ option.icon }}
-                v-list-tile-title {{ option.text }}
+          v-checkbox(v-model='selected', color='success', disabled, hide-details, height='10')
+
+        v-menu(transition='slide-x-transition')
+          v-btn.btn(slot='activator', icon, large)
+            v-icon(large, color='indigo') more_horiz
+          v-list
+            v-list-tile(
+              v-for='option in menus',
+              :key='option.icon',
+              @click='option.method'
+            )
+              v-list-tile-avatar
+                v-icon {{ option.icon }}
+              v-list-tile-title {{ option.text }}
 </template>
 
 <script>
@@ -57,6 +80,26 @@ export default {
     }
   },
 
+  computed: {
+    cardStyle () {
+      return this.entry.bannerImg
+        ? { backgroundImage: `url(${this.entry.bannerImg})` }
+        : {}
+    },
+    img () {
+      return this.entry.img
+    },
+    progress () {
+      return this.entry.progress && this.entry.nbEp
+        ? { text: `${this.entry.progress} / ${this.entry.nbEp}`, value: (this.entry.progress / this.entry.nbEp) * 100 }
+        : this.entry.progress
+          ? { text: `${this.entry.progress} / ??`, value: 70 }
+          : this.entry.nbEp
+            ? { text: `?? / ${this.entry.nbEp}`, value: 0 }
+            : { text: `Unknown`, value: 0 }
+    }
+  },
+
   methods: {
     handleClick () {
       this.$emit('clicked')
@@ -88,18 +131,63 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-  .checkbox, .menu
-    width 15%
+  .card
+    height 150px
+    background-repeat no-repeat
+    background-size cover
+    background-position center center
 
-  .name
-    width 70%
+  .card-container
     display flex
-    justify-content flex-start
+    justify-content space-between
+    align-items center
+    height 100%
+
+  .img
+    max-height 100%
+    max-width 30%
+
+  .menu
+    padding 8px 0
+    height 100%
+    max-width 20%
+    min-width 5%
+
+    display flex
+    flex-direction column
+    justify-content space-between
     align-items center
 
-    line-height 22px
-    font-size 20px
-    letter-spacing 0.03em
-    font-weight 500
+    .btn
+      background-color rgba(30, 30, 30, 0.5)
 
+  .center-container
+    padding 30px 8px
+    height 100%
+    min-width 50%
+    display flex
+    flex-direction column
+    justify-content space-between
+    align-items center
+
+    .text
+      line-height 22px
+      font-size 20px
+      letter-spacing 0.03em
+      font-weight 500
+
+    .progress
+      width 100%
+      display flex
+      justify-content space-around
+      align-items center
+
+      .text
+        padding 0 8px
+        min-width 30%
+        font-size 16px
+        white-space nowrap
+
+  .card-container
+    background-color rgba(30, 30, 30, 0.65)
 </style>
