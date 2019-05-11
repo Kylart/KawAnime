@@ -16,21 +16,19 @@ export default {
 
   methods: {
     _isIn (target) {
-      const { name } = this
+      const { name: targetName } = this
 
-      return this._lists[target].includes(name)
+      return this._lists[target].findIndex(({ name }) => name === targetName) > -1
     },
-    async _addTo (target) {
+    _addTo (target) {
       const { name } = this
       const isIn = this._isIn(target)
-      const action = isIn ? 'removeFrom' : 'addTo'
+      const action = isIn ? 'delete' : 'add'
 
-      this.$store.commit(`watchLists/${action}`, {
-        listName: target,
-        entry: name
+      this.$store.dispatch(`watchLists/${action}`, {
+        list: target,
+        name
       })
-
-      await this.$store.dispatch('watchLists/save')
     }
   }
 }
