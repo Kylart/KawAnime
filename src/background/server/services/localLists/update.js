@@ -10,7 +10,7 @@ function update (data) {
   return localFiles.writeFile(data, FILE_NAME)
 }
 
-function handler (event, { type, data }) {
+function handler (event, { type, data, isDelete = false }) {
   try {
     const storage = localFiles.getFile(FILE_NAME)
     const currentList = storage[type]
@@ -18,23 +18,31 @@ function handler (event, { type, data }) {
     const index = currentList.findIndex(({ name }) => name === data.name)
     const isUpdate = index !== -1
 
-    // Setting up data key
-    data.key = hashName(data.name)
+    if (isDelete) {
+      if (index === -1) throw new Error('Cannot delete non-existing entry.')
 
-    if (isUpdate) {
+      currentList.splice(index, 1)
+
+      logger.info(`Deleted ${data.name} from ${type} list.`)
+    } else if (isUpdate) {
       const current = currentList[index]
       // Updating each value separately as there might be other keys
       // that were not sent here.
       Object.keys(data).forEach((key) => {
         current[key] = data[key]
       })
+
+      logger.info(`Updated ${type} list`)
     } else {
+      // Setting up data key
+      data.key = hashName(data.name)
+
       currentList.push(data)
     }
 
     update(storage)
 
-    logger.info(`Updated ${type} list with:`, data)
+    logger.info('Successfully saved storage.')
 
     event.sender.send(events.success, storage)
   } catch (e) {

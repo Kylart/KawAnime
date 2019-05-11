@@ -55,45 +55,38 @@ export default {
   },
 
   methods: {
-    isSelected (name) {
-      return this.selected.includes(name)
+    isSelected (entry) {
+      return this.selected.find(({ name }) => entry.name)
     },
-    add (name, target = null) {
-      this.$store.commit('watchLists/addTo', {
-        listName: target || this.name,
-        entry: name
+    add (entry, target = null) {
+      this.$store.dispatch('watchLists/add', {
+        ...entry,
+        list: target || this.name
       })
-
-      this.$store.dispatch('watchLists/save')
     },
-    remove (name) {
+    remove (entry) {
       // We need to remove it from selected data
-      this.unselect(name)
+      this.unselect(entry)
 
       // And from the actual list
-      this.$store.commit('watchLists/removeFrom', {
-        listName: this.name,
-        entry: name
-      })
-
-      this.$store.dispatch('watchLists/save')
+      this.$store.dispatch('watchLists/delete', entry)
     },
     move (target) {
       // move can only be activated on selected items
-      this.selected.forEach((name) => {
-        this.remove(name)
-        this.add(name, target)
+      this.selected.forEach((entry) => {
+        this.remove(entry)
+        this.add(entry, target)
       })
 
       this.selected = []
     },
-    select (name) {
-      this.isSelected(name)
-        ? this.unselect(name)
-        : this.selected.push(name)
+    select (entry) {
+      this.isSelected(entry)
+        ? this.unselect(entry)
+        : this.selected.push(entry)
     },
-    unselect (name) {
-      const index = this.selected.indexOf(name)
+    unselect (entry) {
+      const index = this.selected.findIndex(({ key }) => key === entry.key)
       index !== -1 && this.selected.splice(index, 1)
     },
     selectAll () {
@@ -102,8 +95,8 @@ export default {
       this.selected = allSelected ? [] : this.entries
     },
     deleteSelected () {
-      this.selected.forEach((name) => {
-        this.remove(name)
+      this.selected.forEach((entry) => {
+        this.remove(entry)
       })
     }
   }

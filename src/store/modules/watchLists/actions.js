@@ -13,6 +13,9 @@ export default {
   add (store, entry) {
     ipcRenderer.send(eventsList.localLists.update.main, { type: entry.list, data: entry })
   },
+  delete (store, entry) {
+    ipcRenderer.send(eventsList.localLists.update.main, { type: entry.list, data: entry, isDelete: true })
+  },
   info (store, entries) {
     ipcRenderer.send(eventsList.localLists.info.main, entries)
   },
