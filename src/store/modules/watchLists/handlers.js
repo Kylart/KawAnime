@@ -17,7 +17,7 @@ function checkInfo ({ rootState, dispatch }, data) {
     list.forEach((entry) => {
       const shouldCheck = [
         !entry.hasOwnProperty('nbEp') || entry.nbEp === '??',
-        !(now - entry._timestamp > twoWeeksDiff),
+        now - entry._timestamp > twoWeeksDiff,
         !entry.img
       ].some(Boolean)
 
@@ -27,7 +27,10 @@ function checkInfo ({ rootState, dispatch }, data) {
     return acc
   }, [])
 
-  dispatch('info', toCheck)
+  if (toCheck.length) {
+    log('Asking for info for the following entries.', toCheck)
+    dispatch('info', toCheck)
+  }
 }
 
 export const get = {

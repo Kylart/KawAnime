@@ -7,7 +7,9 @@ function generateSentence (data) {
 
   const _source = source === 'ORIGINAL'
     ? 'is an Original'
-    : `adapted from the ${source.toLowerCase()}`
+    : source
+      ? `adapted from the ${source.toLowerCase()}`
+      : 'adapted from unknown material'
 
   const nbEpisodes = episodes
     ? `It's been announced with ${episodes} episodes`

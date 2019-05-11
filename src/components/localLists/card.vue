@@ -33,6 +33,10 @@ export default {
     return {
       menus: [
         {
+          icon: 'edit',
+          text: 'Edit',
+          method: () => this.edit()
+        }, {
           icon: 'file_download',
           text: 'Download',
           method: () => this.download()
@@ -57,7 +61,7 @@ export default {
     handleClick () {
       this.$emit('clicked')
     },
-    async download () {
+    download () {
       const config = {
         fansub: this.$store.state.config.config.fansub,
         quality: this.$store.state.config.config.quality,
@@ -65,7 +69,7 @@ export default {
         name: this.name
       }
 
-      await this.$store.dispatch('downloader/download', config)
+      this.$store.dispatch('downloader/download', config)
     },
     watch () {
       this.$router.push({ path: '/', query: { name: this.name } })
@@ -74,6 +78,10 @@ export default {
       this.$store.commit('info/setTerm', this.name)
       this.$store.commit('info/setRemote', true)
       this.$store.commit('info/showModal', true)
+    },
+    edit () {
+      this.$store.commit('watchLists/setEntry', this.entry)
+      this.$store.commit('watchLists/toggleForm', true)
     }
   }
 }

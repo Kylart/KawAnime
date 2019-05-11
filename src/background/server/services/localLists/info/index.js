@@ -24,8 +24,6 @@ async function handler (event, entries) {
     // Getting useful info like thumbnail, genres,...
     const info = await getInfo(entries)
 
-    console.log(info)
-
     const storage = localFiles.getFile(FILE_NAME)
 
     entries.forEach((entry) => {

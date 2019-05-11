@@ -1,6 +1,7 @@
 export default {
   form: {
-    show: false
+    show: false,
+    entry: null
   },
   lists: {
     watchList: [],

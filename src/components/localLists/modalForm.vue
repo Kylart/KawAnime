@@ -25,6 +25,7 @@
                 v-model='entry.progress',
                 type='number',
                 min='0',
+                :max='`${entry.nbEp }`|| null',
                 label='Watched episodes',
                 clearable,
                 hide-details
@@ -93,6 +94,12 @@ export default {
   }),
 
   computed: {
+    storeEntry: {
+      get () {
+        return this.$store.state.watchLists.form.entry
+      },
+      set () {}
+    },
     show: {
       get () {
         return this.$store.state.watchLists.form.show
@@ -153,9 +160,13 @@ export default {
   watch: {
     show (bool) {
       if (bool) {
+        if (this.storeEntry) this.entry = this.storeEntry
+
         this.$nextTick(() => {
           this.$refs.name.focus()
         })
+      } else {
+        this.$store.commit('watchLists/resetEntry')
       }
     }
   }

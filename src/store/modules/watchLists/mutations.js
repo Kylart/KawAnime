@@ -5,7 +5,10 @@ export default {
   toggleForm (state, bool) {
     state.form.show = bool
   },
-  setFormEntry (state, value) {
-    state.form.entry = value
+  setEntry (state, entry) {
+    state.form.entry = entry
+  },
+  resetEntry (state) {
+    state.form.entry = null
   }
 }
