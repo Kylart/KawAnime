@@ -4,6 +4,8 @@ export default function (data) {
   return Object.keys(data).reduce((acc, key) => {
     const info = data[key]
 
+    if (!info) return
+
     acc[key] = {
       _timestamp: now,
       id: { mal: info.idMal, anilist: info.id },

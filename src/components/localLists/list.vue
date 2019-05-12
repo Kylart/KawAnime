@@ -11,7 +11,7 @@
       transition-group(name='list', tag='div', class='trans layout row wrap')
         template(v-for='entry in reduced')
           v-flex(
-            :key='entry.key',
+            :key='`${entry.key}-${entry.name}`',
             xs12, sm6, md4, lg3, xl2
           )
             card(

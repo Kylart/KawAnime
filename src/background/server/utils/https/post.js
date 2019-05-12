@@ -31,6 +31,8 @@ export default function (url, data, params = []) {
     }, (res) => {
       let response = ''
 
+      res.setEncoding('utf8')
+
       res.on('data', (chunk) => { response += chunk })
 
       res.on('end', () => {

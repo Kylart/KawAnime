@@ -18,7 +18,8 @@ function checkInfo ({ rootState, dispatch }, data) {
       const shouldCheck = [
         !entry.hasOwnProperty('nbEp') || entry.nbEp === '??',
         now - entry._timestamp > twoWeeksDiff,
-        !entry.img
+        !entry.img,
+        !entry.bannerImg
       ].some(Boolean)
 
       shouldCheck && acc.push(entry)

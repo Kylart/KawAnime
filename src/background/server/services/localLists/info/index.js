@@ -10,13 +10,37 @@ const FILE_NAME = 'localLists.json'
 const logger = new Logger('Local Lists (Info)')
 const events = eventsList.localLists.info
 const keyPrefix = 'a'
+const NB_MAX_QUERIES = 20
 
 async function getInfo (entries) {
-  const query = makeQuery(entries)
+  // Let's make a maximum of 20 entries per query
+  const queries = []
+  const nbQueries = Math.floor(entries.length / NB_MAX_QUERIES) + 1
 
-  const { data } = await graphql(GRAPHQL_ENDPOINT, query)
+  for (let i = 0; i < nbQueries; ++i) {
+    const start = i * NB_MAX_QUERIES
+    const end = start + NB_MAX_QUERIES
 
-  return format(data)
+    const query = makeQuery(entries.slice(start, end))
+
+    queries.push(graphql(GRAPHQL_ENDPOINT, query).catch((err) => {
+      console.log(`Query #${i} failed`, err)
+      throw err
+    }))
+  }
+
+  const results = await Promise.all(queries)
+
+  return format(
+    results
+      .reduce((acc, { data }) => {
+        Object.keys(data).forEach((key) => {
+          acc[key] = data[key]
+        })
+
+        return acc
+      }, {})
+  )
 }
 
 async function handler (event, entries) {

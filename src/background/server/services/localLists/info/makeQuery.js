@@ -29,7 +29,8 @@ const CORE_QUERY = `
     isAdult
   }
 `
-const getHeader = ({ key, name }) => `${keyPrefix}${key}: Media(search: "${name}") {`
+
+const getHeader = ({ key, name }) => `${keyPrefix}${key}: Media(search: "${encodeURIComponent(name).replace(/%20/g, ' ')}") {`
 
 export default function (entries) {
   const queries = entries.reduce((acc, entry) => {
@@ -43,5 +44,5 @@ export default function (entries) {
 
   const mainQuery = queries.join('\n')
 
-  return [ '{', mainQuery, '}' ].join('\n')
+  return [ 'query {', mainQuery, '}' ].join('\n')
 }

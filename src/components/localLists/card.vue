@@ -5,45 +5,45 @@
     :class="{ 'green darken-1': selected }",
     :style='cardStyle'
   )
-    .card-container
-      v-img.img(
-        @click='handleClick',
-        :src='img',
-        :lazy-src='img',
-        :loading='!img',
-        contain,
-        position='left center'
-      )
+    v-tooltip(top, lazy)
+      span {{ entry.name }}
+      .card-container(slot='activator')
+        v-img.img(
+          @click='handleClick',
+          :src='img',
+          :lazy-src='img',
+          :loading='!img',
+          contain,
+          position='left center'
+        )
 
-      .center-container(@click='handleClick')
-        v-tooltip.ellipsis(top, lazy)
-          span.text(slot='activator') {{ entry.name }}
-          span {{ entry.name }}
+        .center-container(@click='handleClick')
+          .name-container.text.ellipsis(slot='activator') {{ entry.name }}
 
-        .progress
-          v-progress-linear(
-            :value='progress.value',
-            :indeterminate='!entry.progress',
-            height='15'
-          )
-          span.text {{ progress.text }}
-
-      .menu
-        .checkbox(@click='handleClick')
-          v-checkbox(v-model='selected', color='success', disabled, hide-details, height='10')
-
-        v-menu(transition='slide-x-transition')
-          v-btn.btn(slot='activator', icon, large)
-            v-icon(large, color='indigo') more_horiz
-          v-list
-            v-list-tile(
-              v-for='option in menus',
-              :key='option.icon',
-              @click='option.method'
+          .progress
+            v-progress-linear(
+              :value='progress.value',
+              :indeterminate='!entry.progress',
+              height='15'
             )
-              v-list-tile-avatar
-                v-icon {{ option.icon }}
-              v-list-tile-title {{ option.text }}
+            span.text {{ progress.text }}
+
+        .menu
+          .checkbox(@click='handleClick')
+            v-checkbox(v-model='selected', color='success', disabled, hide-details, height='10')
+
+          v-menu(transition='slide-x-transition')
+            v-btn.btn(slot='activator', icon, large)
+              v-icon(large, color='indigo') more_horiz
+            v-list
+              v-list-tile(
+                v-for='option in menus',
+                :key='option.icon',
+                @click='option.method'
+              )
+                v-list-tile-avatar
+                  v-icon {{ option.icon }}
+                v-list-tile-title {{ option.text }}
 </template>
 
 <script>
@@ -164,11 +164,14 @@ export default {
   .center-container
     padding 30px 8px
     height 100%
-    min-width 50%
+    width 55%
     display flex
     flex-direction column
     justify-content space-between
     align-items center
+
+    .name-container
+      width 100%
 
     .text
       line-height 22px
