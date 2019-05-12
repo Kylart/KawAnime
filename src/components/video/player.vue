@@ -54,6 +54,7 @@ import Ipc from '@/mixins/video/ipc'
 import Tracks from '@/mixins/video/tracks'
 import Subtitles from '@/mixins/video/subtitles'
 import Style from '@/mixins/video/getStyle'
+import Tracking from '@/mixins/video/tracking'
 
 export default {
   name: 'video-player',
@@ -63,7 +64,7 @@ export default {
     Layout
   },
 
-  mixins: [ Ipc, Tracks, Subtitles, Style ],
+  mixins: [ Ipc, Tracks, Subtitles, Style, Tracking ],
 
   props: ['value', 'title', 'fullscreen', 'isMinimized'],
 

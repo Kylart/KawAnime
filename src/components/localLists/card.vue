@@ -31,7 +31,7 @@
             template(v-for='action in actions')
               v-btn(
                 small,
-                :icon='action.icon',
+                :icon='!!action.icon',
                 @click.stop='action.cb'
               ) {{ action.text }}
                 template(v-show='action.icon')
