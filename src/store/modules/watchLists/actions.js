@@ -20,16 +20,16 @@ export default {
     ipcRenderer.send(eventsList.localLists.info.main, entries)
   },
 
-  setEvents ({ rootState, commit, dispatch }) {
+  setEvents ({ rootState, state, commit, dispatch }) {
     ipcRenderer.on(eventsList.localLists.get.success, (e, data) => {
-      handlers.get.success({ rootState, commit, dispatch }, data)
+      handlers.get.success({ rootState, state, commit, dispatch }, data)
     })
     ipcRenderer.on(eventsList.localLists.get.error, (e, msg) => {
       handlers.get.error(msg)
     })
 
     ipcRenderer.on(eventsList.localLists.update.success, (e, data) => {
-      handlers.update.success({ rootState, commit, dispatch }, data)
+      handlers.update.success({ rootState, state, commit, dispatch }, data)
     })
     ipcRenderer.on(eventsList.localLists.update.error, (e, msg) => {
       handlers.update.error(msg)

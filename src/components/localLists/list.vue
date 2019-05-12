@@ -40,8 +40,8 @@ export default {
   props: ['name'],
 
   data: () => ({
-    sup: 80,
-    initSup: 80,
+    sup: 20,
+    initSup: 20,
     selected: []
   }),
 

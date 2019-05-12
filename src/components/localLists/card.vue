@@ -23,10 +23,19 @@
           .progress
             v-progress-linear(
               :value='progress.value',
-              :indeterminate='!entry.progress',
               height='15'
             )
             span.text {{ progress.text }}
+
+          .progress-actions
+            template(v-for='action in actions')
+              v-btn(
+                small,
+                :icon='action.icon',
+                @click.stop='action.cb'
+              ) {{ action.text }}
+                template(v-show='action.icon')
+                  v-icon {{ action.icon }}
 
         .menu
           .checkbox(@click='handleClick')
@@ -52,9 +61,9 @@ export default {
 
   props: ['entry', 'selected'],
 
-  data () {
-    return {
-      menus: [
+  computed: {
+    menus () {
+      return [
         {
           icon: 'edit',
           text: 'Edit',
@@ -77,10 +86,24 @@ export default {
           method: () => this.$emit('delete')
         }
       ]
-    }
-  },
-
-  computed: {
+    },
+    actions () {
+      return [
+        {
+          icon: 'remove',
+          cb: () => this.changeProgress(-1),
+          show: true
+        }, {
+          icon: 'add',
+          cb: () => this.changeProgress(1),
+          show: true
+        }, {
+          text: 'Max',
+          cb: () => this.changeProgress('max'),
+          show: this.has.nbEp
+        }
+      ]
+    },
     cardStyle () {
       return this.entry.bannerImg
         ? { backgroundImage: `url(${this.entry.bannerImg})` }
@@ -89,18 +112,35 @@ export default {
     img () {
       return this.entry.img
     },
+    has () {
+      return {
+        progress: !!`${this.entry.progress}`,
+        nbEp: this.entry.nbEp && this.entry.nbEp !== '??'
+      }
+    },
     progress () {
-      return this.entry.progress && this.entry.nbEp
+      const { has: { progress: hasProgress, nbEp: hasNbEp } } = this
+
+      return hasProgress && hasNbEp
         ? { text: `${this.entry.progress} / ${this.entry.nbEp}`, value: (this.entry.progress / this.entry.nbEp) * 100 }
-        : this.entry.progress
+        : hasProgress
           ? { text: `${this.entry.progress} / ??`, value: 70 }
-          : this.entry.nbEp
+          : hasNbEp
             ? { text: `?? / ${this.entry.nbEp}`, value: 0 }
             : { text: `Unknown`, value: 0 }
     }
   },
 
   methods: {
+    changeProgress (value) {
+      const { entry } = this
+
+      value === 'max'
+        ? (entry.progress = entry.nbEp)
+        : (entry.progress += value)
+
+      this.$store.dispatch('watchLists/add', entry)
+    },
     handleClick () {
       this.$emit('clicked')
     },
@@ -162,7 +202,7 @@ export default {
       background-color rgba(30, 30, 30, 0.5)
 
   .center-container
-    padding 30px 8px
+    padding 15px 8px
     height 100%
     width 55%
     display flex

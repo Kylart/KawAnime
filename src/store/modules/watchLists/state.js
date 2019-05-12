@@ -3,6 +3,7 @@ export default {
     show: false,
     entry: null
   },
+  lastUpdate: 0,
   lists: {
     watchList: [],
     watching: [],

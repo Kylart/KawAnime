@@ -10,5 +10,8 @@ export default {
   },
   resetEntry (state) {
     state.form.entry = null
+  },
+  setLastUpdate (state, value) {
+    state.lastUpdate = value
   }
 }
