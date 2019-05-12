@@ -27,7 +27,11 @@ export default {
 
       this.$store.dispatch(`watchLists/${action}`, {
         list: target,
-        name
+        name,
+        progress: 0,
+        score: null,
+        tags: [],
+        note: ''
       })
     }
   }

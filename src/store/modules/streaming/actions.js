@@ -2,12 +2,13 @@ import { ipcRenderer, log } from '@/store/utils'
 import { eventsList } from '@/vendor'
 
 export default {
-  play ({ commit }, opts) {
+  play ({ commit, dispatch }, opts) {
     const { isTorrent = false } = opts
 
     const event = isTorrent ? eventsList.torrent.play : eventsList.video.init
     const handler = (e, data) => {
       commit('setPlayer', { ...data, show: true })
+      dispatch('getNeighbours')
       ipcRenderer.removeListener(event.success, handler)
     }
 
@@ -81,7 +82,7 @@ export default {
         // watching list.
         const currentEntries = rootState.releases.releases.current
         const watching = [
-          ...rootState.watchLists.lists.watching,
+          ...rootState.watchLists.lists.watching.map(({ name }) => name),
           ...(rootState.services.mal.lists || []).map(({ title }) => title),
           ...(rootState.services.anilist.lists || []).map(({ title }) => title),
           ...(rootState.services.kitsu.lists || []).map(({ title }) => title)

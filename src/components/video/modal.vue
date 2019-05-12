@@ -156,8 +156,6 @@ export default {
           name: `${next.title} - ${next.episodeOrMovieNumber}`,
           neighbours: null
         })
-
-        this.$store.dispatch('streaming/getNeighbours')
       })
     }
   },
