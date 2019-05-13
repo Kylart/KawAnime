@@ -1,6 +1,6 @@
 {
-  "name": "electron-test",
-  "short_name": "electron-test",
+  "name": "KawAnime",
+  "short_name": "KawAnime",
   "icons": [
     {
       "src": "./img/icons/android-chrome-192x192.png",

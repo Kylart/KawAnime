@@ -1,7 +1,6 @@
 <template lang="pug">
   v-card.card(
     hover,
-    ripple,
     :class="{ 'green darken-1': selected }",
     :style='cardStyle'
   )
