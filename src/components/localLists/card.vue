@@ -31,7 +31,8 @@
               v-btn(
                 small,
                 :icon='!!action.icon',
-                @click.stop='action.cb'
+                @click.stop='action.cb',
+                v-show='action.show'
               ) {{ action.text }}
                 template(v-show='action.icon')
                   v-icon {{ action.icon }}
