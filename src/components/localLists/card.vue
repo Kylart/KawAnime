@@ -149,16 +149,16 @@ export default {
         fansub: this.$store.state.config.config.fansub,
         quality: this.$store.state.config.config.quality,
         feed: this.$store.state.config.config.feed,
-        name: this.name
+        name: this.entry.name
       }
 
       this.$store.dispatch('downloader/download', config)
     },
     watch () {
-      this.$router.push({ path: '/', query: { name: this.name } })
+      this.$router.push({ path: '/', query: { name: this.entry.name } })
     },
     search () {
-      this.$store.commit('info/setTerm', this.name)
+      this.$store.commit('info/setTerm', this.entry.name)
       this.$store.commit('info/setRemote', true)
       this.$store.commit('info/showModal', true)
     },
