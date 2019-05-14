@@ -13,10 +13,12 @@ export default function (data) {
       nbEp: info.episodes || '??',
       img: info.coverImage.extraLarge || info.coverImage.large,
       bannerImg: info.bannerImage,
-      format: info.format,
-      status: info.status,
-      season: `${info.season} ${info.startDate.year}`,
-      duration: info.duration,
+      format: info.format || 'Unknown',
+      status: info.status || 'Unknown',
+      season: info.season && info.startDate.year
+        ? `${info.season} ${info.startDate.year}`
+        : 'Unknown',
+      duration: info.duration || 'Unknown',
       genres: info.genres,
       isAdult: info.isAdult
     }
