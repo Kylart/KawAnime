@@ -3,9 +3,13 @@
     v-layout(row, wrap)
       v-flex(xs12)
         list-form(
-          :name='name', :nb-elems='entries.length',
-          @selectAll='selectAll', @move='move',
-          @deleteSelected='deleteSelected'
+          :name='name',
+          :elems='originalEntries',
+          :filtered-elems='entries',
+          @selectAll='selectAll',
+          @move='move',
+          @deleteSelected='deleteSelected',
+          @filter='filterEntries'
         )
 
       transition-group(name='list', tag='div', class='trans layout row wrap')
@@ -42,15 +46,59 @@ export default {
   data: () => ({
     sup: 20,
     initSup: 20,
-    selected: []
+    selected: [],
+    listFilters: {
+      tags: [],
+      genres: [],
+      duration: [],
+      progress: [],
+      score: null,
+      season: [],
+      status: [],
+      nbEp: []
+    }
   }),
 
   computed: {
-    entries: {
+    originalEntries: {
       get () {
         return this.$store.state.watchLists.lists[this.name]
       },
       set () {}
+    },
+    entries () {
+      const filterKeys = Object.keys(this.listFilters)
+      const emptyValue = 'none'
+
+      return this.originalEntries.filter((entry) => {
+        const selected = []
+
+        for (const key of filterKeys) {
+          const filterValue = this.listFilters[key]
+          const isArray = Array.isArray(filterValue)
+
+          if (!filterValue || (isArray && !filterValue.length)) {
+            selected.push(emptyValue)
+            continue
+          }
+
+          if (isArray) {
+            const isSelected = Array.isArray(entry[key])
+              // The entry is selected if it has at least one matching value
+              ? !!entry[key].filter((val) => filterValue.some((v) => v === val)).length
+              : filterValue.includes(entry[key])
+
+            selected.push(isSelected)
+          } else {
+            selected.push(
+              (key === 'score' && entry[key] > filterValue) ||
+              entry[key] === filterValue
+            )
+          }
+        }
+
+        return selected.filter((v) => v !== emptyValue).every((v) => v === true) || selected.every((v) => v === emptyValue)
+      })
     }
   },
 
@@ -98,6 +146,13 @@ export default {
       this.selected.forEach((entry) => {
         this.remove(entry)
       })
+    },
+    filterEntries (filters) {
+      const filterKeys = Object.keys(filters)
+
+      for (const key of filterKeys) {
+        this.$set(this.listFilters, key, filters[key])
+      }
     }
   }
 }
