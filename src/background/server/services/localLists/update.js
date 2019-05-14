@@ -15,7 +15,7 @@ function handler (event, { type, data, isDelete = false }) {
     const storage = localFiles.getFile(FILE_NAME)
     const currentList = storage[type]
 
-    const index = currentList.findIndex(({ name }) => name === data.name)
+    const index = currentList.findIndex(({ name, key }) => name === data.name || (data.key && key === data.key))
     const isUpdate = index !== -1
 
     if (isDelete) {
