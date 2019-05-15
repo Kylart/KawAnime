@@ -124,16 +124,18 @@ export function formatSeason (data) {
 }
 
 export function formatList (data) {
-  return data.MediaListCollection.lists[0].entries.map((entry) => ({
-    ...entry,
-    id: entry.media.id,
-    title: entry.media.title.userPreferred || entry.media.title.english || entry.media.title.romaji,
-    score: entry.score,
-    progress: entry.progress,
-    note: entry.notes,
-    status: capitalize(entry.status || ''),
-    nbEp: entry.media.episodes,
-    format: entry.media.format,
-    img: entry.media.coverImage.extraLarge || entry.media.coverImage.large
-  }))
+  return data.MediaListCollection.lists
+    .reduce((acc, list) => [ ...acc, ...list.entries ], [])
+    .map((entry) => ({
+      ...entry,
+      id: entry.media.id,
+      title: entry.media.title.userPreferred || entry.media.title.english || entry.media.title.romaji,
+      score: entry.score,
+      progress: entry.progress,
+      note: entry.notes,
+      status: capitalize(entry.status || ''),
+      nbEp: entry.media.episodes,
+      format: entry.media.format,
+      img: entry.media.coverImage.extraLarge || entry.media.coverImage.large
+    }))
 }
