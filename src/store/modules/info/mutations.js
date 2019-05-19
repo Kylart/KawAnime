@@ -8,7 +8,11 @@ export default {
     state.info[sanitize(key)] = value
   },
   addEps (state, { name, data }) {
-    state.info[sanitize(name)].episodesInfo = data
+    const localInfo = state.info[sanitize(`local/${name}`)]
+    const globalInfo = state.info[sanitize(name)]
+
+    if (localInfo) state.info[sanitize(`local/${name}`)].episodesInfo = data
+    if (globalInfo) state.info[sanitize(name)].episodesInfo = data
   },
   addEpsLinks (state, { name, data }) {
     state.info[name].episodesLinks = data

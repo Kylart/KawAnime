@@ -43,7 +43,7 @@
         v-for='(entry, i) in entries',
         :key='entry.name'
       )
-        card(:info='entry', :ref='entry.parsedName.title')
+        card(:info='entry', :ref='entry.name')
 
     .pag-container
       v-pagination(

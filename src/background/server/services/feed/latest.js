@@ -22,16 +22,10 @@ async function getLatest (event, { feed, quality, term, fansub = '' }) {
     logger.info('Retrieving latest releases...')
 
     const result = (await engine.search(query, 150, { filter: '0', category: '1_0' }))
-      .map((elem) => {
-        const tmp = elem
-
-        // We have to copy the result of `parse` so that
-        // parsedName won't be always a reference to the same
-        // variable...
-        tmp.parsedName = Object.assign({}, parse(elem.name))
-
-        return tmp
-      })
+      .map((elem) => ({
+        ...elem,
+        parsedName: parse(elem.name)
+      }))
 
     logger.info('Sending latest releases.')
 

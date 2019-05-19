@@ -1,4 +1,4 @@
-import { parseAnime } from 'zettai'
+import { parseSync } from 'anitomy-js'
 
 export default {
   data: () => ({
@@ -63,12 +63,12 @@ export default {
       const fileExtension = path.split('.').slice(-1)[0]
 
       if (this.isValidFile(fileExtension)) {
-        const { title, episodeOrMovieNumber: ep } = Object.assign({}, parseAnime(fullName))
+        const { video_title: title, volume_number: ep } = parseSync(fullName)
 
         this.$store.dispatch('streaming/play', {
           link: path,
           isTorrent: this.torrentExtension.includes(fileExtension),
-          name: `${title} - ${ep}`,
+          name: `${title} - ${+ep}`,
           neighbours: null
         })
       }

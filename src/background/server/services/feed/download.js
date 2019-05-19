@@ -14,18 +14,19 @@ function formatMagnets (data, searchData, feed) {
   const isPantsu = feed === 'pantsu'
 
   data.forEach((elem) => {
-    const parsed = Object.assign({}, parse(elem.name))
-    const ep = parseInt(parsed.episodeOrMovieNumber)
+    const parsed = parse(elem.name)
+    const ep = +parsed.episode_number
 
     eps.push(ep)
 
     if (ep <= searchData.untilEp && ep >= searchData.fromEp) {
       magnets.push({
-        name: parsed.title,
+        originalName: elem.name,
+        name: parsed.anime_title || 'Unknown',
         link: isPantsu ? elem.magnet : elem.links.magnet,
         nb: ep,
-        quality: parsed.resolution,
-        fansub: parsed.releaseGroup
+        quality: parsed.video_resolution || 'Unknown',
+        fansub: parsed.release_group || 'Unknown'
       })
     }
   })

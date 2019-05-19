@@ -82,7 +82,7 @@ export default {
   mounted () {
     this.getInfo()
 
-    if (this.file.eps) this.currentEp = this.file.eps[0].episodeOrMovieNumber
+    if (this.file.eps) this.currentEp = this.file.eps[0].ep
   },
 
   data: () => ({
@@ -115,15 +115,15 @@ export default {
     },
     eps () {
       return (this.file.eps || [])
-        .map((e) => e.episodeOrMovieNumber)
+        .map((e) => e.ep)
         .reverse()
     },
     title () {
-      return `${this.file.title} - ${this.currentEp || this.file.episodeOrMovieNumber || this.file.animeType2 || 'N/A'}`
+      return `${this.file.title} - ${this.currentEp || this.file.ep || this.file.animeType2 || 'N/A'}`
     },
     path () {
       return this.currentEp
-        ? this.file.eps.find((ep) => ep.episodeOrMovieNumber === this.currentEp).path
+        ? this.file.eps.find((ep) => ep.ep === this.currentEp).path
         : this.file.path
     }
   },

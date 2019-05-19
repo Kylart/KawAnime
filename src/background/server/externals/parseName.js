@@ -1,3 +1,1 @@
-import { parseAnime } from 'zettai'
-
-export default parseAnime
+export { parseSync as parseName } from 'anitomy-js'

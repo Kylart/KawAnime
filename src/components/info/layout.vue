@@ -183,7 +183,7 @@ export default {
       allInfo: 'getInfo'
     }),
     title () {
-      return this.current.title.replace(':', '')
+      return (this.current.anime_title || this.current.title).replace(':', '')
     },
     info () {
       return this.allInfo[this.title] || {}

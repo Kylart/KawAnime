@@ -16,11 +16,11 @@
           key='normal'
         )
           v-layout.text(fill-height, column, justify-space-between)
-            v-flex.entry-title(xs2) {{ info.parsedName.title }}
+            v-flex.entry-title(xs2) {{ name }}
             v-flex.text-xs-center(v-if='!picture', xs2)
               v-progress-circular(indeterminate)
-            v-flex.entry-ep(xs2, v-if='info.parsedName.episodeOrMovieNumber')
-              span Ep. {{ info.parsedName.episodeOrMovieNumber }}
+            v-flex.entry-ep(xs2, v-if='episodeLabel')
+              span Ep. {{ episodeLabel }}
 
         v-container.overlay(
           v-else
@@ -42,7 +42,7 @@
               v-icon.large more_horiz
 
     v-card-actions
-      .fansub.ellipsis(v-show='!hasFansub') {{ info.parsedName.releaseGroup }}
+      .fansub.ellipsis(v-show='!hasFansub') {{ info.parsedName.release_group }}
       v-spacer
       template(v-for='list in lists')
         v-tooltip(top, lazy)
@@ -89,13 +89,16 @@ export default {
       return this.$store.state.releases.params.fansub !== 'None'
     },
     name () {
-      return this.info.parsedName.title
+      return this.info.parsedName.anime_title
     },
     lists: {
       get () {
         return this.$store.state.watchLists.listNames.filter(({ list }) => ['watchList', 'watching'].includes(list))
       },
       set () {}
+    },
+    episodeLabel () {
+      return this.info.parsedName.episode_number || 'N/A'
     }
   },
 
@@ -107,7 +110,7 @@ export default {
       this.overlay = false
     },
     watch () {
-      const { parsedName: { title, episodeOrMovieNumber: ep } } = this.info
+      const { parsedName: { anime_title: title, episode_number: ep } } = this.info
 
       const magnet = 'magnet' in this.info
         ? this.info.magnet
@@ -130,14 +133,14 @@ export default {
           ? this.$store.state.config.config.fansub
           : params.fansub,
         quality: params.quality,
-        name: this.info.parsedName.title,
+        name: this.name,
         fromEp: -Infinity,
         untilEp: Infinity,
         feed: params.feed
       })
     },
     more () {
-      if (this.allInfo[this.info.parsedName.title]) {
+      if (this.allInfo[this.name]) {
         this.$store.commit('releases/setCurrent', this.info.parsedName)
       }
     },

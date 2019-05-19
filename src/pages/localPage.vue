@@ -19,7 +19,7 @@
           class='trans layout row wrap justify-space-around', tag='div'
         )
           template(v-for='file in groupedFiles')
-            v-flex(xs12, sm6, md3, lg3, xl2, :key='`${file.title} - ${file.episodeOrMovieNumber || ""}`')
+            v-flex(xs12, sm6, md3, lg3, xl2, :key='`${file.title} - ${file.ep || ""}`')
               card(:reset='resetting', :file='file', @more='setCurrent', @refresh='refresh')
 </template>
 
@@ -57,14 +57,14 @@ export default {
       const { files = [] } = this
 
       return files.reduce((acc, file) => {
-        if (!file.episodeOrMovieNumber) {
+        if (!file.ep) {
           acc.push(file)
           return acc
         }
 
         const isIn = acc.find((f) => f.title === file.title)
         const epInfo = {
-          episodeOrMovieNumber: file.episodeOrMovieNumber,
+          ep: file.ep,
           path: file.path
         }
 

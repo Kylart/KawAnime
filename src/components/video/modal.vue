@@ -153,7 +153,7 @@ export default {
         this.$store.dispatch('streaming/play', {
           isTorrent: next.hasOwnProperty('link'),
           link: next.path || next.link,
-          name: `${next.title} - ${next.episodeOrMovieNumber}`,
+          name: `${next.title} - ${next.ep}`,
           neighbours: null
         })
       })

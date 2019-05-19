@@ -18,9 +18,17 @@ function sendLocalFiles (dir) {
     .filter(
       (file) => extensions.includes(extname(file.toLowerCase()))
     )
-    .map((elem) => Object.assign({
-      path: join(dir, elem)
-    }, parseName(elem)))
+    .map((elem) => {
+      const parsed = parseName(elem)
+
+      return {
+        path: join(dir, elem),
+        ep: parsed.episode_number,
+        title: parsed.anime_title,
+        releaseGroup: parsed.release_group,
+        ...parsed
+      }
+    })
 }
 
 function sendLocalInfo (name) {

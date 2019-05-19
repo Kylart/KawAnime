@@ -65,12 +65,12 @@ export default {
               previous: {
                 link: previous.link,
                 title,
-                episodeOrMovieNumber: +ep - 1
+                ep: +ep - 1
               },
               next: {
                 link: next.link,
                 title,
-                episodeOrMovieNumber: +ep + 1
+                ep: +ep + 1
               }
             })
 
@@ -88,7 +88,7 @@ export default {
           ...(rootState.services.kitsu.lists || []).map(({ title }) => title)
         ]
 
-        const candidates = currentEntries.filter(({ parsedName }) => watching.includes(parsedName.title))
+        const candidates = currentEntries.filter(({ parsedName }) => watching.includes(parsedName.anime_title))
 
         if (!candidates.length) {
           log('No candidates, returning...')
@@ -96,7 +96,7 @@ export default {
           return
         }
 
-        const currentIndex = candidates.findIndex(({ parsedName }) => parsedName.title === title)
+        const currentIndex = candidates.findIndex(({ parsedName }) => parsedName.anime_title === title)
 
         next = currentIndex === -1
           ? candidates[0]
@@ -111,14 +111,14 @@ export default {
         commit('setNeighbours', {
           previous: {
             link: previous.links.magnet,
-            title: previous.parsedName.title,
-            episodeOrMovieNumber: previous.parsedName.episodeOrMovieNumber
+            title: previous.parsedName.anime_title,
+            ep: previous.parsedName.episode_number
           },
           next: next
             ? {
               link: next.links.magnet,
-              title: next.parsedName.title,
-              episodeOrMovieNumber: next.parsedName.episodeOrMovieNumber
+              title: next.parsedName.anime_title,
+              ep: next.parsedName.episode_number
             }
             : null
         })
