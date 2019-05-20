@@ -2,13 +2,20 @@ function capitalize (word) {
   return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
 }
 
+function beautify (str) {
+  return str
+    .split('_')
+    .map(capitalize)
+    .join(' ')
+}
+
 function generateSentence (data) {
   const { status, source, season, startDate, episodes, duration } = data
 
   const _source = source === 'ORIGINAL'
     ? 'is an Original'
     : source
-      ? `adapted from the ${source.toLowerCase()}`
+      ? `adapted from the ${beautify(source)}`
       : 'adapted from unknown material'
 
   const nbEpisodes = episodes
@@ -109,7 +116,7 @@ export function formatSeason (data) {
       acc[key] = data[key].media.map((entry) => ({
         title: entry.title.userPreferred || entry.title.english || entry.title.romaji,
         nbEp: entry.episodes || '?',
-        fromType: entry.source ? capitalize(entry.source) : '',
+        fromType: entry.source ? beautify(entry.source) : '',
         genres: entry.genres,
         synopsis: entry.description ? entry.description.replace(/<br>/g, '') : 'No synopsis yet.',
         score: entry.averageScore,
