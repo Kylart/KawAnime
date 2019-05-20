@@ -1,32 +1,31 @@
 <template lang="pug">
-  v-container(fluid, grid-list-md, pa-1, pt-0)
-    v-dialog(
-      v-model='show',
-      width='60%',
-      transition='dialog-transition',
-      lazy, absolute
-    )
-      v-card
-        v-card-title.grey--text.text-uppercase
-          v-spacer
-          span Advanced research
-          v-spacer
+  v-dialog(
+    v-model='show',
+    width='60%',
+    transition='dialog-transition',
+    lazy, absolute, persistent
+  )
+    v-card
+      v-card-title.grey--text.text-uppercase
+        v-spacer
+        span Advanced research
+        v-spacer
 
-        v-divider
+      v-divider
 
-        v-card-text
-          v-container(grid-list-md)
-            v-layout(row, wrap, justify-center, align-center)
-              template(v-for='form in filterForm')
-                v-flex(xs6)
-                  component(:is='form.component', v-bind='form.props', v-model="filter.models[form.model]")
+      v-card-text
+        v-container(grid-list-md)
+          v-layout(row, wrap, justify-center, align-center)
+            template(v-for='form in filterForm')
+              v-flex(xs6)
+                component(:is='form.component', v-bind='form.props', v-model="filter.models[form.model]")
 
-        v-divider
+      v-divider
 
-        v-card-actions
-          v-spacer
-          v-btn(@click='applyFilters') Apply
-          v-btn.blue--text(flat, @click='close') Cancel
+      v-card-actions
+        v-spacer
+        v-btn(@click='applyFilters') Apply
+        v-btn.blue--text(flat, @click='close') Cancel
 </template>
 
 <script>
