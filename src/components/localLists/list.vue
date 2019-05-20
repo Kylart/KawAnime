@@ -33,13 +33,14 @@ import ListForm from '@/components/localLists/form.vue'
 
 // Mixins
 import Reduced from '@/mixins/global/reduced.js'
+import Filters from '@/mixins/global/filters.js'
 
 export default {
   name: 'List',
 
   components: { ListForm, Card },
 
-  mixins: [ Reduced ],
+  mixins: [ Filters, Reduced ],
 
   props: ['name'],
 
@@ -66,39 +67,9 @@ export default {
       },
       set () {}
     },
-    entries () {
-      const filterKeys = Object.keys(this.listFilters)
-      const emptyValue = 'none'
-
-      return this.originalEntries.filter((entry) => {
-        const selected = []
-
-        for (const key of filterKeys) {
-          const filterValue = this.listFilters[key]
-          const isArray = Array.isArray(filterValue)
-
-          if (!filterValue || (isArray && !filterValue.length)) {
-            selected.push(emptyValue)
-            continue
-          }
-
-          if (isArray) {
-            const isSelected = Array.isArray(entry[key])
-              // The entry is selected if it has at least one matching value
-              ? !!entry[key].filter((val) => filterValue.some((v) => v === val)).length
-              : filterValue.includes(entry[key])
-
-            selected.push(isSelected)
-          } else {
-            selected.push(
-              (key === 'score' && entry[key] > filterValue) ||
-              entry[key] === filterValue
-            )
-          }
-        }
-
-        return selected.filter((v) => v !== emptyValue).every((v) => v === true) || selected.every((v) => v === emptyValue)
-      })
+    // For entries from filters mixins
+    filterModel () {
+      return this.listFilters
     }
   },
 

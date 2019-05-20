@@ -1,0 +1,147 @@
+<template lang="pug">
+  v-container(fluid, grid-list-md, pa-1, pt-0)
+    v-dialog(
+      v-model='show',
+      width='60%',
+      transition='dialog-transition',
+      lazy, absolute
+    )
+      v-card
+        v-card-title.grey--text.text-uppercase
+          v-spacer
+          span Advanced research
+          v-spacer
+
+        v-divider
+
+        v-card-text
+          v-container(grid-list-md)
+            v-layout(row, wrap, justify-center, align-center)
+              template(v-for='form in filterForm')
+                v-flex(xs6)
+                  component(:is='form.component', v-bind='form.props', v-model="filter.models[form.model]")
+
+        v-divider
+
+        v-card-actions
+          v-spacer
+          v-btn(@click='applyFilters') Apply
+          v-btn.blue--text(flat, @click='close') Cancel
+</template>
+
+<script>
+export default {
+  name: 'List-Form',
+
+  props: ['show', 'elems', 'filtered-elems'],
+
+  data: () => ({
+    term: '',
+    filter: {
+      models: {
+        genres: [],
+        producers: [],
+        fromType: [],
+        nbEp: []
+      },
+      keys: [
+        'genres',
+        'producers',
+        'fromType',
+        'nbEp'
+      ]
+    }
+  }),
+
+  computed: {
+    availableFilters () {
+      const filters = this.elems.reduce(
+        (acc, entry) => {
+          for (const key of this.filter.keys) {
+            const value = entry[key]
+
+            if (!value) continue
+
+            if (Array.isArray(value)) {
+              acc[key] = [
+                ...acc[key],
+                ...value.filter((val) => !acc[key].includes(val))
+              ]
+            } else {
+              !acc[key].includes(value) && acc[key].push(value)
+            }
+          }
+
+          return acc
+        }, {
+          genres: [],
+          producers: [],
+          fromType: [],
+          nbEp: []
+        }
+      )
+
+      // Custom sorting
+      filters.nbEp.sort((a, b) => +b - +a)
+
+      return filters
+    },
+    filterForm () {
+      return [{
+        component: 'v-autocomplete',
+        model: 'producers',
+        props: {
+          label: 'Producers',
+          items: this.availableFilters.producers,
+          multiple: true,
+          'small-chips': true,
+          'deletable-chips': true,
+          disabled: !this.availableFilters.producers.length
+        }
+      }, {
+        component: 'v-autocomplete',
+        model: 'genres',
+        props: {
+          label: 'Genres',
+          items: this.availableFilters.genres,
+          multiple: true,
+          'small-chips': true,
+          'deletable-chips': true,
+          disabled: !this.availableFilters.genres.length
+        }
+      }, {
+        component: 'v-autocomplete',
+        model: 'fromType',
+        props: {
+          label: 'From Source Type',
+          items: this.availableFilters.fromType,
+          multiple: true,
+          'small-chips': true,
+          'deletable-chips': true,
+          disabled: !this.availableFilters.fromType.length
+        }
+      }, {
+        component: 'v-autocomplete',
+        model: 'nbEp',
+        props: {
+          label: 'Number of episodes',
+          items: this.availableFilters.nbEp,
+          multiple: true,
+          'small-chips': true,
+          'deletable-chips': true,
+          disabled: !this.availableFilters.nbEp.length
+        }
+      }]
+    }
+  },
+
+  methods: {
+    close () {
+      this.$emit('close')
+    },
+    applyFilters () {
+      this.$emit('filter', this.filter.models)
+    }
+  }
+}
+</script>

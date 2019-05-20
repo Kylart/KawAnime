@@ -25,7 +25,7 @@
                 v-model='entry.progress',
                 type='number',
                 min='0',
-                :max='`${entry.nbEp }`|| null',
+                :max='`${entry.nbEp}`|| null',
                 label='Watched episodes',
                 clearable,
                 hide-details
