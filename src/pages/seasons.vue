@@ -81,6 +81,7 @@ export default {
       show: false,
       form: {
         list: [],
+        score: null,
         genres: [],
         producers: [],
         fromType: [],

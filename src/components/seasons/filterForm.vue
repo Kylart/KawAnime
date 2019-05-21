@@ -39,6 +39,7 @@ export default {
     filter: {
       models: {
         list: [],
+        score: null,
         genres: [],
         producers: [],
         fromType: [],
@@ -46,6 +47,7 @@ export default {
       },
       keys: [
         'list',
+        'score',
         'genres',
         'producers',
         'fromType',
@@ -83,6 +85,7 @@ export default {
           return acc
         }, {
           list: [],
+          score: [],
           genres: [],
           producers: [],
           fromType: [],
@@ -92,6 +95,7 @@ export default {
 
       // Custom sorting
       filters.nbEp.sort((a, b) => +b - +a)
+      filters.score.sort((a, b) => b - a)
 
       return filters
     },
@@ -128,6 +132,14 @@ export default {
           'small-chips': true,
           'deletable-chips': true,
           disabled: !this.availableFilters.fromType.length
+        }
+      }, {
+        component: 'v-combobox',
+        model: 'score',
+        props: {
+          label: 'Score',
+          items: this.availableFilters.score,
+          type: 'number'
         }
       }, {
         component: 'v-autocomplete',
