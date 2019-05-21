@@ -1,6 +1,13 @@
 export default {
 
   mounted () {
+    if (this.hasLinks) {
+      return this.setLinks(null, {
+        name: this.title,
+        magnets: this.info.episodesLinks
+      })
+    }
+
     // We need to wait for the episode info to be here beforehand
     this.$ipc.on(this.$eventsList.episodes.success, this.getLinks)
   },
@@ -25,12 +32,15 @@ export default {
         return this.$store.state.config.config.video
       },
       set () {}
+    },
+    hasLinks () {
+      return !!this.info.episodesLinks
     }
   },
 
   methods: {
-    getLinks (e, { name, data }) {
-      if (name === this.title && !this.info.hasOwnProperty('episodesLinks')) {
+    getLinks (e, { name }) {
+      if (name === this.title && !this.hasLinks) {
         this.$ipc.removeListener(this.$eventsList.episodes.success, this.getLinks)
         this.$ipc.on(this.$eventsList.download.success, this.setLinks)
 
