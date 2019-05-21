@@ -29,38 +29,40 @@
                 v-model='source'
               )
 
-            template(v-if='source')
-              v-flex
-                v-icon(large) keyboard_arrow_down
+            v-scale-transition(group)
+              template(v-if='source')
+                v-flex.text-xs-center(key='icon')
+                  v-icon(large) keyboard_arrow_down
 
-              v-flex
-                v-select(
-                  label='To',
-                  hint='Where to import it.',
-                  persistent-hint,
-                  :items='targets',
-                  v-model='target'
-                )
+                v-flex(key='select')
+                  v-select(
+                    label='To',
+                    hint='Where to import it.',
+                    persistent-hint,
+                    :items='targets',
+                    v-model='target'
+                  )
 
       v-divider
 
-      template(v-if='source && target')
-        v-card-actions
-          v-spacer
+      v-fade-transition
+        template(v-if='source && target')
+          v-card-actions
+            v-spacer
 
-          template(v-if='confirm')
-            .pr-2
-              | You are about to transfer your #[b {{ sourceName }}] list
-              | to #[b {{ targetName }}]. Are you sure?
+            template(v-if='confirm')
+              .pr-2
+                | You are about to transfer your #[b {{ sourceName }}] list
+                | to #[b {{ targetName }}]. Are you sure?
 
-            v-btn(@click='transfer') Yes!
+              v-btn(@click='transfer') Yes!
 
-            v-btn.blue--text(flat, @click='confirm = false') Nevermind!
+              v-btn.blue--text(flat, @click='confirm = false') Nevermind!
 
-          template(v-else)
-            v-btn(@click='confirm = true') Transfer!
+            template(v-else)
+              v-btn(@click='confirm = true') Transfer!
 
-            v-btn.blue--text(flat, @click='close') Cancel
+              v-btn.blue--text(flat, @click='close') Cancel
 </template>
 
 <script>
