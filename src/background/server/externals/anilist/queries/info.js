@@ -1,7 +1,6 @@
-export default function (name) {
-  return `
-  {
-    Media(search: "${name}") {
+export default `
+  query ($name: String) {
+    Media(search: $name) {
       title {
         english
         romaji
@@ -80,5 +79,4 @@ export default function (name) {
       }
     }
   }
-  `
-}
+`

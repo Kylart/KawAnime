@@ -5,7 +5,7 @@ import { formatList } from './helpers'
 
 export default async function (username) {
   try {
-    const { data } = await graphql(GRAPHQL_ENDPOINT, watchLists.get(username))
+    const { data } = await graphql(GRAPHQL_ENDPOINT, watchLists.get, { username })
 
     return formatList(data)
   } catch (e) {

@@ -1,8 +1,7 @@
-export default function (term) {
-  return `
-  {
+export default `
+  query ($term: String) {
     Page(perPage: 10) {
-      media (search: "${term}") {
+      media (search: $term) {
         id
         idMal
         title {
@@ -16,5 +15,4 @@ export default function (term) {
       }
     }
   }
-  `
-}
+`

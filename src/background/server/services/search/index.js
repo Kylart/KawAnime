@@ -13,7 +13,7 @@ function sendReponse (isSync, response, event, eventName = '') {
 export default Object.keys(types).map((_type) => {
   const events = eventsList.search[_type]
 
-  async function handler (event, { provider, toSearch, isSync }) {
+  async function handler (event, { provider, toSearch, isSync, opts }) {
     this._type = _type
     this.events = events
 
@@ -24,7 +24,7 @@ export default Object.keys(types).map((_type) => {
 
       logger.info(`Searching with a ${this._type} with provider ${provider}`)
 
-      const info = await category[provider](toSearch)
+      const info = await category[provider](toSearch, opts)
 
       sendReponse(isSync, { name: toSearch.name || toSearch.url, info }, event, this.events.success)
     } catch (e) {

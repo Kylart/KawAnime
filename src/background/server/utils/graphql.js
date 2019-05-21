@@ -1,9 +1,10 @@
 import https from './https'
 
-export default async function (url, query) {
+export default async function (url, query, variables) {
   try {
     const response = await https.post(url, {
-      query
+      query,
+      variables
     })
 
     if (response.errors) throw new Error(response.errors[0].message)

@@ -1,10 +1,8 @@
-export default function (username) {
-  return `
-  {
-    MediaListCollection (userName: "${username}", type: ANIME) {
+export default `
+  query ($username: String) {
+    MediaListCollection(userName: $username, type: ANIME) {
       lists {
         entries {
-          score
           progress
           status
           notes
@@ -27,5 +25,4 @@ export default function (username) {
       }
     }
   }
-  `
-}
+`

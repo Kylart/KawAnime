@@ -32,7 +32,7 @@ function generateSentence (data) {
 
 async function getInfo (id) {
   try {
-    const data = await graphql(GRAPHQL_ENDPOINT, queries.info(id))
+    const data = await graphql(GRAPHQL_ENDPOINT, queries.info, { id })
 
     return data
   } catch (e) {
