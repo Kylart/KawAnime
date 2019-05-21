@@ -53,7 +53,7 @@
             template(v-if='confirm')
               .pr-2
                 | You are about to transfer your #[b {{ sourceName }}] list
-                | to #[b {{ targetName }}]. Are you sure?
+                | to #[b {{ targetName }}] list. Are you sure?
 
               v-btn(@click='transfer') Yes!
 
@@ -74,12 +74,20 @@ export default {
     show: false,
     source: null,
     target: null,
-    sources: [
+    availableSources: [
       { text: 'Local', value: 'local' },
       { text: 'MyAnimeList.net', value: 'mal' },
       { text: 'Anilist.co', value: 'anilist' },
       { text: 'Kitsu.io', value: 'kitsu' }
-    ]
+    ],
+    excludedTargets: [ 'mal', 'anilist', 'kitsu' ],
+    statusValues: {
+      watchList: [ 'Plan to watch', 'Planned', 'Planning' ],
+      watching: [ 'Watching', 'Current' ],
+      seen: [ 'Completed' ],
+      dropped: [ 'Dropped' ],
+      onHold: [ 'On Hold', 'Paused' ]
+    }
   }),
 
   computed: {
@@ -92,10 +100,14 @@ export default {
     isSame () {
       return this.source === this.target
     },
+    sources () {
+      return this.availableSources
+        .filter(({ value }) => value === 'local' || this.$store.state.services[value].list)
+    },
     targets () {
       if (!this.source) return []
 
-      return this.sources.filter(({ value }) => value !== this.source)
+      return this.sources.filter(({ value }) => value !== this.source && !this.excludedTargets.includes(value))
     }
   },
 
@@ -103,8 +115,39 @@ export default {
     close () {
       this.show = false
     },
+    success () {
+      this.close()
+    },
     transfer () {
-      // const { source, target } = this
+      const { source, target } = this
+
+      if (target === 'local') {
+        this.importToLocal(source)
+      }
+    },
+    importToLocal (source) {
+      this.loading = true
+      const sourceList = this.$store.state.services[source].list
+
+      sourceList.forEach((entry) => {
+        const { status } = entry
+        const localStatus = Object.keys(this.statusValues)
+          .find((key) => this.statusValues[key].includes(status))
+
+        const newEntry = {
+          list: localStatus,
+          name: entry.title,
+          progress: entry.progress || 0,
+          nbEp: entry.nbEp,
+          note: entry.note || '',
+          tags: entry.tags || [],
+          img: entry.img
+        }
+
+        this.$store.dispatch('watchLists/add', newEntry)
+      })
+
+      this.success()
     }
   },
 

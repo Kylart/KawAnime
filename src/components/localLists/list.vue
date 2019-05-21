@@ -63,7 +63,8 @@ export default {
   computed: {
     originalEntries: {
       get () {
-        return this.$store.state.watchLists.lists[this.name]
+        return Array.from(this.$store.state.watchLists.lists[this.name])
+          .sort((a, b) => a.name < b.name ? -1 : 1)
       },
       set () {}
     },
