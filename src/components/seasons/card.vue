@@ -42,7 +42,7 @@
                 .synopsis {{ info.synopsis }}
               v-flex(xs1, d-flex, justify-space-between, align-end)
                 .producers.ellipsis By {{ info.producers.join(' and ') }}
-                .rating {{ info.score }} #[span / 10]
+                .rating {{ info.score }} #[span / {{ info.scoreOutOf || 10 }}]
 </template>
 
 <script>

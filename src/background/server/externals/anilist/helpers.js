@@ -120,6 +120,7 @@ export function formatSeason (data) {
         genres: entry.genres,
         synopsis: entry.description ? entry.description.replace(/<br>/g, '') : 'No synopsis yet.',
         score: entry.averageScore,
+        scoreOutOf: 100,
         picture: entry.coverImage.extraLarge || entry.coverImage.large,
         producers: entry.studios.nodes.map(({ name }) => name)
       }))
