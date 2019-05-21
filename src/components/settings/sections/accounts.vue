@@ -2,7 +2,10 @@
   //- We need one card per account type.
   div
     v-card.elevation-12.mb-3
-      v-card-title.section-title Accounts configuration
+      v-card-title.section-title
+        span Accounts configuration
+        v-spacer
+        import-modal
 
     template(v-for='website in websites')
       v-card.elevation-12.mb-3(:class='{ disabled: website.isOn }')
@@ -36,6 +39,9 @@
 </template>
 
 <script>
+// Components
+import ImportModal from '@/components/services/import.vue'
+
 // Mixins
 import Update from '@/mixins/config/update.js'
 
@@ -43,6 +49,8 @@ export default {
   name: 'Accounts-Section',
 
   mixins: [ Update ],
+
+  components: { ImportModal },
 
   data () {
     return {

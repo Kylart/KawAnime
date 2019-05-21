@@ -25,16 +25,23 @@
           hint='Looking for something?'
         )
 
-      v-btn(icon, large, @click='refresh')
-        v-icon(large) refresh
+      v-flex(xs12, sm4, md3)
+        v-btn(icon, large, @click='refresh')
+          v-icon(large) refresh
 
-      v-btn(icon, large, color='indigo', @click='add', v-show='canAdd')
-        v-icon(large) add
+        import-modal
+
+        v-btn(icon, large, color='indigo', @click='add', v-show='canAdd')
+          v-icon(large) add
 </template>
 
 <script>
+import ImportModal from '@/components/services/import.vue'
+
 export default {
   name: 'Service-Header',
+
+  components: { ImportModal },
 
   props: ['provider', 'hasTags', 'list'],
 
