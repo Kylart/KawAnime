@@ -6,6 +6,13 @@ function capitalize (word) {
   return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
 }
 
+function beautify (str) {
+  return str
+    .split('_')
+    .map(capitalize)
+    .join(' ')
+}
+
 function generateSentence (data) {
   const { status, startDate, endDate, episodeCount: episodes, episodeLength: duration } = data
 
@@ -163,7 +170,7 @@ export function formatList (data) {
       score: entry.ratingTwenty,
       progress: entry.progress,
       note: entry.notes,
-      status: capitalize(entry.status),
+      status: beautify(entry.status),
       nbEp: anime.episodeCount,
       format: anime.subtype,
       img: anime.posterImage.original || anime.posterImage.large || anime.posterImage.medium

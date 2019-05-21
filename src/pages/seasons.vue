@@ -80,6 +80,7 @@ export default {
     filter: {
       show: false,
       form: {
+        list: [],
         genres: [],
         producers: [],
         fromType: [],

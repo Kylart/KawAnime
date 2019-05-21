@@ -38,18 +38,27 @@ export default {
     term: '',
     filter: {
       models: {
+        list: [],
         genres: [],
         producers: [],
         fromType: [],
         nbEp: []
       },
       keys: [
+        'list',
         'genres',
         'producers',
         'fromType',
         'nbEp'
       ]
-    }
+    },
+    displayListsNames: [
+      { value: 0, text: 'Plan to watch' },
+      { value: 1, text: 'Watching' },
+      { value: 2, text: 'Completed' },
+      { value: 3, text: 'Dropped' },
+      { value: 4, text: 'On Hold' }
+    ]
   }),
 
   computed: {
@@ -73,6 +82,7 @@ export default {
 
           return acc
         }, {
+          list: [],
           genres: [],
           producers: [],
           fromType: [],
@@ -129,6 +139,18 @@ export default {
           'small-chips': true,
           'deletable-chips': true,
           disabled: !this.availableFilters.nbEp.length
+        }
+      }, {
+        component: 'v-combobox',
+        model: 'list',
+        props: {
+          label: 'In List',
+          items: this.displayListsNames,
+          multiple: true,
+          'small-chips': true,
+          'deletable-chips': true,
+          'item-text': 'text',
+          'item-value': 'value'
         }
       }]
     }

@@ -1,4 +1,8 @@
+import Lists from '@/mixins/lists/lists.js'
+
 export default {
+  mixins: [ Lists ],
+
   computed: {
     entries () {
       const filterKeys = Object.keys(this.filterModel)
@@ -13,6 +17,17 @@ export default {
 
           if (!filterValue || (isArray && !filterValue.length)) {
             selected.push(emptyValue)
+            continue
+          }
+
+          if (key === 'list') {
+            const isSelected = filterValue.some(({ value }) => {
+              // Comes from the lists mixins
+              return this.getList(value)
+                .some(({ title, name }) => entry.title === title || entry.title === name)
+            })
+
+            selected.push(isSelected)
             continue
           }
 
