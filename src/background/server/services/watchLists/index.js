@@ -9,7 +9,7 @@ const logger = new Logger('Watch Lists (From Provider)')
 const providers = {
   mal: mal.watchLists,
   kitsu: kitsu.watchLists,
-  anilist: anilist.watchLists
+  anilist: anilist.watchLists.get
 }
 
 async function lists (event, { service: provider, user }) {

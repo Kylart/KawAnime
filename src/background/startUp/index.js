@@ -8,6 +8,8 @@ import { localFiles } from '../server/externals'
 import * as templates from './templates'
 import migrate from './migration'
 
+import './register'
+
 const logger = new Logger('Init')
 
 function checkDir () {

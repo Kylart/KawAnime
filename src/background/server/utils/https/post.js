@@ -7,13 +7,13 @@ import Cache from '../cache'
 const logger = new Logger('Http:Post')
 const cache = new Cache()
 
-export default function (url, data, params = []) {
+export default function (url, data, params = [], headers = {}, useCache = true) {
   return new Promise((resolve, reject) => {
     const _url = formUrl(url, params)
     const _data = typeof data === 'string' ? data : JSON.stringify(data)
     const cacheKey = [ _url, _data ].join('|')
 
-    if (cache.has(cacheKey)) {
+    if (useCache && cache.has(cacheKey)) {
       logger.info('Retrieved info from cache!')
       resolve(cache.get(cacheKey))
 
@@ -26,7 +26,8 @@ export default function (url, data, params = []) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Content-Length': _data.length
+        'Content-Length': _data.length,
+        ...headers
       }
     }, (res) => {
       let response = ''
@@ -38,7 +39,7 @@ export default function (url, data, params = []) {
       res.on('end', () => {
         const result = JSON.parse(response)
 
-        cache.set(cacheKey, result)
+        useCache && cache.set(cacheKey, result)
         resolve(result)
       })
     })

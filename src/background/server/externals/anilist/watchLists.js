@@ -3,7 +3,7 @@ import { watchLists } from './queries'
 import { GRAPHQL_ENDPOINT } from './utils'
 import { formatList } from './helpers'
 
-export default async function (username) {
+async function get (username) {
   try {
     const { data } = await graphql(GRAPHQL_ENDPOINT, watchLists.get, { username })
 
@@ -11,4 +11,13 @@ export default async function (username) {
   } catch (e) {
     throw e
   }
+}
+
+async function update (opts) {
+  return graphql(GRAPHQL_ENDPOINT, watchLists.update, opts)
+}
+
+export default {
+  get,
+  update
 }
