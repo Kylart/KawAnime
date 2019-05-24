@@ -1,6 +1,6 @@
 import WebTorrent from 'webtorrent'
 import { extname, join } from 'path'
-import { readFileSync, createReadStream, watchFile, unwatchFile } from 'fs'
+import { readFileSync, createReadStream, watch, existsSync } from 'fs'
 import { BrowserWindow, app } from 'electron'
 
 import generateServer from '../video/createServer'
@@ -182,16 +182,23 @@ function play (event, { link: id, name }) {
 
     const filePath = streamingFilePath = join(torrent.path, torrent.files[0].path)
 
-    watchFile(filePath, (current) => {
-      if (current.size === 0) return
-
-      subtitleStream = createReadStream(streamingFilePath)
+    const startSubtitles = (path) => {
+      subtitleStream = createReadStream(path)
       parseSubtitles(event, subtitleStream, true)
 
       subtitleStream.read()
+    }
 
-      unwatchFile(streamingFilePath)
-    })
+    if (existsSync(filePath)) {
+      startSubtitles(filePath)
+    } else {
+      const watcher = watch(torrent.path, (eventName, filename) => {
+        if (eventName === 'rename' && filename === torrent.files[0].path) {
+          startSubtitles(streamingFilePath)
+          watcher.close()
+        }
+      })
+    }
   }
 
   if (!torrent) {
