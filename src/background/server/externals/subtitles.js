@@ -1,4 +1,5 @@
 import MatroskaSubtitles from 'matroska-subtitles'
+import { Throttle } from 'stream-throttle'
 import { Logger } from '../utils'
 import { eventsList } from '../../../vendor'
 
@@ -15,21 +16,17 @@ function generateHandlers (event) {
 function generateParser (handlers) {
   const parser = new MatroskaSubtitles()
 
-  if (handlers.tracks) {
-    parser.on('tracks', handlers.tracks)
-  }
-
-  if (handlers.subtitle) {
-    parser.on('subtitle', handlers.subtitle)
-  }
+  parser.on('tracks', handlers.tracks)
+  parser.on('subtitle', handlers.subtitle)
 
   return parser
 }
 
-export default function (event, stream) {
+export default function (event, stream, isTorrent = false) {
   const parser = generateParser(generateHandlers(event))
+  const throttle = new Throttle({ rate: (isTorrent ? 1 : 50) * 1000 * 10240 })
 
-  stream.pipe(parser)
+  stream.pipe(throttle).pipe(parser)
 
   logger.info('Parsing subtitles for video')
 }

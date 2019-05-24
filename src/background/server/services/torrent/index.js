@@ -186,7 +186,7 @@ function play (event, { link: id, name }) {
       if (current.size === 0) return
 
       subtitleStream = createReadStream(streamingFilePath)
-      parseSubtitles(event, subtitleStream)
+      parseSubtitles(event, subtitleStream, true)
 
       subtitleStream.read()
 
