@@ -8,29 +8,36 @@
         import-modal
 
     template(v-for='website in websites')
-      v-card.elevation-12.mb-3(:class='{ disabled: website.isOn }')
+      v-card.elevation-12.mb-3
         v-card-title.section-title {{ website.title }}
         v-divider
         v-card-text
           v-container(grid-list-lg, pa-0)
-            v-layout(row, wrap, justify-center, align-center, pr-2, pl-2)
-              v-flex(xs12, sm4, md5)
-                v-text-field(
-                  v-model='website.credentials.username',
-                  label='Username',
-                  clearable
-                )
-              v-flex(xs12, sm4, md5)
-                v-text-field(
-                  v-model='website.credentials.password',
-                  label='Password',
-                  clearable,
-                  :append-icon="website.show ? 'visibility_off' : 'visibility'",
-                  :type="website.show ? 'text' : 'password'",
-                  @click:append='website.show = !website.show'
-                )
-              v-flex(xs12, sm4, md2)
-                v-btn(flat, @click='updateCreds(website)') Update
+            v-layout(justify-space-around, align-center, pr-2, pl-2)
+              template(v-for='input in getInputs(website.service)')
+                v-flex
+                  template(v-if="input.value === 'password'")
+                    v-text-field(
+                      clearable,
+                      v-model='website.credentials[input.value]',
+                      :label='input.text',
+                      :append-icon="website.show ? 'visibility_off' : 'visibility'",
+                      :type="website.show ? 'text' : 'password'",
+                      @click:append='website.show = !website.show'
+                    )
+                  template(v-else)
+                    v-text-field(
+                      v-model='website.credentials[input.value]',
+                      :label='input.text',
+                      clearable
+                    )
+              v-flex
+                v-btn(flat, @click='updateCreds(website)')
+                  v-icon save
+                  .pl-2 Save
+                v-btn(flat, @click='register(website)', v-show='website.mustRegister')
+                  v-icon open_in_new
+                  .pl-2 Register
         v-card-actions
           v-spacer
           v-layout(column, align-end)
@@ -62,25 +69,28 @@ export default {
           password: ''
         },
         show: false,
-        isOn: false
+        isOn: false,
+        mustRegoster: false
       }, {
         title: 'Kitsu.io',
         service: 'kitsu',
         credentials: {
           username: this.$store.state.services.kitsu.username || '',
-          password: ''
+          password: '',
+          email: this.$store.state.services.kitsu.email || ''
         },
         show: false,
-        isOn: false
+        isOn: false,
+        mustRegister: true
       }, {
         title: 'Anilist',
         service: 'anilist',
         credentials: {
-          username: this.$store.state.services.anilist.username || '',
-          password: ''
+          username: this.$store.state.services.anilist.username || ''
         },
         show: false,
-        isOn: false
+        isOn: false,
+        mustRegister: true
       }]
     }
   },
@@ -92,6 +102,12 @@ export default {
 
       // Instanciating API with those new credentials
       // this.$store.dispatch(`credentials/`, credentials)
+    },
+    register (website) {
+
+    },
+    getInputs (service) {
+      return this.$store.state.config.providersRequiredProperties[service]
     }
   }
 }

@@ -5,6 +5,9 @@ export default {
   hasUser (state, service) {
     state[service].has = true
   },
+  setValue (state, { service, key, value }) {
+    state[service][key] = value
+  },
   setList (state, { service, list }) {
     state[service].list = list
     state[service].error = null

@@ -48,6 +48,21 @@ export const providers = [
   { value: 'kitsu', text: 'Kitsu.io' }
 ]
 
+export const providersRequiredProperties = {
+  mal: [
+    { text: 'Username', value: 'username' },
+    { text: 'Password', value: 'password' }
+  ],
+  kitsu: [
+    { text: 'Username', value: 'username' },
+    { text: 'Password', value: 'password' },
+    { text: 'Email', value: 'email' }
+  ],
+  anilist: [
+    { text: 'Username', value: 'username' }
+  ]
+}
+
 export const sections = [
   { name: 'Information Providers', value: 0, icon: 'search' },
   { name: 'Feed', value: 1, icon: 'access_time' },

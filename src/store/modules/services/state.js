@@ -6,6 +6,7 @@ export default {
       has: false,
       isConnected: false,
       username: null,
+      email: null,
       list: null,
       error: null,
       form: {

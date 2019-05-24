@@ -9,9 +9,9 @@ const events = {
 
 const logger = new Logger('Vault (Get)')
 
-async function getCredentials (event, service) {
+async function getCredentials (event, { service, properties }) {
   try {
-    const data = await getCreds(service)
+    const data = await getCreds({ service, properties })
 
     logger.info(`Successfully retrieved credentials for ${service}.`)
 
@@ -22,11 +22,17 @@ async function getCredentials (event, service) {
   }
 }
 
-async function hasCredentials (event, service) {
+async function hasCredentials (event, { service, properties }) {
   try {
-    const { username } = await getCreds(service)
+    const data = await getCreds(service, properties)
+    const toSend = Object.keys(data).reduce((acc, key) => {
+      return [
+        ...acc,
+        { key, value: data[key] }
+      ]
+    }, [])
 
-    event.sender.send(events.has.success, { username, service })
+    event.sender.send(events.has.success, { data: toSend, service })
   } catch (e) {
     logger.error(`Could not retrieve credentials for ${service}.`)
   }

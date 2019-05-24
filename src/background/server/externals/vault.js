@@ -65,9 +65,9 @@ export async function setupCreds (service, creds) {
       const entry = group.getEntries().find((_entry) => _entry.getProperty('title') === service)
       const elem = entry || group.createEntry(service)
 
-      elem
-        .setProperty('username', creds.username)
-        .setProperty('password', creds.password)
+      Object.keys(creds).forEach((credName) => {
+        elem.setProperty(credName, creds[credName])
+      })
 
       await fileDatasource.save(archive.getHistory(), credentials)
     } else {
@@ -76,8 +76,10 @@ export async function setupCreds (service, creds) {
       archive
         .createGroup(GROUP_NAME)
         .createEntry(service)
-        .setProperty('username', creds.username)
-        .setProperty('password', creds.password)
+
+      Object.keys(creds).forEach((credName) => {
+        archive.setProperty(credName, creds[credName])
+      })
 
       await fileDatasource.save(archive.getHistory(), credentials)
     }
@@ -86,7 +88,13 @@ export async function setupCreds (service, creds) {
   }
 }
 
-export async function getCreds (service) {
+/**
+ * Allows the retrieval of properties in the vault.
+ *
+ * @param {string} service Service in which to retrieve the credentials property from.
+ * @param {string[]} properties Properties to retrieve from the vault.
+ */
+export async function getCreds (service, properties = [ 'username', 'password' ]) {
   try {
     const _path = localFiles.getPath(DIR_NAME, BCUP_FILE_NAME)
 
@@ -105,10 +113,11 @@ export async function getCreds (service) {
 
     logger.info(`Retrieved credentials for ${service}.`)
 
-    return {
-      username: entry.getProperty('username'),
-      password: entry.getProperty('password')
-    }
+    return properties.reduce((acc, property) => {
+      acc[property] = entry.getProperty(property)
+
+      return acc
+    }, {})
   } catch (e) {
     throw e
   }

@@ -13,8 +13,12 @@ export default {
   set (store, info) {
     ipcRenderer.send(eventsList.vault.update.main, info)
   },
-  hasUser ({ commit }, service) {
-    ipcRenderer.send(eventsList.vault.has.main, service)
+  hasUser ({ rootState, commit }, service) {
+    const properties = rootState.config.providersRequiredProperties[service]
+      .filter(({ value }) => value !== 'password')
+      .map(({ value }) => value)
+
+    ipcRenderer.send(eventsList.vault.has.main, { service, properties })
   },
   getList ({ state }, { service, username }) {
     log(`Retrieving list for ${service}.`)
