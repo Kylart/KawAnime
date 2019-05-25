@@ -36,7 +36,8 @@ const customs = {
   vault: [ 'get', 'update', 'check', 'has' ],
   video: [ 'init', 'stop', 'subtitles', 'tracks', 'name' ],
   update: [ 'available', 'installable', 'install', 'progress' ],
-  localLists: [ 'get', 'update', 'info' ]
+  localLists: [ 'get', 'update', 'info' ],
+  register: [ 'code', 'token' ]
 }
 
 export default {

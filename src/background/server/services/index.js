@@ -12,6 +12,7 @@ import video from './video'
 import isOnline from './isOnline'
 import vault from './vault'
 import watchLists from './watchLists'
+import registerService from './registerService'
 
 const services = [
   ...config,
@@ -23,6 +24,7 @@ const services = [
   ...torrent,
   ...vault,
   ...video,
+  ...registerService,
   news,
   seasons,
   episodes,

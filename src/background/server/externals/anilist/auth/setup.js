@@ -7,10 +7,10 @@ const clientSecret = process.env.ANILIST_CLIENT_SECRET
 const codeUrl = [
   CODE_URL,
   '?',
-  `redicrect_uri=${REDIRECT_URI}`,
-  'response_type=code',
+  `redicrect_uri=${REDIRECT_URI}&`,
+  'response_type=code&',
   `client_id=${clientId}`
-]
+].join('')
 
 /**
  * Allows the creation / update of an access token.

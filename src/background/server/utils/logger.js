@@ -9,6 +9,11 @@ import chalk from 'chalk'
 import dir from './dir.js'
 
 class Logger {
+  /**
+   * Very basic logger for KawAnime.
+   *
+   * @param {string} label Loger name.
+   */
   constructor (label) {
     this.setLabel(label)
   }

@@ -104,7 +104,9 @@ export default {
       // this.$store.dispatch(`credentials/`, credentials)
     },
     register (website) {
+      const url = this.$ipc.sendSync(this.$eventsList.register.code.main, website.service)
 
+      this.$electron.shell.openExternal(url)
     },
     getInputs (service) {
       return this.$store.state.config.providersRequiredProperties[service]
