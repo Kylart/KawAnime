@@ -28,6 +28,11 @@ export default {
       user: username || state[service].username
     })
   },
+  external (store, { service, code }) {
+    if (service === 'anilist') {
+      ipcRenderer.send(eventsList.register.token.main, { service, code })
+    }
+  },
 
   setEvents ({ state, commit, dispatch }) {
     ipcRenderer.on(eventsList.watchLists.success, (e, data) => {

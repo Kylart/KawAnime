@@ -15,6 +15,8 @@ async function handler (event, { service, code }) {
     const data = await providers[service](code)
     const now = (new Date()).getTime()
 
+    logger.info(`Received token for ${service}.`)
+
     await setupCreds(service, {
       ...data,
       expiresAt: now + data.expiresIn
@@ -22,7 +24,7 @@ async function handler (event, { service, code }) {
 
     event.sender.send(events.success, service)
   } catch (e) {
-    logger.error('Could not get access token.', e.message)
+    logger.error('Could not get access token.', e.stack)
     event.sender.send(events.error, { service, msg: e.message })
     throw new Error(`Unauthorized for ${service}.`)
   }

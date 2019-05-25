@@ -1,8 +1,8 @@
 import { CODE_URL, TOKEN_URL, REDIRECT_URI } from '../utils'
 import { https } from '../../../utils'
 
-const clientId = process.env.ANILIST_CLIENT_ID
-const clientSecret = process.env.ANILIST_CLIENT_SECRET
+const clientId = process.env.VUE_APP_ANILIST_CLIENT_ID
+const clientSecret = process.env.VUE_APP_ANILIST_CLIENT_SECRET
 
 const codeUrl = [
   CODE_URL,
@@ -25,7 +25,7 @@ async function getAccessToken (token, isRefresh = false) {
     client_secret: clientSecret,
     redirect_uri: REDIRECT_URI,
     [isRefresh ? 'refresh_token' : 'code']: token
-  })
+  }, [], {}, false)
 
   return {
     expiresIn: data.expires_in * 1000,

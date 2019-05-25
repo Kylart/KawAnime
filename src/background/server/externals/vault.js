@@ -66,19 +66,19 @@ export async function setupCreds (service, creds) {
       const elem = entry || group.createEntry(service)
 
       Object.keys(creds).forEach((credName) => {
-        elem.setProperty(credName, creds[credName])
+        elem.setProperty(credName, `${creds[credName]}`)
       })
 
       await fileDatasource.save(archive.getHistory(), credentials)
     } else {
       const archive = Archive.createWithDefaults()
 
-      archive
+      const entry = archive
         .createGroup(GROUP_NAME)
         .createEntry(service)
 
       Object.keys(creds).forEach((credName) => {
-        archive.setProperty(credName, creds[credName])
+        entry.setProperty(credName, `${creds[credName]}`)
       })
 
       await fileDatasource.save(archive.getHistory(), credentials)
