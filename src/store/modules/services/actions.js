@@ -8,7 +8,10 @@ export default {
     dispatch('setEvents')
 
     // Checking if we have a registered user for each service
-    providers.forEach(({ value }) => { dispatch('hasUser', value) })
+    providers.forEach(({ value }) => {
+      dispatch('hasUser', value)
+      dispatch('isConnected', value)
+    })
   },
   set (store, info) {
     ipcRenderer.send(eventsList.vault.update.main, info)
@@ -19,6 +22,9 @@ export default {
       .map(({ value }) => value)
 
     ipcRenderer.send(eventsList.vault.has.main, { service, properties })
+  },
+  isConnected (store, service) {
+    ipcRenderer.send(eventsList.register.isAuthed.main, service)
   },
   getList ({ state }, { service, username }) {
     log(`Retrieving list for ${service}.`)
@@ -45,6 +51,10 @@ export default {
 
     ipcRenderer.on(eventsList.vault.has.success, (e, data) => {
       handlers.has.success({ commit, state, dispatch }, data)
+    })
+
+    ipcRenderer.on(eventsList.register.isAuthed.success, (e, args) => {
+      commit('setConnected', args)
     })
   }
 }

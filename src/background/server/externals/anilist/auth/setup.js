@@ -1,3 +1,4 @@
+import { setupCreds } from '../../vault'
 import { CODE_URL, TOKEN_URL, REDIRECT_URI } from '../utils'
 import { https } from '../../../utils'
 
@@ -27,12 +28,20 @@ async function getAccessToken (token, isRefresh = false) {
     [isRefresh ? 'refresh_token' : 'code']: token
   }, [], {}, false)
 
-  return {
+  const now = (new Date()).getTime()
+  const result = {
     expiresIn: data.expires_in * 1000,
     accessToken: data.access_token,
     tokenType: data.token_type,
     refreshToken: data.refresh_token
   }
+
+  await setupCreds('anilist', {
+    ...result,
+    expiresAt: now + result.expiresIn
+  })
+
+  return result
 }
 
 export default {

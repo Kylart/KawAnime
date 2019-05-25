@@ -1,5 +1,5 @@
 import { eventsList } from '../../../../vendor'
-import { anilist, setupCreds } from '../../externals'
+import { anilist } from '../../externals'
 import { Logger } from '../../utils'
 
 const events = eventsList.register.token
@@ -12,15 +12,7 @@ const providers = {
 
 async function handler (event, { service, code }) {
   try {
-    const data = await providers[service](code)
-    const now = (new Date()).getTime()
-
-    logger.info(`Received token for ${service}.`)
-
-    await setupCreds(service, {
-      ...data,
-      expiresAt: now + data.expiresIn
-    })
+    await providers[service](code)
 
     event.sender.send(events.success, service)
   } catch (e) {

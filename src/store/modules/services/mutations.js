@@ -8,6 +8,9 @@ export default {
   setValue (state, { service, key, value }) {
     state[service][key] = value
   },
+  setConnected (state, { service, value }) {
+    state[service].isConnected = value
+  },
   setList (state, { service, list }) {
     state[service].list = list
     state[service].error = null
