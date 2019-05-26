@@ -13,7 +13,6 @@ export const watchLists = {
 
 export const has = {
   success ({ state, commit, dispatch }, { service, data }) {
-    console.log('service has', service, data)
     data.forEach((elem) => {
       commit('setValue', { service, ...elem })
     })

@@ -1,4 +1,4 @@
-import { getAccessToken } from './setup'
+import setup from './setup'
 import { getCreds } from '../../vault'
 
 const properties = [
@@ -20,7 +20,7 @@ export default async function () {
   // We refresh the token only when the expire date is
   // less than a day away.
   if (expiresAt - now < 24 * 60 * 60 * 1000) {
-    const newData = await getAccessToken(refreshToken, true)
+    const newData = await setup.getAccessToken(refreshToken, true)
 
     accessToken = newData.accessToken
     tokenType = newData.tokenType
