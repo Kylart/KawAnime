@@ -25,11 +25,11 @@ const services = [
   ...vault,
   ...video,
   ...registerService,
+  ...watchLists,
   news,
   seasons,
   episodes,
-  isOnline,
-  watchLists
+  isOnline
 ]
 
 // auto update

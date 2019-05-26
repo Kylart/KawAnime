@@ -15,7 +15,6 @@ const getOnly = [
   'episodes',
   'news',
   'seasons',
-  'watchLists',
 
   // Internal
   'env',
@@ -25,7 +24,8 @@ const getOnly = [
 
 const updatable = [
   'config',
-  'local'
+  'local',
+  'watchLists'
 ]
 
 const customs = {

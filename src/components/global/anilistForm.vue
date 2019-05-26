@@ -183,14 +183,10 @@ export default {
       opts.score = +opts.score
       opts.repeat = +opts.repeat
 
-      // this.$store.dispatch('mal/actOnList', {
-      //   type: {
-      //     support: 'anime',
-      //     action: this.isEdit ? 'update' : 'add'
-      //   },
-      //   id,
-      //   opts
-      // })
+      this.$store.dispatch('services/updateList', {
+        service: this.service,
+        args: opts
+      })
 
       this.close()
     },

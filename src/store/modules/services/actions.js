@@ -29,9 +29,15 @@ export default {
   getList ({ state }, { service, username }) {
     log(`Retrieving list for ${service}.`)
 
-    ipcRenderer.send(eventsList.watchLists.main, {
+    ipcRenderer.send(eventsList.watchLists.get.main, {
       service,
       user: username || state[service].username
+    })
+  },
+  updateList ({ state }, { service, args }) {
+    ipcRenderer.send(eventsList.watchLists.update.main, {
+      service,
+      args
     })
   },
   external (store, { service, code }) {
@@ -41,11 +47,11 @@ export default {
   },
 
   setEvents ({ state, commit, dispatch }) {
-    ipcRenderer.on(eventsList.watchLists.success, (e, data) => {
+    ipcRenderer.on(eventsList.watchLists.get.success, (e, data) => {
       handlers.watchLists.success(commit, data)
     })
 
-    ipcRenderer.on(eventsList.watchLists.error, (e, data) => {
+    ipcRenderer.on(eventsList.watchLists.get.error, (e, data) => {
       handlers.watchLists.error(commit, data)
     })
 
