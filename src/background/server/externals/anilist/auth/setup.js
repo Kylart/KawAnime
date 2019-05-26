@@ -1,6 +1,8 @@
 import { setupCreds } from '../../vault'
 import { CODE_URL, TOKEN_URL, REDIRECT_URI } from '../utils'
 import { https } from '../../../utils'
+import { eventsList } from '../../../../../vendor'
+import sendToWindows from '../../sendToWindows'
 
 const clientId = process.env.VUE_APP_ANILIST_CLIENT_ID
 const clientSecret = process.env.VUE_APP_ANILIST_CLIENT_SECRET
@@ -40,6 +42,8 @@ async function getAccessToken (token, isRefresh = false) {
     ...result,
     expiresAt: now + result.expiresIn
   })
+
+  sendToWindows(eventsList.register.isAuthed.success, { service: 'anilist', value: true })
 
   return result
 }

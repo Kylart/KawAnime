@@ -3,6 +3,8 @@ import { graphql } from '../../../utils'
 import { GRAPHQL_ENDPOINT } from '../utils'
 import { search } from '../queries'
 import { setupCreds } from '../../vault'
+import sendToWindows from '../../sendToWindows'
+import { eventsList } from '../../../../../vendor'
 
 export default async function () {
   try {
@@ -25,6 +27,8 @@ export default async function () {
           expiresAt: ''
         })
           .catch((e) => {})
+
+        sendToWindows(eventsList.register.isAuthed.success, { service: 'anilist', value: false })
 
         return false
       }
