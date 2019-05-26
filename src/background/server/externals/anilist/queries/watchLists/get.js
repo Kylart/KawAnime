@@ -3,9 +3,22 @@ export default `
     MediaListCollection(userName: $username, type: ANIME) {
       lists {
         entries {
+          score
           progress
           status
           notes
+          repeat
+          private
+          startedAt {
+            year
+            month
+            day
+          }
+          completedAt {
+            year
+            month
+            day
+          }
           media {
             id
             coverImage {

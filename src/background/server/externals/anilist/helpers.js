@@ -144,6 +144,8 @@ export function formatList (data) {
       status: capitalize(entry.status || ''),
       nbEp: entry.media.episodes,
       format: entry.media.format,
+      startedAt: entry.startedAt,
+      completedAt: entry.completedAt,
       img: entry.media.coverImage.extraLarge || entry.media.coverImage.large
     }))
 }

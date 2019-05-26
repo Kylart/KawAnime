@@ -14,8 +14,9 @@
     overlay(v-show='overlay')
     video-modal(v-show='$store.state.streaming.player.show')
     magnets-modal
-    //- mal-form
     watch-lists-modal
+    //- mal-form
+    anilist-form
 
     //- Used for displaying any info
     v-snackbar(
@@ -40,7 +41,10 @@ import WatchListsModal from '@/components/localLists/modalForm.vue'
 import VideoModal from '@/components/video/modal.vue'
 import Overlay from '@/components/global/overlay.vue'
 import Env from '@/components/global/env.vue'
+
+// Providers form
 import MalForm from '@/components/global/malForm.vue'
+import AnilistForm from '@/components/global/anilistForm.vue'
 
 // Mixins
 import ReadMagnet from '@/mixins/global/readMagnet'
@@ -57,8 +61,9 @@ export default {
     SystemBar,
 
     // Global
-    TorrentDialog,
     MalForm,
+    AnilistForm,
+    TorrentDialog,
     MagnetsModal,
     WatchListsModal,
     VideoModal,

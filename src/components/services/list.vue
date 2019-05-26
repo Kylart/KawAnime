@@ -36,15 +36,18 @@
           span {{ props.item[hasTags ? 'tags' : 'note'] }}
       td
         v-layout(column, align-center, justify-center)
-          span.pb-1 {{ props.item.progress }} / {{ props.item.nbEp }}
+          span.pb-1 {{ props.item.progress }} / {{ props.item.nbEp || '??' }}
           v-progress-linear.ma-0(:value='(props.item.progress / props.item.nbEp) * 100', :max='props.item.nbEp')
+      td
+        v-btn(icon, @click='setModal(props.item)')
+          v-icon edit
 </template>
 
 <script>
 export default {
   name: 'Service-List',
 
-  props: [ 'list', 'tags', 'term', 'hasTags' ],
+  props: [ 'provider', 'list', 'tags', 'term', 'hasTags' ],
 
   data () {
     return {
@@ -80,6 +83,19 @@ export default {
       return this.list.filter(
         ({ tags }) => tags.split(', ').some((tag) => this.tags.includes(tag))
       )
+    }
+  },
+
+  methods: {
+    setModal (item) {
+      this.$store.commit('services/showForm', { service: this.provider, bool: true })
+      this.$store.commit('services/setFormEntry', {
+        service: this.provider,
+        entry: {
+          ...item,
+          isEdit: true
+        }
+      })
     }
   }
 }

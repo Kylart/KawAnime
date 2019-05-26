@@ -34,7 +34,12 @@ async function get (username) {
 }
 
 async function update (opts) {
-  return graphql(GRAPHQL_ENDPOINT, watchLists.update, opts, await getHeaders())
+  return graphql(
+    GRAPHQL_ENDPOINT,
+    watchLists[opts.isDelete ? 'delete' : 'update'],
+    opts,
+    await getHeaders()
+  )
 }
 
 export default {

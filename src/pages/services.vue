@@ -16,7 +16,8 @@
             :hasTags='hasTags',
             :tags='search.tags',
             :term='search.term',
-            :list='creds.list'
+            :list='creds.list',
+            :provider='provider'
           )
 
       empty(v-else, key='empty')
