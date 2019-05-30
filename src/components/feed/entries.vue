@@ -55,8 +55,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-
 // Components
 import Card from '@/components/feed/card.vue'
 
@@ -93,9 +91,6 @@ export default {
   }),
 
   computed: {
-    ...mapGetters('info', {
-      allInfo: 'getInfo'
-    }),
     releases: {
       get () {
         return this.$store.state.releases.releases.current

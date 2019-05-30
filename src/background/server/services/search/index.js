@@ -26,10 +26,10 @@ export default Object.keys(types).map((_type) => {
 
       const info = await category[provider](toSearch, opts)
 
-      sendReponse(isSync, { name: toSearch.name || toSearch.url, info }, event, this.events.success)
+      sendReponse(isSync, { provider, name: toSearch.name || toSearch.url, info }, event, this.events.success)
     } catch (e) {
       logger.error(`An error occured with provider ${provider}`, e)
-      sendReponse(isSync, { name: toSearch, msg: e.message }, event, events.error)
+      sendReponse(isSync, { provider, name: toSearch, msg: e.message }, event, events.error)
     }
   }
 

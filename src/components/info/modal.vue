@@ -77,9 +77,7 @@ export default {
   }),
 
   computed: {
-    ...mapGetters('info', {
-      allInfo: 'getInfo'
-    }),
+    ...mapGetters('info', [ 'getEntryInfo' ]),
     provider: {
       get () {
         return this.$store.state.config.config.infoProvider.search
@@ -152,23 +150,19 @@ export default {
     getInfo (entry) {
       this.searching = true
 
-      // TODO: Rework entire info system to integrate provider in it.
-      // Idea: Set the key to bey <PROVIDER>/<NAME instead of
-      // just <NAME>. Local info should then be local/<PROVIDER>/<NAME>.
-
-      if (!this.allInfo.hasOwnProperty(entry.name)) {
+      if (!this.getEntryInfo(entry.name)) {
         const method = entry.next.url ? 'url' : 'name'
         this.$ipc.on(this.$eventsList.search[method].success, this.ipcSuccess)
         this.$ipc.on(this.$eventsList.search[method].error, this.ipcError)
 
         this.$store.dispatch('info/get', entry.next)
       } else {
-        this.ipcSuccess(null, { info: this.allInfo[entry.name] })
+        this.ipcSuccess(null, { info: this.getEntryInfo(entry.name) })
       }
     },
-    ipcSuccess (e, { name, info }) {
+    ipcSuccess (e, { name, info, provider }) {
       const method = /https?:\/\//.test(name) ? 'url' : 'name'
-      this.$store.commit('info/set', { key: info.title.en, value: info })
+      this.$store.commit('info/set', { name: info.title.en, info, provider })
       this.searching = false
 
       this.current = {

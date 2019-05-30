@@ -1,5 +1,13 @@
+import { providers } from '../lists'
+
 export default {
-  info: {},
+  info: {
+    local: {},
+    ...providers.reduce(
+      (acc, { value: provider }) => ({ ...acc, [provider]: {} }),
+      {}
+    )
+  },
   modal: {
     show: false,
     term: '',

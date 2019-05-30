@@ -210,14 +210,12 @@ export default {
   }),
 
   computed: {
-    ...mapGetters('info', {
-      allInfo: 'getInfo'
-    }),
+    ...mapGetters('info', [ 'getEntryInfo' ]),
     title () {
       return (this.current.anime_title || this.current.title).replace(':', '')
     },
     info () {
-      return this.allInfo[this.title] || {}
+      return this.getEntryInfo(this.title) || {}
     },
     episodesInfo () {
       const result = {}

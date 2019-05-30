@@ -82,9 +82,7 @@ export default {
   }),
 
   computed: {
-    ...mapGetters('info', {
-      allInfo: 'getInfo'
-    }),
+    ...mapGetters('info', [ 'getEntryInfo' ]),
     hasFansub () {
       return this.$store.state.releases.params.fansub !== 'None'
     },
@@ -140,35 +138,39 @@ export default {
       })
     },
     more () {
-      if (this.allInfo[this.name]) {
+      if (this.getEntryInfo(this.name)) {
         this.$store.commit('releases/setCurrent', this.info.parsedName)
       }
     },
     updateInfo () {
       const { name } = this
+      const info = this.getEntryInfo(name)
 
-      name in this.allInfo
+      info
         ? this.setInfo()
         : this.$store.dispatch('info/get', { name })
     },
-    setInfo () {
-      this.$set(this, 'animeInfo', this.allInfo[this.name])
+    setInfo (info = null) {
+      const _info = info || this.getEntryInfo(this.name)
+
+      this.$set(this, 'animeInfo', _info)
       this.$set(this, 'picture', this.animeInfo.img)
 
       this.$store.dispatch('info/saveLocalInfo', {
         title: this.name,
-        info: this.allInfo[this.name],
+        info: _info,
         isUpdate: true
       })
     },
     ipcHandler (e, data) {
-      const { name, info } = data
+      const { name, info, provider } = data
 
       if (!name || name !== this.name) return
 
       this.$store.commit('info/set', {
-        key: name,
-        value: info
+        name,
+        info,
+        provider
       })
 
       this.setInfo()

@@ -4,18 +4,26 @@ const sanitize = (name) => {
 }
 
 export default {
-  set (state, { key, value }) {
-    state.info[sanitize(key)] = value
+  set (state, { name, provider, isLocal, info }) {
+    state.info[isLocal ? 'local' : provider][sanitize(name)] = info
   },
   addEps (state, { name, data }) {
-    const localInfo = state.info[sanitize(`local/${name}`)]
-    const globalInfo = state.info[sanitize(name)]
+    const _name = sanitize(name)
 
-    if (localInfo) state.info[sanitize(`local/${name}`)].episodesInfo = data
-    if (globalInfo) state.info[sanitize(name)].episodesInfo = data
+    Object.keys(state.info).forEach((key) => {
+      const hasInfo = state.info[key].hasOwnProperty(_name)
+
+      if (hasInfo) state.info[key][_name].episodesInfo = data
+    })
   },
   addEpsLinks (state, { name, data }) {
-    state.info[name].episodesLinks = data
+    const _name = sanitize(name)
+
+    Object.keys(state.info).forEach((key) => {
+      const hasInfo = state.info[key].hasOwnProperty(_name)
+
+      if (hasInfo) state.info[key][_name].episodesLinks = data
+    })
   },
   showModal (state, bool) {
     state.modal.show = bool
