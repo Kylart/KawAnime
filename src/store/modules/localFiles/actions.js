@@ -16,7 +16,7 @@ export default {
     })
   },
 
-  setEvents ({ state, commit, dispatch }) {
+  setEvents ({ rootState, commit, dispatch }) {
     ipcRenderer.on(eventsList.local.get.success, (e, data) => {
       handlers.get.success(commit, data)
     })
@@ -25,7 +25,7 @@ export default {
     })
 
     ipcRenderer.on(eventsList.local.update.success, (e, data) => {
-      handlers.update.success({ state, commit, dispatch }, data)
+      handlers.update.success({ rootState, commit, dispatch }, data)
     })
     ipcRenderer.on(eventsList.local.update.error, (e, msg) => {
       handlers.update.error(msg)

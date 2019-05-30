@@ -1,4 +1,4 @@
-import { log } from '@/store/utils'
+import { log, isRoot } from '@/store/utils'
 
 export const get = {
   success (commit, { name, dir, result: data }) {
@@ -13,19 +13,18 @@ export const get = {
 }
 
 export const update = {
-  success ({ state, commit, dispatch }, data) {
+  success ({ rootState, commit, dispatch }, data) {
     const { isUpdate, title, info } = data
 
     log(`Successfully ${isUpdate ? 'updated' : 'saved'} local information for ${title}.`)
 
     // We update the store data too.
-    const key = `local/${title}`
-
-    if (isUpdate && state.info.hasOwnProperty(key)) {
-      commit('set', {
-        key,
-        value: info
-      })
+    if (isUpdate && rootState.info.info.local.hasOwnProperty(title)) {
+      commit('info/set', {
+        isLocal: true,
+        name: title,
+        info
+      }, isRoot)
     } else if (!isUpdate) {
       dispatch('update')
     }
