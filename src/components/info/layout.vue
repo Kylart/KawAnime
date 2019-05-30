@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-container(
+  v-container.info-container(
     grid-list-md, fluid, pt-0, pl-0, pr-2
   )
     v-layout(row, wrap, fill-height, justify-center, align-center)
@@ -88,7 +88,7 @@
         span Staff
 
       v-layout.staff-container.mt-2.mb-0(row, wrap, justify-space-between)
-        v-flex(v-for='member in info.staff', :key='member.link', xs12, sm6, md3, pt-0)
+        v-flex(v-for='(member, index) in info.staff', :key='index', xs12, sm6, md3, pt-0)
           v-layout(row, wrap, justify-space-between)
             v-flex(xs6)
               v-img(contain, :src='sanitize(member.img)', :lazy-src='sanitize(member.img)', height='120')
@@ -142,6 +142,30 @@
       @click='returnCb'
     )
       v-icon chevron_left
+
+    //- Action button
+    v-speed-dial(
+      v-model='actions.show',
+      top, left, fixed,
+      open-on-hover,
+      direction='right',
+      transition='slide-x-transition'
+    )
+      template(v-slot:activator)
+        v-btn#info-actions(
+          color='primary',
+          v-model='actions.show',
+          fab
+        )
+          v-icon account_circle
+          v-icon close
+
+      template(v-for='_provider in providers')
+        v-tooltip(top)
+          v-btn(fab, small, slot='activator', @click='addTo(_provider.value)')
+            v-icon(v-if='_provider.action') {{ _provider.action }}
+            .icon(v-else, :class='{ [`${_provider.value}-icon`]: true }')
+          span Add to my {{ _provider.text }} list
 </template>
 
 <script>
@@ -171,9 +195,16 @@ export default {
     charHover: {
       timeout: null,
       delay: 750,
-      show: false,
       overflow: {
         overflowY: 'hidden'
+      }
+    },
+    actions: {
+      show: false,
+      exclude: {
+        mal: [ 'kitsu', 'anilist' ],
+        anilist: [ 'kitsu' ],
+        kitsu: [ 'anilist' ]
       }
     }
   }),
@@ -196,6 +227,18 @@ export default {
       })
 
       return result
+    },
+    providers () {
+      const excludedProviders = this.actions.exclude[this.provider]
+
+      return [
+        ...this.$store.state.config.providers
+          .filter(({ value }) => !excludedProviders.includes(value)),
+        { value: 'local', text: 'Local', action: 'sort_by_alpha' }
+      ]
+    },
+    provider () {
+      return this.$store.state.info.modal.overrideProvider || this.$store.state.config.config.infoProvider.info
     }
   },
 
@@ -257,12 +300,41 @@ export default {
           clearInterval(timer)
         }
       }, 1000 / 90)
+    },
+    addTo (provider) {
+      const isLocal = provider === 'local'
+
+      if (isLocal) {
+        this.$store.commit('watchLists/setEntry', {
+          name: this.info.title.en,
+          nbEp: this.info.nbEpisodes || '??'
+        })
+        this.$store.commit('watchLists/toggleForm', true)
+      } else {
+        this.$store.commit('services/setFormEntry', {
+          service: provider,
+          entry: {
+            malId: +this.info.malId,
+            mediaId: +this.info.id,
+            title: this.info.title.en,
+            nbEp: this.info.nbEpisodes || null
+          }
+        })
+        this.$store.commit('services/showForm', { service: provider, bool: true })
+      }
     }
   }
 }
 </script>
 
 <style lang="stylus" scoped>
+  .icon
+    height 20px
+    width 20px
+
+  .info-container
+    position relative
+
   .section-title
     display flex
     align-items center

@@ -3,6 +3,7 @@ export default {
   modal: {
     show: false,
     term: '',
-    isRemote: false
+    isRemote: false,
+    overrideProvider: false
   }
 }

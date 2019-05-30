@@ -79,7 +79,8 @@ export default {
 
   methods: {
     add () {
-      this.$store.commit('services/showForm', { service: this.provider, bool: true })
+      this.$store.commit('info/overrideProvider', this.provider)
+      this.$store.commit('info/showModal', true)
     },
     refresh () {
       this.$store.dispatch('services/getList', { service: this.provider })

@@ -25,5 +25,8 @@ export default {
   },
   setRemote (state, bool) {
     state.modal.isRemote = bool
+  },
+  overrideProvider (state, provider) {
+    state.modal.overrideProvider = provider
   }
 }

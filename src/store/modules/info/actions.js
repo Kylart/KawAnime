@@ -14,7 +14,7 @@ export default {
   },
   get ({ rootState }, args) {
     const params = {
-      provider: rootState.config.config.infoProvider.info,
+      provider: args.provider || rootState.config.config.infoProvider.info,
       toSearch: args
     }
 

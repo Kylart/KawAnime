@@ -103,7 +103,7 @@ export function formatEps (rawData) {
     epNumber: attributes.number,
     title: attributes.canonicalTitle || attributes.titles.en_us || attributes.titles.en_jp || attributes.titles.en,
     japaneseTitle: attributes.titles.ja_jp,
-    img: attributes.thumbnail.original
+    img: attributes.thumbnail ? attributes.thumbnail.original : ''
   }))
 }
 

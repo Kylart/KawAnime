@@ -113,10 +113,14 @@ export default {
   },
 
   methods: {
+    removeOverride () {
+      this.$store.commit('info/overrideProvider', null)
+    },
     close () {
       this.show = false
       this.current = null
       this.isRemote = false
+      this.removeOverride()
     },
     back () {
       this.searching = false
@@ -147,6 +151,10 @@ export default {
     }, 300),
     getInfo (entry) {
       this.searching = true
+
+      // TODO: Rework entire info system to integrate provider in it.
+      // Idea: Set the key to bey <PROVIDER>/<NAME instead of
+      // just <NAME>. Local info should then be local/<PROVIDER>/<NAME>.
 
       if (!this.allInfo.hasOwnProperty(entry.name)) {
         const method = entry.next.url ? 'url' : 'name'

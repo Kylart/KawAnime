@@ -92,7 +92,7 @@ function remove (event, magnet) {
       client.destroy((err) => {
         err
           ? logger.error('Could not destroy client.', err)
-          : logger.info('Successfully destroyed client.') && infoIntervalID && clearInterval(infoIntervalID)
+          : infoIntervalID && clearInterval(infoIntervalID) && logger.info('Successfully destroyed client.')
       })
     }
   })
