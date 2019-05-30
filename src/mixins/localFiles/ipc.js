@@ -13,7 +13,7 @@ export default {
 
   methods: {
     handleLocalIpc (e, data) {
-      const { dir, name, result: info } = data
+      const { dir, name, result: info, provider } = data
 
       if (dir) return
 
@@ -22,8 +22,10 @@ export default {
 
       if (name === this.name) {
         this.$store.commit('info/set', {
-          key: 'local/' + name,
-          value: info
+          isLocal: true,
+          provider,
+          name,
+          info
         })
 
         this.setInfo()
@@ -31,12 +33,14 @@ export default {
       }
     },
     handleSearchIpc (e, data) {
-      const { name, info } = data
+      const { name, info, provider } = data
 
       if (name === this.name) {
         this.$store.commit('info/set', {
-          key: 'local/' + name,
-          value: info
+          isLocal: true,
+          provider,
+          name,
+          info
         })
 
         this.$store.dispatch('info/saveLocalInfo', {

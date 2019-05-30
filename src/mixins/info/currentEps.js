@@ -1,5 +1,4 @@
 export default {
-
   mounted () {
     if (this.hasLinks) {
       return this.setLinks(null, {
@@ -53,7 +52,7 @@ export default {
         })
       }
     },
-    setLinks (e, { name, magnets, modal }) {
+    setLinks (e, { name, magnets, modal, provider }) {
       if (modal) return
 
       this.$store.commit('info/addEpsLinks', { name, data: magnets })

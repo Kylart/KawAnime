@@ -80,7 +80,7 @@ export default {
     ...mapGetters('info', [ 'getEntryInfo' ]),
     provider: {
       get () {
-        return this.$store.state.config.config.infoProvider.search
+        return this.$store.state.info.overrideProvider || this.$store.state.config.config.infoProvider.search
       },
       set () {}
     },
@@ -157,21 +157,25 @@ export default {
 
         this.$store.dispatch('info/get', entry.next)
       } else {
-        this.ipcSuccess(null, { info: this.getEntryInfo(entry.name) })
+        this.ipcSuccess(null, { info: this.getEntryInfo(entry.name), provider: this.provider })
       }
     },
     ipcSuccess (e, { name, info, provider }) {
-      const method = /https?:\/\//.test(name) ? 'url' : 'name'
-      this.$store.commit('info/set', { name: info.title.en, info, provider })
       this.searching = false
+
+      if (name) {
+        const method = /https?:\/\//.test(name) ? 'url' : 'name'
+        this.$store.commit('info/set', { name: info.title.en, info, provider })
+
+        this.$ipc.removeListener(this.$eventsList.search[method].success, this.ipcSuccess)
+        this.$ipc.removeListener(this.$eventsList.search[method].error, this.ipcError)
+      }
 
       this.current = {
         title: info.title.en
       }
 
       this.searching = false
-      this.$ipc.removeListener(this.$eventsList.search[method].success, this.ipcSuccess)
-      this.$ipc.removeListener(this.$eventsList.search[method].error, this.ipcError)
     },
     ipcError (e, { name, msg }) {
       this.$log(`Could not find any data for ${name}.`, msg)

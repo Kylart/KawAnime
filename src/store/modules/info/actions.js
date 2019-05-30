@@ -21,16 +21,13 @@ export default {
     ipcRenderer.send(eventsList.search[args.url ? 'url' : 'name'].main, params)
   },
   getEps ({ rootState }, { malId, name, id }) {
-    const searchName = name.replace('local/', '')
     const provider = rootState.config.config.infoProvider.episodes
     const infoProvider = rootState.config.config.infoProvider.info
 
-    ipcRenderer.send(eventsList.episodes.main, { infoProvider, provider, name: searchName, id, malId })
+    ipcRenderer.send(eventsList.episodes.main, { infoProvider, provider, name, id, malId })
   },
   getEpsLinks (store, { name, config }) {
-    const searchName = name.replace('local/', '')
-
-    ipcRenderer.send(eventsList.download.main, { name: searchName, ...config })
+    ipcRenderer.send(eventsList.download.main, { name, ...config })
   },
 
   setEvents ({ commit }) {

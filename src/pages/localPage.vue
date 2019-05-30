@@ -84,15 +84,9 @@ export default {
 
   methods: {
     setCurrent (info, file) {
-      const key = `local/${file.title}`
-
-      this.$store.commit('info/set', {
-        key,
-        value: info
-      })
-
       this.current = {
-        title: key,
+        isLocal: true,
+        title: file.title,
         releaseGroup: file.releaseGroup
       }
     },

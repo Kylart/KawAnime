@@ -215,7 +215,7 @@ export default {
       return (this.current.anime_title || this.current.title).replace(':', '')
     },
     info () {
-      return this.getEntryInfo(this.title) || {}
+      return this.getEntryInfo(this.title, this.current.isLocal) || {}
     },
     episodesInfo () {
       const result = {}
@@ -279,6 +279,9 @@ export default {
       this.charHover.overflow.overflowY = 'auto'
 
       const elem = this.$refs.chars
+
+      if (!elem) return
+
       const { clientHeight } = elem
 
       // Shitty animation ?

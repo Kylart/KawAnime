@@ -69,6 +69,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 import Status from '@/mixins/lists/status.js'
 import Ipc from '@/mixins/localFiles/ipc.js'
 
@@ -94,6 +96,7 @@ export default {
   }),
 
   computed: {
+    ...mapGetters('info', [ 'getEntryInfo' ]),
     lists: {
       get () {
         return this.$store.state.watchLists.listNames
@@ -153,7 +156,7 @@ export default {
       this.$store.dispatch('info/get', { name: this.file.title })
     },
     setInfo () {
-      this.$set(this, 'info', this.$store.state.info.info['local/' + this.file.title])
+      this.$set(this, 'info', this.getEntryInfo(this.file.title, true))
     },
     getInfo () {
       this.$store.dispatch('info/getLocalInfo', {
