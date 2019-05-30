@@ -30,7 +30,6 @@
 <script>
 // Components
 import LeftDrawer from '@/components/layout/leftNavigationDrawer.vue'
-import RightDrawer from '@/components/layout/rightNavigationDrawer.vue'
 import Toolbar from '@/components/layout/toolbar.vue'
 import SystemBar from '@/components/layout/systemBar.vue'
 
@@ -56,7 +55,6 @@ export default {
 
   components: {
     LeftDrawer,
-    RightDrawer,
     Toolbar,
     SystemBar,
 

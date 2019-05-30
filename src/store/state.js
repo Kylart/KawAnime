@@ -7,15 +7,10 @@ export default {
   platform: process.platform,
   isConnected: false,
   drawer: {
-    left: false,
-    right: false
+    left: false
   },
   infoSnackbar: {
     show: false,
     text: ''
-  },
-  addToChoice: {
-    show: false,
-    title: ''
   }
 }
