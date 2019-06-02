@@ -35,9 +35,14 @@
                 v-btn(flat, @click='updateCreds(website)')
                   v-icon save
                   .pl-2 Save
-                v-btn(flat, @click='register(website)', v-show='website.mustRegister')
-                  v-icon open_in_new
-                  .pl-2 Register
+                template(v-if='website.mustSignIn')
+                  v-btn(flat, @click='signIn(website)')
+                    v-icon subdirectory_arrow_left
+                    .pl-2 Log In
+                template(v-if='website.mustRegister')
+                  v-btn(flat, @click='register(website)')
+                    v-icon open_in_new
+                    .pl-2 Register
         v-card-actions
           v-spacer
           v-layout(column, align-end)
@@ -70,7 +75,7 @@ export default {
         },
         show: false,
         isOn: false,
-        mustRegoster: false
+        mustSignIn: true
       }, {
         title: 'Kitsu.io',
         service: 'kitsu',
@@ -81,7 +86,7 @@ export default {
         },
         show: false,
         isOn: false,
-        mustRegister: true
+        mustSignIn: true
       }, {
         title: 'Anilist',
         service: 'anilist',
@@ -107,6 +112,11 @@ export default {
       const url = this.$ipc.sendSync(this.$eventsList.register.code.main, website.service)
 
       this.$electron.shell.openExternal(url)
+    },
+    signIn (website) {
+      const success = this.$ipc.sendSync(this.$eventsList.services.connect.main, website.service)
+
+      this.$store.commit('setInfoSnackbar', success ? 'Successfully logged in' : 'Log in failed')
     },
     getInputs (service) {
       return this.$store.state.config.providersRequiredProperties[service]

@@ -6,7 +6,6 @@ const events = eventsList.register.token
 const logger = new Logger('Services [Access Token]')
 
 const providers = {
-  // kitsu: kitsu.watchLists,
   anilist: anilist.auth.setup.getAccessToken
 }
 
