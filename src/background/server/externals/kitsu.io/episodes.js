@@ -1,14 +1,16 @@
 import { https } from '../../utils'
-import { EPISODES_URL } from './utils'
+import { BASE_URL } from './utils'
 import { formatEps } from './helpers'
 
-export default async function ({ id }) {
+export default async function ({ name }) {
   try {
-    const { data } = await https.get(EPISODES_URL, [
-      { name: 'filter[media_id]', value: id }
+    const { included = [] } = await https.get(BASE_URL, [
+      { name: 'filter[text]', value: name },
+      { name: 'page[limit]', value: '1' },
+      { name: 'include', value: 'episodes' }
     ])
 
-    return formatEps(data)
+    return formatEps(included.filter(({ type }) => type === 'episodes'))
   } catch (e) {
     throw e
   }
