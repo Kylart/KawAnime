@@ -15,7 +15,7 @@ export default {
     ipcRenderer.on(event.success, handler)
     ipcRenderer.send(event.main, opts)
   },
-  getNeighbours ({ rootState, state, commit }) {
+  getNeighbours ({ rootState, state, commit, rootGetters }) {
     try {
       // Delivers the previous and the next file to be read by the player
       // First we need to get the currently read file path
@@ -43,7 +43,7 @@ export default {
           return
         }
 
-        const info = rootState.info.info[title]
+        const info = rootGetters['info/getEntryInfo'](title)
         let next
         let previous
 

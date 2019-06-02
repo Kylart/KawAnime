@@ -130,7 +130,7 @@ export default {
     },
     watch (ep) {
       const magnet = this.getMagnet(ep)
-      const { title } = this.current
+      const { title } = this
 
       this.$store.dispatch('streaming/play', {
         isTorrent: true,

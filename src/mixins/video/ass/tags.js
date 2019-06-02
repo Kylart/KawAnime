@@ -254,7 +254,7 @@ const handlePos = (string, style, info) => {
 const handleRotation = (string) => {
   if (re.rot.test(string)) {
     const result = {}
-    const rotateTag = string.match(re.rot)
+    const rotateTag = string.match(re.rot)[0]
     let axis = rotateTag.replace('\\fr', '').slice(0, 1)
 
     if (!isNaN(+axis)) {
