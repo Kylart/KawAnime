@@ -48,11 +48,19 @@ export default {
 
   setEvents ({ state, commit, dispatch }) {
     ipcRenderer.on(eventsList.watchLists.get.success, (e, data) => {
-      handlers.watchLists.success(commit, data)
+      handlers.watchLists.get.success(commit, data)
     })
 
     ipcRenderer.on(eventsList.watchLists.get.error, (e, data) => {
-      handlers.watchLists.error(commit, data)
+      handlers.watchLists.get.error(commit, data)
+    })
+
+    ipcRenderer.on(eventsList.watchLists.update.success, (e, data) => {
+      handlers.watchLists.update.success({ commit, dispatch }, data)
+    })
+
+    ipcRenderer.on(eventsList.watchLists.update.error, (e, data) => {
+      handlers.watchLists.update.error(commit, data)
     })
 
     ipcRenderer.on(eventsList.vault.has.success, (e, data) => {

@@ -113,7 +113,6 @@ export default {
         { text: 'Plan to watch', value: 'PLANNING' }
       ],
       initForm: {
-        mediaId: '',
         status: '',
         score: '',
         progress: '',
@@ -124,7 +123,6 @@ export default {
         completedAt: ''
       },
       form: {
-        mediaId: '',
         status: '',
         score: '',
         progress: '',
@@ -175,8 +173,7 @@ export default {
       this.form = this.initForm
     },
     submit () {
-      // const id = this.entry.id || this.entry.animeId
-      const opts = { ...this.form }
+      const opts = { ...this.entry, ...this.form }
 
       opts.startedAt = this.parseDate(opts.startedAt)
       opts.completedAt = this.parseDate(opts.completedAt)
