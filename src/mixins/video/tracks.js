@@ -38,6 +38,8 @@ export default {
         const language = (track.language || 'eng').slice(0, 2)
         const trackNumber = +track.number
 
+        if (this.tracks[trackNumber]) return
+
         this.tracks[trackNumber] = []
         this.numToLang[trackNumber] = language
 

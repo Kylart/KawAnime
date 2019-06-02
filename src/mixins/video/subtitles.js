@@ -9,8 +9,9 @@ export default {
       if (trackNumber in this.tracks) {
         if (this.isAss) {
           const cue = parseSubtitles(subtitle, this.styles, this.info)
+          const isIn = this.tracks[trackNumber].findIndex(({ masterId }) => cue.masterId === masterId) !== -1
 
-          this.tracks[trackNumber].push(cue)
+          !isIn && this.tracks[trackNumber].push(cue)
         } else {
           const cue = new window.VTTCue(subtitle.time / 1000, (subtitle.time + subtitle.duration) / 1000, subtitle.text)
 

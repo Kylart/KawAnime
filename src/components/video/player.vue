@@ -6,7 +6,6 @@
     video(
       ref='video',
       crossorigin='anonymous',
-      preload='metadata',
       name='kawanime-player',
       :autoplay='config.autoplay',
       @pause='paused = true',
