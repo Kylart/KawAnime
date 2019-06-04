@@ -204,7 +204,7 @@ export default {
       exclude: {
         mal: [ 'kitsu', 'anilist' ],
         anilist: [ 'kitsu' ],
-        kitsu: [ 'anilist' ]
+        kitsu: [ 'anilist', 'mal' ]
       }
     }
   }),
@@ -317,6 +317,7 @@ export default {
           entry: {
             malId: +this.info.malId,
             mediaId: +this.info.id,
+            id: +this.info.id,
             title: this.info.title.en,
             nbEp: this.info.nbEpisodes || null
           }

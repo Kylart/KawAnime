@@ -83,7 +83,7 @@
                 label='Time rewatched',
                 hint='How many times?',
                 persistent-hint,
-                v-model='form.reconsuming'
+                v-model='form.reconsumeCount'
               )
             v-flex(xs12, pt-2)
               v-textarea(
@@ -178,10 +178,11 @@ export default {
     submit () {
       const opts = { ...this.form }
 
-      opts.startedAt = this.parseDate(opts.startedAt)
-      opts.finishedAt = this.parseDate(opts.finishedAt)
+      opts.startedAt = opts.startedAt && this.parseDate(opts.startedAt)
+      opts.finishedAt = opts.finishedAt && this.parseDate(opts.finishedAt)
       opts.ratingTwenty = +opts.ratingTwenty
-      opts.reconsuming = +opts.reconsuming
+      opts.reconsumeCount = +opts.reconsumeCount
+      opts.progress = +opts.progress
 
       this.$store.dispatch('services/updateList', {
         service: this.service,

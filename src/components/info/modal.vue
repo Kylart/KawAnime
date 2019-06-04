@@ -80,7 +80,7 @@ export default {
     ...mapGetters('info', [ 'getEntryInfo' ]),
     provider: {
       get () {
-        return this.$store.state.info.overrideProvider || this.$store.state.config.config.infoProvider.search
+        return this.$store.state.info.modal.overrideProvider || this.$store.state.config.config.infoProvider.search
       },
       set () {}
     },

@@ -12,9 +12,9 @@ export default {
   getLocalInfo (store, data) {
     ipcRenderer.send(eventsList.local.get.main, data)
   },
-  get ({ rootState }, args) {
+  get ({ rootState, state }, args) {
     const params = {
-      provider: args.provider || rootState.config.config.infoProvider.info,
+      provider: args.provider || state.modal.overrideProvider || rootState.config.config.infoProvider.info,
       toSearch: args
     }
 
