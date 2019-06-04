@@ -42,29 +42,29 @@
             template(v-for='i in 2')
               v-flex(xs3)
                 v-menu(
-                  lazy,
-                  :close-on-content-click='false',
+                  ref='pickers',
                   v-model='datePickers[i - 1]',
+                  :close-on-content-click='false',
+                  :nudge-right='40',
+                  lazy,
                   transition='scale-transition',
                   offset-y,
                   full-width,
-                  :nudge-right='40',
-                  max-width='290px',
                   min-width='290px'
                 )
-                  v-text-field(
-                    slot='activator',
-                    :label="`${i === 1 ? 'Start' : 'End'} date`",
-                    v-model="dates[i === 1 ? 'start' : 'end']",
-                    prepend-icon='event',
-                    readonly
+                  template(v-slot:activator='{ on }')
+                    v-text-field(
+                      :label="`${i === 1 ? 'Start' : 'End'} date`",
+                      v-model="form[i === 1 ? 'startedAt' : 'finishedAt']",
+                      prepend-icon='event',
+                      readonly
+                      v-on='on'
+                    )
+                  v-date-picker(
+                    v-model="form[i === 1 ? 'startedAt' : 'finishedAt']",
+                    @input='datePickers[i - 1] = false',
+                    scrollable
                   )
-                  v-date-picker(v-model="dates[i === 1 ? 'start' : 'end']", no-title, scrollable, actions)
-                    template(slot-scope='{ save, cancel }')
-                      v-card-actions
-                        v-spacer
-                        v-btn(flat, color='primary', @click='cancel') Cancel
-                        v-btn(flat, color='primary', @click='save') Ok
             v-flex(xs3)
               v-text-field(
                 type='number',
@@ -137,6 +137,7 @@ export default {
       }
     }
   },
+
   computed: {
     show: {
       get () {
@@ -170,6 +171,7 @@ export default {
       }
     }
   },
+
   methods: {
     close () {
       this.$store.commit('services/showForm', { service: this.service, bool: false })
@@ -202,13 +204,7 @@ export default {
       return new Date(date).toISOString()
     },
     formatDate (date) {
-      const _date = new Date(date)
-
-      return [
-        _date.getFullYear(),
-        ('0' + (_date.getMonth() + 1)).slice(-2),
-        ('0' + _date.getDate()).slice(-2)
-      ].join('-')
+      return new Date(date).toISOString().substr(0, 10)
     }
   },
   watch: {
