@@ -11,6 +11,7 @@ export default async function (url, query, variables, headers = {}, useCache = f
 
     return response
   } catch (e) {
+    console.log('FAILED QUERY', query, variables, headers)
     throw e
   }
 }

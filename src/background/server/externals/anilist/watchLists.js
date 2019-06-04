@@ -39,7 +39,8 @@ async function update (opts) {
     GRAPHQL_ENDPOINT,
     watchLists[opts.isDelete ? 'delete' : 'update'],
     opts,
-    await getHeaders()
+    await getHeaders(),
+    false
   )
 }
 

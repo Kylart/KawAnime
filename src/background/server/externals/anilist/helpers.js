@@ -138,7 +138,7 @@ export function formatList (data) {
       ...entry,
       id: entry.media.id,
       title: entry.media.title.userPreferred || entry.media.title.english || entry.media.title.romaji,
-      score: entry.score,
+      score: entry.score || null,
       progress: entry.progress,
       note: entry.notes,
       status: capitalize(entry.status || ''),

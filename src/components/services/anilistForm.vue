@@ -173,11 +173,11 @@ export default {
       this.form = this.initForm
     },
     submit () {
-      const opts = { ...this.entry, ...this.form }
+      const opts = { mediaId: this.entry.mediaId, ...this.form }
 
-      opts.startedAt = this.parseDate(opts.startedAt)
-      opts.completedAt = this.parseDate(opts.completedAt)
-      opts.score = +opts.score
+      opts.startedAt = opts.startedAt ? this.parseDate(opts.startedAt) : undefined
+      opts.completedAt = opts.completedAt ? this.parseDate(opts.completedAt) : undefined
+      opts.score = opts.score ? +opts.score : null
       opts.repeat = +opts.repeat
 
       this.$store.dispatch('services/updateList', {
@@ -219,20 +219,6 @@ export default {
           ? this.formatDate(obj.completedAt)
           : null
       }
-
-      // const { id, name, url } = obj
-      // const handler = (e, data) => {
-      //   this.$store.commit('services/setFormEntry', { id, ...data })
-      //   this.$ipc.removeListener(this.$eventsList.search.url.main, handler)
-      // }
-
-      // if (name) {
-      //   this.$ipc.on(this.$eventsList.search.url.main, handler)
-      //   this.$ipc.send(this.$eventsList.search.url.main, {
-      //     provider: 'mal',
-      //     toSearch: url
-      //   })
-      // }
     }
   }
 }
