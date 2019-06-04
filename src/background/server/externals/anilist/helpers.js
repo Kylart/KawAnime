@@ -9,6 +9,12 @@ function beautify (str) {
     .join(' ')
 }
 
+function getFormat (format) {
+  return format
+    ? format.split('_').slice(-1)[0].toUpperCase()
+    : 'N/A'
+}
+
 function generateSentence (data) {
   const { status, source, season, startDate, episodes, duration } = data
 
@@ -75,7 +81,7 @@ export function formatInfo (rawData) {
     id: data.id,
     malId: data.idMal,
     img: data.coverImage.extraLarge || data.coverImage.large,
-    type: data.format,
+    type: getFormat(data.format),
     synopsis: data.description && data.description.replace(/<br>/g, ''),
     score: data.averageScore,
     scoreOutOf: 100,
@@ -143,7 +149,7 @@ export function formatList (data) {
       note: entry.notes,
       status: capitalize(entry.status || ''),
       nbEp: entry.media.episodes,
-      format: entry.media.format,
+      format: getFormat(entry.media.format),
       startedAt: entry.startedAt,
       completedAt: entry.completedAt,
       img: entry.media.coverImage.extraLarge || entry.media.coverImage.large
