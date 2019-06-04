@@ -178,13 +178,19 @@ export default {
       this.form = this.initForm
     },
     submit () {
-      const opts = { ...this.form }
+      const opts = {}
+      const base = this.entry
 
-      opts.startedAt = opts.startedAt && this.parseDate(opts.startedAt)
-      opts.finishedAt = opts.finishedAt && this.parseDate(opts.finishedAt)
-      opts.ratingTwenty = +opts.ratingTwenty
-      opts.reconsumeCount = +opts.reconsumeCount
-      opts.progress = +opts.progress
+      // Making a simple diff to send only required data.
+      Object.keys(this.form).forEach((key) => {
+        if (key.includes('At')) {
+          const baseValue = base[key] ? this.formatDate(base[key]) : null
+
+          if (this.form[key] !== baseValue) opts[key] = this.form[key]
+        } else {
+          if (`${this.form[key]}`.toLowerCase() !== `${base[key]}`.toLowerCase()) opts[key] = this.form[key]
+        }
+      })
 
       this.$store.dispatch('services/updateList', {
         service: this.service,
@@ -211,11 +217,11 @@ export default {
     async entry (obj) {
       if (this.isEdit) {
         this.form.status = obj.status.toLowerCase().replace(/\s/g, '_')
-        this.form.ratingTwenty = obj.score || null
-        this.form.progress = obj.progress || null
-        this.form.reconsuming = obj.reconsuming || null
+        this.form.ratingTwenty = obj.score
+        this.form.progress = obj.progress
+        this.form.reconsuming = obj.reconsuming
         this.form.reconsumeCount = obj.reconsumeCount || 0
-        this.form.notes = obj.note || obj.notes || null
+        this.form.notes = obj.note
         this.form.startedAt = obj.startedAt
           ? this.formatDate(obj.startedAt)
           : null
