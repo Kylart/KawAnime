@@ -62,5 +62,9 @@ export default {
     ipcRenderer.on(eventsList.register.isAuthed.success, (e, args) => {
       commit('setConnected', args)
     })
+
+    ipcRenderer.on(eventsList.watchLists.update.success, (e, { service }) => {
+      dispatch('getList', { service })
+    })
   }
 }

@@ -5,7 +5,8 @@ const properties = [
   'expiresAt',
   'accessToken',
   'tokenType',
-  'refreshToken'
+  'refreshToken',
+  'userId'
 ]
 
 export default async function () {
@@ -13,7 +14,8 @@ export default async function () {
     expiresAt,
     accessToken,
     tokenType,
-    refreshToken
+    refreshToken,
+    userId
   } = await getCreds('kitsu', properties)
   const now = (new Date()).getTime()
 
@@ -28,6 +30,7 @@ export default async function () {
 
   return {
     accessToken,
-    tokenType
+    tokenType,
+    userId
   }
 }

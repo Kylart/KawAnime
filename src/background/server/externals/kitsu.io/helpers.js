@@ -160,19 +160,20 @@ export function formatList (data) {
     }
   )
 
-  return entries.map(({ attributes: entry }, index) => {
+  return entries.map(({ id, attributes: entry }, index) => {
     const anime = animes[index].attributes
 
     return {
       ...entry,
       ...anime,
+      id,
       title: anime.titles.en_jp || anime.canonicalTitle || anime.titles.en || anime.titles.en_us,
       score: entry.ratingTwenty,
-      progress: entry.progress,
+      progress: entry.progress || 0,
       note: entry.notes,
       status: beautify(entry.status),
       nbEp: anime.episodeCount,
-      format: anime.subtype,
+      format: (anime.subtype || '').toUpperCase(),
       img: anime.posterImage.original || anime.posterImage.large || anime.posterImage.medium
     }
   })

@@ -8,7 +8,7 @@ const logger = new Logger('Watch Lists (From Provider) [Get]')
 
 const providers = {
   mal: mal.watchLists,
-  kitsu: kitsu.watchLists,
+  kitsu: kitsu.watchLists.get,
   anilist: anilist.watchLists.get
 }
 

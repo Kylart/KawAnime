@@ -12,7 +12,7 @@ const providers = {
 
 async function handler (event, { service, code, email, username, password }) {
   try {
-    await providers[service]({ token: code, username: service === 'kitsu' ? email : username, password })
+    await providers[service]({ token: code, username, email, password })
 
     event.sender.send(events.success, service)
   } catch (e) {
