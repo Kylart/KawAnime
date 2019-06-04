@@ -4,6 +4,7 @@
     :headers='headers',
     :items='filteredList',
     :search='term',
+    :loading='isLoading',
     item-key='id',
     rows-per-page-text='Anime per page:',
     :rows-per-page-items="[10, 15, 25, 50, 100, { text: 'All', value: -1 }]",
@@ -78,6 +79,9 @@ export default {
     isConnected () {
       return this.$store.state.services[this.provider].isConnected
     },
+    isLoading () {
+      return this.$store.state.services[this.provider].isLoading
+    },
     isEmpty () {
       return this.list && this.list.length
     },
@@ -98,6 +102,19 @@ export default {
         entry: {
           ...item,
           isEdit: true
+        }
+      })
+    }
+  },
+
+  watch: {
+    provider () {
+      this.$nextTick(() => {
+        if (this.isConnected) {
+          this.headers.push({ text: 'Edit' })
+        } else {
+          const editIndex = this.headers.findIndex(({ text }) => text === 'Edit')
+          this.headers.splice(editIndex, 1)
         }
       })
     }

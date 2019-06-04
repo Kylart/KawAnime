@@ -11,6 +11,9 @@ export default {
   setConnected (state, { service, value }) {
     state[service].isConnected = value
   },
+  setLoading (state, { service, value }) {
+    state[service].isLoading = value
+  },
   setList (state, { service, list }) {
     state[service].list = list
     state[service].error = null

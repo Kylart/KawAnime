@@ -3,12 +3,14 @@ import { log, isRoot } from '@/store/utils'
 export const watchLists = {
   get: {
     success (commit, { service, list }) {
+      commit('setLoading', { service, value: false })
       commit('setList', { service, list })
       log(`Retrieved user list for ${service}.`)
     },
     error (commit, { service, msg }) {
-      log('Could not retrieve user list:', msg)
+      commit('setLoading', { service, value: false })
       commit('setError', { service, msg })
+      log('Could not retrieve user list:', msg)
     }
   },
   update: {

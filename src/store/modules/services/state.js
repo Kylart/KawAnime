@@ -5,6 +5,7 @@ export default {
     acc[value] = {
       has: false,
       isConnected: false,
+      isLoading: false,
       username: null,
       email: null,
       list: null,

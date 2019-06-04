@@ -26,8 +26,10 @@ export default {
   isConnected (store, service) {
     ipcRenderer.send(eventsList.register.isAuthed.main, service)
   },
-  getList ({ state }, { service, username }) {
+  getList ({ state, commit }, { service, username }) {
     log(`Retrieving list for ${service}.`)
+
+    commit('setLoading', { service, value: true })
 
     ipcRenderer.send(eventsList.watchLists.get.main, {
       service,
