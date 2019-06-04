@@ -38,9 +38,10 @@
         v-layout(column, align-center, justify-center)
           span.pb-1 {{ props.item.progress }} / {{ props.item.nbEp || '??' }}
           v-progress-linear.ma-0(:value='(props.item.progress / props.item.nbEp) * 100', :max='props.item.nbEp')
-      td
-        v-btn(icon, @click='setModal(props.item)')
-          v-icon edit
+      template(v-if='isConnected')
+        td
+          v-btn(icon, @click='setModal(props.item)')
+            v-icon edit
 </template>
 
 <script>
@@ -74,6 +75,9 @@ export default {
   },
 
   computed: {
+    isConnected () {
+      return this.$store.state.services[this.provider].isConnected
+    },
     isEmpty () {
       return this.list && this.list.length
     },
