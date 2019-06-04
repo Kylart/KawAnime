@@ -14,13 +14,13 @@ export default async function () {
     accessToken,
     tokenType,
     refreshToken
-  } = await getCreds('anilist', properties)
+  } = await getCreds('kitsu', properties)
   const now = (new Date()).getTime()
 
   // We refresh the token only when the expire date is
   // less than a day away.
   if (expiresAt - now < 24 * 60 * 60 * 1000) {
-    const newData = await setup.getAccessToken(refreshToken, true)
+    const newData = await setup.getAccessToken({ token: refreshToken }, true)
 
     accessToken = newData.accessToken
     tokenType = newData.tokenType

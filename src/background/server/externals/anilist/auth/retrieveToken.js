@@ -20,7 +20,7 @@ export default async function () {
   // We refresh the token only when the expire date is
   // less than a day away.
   if (expiresAt - now < 24 * 60 * 60 * 1000) {
-    const newData = await setup.getAccessToken(refreshToken, true)
+    const newData = await setup.getAccessToken({ token: refreshToken }, true)
 
     accessToken = newData.accessToken
     tokenType = newData.tokenType

@@ -104,9 +104,6 @@ export default {
     updateCreds (website) {
       // Setting those credentials for this service
       this.$store.dispatch(`services/set`, website)
-
-      // Instanciating API with those new credentials
-      // this.$store.dispatch(`credentials/`, credentials)
     },
     register (website) {
       const url = this.$ipc.sendSync(this.$eventsList.register.code.main, website.service)
@@ -114,9 +111,21 @@ export default {
       this.$electron.shell.openExternal(url)
     },
     signIn (website) {
-      const success = this.$ipc.sendSync(this.$eventsList.services.connect.main, website.service)
+      this.$ipc.on(this.$eventsList.register.token.success, (e, { service }) => {
+        this.$store.commit('setInfoSnackbar', 'Successfully logged in.')
 
-      this.$store.commit('setInfoSnackbar', success ? 'Successfully logged in' : 'Log in failed')
+        this.$ipc.removeListener(this.$eventsList.register.token.success)
+      })
+
+      this.$ipc.on(this.$eventsList.register.token.error, (e, { service }) => {
+        this.$store.commit('setInfoSnackbar', 'Log in failed.')
+
+        this.$ipc.removeListener(this.$eventsList.register.token.error)
+      })
+
+      const { service, credentials } = website
+
+      this.$ipc.send(this.$eventsList.register.token.main, { service, ...credentials })
     },
     getInputs (service) {
       return this.$store.state.config.providersRequiredProperties[service]

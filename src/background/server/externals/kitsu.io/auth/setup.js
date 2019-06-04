@@ -7,16 +7,22 @@ import sendToWindows from '../../sendToWindows'
 /**
  * Allows the creation / update of an access token.
  *
- * @param {string} token Token to use to get the access token.
+ * @param {object} args Credentials.
+ * @param {string} token Needs to be given if `isRefresh` is `true`. This is the refresh token.
+ * @param {string} username Username for the user to authenticate (email).
+ * @param {string} password Password to authenticate the user.
  * @param {boolean} isRefresh Whether or not to user the refresh_token grant type.
  */
-export default async function getAccessToken (token, isRefresh = false) {
+async function getAccessToken ({ token, username, password }, isRefresh = false) {
   const data = await https.post(TOKEN_URL, {
     grant_type: isRefresh ? 'refresh_token' : 'password',
-    [isRefresh ? 'refresh_token' : 'password']: token
+    ...(
+      isRefresh
+        ? { refresh_token: token }
+        : { username, password }
+    )
   }, [], {}, false)
 
-  const now = (new Date()).getTime()
   const result = {
     expiresIn: data.expires_in * 1000,
     accessToken: data.access_token,
@@ -26,10 +32,14 @@ export default async function getAccessToken (token, isRefresh = false) {
 
   await setupCreds('kitsu', {
     ...result,
-    expiresAt: now + result.expiresIn
+    expiresAt: (data.created_at * 1000) + result.expiresIn
   })
 
-  sendToWindows(eventsList.register.isAuthed.success, { service: 'anilist', value: true })
+  sendToWindows(eventsList.register.isAuthed.success, { service: 'kitsu', value: true })
 
   return result
+}
+
+export default {
+  getAccessToken
 }

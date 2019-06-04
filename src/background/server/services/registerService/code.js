@@ -4,7 +4,6 @@ import { anilist } from '../../externals'
 const events = eventsList.register.code
 
 const providers = {
-  // kitsu: kitsu.watchLists,
   anilist: anilist.auth.setup.codeUrl
 }
 
