@@ -1,6 +1,6 @@
 import WebTorrent from 'webtorrent'
 import { extname, join } from 'path'
-import { readFileSync, createReadStream, watch, existsSync } from 'fs'
+import { readFileSync, createReadStream, watchFile, unwatchFile } from 'fs'
 import { BrowserWindow, app } from 'electron'
 
 import generateServer from '../video/createServer'
@@ -92,7 +92,7 @@ function remove (event, magnet) {
       client.destroy((err) => {
         err
           ? logger.error('Could not destroy client.', err)
-          : infoIntervalID && clearInterval(infoIntervalID) && logger.info('Successfully destroyed client.')
+          : logger.info('Successfully destroyed client.') && infoIntervalID && clearInterval(infoIntervalID)
       })
     }
   })
@@ -182,23 +182,14 @@ function play (event, { link: id, name }) {
 
     const filePath = streamingFilePath = join(torrent.path, torrent.files[0].path)
 
-    const startSubtitles = (path) => {
-      subtitleStream = createReadStream(path)
-      parseSubtitles(event, subtitleStream, true)
+    watchFile(filePath, (current) => {
+      if (current.size === 0) return
 
-      subtitleStream.read()
-    }
+      subtitleStream = createReadStream(streamingFilePath)
+      parseSubtitles(event, subtitleStream)
 
-    if (existsSync(filePath)) {
-      startSubtitles(filePath)
-    } else {
-      const watcher = watch(torrent.path, (eventName, filename) => {
-        if (eventName === 'rename' && filename === torrent.files[0].path) {
-          startSubtitles(streamingFilePath)
-          watcher.close()
-        }
-      })
-    }
+      unwatchFile(streamingFilePath)
+    })
   }
 
   if (!torrent) {

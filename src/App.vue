@@ -17,6 +17,7 @@
     watch-lists-modal
     //- mal-form
     anilist-form
+    kitsu-form
 
     //- Used for displaying any info
     v-snackbar(
@@ -42,8 +43,9 @@ import Overlay from '@/components/global/overlay.vue'
 import Env from '@/components/global/env.vue'
 
 // Providers form
-import MalForm from '@/components/global/malForm.vue'
-import AnilistForm from '@/components/global/anilistForm.vue'
+import MalForm from '@/components/services/malForm.vue'
+import AnilistForm from '@/components/services/anilistForm.vue'
+import KitsuForm from '@/components/services/kitsuForm.vue'
 
 // Mixins
 import ReadMagnet from '@/mixins/global/readMagnet'
@@ -58,9 +60,12 @@ export default {
     Toolbar,
     SystemBar,
 
-    // Global
+    // Providers form
     MalForm,
     AnilistForm,
+    KitsuForm,
+
+    // Global
     TorrentDialog,
     MagnetsModal,
     WatchListsModal,

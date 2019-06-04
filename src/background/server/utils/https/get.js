@@ -7,11 +7,11 @@ import Cache from '../cache'
 const logger = new Logger('Http:Get')
 const cache = new Cache()
 
-export default function (url, params = [], headers = {}) {
+export default function (url, params = [], headers = {}, useCache = true) {
   return new Promise((resolve, reject) => {
     const _url = formUrl(url, params)
 
-    if (cache.has(_url)) {
+    if (useCache && cache.has(_url)) {
       logger.info(`Retrieved info from cache for ${_url}!`)
       resolve(cache.get(_url))
 
@@ -34,7 +34,7 @@ export default function (url, params = [], headers = {}) {
       res.once('end', () => {
         const result = JSON.parse(data)
 
-        cache.set(_url, result)
+        useCache && cache.set(_url, result)
         resolve(result)
       })
     }).on('error', (err) => reject(err))

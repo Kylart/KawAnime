@@ -1,5 +1,5 @@
 import { eventsList } from '../../../../vendor'
-import { anilist } from '../../externals'
+import { anilist, kitsu } from '../../externals'
 import { Logger } from '../../utils'
 
 const events = eventsList.watchLists.update
@@ -8,7 +8,7 @@ const logger = new Logger('Watch Lists (From Provider) [Update]')
 
 const providers = {
   // mal: mal.watchLists,
-  // kitsu: kitsu.watchLists,
+  kitsu: kitsu.watchLists.update,
   anilist: anilist.watchLists.update
 }
 

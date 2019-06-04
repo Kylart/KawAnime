@@ -5,7 +5,8 @@ const properties = [
   'expiresAt',
   'accessToken',
   'tokenType',
-  'refreshToken'
+  'refreshToken',
+  'userId'
 ]
 
 export default async function () {
@@ -13,8 +14,9 @@ export default async function () {
     expiresAt,
     accessToken,
     tokenType,
-    refreshToken
-  } = await getCreds('anilist', properties)
+    refreshToken,
+    userId
+  } = await getCreds('kitsu', properties)
   const now = (new Date()).getTime()
 
   // We refresh the token only when the expire date is
@@ -28,6 +30,7 @@ export default async function () {
 
   return {
     accessToken,
-    tokenType
+    tokenType,
+    userId
   }
 }

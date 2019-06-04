@@ -24,7 +24,8 @@ async function get (username) {
       GRAPHQL_ENDPOINT,
       watchLists.get,
       { username },
-      await getHeaders()
+      await getHeaders(),
+      false
     )
 
     return formatList(data)

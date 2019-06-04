@@ -18,10 +18,11 @@ const codeUrl = [
 /**
  * Allows the creation / update of an access token.
  *
- * @param {string} token Token to use to get the access token.
+ * @param {object} args Credentials.
+ * @param {string} token Token to use to authenticate the user (refresh token or not).
  * @param {boolean} isRefresh Whether or not to user the refresh_token grant type.
  */
-async function getAccessToken (token, isRefresh = false) {
+async function getAccessToken ({ token }, isRefresh = false) {
   const data = await https.post(TOKEN_URL, {
     grant_type: isRefresh ? 'refresh_token' : 'authorization_code',
     client_id: clientId,

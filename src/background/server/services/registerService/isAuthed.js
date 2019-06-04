@@ -1,10 +1,10 @@
 import { eventsList } from '../../../../vendor'
-import { anilist } from '../../externals'
+import { anilist, kitsu } from '../../externals'
 
 const events = eventsList.register.isAuthed
 
 const providers = {
-  // kitsu: kitsu.watchLists,
+  kitsu: kitsu.auth.isAuthed,
   anilist: anilist.auth.isAuthed
 }
 

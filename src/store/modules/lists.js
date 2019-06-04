@@ -55,8 +55,8 @@ export const providersRequiredProperties = {
   ],
   kitsu: [
     { text: 'Username', value: 'username' },
-    { text: 'Password', value: 'password' },
-    { text: 'Email', value: 'email' }
+    { text: 'Email', value: 'email' },
+    { text: 'Password', value: 'password' }
   ],
   anilist: [
     { text: 'Username', value: 'username' }
