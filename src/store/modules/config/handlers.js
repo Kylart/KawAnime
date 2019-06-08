@@ -7,6 +7,8 @@ export const get = {
     // Setting defaults
     dispatch('player/setUp', null, isRoot)
     commit('localFiles/setDir', data.config.localPath, isRoot)
+    commit('localFiles/setRecursiveSearch', data.config.recursiveSearch, isRoot)
+    commit('localFiles/setInside', data.config.inside, isRoot)
     dispatch('localFiles/update', null, isRoot)
     commit('releases/setParams', {
       fansub: data.config.fansub,

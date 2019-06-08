@@ -1,5 +1,6 @@
 export default {
   dir: '',
   inside: true,
-  files: []
+  files: [],
+  recursiveSearch: false
 }

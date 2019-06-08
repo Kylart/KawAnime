@@ -14,6 +14,14 @@
         hint='Play in KawAnime?'
       )
 
+      v-switch.mt-0(
+        v-model='recursiveSearch',
+        color='primary',
+        :label="recursiveSearch ? 'Recursive' : 'Folder only'"
+        persistent-hint,
+        hint='Search for files recursively?'
+      )
+
     v-flex.right-buttons(xs12, sm5, md4)
       v-btn(icon, large, @click='refresh', :loading='refreshing')
         v-icon(large) refresh
@@ -42,6 +50,15 @@ export default {
       },
       set (bool) {
         this.$store.commit('localFiles/setInside', bool)
+      }
+    },
+    recursiveSearch: {
+      get () {
+        return this.$store.state.localFiles.recursiveSearch
+      },
+      set (bool) {
+        this.$store.commit('localFiles/setRecursiveSearch', bool)
+        this.refresh()
       }
     },
     hasFiles () {

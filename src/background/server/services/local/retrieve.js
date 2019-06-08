@@ -1,5 +1,5 @@
-import { readdirSync } from 'fs'
-import { extname, join } from 'path'
+import { readdirSync, statSync } from 'fs'
+import { extname, join, basename } from 'path'
 
 import { eventsList } from '../../../../vendor'
 import { parseName } from '../../externals'
@@ -11,18 +11,31 @@ const logger = new Logger('Local Files (Get)')
 const events = eventsList.local.get
 const extensions = ['.mkv', '.mp4']
 
-function sendLocalFiles (dir) {
+function getAllFiles (dir) {
+  return readdirSync(dir).reduce((files, file) => {
+    const name = join(dir, file)
+    const isDirectory = statSync(name).isDirectory()
+    return isDirectory ? [...files, ...getAllFiles(name)] : [...files, name]
+  }, [])
+}
+
+function sendLocalFiles (dir, isRecursive) {
   logger.info('Sending files.')
 
-  return readdirSync(dir)
+  const files = isRecursive
+    ? getAllFiles(dir)
+    : readdirSync(dir)
+
+  return files
     .filter(
       (file) => extensions.includes(extname(file.toLowerCase()))
     )
     .map((elem) => {
-      const parsed = parseName(elem)
+      const path = isRecursive ? elem : join(dir, elem)
+      const parsed = parseName(basename(path))
 
       return {
-        path: join(dir, elem),
+        path,
         ep: parsed.episode_number,
         title: parsed.anime_title,
         releaseGroup: parsed.release_group,
@@ -38,11 +51,11 @@ function sendLocalInfo (name) {
   return storage[key] || null
 }
 
-async function retrieve (event, { name, dir, isSync = false }) {
+async function retrieve (event, { name, dir, isSync = false, isRecursive = false }) {
   try {
     const result = name
       ? sendLocalInfo(name)
-      : sendLocalFiles(dir)
+      : sendLocalFiles(dir, isRecursive)
 
     isSync
       ? (event.returnValue = { name, dir, result })

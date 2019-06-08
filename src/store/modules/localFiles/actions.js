@@ -7,7 +7,7 @@ export default {
     dispatch('setEvents')
   },
   update ({ state }) {
-    ipcRenderer.send(eventsList.local.get.main, { dir: state.dir })
+    ipcRenderer.send(eventsList.local.get.main, { dir: state.dir, isRecursive: state.recursiveSearch })
   },
   reset (store, titles) {
     ipcRenderer.sendSync(eventsList.local.update.main, {

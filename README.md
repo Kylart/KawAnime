@@ -33,7 +33,7 @@ Use KawAnime to:
 * Magnet links for all episodes can be generated through the Downloader.
 * Get anime information, news, and seasonal information from your preferred anime information source (Anilist, Kitsu.io, MAL).
 * Manage your anime files (watch and delete on click).
-* Manage local watch lists as well as those from your preffered provider (Anilist, Kitsu.io, MAL).
+* Manage local watch lists as well as those from your preferred provider (Anilist, Kitsu.io, MAL).
 * Keep track of what you watched with the History.
 * Easily binge watch your local anime or while streaming.
 

@@ -10,5 +10,8 @@ export default {
   },
   setInside (state, bool) {
     state.inside = bool
+  },
+  setRecursiveSearch (state, bool) {
+    state.recursiveSearch = bool
   }
 }

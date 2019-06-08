@@ -19,6 +19,7 @@ export default {
         news: defaultProvider
       },
       localPath: downloadPath,
+      recursiveSearch: false,
       sound: 'Nyanpasu',
       notificationVolume: 0.5,
       inside: true,

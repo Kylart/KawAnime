@@ -4,7 +4,9 @@ export default {
   config: {
     infoProvider: {},
     bounds: {},
-    system: {},
+    system: {
+      darkTheme: true
+    },
     video: {},
     torrentClient: {}
   },
