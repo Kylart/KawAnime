@@ -56,29 +56,35 @@ export default {
     groupedFiles () {
       const { files = [] } = this
 
-      return files.reduce((acc, file) => {
-        if (!file.ep) {
-          acc.push(file)
+      return files
+        .reduce((acc, file) => {
+          if (!file.ep) {
+            acc.push(file)
+            return acc
+          }
+
+          const isIn = acc.find((f) => f.title === file.title)
+          const epInfo = {
+            ep: file.ep,
+            path: file.path
+          }
+
+          if (isIn) {
+            isIn.eps.push(epInfo)
+          } else {
+            acc.push({
+              ...file,
+              eps: [epInfo]
+            })
+          }
+
           return acc
-        }
+        }, [])
+        .map((file) => {
+          file.eps.sort((a, b) => +b - +a)
 
-        const isIn = acc.find((f) => f.title === file.title)
-        const epInfo = {
-          ep: file.ep,
-          path: file.path
-        }
-
-        if (isIn) {
-          isIn.eps.push(epInfo)
-        } else {
-          acc.push({
-            ...file,
-            eps: [epInfo]
-          })
-        }
-
-        return acc
-      }, [])
+          return file
+        })
     }
   },
 
