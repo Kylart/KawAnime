@@ -50,7 +50,6 @@ import Layout from '@/components/video/layout.vue'
 import CuesContainer from '@/components/video/cues/container.vue'
 
 // Mixins and methods
-import Ipc from '@/mixins/video/ipc'
 import Tracks from '@/mixins/video/tracks'
 import Subtitles from '@/mixins/video/subtitles'
 import Style from '@/mixins/video/getStyle'
@@ -64,7 +63,7 @@ export default {
     Layout
   },
 
-  mixins: [ Ipc, Tracks, Subtitles, Style, Tracking ],
+  mixins: [ Tracks, Subtitles, Style, Tracking ],
 
   props: ['value', 'title', 'fullscreen', 'isMinimized'],
 
