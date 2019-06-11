@@ -1,6 +1,5 @@
 import { app } from 'electron'
 
-const defaultProvider = 'mal'
 const downloadPath = app.getPath('downloads')
 const tmpPath = app.getPath('temp')
 
@@ -11,12 +10,18 @@ export default {
       fansub: 'HorribleSubs',
       quality: '720p',
       feed: 'si',
+      autoTracking: {
+        local: true,
+        mal: true,
+        anilist: true,
+        kitsu: true
+      },
       infoProvider: {
-        episodes: defaultProvider,
-        info: defaultProvider,
-        search: defaultProvider,
-        seasons: defaultProvider,
-        news: defaultProvider
+        episodes: 'mal',
+        info: 'anilist',
+        search: 'kitsu',
+        seasons: 'anilist',
+        news: 'mal'
       },
       localPath: downloadPath,
       recursiveSearch: false,

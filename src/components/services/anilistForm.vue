@@ -114,7 +114,7 @@ export default {
       ],
       initForm: {
         status: '',
-        score: '',
+        score: 0,
         progress: '',
         repeat: '',
         private: false,
@@ -124,7 +124,7 @@ export default {
       },
       form: {
         status: '',
-        score: '',
+        score: 0,
         progress: '',
         repeat: '',
         private: false,
@@ -177,7 +177,8 @@ export default {
 
       opts.startedAt = opts.startedAt ? this.parseDate(opts.startedAt) : undefined
       opts.completedAt = opts.completedAt ? this.parseDate(opts.completedAt) : undefined
-      opts.score = opts.score ? +opts.score : null
+      opts.score = opts.score ? +opts.score : 0
+      opts.progress = opts.progress ? +opts.progress : undefined
       opts.repeat = +opts.repeat
 
       this.$store.dispatch('services/updateList', {
@@ -208,8 +209,8 @@ export default {
       if (this.isEdit) {
         this.form.mediaId = obj.id
         this.form.status = obj.status.toUpperCase()
-        this.form.score = obj.score || null
-        this.form.progress = obj.progress || null
+        this.form.score = obj.score || 0
+        this.form.progress = +obj.progress || null
         this.form.repeat = obj.repeat || null
         this.form.notes = obj.note || obj.notes || null
         this.form.startedAt = obj.startedAt.year
