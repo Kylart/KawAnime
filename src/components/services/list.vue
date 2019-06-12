@@ -51,6 +51,10 @@ export default {
 
   props: [ 'provider', 'list', 'tags', 'term', 'hasTags' ],
 
+  mounted () {
+    this.setEdit()
+  },
+
   data () {
     return {
       selected: [],
@@ -104,19 +108,27 @@ export default {
           isEdit: true
         }
       })
+    },
+    setEdit () {
+      this.$nextTick(() => {
+        const editIndex = this.headers.findIndex(({ text }) => text === 'Edit')
+        const hasEdit = editIndex !== -1
+
+        if (this.isConnected) {
+          !hasEdit && this.headers.push({ text: 'Edit' })
+        } else {
+          hasEdit && this.headers.splice(editIndex, 1)
+        }
+      })
     }
   },
 
   watch: {
     provider () {
-      this.$nextTick(() => {
-        if (this.isConnected) {
-          this.headers.push({ text: 'Edit' })
-        } else {
-          const editIndex = this.headers.findIndex(({ text }) => text === 'Edit')
-          this.headers.splice(editIndex, 1)
-        }
-      })
+      this.setEdit()
+    },
+    isConnected () {
+      this.setEdit()
     }
   }
 }
