@@ -33,7 +33,6 @@
     "mime": "^2.4.3",
     "moment": "^2.24.0",
     "nyaapi": "^2.0.5",
-    "rage-edit": "^1.2.0",
     "range-parser": "^1.2.1",
     "register-service-worker": "^1.6.2",
     "rimraf": "^2.6.3",

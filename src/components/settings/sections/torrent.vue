@@ -40,9 +40,6 @@
 </template>
 
 <script>
-// Comes from https://github.com/electron/electron/issues/14108
-import { Registry } from 'rage-edit'
-
 // Mixins
 import Update from '@/mixins/config/update.js'
 
@@ -103,17 +100,10 @@ export default {
       this.$log('Registering as default torrent app...')
       this.defaultLoading = true
 
-      let isOk = false
-
-      if (process.platform === 'win32') {
-        isOk = await this.installWindows()
-      } else {
-        const { app } = this.$electron.remote
-
-        isOk = this.protocols
-          .map((protocol) => app.setAsDefaultProtocolClient(protocol))
-          .every(Boolean)
-      }
+      const { app } = this.$electron.remote
+      const isOk = this.protocols
+        .map((protocol) => app.setAsDefaultProtocolClient(protocol, process.platform === 'darwin' ? undefined : app.getPath('exe')))
+        .every(Boolean)
 
       if (isOk) {
         this.$log('Success!')
@@ -124,27 +114,6 @@ export default {
       }
 
       this.defaultLoading = false
-    },
-    async installWindows () {
-      const appName = 'KawAnime'
-
-      try {
-        await Promise.all(
-          this.protocols.map(async (protocol) => {
-            await Registry.set(`HKCU\\Software\\${appName}\\Capabilities`, 'ApplicationName', `${appName}`)
-            await Registry.set(`HKCU\\Software\\${appName}\\Capabilities`, 'ApplicationDescription', `${appName}`)
-            await Registry.set(`HKCU\\Software\\${appName}\\Capabilities\\URLAssociations`, `${protocol}`, `${appName}.${protocol}`)
-            await Registry.set(`HKCU\\Software\\Classes\\${appName}.${protocol}\\DefaultIcon`, ``, process.execPath)
-            await Registry.set(`HKCU\\Software\\Classes\\${appName}.${protocol}\\shell\\open\\command`, ``, `"${process.execPath}" "%1"`)
-            await Registry.set(`HKCU\\Software\\RegisteredApplications`, `${appName}`, `Software\\${appName}\\Capabilities`)
-          })
-        )
-
-        return true
-      } catch (e) {
-        this.$log('Could not register the app as default client.', e)
-        return false
-      }
     }
   }
 }
