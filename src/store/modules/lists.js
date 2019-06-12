@@ -50,8 +50,8 @@ export const providers = [
 
 export const providersRequiredProperties = {
   mal: [
-    { text: 'Username', value: 'username' },
-    { text: 'Password', value: 'password' }
+    { text: 'Username', value: 'username' }
+    // { text: 'Password', value: 'password' }
   ],
   kitsu: [
     { text: 'Username', value: 'username' },

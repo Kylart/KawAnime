@@ -44,7 +44,7 @@
                 v-btn(flat, @click='register(website)')
                   v-icon open_in_new
                   .pl-2 Register
-              div(@click='saveTracking(website.service)')
+              div(v-show='website.canAuth', @click='saveTracking(website.service)')
                 v-switch(
                   :label="autoTracking[website.service] ? 'Enabled' : 'Disabled'",
                   persistent-hint,
@@ -79,12 +79,12 @@ export default {
         title: 'MyAnimeList.net',
         service: 'mal',
         credentials: {
-          username: this.$store.state.services.mal.username || '',
-          password: ''
+          username: this.$store.state.services.mal.username || ''
+          // password: ''
         },
         show: false,
-        isOn: false,
-        mustSignIn: true
+        mustSignIn: false,
+        canAuth: false
       }, {
         title: 'Kitsu.io',
         service: 'kitsu',
@@ -94,8 +94,8 @@ export default {
           email: this.$store.state.services.kitsu.email || ''
         },
         show: false,
-        isOn: false,
-        mustSignIn: true
+        mustSignIn: true,
+        canAuth: true
       }, {
         title: 'Anilist',
         service: 'anilist',
@@ -103,8 +103,8 @@ export default {
           username: this.$store.state.services.anilist.username || ''
         },
         show: false,
-        isOn: false,
-        mustRegister: true
+        mustRegister: true,
+        canAuth: true
       }]
     }
   },
