@@ -62,7 +62,11 @@ export default {
 
         if (!list || !isConnected) return
 
-        const { id, progress } = list.filter(({ title }) => title === refName)[0]
+        const candidates = list.filter(({ title }) => title === refName)
+
+        if (!candidates.length) return
+
+        const { id, progress } = candidates[0]
 
         if (progress && +progress >= +refEp) return
 
