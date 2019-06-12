@@ -1,3 +1,5 @@
+import { dirname } from 'path'
+
 import { ipcRenderer, log } from '@/store/utils'
 import { eventsList } from '@/vendor'
 
@@ -128,7 +130,7 @@ export default {
 
       // Getting files from local and get the index of the current one
       const { result: files } = ipcRenderer.sendSync(eventsList.local.get.main, {
-        dir: link.split('/').slice(0, -1).join('/'),
+        dir: dirname(link),
         isSync: true
       })
 
