@@ -102,7 +102,8 @@ if (!isDevelopment && !gotTheLock) {
       if (process.platform === 'darwin') {
         app.dock.hide()
       }
-      tray = new Tray('../assets/images/tray.png')
+      // eslint-disable-next-line no-undef
+      tray = new Tray(join(__static, 'images', 'tray.png'))
       const contextMenu = Menu.buildFromTemplate([
         {
           label: 'New window',
@@ -113,7 +114,7 @@ if (!isDevelopment && !gotTheLock) {
           },
           accelerator: 'CommandOrControl+N'
         },
-        { label: 'Show current window', click: win.show },
+        { label: 'Show current window', click: win ? win.show : createWindow },
         { label: 'Close current window', role: 'close', accelerator: 'CommandOrControl+W' },
         { type: 'separator' },
         { label: 'Quit', role: 'quit', accelerator: 'CommandOrControl+Q' }
