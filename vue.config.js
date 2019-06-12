@@ -51,7 +51,13 @@ module.exports = {
             ext: 'torrent',
             name: 'Torrent files'
           }
-        ]
+        ],
+        protocols: [{
+          name: 'kawanime-app-external',
+          schemes: [
+            'kawanime-app'
+          ]
+        }]
       },
       chainWebpackMainProcess: (config) => {
         // Chain webpack config for electron main process only

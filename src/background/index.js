@@ -88,7 +88,7 @@ if (!isDevelopment && !gotTheLock) {
     // Someone tried to run a second instance, we should focus our window.
     if (win) {
       if (win.isMinimized()) win.restore()
-      win.focus()
+      setTimeout(win.focus, 100)
 
       if (process.platform !== 'darwin') external(null, commandLine)
     }

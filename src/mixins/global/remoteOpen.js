@@ -28,7 +28,7 @@ export default {
         return acc
       }, {})
 
-      this.$store.dispatch(`${service}/external`, externalArgs)
+      this.$store.dispatch('services/external', { service, ...externalArgs })
     })
   },
 
