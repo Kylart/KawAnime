@@ -118,6 +118,7 @@ export default {
     updateCreds (website) {
       // Setting those credentials for this service
       this.$store.dispatch(`services/set`, website)
+      this.$store.dispatch('services/getList', { service: website.service })
     },
     register (website) {
       const url = this.$ipc.sendSync(this.$eventsList.register.code.main, website.service)
@@ -125,20 +126,23 @@ export default {
       this.$electron.shell.openExternal(url)
     },
     signIn (website) {
-      this.$ipc.on(this.$eventsList.register.token.success, (e, { service }) => {
+      const success = (e, { service }) => {
         this.$store.commit('setInfoSnackbar', 'Successfully logged in.')
+        this.$store.dispatch('services/getList', { service: website.service })
 
-        this.$ipc.removeListener(this.$eventsList.register.token.success)
-      })
+        this.$ipc.removeListener(this.$eventsList.register.token.success, success)
+      }
 
-      this.$ipc.on(this.$eventsList.register.token.error, (e, { service }) => {
+      const error = (e, { service }) => {
         this.$store.commit('setInfoSnackbar', 'Log in failed.')
 
-        this.$ipc.removeListener(this.$eventsList.register.token.error)
-      })
+        this.$ipc.removeListener(this.$eventsList.register.token.error, error)
+      }
 
       const { service, credentials } = website
 
+      this.$ipc.on(this.$eventsList.register.token.success, success)
+      this.$ipc.on(this.$eventsList.register.token.error, error)
       this.$ipc.send(this.$eventsList.register.token.main, { service, ...credentials })
     },
     getInputs (service) {
