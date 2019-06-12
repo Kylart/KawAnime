@@ -31,18 +31,26 @@
                       :label='input.text',
                       clearable
                     )
-              v-flex
-                v-btn(flat, @click='updateCreds(website)')
-                  v-icon save
-                  .pl-2 Save
-                template(v-if='website.mustSignIn')
-                  v-btn(flat, @click='signIn(website)')
-                    v-icon subdirectory_arrow_left
-                    .pl-2 Log In
-                template(v-if='website.mustRegister')
-                  v-btn(flat, @click='register(website)')
-                    v-icon open_in_new
-                    .pl-2 Register
+
+            v-layout(justify-end, align-center, pr-2)
+              v-btn(flat, @click='updateCreds(website)')
+                v-icon save
+                .pl-2 Save
+              template(v-if='website.mustSignIn')
+                v-btn(flat, @click='signIn(website)')
+                  v-icon subdirectory_arrow_left
+                  .pl-2 Log In
+              template(v-if='website.mustRegister')
+                v-btn(flat, @click='register(website)')
+                  v-icon open_in_new
+                  .pl-2 Register
+              div(@click='saveTracking(website.service)')
+                v-switch(
+                  :label="autoTracking[website.service] ? 'Enabled' : 'Disabled'",
+                  persistent-hint,
+                  hint='Enable auto tracking?'
+                  v-model='autoTracking[website.service]'
+                )
         v-card-actions
           v-spacer
           v-layout(column, align-end)
@@ -66,6 +74,7 @@ export default {
 
   data () {
     return {
+      autoTracking: this.$store.state.config.config.autoTracking,
       websites: [{
         title: 'MyAnimeList.net',
         service: 'mal',
@@ -101,6 +110,11 @@ export default {
   },
 
   methods: {
+    saveTracking (service) {
+      this.$nextTick(() => {
+        this.setDeepValue(`autoTracking.${service}`, this.autoTracking[service])
+      })
+    },
     updateCreds (website) {
       // Setting those credentials for this service
       this.$store.dispatch(`services/set`, website)
