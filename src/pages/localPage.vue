@@ -81,7 +81,7 @@ export default {
           return acc
         }, [])
         .map((file) => {
-          file.eps && file.eps.length && file.eps.sort((a, b) => +b - +a)
+          file.eps && file.eps.length && file.eps.sort((a, b) => +a.ep - +b.ep)
 
           return file
         })
