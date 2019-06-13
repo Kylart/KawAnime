@@ -1,10 +1,11 @@
 import WebTorrent from 'webtorrent'
-import { extname, join } from 'path'
-import { readFileSync, createReadStream, watchFile, unwatchFile } from 'fs'
+import { extname } from 'path'
+import { readFileSync } from 'fs'
 import { BrowserWindow, app } from 'electron'
+import MatroskaSubtitles from 'matroska-subtitles'
+import { finished } from 'stream'
 
-import generateServer from '../video/createServer'
-import { parseSubtitles, localFiles } from '../../externals'
+import { localFiles } from '../../externals'
 import { eventsList } from '../../../../vendor'
 import cleanTorrents from './format'
 import { save, load } from './storage'
@@ -13,6 +14,7 @@ import { Logger } from '../../utils'
 const logger = new Logger('Torrent')
 
 const events = eventsList.torrent
+const videoEvents = eventsList.video
 
 // TODO Limit download speed, check https://github.com/webtorrent/webtorrent/issues/163
 
@@ -21,7 +23,7 @@ let client = null
 let infoIntervalID = null
 let streamServer = null
 let subtitleStream = null
-let streamingFilePath = null
+let subIntervalId = null
 
 app.on('quit', () => {
   client && save(client)
@@ -78,7 +80,8 @@ function remove (event, magnet) {
   // If it comes from streaming, we have to close the streams
   streamServer && streamServer.close()
   subtitleStream = null
-  streamingFilePath = null
+  subIntervalId && clearInterval(subIntervalId)
+  subIntervalId = null
 
   // Be careful calling this one.
   magnet = (extname(magnet) === '.torrent' && readFileSync(magnet)) || magnet
@@ -171,25 +174,16 @@ function play (event, { link: id, name }) {
   const torrent = client.get(id)
 
   function createServers (torrent) {
-    streamServer = generateServer(torrent)
+    streamServer = torrent.createServer({
+      hostname: 'localhost'
+    })
 
     streamServer.listen()
     const address = streamServer.address()
 
     logger.info(`Created video server for ${id} at ${address.port}`)
 
-    event.sender.send(events.play.success, { torrent: id, name: name || torrent.name, port: address.port })
-
-    const filePath = streamingFilePath = join(torrent.path, torrent.files[0].path)
-
-    watchFile(filePath, (current) => {
-      if (current.size === 0) return
-
-      subtitleStream = createReadStream(streamingFilePath)
-      parseSubtitles(event, subtitleStream)
-
-      unwatchFile(streamingFilePath)
-    })
+    event.sender.send(events.play.success, { torrent: id, name: name || torrent.name, port: `${address.port}/0` })
   }
 
   if (!torrent) {
@@ -202,10 +196,57 @@ function play (event, { link: id, name }) {
   }
 }
 
+function streamSubs (event, id) {
+  if (isClientDestroyed()) return
+
+  const torrent = client.get(id)
+  if (!torrent) return
+
+  const parser = new MatroskaSubtitles()
+
+  parser.once('tracks', (tracks) => {
+    event.sender.send(videoEvents.tracks.success, tracks)
+  })
+
+  parser.on('subtitle', (subtitle, trackNumber) => {
+    event.sender.send(videoEvents.subtitles.success, { subtitle, trackNumber })
+  })
+
+  subIntervalId && clearInterval(subIntervalId)
+
+  const stream = () => {
+    const _torrent = client.get(id)
+
+    if (!_torrent || torrent.destroyed) return
+
+    subtitleStream = _torrent.files[0].createReadStream()
+    subtitleStream.pipe(parser)
+  }
+
+  const createStream = () => {
+    stream()
+
+    subIntervalId = setInterval(() => {
+      if (subtitleStream) {
+        finished(subtitleStream, (err) => {
+          if (err) console.error(err)
+
+          stream()
+        })
+      }
+    }, 300)
+  }
+
+  torrent.ready
+    ? createStream()
+    : torrent.once('ready', () => createStream())
+}
+
 export default [
   { eventName: events.add.main, handler: add },
   { eventName: events.destroy.main, handler: remove },
   { eventName: events.act.main, handler: actOnTorrent },
   { eventName: events.info.main, handler: info },
-  { eventName: events.play.main, handler: play }
+  { eventName: events.play.main, handler: play },
+  { eventName: events.subs.main, handler: streamSubs }
 ]

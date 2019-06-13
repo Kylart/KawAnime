@@ -7,7 +7,6 @@
       ref='video',
       crossorigin='anonymous',
       name='kawanime-player',
-      :autoplay='config.autoplay',
       @pause='paused = true',
       @play='paused = false',
       @timeupdate='onTimelineChangeEvent',
@@ -72,7 +71,6 @@ export default {
       waiting: false,
       paused: true,
       layoutShow: true,
-      isMagnetRe: /^magnet:\?/,
       name: '',
       hasAppendedToHistory: false
     }
@@ -86,6 +84,10 @@ export default {
       // Otherwise, there is no file to get the subtitles from.
       this.setHeight()
       layout.reveal()
+
+      if (this.config.autoplay) this.togglePlay()
+
+      if (this.isMagnet) this.$ipc.send(this.$eventsList.torrent.subs.main, this.player.torrent)
 
       if (this.title) {
         this.addToHistory()
@@ -114,8 +116,14 @@ export default {
       },
       set () {}
     },
+    player: {
+      get () {
+        return this.$store.state.streaming.player
+      },
+      set () {}
+    },
     isMagnet () {
-      return !!this.$store.state.streaming.player.torrent
+      return !!this.player.torrent
     },
     videoTitle () {
       return this.title || this.name
@@ -146,6 +154,7 @@ export default {
     onSeeked () {
       // Needed for subtitle timing
       this.index = 0
+      if (this.isMagnet) this.$ipc.send(this.$eventsList.torrent.subs.main, this.player.torrent)
     },
     onEnded () {
       const { neighbours } = this.$store.state.streaming.player

@@ -21,31 +21,18 @@ function onConnection (socket) {
   })
 }
 
-function handleFile (id) {
-  const isTorrent = id.hasOwnProperty('infoHash')
+function handleFile (path) {
+  const mimeType = getType(path)
+  const { size } = statSync(path)
 
-  if (isTorrent) {
-    return {
-      isTorrent,
-      torrent: id.files[0],
-      magnet: id.magnetURI,
-      size: id.length,
-      mimeType: getType(id.name)
-    }
-  } else {
-    const mimeType = getType(id)
-    const { size } = statSync(id)
-
-    return {
-      path: id,
-      size,
-      mimeType,
-      isTorrent
-    }
+  return {
+    path,
+    size,
+    mimeType
   }
 }
 
-function handleRequest (id) {
+function handleRequest (path) {
   return (req, res) => {
     // CORS
     res.setHeader('Access-Control-Allow-Origin', '*')
@@ -72,8 +59,8 @@ function handleRequest (id) {
     }
 
     if (req.method === 'GET') {
-      const { isTorrent, torrent, size, mimeType, path, magnet } = handleFile(id)
-      isDev && logger.info(`Streaming ${mimeType}: ${path || magnet}`)
+      const { size, mimeType } = handleFile(path)
+      isDev && logger.info(`Streaming ${mimeType}: ${path}`)
 
       // Support range-requests
       res.setHeader('Content-Type', getType(mimeType))
@@ -101,13 +88,11 @@ function handleRequest (id) {
         range = null
       }
 
-      const stream = isTorrent
-        ? torrent && torrent.createReadStream(range)
-        : createReadStream(id, range)
+      const stream = createReadStream(path, range)
 
       const close = () => {
         if (stream) {
-          isDev && logger.info(`Closing stream of range: ${JSON.stringify(range)} for file ${path || magnet}`)
+          isDev && logger.info(`Closing stream of range: ${JSON.stringify(range)} for file ${path}`)
           stream.destroy()
         }
       }
@@ -120,15 +105,15 @@ function handleRequest (id) {
   }
 }
 
-export default function (id) {
+export default function (path) {
   const server = createServer()
 
   server.on('connection', onConnection)
-  server.on('request', handleRequest(id))
+  server.on('request', handleRequest(path))
 
   server.close = () => {
     server.removeListener('connection', onConnection)
-    server.removeListener('request', handleRequest(id))
+    server.removeListener('request', handleRequest(path))
 
     sockets.forEach((socket) => socket.destroy())
   }

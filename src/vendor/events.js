@@ -29,7 +29,7 @@ const updatable = [
 ]
 
 const customs = {
-  torrent: [ 'add', 'act', 'destroy', 'info', 'play' ],
+  torrent: [ 'add', 'act', 'destroy', 'info', 'play', 'subs' ],
   history: [ 'append', 'remove', 'get' ],
   search: [ 'url', 'name', 'term' ],
   services: [ 'connect', 'act' ],
