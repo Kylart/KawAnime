@@ -203,7 +203,7 @@ export default {
       show: false,
       exclude: {
         mal: [ 'kitsu', 'anilist' ],
-        anilist: [ 'kitsu' ],
+        anilist: [ 'kitsu', 'mal' ],
         kitsu: [ 'anilist', 'mal' ]
       }
     }

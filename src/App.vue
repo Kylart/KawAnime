@@ -43,7 +43,7 @@ import Overlay from '@/components/global/overlay.vue'
 import Env from '@/components/global/env.vue'
 
 // Providers form
-import MalForm from '@/components/services/malForm.vue'
+// import MalForm from '@/components/services/malForm.vue'
 import AnilistForm from '@/components/services/anilistForm.vue'
 import KitsuForm from '@/components/services/kitsuForm.vue'
 
@@ -61,7 +61,7 @@ export default {
     SystemBar,
 
     // Providers form
-    MalForm,
+    // MalForm,
     AnilistForm,
     KitsuForm,
 
