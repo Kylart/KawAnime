@@ -19,7 +19,7 @@ cache:
     - $HOME/.cache/electron-builder
 
 install:
-  - npm ci
+  - npm install
 
 jobs:
   include:
