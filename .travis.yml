@@ -23,6 +23,7 @@ jobs:
       script:
         - npm run lint
       deploy:
+        provider: script
         script:
           - npm run publish:mac
         on:
@@ -43,6 +44,7 @@ jobs:
       script:
         - npm run lint
       deploy:
+        provider: script
         script:
           - npm run publish:linux
         on:
