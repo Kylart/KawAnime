@@ -23,7 +23,7 @@ module.exports = {
   pluginOptions: {
     electronBuilder: {
       builderOptions: {
-        appId: 'KawAnime',
+        appId: 'com.kylart.kawanime',
         productName: 'KawAnime',
         dmg: {
           contents: [
