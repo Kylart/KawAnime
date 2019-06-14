@@ -19,9 +19,15 @@ jobs:
         - ELECTRON_CACHE=$HOME/.cache/electron
         - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
         - MATRIX_EVAL="brew install gcc && CC=gcc-7 && CXX=g++-7"
-      name: Lint
+      name: Mac
       script:
         - npm run lint
+      deploy:
+        script:
+          - npm run publish:mac
+        on:
+          branch: master
+          condition: $TRAVIS_BRANCH = master
 
     - 
       os: linux
@@ -33,17 +39,12 @@ jobs:
             - g++-5
             - gcc-5
       env: CC=gcc-5 CXX=g++-5
-      name: Lint
+      name: Linux
       script:
         - npm run lint
-
-    - 
-      name: Deploy
-      if: branch = master
-      script:
-        - |
-          if [ "$TRAVIS_OS_NAME" == "linux" ]; then
-            npm run publish:linux
-          else
-            npm run publish:mac
-          fi
+      deploy:
+        script:
+          - npm run publish:linux
+        on:
+          branch: master
+          condition: $TRAVIS_BRANCH = master
