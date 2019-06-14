@@ -36,13 +36,15 @@
 Disclaimer : KawAnime is built for otaku/anime-fans. The software will contain images and sounds sourced from anime. Do not try if you're not prepared.
 
 Use KawAnime to:
+
 * Manage your pirate anime life with a single software.
 * Get updated on anime releases as soon as they are subbed (or not).
-* Download or stream your torrents easily (in-app torrent client included!).
+* Download or _Stream_ your torrents easily (in-app torrent client included!).
 * Magnet links for all episodes can be generated through the Downloader.
 * Get anime information, news, and seasonal information from your preferred anime information source (Anilist, Kitsu.io, MAL).
 * Manage your anime files (watch and delete on click).
 * Manage local watch lists as well as those from your preferred provider (Anilist, Kitsu.io, MAL).
+* Auto track entry progress on Anilist and Kitsu.io.
 * Keep track of what you watched with the History.
 * Easily binge watch your local anime or while streaming.
 
