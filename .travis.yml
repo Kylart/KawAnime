@@ -1,25 +1,5 @@
-matrix:
-  include:
-    - os: osx
-      osx_image: xcode10.2
-      language: node_js
-      node_js: "12"
-      env:
-        - ELECTRON_CACHE=$HOME/.cache/electron
-        - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
-        - MATRIX_EVAL="brew install gcc && CC=gcc-7 && CXX=g++-7"
-
-    - os: linux
-      language: node_js
-      node_js: "12"
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-            - g++-5
-            - gcc-5
-      env: CC=gcc-5 CXX=g++-5
+language: node_js
+node_js: "12"
 
 cache:
   directories:
@@ -33,9 +13,30 @@ install:
 jobs:
   include:
     -
+      os: osx
+      osx_image: xcode10.2
+      env:
+        - ELECTRON_CACHE=$HOME/.cache/electron
+        - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
+        - MATRIX_EVAL="brew install gcc && CC=gcc-7 && CXX=g++-7"
       name: Lint
       script:
         - npm run lint
+
+    - 
+      os: linux
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-5
+            - gcc-5
+      env: CC=gcc-5 CXX=g++-5
+      name: Lint
+      script:
+        - npm run lint
+
     - 
       name: Deploy
       if: branch = master
