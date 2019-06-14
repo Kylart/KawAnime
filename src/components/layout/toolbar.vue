@@ -7,10 +7,11 @@
     v-toolbar-side-icon(@click.stop='toggleLeftDrawer')
     v-toolbar-title.title.jap かわニメ
     v-spacer
-    v-tooltip(left)
-      v-btn(icon, v-show='update', @click='restartAndUpdate', slot='activator')
-        v-icon.green--text update
-      span Update KawAnime
+    template(v-if='update')
+      v-tooltip(left, lazy)
+        v-btn(icon, @click='restartAndUpdate', slot='activator')
+          v-icon.green--text update
+        span Update KawAnime
     searcher
     downloader
     settings

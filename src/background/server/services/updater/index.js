@@ -1,23 +1,16 @@
 import { autoUpdater } from 'electron-updater'
-import { BrowserWindow } from 'electron'
 
 import { eventsList } from '../../../../vendor'
 import { Logger } from '../../utils'
+import { sendToWindows } from '../../externals'
 
 const events = eventsList.update
 const logger = new Logger('Update')
 
-function sendToWIndows (eventName, data) {
-  BrowserWindow.getAllWindows()
-    .forEach((win) => {
-      win.webContents.send(eventName, data)
-    })
-}
-
 autoUpdater.on('update-available', () => {
   logger.info('Update available.')
 
-  sendToWIndows(events.available.success)
+  sendToWindows(events.available.success)
 })
 
 autoUpdater.on('error', (err) => {
@@ -25,13 +18,13 @@ autoUpdater.on('error', (err) => {
 })
 
 autoUpdater.on('download-progress', (progressObj) => {
-  sendToWIndows(events.progress.success, progressObj)
+  sendToWindows(events.progress.success, progressObj)
 })
 
 autoUpdater.on('update-downloaded', () => {
   logger.info('Update fully downloaded and installable.')
 
-  sendToWIndows(events.installable.success)
+  sendToWindows(events.installable.success)
 })
 
 function install () {
