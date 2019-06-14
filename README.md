@@ -13,6 +13,15 @@
 </p>
 
 <p align="center">
+  <a href="https://travis-ci.org/Kylart/KawAnime?branch=dev" target="_blank">
+    <img src="https://travis-ci.org/Kylart/KawAnime.svg?branch=dev"/>
+  </a>
+  <a href="https://ci.appveyor.com/project/Kylart/kawanime" target="_blank">
+    <img src="https://ci.appveyor.com/api/projects/status/sgvh8294bt0hlo83/branch/master?svg=true"/>
+  </a>
+</p>
+
+<p align="center">
   <a href="https://opensource.org/licenses/MIT" target="_blank">
     <img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License">
   </a>
