@@ -48,3 +48,6 @@ jobs:
         on:
           branch: master
           condition: $TRAVIS_BRANCH = master
+
+notifications:
+  email: false
