@@ -17,9 +17,9 @@ matrix:
           sources:
             - ubuntu-toolchain-r-test
           packages:
-            - g++-7
-      env:
-        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
+            - g++-5
+            - gcc-5
+      env: CC=gcc-5 CXX=g++-5
 
 cache:
   directories:
