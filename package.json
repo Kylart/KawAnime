@@ -60,7 +60,7 @@
     "chai-as-promised": "^7.1.1",
     "cross-env": "^5.2.0",
     "electron": "^4.2.3",
-    "electron-builder": "^20.41.0",
+    "electron-builder": "20.41.0",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.2.2",
     "lint-staged": "^8.1.7",

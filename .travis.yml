@@ -36,7 +36,7 @@ jobs:
       name: Linux
       script:
         - npm run lint
-        - "[[ $TRAVIS_BRANCH == master ]] && npm run publish:linux"
+        - "[[ $TRAVIS_BRANCH == master ]] && npm run publish:linux || echo \"Skipped Deploy Step\""
 
 notifications:
   email: false
