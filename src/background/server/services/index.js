@@ -13,6 +13,7 @@ import isOnline from './isOnline'
 import vault from './vault'
 import watchLists from './watchLists'
 import registerService from './registerService'
+import analytics from './analytics'
 
 const services = [
   ...config,
@@ -29,7 +30,8 @@ const services = [
   news,
   seasons,
   episodes,
-  isOnline
+  isOnline,
+  analytics
 ]
 
 // auto update
