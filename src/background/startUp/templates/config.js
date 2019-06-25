@@ -32,7 +32,8 @@ export default {
         darkTheme: true,
         autoStart: false,
         toTray: false,
-        center: true
+        center: true,
+        analytics: true
       },
       bounds: {
         height: null,

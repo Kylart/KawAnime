@@ -6,7 +6,7 @@
     v-card-text
       v-container(grid-list-lg, pa-0, pb-2)
         v-layout(row, wrap, justify-space-around, align-center)
-          v-flex(xs12, sm4)
+          v-flex(xs12, sm3)
             v-switch.mt-0(
               v-model='tray',
               color='primary',
@@ -14,7 +14,7 @@
               persistent-hint,
               hint='*Should KawAnime be in your tray?'
             )
-          v-flex(xs12, sm4)
+          v-flex(xs12, sm3)
             v-switch.mt-0(
               v-model='autoStart',
               color='primary',
@@ -22,13 +22,21 @@
               persistent-hint,
               hint='*Should KawAnime start on boot?'
             )
-          v-flex(xs12, sm4)
+          v-flex(xs12, sm3)
             v-switch.mt-0(
               v-model='darkTheme',
               color='primary',
               :label="darkTheme ? 'Dark' : 'Light'"
               persistent-hint,
               hint='Theme to apply'
+            )
+          v-flex(xs12, sm3)
+            v-switch.mt-0(
+              v-model='analytics',
+              color='primary',
+              :label="analytics ? 'Ok' : 'Nope'"
+              persistent-hint,
+              hint='Allows the app to send events to our server (mainly to know how many users we have)'
             )
 
       v-container(grid-list-lg, pa-0, mt-3)
@@ -142,6 +150,14 @@ export default {
       },
       set (val) {
         this.setDeepValue('system.darkTheme', val)
+      }
+    },
+    analytics: {
+      get () {
+        return this.system.analytics
+      },
+      set (val) {
+        this.setDeepValue('system.analytics', val)
       }
     },
     height: {
