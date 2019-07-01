@@ -28,7 +28,10 @@ let win
 let tray
 
 // Standard scheme must be registered before the app is ready
-protocol.registerSchemesAsPrivileged([{ scheme: 'app', privileges: { secure: true, standard: true } }])
+protocol.registerStandardSchemes(['app'], { secure: true })
+
+// When upgrading to Electron 5
+// protocol.registerSchemesAsPrivileged([{ scheme: 'app', privileges: { secure: true, standard: true } }])
 
 function createWindow () {
   // Create the browser window.
