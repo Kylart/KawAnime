@@ -4,7 +4,7 @@
     .text You can set it up on in the settings!
     .img-container
       video(muted, autoplay, loop)
-        source(src='../../../public/images/local-empty.mp4', type='video/mp4')
+        source(src='../../assets/images/local-empty.mp4', type='video/mp4')
 </template>
 
 <script>

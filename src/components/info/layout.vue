@@ -169,7 +169,7 @@
 </template>
 
 <script>
-import NotFoundImage from '../../../public/images/not-found.png'
+import NotFoundImage from '../../assets/images/not-found.png'
 import Episodes from '@/mixins/info/currentEps.js'
 
 import { mapGetters } from 'vuex'

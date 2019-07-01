@@ -2,7 +2,7 @@
   .main
     .text Now retrieving seasonal information. Please stand by for a moment.
     .img-container
-      img(src='../../../public/images/news-wait.gif')
+      img(src='../../assets/images/news-wait.gif')
 </template>
 
 <style lang="stylus" scoped>

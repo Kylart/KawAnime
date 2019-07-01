@@ -4,7 +4,7 @@
     .text Let me help you... #[router-link.please(to='/') please.]
     .img-container
       video(muted, autoplay, loop)
-        source(src='../../../public/images/local-empty.mp4', type='video/mp4')
+        source(src='../../assets/images/local-empty.mp4', type='video/mp4')
 </template>
 
 <style lang="stylus" scoped>
