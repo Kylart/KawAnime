@@ -1,9 +1,10 @@
-// const test = require('ava')
+const { Application } = require('spectron')
+const electron = require('electron')
+const chai = require('chai')
+const chaiAsPromised = require('chai-as-promised')
 
-// A simple test to verify a visible window is opened with a title
-var Application = require('spectron').Application
-var electron = require('electron')
-var assert = require('assert')
+chai.should()
+chai.use(chaiAsPromised)
 
 describe('Launch app', function () {
   this.timeout(10000)
@@ -17,13 +18,25 @@ describe('Launch app', function () {
     return this.app.start()
   })
 
+  beforeEach(function () {
+    chaiAsPromised.transferPromiseness = this.app.transferPromiseness
+  })
+
   after(async function () {
     this.app.stop()
   })
 
   it('should be visible', async function () {
-    const isVisible = await this.app.browserWindow.isVisible()
-
-    assert.strictEqual(true, isVisible)
+    return this.app.client
+      .getWindowCount()
+      .should.eventually.have.at.least(1)
+      .browserWindow.isMinimized()
+      .should.eventually.be.false.browserWindow.isVisible()
+      .should.eventually.be.true.browserWindow.getBounds()
+      .should.eventually.have.property('width')
+      .and.be.above(0)
+      .browserWindow.getBounds()
+      .should.eventually.have.property('height')
+      .and.be.above(0)
   })
 })
