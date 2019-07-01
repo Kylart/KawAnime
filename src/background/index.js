@@ -28,7 +28,7 @@ let win
 let tray
 
 // Standard scheme must be registered before the app is ready
-protocol.registerStandardSchemes(['app'], { secure: true })
+protocol.registerSchemesAsPrivileged([{ scheme: 'app', privileges: { secure: true, standard: true } }])
 
 function createWindow () {
   // Create the browser window.
@@ -44,7 +44,10 @@ function createWindow () {
     center: userConfig.system.center || false,
     titleBarStyle: 'hidden',
     frame: process.platform === 'darwin',
-    show: false
+    show: false,
+    webPreferences: {
+      nodeIntegration: true
+    }
   })
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {

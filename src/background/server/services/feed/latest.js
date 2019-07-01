@@ -21,7 +21,7 @@ async function getLatest (event, { feed, quality, term, fansub = '' }) {
   try {
     logger.info('Retrieving latest releases...')
 
-    const result = (await engine.search(query, 150, { filter: '0', category: '1_0' }))
+    const result = (await engine.search(query, 150, { filter: '0', category: '1_0', sort: 'id', direction: 'desc' }))
       .map((elem) => ({
         ...elem,
         parsedName: parse(elem.name)

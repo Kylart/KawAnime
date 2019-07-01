@@ -37,11 +37,11 @@ export default function (url, data, params = [], headers = {}, useCache = true) 
       res.on('data', (chunk) => { response += chunk })
 
       res.on('end', () => {
-        const result = JSON.parse(response)
-
         if (res.statusCode >= 400) {
           return reject(new Error(`Request failed with code ${res.statusCode} - ${res.statusMessage}, ${response}`))
         }
+
+        const result = JSON.parse(response)
 
         useCache && cache.set(cacheKey, result)
         resolve(result)
