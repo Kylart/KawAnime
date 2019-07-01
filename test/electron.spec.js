@@ -23,7 +23,7 @@ describe('Launch app', function () {
   })
 
   after(async function () {
-    this.app.stop()
+    return this.app.stop()
   })
 
   it('should be visible', async function () {
