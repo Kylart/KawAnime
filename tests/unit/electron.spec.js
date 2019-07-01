@@ -1,41 +1,29 @@
-import testWithSpectron from 'vue-cli-plugin-electron-builder/lib/testWithSpectron'
-import chai from 'chai'
-import chaiAsPromised from 'chai-as-promised'
+// A simple test to verify a visible window is opened with a title
+var Application = require('spectron').Application
+var electron = require('electron')
+var assert = require('assert')
 
-chai.should()
-chai.use(chaiAsPromised)
+var app = new Application({
+  path: electron,
+  args: [ 'dist/bundled/background.js' ]
+})
 
-describe('Application launch', function () {
-  this.timeout(30000)
-
-  beforeEach(function () {
-    return testWithSpectron().then(instance => {
-      this.app = instance.app
-      this.stopServe = instance.stopServe
-    })
-  })
-
-  beforeEach(function () {
-    chaiAsPromised.transferPromiseness = this.app.transferPromiseness
-  })
-
-  afterEach(function () {
-    if (this.app && this.app.isRunning()) {
-      return this.stopServe()
-    }
-  })
-
-  it('opens a window', function () {
-    return this.app.client
-      .getWindowCount()
-      .should.eventually.have.at.least(1)
-      .browserWindow.isMinimized()
-      .should.eventually.be.false.browserWindow.isVisible()
-      .should.eventually.be.true.browserWindow.getBounds()
-      .should.eventually.have.property('width')
-      .and.be.above(0)
-      .browserWindow.getBounds()
-      .should.eventually.have.property('height')
-      .and.be.above(0)
-  })
+app.start().then(function () {
+  // Check if the window is visible
+  return app.browserWindow.isVisible()
+}).then(function (isVisible) {
+  // Verify the window is visible
+  assert.strictEqual(isVisible, true)
+}).then(function () {
+  // Get the window's title
+  return app.client.getTitle()
+}).then(function (title) {
+  // Verify the window's title
+  assert.strictEqual(title, 'Vue App')
+}).then(function () {
+  // Stop the application
+  return app.stop()
+}).catch(function (error) {
+  // Log any failures
+  console.error('Test failed', error.message)
 })

@@ -1,4 +1,4 @@
-import { parseSync } from 'anitomy-js'
+// import { parseSync } from 'anitomy-js'
 
 export default {
   data: () => ({
@@ -57,21 +57,22 @@ export default {
       e.preventDefault()
       e.stopPropagation()
 
-      const { dataTransfer: { files: [file = {}] } } = e
-      const { name: fullName = '', path = '' } = file
+      // const { dataTransfer: { files: [file = {}] } } = e
+      // const { name: fullName = '', path = '' } = file
 
-      const fileExtension = path.split('.').slice(-1)[0]
+      // const fileExtension = path.split('.').slice(-1)[0]
 
-      if (this.isValidFile(fileExtension)) {
-        const { video_title: title, volume_number: ep } = parseSync(fullName)
+      // TODO make sync service to parse, anitomy on renderer process causes problems
+      // if (this.isValidFile(fileExtension)) {
+      //   const { video_title: title, volume_number: ep } = parseSync(fullName)
 
-        this.$store.dispatch('streaming/play', {
-          link: path,
-          isTorrent: this.torrentExtension.includes(fileExtension),
-          name: `${title} - ${+ep}`,
-          neighbours: null
-        })
-      }
+      //   this.$store.dispatch('streaming/play', {
+      //     link: path,
+      //     isTorrent: this.torrentExtension.includes(fileExtension),
+      //     name: `${title} - ${+ep}`,
+      //     neighbours: null
+      //   })
+      // }
 
       this.showOverlay(false)
     }

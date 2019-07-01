@@ -53,7 +53,7 @@ function createWindow () {
     }
   })
 
-  if (process.env.WEBPACK_DEV_SERVER_URL) {
+  if (isDevelopment && process.env.WEBPACK_DEV_SERVER_URL && !process.env.IS_TEST) {
     // Load the url of the dev server if in development mode
     win.loadURL(process.env.WEBPACK_DEV_SERVER_URL)
   } else {
