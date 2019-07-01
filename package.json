@@ -11,6 +11,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "cross-env NODE_ENV=development vue-cli-service electron:serve",
+    "start": "cross-env NODE_ENV=production electron dist/bundled/background.js",
     "build": "vue-cli-service electron:build",
     "pack": "npm run build -- --dir",
     "dist": "npm run dist:mac && npm run dist:win && npm run dist:linux",
