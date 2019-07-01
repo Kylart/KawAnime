@@ -36,6 +36,7 @@ protocol.registerStandardSchemes(['app'], { secure: true })
 function createWindow () {
   // Create the browser window.
   win = new BrowserWindow({
+    title: 'KawAnime',
     width: userConfig.bounds.width || 1200,
     height: userConfig.bounds.height || 800,
     x: userConfig.system.center
