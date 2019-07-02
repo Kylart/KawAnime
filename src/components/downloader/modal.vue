@@ -1,7 +1,7 @@
 <template lang="pug">
   v-dialog(lazy, absolute, v-model='show', width='65%')
     v-tooltip(slot='activator', lazy, left)
-      v-btn(icon, slot='activator')
+      v-btn#downloader-btn(icon, slot='activator')
         v-icon file_download
       span Quick download
 

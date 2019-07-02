@@ -15,7 +15,7 @@ describe('Launch app', function () {
       args: ['dist/bundled/background.js']
     })
 
-    return this.app.start()
+    await this.app.start()
   })
 
   beforeEach(function () {
@@ -24,6 +24,17 @@ describe('Launch app', function () {
 
   after(async function () {
     this.app.stop()
+  })
+
+  it('should open the download modal', async function () {
+    return this.app.client
+      .$('#downloader-btn').click()
+      .getText('.button-container .button')
+      .should.eventually.equal('DOWNLOAD')
+      .isExisting('.quality-container')
+      .should.eventually.be.true
+      .isExisting('.input-container')
+      .should.eventually.be.true
   })
 
   it('should be visible', async function () {
