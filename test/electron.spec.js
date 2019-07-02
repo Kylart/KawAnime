@@ -29,12 +29,12 @@ describe('Launch app', function () {
   it('should open the download modal', async function () {
     return this.app.client
       .$('#downloader-btn').click()
-      .getText('.button-container .button')
-      .should.eventually.equal('DOWNLOAD')
-      .isExisting('.quality-container')
-      .should.eventually.be.true
-      .isExisting('.input-container')
-      .should.eventually.be.true
+      .pause(500)
+      .getText('.button-container .button').should.eventually.equal('DOWNLOAD')
+      .isExisting('.quality-container').should.eventually.be.true
+      .isExisting('.input-container').should.eventually.be.true
+      .isExisting('.left').should.eventually.be.true
+      .isExisting('.right').should.eventually.be.true
   })
 
   it('should be visible', async function () {
