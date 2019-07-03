@@ -21,15 +21,6 @@ module.exports = function () {
   })
 
   after(async function () {
-    const rendererLogs = await this.app.client.getRenderProcessLogs()
-    const mainLogs = await this.app.client.getMainProcessLogs()
-
-    console.log('RENDERER LOGS')
-    rendererLogs.forEach((log) => console.log(log))
-
-    console.log('MAIN LOGS')
-    mainLogs.forEach((log) => console.log(log))
-
     return this.app.stop()
   })
 }

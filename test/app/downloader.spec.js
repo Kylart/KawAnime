@@ -24,6 +24,7 @@ module.exports = function () {
         .$('.quality-container div[role="radiogroup"] div:nth-child(4) input').hasFocus().should.eventually.be.true
         .keys([ 'Tab', 'Enter' ])
         .waitUntil(() => this.app.client.$('#magnet-modal').isVisible(), 10000)
+        .pause(500)
         .isVisible('.quality-container').should.eventually.be.false
         .isVisible('.left').should.eventually.be.false
         .isVisible('.right').should.eventually.be.false
@@ -36,8 +37,8 @@ module.exports = function () {
         .getText('#magnet-modal li > div:nth-child(1)').should.eventually.include('Sakura Trick')
         .$('#magnet-modal li > div:nth-child(1)').click()
         .waitUntil(async () => (await this.app.client.$('#magnet-modal li:nth-child(1)').getAttribute('aria-expanded')) === 'true')
-        .isExisting('#magnet-modal li:nth-child(1) > div:nth-child(2) > div:nth-child(6)').should.eventually.be.true
-        .getText('#magnet-modal li:nth-child(1) > div:nth-child(2) > div:nth-child(6)').should.eventually.include('Sakura Trick - Ep. 4')
+        .isExisting('#magnet-modal li:nth-child(1) > div:nth-child(2) > div:last-child').should.eventually.be.true
+        .getText('#magnet-modal li:nth-child(1) > div:nth-child(2) > div:last-child').should.eventually.include('Sakura Trick - Ep. 4')
         .getText('#magnet-modal li:nth-child(1) > div:nth-child(2) > div:nth-child(2)').should.eventually.include('Sakura Trick - Ep. 8')
         .getText('#magnet-modal li:nth-child(1) > div:nth-child(2) > div:nth-child(3)').should.eventually.include('Sakura Trick - Ep. 7')
     })

@@ -23,6 +23,8 @@ jobs:
       before_script:
         - "export DISPLAY=:99.0"
       script:
+        - node --version
+        - npm --version
         - npm run lint
         - npm run pack
         - npm run test
@@ -43,6 +45,8 @@ jobs:
         - "sh -e /etc/init.d/xvfb start"
         - sleep 3 # give xvfb some time to start
       script:
+        - node --version
+        - npm --version
         - npm run lint
         - npm run pack
         - npm run test
