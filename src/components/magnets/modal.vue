@@ -1,7 +1,7 @@
 <template lang="pug">
   div
     v-dialog(v-model='values.show', lazy, absolute, max-width='800', @keydown.esc='close()')
-      v-card
+      v-card#magnet-modal
         v-card-title.pb-2.pt-2
           h2.mb-0.main-title.ellipsis Results for #[strong {{ values.title }}]
           v-spacer

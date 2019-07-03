@@ -31,10 +31,21 @@ describe('Launch app', function () {
       .$('#downloader-btn').click()
       .pause(500)
       .getText('.button-container .button').should.eventually.equal('DOWNLOAD')
-      .isExisting('.quality-container').should.eventually.be.true
       .isExisting('.input-container').should.eventually.be.true
+      .isExisting('.quality-container').should.eventually.be.true
       .isExisting('.left').should.eventually.be.true
       .isExisting('.right').should.eventually.be.true
+      .$('.input-container:nth-child(1) input').addValue('Sakura Trick')
+      .keys([ 'Tab' ])
+      .$('.input-container:nth-child(2) input').hasFocus().should.eventually.be.true
+      .$('.input-container:nth-child(2) input').addValue('4')
+      .keys([ 'Tab' ])
+      .$('.input-container:nth-child(3) input').hasFocus().should.eventually.be.true
+      .$('.input-container:nth-child(3) input').addValue('8')
+      .keys([ 'Tab', 'ArrowRight', 'ArrowLeft', 'ArrowLeft', 'ArrowRight', 'ArrowRight' ]) // Should select 1080p quality
+      .$('.quality-container div[role="radiogroup"] div:nth-child(4) input').hasFocus().should.eventually.be.true
+      .keys([ 'Tab', 'Enter' ])
+      .waitUntil(() => this.app.client.$('#magnet-modal').isVisible())
   })
 
   it('should be visible', async function () {
