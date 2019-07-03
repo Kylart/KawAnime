@@ -23,7 +23,7 @@ module.exports = function () {
         .keys([ 'Tab', 'ArrowRight', 'ArrowLeft', 'ArrowLeft', 'ArrowRight', 'ArrowRight' ]) // Should select 1080p quality
         .$('.quality-container div[role="radiogroup"] div:nth-child(4) input').hasFocus().should.eventually.be.true
         .keys([ 'Tab', 'Enter' ])
-        .waitUntil(() => this.app.client.$('#magnet-modal').isVisible())
+        .waitUntil(() => this.app.client.$('#magnet-modal').isVisible(), 10000)
         .isVisible('.quality-container').should.eventually.be.false
         .isVisible('.left').should.eventually.be.false
         .isVisible('.right').should.eventually.be.false
