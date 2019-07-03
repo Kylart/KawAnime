@@ -29,7 +29,6 @@
             v-expansion-panel-content(
               v-for='(name, index) in filteredNames',
               :key='index',
-              :value='index === 0'
               ripple, lazy
             )
               .entry-title(slot='header')

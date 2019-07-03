@@ -42,6 +42,10 @@ export default {
       .forEach(
         (_var) => this.$set(this, _var, this.$store.state.config.config[_var])
       )
+
+    this.$ipc.on(this.$eventsList.download.success, () => {
+      this.$emit('downloaded')
+    })
   },
 
   data: () => ({
@@ -90,20 +94,12 @@ export default {
   },
 
   methods: {
-    hasDownloaded () {
-      return this.$store.state.downloader.modal.magnets.length > 0
-    },
     async download () {
       this.searching = true
 
       await this.$store.dispatch('downloader/download', this.form)
 
       this.searching = false
-
-      // We have to check if it did download something.
-      this.hasDownloaded()
-        ? this.$emit('downloaded')
-        : this.$store.commit('setInfoSnackbar', 'Could not find anything for that query.')
     }
   }
 }

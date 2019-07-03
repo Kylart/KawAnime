@@ -34,7 +34,7 @@ function formatMagnets (data, searchData, feed) {
   return {
     minEp: min(eps),
     maxEp: max(eps),
-    magnets
+    magnets: magnets.sort((a, b) => b.nb - a.nb)
   }
 }
 
