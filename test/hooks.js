@@ -18,6 +18,8 @@ module.exports = function () {
 
   beforeEach(function () {
     chaiAsPromised.transferPromiseness = this.app.transferPromiseness
+
+    this.app.browserWindow.focus()
   })
 
   after(async function () {
