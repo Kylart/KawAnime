@@ -22,6 +22,8 @@ jobs:
       name: Mac
       script:
         - npm run lint
+        - npm run pack
+        - npm run test
 
     - 
       os: linux
@@ -34,8 +36,14 @@ jobs:
             - gcc-5
       env: CC=gcc-5 CXX=g++-5
       name: Linux
+      before_script:
+        - "export DISPLAY=:99.0"
+        - "sh -e /etc/init.d/xvfb start"
+        - sleep 3 # give xvfb some time to start
       script:
         - npm run lint
+        - npm run pack
+        - npm run test
         - "[[ $TRAVIS_BRANCH == master ]] && npm run publish:linux || echo \"Skipped Deploy Step\""
 
 notifications:
