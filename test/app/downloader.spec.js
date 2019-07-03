@@ -24,9 +24,9 @@ module.exports = function () {
         .$('.quality-container div[role="radiogroup"] div:nth-child(4) input').hasFocus().should.eventually.be.true
         .keys([ 'Tab', 'Enter' ])
         .waitUntil(() => this.app.client.$('#magnet-modal').isVisible())
-        .isVisible('.quality-container').should.be.eventually.be.false
-        .isVisible('.left').should.be.eventually.be.false
-        .isVisible('.right').should.be.eventually.be.false
+        .isVisible('.quality-container').should.eventually.be.false
+        .isVisible('.left').should.eventually.be.false
+        .isVisible('.right').should.eventually.be.false
         .pause(500)
     })
 
