@@ -20,6 +20,8 @@ jobs:
         - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
         - MATRIX_EVAL="brew install gcc && CC=gcc-5 && CXX=g++-5"
       name: Mac
+      before_script:
+        - "export DISPLAY=:99.0"
       script:
         - npm run lint
         - npm run pack
