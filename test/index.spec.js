@@ -10,6 +10,8 @@
  */
 
 describe('KawAnime main test routine', function () {
+  this.timeout(10000)
+
   require('./hooks')()
 
   require('./container')
