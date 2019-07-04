@@ -2,7 +2,7 @@ module.exports = function () {
   describe('Downloader modal', function () {
     it('should open the downloader modal', function () {
       return this.app.client
-        .$('#downloader-btn').click()
+        .$('nav.toolbar > div > div:nth-child(5)').click()
         .pause(500)
         .getText('.button-container .button').should.eventually.equal('DOWNLOAD')
         .isExisting('.input-container').should.eventually.be.true
@@ -37,6 +37,7 @@ module.exports = function () {
         .getText('#magnet-modal li > div:nth-child(1)').should.eventually.include('Sakura Trick')
         .$('#magnet-modal li > div:nth-child(1)').click()
         .waitUntil(async () => (await this.app.client.$('#magnet-modal li:nth-child(1)').getAttribute('aria-expanded')) === 'true')
+        .pause(500)
         .isExisting('#magnet-modal li:nth-child(1) > div:nth-child(2) > div:last-child').should.eventually.be.true
         .getText('#magnet-modal li:nth-child(1) > div:nth-child(2) > div:last-child').should.eventually.include('Sakura Trick - Ep. 4')
         .getText('#magnet-modal li:nth-child(1) > div:nth-child(2) > div:nth-child(2)').should.eventually.include('Sakura Trick - Ep. 8')
