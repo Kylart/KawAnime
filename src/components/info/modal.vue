@@ -76,6 +76,17 @@ export default {
     loading: false
   }),
 
+  mounted () {
+    this.$ipc.on(this.$eventsList.search.term.success, this.ipcSearchSuccess)
+    this.$ipc.on(this.$eventsList.search.term.error, this.ipcSearchError)
+  },
+
+  // I mean... you never know.
+  beforeDestroy () {
+    this.$ipc.removeListener(this.$eventsList.search.term.success, this.ipcSearchSuccess)
+    this.$ipc.removeListener(this.$eventsList.search.term.error, this.ipcSearchError)
+  },
+
   computed: {
     ...mapGetters('info', [ 'getEntryInfo' ]),
     provider: {
@@ -123,29 +134,20 @@ export default {
     back () {
       this.searching = false
       this.current = null
+
+      this.$nextTick(() => {
+        this.$refs.input.focus()
+      })
     },
     search: debounce(function () {
       if (this.term.length < 3) return
 
       this.loading = true
 
-      const { info, error } = this.$ipc.sendSync(this.$eventsList.search.term.main, {
+      this.$ipc.send(this.$eventsList.search.term.main, {
         provider: this.provider,
-        toSearch: this.term,
-        isSync: true
+        toSearch: this.term
       })
-
-      if (error) {
-        this.$log('Error while getting pre-search results.', error)
-        return
-      }
-
-      this.results = info
-      this.loading = false
-
-      // If this is started from a remote component, we shall set the first
-      // result as current.
-      this.isRemote && this.getInfo(this.results[0])
     }, 300),
     getInfo (entry) {
       this.searching = true
@@ -181,6 +183,20 @@ export default {
       this.$log(`Could not find any data for ${name}.`, msg)
 
       setTimeout(this.getInfo, 1000)
+    },
+    ipcSearchSuccess (e, { info }) {
+      this.results = info
+      this.loading = false
+
+      // If this is started from a remote component, we shall set the first
+      // result as current.
+      this.isRemote && this.getInfo(this.results[0])
+    },
+    ipcSearchError (e, { msg }) {
+      this.loading = false
+
+      this.$store.commit('setInfoSnackbar', 'Could not find any result.')
+      this.$log('Error while getting pre-search results.', msg)
     }
   },
 

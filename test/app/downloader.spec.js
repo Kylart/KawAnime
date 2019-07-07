@@ -1,6 +1,6 @@
 module.exports = function () {
   describe('Downloader modal', function () {
-    it('should open the downloader modal', function () {
+    it('should open on click', function () {
       return this.app.client
         .$('nav.toolbar > div > div:nth-child(5)').click()
         .pause(500)

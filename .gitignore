@@ -30,3 +30,6 @@ yarn-error.log*
 # Coverage
 coverage
 .nyc_output
+
+# Mocha reporter
+mochawesome-report
