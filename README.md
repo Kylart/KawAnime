@@ -48,7 +48,7 @@ Use KawAnime to:
 * Keep track of what you watched with the History.
 * Easily binge watch your local anime or while streaming.
 
-Feel free to check the official website for [a demo of all the available features.](https://kawanime.com/features)
+Feel free to check the official website for [a demo of all the available features.](https://kawanime.com/#features)
 
 ## About OS
 _KawAnime_ is completely cross-platform.
@@ -80,11 +80,15 @@ npm run lint
 ```
 
 #### Testing
-Testing is not implemented yet as it takes time :(
+To run tests, you have to build a production ready bundle:
+```
+npm run pack
+```
 
-Two types are setup though:
-1. e2e with Cypress (see tests/e2e)
-1. Unit tests (see tests/unit)
+then simply run
+```
+npm run test
+```
 
 ## Generating distributable apps
 This feature uses [electron-builder](https://github.com/electron-userland/electron-builder).
