@@ -10,7 +10,10 @@ module.exports = function () {
   before(async function () {
     this.app = new Application({
       path: electron,
-      args: ['dist/bundled/background.js']
+      args: ['dist/bundled/background.js'],
+      webdriverOptions: {
+        deprecationWarnings: false
+      }
     })
 
     await this.app.start()

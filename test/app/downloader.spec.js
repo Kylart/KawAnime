@@ -3,7 +3,7 @@ module.exports = function () {
     it('should open on click', function () {
       return this.app.client
         .$('nav.toolbar > div > div:nth-child(5)').click()
-        .pause(500)
+        .pause(500).saveScreenshot('test/screenshots/downloader_modal.png')
         .getText('.button-container .button').should.eventually.equal('DOWNLOAD')
         .isExisting('.input-container').should.eventually.be.true
         .isExisting('.quality-container').should.eventually.be.true
@@ -22,6 +22,7 @@ module.exports = function () {
         .$('.input-container:nth-child(3) input').addValue('8')
         .keys([ 'Tab', 'ArrowRight', 'ArrowLeft', 'ArrowLeft', 'ArrowRight', 'ArrowRight' ]) // Should select 1080p quality
         .$('.quality-container div[role="radiogroup"] div:nth-child(4) input').hasFocus().should.eventually.be.true
+        .saveScreenshot('test/screenshots/downloader_modal_filled.png')
         .keys([ 'Tab', 'Enter' ])
         .waitUntil(() => this.app.client.$('#magnet-modal').isVisible(), 10000)
         .pause(500)
@@ -33,11 +34,13 @@ module.exports = function () {
 
     it('should open the magnet modal with the correct magnets', function () {
       return this.app.client
+        .saveScreenshot('test/screenshots/downloader_results.png')
         .getText('#magnet-modal').should.eventually.include('Results for Sakura Trick')
         .getText('#magnet-modal li > div:nth-child(1)').should.eventually.include('Sakura Trick')
         .$('#magnet-modal li > div:nth-child(1)').click()
         .waitUntil(async () => (await this.app.client.$('#magnet-modal li:nth-child(1)').getAttribute('aria-expanded')) === 'true')
         .pause(500)
+        .saveScreenshot('test/screenshots/downloader_results_expanded.png')
         .isExisting('#magnet-modal li:nth-child(1) > div:nth-child(2) > div:last-child').should.eventually.be.true
         .getText('#magnet-modal li:nth-child(1) > div:nth-child(2) > div:last-child').should.eventually.include('Sakura Trick - Ep. 4')
         .getText('#magnet-modal li:nth-child(1) > div:nth-child(2) > div:nth-child(2)').should.eventually.include('Sakura Trick - Ep. 8')

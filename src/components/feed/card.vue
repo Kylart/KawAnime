@@ -20,7 +20,7 @@
             v-flex.text-xs-center(v-if='!picture', xs2)
               v-progress-circular(indeterminate)
             v-flex.entry-ep(xs2, v-if='episodeLabel')
-              span Ep. {{ episodeLabel }}
+              span {{ episodeLabel }}
 
         v-container.overlay(
           v-else
@@ -96,7 +96,11 @@ export default {
       set () {}
     },
     episodeLabel () {
-      return this.info.parsedName.episode_number || 'N/A'
+      const ep = this.info.parsedName.episode_number || 'N/A'
+
+      return Array.isArray(ep)
+        ? `Eps. ${ep.join(' - ')}`
+        : `Ep. ${ep}`
     }
   },
 

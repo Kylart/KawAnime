@@ -97,12 +97,15 @@ module.exports = function () {
         .pause(500)
         .$('input').getAttribute('aria-label').should.eventually.equal('Search')
         .$('input').hasFocus().should.eventually.be.true
+        .saveScreenshot('test/screenshots/search_modal.png')
     })
 
     it('should make a research', function () {
       return this.app.client
         .$('input').addValue(BEST_ANIME.name)
+        .pause(500)
         .waitUntilTextExists('.v-dialog .container > div:last-child > div:nth-child(1)', BEST_ANIME.name, 7500)
+        .saveScreenshot('test/screenshots/search_modal_results.png')
     })
 
     it('should open the result into the modal and set it fullscreen', function () {
@@ -110,6 +113,7 @@ module.exports = function () {
         .$('.v-dialog .container > div:last-child > div:nth-child(1)').click()
         .waitUntil(async () => this.app.client.$('.info-container').isExisting(), 10000)
         .pause(1000)
+        .saveScreenshot('test/screenshots/search_modal_info.png')
     })
 
     it('should eventually have all the needed information', function () {
