@@ -8,7 +8,7 @@ module.exports = function () {
     it('should have some entries', function () {
       return this.app.client
         .saveScreenshot('test/screenshots/feed_loader.png')
-        .waitUntil(async () => (await this.app.client.isVisible('.loader-container')) === false, 10000)
+        .waitUntil(async () => (await this.app.client.isVisible('.loader-container')) === false, 30000)
         .pause(500)
         .isVisible('.container > .pag-container').should.eventually.be.true
         .$$('div > .container > .layout > div').should.eventually.have.length(13)

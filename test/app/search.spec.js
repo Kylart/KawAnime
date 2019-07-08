@@ -129,7 +129,7 @@ module.exports = function () {
 
     it('should eventually have all the episodes', function () {
       return this.app.client
-        .waitUntil(async () => this.app.client.isVisible('.episodes-container'), 15000)
+        .waitUntil(async () => this.app.client.isVisible('.episodes-container'), 30000)
         .$$('.episodes-container > div > div').should.eventually.have.length(this.sakuraTrick.episodes.length)
         .$('.episodes-container > div > div:nth-child(1)')
         .getText().should.eventually.include(this.sakuraTrick.episodes.slice(-1)[0].title)
