@@ -18,9 +18,20 @@ const getAllFiles = (dir) =>
     return isDirectory ? [...files, ...getAllFiles(name)] : [...files, name]
   }, [])
 
+const VENDOR_PATH = path.join(__dirname, 'src', 'vendor')
+
 module.exports = {
   configureWebpack: {
-    devtool: 'source-map'
+    devtool: 'source-map',
+    resolve: {
+      alias: {
+        '@': path.join(__dirname, 'src', 'renderer'),
+        'vendor': VENDOR_PATH
+      }
+    },
+    entry: {
+      app: './src/renderer/main.js'
+    }
   },
   pluginOptions: {
     electronBuilder: {
@@ -63,6 +74,10 @@ module.exports = {
       },
       chainWebpackMainProcess: (config) => {
         // Chain webpack config for electron main process only
+        config
+          .resolve
+          .alias
+          .set('vendor', VENDOR_PATH)
       },
       chainWebpackRendererProcess: (config) => {
         // Chain webpack config for electron renderer process only
@@ -73,15 +88,10 @@ module.exports = {
         })
       },
       // Use this to change the entrypoint of your app's main process
-      mainProcessFile: 'src/background/index.js',
+      mainProcessFile: 'src/main/index.js',
       // Provide an array of files that, when changed, will recompile the main process and restart Electron
       // Your main process file will be added by default
-      mainProcessWatch: getAllFiles('src/background'),
-      // [1.0.0-rc.4+] Provide a list of arguments that Electron will be launched with during 'electron:serve',
-      // which can be accessed from the main process (src/background.js).
-      // Note that it is ignored when --debug flag is used with 'electron:serve', as you must launch Electron yourself
-      // Command line args (excluding --debug, --dashboard, and --headless) are passed to Electron as well
-      // mainProcessArgs: ['--arg-name', 'arg-value']
+      mainProcessWatch: getAllFiles('src/main'),
       outputDir: 'dist'
     }
   }
