@@ -19,7 +19,6 @@ const getAllFiles = (dir) =>
   }, [])
 
 module.exports = {
-  indexPath: path.resolve(__dirname, 'src', 'assets', 'index.html'),
   configureWebpack: {
     devtool: 'source-map'
   },
