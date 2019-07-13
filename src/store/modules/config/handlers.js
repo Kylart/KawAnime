@@ -4,6 +4,8 @@ export const get = {
   success ({ commit, dispatch }, data) {
     commit('set', data.config)
 
+    dispatch('analytics', { eventName: 'appOpen' }, isRoot)
+
     // Setting defaults
     dispatch('player/setUp', null, isRoot)
     commit('localFiles/setDir', data.config.localPath, isRoot)

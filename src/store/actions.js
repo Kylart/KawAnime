@@ -32,6 +32,14 @@ export default {
   checkOnlineStatus () {
     ipcRenderer.send(eventsList.isOnline.main)
   },
+  analytics ({ state }, args) {
+    const { config: { system: { analytics } } } = state.config
+
+    if (analytics) {
+      ipcRenderer.send(eventsList.analytics.main, args)
+    }
+  },
+
   setEvents ({ state, commit, dispatch }) {
     ipcRenderer.on(eventsList.isOnline.success, (e) => {
       const isConnected = state.isConnected

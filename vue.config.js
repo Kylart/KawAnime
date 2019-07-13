@@ -1,6 +1,8 @@
 const fs = require('fs')
 const path = require('path')
 
+process.env.KAWANIME_VERSION = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'package.json'))).version
+
 /**
  * Taken from https://gist.github.com/kethinov/6658166#gistcomment-2389484
  *
