@@ -7,6 +7,10 @@
  *
  * We'll make each app test so that it leaves the app in a neutral state,
  * meaning that any action should be possible once any test is done.
+ *
+ * Documentation is at:
+ *   - Spectron: https://github.com/electron-userland/spectron#application-api
+ *   - Webdriver.io: https://webdriver.io/docs/api/browser/waitUntil.html
  */
 
 describe('KawAnime main test routine', function () {

@@ -1,14 +1,10 @@
 image: Visual Studio 2017
 
-os: unstable
-
 cache:
-  - node_modules -> package.json
+  - node_modules
+  - '%USERPROFILE%\.electron'
 
 skip_tags: true
-
-environment:
-  nodejs_version: "11"
 
 platform:
   - x64
@@ -17,7 +13,7 @@ init:
   - git config --global core.autocrlf input
 
 install:
-  - ps: Install-Product node $env:nodejs_version
+  - ps: Install-Product node 12 x64
   - npm install
 
 test_script:
