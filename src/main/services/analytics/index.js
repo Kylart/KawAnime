@@ -8,7 +8,7 @@ const events = eventsList.analytics
 const secretKey = process.env.VUE_APP_KAWANIME_SECRET
 const ANALYTICS_URL = process.env.VUE_APP_KAWANIME_API_URL
 const VERSION = process.env.KAWANIME_VERSION
-const userToken = readFileSync(localFiles.getPath('_token'))
+const userToken = readFileSync(localFiles.getPath('_token'), 'utf-8')
 
 const logger = new Logger('Analytics')
 
