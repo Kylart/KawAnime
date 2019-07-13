@@ -17,7 +17,7 @@
     <img src="https://travis-ci.org/Kylart/KawAnime.svg?branch=dev"/>
   </a>
   <a href="https://ci.appveyor.com/project/Kylart/kawanime" target="_blank">
-    <img src="https://ci.appveyor.com/api/projects/status/sgvh8294bt0hlo83/branch/master?svg=true"/>
+    <img src="https://ci.appveyor.com/api/projects/status/sgvh8294bt0hlo83/branch/dev?svg=true"/>
   </a>
 </p>
 
