@@ -6,10 +6,22 @@ import { setupCreds } from '../../vault'
 import sendToWindows from '../../sendToWindows'
 import { eventsList } from 'vendor'
 
+const ONE_DAY = 1 * 24 * 60 * 60 * 1000
+
 export default async function () {
   try {
-    const { accessToken, tokenType } = await retrieveToken()
+    const { accessToken, tokenType, expiresAt = 0 } = await retrieveToken()
     const hasToken = !!accessToken && !!tokenType
+
+    if (Date.now() + ONE_DAY > expiresAt) {
+      // Token is expired, we'll ask the user to refresh it.
+      sendToWindows(
+        eventsList.register.cta.main,
+        'Anilist account needs to be refreshed. Please register in the settings to re-enable Anilist!'
+      )
+
+      return
+    }
 
     // Checking if that token if valid
     if (hasToken) {
@@ -23,8 +35,7 @@ export default async function () {
         setupCreds('anilist', {
           accessToken: '',
           tokenType: '',
-          refreshToken: '',
-          expiresAt: ''
+          expiresAt: 0
         })
           .catch((e) => {})
 

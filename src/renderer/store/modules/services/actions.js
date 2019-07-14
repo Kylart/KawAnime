@@ -42,9 +42,9 @@ export default {
       args
     })
   },
-  external (store, { service, code }) {
+  external (store, { service, access_token: accessToken, expires_in: expiresIn, token_type: tokenType }) {
     if (service === 'anilist') {
-      ipcRenderer.send(eventsList.register.token.main, { service, code })
+      ipcRenderer.send(eventsList.register.token.main, { service, accessToken, expiresIn, tokenType })
     }
   },
 

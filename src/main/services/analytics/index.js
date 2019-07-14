@@ -1,14 +1,12 @@
 import { readFileSync } from 'fs'
 
-import { eventsList } from 'vendor'
+import { eventsList, config } from 'vendor'
 import { Logger, https } from '../../utils'
 import { localFiles } from '../../externals'
 
 const events = eventsList.analytics
-const secretKey = process.env.VUE_APP_KAWANIME_SECRET
-const ANALYTICS_URL = process.env.VUE_APP_KAWANIME_API_URL
-const VERSION = process.env.KAWANIME_VERSION
 const userToken = readFileSync(localFiles.getPath('_token'), 'utf-8')
+const { secret: secretKey, url: ANALYTICS_URL, version: VERSION } = config.kawanime
 
 const logger = new Logger('Analytics')
 

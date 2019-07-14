@@ -3,7 +3,7 @@ export default {
     this.$ipc.on(this.$eventsList.externalOpen.success, (e, args) => {
       const link = args.filter(
         (l) => l.includes(this.appProtocolName)
-      )[0]
+      )[0].replace('#', '&')
 
       if (!link) return
 

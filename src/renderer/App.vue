@@ -50,7 +50,8 @@ import KitsuForm from '@/components/services/kitsuForm.vue'
 // Mixins
 import ReadMagnet from '@/mixins/global/readMagnet'
 import DragDrop from '@/mixins/global/dragDrop'
-import remoteOpen from '@/mixins/global/remoteOpen'
+import RemoteOpen from '@/mixins/global/remoteOpen'
+import Ipc from '@/mixins/global/ipc'
 
 export default {
   name: 'KawAnime',
@@ -74,7 +75,7 @@ export default {
     Env
   },
 
-  mixins: [ReadMagnet, DragDrop, remoteOpen],
+  mixins: [ReadMagnet, DragDrop, RemoteOpen, Ipc],
 
   beforeCreate () {
     this.$store.dispatch('init')

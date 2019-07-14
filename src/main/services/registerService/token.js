@@ -7,12 +7,14 @@ const logger = new Logger('Services [Access Token]')
 
 const providers = {
   kitsu: kitsu.auth.setup.getAccessToken,
-  anilist: anilist.auth.setup.getAccessToken
+  anilist: anilist.auth.setup.saveToken
 }
 
-async function handler (event, { service, code, email, username, password }) {
+async function handler (event, data) {
+  const { service } = data
+
   try {
-    await providers[service]({ token: code, username, email, password })
+    await providers[service](data)
 
     event.sender.send(events.success, service)
   } catch (e) {

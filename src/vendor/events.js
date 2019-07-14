@@ -38,7 +38,7 @@ const customs = {
   video: [ 'init', 'stop', 'subtitles', 'tracks', 'name' ],
   update: [ 'available', 'installable', 'install', 'progress' ],
   localLists: [ 'get', 'update', 'info' ],
-  register: [ 'code', 'token', 'isAuthed' ]
+  register: [ 'code', 'token', 'isAuthed', 'cta' ]
 }
 
 export default {
