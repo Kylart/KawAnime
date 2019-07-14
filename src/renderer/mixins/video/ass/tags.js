@@ -325,15 +325,18 @@ const handleAlignment = (string, style, info) => {
 const getEnclosedTags = (string) => {
   const enclosedTags = []
 
+  let missingLength = 0
+
   while (re.delimiter.test(string)) {
     const tags = string.match(re.delimiter)[0]
     const index = string.indexOf(tags)
 
     // We keep index but remove delimiters from tag
-    enclosedTags.push({ tags, index })
+    enclosedTags.push({ tags, index: index + missingLength })
 
     // then we have to remove it from string
     string = string.slice(0, index) + string.slice(index + tags.length)
+    missingLength += tags.length
   }
 
   return { enclosedTags, clearedString: string }
@@ -411,6 +414,8 @@ export default function (cue, style, info) {
         ...cueStyle
       }
     })
+
+  console.log(cue.text)
 
   return cue
 }
