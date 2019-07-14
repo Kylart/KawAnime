@@ -110,7 +110,7 @@ if (!isDevelopment && !gotTheLock) {
         app.dock.hide()
       }
       // eslint-disable-next-line no-undef
-      tray = new Tray(join(__static, 'images', 'tray.png'))
+      tray = new Tray(join(__static, 'tray.png'))
       const contextMenu = Menu.buildFromTemplate([
         {
           label: 'New window',
