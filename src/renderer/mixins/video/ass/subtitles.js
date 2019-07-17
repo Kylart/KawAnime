@@ -49,7 +49,7 @@ export default function (subtitle, styles, info) {
   // We handle newline "manually". Hence, there is a need for
   // a masterId as to know which cues are initially the same.
   result.masterId = `${result.start}-${result.end}-${result.line}-${result.position}-${result.text}`
-  result.text = result.text.replace(/\\N/g, '<br>')
+  // result.text = result.text.replace(/\\N/g, '<br>')
 
   // Style might ask for a rotation, this needs to be set as a key
   // for the cue. It seems the rotation axis is inversed too.

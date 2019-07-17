@@ -20,7 +20,7 @@ const re = {
       to: '<i>'
     },
     end: {
-      from: /\\i0?/g,
+      from: /\\i0/g,
       to: '</i>'
     }
   },
@@ -89,22 +89,6 @@ const handleHardSpace = (string) => {
 }
 const handleNewline = (string) => {
   return string.replace(re.newline, '<br>')
-}
-
-const handleCommon = (type, string) => {
-  // Handles bold, italic and underline
-  const re_ = re[type]
-  let tag = null
-
-  if (re_.start.from.test(string)) {
-    return re_.start.to
-  }
-
-  if (re_.end.from.test(string)) {
-    return re_.end.to
-  }
-
-  return tag
 }
 
 const handleFontSize = (string, info) => {
@@ -344,6 +328,7 @@ const getEnclosedTags = (string) => {
 
 const handleEnclosedTags = (enclosedTags, cue, style, info) => {
   const cueStyle = {}
+  let addedLength = 0
 
   return enclosedTags.map(({ tags, index }, k) => {
     // Removing unsupported tags
@@ -352,17 +337,19 @@ const handleEnclosedTags = (enclosedTags, cue, style, info) => {
     // Handling common tags
     const types = ['bold', 'italic', 'underline', 'strike']
     types.forEach((type) => {
-      const tag = handleCommon(type, string)
+      const _re = re[type]
+      const isStart = string.match(_re.start.from)
+      const isEnd = string.match(_re.end.from)
 
-      if (!tag) return
+      if (!isStart && !isEnd) return
 
-      const l = tag.length
+      let tag = isStart
+        ? _re.start.to
+        : _re.end.to
 
+      index += addedLength
       cue.text = cue.text.slice(0, index) + tag + cue.text.slice(index)
-
-      if (k !== enclosedTags.length - 1) {
-        enclosedTags[k + 1].index += l
-      }
+      addedLength += tag.length - string.length
     })
 
     // Font
@@ -414,8 +401,6 @@ export default function (cue, style, info) {
         ...cueStyle
       }
     })
-
-  console.log(cue.text)
 
   return cue
 }
