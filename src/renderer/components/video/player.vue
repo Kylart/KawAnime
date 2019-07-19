@@ -7,6 +7,7 @@
       ref='video',
       crossorigin='anonymous',
       name='kawanime-player',
+      :preload="isMagnet ? 'metadata' : 'auto'",
       @pause='paused = true',
       @play='paused = false',
       @timeupdate='onTimelineChangeEvent',
