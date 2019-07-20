@@ -23,5 +23,5 @@ test_script:
   - npm run pack
   - npm run test
 
-build_script:
+deploy_script:
   - IF [%APPVEYOR_REPO_BRANCH%]==[master] npm run publish:win
