@@ -8,6 +8,7 @@ import search from './search'
 import history from './history'
 import local from './local'
 import news from './news'
+import parseName from './parseName'
 import seasons from './seasons'
 import episodes from './episodes'
 import localLists from './localLists'
@@ -35,6 +36,7 @@ const services = [
   ...registerService,
   ...watchLists,
   news,
+  parseName,
   seasons,
   episodes,
   isOnline,

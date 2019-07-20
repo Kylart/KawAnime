@@ -20,7 +20,8 @@ const getOnly = [
   'env',
   'isOnline',
   'externalOpen',
-  'analytics'
+  'analytics',
+  'parse'
 ]
 
 const updatable = [
