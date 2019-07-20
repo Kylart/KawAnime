@@ -38,7 +38,6 @@ export default {
 
   data: () => ({
     isPaused: false,
-    creationDate: moment(),
     timeRemaining: ''
   }),
 
@@ -77,11 +76,10 @@ export default {
         return
       }
 
+      const endsIn = parseInt(Date.now() + torrent.timeRemaining)
+
       this.timeRemaining = torrent.timeRemaining
-        ? 'Ends ' + this.creationDate
-          .clone()
-          .add(torrent.timeRemaining)
-          .fromNow()
+        ? 'Ends ' + moment(endsIn).fromNow()
         : 'Unknown time remaining...'
     },
     actOnTorrent (action) {
