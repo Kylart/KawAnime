@@ -67,7 +67,6 @@ export default {
 
   methods: {
     stop () {
-      this.actOnTorrent('pause')
       this.actOnTorrent('destroy')
     },
     setRemainingTime (torrent) {

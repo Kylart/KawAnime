@@ -25,6 +25,20 @@ let streamServer = null
 let subtitleStream = null
 let subIntervalId = null
 
+function pauseTorrent (torrent, magnet) {
+  // Only stops connection to new peers, must delete all existing peers now
+  torrent.pause()
+
+  // Removing all connected peers
+  Object.keys(torrent._peers).forEach((peerId) => {
+    if (!peersMap[magnet]) peersMap[magnet] = []
+
+    peersMap[magnet].push(peerId)
+
+    torrent.removePeer(peerId)
+  })
+}
+
 app.on('quit', () => {
   client && save(client)
 })
@@ -48,11 +62,13 @@ function init () {
     })
 
     // Sending client information to windows every second
-    infoIntervalID = setInterval(() => {
-      BrowserWindow.getAllWindows().forEach(
-        (win) => win.webContents.send(events.info.success, info())
-      )
-    }, 1000)
+    if (!infoIntervalID) {
+      infoIntervalID = setInterval(() => {
+        BrowserWindow.getAllWindows().forEach(
+          (win) => win.webContents.send(events.info.success, info())
+        )
+      }, 1000)
+    }
   } else {
     logger.info('Torrent client already instanciated.')
   }
@@ -92,10 +108,13 @@ function remove (event, magnet) {
       : logger.info(`Removed magnet to torrent: ${magnet}`)
 
     if (!client.torrents.length) {
+      clearInterval(infoIntervalID)
+      infoIntervalID = null
+
       client.destroy((err) => {
         err
           ? logger.error('Could not destroy client.', err)
-          : logger.info('Successfully destroyed client.') && infoIntervalID && clearInterval(infoIntervalID)
+          : logger.info('Successfully destroyed client.')
       })
     }
   })
@@ -141,22 +160,15 @@ function actOnTorrent (event, { magnet, action }) {
       break
 
     case 'pause':
-      // Only stops connection to new peers, must delete all existing peers now
-      _torrent.pause()
-
-      // Removing all connected peers
-      Object.keys(_torrent._peers).forEach((peerId) => {
-        if (!peersMap[magnet]) peersMap[magnet] = []
-
-        peersMap[magnet].push(peerId)
-
-        _torrent.removePeer(peerId)
-      })
+      pauseTorrent(_torrent, magnet)
 
       break
 
     case 'destroy':
-      return remove(event, magnet)
+      pauseTorrent(_torrent, magnet)
+      remove(event, magnet)
+
+      break
 
     default:
       break
