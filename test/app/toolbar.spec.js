@@ -8,7 +8,8 @@ module.exports = function () {
         .$('nav.toolbar > div > div:nth-child(3)').getAttribute('class').should.eventually.equal('spacer')
         .getText('nav.toolbar > div > div:nth-child(4)').should.eventually.equal('search')
         .getText('nav.toolbar > div > div:nth-child(5)').should.eventually.equal('file_download')
-        .getText('nav.toolbar > div > div:last-child').should.eventually.equal('settings')
+        .getText('nav.toolbar > div > div:nth-child(6)').should.eventually.equal('settings')
+        .getText('nav.toolbar > div > *:last-child').should.eventually.equal('fiber_new')
     })
 
     it('should be able to open the drawer', function () {
