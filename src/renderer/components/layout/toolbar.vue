@@ -15,8 +15,15 @@
     searcher
     downloader
     settings
-    // v-btn(icon, @click='toggleRightDrawer')
-    //   v-icon chevron_left
+
+    v-tooltip(top)
+      v-btn(
+        @click='openChangelog',
+        slot='activator',
+        icon
+      )
+        v-icon fiber_new
+      span What's new in version v{{ version }}?
 </template>
 
 <script>
@@ -29,6 +36,11 @@ export default {
   name: 'Toolbar',
 
   components: { Settings, Searcher, Downloader },
+
+  data: () => ({
+    version: process.env.VUE_APP_KAWANIME_VERSION,
+    changelogLink: `https://github.com/Kylart/KawAnime/releases/tag/v${process.env.VUE_APP_KAWANIME_VERSION}`
+  }),
 
   computed: {
     update: {
@@ -54,6 +66,9 @@ export default {
     },
     restartAndUpdate () {
       this.$store.dispatch('update/updateApp')
+    },
+    openChangelog () {
+      this.$electron.shell.openExternal(this.changelogLink)
     }
   }
 }

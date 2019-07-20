@@ -1,8 +1,6 @@
 const fs = require('fs')
 const path = require('path')
 
-process.env.KAWANIME_VERSION = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'package.json'))).version
-
 /**
  * Taken from https://gist.github.com/kethinov/6658166#gistcomment-2389484
  *
@@ -18,7 +16,10 @@ const getAllFiles = (dir) =>
     return isDirectory ? [...files, ...getAllFiles(name)] : [...files, name]
   }, [])
 
+const VERSION = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'package.json'))).version
 const VENDOR_PATH = path.join(__dirname, 'src', 'vendor')
+
+process.env.VUE_APP_KAWANIME_VERSION = VERSION
 
 module.exports = {
   configureWebpack: {
