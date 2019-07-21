@@ -8,6 +8,6 @@ export default {
   kawanime: {
     url: process.env.VUE_APP_KAWANIME_API_URL,
     secret: process.env.VUE_APP_KAWANIME_SECRET,
-    version: process.env.KAWANIME_VERSION
+    version: process.env.VUE_APP_KAWANIME_VERSION
   }
 }

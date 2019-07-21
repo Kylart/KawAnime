@@ -27,6 +27,8 @@
 </template>
 
 <script>
+import { config } from 'vendor'
+
 // Components
 import Settings from '@/components/settings/modal.vue'
 import Searcher from '@/components/info/modal.vue'
@@ -38,8 +40,8 @@ export default {
   components: { Settings, Searcher, Downloader },
 
   data: () => ({
-    version: process.env.VUE_APP_KAWANIME_VERSION,
-    changelogLink: `https://github.com/Kylart/KawAnime/releases/tag/v${process.env.VUE_APP_KAWANIME_VERSION}`
+    version: config.kawanime.version,
+    changelogLink: `https://github.com/Kylart/KawAnime/releases/tag/v${config.kawanime.version}`
   }),
 
   computed: {
