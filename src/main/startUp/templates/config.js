@@ -41,7 +41,6 @@ export default {
         x: null,
         y: null
       },
-      version: '0.0.0',
       video: {
         inside: true,
         autoplay: true,
