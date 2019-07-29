@@ -6,7 +6,7 @@
         :current='current', :return-cb='resetCurrent'
       )
 
-      v-container(v-else, fluid, grid-list-lg, pt-1, key='tools')
+      v-container(v-else, fluid, grid-list-lg, pt-1, pb-0, key='tools')
         tools(:nb-elems='files.length', :resetting='resetting', @reset='reset', ref='tools')
 
         transition(name='list')
