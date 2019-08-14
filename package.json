@@ -17,7 +17,7 @@
     "dist": "npm run dist:mac && npm run dist:win && npm run dist:linux",
     "dist:mac": "npm run build -- --mac",
     "dist:win": "npm run build -- --win --x64 --ia32",
-    "dist:linux": "npm run build -- --linux deb AppImage",
+    "dist:linux": "npm run build -- --linux deb AppImage snap",
     "publish:mac": "npm run build -- --mac -p always",
     "publish:linux": "npm run build -- --linux deb AppImage -p always",
     "publish:win": "npm run build -- --win --x64 --ia32 -p always",
