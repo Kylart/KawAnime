@@ -1,7 +1,7 @@
 <template lang="pug">
   v-app-bar.toolbar(
     app, fixed, dense,
-    color='indigo',
+    color='secondary',
     clipped-left
   )
     v-app-bar-nav-icon(@click='toggleMiniDrawer')

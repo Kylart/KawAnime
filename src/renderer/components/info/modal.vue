@@ -51,7 +51,7 @@
         v-btn(@click='back') Cancel
 
     v-card(v-else)
-      v-toolbar(dense, color='indigo')
+      v-toolbar(dense, color='secondary')
         v-spacer
         v-btn(icon, @click='close')
           v-icon close

@@ -41,7 +41,7 @@
       v-card-actions
         v-spacer
         v-btn.blue--text(@click='close', text) Close
-        v-btn.indigo(@click='download') Download
+        v-btn.secondary(@click='download') Download
 </template>
 
 <script>

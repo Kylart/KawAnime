@@ -12,7 +12,7 @@
 
     v-tabs(
       v-model='active',
-      background-color='indigo',
+      background-color='secondary',
       grow
     )
       v-tab(

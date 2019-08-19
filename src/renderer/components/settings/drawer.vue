@@ -1,5 +1,5 @@
 <template lang="pug">
-  .sections-container.elevation-12.indigo.pt-2.pb-2
+  .sections-container.elevation-12.secondary.pt-2.pb-2
     v-list-item(
       v-for='section in sections', :key='section.value',
       @click='setRoute(section.value)',

@@ -13,8 +13,8 @@ export default {
       success: colors.green.base
     },
     light: {
-      primary: colors.indigo.base,
-      secondary: colors.orange.base,
+      secondary: colors.indigo.base,
+      primary: colors.orange.base,
       accent: colors.purple.base,
       error: colors.red.base,
       warning: colors.pink.base,

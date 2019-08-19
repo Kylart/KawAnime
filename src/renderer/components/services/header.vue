@@ -31,7 +31,7 @@
 
         import-modal
 
-        v-btn(icon, large, color='indigo', @click='add', v-show='canAdd')
+        v-btn(icon, large, color='secondary', @click='add', v-show='canAdd')
           v-icon(large) add
 </template>
 

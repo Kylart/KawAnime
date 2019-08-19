@@ -2,7 +2,7 @@
   div
     v-tabs(
       v-model='active',
-      background-color='indigo',
+      background-color='secondary',
       grow, icons-and-text
     )
       v-tab(

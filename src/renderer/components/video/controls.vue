@@ -10,7 +10,7 @@
                 v-slider.volume.ma-0.ml-1(
                   thumb-label,
                   hide-details, dark,
-                  color='indigo accent-2',
+                  color='secondary accent-2',
                   max='100',
                   :value='muted ? 0 : volume',
                   @input='changeVolume',
@@ -34,12 +34,12 @@
               v-flex(xs2)
                 v-menu(v-show='hasTracks', offset-overflow, offset-y, top)
                   template(v-slot:activator='{ on }')
-                    v-btn.subtitles.ma-0(v-on='on', small, outlined, icon, color='indigo accent-2')
+                    v-btn.subtitles.ma-0(v-on='on', small, outlined, icon, color='secondary accent-2')
                       v-icon(small) subtitles
                   v-list(dense).subtitle-lang
                     v-list-item(v-for='(num, i) in Object.keys(numToLang)', :key='i' @click="setTrack(num)")
                       v-list-item-title(:class="{ 'blue--text': numToLang[num] === currentLang }") {{ numToLang[num] }}
-                v-btn.fullscreen.ma-0.ml-2(color='indigo accent-2', small, outlined, icon, @click='toggleFullScreen')
+                v-btn.fullscreen.ma-0.ml-2(color='secondary accent-2', small, outlined, icon, @click='toggleFullScreen')
                   v-icon(v-html="fullscreen ? 'fullscreen_exit' : 'fullscreen'")
 
         v-flex.wide.progress-bar-container(xs5, d-flex, align-center)
@@ -47,7 +47,7 @@
             v-layout(row, wrap, justify-center, align-center)
               v-flex(xs9)
                 progress-bar.ma-0(
-                  dark, hide-details, color='indigo accent-2',
+                  dark, hide-details, color='secondary accent-2',
                   :step='0', :buffer='buffered', :value='timeline',
                   :duration='duration',
                   @input='changeTimeline'

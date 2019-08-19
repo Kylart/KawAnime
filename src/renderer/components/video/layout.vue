@@ -6,10 +6,10 @@
 
       //- Window buttons
       .window-buttons
-        v-btn.video-size(color='indigo', dark, icon, outlined, @click.stop='actOnWindow("minimize")', v-show='!fullscreen')
+        v-btn.video-size(color='secondary', dark, icon, outlined, @click.stop='actOnWindow("minimize")', v-show='!fullscreen')
           v-icon {{ isMinimized ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}
 
-        v-btn.video-close(color='indigo', dark, icon, outlined, @click.stop='actOnWindow("close")')
+        v-btn.video-close(color='secondary', dark, icon, outlined, @click.stop='actOnWindow("close")')
           v-icon close
 
       //- Center play button

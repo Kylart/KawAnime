@@ -1,6 +1,6 @@
 <template lang="pug">
   v-card
-    v-toolbar(dense, color='indigo')
+    v-toolbar(dense, color='secondary')
       v-spacer
       v-btn(icon, @click='close')
         v-icon close

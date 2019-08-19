@@ -1,5 +1,6 @@
 <template lang="pug">
   v-navigation-drawer.drawer(
+    dark,
     fixed,
     permanent,
     app,

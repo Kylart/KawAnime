@@ -40,7 +40,7 @@
         :style='charHover.overflow',
         ref='chars'
       )
-        v-btn.expand.mb-2(fab, small, color='indigo', v-show='!charHover.show', @click='expandChar')
+        v-btn.expand.mb-2(fab, small, color='secondary', v-show='!charHover.show', @click='expandChar')
           v-icon keyboard_arrow_down
         v-flex(v-for='char in info.characters', :key='char.link', xs12, sm6, md4, pt-0)
           v-layout(row, wrap)

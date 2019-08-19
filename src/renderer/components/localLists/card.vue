@@ -46,7 +46,7 @@
             v-menu(transition='slide-x-transition')
               template(v-slot:activator='{ on: menu }')
                 v-btn.btn(v-on='menu', icon, large)
-                  v-icon(large, color='indigo') more_horiz
+                  v-icon(large, color='secondary') more_horiz
               v-list
                 v-list-item(
                   v-for='option in menus',
