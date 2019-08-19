@@ -10,6 +10,7 @@ module.exports = function () {
         .getText('.toolbar > div > *:nth-child(8)').should.eventually.equal('file_download')
         .getText('.toolbar > div > *:nth-child(10)').should.eventually.equal('settings')
         .getText('.toolbar > div > *:last-child').should.eventually.equal('fiber_new')
+        .pause(500)
     })
 
     it.skip('should be able to expand the drawer', function () {

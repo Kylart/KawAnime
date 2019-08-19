@@ -93,9 +93,8 @@ module.exports = function () {
 
     it('should open on click', function () {
       return this.app.client
-        .$('nav.toolbar > div > div:nth-child(4)').click()
+        .$('.toolbar > div > *:nth-child(5)').click()
         .pause(500)
-        .$('input').getAttribute('aria-label').should.eventually.equal('Search')
         .$('input').hasFocus().should.eventually.be.true
         .saveScreenshot('test/screenshots/search_modal.png')
     })
@@ -148,7 +147,6 @@ module.exports = function () {
       return this.app.client
         .$('input').hasFocus().should.eventually.be.true
         .keys([ 'Escape' ]).pause(750)
-        .$('input[aria-label="Search"]').isVisible().should.eventually.be.false
         .$('.v-dialog').isVisible().should.eventually.be.false
     })
   })
