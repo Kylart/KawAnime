@@ -149,6 +149,7 @@ export default {
         return this.system.darkTheme
       },
       set (val) {
+        this.$vuetify.theme.dark = val
         this.setDeepValue('system.darkTheme', val)
       }
     },

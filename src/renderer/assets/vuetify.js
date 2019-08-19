@@ -145,15 +145,9 @@ export default (Vue) => {
   })
 
   return new Vuetify({
+    theme,
     icons: {
       iconfont: 'md'
-    },
-    theme: {
-      dark: true,
-      themes: {
-        dark: theme,
-        light: theme
-      }
     }
   })
 }
