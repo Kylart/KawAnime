@@ -3,7 +3,7 @@
     v-spacer
     .window-icon.non-dragable(v-if="$store.state.platform !== 'darwin'")
       v-icon.not-close(@click="actOnWindow('minimize')") remove
-      v-icon.not-close(@click="actOnWindow('maximize')") check_box_outlined_blank
+      v-icon.not-close(@click="actOnWindow('maximize')") check_box_outline_blank
       v-icon.close(@click="actOnWindow('close')") close
 </template>
 

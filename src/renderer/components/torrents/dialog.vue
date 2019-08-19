@@ -30,7 +30,7 @@
                 v-btn(icon)
                   v-icon(@click='removeEntry(index)') close
                 v-btn(icon)
-                  v-icon(@click='playEntry(index)') play_circle_outlined
+                  v-icon(@click='playEntry(index)') play_circle_outline
             template(v-else)
               v-layout.choice(justify-space-between, align-center)
                 v-btn(@click='openDialog(index)') Open file

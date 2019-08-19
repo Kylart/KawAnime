@@ -80,7 +80,7 @@ export default {
           text: 'Watch',
           method: () => this.watch()
         }, {
-          icon: 'info_outlined',
+          icon: 'info_outline',
           text: 'Information',
           method: () => this.search()
         }, {
