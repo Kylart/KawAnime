@@ -1,5 +1,5 @@
 <template lang="pug">
-  div
+  .feed-container
     transition(name='fade', mode='out-in')
       loader(v-if='!instanciate', key='loading')
 
@@ -54,4 +54,7 @@ export default {
 
   .fade-enter-active, .fade-leave
     transition all .5s
+
+  .feed-container
+    overflow hidden
 </style>
