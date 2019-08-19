@@ -25,7 +25,7 @@
       top, right,
       v-model='$store.state.infoSnackbar.show'
     ) {{ $store.state.infoSnackbar.text }}
-      v-btn.pink--text(flat, @click='$store.state.infoSnackbar.show = false') Close
+      v-btn.pink--text(text, @click='$store.state.infoSnackbar.show = false') Close
 </template>
 
 <script>

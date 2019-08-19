@@ -1,66 +1,71 @@
 <template lang="pug">
   div
-    v-dialog(v-model='values.show', lazy, absolute, max-width='800', @keydown.esc='close()')
+    v-dialog(v-model='values.show', absolute, max-width='800', @keydown.esc='close()')
       v-card#magnet-modal
         v-card-title.pb-2.pt-2
           h2.mb-0.main-title.ellipsis Results for #[strong {{ values.title }}]
           v-spacer
           v-tooltip(left)
-            v-btn(
-              flat, icon,
-              @click='openSelected',
-              v-if='selected.length',
-              slot='activator'
-            )
-              v-icon open_in_new
+            template(v-slot:activator='{ on }')
+              v-btn.mr-2(
+                text, icon,
+                @click='openSelected',
+                v-if='selected.length',
+                v-on='on'
+              )
+                v-icon open_in_new
             span Open all selected magnets
           v-tooltip(left)
-            v-btn(
-              flat, icon,
-              @click='copyToClipboard',
-              v-if='selected.length',
-              slot='activator'
-            )
-              v-icon.copy-icon content_copy
+            template(v-slot:activator='{ on }')
+              v-btn(
+                text, icon,
+                @click='copyToClipboard',
+                v-if='selected.length',
+                v-on='on'
+              )
+                v-icon.copy-icon content_copy
             span Copy all selected magnets
         v-divider
-        v-card-text.subheading
-          v-expansion-panel(popout)
-            v-expansion-panel-content(
+        v-card-text.subtitle-1.pt-2
+          v-expansion-panels(popout)
+            v-expansion-panel(
               v-for='(name, index) in filteredNames',
               :key='index',
               ripple, lazy
             )
-              .entry-title(slot='header')
-                span {{ name }}
-                v-tooltip(left)
-                  v-btn.ma-0.mr-3(
-                    icon,
-                    @click.stop='selectAll(name)',
-                    slot='activator'
-                  )
-                    v-icon select_all
-                  span (un)select these magnets
+              v-expansion-panel-header
+                .entry-title
+                  span {{ name }}
+                  v-tooltip(left)
+                    template(v-slot:activator='{ on }')
+                      v-btn.ma-0.mr-3(
+                        icon,
+                        @click.stop='selectAll(name)',
+                        v-on='on'
+                      )
+                        v-icon select_all
+                    span (un)select these magnets
               v-divider
-              v-layout.ep-container(
-                row, wrap,
-                v-for='(magnet, subIndex) in getLinks(name)', :key='magnet.link'
-              )
-                v-flex.pt-0.pb-0(xs11, d-flex, align-center, :class='{ bordered: subIndex > 0 }')
-                  .episode {{ magnet.name }} - Ep. {{ magnet.nb }}
-                v-flex.pt-2.pb-0(xs1, d-flex, justify-center, align-center, :class='{ bordered: subIndex > 0 }')
-                  v-checkbox.mt-0(v-model='selected', :value='magnet.link', hide-details, color='primary')
-                v-flex.pt-0.pb-2.magnet(xs9, offset-xs3, d-flex, justify-end)
-                  a.ellipsis(:href='magnet.link') {{ magnet.link}}
+              v-expansion-panel-content
+                v-layout.ep-container(
+                  row, wrap,
+                  v-for='(magnet, subIndex) in getLinks(name)', :key='magnet.link'
+                )
+                  v-flex.pt-0.pb-0(xs11, d-flex, align-center, :class='{ bordered: subIndex > 0 }')
+                    .episode {{ magnet.name }} - Ep. {{ magnet.nb }}
+                  v-flex.pt-2.pb-0(xs1, d-flex, justify-center, align-center, :class='{ bordered: subIndex > 0 }')
+                    v-checkbox.mt-0(v-model='selected', :value='magnet.link', hide-details, color='primary')
+                  v-flex.pt-0.pb-2.magnet(xs9, offset-xs3, d-flex, justify-end)
+                    a.ellipsis(:href='magnet.link') {{ magnet.link}}
         v-card-actions
           v-spacer
-          v-btn.blue--text.darken-1(flat, @click='close()') Thanks!
+          v-btn.blue--text.darken-1(text, @click='close()') Thanks!
     v-snackbar(
       :timeout='2500',
       top,
       v-model='snack'
     ) All selected magnets were copied to clipboard!
-      v-btn.pink--text(flat, @click='snack = false') Thanks!
+      v-btn.pink--text(text, @click='snack = false') Thanks!
 </template>
 
 <script>

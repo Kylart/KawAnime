@@ -15,10 +15,11 @@
         v-layout(row, wrap, justify-space-around, align-center)
           .grey--text.text-uppercase Download Path:
           v-tooltip(top)
-            .path.ellipsis.pl-2(slot='activator') {{ currentPath }}
+            template(v-slot:activator='{ on }')
+              .path.ellipsis.pl-2(v-on='on') {{ currentPath }}
             span {{ currentPath }}
-          v-btn(flat, color='blue', @click='openDirectoryDialog') Change
-          v-btn(icon, flat, large)
+          v-btn(text, color='blue', @click='openDirectoryDialog') Change
+          v-btn(icon, text, large)
             v-icon(large, color='blue', @click='addEntry') add_circle
 
         div.torrents-container
@@ -29,7 +30,7 @@
                 v-btn(icon)
                   v-icon(@click='removeEntry(index)') close
                 v-btn(icon)
-                  v-icon(@click='playEntry(index)') play_circle_outline
+                  v-icon(@click='playEntry(index)') play_circle_outlined
             template(v-else)
               v-layout.choice(justify-space-between, align-center)
                 v-btn(@click='openDialog(index)') Open file
@@ -39,7 +40,7 @@
 
       v-card-actions
         v-spacer
-        v-btn.blue--text(@click='close', flat) Close
+        v-btn.blue--text(@click='close', text) Close
         v-btn.indigo(@click='download') Download
 </template>
 

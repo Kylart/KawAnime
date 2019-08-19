@@ -4,55 +4,58 @@
     :class="{ 'green darken-1': selected }",
     :style='cardStyle'
   )
-    v-tooltip(top, lazy)
+    v-tooltip(top)
       span {{ entry.name }}
-      .card-container(slot='activator')
-        v-img.img(
-          @click='handleClick',
-          :src='img',
-          :lazy-src='img',
-          :loading='!img',
-          contain,
-          position='left center'
-        )
 
-        .center-container(@click='handleClick')
-          .name-container.text.ellipsis(slot='activator') {{ entry.name }}
+      template(v-slot:activator='{ on: tooltip }')
+        .card-container(v-on='tooltip')
+          v-img.img(
+            @click='handleClick',
+            :src='img',
+            :lazy-src='img',
+            :loading='!img',
+            contain,
+            position='left center'
+          )
 
-          .progress
-            v-progress-linear(
-              :value='progress.value',
-              height='15'
-            )
-            span.text {{ progress.text }}
+          .center-container(@click='handleClick')
+            .name-container.text.ellipsis {{ entry.name }}
 
-          .progress-actions
-            template(v-for='action in actions')
-              v-btn(
-                small,
-                :icon='!!action.icon',
-                @click.stop='action.cb',
-                v-show='action.show'
-              ) {{ action.text }}
-                template(v-show='action.icon')
-                  v-icon {{ action.icon }}
-
-        .menu
-          .checkbox(@click='handleClick')
-            v-checkbox(v-model='selected', color='success', disabled, hide-details, height='10')
-
-          v-menu(transition='slide-x-transition')
-            v-btn.btn(slot='activator', icon, large)
-              v-icon(large, color='indigo') more_horiz
-            v-list
-              v-list-tile(
-                v-for='option in menus',
-                :key='option.icon',
-                @click='option.method'
+            .progress
+              v-progress-linear(
+                :value='progress.value',
+                height='15'
               )
-                v-list-tile-avatar
-                  v-icon {{ option.icon }}
-                v-list-tile-title {{ option.text }}
+              span.text {{ progress.text }}
+
+            .progress-actions
+              template(v-for='action in actions')
+                v-btn(
+                  small,
+                  :icon='!!action.icon',
+                  @click.stop='action.cb',
+                  v-show='action.show'
+                ) {{ action.text }}
+                  template(v-show='action.icon')
+                    v-icon {{ action.icon }}
+
+          .menu
+            .checkbox(@click='handleClick')
+              v-checkbox(v-model='selected', color='success', disabled, hide-details, height='10')
+
+            v-menu(transition='slide-x-transition')
+              template(v-slot:activator='{ on: menu }')
+                v-btn.btn(v-on='menu', icon, large)
+                  v-icon(large, color='indigo') more_horiz
+              v-list
+                v-list-item(
+                  v-for='option in menus',
+                  :key='option.icon',
+                  @click='option.method'
+                )
+                  v-list-item-avatar
+                    v-icon {{ option.icon }}
+                  v-list-item-title {{ option.text }}
 </template>
 
 <script>
@@ -77,7 +80,7 @@ export default {
           text: 'Watch',
           method: () => this.watch()
         }, {
-          icon: 'info_outline',
+          icon: 'info_outlined',
           text: 'Information',
           method: () => this.search()
         }, {

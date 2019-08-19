@@ -8,10 +8,11 @@ import Helpers from '../vendor/helpers'
 Vue.config.productionTip = false
 
 Helpers(Vue)
-Vuetify(Vue)
+const vuetify = Vuetify(Vue)
 
 new Vue({
   router,
   store,
+  vuetify,
   render: h => h(App)
 }).$mount('#app')

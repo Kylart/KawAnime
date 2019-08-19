@@ -4,7 +4,7 @@
       v-model='filter.show',
       width='60%',
       transition='dialog-transition',
-      lazy, absolute
+      absolute
     )
       v-card
         v-card-title.grey--text.text-uppercase
@@ -26,37 +26,47 @@
         v-card-actions
           v-spacer
           v-btn(@click='applyFilters') Apply
-          v-btn.blue--text(flat, @click='filter.show = false') Cancel
+          v-btn.blue--text(text, @click='filter.show = false') Cancel
 
-    v-layout(justify-space-between, align-center)
-      .actions
-        v-btn(icon, @click="$emit('selectAll')")
-          v-icon select_all
+    v-layout(row, wrap, justify-space-between)
+      v-flex(xs12, sm6 md4, lg3)
+        v-layout(align-center)
+          v-flex(d-flex, justify-center)
+            v-btn(icon, @click="$emit('selectAll')")
+              v-icon select_all
 
-        v-menu(open-on-hover, transition='slide-x-transition')
-          v-btn(slot='activator') Move to
-          v-list
-            v-list-tile(
-              v-for='list in lists'
-              :key='list.icon'
-              @click="$emit('move', list.list)"
-            )
-              v-list-tile-avatar
-                v-icon {{ list.icon }}
-              v-list-tile-title {{ list.name }}
+          v-flex(d-flex, justify-center)
+            v-menu(open-on-hover, transition='slide-x-transition')
+              template(v-slot:activator='{ on }')
+                v-btn(v-on='on') Move to
+              v-list
+                v-list-item(
+                  v-for='list in lists'
+                  :key='list.icon'
+                  @click="$emit('move', list.list)"
+                )
+                  v-list-item-avatar
+                    v-icon {{ list.icon }}
+                  v-list-item-title {{ list.name }}
 
-        v-btn(icon, color='red', @click="$emit('deleteSelected')")
-          v-icon delete
+          v-flex(d-flex, justify-center)
+            v-btn(icon, color='red', @click="$emit('deleteSelected')")
+              v-icon delete
 
-        .label(xs12, sm3, md2, lg1) {{ nbElems }} {{ label }}
+          v-flex(d-flex, justify-center)
+            .label(xs12, sm3, md2, lg1) {{ nbElems }} {{ label }}
 
-      div
-        v-btn(@click='showFilterForm')
-          v-icon filter_list
-          span.pl-2 Filter
-        v-btn(@click='showForm')
-          v-icon add
-          span.pl-2 Add
+      v-flex(xs12, sm4, md3, lg2)
+        v-layout(justify-space-around)
+          v-flex(d-flex, justify-center)
+            v-btn(@click='showFilterForm')
+              v-icon filter_list
+              span.pl-2 Filter
+
+          v-flex(d-flex, justify-center)
+            v-btn(@click='showForm')
+              v-icon add
+              span.pl-2 Add
 </template>
 
 <script>

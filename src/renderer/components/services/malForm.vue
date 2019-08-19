@@ -1,11 +1,11 @@
 <template lang="pug">
-  v-dialog(v-model='show', persistent, lazy, absolute, max-width='800', @keydown.esc='close()')
+  v-dialog(v-model='show', persistent, absolute, max-width='800', @keydown.esc='close()')
     v-card.pa-2
       v-layout(row, wrap)
         v-flex.entry-title-generic.pa-2(xs9, offset-xs1) {{ addOrEdit }} a list entry
           span.entry-title {{ entryTitle }}
         v-flex(xs2)
-          v-btn(icon, outline, @click='close')
+          v-btn(icon, outlined, @click='close')
             v-icon close
         v-flex(xs4, offset-xs1)
           v-select(
@@ -40,19 +40,20 @@
               max-width='290px',
               min-width='290px'
             )
-              v-text-field(
-                slot='activator',
-                :label="`${i === 1 ? 'Start' : 'End'} date`",
-                v-model="form['date_' + (i === 1 ? 'start' : 'finish')]",
-                prepend-icon='event',
-                readonly
-              )
+              template(v-slot:activator='{ on }')
+                v-text-field(
+                  v-on='on',
+                  :label="`${i === 1 ? 'Start' : 'End'} date`",
+                  v-model="form['date_' + (i === 1 ? 'start' : 'finish')]",
+                  prepend-icon='event',
+                  readonly
+                )
               v-date-picker(v-model="form['date_' + (i === 1 ? 'start' : 'finish')]", no-title, scrollable, actions)
                 template(slot-scope='{ save, cancel }')
                   v-card-actions
                     v-spacer
-                    v-btn(flat, color='primary', @click='cancel') Cancel
-                    v-btn(flat, color='primary', @click='save') Ok
+                    v-btn(text, color='primary', @click='cancel') Cancel
+                    v-btn(text, color='primary', @click='save') Ok
         v-flex(xs2, offset-xs1)
           v-select(
             label='Score'
@@ -63,17 +64,19 @@
             item-value='value',
             item-text='text'
           )
-      v-expansion-panel(popout)
-        v-expansion-panel-content(ripple)
-          div(slot='header') Advanced options
-          v-layout(justify-center)
-            v-flex(xs8)
-              v-combobox(
-                v-model="form.tags",
-                label="Tags",
-                chips,
-                multiple
-              )
+      v-expansion-panels(popout)
+        v-expansion-panel(ripple)
+          v-expansion-panel-header
+            div Advanced options
+          v-expansion-panel-content
+            v-layout(justify-center)
+              v-flex(xs8)
+                v-combobox(
+                  v-model="form.tags",
+                  label="Tags",
+                  chips,
+                  multiple
+                )
           v-layout.pa-3(justify-space-between)
             v-flex(xs2)
               v-select(
@@ -117,7 +120,7 @@
             v-flex(xs8)
               v-textarea(
                 label="Comment",
-                outline,
+                outlined,
                 v-model='form.comments'
               )
       v-layout(justify-center)

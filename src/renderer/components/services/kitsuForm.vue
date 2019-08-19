@@ -1,11 +1,11 @@
 <template lang="pug">
-  v-dialog(v-model='show', persistent, lazy, absolute, max-width='800', @keydown.esc='close()')
+  v-dialog(v-model='show', persistent, absolute, max-width='800', @keydown.esc='close()')
     v-card.pa-2
       v-card-title.entry-title.grey--text
         .text-uppercase(xs9, offset-xs1) {{ addOrEdit }} a list entry
         span {{ entryTitle }}
         v-spacer
-        v-btn(icon, outline, @click='close')
+        v-btn(icon, outlined, @click='close')
           v-icon close
 
       v-divider
@@ -46,7 +46,6 @@
                   v-model='datePickers[i - 1]',
                   :close-on-content-click='false',
                   :nudge-right='40',
-                  lazy,
                   transition='scale-transition',
                   offset-y,
                   full-width,
@@ -88,7 +87,7 @@
             v-flex(xs12, pt-2)
               v-textarea(
                 label="Custom notes",
-                outline,
+                outlined,
                 v-model='form.notes'
               )
 

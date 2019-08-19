@@ -1,31 +1,32 @@
 <template lang="pug">
   v-layout(row, wrap, justify-space-between, align-center)
     v-flex.left(xs12, sm6, md5, lg4, xl3, d-flex, justify-space-around, align-center)
-      span.label(v-show='hasFiles') {{ nbElems }} {{ label }}
+      v-layout(justify-space-around, align-center)
+        span.label(v-show='hasFiles') {{ nbElems }} {{ label }}
 
-      history
+        history
 
-      v-switch.mt-0(
-        v-show='hasFiles',
-        v-model='inside',
-        color='primary',
-        :label="inside ? 'Inside' : 'Outside'"
-        persistent-hint,
-        hint='Play in KawAnime?'
-      )
+        v-switch.mt-0(
+          v-show='hasFiles',
+          v-model='inside',
+          color='primary',
+          :label="inside ? 'Inside' : 'Outside'"
+          persistent-hint,
+          hint='Play in KawAnime?'
+        )
 
-      v-switch.mt-0(
-        v-model='recursiveSearch',
-        color='primary',
-        :label="recursiveSearch ? 'Recursive' : 'Folder only'"
-        persistent-hint,
-        hint='Search for files recursively?'
-      )
+        v-switch.mt-0(
+          v-model='recursiveSearch',
+          color='primary',
+          :label="recursiveSearch ? 'Recursive' : 'Folder only'"
+          persistent-hint,
+          hint='Search for files recursively?'
+        )
 
     v-flex.right-buttons(xs12, sm5, md4)
       v-btn(icon, large, @click='refresh', :loading='refreshing')
         v-icon(large) refresh
-      v-btn(flat, @click='changeDir') Change Dir
+      v-btn(text, @click='changeDir') Change Dir
       v-btn(v-show='hasFiles', @click='reset', :loading='resetting') Refresh info
 </template>
 

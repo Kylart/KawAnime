@@ -1,43 +1,46 @@
 <template lang="pug">
-  v-dialog#history(lazy,
+  v-dialog#history(
     absolute,
     max-width='75%',
     v-model='$store.state.history.modal',
     @keydown.esc='close()'
   )
-    v-btn(color='secondary', dark, @click='refresh()', slot='activator')
-      | History
+    template(v-slot:activator='{ on }')
+      v-btn(color='secondary', dark, @click='refresh()', v-on='on')
+        | History
     v-card
       v-card-title.headline History
       v-divider
       v-card-text
         v-layout(row, wrap, justify-center)
-          v-expansion-panel(expand, popout, v-if='Object.keys(elems).length')
-            v-expansion-panel-content.history-elem(
+          v-expansion-panels(popout, v-if='Object.keys(elems).length')
+            v-expansion-panel.history-elem(
               ripple, lazy,
               v-for='item in Object.keys(elems)',
               :key='item'
             )
-              .day(slot='header') {{ item }}
-              v-card
-                v-card-text.lighten-3.info-container
-                  v-layout(row, wrap)
-                    template(v-for='info in history[item]')
-                      v-flex.pl-1.time.entry(xs2, :class='isDelete(info.type)')
-                        | {{ info.time }}
-                      v-flex.type.entry(xs2, :class='isDelete(info.type)')
-                        | {{ info.type }}
-                      v-flex.ellipsis.text.entry(xs7, :class='isDelete(info.type)')
-                        | {{ info.text }}
-                      v-flex.entry(xs1, :class='isDelete(info.type)')
-                        v-icon.delete-entry(@click.stop='clearEntry(info, item)')
-                          | clear
+              v-expansion-panel-header
+                .day {{ item }}
+              v-expansion-panel-content
+                v-card
+                  v-card-text.lighten-3.info-container
+                    v-layout(row, wrap)
+                      template(v-for='info in history[item]')
+                        v-flex.pl-1.time.entry(xs2, :class='isDelete(info.type)')
+                          | {{ info.time }}
+                        v-flex.type.entry(xs2, :class='isDelete(info.type)')
+                          | {{ info.type }}
+                        v-flex.ellipsis.text.entry(xs7, :class='isDelete(info.type)')
+                          | {{ info.text }}
+                        v-flex.entry(xs1, :class='isDelete(info.type)')
+                          v-icon.delete-entry(@click.stop='clearEntry(info, item)')
+                            | clear
           v-flex.empty-history(xs4, v-else) No entry yet, go watch some anime ~
       v-divider
       v-card-actions(style='padding-right: 20px;')
         v-spacer
         v-btn.blue--text.darken-1(
-          flat,
+          text,
           @click="close()"
         ) Close
 </template>

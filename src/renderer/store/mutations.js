@@ -9,6 +9,9 @@ export default {
   setLeftDrawer (state, bool) {
     state.drawer.left = bool
   },
+  setMiniDrawer (state, bool) {
+    state.drawer.mini = bool
+  },
   setInfoSnackbar (state, data) {
     state.infoSnackbar.text = data
     state.infoSnackbar.show = true

@@ -1,9 +1,11 @@
 <template lang="pug">
-  v-dialog(lazy, absolute, v-model='show', width='65%')
-    v-tooltip(slot='activator', lazy, left)
-      v-btn(icon, slot='activator')
-        v-icon file_download
-      span Quick download
+  v-dialog(absolute, v-model='show', width='65%')
+    template(v-slot:activator='{ on: dialog }')
+      v-tooltip(left)
+        template(v-slot:activator='{ on: tooltip }')
+          v-btn(icon, v-on='{ ...dialog, ...tooltip }')
+            v-icon file_download
+        span Quick download
 
     layout(@downloaded='show = false')
 </template>

@@ -10,7 +10,7 @@
         v-container(grid-list-lg, pa-0)
           v-layout(row, wrap, justify-center, align-center)
             v-flex(xs12, sm4, md2)
-              v-btn(flat, @click='openDialog') Change Dir
+              v-btn(text, @click='openDialog') Change Dir
             v-flex(xs12, sm8, md8)
               .path.ellipsis.pl-2 {{ path }}
             v-flex(xs12, sm6, md4)
@@ -22,15 +22,17 @@
       v-card-text
         v-container(grid-list-lg, pa-0)
           v-layout(justify-space-around, align-center)
-            v-btn(flat, @click="openDialog('streaming')") Change Dir
+            v-btn(text, @click="openDialog('streaming')") Change Dir
             .path.ellipsis.pl-2 {{ streamingPath }}
-            v-tooltip(top, lazy)
-              v-btn(icon, slot='activator', @click='openStreamingFolder')
-                v-icon open_in_new
+            v-tooltip(top)
+              template(v-slot:activator='{ on }')
+                v-btn(icon, v-on='on', @click='openStreamingFolder')
+                  v-icon open_in_new
               span Open
-            v-tooltip(top, lazy)
-              v-btn(icon, slot='activator', @click='resetToTmp')
-                v-icon(large) refresh
+            v-tooltip(top)
+              template(v-slot:activator='{ on }')
+                v-btn(icon, v-on='on', @click='resetToTmp')
+                  v-icon(large) refresh
               span Reset to temporary folder
       v-card-actions
         v-spacer

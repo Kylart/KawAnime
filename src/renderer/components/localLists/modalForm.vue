@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-dialog(v-model='show', persistent, lazy, absolute, width='700', @keydown.esc='close()')
+  v-dialog(v-model='show', persistent, absolute, width='700', @keydown.esc='close()')
     v-card.pa-2
       v-card-title.grey--text.text-uppercase
         v-layout(justify-center, align-center)
@@ -68,7 +68,7 @@
             v-textarea(
               v-model='entry.note',
               label='Comment',
-              outline
+              outlined
             )
 
       v-divider

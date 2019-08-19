@@ -1,44 +1,30 @@
 <template lang="pug">
-  v-navigation-drawer.drawer(app, fixed, v-model='show')
-      v-list
-        template(v-for='item in itemGroup')
-          v-list-group(
-            v-if='item.items',
-            :group='item.group',
-            :prepend-icon='item.action',
-            no-action
-          )
-            v-list-tile(slot='activator', ripple)
-              v-list-tile-content
-                v-list-tile-title {{ item.title }}
-            template(v-for='(subItem, i) in item.items')
-              v-list-tile(
-                :key='i',
-                :to='subItem.href',
-                :disabled='subItem.disabled',
-                ripple
-              )
-                v-list-tile-action
-                  v-icon(v-if='!subItem.custom') {{ subItem.action }}
-                  div(v-else, :class='subItem.custom')
-                v-list-tile-content
-                  v-list-tile-title
-                    span {{ subItem.title }}
+  v-navigation-drawer.drawer(
+    fixed,
+    permanent,
+    app,
+    clipped,
+    :mini-variant.sync='mini'
+    v-model='show'
+  )
+    v-list(dense, nav)
+      template(v-for='item in itemGroup')
+        v-subheader(v-if='item.header') {{ item.header }}
 
-          v-subheader.white--text(v-else-if='item.header') {{ item.header }}
-          v-divider(v-else-if='item.divider')
+        v-divider(v-else-if='item.divider')
 
-          v-list-tile(
-            v-else,
-            :to='item.href',
-            :disabled='item.disabled',
-            ripple
-          )
-            v-list-tile-action
-              v-icon {{ item.action }}
-            v-list-tile-content
-              v-list-tile-title
-                span {{ item.title }}
+        v-list-item(
+          v-else,
+          :to='item.href',
+          :disabled='item.disabled',
+          link
+        )
+          v-list-item-action
+            v-icon(v-if='!item.custom') {{ item.action }}
+            div(v-else, :class='item.custom')
+          v-list-item-content
+            v-list-item-title
+              span {{ item.title }}
 </template>
 
 <script>
@@ -66,7 +52,7 @@ export default {
         href: '/localPage'
       },
       { divider: true },
-      { header: 'Anime world' },
+      { header: 'Anime' },
       {
         title: 'Seasons',
         action: 'hourglass_empty',
@@ -77,35 +63,36 @@ export default {
         action: 'more',
         href: '/news'
       },
+      { divider: true },
+      { header: 'Lists' },
       {
-        title: 'Watch lists',
-        action: 'web',
-        group: 'services',
-        items: [
-          {
-            title: 'Local lists',
-            action: 'sort_by_alpha',
-            href: '/watchList'
-          }, {
-            custom: { 'provider-icon': true, 'mal-icon': true },
-            title: 'MyAnimeList.net',
-            href: '/services/mal'
-          }, {
-            custom: { 'provider-icon': true, 'kitsu-icon': true },
-            title: 'Kitsu.io',
-            href: '/services/kitsu'
-          }, {
-            custom: { 'provider-icon': true, 'anilist-icon': true },
-            title: 'Anilist',
-            href: '/services/anilist'
-          }
-        ]
+        title: 'Local lists',
+        action: 'sort_by_alpha',
+        href: '/watchList'
+      }, {
+        custom: { 'provider-icon': true, 'mal-icon': true },
+        title: 'MyAnimeList.net',
+        href: '/services/mal'
+      }, {
+        custom: { 'provider-icon': true, 'kitsu-icon': true },
+        title: 'Kitsu.io',
+        href: '/services/kitsu'
+      }, {
+        custom: { 'provider-icon': true, 'anilist-icon': true },
+        title: 'Anilist',
+        href: '/services/anilist'
       },
       { divider: true }
     ]
   }),
 
   computed: {
+    mini: {
+      get () {
+        return this.$store.state.drawer.mini
+      },
+      set () {}
+    },
     show: {
       get () {
         return this.$store.state.drawer.left
@@ -117,8 +104,3 @@ export default {
   }
 }
 </script>
-
-<style lang="stylus" scoped>
-  .drawer
-    padding-top 64px
-</style>

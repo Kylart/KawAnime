@@ -50,18 +50,18 @@ export default {
     shadow () {
       let result = ''
 
-      const { shadow, outline } = this.cue
+      const { shadow, outlined } = this.cue
       const containerHeight = +this.size.height.slice(0, -2) // Need to remove px
 
       const shadowDepth = shadow.thickness * 1.5 * containerHeight
-      const outlineDepth = outline.thickness * containerHeight * 2
+      const outlinedDepth = outlined.thickness * containerHeight * 2
 
-      // First, outline
-      result = `0 0 ${1.8 * outlineDepth}px ${outline.color}, `.repeat(8).slice(0, -2)
+      // First, outlined
+      result = `0 0 ${1.8 * outlinedDepth}px ${outlined.color}, `.repeat(8).slice(0, -2)
 
       if (shadowDepth) {
-        if (!outline.thickness) {
-          // SSA specifies that if no outline is set, 1px outline must be forced.
+        if (!outlined.thickness) {
+          // SSA specifies that if no outlined is set, 1px outlined must be forced.
           result = `1px 1px 1px ${shadow.color}, `.repeat(8).slice(0, -2)
         }
 

@@ -3,7 +3,7 @@
     v-model='show',
     width='60%',
     transition='dialog-transition',
-    lazy, absolute, persistent
+    absolute, persistent
   )
     v-card
       v-card-title.grey--text.text-uppercase
@@ -25,7 +25,7 @@
       v-card-actions
         v-spacer
         v-btn(@click='applyFilters') Apply
-        v-btn.blue--text(flat, @click='close') Cancel
+        v-btn.blue--text(text, @click='close') Cancel
 </template>
 
 <script>

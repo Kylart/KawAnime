@@ -1,16 +1,17 @@
 <template lang="pug">
   v-dialog(
     v-model='show',
-    lazy, absolute,
+    absolute,
     @keydown.esc='close',
     :fullscreen='current !== null',
     width='700'
   )
-    v-btn(
-      slot='activator',
-      icon
-    )
-      v-icon search
+    template(v-slot:activator='{ on }')
+      v-btn(
+        v-on='on',
+        icon
+      )
+        v-icon search
     v-card(v-if='!searching && !current')
       v-container(grid-list-md)
         v-layout(row, wrap, justify-center)

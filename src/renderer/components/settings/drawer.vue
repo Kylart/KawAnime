@@ -1,15 +1,15 @@
 <template lang="pug">
   .sections-container.elevation-12.indigo.pt-2.pb-2
-    v-list-tile(
+    v-list-item(
       v-for='section in sections', :key='section.value',
       @click='setRoute(section.value)',
       :color='getColor(section.value)',
       ripple
     )
-      v-list-tile-action
+      v-list-item-action
         v-icon(:color='getColor(section.value)') {{ section.icon }}
-      v-list-tile-content
-        v-list-tile-title
+      v-list-item-content
+        v-list-item-title
           span {{ section.name }}
 </template>
 

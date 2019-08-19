@@ -17,7 +17,7 @@
         )
           v-layout.text(fill-height, column, justify-space-between)
             v-flex.entry-title(xs2) {{ name }}
-            v-flex.text-xs-center(v-if='!picture', xs2)
+            v-flex.text-center(v-if='!picture', xs2)
               v-progress-circular(indeterminate)
             v-flex.entry-ep(xs2, v-if='episodeLabel')
               span {{ episodeLabel }}
@@ -45,13 +45,14 @@
       .fansub.ellipsis(v-show='!hasFansub') {{ info.parsedName.release_group }}
       v-spacer
       template(v-for='list in lists')
-        v-tooltip(top, lazy)
-          v-btn(
-            slot='activator',
-            @click='_addTo(list.list)',
-            icon
-          )
-            v-icon(:color="_isIn(list.list) ? '#66BB6A' : 'default'") {{ list.icon }}
+        v-tooltip(top)
+          template(v-slot:activator='{ on }')
+            v-btn(
+              v-on='on',
+              @click='_addTo(list.list)',
+              icon
+            )
+              v-icon(:color="_isIn(list.list) ? '#66BB6A' : 'default'") {{ list.icon }}
           span {{ _isIn(list.list) ? 'Remove from' : 'Add to' }} {{ list.name }}
       //- v-btn(icon)
       //-   span.mal-icon

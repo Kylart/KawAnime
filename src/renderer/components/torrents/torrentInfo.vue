@@ -16,8 +16,9 @@
         .title Torrent information
         v-spacer
         v-tooltip(top)
-          v-btn(icon, slot='activator', @click='copy')
-            v-icon content_copy
+          template(v-slot:activator='{ on }')
+            v-btn(icon, v-on='on', @click='copy')
+              v-icon content_copy
           span Copy magnet to clipboard
       v-divider
       v-card-text
@@ -56,9 +57,10 @@
           template(v-for='file in torrent.files')
             .file(:key='file.path')
               v-tooltip(top)
-                .file-title(slot='activator')
-                  span.name {{ file.name }}
-                  v-icon(:color='getFileStatus(file).color') {{ getFileStatus(file).icon }}
+                template(v-slot:activator='{ on }')
+                  .file-title(v-on='on')
+                    span.name {{ file.name }}
+                    v-icon(:color='getFileStatus(file).color') {{ getFileStatus(file).icon }}
 
                 span {{ file.path }}
 </template>

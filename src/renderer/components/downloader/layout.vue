@@ -18,7 +18,7 @@
             min='0'
           )
         .quality-container
-          v-radio-group(v-model='quality', row)
+          v-radio-group.group-container(v-model='quality', row)
             v-radio(
               v-for='quality in qualities',
               :key='quality',
@@ -138,10 +138,13 @@ export default {
       padding 16px 8px
 
     .quality-container
-      padding 16px 40px
+      padding 16px 48px
       width 80%
       display flex
       justify-content space-between
+
+      .group-container
+        width 100%
 
   .button-container
     display flex

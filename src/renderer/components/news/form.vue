@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-container(fluid, pa-0, pt-2, grid-list-md)
+  v-container(fluid, pt-2, grid-list-md)
     v-layout
       v-spacer
 

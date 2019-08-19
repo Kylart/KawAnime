@@ -1,13 +1,14 @@
 <template lang="pug">
   v-dialog(
     v-model='show',
-    width='65%',
-    lazy
+    width='65%'
   )
-    v-tooltip(top, lazy, slot='activator')
-      v-btn(slot='activator', icon, large)
-        v-icon(large) import_export
-      span Transfer Lists
+    template(v-slot:activator='{ on: dialog }')
+      v-tooltip(top)
+        template(v-slot:activator='{ on: tooltip }')
+          v-btn(v-on='{ ...dialog, ...tooltip }', icon, large)
+            v-icon(large) import_export
+        span Transfer Lists
 
     v-card
       v-card-title.grey--text.text-uppercase
@@ -31,7 +32,7 @@
 
             v-scale-transition(group)
               template(v-if='source')
-                v-flex.text-xs-center(key='icon')
+                v-flex.text-center(key='icon')
                   v-icon(large) keyboard_arrow_down
 
                 v-flex(key='select')
@@ -57,12 +58,12 @@
 
               v-btn(@click='transfer') Yes!
 
-              v-btn.blue--text(flat, @click='confirm = false') Nevermind!
+              v-btn.blue--text(text, @click='confirm = false') Nevermind!
 
             template(v-else)
               v-btn(@click='confirm = true') Transfer!
 
-              v-btn.blue--text(flat, @click='close') Cancel
+              v-btn.blue--text(text, @click='close') Cancel
 </template>
 
 <script>

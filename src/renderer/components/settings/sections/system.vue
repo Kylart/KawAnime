@@ -39,7 +39,7 @@
               hint='Allows the app to send events to our server (mainly to know how many users we have)'
             )
 
-      v-container(grid-list-lg, pa-0, mt-3)
+      v-container(grid-list-lg, pa-0, mt-6)
         v-layout(row, wrap, justify-space-around, align-center)
           v-flex(xs12, sm6, md3)
               v-text-field(

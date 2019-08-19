@@ -7,6 +7,7 @@ export default {
   platform: process.platform,
   isConnected: false,
   drawer: {
+    mini: true,
     left: false
   },
   infoSnackbar: {

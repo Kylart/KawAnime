@@ -19,23 +19,27 @@
               v-flex(xs4, justify-space-around, align-center, d-flex)
                 v-tooltip(top)
                   span Rewind 5s
-                  v-icon(@click='timeForward(-5)', slot='activator') replay_5
+                  template(v-slot:activator='{ on }')
+                    v-icon(@click='timeForward(-5)', v-on='on') replay_5
                 v-icon(large, @click='togglePlay', v-html='paused ? "play_arrow" : "pause"')
                 v-tooltip(top)
                   span Fast forward 5s
-                  v-icon(@click='timeForward(5)', slot='activator') forward_5
+                  template(v-slot:activator='{ on }')
+                    v-icon(@click='timeForward(5)', v-on='on') forward_5
                 v-tooltip(top)
                   span Skip 1m25 (op & ed)
-                  v-icon(@click='timeForward(85)', slot='activator') fast_forward
+                  template(v-slot:activator='{ on }')
+                    v-icon(@click='timeForward(85)', v-on='on') fast_forward
 
               v-flex(xs2)
                 v-menu(v-show='hasTracks', offset-overflow, offset-y, top)
-                  v-btn.subtitles.ma-0(slot='activator', small, outline, icon, color='indigo accent-2')
-                    v-icon(small) subtitles
+                  template(v-slot:activator='{ on }')
+                    v-btn.subtitles.ma-0(v-on='on', small, outlined, icon, color='indigo accent-2')
+                      v-icon(small) subtitles
                   v-list(dense).subtitle-lang
-                    v-list-tile(v-for='(num, i) in Object.keys(numToLang)', :key='i' @click="setTrack(num)")
-                      v-list-tile-title(:class="{ 'blue--text': numToLang[num] === currentLang }") {{ numToLang[num] }}
-                v-btn.fullscreen.ma-0.ml-2(color='indigo accent-2', small, outline, icon, @click='toggleFullScreen')
+                    v-list-item(v-for='(num, i) in Object.keys(numToLang)', :key='i' @click="setTrack(num)")
+                      v-list-item-title(:class="{ 'blue--text': numToLang[num] === currentLang }") {{ numToLang[num] }}
+                v-btn.fullscreen.ma-0.ml-2(color='indigo accent-2', small, outlined, icon, @click='toggleFullScreen')
                   v-icon(v-html="fullscreen ? 'fullscreen_exit' : 'fullscreen'")
 
         v-flex.wide.progress-bar-container(xs5, d-flex, align-center)

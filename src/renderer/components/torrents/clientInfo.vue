@@ -8,7 +8,7 @@
       v-layout(
         column,
         align-start,
-        pt-4
+        pt-6
       )
 
         v-layout.speeds-container(justify-space-between)

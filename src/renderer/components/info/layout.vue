@@ -40,8 +40,8 @@
         :style='charHover.overflow',
         ref='chars'
       )
-        v-btn.expand(icon, large, color='indigo', v-show='!charHover.show', @click='expandChar')
-          v-icon(large) keyboard_arrow_down
+        v-btn.expand.mb-2(fab, small, color='indigo', v-show='!charHover.show', @click='expandChar')
+          v-icon keyboard_arrow_down
         v-flex(v-for='char in info.characters', :key='char.link', xs12, sm6, md4, pt-0)
           v-layout(row, wrap)
             v-flex(xs3)
@@ -130,7 +130,7 @@
                 )
               v-flex.actions(xs2)
                 v-btn(large, icon, @click='watch(ep)')
-                  v-icon(large) play_circle_outline
+                  v-icon(large) play_circle_outlined
                 v-btn(large, icon, @click='download(ep)')
                   v-icon(large) file_download
 
@@ -162,9 +162,10 @@
 
       template(v-for='_provider in providers')
         v-tooltip(top)
-          v-btn(fab, small, slot='activator', @click='addTo(_provider.value)')
-            v-icon(v-if='_provider.action') {{ _provider.action }}
-            .icon(v-else, :class='{ [`${_provider.value}-icon`]: true }')
+          template(v-slot:activator='{ on }')
+            v-btn(fab, small, v-on='on', @click='addTo(_provider.value)')
+              v-icon(v-if='_provider.action') {{ _provider.action }}
+              .icon(v-else, :class='{ [`${_provider.value}-icon`]: true }')
           span Add to my {{ _provider.text }} list
 </template>
 

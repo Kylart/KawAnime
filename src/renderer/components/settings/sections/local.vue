@@ -7,7 +7,7 @@
       v-container(grid-list-lg, pa-0)
         v-layout(row, wrap, justify-center, align-center)
           v-flex(xs12, sm4, md2)
-            v-btn(flat, @click='openDialog') Change Dir
+            v-btn(text, @click='openDialog') Change Dir
           v-flex(xs12, sm8, md6)
             .path.ellipsis.pl-2 {{ path }}
           v-flex(xs12, md4, d-flex, align-center, justify-space-around)

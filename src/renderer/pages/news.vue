@@ -5,7 +5,7 @@
     transition(name='fade', mode='out-in')
       v-container(
         fluid, fill-height,
-        v-if='isRefreshing', key='loading'
+        v-if='isRefreshing || !entries.length', key='loading'
       )
         loader
 

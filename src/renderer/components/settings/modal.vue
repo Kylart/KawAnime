@@ -1,8 +1,8 @@
 <template lang="pug">
-  v-dialog(fullscreen, lazy, v-model='show')
-
-    v-btn(slot='activator', icon)
-      v-icon settings
+  v-dialog(fullscreen, v-model='show')
+    template(v-slot:activator='{ on }')
+      v-btn(v-on='on', icon)
+        v-icon settings
 
     layout(@close='close')
 </template>

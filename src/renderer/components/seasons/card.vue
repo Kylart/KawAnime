@@ -16,26 +16,29 @@
                   style='height: 100%;'
                 )
                   template(v-for='list in lists')
-                    v-tooltip(top, lazy)
-                      v-btn(
-                        slot='activator',
-                        @click='_addTo(list.list)',
-                        :color="_isIn(list.list) ? '#66BB6A' : 'default'",
-                        icon
-                      )
-                        v-icon {{ list.icon }}
+                    v-tooltip(top)
+                      template(v-slot:activator='{ on }')
+                        v-btn(
+                          v-on='on',
+                          @click='_addTo(list.list)',
+                          :color="_isIn(list.list) ? '#66BB6A' : 'default'",
+                          icon
+                        )
+                          v-icon {{ list.icon }}
                       span {{ _isIn(list.list) ? 'Remove from' : 'Add to' }} {{ list.name }}
           v-flex.pa-2.pr-3(xs8)
             v-layout(row, wrap, column)
               v-flex(xs2, d-flex, justify-space-between)
-                v-tooltip.entry-title.ellipsis(top, lazy)
-                  span(slot='activator') {{ info.title }}
+                v-tooltip.entry-title.ellipsis(top)
+                  template(v-slot:activator='{ on }')
+                    span(v-on='on') {{ info.title }}
                   span {{ info.title }}
                 .nb-ep.ellipsis {{ episodeLabel }}
               v-flex(xs2, d-flex, justify-space-between)
                 .source.ellipsis {{ info.fromType }}
-                v-tooltip.genres.ellipsis(lazy, top)
-                  span(slot='activator') {{ info.genres.join(' / ') }}
+                v-tooltip.genres.ellipsis(top)
+                  template(v-slot:activator='{ on }')
+                    span(v-on='on') {{ info.genres.join(' / ') }}
                   span {{ info.genres.join(' / ') }}
               v-divider
               v-flex(xs7)

@@ -1,8 +1,9 @@
 <template lang="pug">
   v-card.pa-2
     v-layout(row, wrap, column)
-      v-tooltip(top, lazy, v-show='torrentName')
-        .torrent-title.ellipsis.pt-1.pb-2(slot='activator') {{ torrentName }}
+      v-tooltip(top, v-show='torrentName')
+        template(v-slot:activator='{ on }')
+          .torrent-title.ellipsis.pt-1.pb-2(v-on='on') {{ torrentName }}
         span {{ torrentName }}
 
       v-divider
@@ -16,7 +17,7 @@
 
       v-divider
 
-      v-layout(justify-space-around, pl-4, pr-4)
+      v-layout(justify-space-around, pl-6, pr-6)
         template(v-for='action in actions')
           v-btn(v-if='!action.displayInfo', icon, @click='action.action', large)
             v-icon(:color='action.color', large) {{ action.icon }}

@@ -1,28 +1,31 @@
 <template lang="pug">
-  v-toolbar.toolbar(
+  v-app-bar.toolbar(
     app, fixed, dense,
     color='indigo',
-    clipped-right, clipped-left
+    clipped-left
   )
-    v-toolbar-side-icon(@click.stop='toggleLeftDrawer')
-    v-toolbar-title.title.jap かわニメ
+    v-app-bar-nav-icon(@click='toggleMiniDrawer')
+      v-icon {{ miniDrawer ? 'chevron_right' : 'chevron_left' }}
+    v-toolbar-title.app-title.jap かわニメ
     v-spacer
     template(v-if='update')
-      v-tooltip(left, lazy)
-        v-btn(icon, @click='restartAndUpdate', slot='activator')
-          v-icon.green--text update
+      v-tooltip(left)
+        template(v-slot:activator='{ on }')
+          v-btn(icon, @click='restartAndUpdate', v-on='on')
+            v-icon.green--text update
         span Update KawAnime
     searcher
     downloader
     settings
 
     v-tooltip(top)
-      v-btn(
-        @click='openChangelog',
-        slot='activator',
-        icon
-      )
-        v-icon fiber_new
+      template(v-slot:activator='{ on }')
+        v-btn(
+          @click='openChangelog',
+          v-on='on',
+          icon
+        )
+          v-icon fiber_new
       span What's new in version v{{ version }}?
 </template>
 
@@ -56,12 +59,20 @@ export default {
         return this.$store.state.drawer
       },
       set () {}
+    },
+    miniDrawer: {
+      get () {
+        return this.drawer.mini
+      },
+      set (bool) {
+        this.$store.commit('setMiniDrawer', bool)
+      }
     }
   },
 
   methods: {
-    toggleLeftDrawer () {
-      this.$store.commit('setLeftDrawer', !this.drawer.left)
+    toggleMiniDrawer () {
+      this.miniDrawer = !this.miniDrawer
     },
     toggleRightDrawer () {
       this.$store.commit('setRightDrawer', !this.drawer.right)
@@ -77,7 +88,7 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-  .title
+  .app-title
     overflow hidden
     font-size 30px !important
     line-height 25px !important

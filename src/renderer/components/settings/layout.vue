@@ -9,8 +9,8 @@
       v-flex.pa-3(xs3)
         drawer(@routeUpdate='setRoute', :indexKey='route')
       v-flex.pa-5(xs9)
-        transition(name='page', mode='out-in')
-          component(:is='currentSectionComponent')
+        v-expand-transition(mode='out-in')
+          component(:is='currentSectionComponent', :key='currentSectionComponent.name')
 </template>
 
 <script>

@@ -19,7 +19,8 @@
               v-model='volume',
               append-icon='volume_up',
               prepend-icon='volume_down',
-              thumb-label
+              thumb-label,
+              hide-details
             )
           v-flex(xs3, sm2)
             v-btn(icon, large, @click='play')

@@ -12,25 +12,24 @@
 
     v-tabs(
       v-model='active',
-      color='indigo',
+      background-color='indigo',
       grow
     )
       v-tab(
+        v-model='active',
         v-for='season in tabs',
         :key='season',
         ripple
       ) {{ season }}
 
-      v-tab-item(
-        v-for='season in tabs',
-        :key='season', lazy
-      )
+    v-tabs-items(v-model='active')
+      v-tab-item(v-for='season in tabs', :key='season')
         transition(name='fade', mode='out-in')
           v-container(
             key='season', v-if='!refreshing',
             fluid, grid-list-md, pt-0
           )
-            v-layout(justify-space-between, align-center, pa-3)
+            v-layout(justify-space-between, align-center, pa-6)
               .label {{ entries.length }} {{ label }}
 
               .filters-container

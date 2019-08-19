@@ -21,8 +21,8 @@
               )
       v-card-actions
         v-spacer
-        v-btn.blue--text.darken-1(flat, @click='add()') Add
-        v-btn.blue--text.darken-1(flat, @click='hide()') Close
+        v-btn.blue--text.darken-1(text, @click='add()') Add
+        v-btn.blue--text.darken-1(text, @click='hide()') Close
 </template>
 
 <script>

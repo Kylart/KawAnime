@@ -2,7 +2,7 @@
   div
     v-tabs(
       v-model='active',
-      color='indigo',
+      background-color='indigo',
       grow, icons-and-text
     )
       v-tab(
@@ -12,9 +12,10 @@
       ) {{ list.name }}
         v-icon {{ list.icon }}
 
+    v-tabs-items(v-model='active')
       v-tab-item(
         v-for='list in lists',
-        :key='list.list', lazy
+        :key='list.list'
       )
         list(:name='list.list')
 </template>

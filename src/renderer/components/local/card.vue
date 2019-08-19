@@ -50,7 +50,7 @@
             template(v-else)
               v-flex.entry-ep(xs2)
                 span {{ file.animeType2 }}
-            v-flex.text-xs-center(v-if='!picture', xs2)
+            v-flex.text-center(v-if='!picture', xs2)
               v-progress-circular(indeterminate)
             v-flex.entry-title(xs2)
               div {{ file.title }}
@@ -58,13 +58,14 @@
     v-card-actions
       v-layout.actions(justify-space-around)
         template(v-for='list in lists')
-          v-tooltip(top, lazy)
-            v-btn(
-              slot='activator',
-              @click='_addTo(list.list)',
-              icon
-            )
-              v-icon(:color="_isIn(list.list) ? '#66BB6A' : 'default'") {{ list.icon }}
+          v-tooltip(top)
+            template(v-slot:activator='{ on }')
+              v-btn(
+                v-on='on',
+                @click='_addTo(list.list)',
+                icon
+              )
+                v-icon(:color="_isIn(list.list) ? '#66BB6A' : 'default'") {{ list.icon }}
             span {{ _isIn(list.list) ? 'Remove from' : 'Add to' }} {{ list.name }}
 </template>
 

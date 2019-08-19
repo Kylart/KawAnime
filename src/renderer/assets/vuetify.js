@@ -1,7 +1,15 @@
+import 'roboto-fontface/css/roboto/roboto-fontface.css'
+import 'material-design-icons-iconfont/dist/material-design-icons.css'
+
 import theme from '@/stylus/theme.js'
+import * as directives from 'vuetify/lib/directives'
 
 import Vuetify, {
   VApp,
+  VAppBar,
+  VAppBarNavIcon,
+  VToolbar,
+  VToolbarTitle,
   VContent,
   VContainer,
   VLayout,
@@ -10,15 +18,12 @@ import Vuetify, {
   VMenu,
   VList,
   VListGroup,
-  VListTile,
-  VListTileContent,
-  VListTileAction,
-  VListTileTitle,
-  VListTileAvatar,
+  VListItem,
+  VListItemContent,
+  VListItemAction,
+  VListItemTitle,
+  VListItemAvatar,
   VNavigationDrawer,
-  VToolbar,
-  VToolbarTitle,
-  VToolbarSideIcon,
   VSystemBar,
   VSubheader,
   VFooter,
@@ -36,11 +41,14 @@ import Vuetify, {
   VRadioGroup,
   VRadio,
   VTabs,
+  VTabsItems,
   VTab,
   VTabItem,
   VSwitch,
+  VExpansionPanels,
   VExpansionPanel,
   VExpansionPanelContent,
+  VExpansionPanelHeader,
   VDivider,
   VTooltip,
   VDataTable,
@@ -64,13 +72,15 @@ import Vuetify, {
   VExpandTransition
 } from 'vuetify/lib'
 
-import directives from 'vuetify/lib/directives'
-
 export default (Vue) => {
   Vue.use(Vuetify, {
-    theme,
+    directives,
     components: {
       VApp,
+      VAppBar,
+      VAppBarNavIcon,
+      VToolbar,
+      VToolbarTitle,
       VContent,
       VContainer,
       VLayout,
@@ -79,15 +89,12 @@ export default (Vue) => {
       VMenu,
       VList,
       VListGroup,
-      VListTile,
-      VListTileContent,
-      VListTileAction,
-      VListTileTitle,
-      VListTileAvatar,
+      VListItem,
+      VListItemContent,
+      VListItemAction,
+      VListItemTitle,
+      VListItemAvatar,
       VNavigationDrawer,
-      VToolbar,
-      VToolbarTitle,
-      VToolbarSideIcon,
       VSystemBar,
       VSubheader,
       VFooter,
@@ -105,11 +112,14 @@ export default (Vue) => {
       VRadioGroup,
       VRadio,
       VTabs,
+      VTabsItems,
       VTab,
       VTabItem,
       VSwitch,
+      VExpansionPanels,
       VExpansionPanel,
       VExpansionPanelContent,
+      VExpansionPanelHeader,
       VDivider,
       VTooltip,
       VDataTable,
@@ -131,7 +141,19 @@ export default (Vue) => {
       VFadeTransition,
       VScaleTransition,
       VExpandTransition
+    }
+  })
+
+  return new Vuetify({
+    icons: {
+      iconfont: 'md'
     },
-    directives
+    theme: {
+      dark: true,
+      themes: {
+        dark: theme,
+        light: theme
+      }
+    }
   })
 }
