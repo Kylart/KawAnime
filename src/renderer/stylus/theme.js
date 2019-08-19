@@ -1,27 +1,25 @@
+import colors from 'vuetify/lib/util/colors'
+
 export default {
   dark: true,
   themes: {
     dark: {
-      primary: '#ff9800',
-      accent: '#ce93d8',
-      secondary: '#505050',
-      info: '#9c27b0',
-      warning: '#0D47A1',
-      error: '#B71C1C',
-      success: '#2E7D32',
-      mablue: '#0D47A1',
-      dark: '#424242'
+      primary: colors.orange.base,
+      secondary: colors.indigo.base,
+      accent: colors.purple.base,
+      error: colors.red.base,
+      warning: colors.pink.base,
+      info: colors.deepPurple.base,
+      success: colors.green.base
     },
     light: {
-      primary: '#ff9800',
-      accent: '#ce93d8',
-      secondary: '#505050',
-      info: '#9c27b0',
-      warning: '#0D47A1',
-      error: '#B71C1C',
-      success: '#2E7D32',
-      mablue: '#0D47A1',
-      dark: '#424242'
+      primary: colors.indigo.base,
+      secondary: colors.orange.base,
+      accent: colors.purple.base,
+      error: colors.red.base,
+      warning: colors.pink.base,
+      info: colors.deepPurple.base,
+      success: colors.green.base
     }
   }
 }
