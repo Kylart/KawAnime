@@ -21,7 +21,7 @@
                         v-btn(
                           v-on='on',
                           @click='_addTo(list.list)',
-                          :color="_isIn(list.list) ? '#66BB6A' : 'default'",
+                          :color="_isIn(list.list) ? 'success' : 'default'",
                           icon
                         )
                           v-icon {{ list.icon }}
@@ -100,7 +100,7 @@ export default {
       padding 32px 0
       background-color rgba(0, 0, 0, 0.4)
       align-items center
-      justify-content center
+      justify-content space-around
       flex-direction column
 
       div
