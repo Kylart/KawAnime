@@ -2,7 +2,7 @@ module.exports = function () {
   describe('Downloader modal', function () {
     it('should open on click', function () {
       return this.app.client
-        .$('nav.toolbar > div > div:nth-child(5)').click()
+        .$('.toolbar > div > *:nth-child(8)').click()
         .pause(500).saveScreenshot('test/screenshots/downloader_modal.png')
         .getText('.button-container .button').should.eventually.equal('DOWNLOAD')
         .isExisting('.input-container').should.eventually.be.true
@@ -36,20 +36,18 @@ module.exports = function () {
       return this.app.client
         .saveScreenshot('test/screenshots/downloader_results.png')
         .getText('#magnet-modal').should.eventually.include('Results for Sakura Trick')
-        .getText('#magnet-modal li > div:nth-child(1)').should.eventually.include('Sakura Trick')
-        .$('#magnet-modal li > div:nth-child(1)').click()
-        .waitUntil(async () => (await this.app.client.$('#magnet-modal li:nth-child(1)').getAttribute('aria-expanded')) === 'true')
+        .$('#magnet-modal div:nth-child(3) > div > div > button').click()
+        .waitUntil(async () => (await this.app.client.$('#magnet-modal div:nth-child(3) > div > div').getAttribute('aria-expanded')) === 'true')
         .pause(500)
         .saveScreenshot('test/screenshots/downloader_results_expanded.png')
-        .isExisting('#magnet-modal li:nth-child(1) > div:nth-child(2) > div:last-child').should.eventually.be.true
-        .getText('#magnet-modal li:nth-child(1) > div:nth-child(2) > div:last-child').should.eventually.include('Sakura Trick - Ep. 4')
-        .getText('#magnet-modal li:nth-child(1) > div:nth-child(2) > div:nth-child(2)').should.eventually.include('Sakura Trick - Ep. 8')
-        .getText('#magnet-modal li:nth-child(1) > div:nth-child(2) > div:nth-child(3)').should.eventually.include('Sakura Trick - Ep. 7')
+        .getText('#magnet-modal > div:nth-child(3) > div > div > div > div > div:nth-child(5)').should.eventually.include('Sakura Trick - Ep. 4')
+        .getText('#magnet-modal > div:nth-child(3) > div > div > div > div > div:nth-child(1)').should.eventually.include('Sakura Trick - Ep. 8')
+        .getText('#magnet-modal > div:nth-child(3) > div > div > div > div > div:nth-child(2)').should.eventually.include('Sakura Trick - Ep. 7')
     })
 
-    it('should close the magnet modal when hitting the escape key', function () {
+    it('should close the magnet modal when hitting the escape key', async function () {
       return this.app.client
-        .$('body').keys([ 'Escape' ])
+        .$('#magnet-modal > div:nth-child(4) > button').click()
         .pause(500)
         .isVisible('#magnet-modal').should.eventually.be.false
     })
