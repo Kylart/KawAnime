@@ -1,6 +1,5 @@
 <script>
 import VSlider from 'vuetify/lib/components/VSlider/VSlider'
-import { VScaleTransition } from 'vuetify/lib/components/transitions'
 
 import Hover from '@/mixins/video/hover'
 
@@ -18,6 +17,11 @@ export default {
     thumbLabel: {
       type: Boolean,
       default: true
+    },
+    // Override
+    thumbSize: {
+      type: [Number, String],
+      default: 48
     }
   },
 
@@ -79,32 +83,6 @@ export default {
 
       return result
     },
-    // Override
-    getLabel (value) {
-      return this.$createElement('span', this.formatLabel(value))
-    },
-    // Override
-    genThumbLabel (content) {
-      return this.$createElement(VScaleTransition, {
-        props: { origin: 'bottom center' }
-      }, [
-        this.$createElement(
-          'div', {
-            staticClass: 'thumb-container',
-            directives: [{
-              name: 'show',
-              value: this.isFocused || this.isActive
-            }]
-          }, [
-            this.$createElement(
-              'div', this.setBackgroundColor(this.computedThumbColor, {
-                staticClass: 'thumb-content'
-              }), [ content ]
-            )
-          ]
-        )
-      ])
-    },
     genBuffers () {
       const ticks = this.buffer.map(([start, end]) => {
         const span = this.$createElement('span', {
@@ -126,6 +104,18 @@ export default {
         ticks
       )
     },
+
+    genHoverPreviewContainer () {
+      return this.$createElement('div', {
+        on: this.genListeners(),
+        staticClass: 'hello-im-preview',
+        style: {
+          height: '12px',
+          width: '100%'
+        }
+      })
+    },
+
     // Override
     genChildren () {
       return [
@@ -133,12 +123,16 @@ export default {
         this.genInput(),
         this.genTrackContainer(),
         this.genSteps(),
+        this.genHoverPreviewContainer(),
         this.genHoverThumbContainer(),
         this.genThumbContainer(
-          this.internalValue,
+          this.formatLabel(this.internalValue),
           this.inputWidth,
-          this.isFocused || this.isActive,
-          this.onThumbMouseDown
+          this.isActive,
+          this.isFocused,
+          this.onThumbMouseDown,
+          this.onFocus,
+          this.onBlur
         )
       ]
     }

@@ -9,7 +9,7 @@
         v-btn.video-size(color='secondary', dark, icon, outlined, @click.stop='actOnWindow("minimize")', v-show='!fullscreen')
           v-icon {{ isMinimized ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}
 
-        v-btn.video-close(color='secondary', dark, icon, outlined, @click.stop='actOnWindow("close")')
+        v-btn.video-close.mr-2.ml-4(color='secondary', dark, icon, outlined, @click.stop='actOnWindow("close")')
           v-icon close
 
       //- Center play button

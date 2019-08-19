@@ -37,7 +37,7 @@ export default {
       width: 85,
       bottom: 0,
       right: 0,
-      z: 3,
+      z: 5,
       isMinimized: false
     }
   },
@@ -118,7 +118,7 @@ export default {
       this.isMinimized = false
 
       if (this.fullscreen) {
-        this.z = 4
+        this.z = 10
         this.width = 100
         this.height = 100
         this.bottom = 0
@@ -126,7 +126,7 @@ export default {
       } else {
         this.width = 85
         this.height = 85
-        this.z = 3
+        this.z = 5
         this.center()
       }
 
