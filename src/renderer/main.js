@@ -2,8 +2,9 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import Vuetify from './assets/vuetify'
-import Helpers from '../vendor/helpers'
+
+import Helpers from 'vendor/helpers'
+import Vuetify from '@/plugins/vuetify'
 
 Vue.config.productionTip = false
 
