@@ -3,7 +3,6 @@ node_js: "12"
 
 cache:
   directories:
-    - node_modules
     - $HOME/.cache/electron
     - $HOME/.cache/electron-builder
 
@@ -38,10 +37,10 @@ jobs:
             - gcc-5
       env: CC=gcc-5 CXX=g++-5
       name: Linux
+      services:
+        - xvfb
       before_script:
         - "export DISPLAY=:99.0"
-        - "sh -e /etc/init.d/xvfb start"
-        - sleep 3 # give xvfb some time to start
       script:
         - node --version
         - npm --version
