@@ -146,7 +146,7 @@
     //- Action button
     v-speed-dial(
       v-model='actions.show',
-      top, left, fixed,
+      top, left, absolute,
       open-on-hover,
       direction='right',
       transition='slide-x-transition'
@@ -154,11 +154,10 @@
       template(v-slot:activator)
         v-btn#info-actions(
           color='primary',
-          v-model='actions.show',
           fab
         )
-          v-icon account_circle
-          v-icon close
+          v-icon(v-if='!actions.show') account_circle
+          v-icon(v-else) close
 
       template(v-for='_provider in providers')
         v-tooltip(top)
@@ -332,8 +331,9 @@ export default {
 
 <style lang="stylus" scoped>
   .icon
-    height 20px
-    width 20px
+    height 24px
+    width 24px
+    background-size 24px 24px
 
   .info-container
     position relative
