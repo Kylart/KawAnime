@@ -28,16 +28,18 @@
               )
               span.text {{ progress.text }}
 
-            .progress-actions
-              template(v-for='action in actions')
-                v-btn(
-                  small,
-                  :icon='!!action.icon',
-                  @click.stop='action.cb',
-                  v-show='action.show'
-                ) {{ action.text }}
-                  template(v-show='action.icon')
-                    v-icon {{ action.icon }}
+            v-container
+              v-layout(justify-space-around)
+                template(v-for='action in actions')
+                  v-flex
+                    v-btn(
+                      small,
+                      :icon='!!action.icon',
+                      @click.stop='action.cb',
+                      v-show='action.show'
+                    ) {{ action.text }}
+                      template(v-show='action.icon')
+                        v-icon {{ action.icon }}
 
           .menu
             .checkbox(@click='handleClick')
