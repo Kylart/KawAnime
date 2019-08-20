@@ -8,8 +8,8 @@
 
       v-divider
 
-      v-flex(pl-4, pr-2, pb-0, d-flex, justify-space-between, align-center)
-        v-progress-linear(v-model='progress', height='12', color='green')
+      v-flex(pl-4, pr-2, pt-3, pb-0, d-flex, justify-space-between, align-center)
+        v-progress-linear(:value='progress', height='12', color='green')
         .progress-text {{ progress }}%
 
       v-flex(pt-0, pr-2, pb-2, d-flex, justify-end)
@@ -19,10 +19,11 @@
 
       v-layout(justify-space-around, pl-6, pr-6)
         template(v-for='action in actions')
-          v-btn(v-if='!action.displayInfo', icon, @click='action.action', large)
-            v-icon(:color='action.color', large) {{ action.icon }}
-
-        torrent-info(:torrent='torrent')
+          v-flex(d-flex, justify-center)
+            v-btn(v-if='!action.displayInfo', icon, @click='action.action', large)
+              v-icon(:color='action.color', large) {{ action.icon }}
+        v-flex(d-flex, justify-center)
+          torrent-info(:torrent='torrent')
 </template>
 
 <script>
@@ -109,6 +110,7 @@ export default {
     padding 0 12px
 
   .progress-text
+    white-space nowrap
     font-size 16px
     font-weight 300
     letter-spacing 0.02em
