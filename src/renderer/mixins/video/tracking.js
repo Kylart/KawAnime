@@ -1,15 +1,6 @@
+import { mapActions, mapMutations } from 'vuex'
+
 export default {
-  computed: {
-    parsedName () {
-      const parts = this.videoTitle.split(' - ')
-
-      return {
-        name: parts[0],
-        ep: parts[1]
-      }
-    }
-  },
-
   beforeDestroy () {
     const { name: refName, ep: refEp } = this.parsedName
     const { autoTracking } = this.$store.state.config.config
@@ -25,7 +16,25 @@ export default {
     providersAutoTracking.some(Boolean) && this.trackProviders(refName, refEp, providersAutoTracking)
   },
 
+  computed: {
+    parsedName () {
+      const parts = this.videoTitle.split(' - ')
+
+      return {
+        name: parts[0],
+        ep: parts[1]
+      }
+    }
+  },
+
   methods: {
+    ...mapActions('watchLists', {
+      localMove: 'move',
+      localAdd: 'add'
+    }),
+    ...mapMutations({
+      tellUser: 'setInfoSnackbar'
+    }),
     trackLocal (refName, refEp) {
       // Finding entries with the same name
       const lists = this.$store.state.watchLists.lists
@@ -48,12 +57,20 @@ export default {
         if (isRewatch) return
 
         // Updating progress accordingly
-        this.$store.dispatch('watchLists/add', {
+        this.localAdd({
           ...entry,
           progress: +refEp
         })
 
         this.$log(`Updated user local progress for ${refName}.`)
+
+        // If the entry is fully watched, we should move it to seen
+        if (entry.nbEp && +refEp === +entry.nbEp) {
+          this.$log(`Moving ${entry.name} to \`seen\` list as it reached maximum known episode.`)
+          this.tellUser(`${entry.name} completed. Niiice!`)
+
+          this.localMove({ entry, target: 'seen' })
+        }
       })
     },
     trackProviders (refName, refEp, providers) {

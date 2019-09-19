@@ -16,6 +16,12 @@ export default {
   delete (store, entry) {
     ipcRenderer.send(eventsList.localLists.update.main, { type: entry.list, data: entry, isDelete: true })
   },
+  move ({ dispatch }, { entry, target = null }) {
+    dispatch('delete', entry)
+
+    entry.list = target
+    dispatch('add', entry)
+  },
   info (store, entries) {
     ipcRenderer.send(eventsList.localLists.info.main, entries)
   },
