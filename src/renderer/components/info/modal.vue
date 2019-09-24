@@ -205,10 +205,12 @@ export default {
     term () {
       this.search()
     },
-    show () {
-      this.$nextTick(() => {
-        this.$refs.input.focus()
-      })
+    show (show) {
+      if (show) {
+        // Temporary fix
+        // TODO: revert to nextTick
+        setImmediate(() => this.$refs.input.focus())
+      }
     }
   }
 }
