@@ -1,7 +1,7 @@
 import createNamespace from './createNamespace'
 
 const PREFIX = '__ll'
-const NAMESPACE = 'watchLists'
+const NAMESPACE = 'localLists'
 
 export default createNamespace(
   NAMESPACE,

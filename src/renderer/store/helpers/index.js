@@ -1,1 +1,1 @@
-export { default as localLists } from './watchLists'
+export { default as localLists } from './localLists'

@@ -84,7 +84,7 @@ export default {
         // watching list.
         const currentEntries = rootState.releases.releases.current
         const watching = [
-          ...rootState.watchLists.lists.watching.map(({ name }) => name),
+          ...rootState.localLists.lists.watching.map(({ name }) => name),
           ...(rootState.services.mal.lists || []).map(({ title }) => title),
           ...(rootState.services.anilist.lists || []).map(({ title }) => title),
           ...(rootState.services.kitsu.lists || []).map(({ title }) => title)

@@ -8,7 +8,7 @@ export default {
     dispatch('update/init')
     dispatch('localFiles/init')
     dispatch('history/init')
-    dispatch('watchLists/init')
+    dispatch('localLists/init')
     dispatch('torrents/init')
     dispatch('info/init')
     dispatch('downloader/init')
