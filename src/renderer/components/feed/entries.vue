@@ -55,6 +55,8 @@
 </template>
 
 <script>
+import { global } from '@/store/helpers'
+
 // Components
 import Card from '@/components/feed/card.vue'
 
@@ -91,15 +93,12 @@ export default {
   }),
 
   computed: {
+    // Brings __Drawer, __IsConnected, __Platform and __NODE_ENV
+    ...global.state,
+
     releases: {
       get () {
         return this.$store.state.releases.releases.current
-      },
-      set () {}
-    },
-    isOnline: {
-      get () {
-        return this.$store.state.isConnected
       },
       set () {}
     },
@@ -159,7 +158,7 @@ export default {
       this.time = this.$store.state.releases.updateTime.fromNow()
     },
     async search () {
-      if (!this.isOnline) {
+      if (!this.__IsConnected) {
         this.$log('Offline, cancelling search.')
       }
 

@@ -42,6 +42,8 @@
 </template>
 
 <script>
+import { global } from '@/store/helpers'
+
 // Mixins
 import Update from '@/mixins/config/update.js'
 
@@ -87,6 +89,9 @@ export default {
   },
 
   methods: {
+    // Brings __SetLeftDrawer and __TellUser
+    ...global.mutations,
+
     resetToTmp () {
       this.streamingPath = this.$electron.remote.app.getPath('temp')
     },
@@ -112,7 +117,7 @@ export default {
         this.isDefault = true
       } else {
         this.$log('Failure.')
-        this.$store.commit('setInfoSnackbar', 'Could not register as default torrent client...')
+        this.__TellUser('Could not register as default torrent client...')
       }
 
       this.defaultLoading = false

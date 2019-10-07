@@ -59,6 +59,8 @@
 </template>
 
 <script>
+import { global } from '@/store/helpers'
+
 import Layout from '@/components/info/layout.vue'
 
 import { mapGetters } from 'vuex'
@@ -123,6 +125,9 @@ export default {
   },
 
   methods: {
+    // Brings __SetLeftDrawer and __TellUser
+    ...global.mutations,
+
     removeOverride () {
       this.$store.commit('info/overrideProvider', null)
     },
@@ -196,7 +201,7 @@ export default {
     ipcSearchError (e, { msg }) {
       this.loading = false
 
-      this.$store.commit('setInfoSnackbar', 'Could not find any result.')
+      this.__TellUser('Could not find any result.')
       this.$log('Error while getting pre-search results.', msg)
     }
   },

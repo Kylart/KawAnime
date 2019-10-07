@@ -69,6 +69,8 @@
 </template>
 
 <script>
+import { global } from '@/store/helpers'
+
 export default {
   name: 'Magnets-Modal',
 
@@ -81,6 +83,9 @@ export default {
   },
 
   computed: {
+    // Brings __Drawer, __IsConnected, __Platform and __NODE_ENV
+    ...global.state,
+
     values () {
       return this.$store.state.downloader.modal
     },
@@ -88,11 +93,9 @@ export default {
       return this.values.show
     },
     eol () {
-      if (this.$store.state.platform === 'win32') {
-        return '\r\n'
-      } else {
-        return '\n'
-      }
+      return this.__Platform === 'win32'
+        ? '\r\n'
+        : '\n'
     },
     filteredNames () {
       return this.$_.uniq(this.values.magnets.map((magnet) => {

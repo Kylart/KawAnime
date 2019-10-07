@@ -5,8 +5,8 @@
     permanent,
     app,
     clipped,
-    :mini-variant.sync='mini'
-    v-model='show'
+    :mini-variant.sync='__Drawer.mini'
+    v-model='__Drawer.left'
   )
     v-list(dense, nav)
       template(v-for='item in itemGroup')
@@ -29,6 +29,8 @@
 </template>
 
 <script>
+import { global } from '@/store/helpers'
+
 export default {
   name: 'Left-Drawer',
 
@@ -88,20 +90,13 @@ export default {
   }),
 
   computed: {
-    mini: {
-      get () {
-        return this.$store.state.drawer.mini
-      },
-      set () {}
-    },
-    show: {
-      get () {
-        return this.$store.state.drawer.left
-      },
-      set (val) {
-        this.$store.commit('setLeftDrawer', val)
-      }
-    }
+    // Brings __Drawer, __IsConnected, __Platform and __NODE_ENV
+    ...global.state
+  },
+
+  methods: {
+    // Brings __SetLeftDrawer and __TellUser
+    ...global.mutations
   }
 }
 </script>

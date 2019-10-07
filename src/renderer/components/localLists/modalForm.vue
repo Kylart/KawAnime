@@ -34,7 +34,7 @@
             v-flex
               v-select(
                 v-model='entry.list',
-                :items='__llListsNames',
+                :items='__llListNames',
                 label='Category',
                 item-text='name',
                 item-value='list',
@@ -80,7 +80,7 @@
 </template>
 
 <script>
-import { localLists } from '@/store/helpers'
+import { localLists, global } from '@/store/helpers'
 
 export default {
   data: () => ({
@@ -121,6 +121,9 @@ export default {
   },
 
   methods: {
+    // Brings __SetLeftDrawer and __TellUser
+    ...global.mutations,
+
     // Brings __llSet, __llToggleForm, __llSetEntry and __llResetEntry
     ...localLists.mutations,
     // Brings __llAdd, __llMove, __llDelete, __llGet and __llInfo
@@ -140,8 +143,8 @@ export default {
       }
     },
     submit () {
-      if (this.entry.name.length < 2) {
-        this.$store.commit('setInfoSnackbar', 'The name needs to be at least 1 character long.')
+      if (this.entry.name.length < 1) {
+        this.__TellUser('The name needs to be at least 1 character long.')
         return
       }
 

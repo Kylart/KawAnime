@@ -59,6 +59,8 @@
 </template>
 
 <script>
+import { global } from '@/store/helpers'
+
 // Components
 import ImportModal from '@/components/services/import.vue'
 
@@ -110,6 +112,9 @@ export default {
   },
 
   methods: {
+    // Brings __SetLeftDrawer and __TellUser
+    ...global.mutations,
+
     saveTracking (service) {
       this.$nextTick(() => {
         this.setDeepValue(`autoTracking.${service}`, this.autoTracking[service])
@@ -127,14 +132,14 @@ export default {
     },
     signIn (website) {
       const success = (e, { service }) => {
-        this.$store.commit('setInfoSnackbar', 'Successfully logged in.')
+        this.__TellUser('Successfully logged in.')
         this.$store.dispatch('services/getList', { service: website.service })
 
         this.$ipc.removeListener(this.$eventsList.register.token.success, success)
       }
 
       const error = (e, { service }) => {
-        this.$store.commit('setInfoSnackbar', 'Log in failed.')
+        this.__TellUser('Log in failed.')
 
         this.$ipc.removeListener(this.$eventsList.register.token.error, error)
       }

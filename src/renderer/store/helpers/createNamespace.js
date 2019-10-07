@@ -1,4 +1,4 @@
-import { createNamespacedHelpers } from 'vuex'
+import vuex from 'vuex'
 
 /**
  * Concatenate prefix with name. Name will have its first letter set to upper case.
@@ -15,6 +15,25 @@ function addPrefix (prefix, name) {
 }
 
 /**
+ * Correctly format a method allowing aliases if needed. To make an alias,
+ * simply put name = ['myRealName', 'myAlias'].
+ *
+ * @param {string} prefix Prefix to use
+ * @param {string|[string]} name Name or name with alias
+ * @returns
+ */
+function format (prefix, name) {
+  const hasAlias = Array.isArray(name)
+
+  const realName = hasAlias ? name[0] : name
+  const alias = hasAlias && name[1]
+
+  return {
+    [addPrefix(prefix, alias || realName)]: realName
+  }
+}
+
+/**
  * Helpers function to automatically format vuex store map.
  *
  * @export
@@ -28,12 +47,12 @@ function addPrefix (prefix, name) {
  * @returns
  */
 export default function (name, prefix, { actions = [], getters = [], mutations = [], state = [] }) {
-  const { mapActions, mapGetters, mapMutations, mapState } = createNamespacedHelpers(name)
+  const { mapActions, mapGetters, mapMutations, mapState } = name ? vuex.createNamespacedHelpers(name) : vuex
 
   return {
-    actions: mapActions(actions.reduce((acc, action) => ({ ...acc, [addPrefix(prefix, action)]: action }), {})),
-    mutations: mapMutations(mutations.reduce((acc, mutation) => ({ ...acc, [addPrefix(prefix, mutation)]: mutation }), {})),
-    getters: mapGetters(getters.reduce((acc, getter) => ({ ...acc, [addPrefix(prefix, getter)]: getter }), {})),
-    state: mapState(state.reduce((acc, value) => ({ ...acc, [addPrefix(prefix, value)]: value }), {}))
+    actions: mapActions(actions.reduce((acc, action) => Object.assign(acc, format(prefix, action)), {})),
+    mutations: mapMutations(mutations.reduce((acc, mutation) => Object.assign(acc, format(prefix, mutation)), {})),
+    getters: mapGetters(getters.reduce((acc, getter) => Object.assign(acc, format(prefix, getter)), {})),
+    state: mapState(state.reduce((acc, value) => Object.assign(acc, format(prefix, value)), {}))
   }
 }

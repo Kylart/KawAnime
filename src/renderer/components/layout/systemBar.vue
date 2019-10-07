@@ -1,15 +1,21 @@
 <template lang="pug">
   v-system-bar.bar.dragable.pr-0(app)
     v-spacer
-    .window-icon.non-dragable(v-if="$store.state.platform !== 'darwin'")
+    .window-icon.non-dragable(v-if="__Platform !== 'darwin'")
       v-icon.not-close(@click="actOnWindow('minimize')") remove
       v-icon.not-close(@click="actOnWindow('maximize')") check_box_outline_blank
       v-icon.close(@click="actOnWindow('close')") close
 </template>
 
 <script>
+import { global } from '@/store/helpers'
+
 export default {
   name: 'System-Bar',
+
+  computed: {
+    ...global.state
+  },
 
   methods: {
     actOnWindow (action) {

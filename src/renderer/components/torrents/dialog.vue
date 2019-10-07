@@ -45,6 +45,8 @@
 </template>
 
 <script>
+import { global } from '@/store/helpers'
+
 export default {
   name: 'Torrent-Dialog',
 
@@ -68,6 +70,9 @@ export default {
   },
 
   computed: {
+    // Brings __Drawer, __IsConnected, __Platform and __NODE_ENV
+    ...global.state,
+
     config: {
       get () {
         return this.$store.state.config.config.torrentClient
@@ -92,7 +97,7 @@ export default {
       return this.path || this.config.defaultPath || ''
     },
     eol () {
-      return this.$store.state.platform === 'win32'
+      return this.__Platform === 'win32'
         ? '\r\n'
         : '\n'
     }
