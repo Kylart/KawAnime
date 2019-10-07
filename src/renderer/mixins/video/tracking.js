@@ -65,7 +65,7 @@ export default {
         this.$log(`Updated user local progress for ${refName}.`)
 
         // If the entry is fully watched, we should move it to seen
-        if (entry.nbEp && +refEp === +entry.nbEp) {
+        if (entry.list !== 'seen' && entry.nbEp && +refEp === +entry.nbEp) {
           this.$log(`Moving ${entry.name} to \`seen\` list as it reached maximum known episode.`)
           this.tellUser(`${entry.name} completed. Niiice!`)
 
