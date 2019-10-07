@@ -61,6 +61,8 @@
 <script>
 import { mapGetters } from 'vuex'
 
+import { localLists } from '@/store/helpers'
+
 import Status from '@/mixins/lists/status.js'
 
 export default {
@@ -84,17 +86,18 @@ export default {
 
   computed: {
     ...mapGetters('info', [ 'getEntryInfo' ]),
+
+    // Brings __llListNames and __llLists
+    ...localLists.state,
+
     hasFansub () {
       return this.$store.state.releases.params.fansub !== 'None'
     },
     name () {
       return this.info.parsedName.anime_title
     },
-    lists: {
-      get () {
-        return this.$store.state.watchLists.listNames.filter(({ list }) => ['watchList', 'watching'].includes(list))
-      },
-      set () {}
+    lists () {
+      return this.__llListNames.filter(({ list }) => ['watchList', 'watching'].includes(list))
     },
     episodeLabel () {
       const ep = this.info.parsedName.episode_number || 'N/A'

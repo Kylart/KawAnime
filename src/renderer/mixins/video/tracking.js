@@ -1,4 +1,5 @@
-import { mapActions, mapMutations } from 'vuex'
+import { mapMutations } from 'vuex'
+import { localLists } from '@/store/helpers'
 
 export default {
   beforeDestroy () {
@@ -17,6 +18,8 @@ export default {
   },
 
   computed: {
+    // Brings __llListNames and __llLists
+    ...localLists.state,
     parsedName () {
       const parts = this.videoTitle.split(' - ')
 
@@ -28,16 +31,14 @@ export default {
   },
 
   methods: {
-    ...mapActions('watchLists', {
-      localMove: 'move',
-      localAdd: 'add'
-    }),
+    // Brings __llAdd, __llMove, __llDelete, __llGet and __llInfo
+    ...localLists.actions,
     ...mapMutations({
       tellUser: 'setInfoSnackbar'
     }),
     trackLocal (refName, refEp) {
       // Finding entries with the same name
-      const lists = this.$store.state.watchLists.lists
+      const lists = this.__llLists
       const candidates = []
 
       Object.keys(lists).forEach((listName) => {
@@ -57,7 +58,7 @@ export default {
         if (isRewatch) return
 
         // Updating progress accordingly
-        this.localAdd({
+        this.__llAdd({
           ...entry,
           progress: +refEp
         })
@@ -69,7 +70,7 @@ export default {
           this.$log(`Moving ${entry.name} to \`seen\` list as it reached maximum known episode.`)
           this.tellUser(`${entry.name} completed. Niiice!`)
 
-          this.localMove({ entry, target: 'seen' })
+          this.__llMove({ entry, target: 'seen' })
         }
       })
     },

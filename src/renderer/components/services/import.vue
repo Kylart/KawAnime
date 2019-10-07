@@ -67,6 +67,8 @@
 </template>
 
 <script>
+import { localLists } from '@/store/helpers'
+
 export default {
   name: 'Service-Import',
 
@@ -113,6 +115,9 @@ export default {
   },
 
   methods: {
+    // Brings __llAdd, __llMove, __llDelete, __llGet and __llInfo
+    ...localLists.actions,
+
     close () {
       this.show = false
     },
@@ -145,7 +150,7 @@ export default {
           img: entry.img
         }
 
-        this.$store.dispatch('watchLists/add', newEntry)
+        this.__llAdd(newEntry)
       })
 
       this.success()

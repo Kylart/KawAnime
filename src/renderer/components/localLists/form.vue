@@ -70,6 +70,8 @@
 </template>
 
 <script>
+import { localLists } from '@/store/helpers'
+
 export default {
   name: 'List-Form',
 
@@ -103,11 +105,10 @@ export default {
   }),
 
   computed: {
-    lists: {
-      get () {
-        return this.$store.state.watchLists.listNames.filter((list) => list.list !== this.name)
-      },
-      set () {}
+    // Brings __llListNames and __llLists
+    ...localLists.state,
+    lists () {
+      return this.__llListNames.filter((list) => list.list !== this.name)
     },
     label () {
       return this.nbElems === 1
@@ -247,8 +248,11 @@ export default {
   },
 
   methods: {
+    // Brings __llSet, __llToggleForm, __llSetEntry and __llResetEntry
+    ...localLists.mutations,
+
     showForm () {
-      this.$store.commit('watchLists/toggleForm', true)
+      this.__llToggleForm(true)
     },
     showFilterForm () {
       this.filter.show = true

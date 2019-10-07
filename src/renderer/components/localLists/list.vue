@@ -64,12 +64,12 @@ export default {
   }),
 
   computed: {
-    originalEntries: {
-      get () {
-        return Array.from(this.$store.state.watchLists.lists[this.name])
-          .sort((a, b) => a.name < b.name ? -1 : 1)
-      },
-      set () {}
+    // Brings __llListNames and __llLists
+    ...localLists.state,
+
+    originalEntries () {
+      return Array.from(this.__llLists[this.name])
+        .sort((a, b) => a.name < b.name ? -1 : 1)
     },
     // For entries from filters mixins
     filterModel () {

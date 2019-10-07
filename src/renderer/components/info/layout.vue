@@ -170,6 +170,9 @@
 
 <script>
 import NotFoundImage from '../../assets/images/not-found.png'
+
+import { localLists } from '@/store/helpers'
+
 import Episodes from '@/mixins/info/currentEps.js'
 
 import { mapGetters } from 'vuex'
@@ -241,6 +244,9 @@ export default {
   },
 
   methods: {
+    // Brings __llSet, __llToggleForm, __llSetEntry and __llResetEntry
+    ...localLists.mutations,
+
     triggerDelay () {
       if (!this.charHover.show) {
         this.charHover.timeout = setTimeout(this.expandChar, this.charHover.delay)
@@ -306,11 +312,11 @@ export default {
       const isLocal = provider === 'local'
 
       if (isLocal) {
-        this.$store.commit('watchLists/setEntry', {
+        this.__llSetEntry({
           name: this.info.title.en,
           nbEp: this.info.nbEpisodes || '??'
         })
-        this.$store.commit('watchLists/toggleForm', true)
+        this.__llToggleForm(true)
       } else {
         this.$store.commit('services/setFormEntry', {
           service: provider,

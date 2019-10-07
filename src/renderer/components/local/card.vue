@@ -57,7 +57,7 @@
 
     v-card-actions
       v-layout.actions(justify-space-around)
-        template(v-for='list in lists')
+        template(v-for='list in __llListNames')
           v-tooltip(top)
             template(v-slot:activator='{ on }')
               v-btn(
@@ -71,6 +71,8 @@
 
 <script>
 import { mapGetters } from 'vuex'
+
+import { localLists } from '@/store/helpers'
 
 import Status from '@/mixins/lists/status.js'
 import Ipc from '@/mixins/localFiles/ipc.js'
@@ -98,12 +100,10 @@ export default {
 
   computed: {
     ...mapGetters('info', [ 'getEntryInfo' ]),
-    lists: {
-      get () {
-        return this.$store.state.watchLists.listNames
-      },
-      set () {}
-    },
+
+    // Brings __llListNames and __llLists
+    ...localLists.state,
+
     inside: {
       get () {
         return this.$store.state.localFiles.inside

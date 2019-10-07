@@ -34,7 +34,7 @@
             v-flex
               v-select(
                 v-model='entry.list',
-                :items='availableLists',
+                :items='__llListsNames',
                 label='Category',
                 item-text='name',
                 item-value='list',
@@ -80,6 +80,8 @@
 </template>
 
 <script>
+import { localLists } from '@/store/helpers'
+
 export default {
   data: () => ({
     scoreOutOf: 10,
@@ -94,25 +96,16 @@ export default {
   }),
 
   computed: {
-    storeEntry: {
-      get () {
-        return this.$store.state.watchLists.form.entry
-      },
-      set () {}
-    },
+    // Brings __llListNames and __llLists
+    ...localLists.state,
+
     show: {
       get () {
-        return this.$store.state.watchLists.form.show
+        return this.__llForm.show
       },
       set (bool) {
-        this.$store.commit('watchLists/toggleForm', bool)
+        this.__llToggleForm(bool)
       }
-    },
-    availableLists: {
-      get () {
-        return this.$store.state.watchLists.listNames
-      },
-      set () {}
     },
     availableTags () {
       const malList = this.$store.state.services.mal.list
@@ -128,6 +121,11 @@ export default {
   },
 
   methods: {
+    // Brings __llSet, __llToggleForm, __llSetEntry and __llResetEntry
+    ...localLists.mutations,
+    // Brings __llAdd, __llMove, __llDelete, __llGet and __llInfo
+    ...localLists.actions,
+
     close () {
       this.show = false
     },
@@ -147,7 +145,7 @@ export default {
         return
       }
 
-      this.$store.dispatch('watchLists/add', this.entry)
+      this.__llAdd(this.entry)
 
       this.cancel()
     },
@@ -160,13 +158,13 @@ export default {
   watch: {
     show (bool) {
       if (bool) {
-        if (this.storeEntry) this.entry = this.storeEntry
+        if (this.__llForm.entry) this.entry = this.__llForm.entry
 
         this.$nextTick(() => {
           this.$refs.name.focus()
         })
       } else {
-        this.$store.commit('watchLists/resetEntry')
+        this.__llResetEntry()
       }
     }
   }

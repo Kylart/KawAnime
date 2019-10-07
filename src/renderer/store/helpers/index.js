@@ -1,1 +1,1 @@
-export { default as localLists } from '@/store/modules/watchLists/helpers'
+export { default as localLists } from './watchLists'

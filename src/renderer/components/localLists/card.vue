@@ -61,6 +61,8 @@
 </template>
 
 <script>
+import { localLists } from '@/store/helpers'
+
 export default {
   name: 'List-Card',
 
@@ -137,6 +139,11 @@ export default {
   },
 
   methods: {
+    // Brings __llSet, __llToggleForm, __llSetEntry and __llResetEntry
+    ...localLists.mutations,
+    // Brings __llAdd, __llMove, __llDelete, __llGet and __llInfo
+    ...localLists.actions,
+
     changeProgress (value) {
       const { entry } = this
 
@@ -144,7 +151,7 @@ export default {
         ? (entry.progress = entry.nbEp)
         : (entry.progress += value)
 
-      this.$store.dispatch('watchLists/add', entry)
+      this.__llAdd(entry)
     },
     handleClick () {
       this.$emit('clicked')
@@ -168,8 +175,8 @@ export default {
       this.$store.commit('info/showModal', true)
     },
     edit () {
-      this.$store.commit('watchLists/setEntry', this.entry)
-      this.$store.commit('watchLists/toggleForm', true)
+      this.__llSetEntry(this.entry)
+      this.__llToggleForm(true)
     }
   }
 }

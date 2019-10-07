@@ -1,31 +1,25 @@
+import { localLists } from '@/store/helpers'
+
 export default {
   computed: {
-    _lists: {
-      get () {
-        return this.$store.state.watchLists.lists
-      },
-      set () {}
-    },
-    _listNames: {
-      get () {
-        return this.$store.state.watchLists.listNames.map((list) => list.list)
-      },
-      set () { }
-    }
+    ...localLists.state
   },
 
   methods: {
+    // Brings __llAdd, __llMove, __llDelete, __llGet and __llInfo
+    ...localLists.actions,
+
     _isIn (target) {
       const { name: targetName } = this
 
-      return this._lists[target].findIndex(({ name }) => name === targetName) > -1
+      return this.__llLists[target].findIndex(({ name }) => name === targetName) > -1
     },
     _addTo (target) {
       const { name } = this
       const isIn = this._isIn(target)
-      const action = isIn ? 'delete' : 'add'
+      const action = isIn ? 'Delete' : 'Add'
 
-      this.$store.dispatch(`watchLists/${action}`, {
+      this[`__ll${action}`]({
         list: target,
         name,
         progress: 0,

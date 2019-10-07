@@ -1,3 +1,5 @@
+import { localLists } from '@/store/helpers'
+
 /**
  * Let's instore some rule...
  * 0. Plan to watch list
@@ -41,9 +43,12 @@ export default {
   }),
 
   computed: {
+    // Brings __llListNames and __llLists
+    ...localLists.state,
+
     localLists: {
       get () {
-        const original = this.$store.state.watchLists.lists
+        const original = this.__llLists
 
         return Object.keys(original).reduce((acc, listName) => {
           const list = original[listName]

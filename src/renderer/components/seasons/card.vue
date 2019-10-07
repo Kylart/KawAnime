@@ -49,6 +49,8 @@
 </template>
 
 <script>
+import { localLists } from '@/store/helpers'
+
 import Status from '@/mixins/lists/status.js'
 
 export default {
@@ -59,16 +61,16 @@ export default {
   props: ['info'],
 
   computed: {
+    // Brings __llListNames and __llLists
+    ...localLists.state,
+
     name () {
       return this.info.title
     },
-    lists: {
-      get () {
-        return this.$store.state.watchLists.listNames.filter(
-          ({ list }) => ['watchList', 'watching', 'seen'].includes(list)
-        )
-      },
-      set () {}
+    lists () {
+      return this.__llListNames.filter(
+        ({ list }) => ['watchList', 'watching', 'seen'].includes(list)
+      )
     },
     pictureUrl () {
       if (this.$store.state.config.config.infoProvider.seasons !== 'mal') return this.info.picture

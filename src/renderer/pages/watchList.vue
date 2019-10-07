@@ -6,7 +6,7 @@
       grow, icons-and-text
     )
       v-tab(
-        v-for='list in __llNames',
+        v-for='list in __llListNames',
         :key='list.list',
         ripple
       ) {{ list.name }}
@@ -14,7 +14,7 @@
 
     v-tabs-items(v-model='active')
       v-tab-item(
-        v-for='list in __llNames',
+        v-for='list in __llListNames',
         :key='list.list'
       )
         list(:name='list.list')
@@ -36,12 +36,8 @@ export default {
   }),
 
   computed: {
-    // Brings __llNames
+    // Brings __llListNames
     ...localLists.state
   }
 }
 </script>
-
-<style lang="stylus" scoped>
-
-</style>
