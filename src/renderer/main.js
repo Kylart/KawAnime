@@ -9,11 +9,10 @@ import Vuetify from '@/plugins/vuetify'
 Vue.config.productionTip = false
 
 Helpers(Vue)
-const vuetify = Vuetify(Vue)
 
 new Vue({
   router,
   store,
-  vuetify,
+  vuetify: Vuetify(Vue),
   render: h => h(App)
 }).$mount('#app')
