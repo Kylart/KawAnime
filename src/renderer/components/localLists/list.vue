@@ -27,6 +27,9 @@
 </template>
 
 <script>
+// Helpers from store
+import { localLists } from '@/store/helpers'
+
 // Components
 import Card from '@/components/localLists/card.vue'
 import ListForm from '@/components/localLists/form.vue'
@@ -75,11 +78,13 @@ export default {
   },
 
   methods: {
+    // Brings __llAdd, __llMove, __llDelete, __llGet and __llInfo
+    ...localLists.actions,
     isSelected (entry) {
       return this.selected.findIndex(({ key }) => key === entry.key) > -1
     },
     add (entry, target = null) {
-      this.$store.dispatch('watchLists/add', {
+      this.__llAdd({
         ...entry,
         list: target || this.name
       })
@@ -89,13 +94,12 @@ export default {
       this.unselect(entry)
 
       // And from the actual list
-      this.$store.dispatch('watchLists/delete', entry)
+      this.__llDelete(entry)
     },
     move (target) {
       // move can only be activated on selected items
       this.selected.forEach((entry) => {
-        this.remove(entry)
-        this.add(entry, target)
+        this.__llMove({ entry, target })
       })
 
       this.selected = []

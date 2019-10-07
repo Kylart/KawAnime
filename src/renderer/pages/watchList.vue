@@ -6,7 +6,7 @@
       grow, icons-and-text
     )
       v-tab(
-        v-for='list in lists',
+        v-for='list in __llNames',
         :key='list.list',
         ripple
       ) {{ list.name }}
@@ -14,13 +14,16 @@
 
     v-tabs-items(v-model='active')
       v-tab-item(
-        v-for='list in lists',
+        v-for='list in __llNames',
         :key='list.list'
       )
         list(:name='list.list')
 </template>
 
 <script>
+// Helpers from store
+import { localLists } from '@/store/helpers'
+
 import List from '@/components/localLists/list.vue'
 
 export default {
@@ -33,12 +36,8 @@ export default {
   }),
 
   computed: {
-    lists: {
-      get () {
-        return this.$store.state.watchLists.listNames
-      },
-      set () {}
-    }
+    // Brings __llNames
+    ...localLists.state
   }
 }
 </script>
