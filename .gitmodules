@@ -1,0 +1,3 @@
+[submodule "bindings/lib/anitomy"]
+	path = bindings/lib/anitomy
+	url = https://github.com/erengy/anitomy

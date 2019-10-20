@@ -32,3 +32,6 @@ coverage
 
 # Mocha reporter
 mochawesome-report
+
+# C++ Bindings
+bindings/build

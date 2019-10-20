@@ -13,6 +13,7 @@
     "dev": "cross-env NODE_ENV=development vue-cli-service electron:serve",
     "start": "cross-env NODE_ENV=production electron dist/bundled/background.js",
     "build": "vue-cli-service electron:build",
+    "build:bindings": "cmake-js -d bindings -O bindings/build",
     "pack": "npm run build -- --dir",
     "dist": "npm run dist:mac && npm run dist:win && npm run dist:linux",
     "dist:mac": "npm run build -- --mac",
@@ -22,7 +23,8 @@
     "publish:linux": "npm run build -- --linux deb AppImage -p always",
     "publish:win": "npm run build -- --win --x64 --ia32 -p always",
     "lint": "vue-cli-service lint",
-    "postinstall": "electron-builder install-app-deps",
+    "compile:bindings": "cmake-js compile -d bindings -O bindings/build",
+    "postinstall": "npm run compile:bindings && electron-builder install-app-deps",
     "postuninstall": "electron-builder install-app-deps",
     "test": "cross-env IS_TEST=true mocha --reporter mochawesome"
   },
@@ -36,6 +38,7 @@
     "matroska-subtitles": "^2.0.3",
     "mime": "^2.4.4",
     "moment": "^2.24.0",
+    "node-addon-api": "^1.7.1",
     "nyaapi": "^2.1.0",
     "range-parser": "^1.2.1",
     "rimraf": "^3.0.0",
@@ -58,6 +61,7 @@
     "babel-eslint": "^10.0.3",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
+    "cmake-js": "^6.0.0",
     "cross-env": "^5.2.1",
     "electron": "^4.2.5",
     "electron-builder": "20.41.0",
@@ -67,6 +71,7 @@
     "material-design-icons-iconfont": "^5.0.1",
     "mocha": "^6.2.0",
     "mochawesome": "^4.1.0",
+    "node-loader": "^0.6.0",
     "pug": "^2.0.4",
     "pug-plain-loader": "^1.0.0",
     "roboto-fontface": "^0.10.0",
@@ -92,5 +97,9 @@
       "vue-cli-service lint",
       "git add"
     ]
+  },
+  "cmake-js": {
+    "runtime": "electron",
+    "runtimeVersion": "4.2.5"
   }
 }

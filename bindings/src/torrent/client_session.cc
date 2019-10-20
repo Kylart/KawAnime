@@ -1,0 +1,169 @@
+#include "client_session.h"
+
+namespace LtSession {
+
+Napi::FunctionReference Client::constructor;
+
+Napi::Object Client::Init(Napi::Env env, Napi::Object exports) {
+  Napi::HandleScope scope(env);
+
+  Napi::Function func = DefineClass(
+    env,
+    "Client",
+    {
+      InstanceMethod("destroy", &Client::Destroy),
+      InstanceMethod("addTorrent", &Client::AddTorrent),
+      InstanceMethod("removeTorrent", &Client::RemoveTorrent),
+      InstanceMethod("pauseTorrent", &Client::PauseTorrent),
+      InstanceMethod("resumeTorrent", &Client::ResumeTorrent),
+      InstanceMethod("getTorrents", &Client::GetTorrentsList),
+      InstanceMethod("hasTorrents", &Client::HasTorrents)
+    }
+  );
+
+  constructor = Napi::Persistent(func);
+  constructor.SuppressDestruct();
+
+  exports.Set("Client", func);
+  return exports;
+}
+
+Client::Client(const Napi::CallbackInfo& info) : Napi::ObjectWrap<Client>(info) {
+  Napi::Env env = info.Env();
+  Napi::HandleScope scope(env);
+}
+
+Napi::Value Client::Destroy (const Napi::CallbackInfo& info) {
+  Napi::Env env = info.Env();
+
+  this->session_proxy = this->session.abort();
+  this->session.~session();
+  this->session_proxy.~session_proxy();
+
+  return Napi::Boolean::New(env, true);
+};
+
+Napi::Value Client::GetTorrentsList (const Napi::CallbackInfo& info) {
+  Napi::Env env = info.Env();
+  Napi::Array result = Napi::Array::New(env);
+  std::uint32_t index = 0;
+
+  if (!this->session.is_valid()) {
+    Napi::Error::New(env, "Client is destroyed.").ThrowAsJavaScriptException();
+    return env.Null();
+  }
+
+  std::vector<lt::torrent_handle> torrents = this->session.get_torrents();
+
+  for (auto const& torrent: torrents) {
+    Napi::Object entry = LtUtils::formatTorrentInfo(env, torrent);
+
+    result.Set(index, entry);
+    ++index;
+  }
+
+  result.Set("length", torrents.size());
+
+  return result;
+};
+
+Napi::Value Client::AddTorrent (const Napi::CallbackInfo& info) {
+  Napi::Env env = info.Env();
+
+  int argc = info.Length();
+  if (argc < 2 && !info[0].IsString() && !info[1].IsString()) {
+    Napi::TypeError::New(env, "Not enough arguments provided.").ThrowAsJavaScriptException();
+    return env.Null();
+  }
+
+  std::string save_path = info[0].As<Napi::String>().Utf8Value();
+  std::string torrent = info[1].As<Napi::String>().Utf8Value();
+
+  lt::add_torrent_params params;
+  lt::error_code ec;
+
+  params.save_path = save_path;
+
+  if (torrent.substr(0, 8) == "magnet:?") {
+    lt::parse_magnet_uri(torrent, params, ec);
+  } else {
+    params.ti = std::make_shared<lt::torrent_info>(torrent);
+  }
+
+  if (ec.failed()) {
+    Napi::Error::New(env, "Invalid magnet link.").ThrowAsJavaScriptException();
+    return env.Null();
+  }
+
+  lt::torrent_handle added_torrent = this->session.add_torrent(params);
+
+  return Napi::Boolean::New(env, added_torrent.is_valid());
+};
+
+Napi::Value Client::RemoveTorrent (const Napi::CallbackInfo& info) {
+  Napi::Env env = info.Env();
+
+  int argc = info.Length();
+  if (argc < 1 && !info[0].IsNumber()) {
+    Napi::TypeError::New(env, "Not enough arguments provided.").ThrowAsJavaScriptException();
+    return env.Null();
+  }
+
+  std::uint32_t to_find_id = info[0].As<Napi::Number>().Int32Value();
+  lt::torrent_handle torrent = LtUtils::findTorrent(&this->session, to_find_id);
+
+  if (torrent.is_valid()) {
+    this->session.remove_torrent(torrent);
+    return Napi::Boolean::New(env, true);
+  }
+
+  return env.Null();
+}
+
+Napi::Value Client::PauseTorrent (const Napi::CallbackInfo& info) {
+  Napi::Env env = info.Env();
+
+  int argc = info.Length();
+  if (argc < 1 && !info[0].IsNumber()) {
+    Napi::TypeError::New(env, "Not enough arguments provided.").ThrowAsJavaScriptException();
+    return env.Null();
+  }
+
+  std::uint32_t to_find_id = info[0].As<Napi::Number>().Int32Value();
+  lt::torrent_handle torrent = LtUtils::findTorrent(&this->session, to_find_id);
+
+  if (torrent.is_valid()) {
+    torrent.pause();
+    return Napi::Boolean::New(env, (bool)(torrent.flags() & lt::torrent_flags::paused));
+  }
+
+  return env.Null();
+}
+
+Napi::Value Client::ResumeTorrent (const Napi::CallbackInfo& info) {
+  Napi::Env env = info.Env();
+
+  int argc = info.Length();
+  if (argc < 1 && !info[0].IsNumber()) {
+    Napi::TypeError::New(env, "Not enough arguments provided.").ThrowAsJavaScriptException();
+    return env.Null();
+  }
+
+  std::uint32_t to_find_id = info[0].As<Napi::Number>().Int32Value();
+  lt::torrent_handle torrent = LtUtils::findTorrent(&this->session, to_find_id);
+
+  if (torrent.is_valid()) {
+    torrent.resume();
+    return Napi::Boolean::New(env, !(bool)(torrent.flags() & lt::torrent_flags::paused));
+  }
+
+  return env.Null();
+}
+
+Napi::Value Client::HasTorrents (const Napi::CallbackInfo& info) {
+  Napi::Env env = info.Env();
+
+  return Napi::Boolean::New(env, this->session.get_torrents().size() != 0);
+}
+
+} // namespace LtSession

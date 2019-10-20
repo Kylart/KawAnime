@@ -18,6 +18,7 @@ const getAllFiles = (dir) =>
 
 const VERSION = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'package.json'))).version
 const VENDOR_PATH = path.join(__dirname, 'src', 'vendor')
+const BIDNINGS_PATH = path.join(__dirname, 'bindings')
 
 process.env.VUE_APP_KAWANIME_VERSION = VERSION
 
@@ -76,9 +77,18 @@ module.exports = {
       chainWebpackMainProcess: (config) => {
         // Chain webpack config for electron main process only
         config
+          .module
+          .rule('node')
+          .test(/\.node$/)
+          .use('node-loader')
+          .loader('node-loader')
+          .end()
+
+        config
           .resolve
           .alias
           .set('vendor', VENDOR_PATH)
+          .set('kawabinds', BIDNINGS_PATH)
       },
       chainWebpackRendererProcess: (config) => {
         // Chain webpack config for electron renderer process only
