@@ -32,7 +32,7 @@ export default createNamespace(
       'showForm',
       'setFormEntry'
     ],
-    // Brings __s<providerName>
+    // Brings __s<ProviderName>
     state: [
       ...providers.map(({ value }) => value)
     ]
