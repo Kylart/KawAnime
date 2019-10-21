@@ -17,7 +17,9 @@ Napi::Object Client::Init(Napi::Env env, Napi::Object exports) {
       InstanceMethod("pauseTorrent", &Client::PauseTorrent),
       InstanceMethod("resumeTorrent", &Client::ResumeTorrent),
       InstanceMethod("getTorrents", &Client::GetTorrentsList),
-      InstanceMethod("hasTorrents", &Client::HasTorrents)
+      InstanceMethod("getClientInfo", &Client::GetClientInfo),
+      InstanceMethod("hasTorrents", &Client::HasTorrents),
+      InstanceMethod("isDestroyed", &Client::IsDestroyed)
     }
   );
 
@@ -160,10 +162,46 @@ Napi::Value Client::ResumeTorrent (const Napi::CallbackInfo& info) {
   return env.Null();
 }
 
+Napi::Value Client::GetClientInfo (const Napi::CallbackInfo& info) {
+  Napi::Env env = info.Env();
+  Napi::Object result = Napi::Object::New(env);
+
+  std::vector<lt::torrent_handle> torrents = this->session.get_torrents();
+
+  double download_rate = 0.0;
+  double upload_rate = 0.0;
+  float progress = 0;
+  int nb_torrents = torrents.size();
+
+  for (auto const& torrent: torrents) {
+    lt::torrent_status status = torrent.status();
+
+    download_rate += status.download_rate;
+    upload_rate += status.upload_rate;
+    progress += status.progress;
+  }
+
+
+  result.Set("downloadRate", download_rate);
+  result.Set("uploadRate", upload_rate);
+  result.Set("ratio", upload_rate / download_rate);
+  result.Set("peers", lt::find_metric_idx("peer.num_peers_connected"));
+  result.Set("progress", progress / (float)nb_torrents);
+  result.Set("nbTorrents", nb_torrents);
+
+  return result;
+}
+
 Napi::Value Client::HasTorrents (const Napi::CallbackInfo& info) {
   Napi::Env env = info.Env();
 
   return Napi::Boolean::New(env, this->session.get_torrents().size() != 0);
+}
+
+Napi::Value Client::IsDestroyed (const Napi::CallbackInfo& info) {
+  Napi::Env env = info.Env();
+
+  return Napi::Boolean::New(env, !this->session.is_valid());
 }
 
 } // namespace LtSession

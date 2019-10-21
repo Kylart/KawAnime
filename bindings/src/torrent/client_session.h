@@ -5,7 +5,9 @@
 
 #include <cstdlib>
 
+#include <libtorrent/session_stats.hpp>
 #include <libtorrent/session.hpp>
+
 #include <libtorrent/torrent_info.hpp>
 #include <libtorrent/torrent_handle.hpp>
 #include <libtorrent/torrent_status.hpp>
@@ -33,7 +35,9 @@ class Client : public Napi::ObjectWrap<Client> {
     Napi::Value PauseTorrent (const Napi::CallbackInfo& info);
     Napi::Value ResumeTorrent (const Napi::CallbackInfo& info);
     Napi::Value GetTorrentsList (const Napi::CallbackInfo& info);
+    Napi::Value GetClientInfo (const Napi::CallbackInfo& info);
     Napi::Value HasTorrents (const Napi::CallbackInfo& info);
+    Napi::Value IsDestroyed (const Napi::CallbackInfo& info);
 };
 
 }
