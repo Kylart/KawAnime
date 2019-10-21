@@ -1,9 +1,9 @@
-// import { app } from 'electron'
+import { app } from 'electron'
 
 import bindings from 'kawabinds'
 import { sendToWindows } from '../../externals'
 import { eventsList } from 'vendor'
-// import { save, load } from './storage'
+import { save, load } from './storage'
 import { Logger } from '../../utils'
 
 const logger = new Logger('Torrent')
@@ -13,14 +13,14 @@ const events = eventsList.torrent
 // Torrent client
 let client = null
 let infoIntervalID = null
-let torrentMap = new Map()
+let torrentsMap = []
 
 // TODO: Handle torrent storage
-// app.on('quit', () => {
-//   client && save(client)
-// })
+app.on('quit', () => {
+  client && save(client, torrentsMap)
+})
 
-// app.once('ready', () => load(init))
+app.once('ready', () => load(init))
 
 const isClientDestroyed = () => !client || (client && client.isDestroyed())
 
@@ -63,7 +63,7 @@ function add (event, { magnet, path }) {
   const addedId = client.addTorrent(path, magnet)
 
   initInfoInterval()
-  torrentMap.set(magnet, addedId)
+  torrentsMap.push({ id: addedId, magnet, path })
 
   event.sender.send(events.add.success)
 }
@@ -101,7 +101,12 @@ function actOnTorrent (event, { torrent, action }) {
     const success = {
       resume: (id) => client.resumeTorrent(id),
       pause: (id) => client.pauseTorrent(id),
-      destroy: (id) => client.removeTorrent(id)
+      destroy: (id) => {
+        client.removeTorrent(id)
+
+        const torrentIdx = torrentsMap.findIndex(({ id: refId }) => refId === id)
+        torrentIdx !== -1 && torrentsMap.splice(torrentIdx, 1)
+      }
     }[action](torrent.id)
 
     info(event)
@@ -120,6 +125,4 @@ export default [
   { eventName: events.add.main, handler: add },
   { eventName: events.act.main, handler: actOnTorrent },
   { eventName: events.info.main, handler: info }
-  // { eventName: events.play.main, handler: play },
-  // { eventName: events.subs.main, handler: streamSubs }
 ]

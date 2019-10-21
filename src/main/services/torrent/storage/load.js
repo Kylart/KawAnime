@@ -18,7 +18,7 @@ export default function (init) {
   const torrents = localFiles.getFile(FILENAME)
 
   for (const { magnet, path } of torrents) {
-    client.add(magnet, { path })
+    client.addTorrent(path, magnet)
   }
 
   unlinkSync(path)
