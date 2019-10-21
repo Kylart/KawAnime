@@ -44,7 +44,8 @@ export default {
       { value: 'upload', text: 'Upload speed' },
       { value: 'ratio', text: 'Ratio' },
       { value: 'progress', text: 'Progress' },
-      { value: 'nbTorrents', text: 'Torrents' }
+      { value: 'nbTorrents', text: 'Torrents' },
+      { value: 'peers', text: 'Peers' }
     ],
     sizes: ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
     graph: {
@@ -62,11 +63,12 @@ export default {
     },
     currentSpeed () {
       return {
-        download: this.formatBytes(this.client.downloadSpeed),
-        upload: this.formatBytes(this.client.uploadSpeed),
+        download: this.formatBytes(this.client.downloadRate),
+        upload: this.formatBytes(this.client.uploadRate),
         ratio: { value: `${(this.client.ratio * 100).toFixed(2)}%`, unit: '' },
         progress: { value: `${(this.client.progress * 100).toFixed(2)}%`, unit: '' },
-        nbTorrents: { value: this.client.nbTorrents, unit: '' }
+        nbTorrents: { value: this.client.nbTorrents, unit: '' },
+        peers: { value: this.client.peers, unit: '' }
       }
     }
   },
@@ -85,7 +87,7 @@ export default {
       }
     },
     addGraphValue (client) {
-      const { downloadSpeed: value } = client
+      const { downloadRate: value } = client
 
       if (+value) {
         // this.graph.current = value

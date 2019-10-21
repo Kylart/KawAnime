@@ -46,8 +46,7 @@
     "vue": "^2.6.10",
     "vue-router": "^3.1.3",
     "vuetify": "^2.0.18",
-    "vuex": "^3.1.1",
-    "webtorrent": "^0.104.0"
+    "vuex": "^3.1.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.11.0",

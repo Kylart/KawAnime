@@ -6,7 +6,7 @@
         .layout.row.wrap.justify-center.align-center
           client-info(key='client-info')
           transition-group(name='list', mode='out-in', tag='div').layout.row.wrap.justify-center.align-center
-            v-flex(v-for='(torrent, index) in torrents', :key='torrent.infoHash', xs12, sm6, md4, xl3)
+            v-flex(v-for='(torrent, index) in torrents', :key='torrent.id', xs12, sm6, md4, xl3)
               card(:torrent='torrent')
       template(v-else)
         empty(key='empty')

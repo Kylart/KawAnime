@@ -99,7 +99,7 @@ Napi::Value Client::AddTorrent (const Napi::CallbackInfo& info) {
 
   lt::torrent_handle added_torrent = this->session.add_torrent(params);
 
-  return Napi::Boolean::New(env, added_torrent.is_valid());
+  return Napi::Number::New(env, added_torrent.id());
 };
 
 Napi::Value Client::RemoveTorrent (const Napi::CallbackInfo& info) {
@@ -116,6 +116,7 @@ Napi::Value Client::RemoveTorrent (const Napi::CallbackInfo& info) {
 
   if (torrent.is_valid()) {
     this->session.remove_torrent(torrent);
+
     return Napi::Boolean::New(env, true);
   }
 
@@ -180,7 +181,6 @@ Napi::Value Client::GetClientInfo (const Napi::CallbackInfo& info) {
     upload_rate += status.upload_rate;
     progress += status.progress;
   }
-
 
   result.Set("downloadRate", download_rate);
   result.Set("uploadRate", upload_rate);

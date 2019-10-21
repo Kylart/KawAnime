@@ -22,8 +22,8 @@
           v-flex(d-flex, justify-center)
             v-btn(v-if='!action.displayInfo', icon, @click='action.action', large)
               v-icon(:color='action.color', large) {{ action.icon }}
-        v-flex(d-flex, justify-center)
-          torrent-info(:torrent='torrent')
+        //- v-flex(d-flex, justify-center)
+        //-   torrent-info(:torrent='torrent')
 </template>
 
 <script>
@@ -45,14 +45,10 @@ export default {
 
   computed: {
     torrentName () {
-      return this.torrent.files && this.torrent.files.length
-        ? this.torrent.files[0].name
-        : undefined
+      return this.torrent.name
     },
     progress () {
-      return this.torrent
-        ? (this.torrent.progress * 100).toFixed(2)
-        : 0
+      return (this.torrent.progress * 100).toFixed(2)
     },
     actions () {
       return [{
@@ -85,7 +81,7 @@ export default {
     },
     actOnTorrent (action) {
       this.$ipc.send(this.$eventsList.torrent.act.main, {
-        magnet: this.torrent.magnetURI,
+        torrent: this.torrent,
         action
       })
 

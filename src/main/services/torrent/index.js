@@ -1,74 +1,55 @@
-import WebTorrent from 'webtorrent'
-import { extname } from 'path'
-import { readFileSync } from 'fs'
-import { BrowserWindow, app } from 'electron'
-import MatroskaSubtitles from 'matroska-subtitles'
-import { finished } from 'stream'
+// import { app } from 'electron'
 
-import { localFiles } from '../../externals'
+import bindings from 'kawabinds'
+import { sendToWindows } from '../../externals'
 import { eventsList } from 'vendor'
-import cleanTorrents from './format'
-import { save, load } from './storage'
+// import { save, load } from './storage'
 import { Logger } from '../../utils'
 
 const logger = new Logger('Torrent')
 
 const events = eventsList.torrent
-const videoEvents = eventsList.video
 
-// TODO Limit download speed, check https://github.com/webtorrent/webtorrent/issues/163
-
-const peersMap = {}
+// Torrent client
 let client = null
 let infoIntervalID = null
-let streamServer = null
-let subtitleStream = null
-let subIntervalId = null
+let torrentMap = new Map()
 
-function pauseTorrent (torrent, magnet) {
-  // Only stops connection to new peers, must delete all existing peers now
-  torrent.pause()
+// TODO: Handle torrent storage
+// app.on('quit', () => {
+//   client && save(client)
+// })
 
-  // Removing all connected peers
-  Object.keys(torrent._peers).forEach((peerId) => {
-    if (!peersMap[magnet]) peersMap[magnet] = []
+// app.once('ready', () => load(init))
 
-    peersMap[magnet].push(peerId)
+const isClientDestroyed = () => !client || (client && client.isDestroyed())
 
-    torrent.removePeer(peerId)
-  })
+function initInfoInterval () {
+  if (!infoIntervalID) {
+    infoIntervalID = setInterval(() => {
+      if (isClientDestroyed()) return
+
+      sendToWindows(events.info.success, info())
+
+      if (!client.getTorrents().length) stopInfoInterval()
+    }, 1000)
+  }
 }
 
-app.on('quit', () => {
-  client && save(client)
-})
-
-app.once('ready', () => load(init))
-
-const isClientDestroyed = () => !client || (client && client.destroyed)
+function stopInfoInterval () {
+  if (infoIntervalID) {
+    clearInterval(infoIntervalID)
+    infoIntervalID = null
+  }
+}
 
 function init () {
   if (isClientDestroyed()) {
-    client = new WebTorrent()
-    logger.info('Instanciated torrent client.')
-
-    // Setting up all listeners
-    client.on('torrent', (torrent) => {
-      logger.info(`${torrent.infoHash} is ready to be used.`)
-    })
-
-    client.on('error', (err) => {
-      logger.error('Client encountered an error.', err)
-    })
+    logger.info('Instanciating torrent client.')
+    client = new bindings.torrent.Client()
 
     // Sending client information to windows every second
-    if (!infoIntervalID) {
-      infoIntervalID = setInterval(() => {
-        BrowserWindow.getAllWindows().forEach(
-          (win) => win.webContents.send(events.info.success, info())
-        )
-      }, 1000)
-    }
+    initInfoInterval()
   } else {
     logger.info('Torrent client already instanciated.')
   }
@@ -77,47 +58,14 @@ function init () {
 }
 
 function add (event, { magnet, path }) {
-  if (isClientDestroyed()) {
-    init()
-  }
+  isClientDestroyed() && init()
 
-  client.add(magnet, { path }, (torrent) => {
-    logger.info(`Added ${torrent.infoHash}.`)
-    event.sender.send(events.add.success)
-  })
-}
+  const addedId = client.addTorrent(path, magnet)
 
-function remove (event, magnet) {
-  if (isClientDestroyed()) {
-    event.sender.send(events.destroy.error)
-    return
-  }
+  initInfoInterval()
+  torrentMap.set(magnet, addedId)
 
-  // If it comes from streaming, we have to close the streams
-  streamServer && streamServer.close()
-  subtitleStream = null
-  subIntervalId && clearInterval(subIntervalId)
-  subIntervalId = null
-
-  // Be careful calling this one.
-  magnet = (extname(magnet) === '.torrent' && readFileSync(magnet)) || magnet
-
-  client.remove(magnet, (err) => {
-    err
-      ? logger.error(`Error while removing ${magnet}`, err)
-      : logger.info(`Removed magnet to torrent: ${magnet}`)
-
-    if (!client.torrents.length) {
-      clearInterval(infoIntervalID)
-      infoIntervalID = null
-
-      client.destroy((err) => {
-        err
-          ? logger.error('Could not destroy client.', err)
-          : logger.info('Successfully destroyed client.')
-      })
-    }
-  })
+  event.sender.send(events.add.success)
 }
 
 function info (event) {
@@ -128,137 +76,50 @@ function info (event) {
     return
   }
 
-  const result = {
-    client: {
-      downloadSpeed: client.downloadSpeed,
-      uploadSpeed: client.uploadSpeed,
-      ratio: client.ratio,
-      progress: client.progress,
-      nbTorrents: client.torrents.length
-    },
-    torrents: cleanTorrents(client.torrents) || []
-  }
+  try {
+    const result = {
+      client: client.getClientInfo(),
+      torrents: client.getTorrents()
+    }
 
-  if (!event) return result
-  event.sender.send(events.info.success, result)
-}
+    if (!event) return result
+    event.sender.send(events.info.success, result)
+  } catch (e) {
+    logger.error('Could not retrieve client info', e.message)
 
-function actOnTorrent (event, { magnet, action }) {
-  // Running this implies that there is a client.
-  const _torrent = client.get(magnet)
-
-  switch (action) {
-    case 'resume':
-      // Reconnecting old torrent
-      _torrent.resume()
-
-      // Reconnecting peers
-      if (peersMap[magnet]) {
-        peersMap[magnet].forEach((peerId) => _torrent.addPeer(peerId))
-      }
-
-      break
-
-    case 'pause':
-      pauseTorrent(_torrent, magnet)
-
-      break
-
-    case 'destroy':
-      pauseTorrent(_torrent, magnet)
-      remove(event, magnet)
-
-      break
-
-    default:
-      break
-  }
-
-  _torrent[action]()
-
-  event.sender.send(events.act.success)
-}
-
-function play (event, { link: id, name }) {
-  if (isClientDestroyed()) init()
-
-  const isFile = !/^magnet/.test(id)
-  const torrent = client.get(id)
-
-  function createServers (torrent) {
-    streamServer = torrent.createServer({
-      hostname: 'localhost'
-    })
-
-    streamServer.listen()
-    const address = streamServer.address()
-
-    logger.info(`Created video server for ${id} at ${address.port}`)
-
-    event.sender.send(events.play.success, { torrent: id, name: name || torrent.name, port: `${address.port}/0` })
-  }
-
-  if (!torrent) {
-    const { config: { torrentClient: { streamingPath } } } = localFiles.getFile('config.json')
-    client.add(isFile ? readFileSync(id) : id, { path: streamingPath }, createServers)
-  } else {
-    torrent.ready
-      ? createServers(torrent)
-      : torrent.once('ready', () => createServers(torrent))
+    return {
+      client: {},
+      torrents: []
+    }
   }
 }
 
-function streamSubs (event, id) {
-  if (isClientDestroyed()) return
+function actOnTorrent (event, { torrent, action }) {
+  try {
+    logger.info(`${action} requested on torrent ${torrent.id}`)
 
-  const torrent = client.get(id)
-  if (!torrent) return
+    const success = {
+      resume: (id) => client.resumeTorrent(id),
+      pause: (id) => client.pauseTorrent(id),
+      destroy: (id) => client.removeTorrent(id)
+    }[action](torrent.id)
 
-  const parser = new MatroskaSubtitles()
+    info(event)
 
-  parser.once('tracks', (tracks) => {
-    event.sender.send(videoEvents.tracks.success, tracks)
-  })
-
-  parser.on('subtitle', (subtitle, trackNumber) => {
-    event.sender.send(videoEvents.subtitles.success, { subtitle, trackNumber })
-  })
-
-  subIntervalId && clearInterval(subIntervalId)
-
-  const stream = () => {
-    const _torrent = client.get(id)
-
-    if (!_torrent || torrent.destroyed) return
-
-    subtitleStream = _torrent.files[0].createReadStream()
-    subtitleStream.pipe(parser)
+    success
+      ? event.sender.send(events.act.success)
+      : event.sender.send(events.act.error, { msg: `Could not ${action} torrent, please retry later.` })
+  } catch (e) {
+    console.log(e)
+    logger.error('Could not act on torrent', { action, msg: e.message, torrent })
+    event.sender.send(events.act.error, { msg: `An error occurred while trying to ${action} torrent.` })
   }
-
-  const createStream = () => {
-    stream()
-
-    subIntervalId = setInterval(() => {
-      if (subtitleStream) {
-        finished(subtitleStream, (err) => {
-          if (err) console.error(err)
-
-          stream()
-        })
-      }
-    }, 300)
-  }
-
-  torrent.ready
-    ? createStream()
-    : torrent.once('ready', () => createStream())
 }
 
 export default [
   { eventName: events.add.main, handler: add },
-  { eventName: events.destroy.main, handler: remove },
   { eventName: events.act.main, handler: actOnTorrent },
-  { eventName: events.info.main, handler: info },
-  { eventName: events.play.main, handler: play },
-  { eventName: events.subs.main, handler: streamSubs }
+  { eventName: events.info.main, handler: info }
+  // { eventName: events.play.main, handler: play },
+  // { eventName: events.subs.main, handler: streamSubs }
 ]
