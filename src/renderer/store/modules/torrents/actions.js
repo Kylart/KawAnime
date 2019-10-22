@@ -31,13 +31,6 @@ export default {
       handlers.act.error(msg)
     })
 
-    ipcRenderer.on(eventsList.torrent.destroy.success, (e, magnet) => {
-      handlers.destroy.success(magnet)
-    })
-    ipcRenderer.on(eventsList.torrent.destroy.error, (e, msg) => {
-      handlers.destroy.error(msg)
-    })
-
     ipcRenderer.on(eventsList.torrent.info.success, (e, data) => {
       handlers.info.success(commit, data)
     })

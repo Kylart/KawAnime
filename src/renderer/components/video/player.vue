@@ -88,7 +88,7 @@ export default {
 
       if (this.config.autoplay) this.togglePlay()
 
-      if (this.isMagnet) this.$ipc.send(this.$eventsList.torrent.subs.main, this.player.torrent)
+      if (this.isMagnet) this.$ipc.send(this.$eventsList.streaming.subs.main)
 
       if (this.title) {
         this.addToHistory()
@@ -106,7 +106,7 @@ export default {
     styleTag instanceof Node && document.head.removeChild(styleTag)
 
     this.isMagnet
-      ? this.$ipc.send(this.$eventsList.torrent.destroy.main, this.$store.state.streaming.player.torrent)
+      ? this.$ipc.send(this.$eventsList.streaming.stop.main)
       : this.$ipc.send(this.$eventsList.video.stop.main)
   },
 
@@ -155,7 +155,7 @@ export default {
     onSeeked () {
       // Needed for subtitle timing
       this.index = 0
-      if (this.isMagnet) this.$ipc.send(this.$eventsList.torrent.subs.main, this.player.torrent)
+      if (this.isMagnet) this.$ipc.send(this.$eventsList.streaming.subs.main)
     },
     onEnded () {
       const { neighbours } = this.$store.state.streaming.player

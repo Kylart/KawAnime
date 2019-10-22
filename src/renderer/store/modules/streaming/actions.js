@@ -7,7 +7,7 @@ export default {
   play ({ commit, dispatch }, opts) {
     const { isTorrent = false } = opts
 
-    const event = isTorrent ? eventsList.torrent.play : eventsList.video.init
+    const event = isTorrent ? eventsList.streaming.init : eventsList.video.init
     const handler = (e, data) => {
       commit('setPlayer', { ...data, show: true })
       dispatch('getNeighbours')
@@ -22,7 +22,7 @@ export default {
       // Delivers the previous and the next file to be read by the player
       // First we need to get the currently read file path
       const { player: { path, torrent, name } } = state
-      const link = path || torrent
+      const link = torrent || path
 
       log('Setting neighbours for current file:', link)
 

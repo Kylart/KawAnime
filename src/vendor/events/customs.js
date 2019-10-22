@@ -1,12 +1,13 @@
 import generate from './generate'
 
 const customs = {
-  torrent: ['add', 'act', 'destroy', 'info', 'play', 'subs'],
+  torrent: ['add', 'act', 'info'],
   history: ['append', 'remove', 'get'],
   search: ['url', 'name', 'term'],
   services: ['connect', 'act'],
   vault: ['get', 'update', 'check', 'has'],
   video: ['init', 'stop', 'subtitles', 'tracks', 'name'],
+  streaming: ['init', 'subs', 'stop'],
   update: ['available', 'installable', 'install', 'progress'],
   localLists: ['get', 'update', 'info'],
   register: ['code', 'token', 'isAuthed', 'cta']

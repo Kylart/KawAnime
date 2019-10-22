@@ -14,6 +14,7 @@ import episodes from './episodes'
 import localLists from './localLists'
 import torrent from './torrent'
 import video from './video'
+import streaming from './streaming'
 import isOnline from './isOnline'
 import vault from './vault'
 import watchLists from './watchLists'
@@ -33,6 +34,7 @@ const services = [
   ...torrent,
   ...vault,
   ...video,
+  ...streaming,
   ...registerService,
   ...watchLists,
   news,

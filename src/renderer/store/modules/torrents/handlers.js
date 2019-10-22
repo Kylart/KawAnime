@@ -18,15 +18,6 @@ export const act = {
   }
 }
 
-export const destroy = {
-  success (magnet) {
-    log('Successfully destroyed torrent. ID:', magnet)
-  },
-  error (msg) {
-    log('An error occurred while destroying a torrent.', msg)
-  }
-}
-
 export const info = {
   success (commit, data) {
     if (data) {
