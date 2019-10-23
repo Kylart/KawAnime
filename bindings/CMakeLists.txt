@@ -3,7 +3,8 @@ cmake_minimum_required(VERSION 3.12.0 FATAL_ERROR)
 # Name of the project (will be the name of the plugin)
 project(kawabinds)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_BUILD_TYPE Release)
 
 # Essential include files to build a node addon,
 # you should add this line in every CMake.js based project.
@@ -15,17 +16,21 @@ file(
   SOURCE_FILES
   "src/*.cc" "src/*.h"
   "src/torrent/*.cc" "src/torrent/*.h"
+  "src/name_parser/*.cc" "src/name_parser/*.h"
+
+  "lib/anitomy/anitomy/*.cpp" "lib/anitomy/anitomy/*.h"
 )
 add_library(${PROJECT_NAME} SHARED ${SOURCE_FILES})
 
-set(ANITOMY_INCLUDE_DIR "lib/anitomy")
-target_include_directories(${PROJECT_NAME} PRIVATE ${ANITOMY_INCLUDE_DIR})
+target_include_directories(${PROJECT_NAME} PRIVATE "lib/anitomy")
 
 ## Libtorrent
 # Checking Version
-find_package(LibtorrentRasterbar 1.2 REQUIRED)
-
 # Getting installed version of libtorrent
+find_package(LibtorrentRasterbar 1.2 REQUIRED)
+# set(LIBTORRENT_DIR "lib/libtorrent")
+# add_subdirectory(${LIBTORRENT_DIR})
+
 find_path(LIBTORRENT_INCLUDE_PATH libtorrent)
 find_library(LIBTORRENT_LIB torrent-rasterbar)
 
@@ -34,9 +39,9 @@ target_link_libraries(${PROJECT_NAME} ${LIBTORRENT_LIB})
 
 # Include N-API wrappers
 execute_process(COMMAND node -p "require('node-addon-api').include"
-        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-        OUTPUT_VARIABLE NODE_ADDON_API_DIR
-        )
+  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+  OUTPUT_VARIABLE NODE_ADDON_API_DIR
+)
 string(REPLACE "\n" "" NODE_ADDON_API_DIR ${NODE_ADDON_API_DIR})
 string(REPLACE "\"" "" NODE_ADDON_API_DIR ${NODE_ADDON_API_DIR})
 target_include_directories(${PROJECT_NAME} PRIVATE ${NODE_ADDON_API_DIR})
