@@ -1,4 +1,4 @@
-import { parseSync } from 'anitomy-js'
+import bindings from 'kawabinds'
 
 import { eventsList } from 'vendor'
 import { Logger } from '../../utils'
@@ -9,7 +9,7 @@ const logger = new Logger('Parse')
 
 async function news (event, name) {
   try {
-    event.returnValue = parseSync(name)
+    event.returnValue = bindings.parseName(name)
   } catch (e) {
     logger.error(`Could not parse name ${name}`)
     event.returnValue = e.message

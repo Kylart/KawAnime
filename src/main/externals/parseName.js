@@ -1,1 +1,3 @@
-export { parseSync as parseName } from 'anitomy-js'
+import bindings from 'kawabinds'
+
+export default bindings.parseName
