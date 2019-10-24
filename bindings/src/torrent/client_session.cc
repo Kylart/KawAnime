@@ -1,3 +1,17 @@
+/**
+ * Copyright (c) 2019 Kylart <kylart.dev@gmail.com>
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ */ 
+
 #include "client_session.h"
 
 namespace LtSession {
@@ -20,8 +34,7 @@ Napi::Object Client::Init(Napi::Env env, Napi::Object exports) {
       InstanceMethod("getClientInfo", &Client::GetClientInfo),
       InstanceMethod("hasTorrents", &Client::HasTorrents),
       InstanceMethod("isDestroyed", &Client::IsDestroyed)
-    }
-  );
+    });
 
   constructor = Napi::Persistent(func);
   constructor.SuppressDestruct();
@@ -35,7 +48,7 @@ Client::Client(const Napi::CallbackInfo& info) : Napi::ObjectWrap<Client>(info) 
   Napi::HandleScope scope(env);
 }
 
-Napi::Value Client::Destroy (const Napi::CallbackInfo& info) {
+Napi::Value Client::Destroy(const Napi::CallbackInfo& info) {
   Napi::Env env = info.Env();
 
   this->session_proxy = this->session.abort();
@@ -43,9 +56,9 @@ Napi::Value Client::Destroy (const Napi::CallbackInfo& info) {
   this->session_proxy.~session_proxy();
 
   return Napi::Boolean::New(env, true);
-};
+}
 
-Napi::Value Client::GetTorrentsList (const Napi::CallbackInfo& info) {
+Napi::Value Client::GetTorrentsList(const Napi::CallbackInfo& info) {
   Napi::Env env = info.Env();
   Napi::Array result = Napi::Array::New(env);
   std::uint32_t index = 0;
@@ -57,7 +70,7 @@ Napi::Value Client::GetTorrentsList (const Napi::CallbackInfo& info) {
 
   std::vector<lt::torrent_handle> torrents = this->session.get_torrents();
 
-  for (auto const& torrent: torrents) {
+  for (auto const& torrent : torrents) {
     Napi::Object entry = LtUtils::formatTorrentInfo(env, torrent);
 
     result.Set(index, entry);
@@ -67,9 +80,9 @@ Napi::Value Client::GetTorrentsList (const Napi::CallbackInfo& info) {
   result.Set("length", torrents.size());
 
   return result;
-};
+}
 
-Napi::Value Client::AddTorrent (const Napi::CallbackInfo& info) {
+Napi::Value Client::AddTorrent(const Napi::CallbackInfo& info) {
   Napi::Env env = info.Env();
 
   int argc = info.Length();
@@ -100,9 +113,9 @@ Napi::Value Client::AddTorrent (const Napi::CallbackInfo& info) {
   lt::torrent_handle added_torrent = this->session.add_torrent(params);
 
   return Napi::Number::New(env, added_torrent.id());
-};
+}
 
-Napi::Value Client::RemoveTorrent (const Napi::CallbackInfo& info) {
+Napi::Value Client::RemoveTorrent(const Napi::CallbackInfo& info) {
   Napi::Env env = info.Env();
 
   int argc = info.Length();
@@ -123,7 +136,7 @@ Napi::Value Client::RemoveTorrent (const Napi::CallbackInfo& info) {
   return env.Null();
 }
 
-Napi::Value Client::PauseTorrent (const Napi::CallbackInfo& info) {
+Napi::Value Client::PauseTorrent(const Napi::CallbackInfo& info) {
   Napi::Env env = info.Env();
 
   int argc = info.Length();
@@ -137,13 +150,13 @@ Napi::Value Client::PauseTorrent (const Napi::CallbackInfo& info) {
 
   if (torrent.is_valid()) {
     torrent.pause();
-    return Napi::Boolean::New(env, (bool)(torrent.flags() & lt::torrent_flags::paused));
+    return Napi::Boolean::New(env, static_cast<bool>(torrent.flags() & lt::torrent_flags::paused));
   }
 
   return env.Null();
 }
 
-Napi::Value Client::ResumeTorrent (const Napi::CallbackInfo& info) {
+Napi::Value Client::ResumeTorrent(const Napi::CallbackInfo& info) {
   Napi::Env env = info.Env();
 
   int argc = info.Length();
@@ -157,13 +170,13 @@ Napi::Value Client::ResumeTorrent (const Napi::CallbackInfo& info) {
 
   if (torrent.is_valid()) {
     torrent.resume();
-    return Napi::Boolean::New(env, !(bool)(torrent.flags() & lt::torrent_flags::paused));
+    return Napi::Boolean::New(env, !static_cast<bool>(torrent.flags() & lt::torrent_flags::paused));
   }
 
   return env.Null();
 }
 
-Napi::Value Client::GetClientInfo (const Napi::CallbackInfo& info) {
+Napi::Value Client::GetClientInfo(const Napi::CallbackInfo& info) {
   Napi::Env env = info.Env();
   Napi::Object result = Napi::Object::New(env);
 
@@ -174,7 +187,7 @@ Napi::Value Client::GetClientInfo (const Napi::CallbackInfo& info) {
   float progress = 0;
   int nb_torrents = torrents.size();
 
-  for (auto const& torrent: torrents) {
+  for (auto const& torrent : torrents) {
     lt::torrent_status status = torrent.status();
 
     download_rate += status.download_rate;
@@ -186,22 +199,22 @@ Napi::Value Client::GetClientInfo (const Napi::CallbackInfo& info) {
   result.Set("uploadRate", upload_rate);
   result.Set("ratio", upload_rate / download_rate);
   result.Set("peers", lt::find_metric_idx("peer.num_peers_connected"));
-  result.Set("progress", progress / (float)nb_torrents);
+  result.Set("progress", progress / static_cast<float>(nb_torrents));
   result.Set("nbTorrents", nb_torrents);
 
   return result;
 }
 
-Napi::Value Client::HasTorrents (const Napi::CallbackInfo& info) {
+Napi::Value Client::HasTorrents(const Napi::CallbackInfo& info) {
   Napi::Env env = info.Env();
 
   return Napi::Boolean::New(env, this->session.get_torrents().size() != 0);
 }
 
-Napi::Value Client::IsDestroyed (const Napi::CallbackInfo& info) {
+Napi::Value Client::IsDestroyed(const Napi::CallbackInfo& info) {
   Napi::Env env = info.Env();
 
   return Napi::Boolean::New(env, !this->session.is_valid());
 }
 
-} // namespace LtSession
+}  // namespace LtSession

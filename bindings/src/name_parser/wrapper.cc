@@ -1,3 +1,17 @@
+/**
+ * Copyright (c) 2019 Kylart <kylart.dev@gmail.com>
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ */ 
+
 #include "wrapper.h"
 
 namespace Wrapper {
@@ -15,7 +29,7 @@ anitomy::Elements Wrapper::Parsed() { return this->parsed_; }
 
 Napi::Value Wrapper::ParsedResult(Napi::Env env) {
   Napi::Object result = Napi::Object::New(env);
-  
+
   return BuildObject(this->parsed_, env);
 }
 
@@ -24,21 +38,20 @@ std::wstring Wrapper::ToWideString(Napi::String input, Napi::Env env) {
   std::wstring result;
   std::string _input = input.Utf8Value();
 
-  try
-  {
-      std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-      return converter.from_bytes(_input);
-  }
-  catch(std::range_error& e)
-  {
-      size_t length = _input.length();
-      std::wstring result;
-      result.reserve(length);
-      for(size_t i = 0; i < length; i++)
-      {
-          result.push_back(_input[i] & 0xFF);
-      }
-      return result;
+  try {
+    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+    return converter.from_bytes(_input);
+  } catch(std::range_error& e) {
+    size_t length = _input.length();
+    std::wstring result;
+
+    result.reserve(length);
+
+    for (size_t i = 0; i < length; i++) {
+        result.push_back(_input[i] & 0xFF);
+    }
+
+    return result;
   }
 }
 
@@ -47,7 +60,13 @@ std::string Wrapper::ToStr(anitomy::string_t str) {
   return std::string(ws_value.begin(), ws_value.end());
 }
 
-void Wrapper::SetEntry(Napi::Object &object, Napi::Env env, const char *entry, anitomy::Elements &elements, anitomy::ElementCategory pos) {
+void Wrapper::SetEntry(
+  Napi::Object object,
+  Napi::Env env,
+  const char *entry,
+  anitomy::Elements elements,
+  anitomy::ElementCategory pos
+) {
   Napi::String entry_name = Napi::String::New(env, entry);
 
   switch (elements.count(pos)) {
@@ -61,7 +80,7 @@ void Wrapper::SetEntry(Napi::Object &object, Napi::Env env, const char *entry, a
   }
 }
 
-Napi::Array Wrapper::CategoryArray(anitomy::Elements &elements, anitomy::ElementCategory pos, Napi::Env env) {
+Napi::Array Wrapper::CategoryArray(anitomy::Elements elements, anitomy::ElementCategory pos, Napi::Env env) {
   std::vector<anitomy::string_t> category_elements = elements.get_all(pos);
   Napi::Array output = Napi::Array::New(env);
   unsigned int index = 0;
@@ -74,7 +93,7 @@ Napi::Array Wrapper::CategoryArray(anitomy::Elements &elements, anitomy::Element
   return output;
 }
 
-Napi::Object Wrapper::BuildObject(anitomy::Elements &elements, Napi::Env env) {
+Napi::Object Wrapper::BuildObject(anitomy::Elements elements, Napi::Env env) {
   Napi::Object result = Napi::Object::New(env);
 
   SetEntry(result, env, "anime_season", elements, anitomy::kElementAnimeSeason);
@@ -106,4 +125,4 @@ Napi::Object Wrapper::BuildObject(anitomy::Elements &elements, Napi::Env env) {
 
   return result;
 }
-} // namespace Wrapper
+}  // namespace Wrapper
