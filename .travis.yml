@@ -6,19 +6,23 @@ cache:
     - $HOME/.cache/electron
     - $HOME/.cache/electron-builder
 
-install:
-  - npm install
+sudo: required
 
 jobs:
   include:
     -
       os: osx
-      osx_image: xcode10
+      osx_image: xcode11
       env:
         - ELECTRON_CACHE=$HOME/.cache/electron
         - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
-        - MATRIX_EVAL="brew install gcc && CC=gcc-5 && CXX=g++-5"
+        - MATRIX_EVAL="brew install gcc && CC=gcc-9 && CXX=g++-9"
       name: Mac
+      install:
+        - brew update
+        - brew install cmake boost
+        - bindings/scripts/install.sh
+        - npm install
       script:
         - node --version
         - npm --version
@@ -28,19 +32,36 @@ jobs:
 
     - 
       os: linux
+      dist: bionic
       addons:
         apt:
+          update: true
           sources:
             - ubuntu-toolchain-r-test
           packages:
+            - make
             - g++-5
             - gcc-5
+            - ninja-build
+            - libboost-system-dev
       env: CC=gcc-5 CXX=g++-5
       name: Linux
       services:
         - xvfb
       before_script:
         - "export DISPLAY=:99.0"
+      install:
+        - sudo apt purge --auto-remove cmake
+        - wget https://github.com/Kitware/CMake/releases/download/v3.15.4/cmake-3.15.4.tar.gz
+        - tar -xzf cmake-3.15.4.tar.gz
+        - cd cmake-3.15.4
+        - ./bootstrap
+        - make
+        - sudo make install
+        - cmake --version
+        - cd ..
+        - sudo bindings/scripts/install.sh
+        - npm install
       script:
         - node --version
         - npm --version
