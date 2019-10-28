@@ -19,7 +19,7 @@ jobs:
         - MATRIX_EVAL="brew install gcc && CC=gcc-9 && CXX=g++-9"
       name: Mac
       install:
-        - brew install ninja
+        - brew install ninja openssl
         - sudo ./bindings/scripts/install_libtorrent.sh
         - npm install
       script:
