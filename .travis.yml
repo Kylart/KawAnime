@@ -19,12 +19,11 @@ jobs:
         - MATRIX_EVAL="brew install gcc && CC=gcc-9 && CXX=g++-9"
       name: Mac
       install:
-        - brew update
-        - bindings/scripts/install.sh
+        - brew install ninja
+        - sudo ln -s $(which cmake) /usr/local/bin/
+        - sudo ./bindings/scripts/install_libtorrent.sh
         - npm install
       script:
-        - node --version
-        - npm --version
         - npm run lint
         - npm run pack
         # - npm run test
@@ -35,10 +34,7 @@ jobs:
       addons:
         apt:
           update: true
-          sources:
-            - ubuntu-toolchain-r-test
           packages:
-            - make
             - g++-5
             - gcc-5
             - ninja-build
@@ -50,20 +46,11 @@ jobs:
       before_script:
         - "export DISPLAY=:99.0"
       install:
-        - sudo apt purge --auto-remove cmake
-        - wget https://github.com/Kitware/CMake/releases/download/v3.15.4/cmake-3.15.4.tar.gz
-        - tar -xzf cmake-3.15.4.tar.gz
-        - cd cmake-3.15.4
-        - ./bootstrap
-        - make
-        - sudo make install
         - cmake --version
-        - cd ..
-        - sudo bindings/scripts/install.sh
+        - sudo ln -s $(which cmake) /usr/local/bin/
+        - sudo ./bindings/scripts/install_libtorrent.sh
         - npm install
       script:
-        - node --version
-        - npm --version
         - npm run lint
         - npm run pack
         - npm run test
