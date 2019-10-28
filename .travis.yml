@@ -20,7 +20,6 @@ jobs:
       name: Mac
       install:
         - brew install ninja
-        - sudo ln -s $(which cmake) /usr/local/bin/
         - sudo ./bindings/scripts/install_libtorrent.sh
         - npm install
       script:
