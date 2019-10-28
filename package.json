@@ -25,7 +25,6 @@
     "lint": "vue-cli-service lint",
     "compile:bindings": "cmake-js compile -d bindings -O bindings/build",
     "install:deps": "bash bindings/scripts/install.sh",
-    "preinstall": "npm run install:deps",
     "postinstall": "npm run compile:bindings && electron-builder install-app-deps",
     "postuninstall": "electron-builder install-app-deps",
     "test": "cross-env IS_TEST=true mocha --reporter mochawesome"
