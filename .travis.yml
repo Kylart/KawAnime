@@ -20,7 +20,6 @@ jobs:
       name: Mac
       install:
         - brew update
-        - brew install cmake boost
         - bindings/scripts/install.sh
         - npm install
       script:
