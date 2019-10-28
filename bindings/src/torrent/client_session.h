@@ -22,6 +22,8 @@
 #include <memory>
 #include <vector>
 
+#include <boost/version.hpp>
+
 #include <libtorrent/session_stats.hpp>
 #include <libtorrent/session.hpp>
 

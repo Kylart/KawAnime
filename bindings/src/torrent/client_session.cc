@@ -105,10 +105,13 @@ Napi::Value Client::AddTorrent(const Napi::CallbackInfo& info) {
     params.ti = std::make_shared<lt::torrent_info>(torrent);
   }
 
+  // TODO(Kylart): Uncomment when ubuntu has Boost 1.69 at least
+#if BOOST_VERSION >= 106900
   if (ec.failed()) {
     Napi::Error::New(env, "Invalid magnet link.").ThrowAsJavaScriptException();
     return env.Null();
   }
+#endif
 
   lt::torrent_handle added_torrent = this->session.add_torrent(params);
 
