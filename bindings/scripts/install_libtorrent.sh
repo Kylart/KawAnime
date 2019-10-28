@@ -1,4 +1,4 @@
-export LIBTORRENT_PATH="${CURRENT_PATH}/../lib/libtorrent"
+export LIBTORRENT_PATH="$(dirname $0)/../lib/libtorrent"
 
 cd $LIBTORRENT_PATH
 
