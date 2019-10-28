@@ -28,6 +28,8 @@ target_include_directories(${PROJECT_NAME} PRIVATE "lib/anitomy")
 # Checking Version
 # Getting installed version of libtorrent
 find_package(LibtorrentRasterbar 1.2 REQUIRED)
+
+# TODO: Would be great to have libtorrent build with cmake dependancy.
 # set(LIBTORRENT_DIR "lib/libtorrent")
 # add_subdirectory(${LIBTORRENT_DIR})
 
