@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.12.0 FATAL_ERROR)
 
 # Name of the project (will be the name of the plugin)
 project(kawabinds)
