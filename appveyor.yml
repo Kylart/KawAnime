@@ -52,8 +52,8 @@ install:
   - mkdir build && cd build
   - set "PATH=c:\Python27-x64;%PATH%"
   - cmake -DCMAKE_CXX_STANDARD=14 -Dbuild_tools=ON -G "Visual Studio 14 2015 Win64" ..
-  - ninja
-  - sudo ninja install
+  - cmake --build . --config Release -- -verbosity:minimal
+  - cmake --install .
   - cd %APPVEYOR_BUILD_FOLDER%
   - npm install
 
