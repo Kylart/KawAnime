@@ -19,12 +19,6 @@ jobs:
       name: Mac
       install:
         - brew install ninja
-        - sudo ln -s /usr/local/Cellar/gcc/9.*/bin/g++-9 /usr/local/bin/g++
-        - sudo ln -s /usr/local/Cellar/gcc/9.*/bin/g++-9 /usr/local/bin/c++
-        - sudo ln -s /usr/local/Cellar/gcc/9.*/bin/gcc-9 /usr/local/bin/gcc
-        - sudo ln -s /usr/local/Cellar/gcc/9.*/bin/gcc-9 /usr/local/bin/cc
-        - export CC=gcc
-        - export CXX=g++
         - bindings/scripts/install_libtorrent.sh
         - npm install
       script:
