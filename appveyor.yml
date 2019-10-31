@@ -14,12 +14,12 @@ init:
 install:
   - ps: Install-Product node 12 x64
   - choco install ninja
-  - cd bindings\lib\libtorrent
+  - cd %APPVEYOR_BUILD_FOLDER%\bindings\lib\libtorrent
   - mkdir build && cd build
   - cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=14 -G Ninja ..
   - ninja
   - ninja install
-  - cd ..\..\..\..\
+  - cd %APPVEYOR_BUILD_FOLDER%
   - npm install
 
 test_script:
