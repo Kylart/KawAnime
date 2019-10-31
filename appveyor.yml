@@ -32,8 +32,26 @@ environment:
 
 install:
   - ps: Install-Product node 12 x64
-  - ps: '"using msvc : 14.0 ;`nusing gcc : : : <cxxflags>-std=c++14 ;`nusing python : 3.5 : c:\\Python35-x64 : c:\\Python35-x64\\include : c:\\Python35-x64\\libs ;`n" | Set-Content $env:HOMEDRIVE\$env:HOMEPATH\user-config.jam'
   - git submodule update --init --recursive
+
+  - set ROOT_DIRECTORY=%CD%
+  - cd %ROOT_DIRECTORY%
+  - if not defined compiler ( set compiler="" )
+  - if not defined crypto ( set crypto=built-in )
+  - if not defined linkflags ( set linkflags="" )
+  - if not defined include ( set include="" )
+  - cd %ROOT_DIRECTORY%
+  - set BOOST_ROOT=c:\Libraries\boost_1_69_0
+  - set BOOST_BUILD_PATH=%BOOST_ROOT%\tools\build
+  - echo %BOOST_ROOT%
+  - echo %BOOST_BUILD_PATH%
+  - set PATH=%PATH%;%BOOST_BUILD_PATH%\src\engine\bin.ntx86
+  - ps: '"using msvc : 14.0 ;`nusing gcc : : : <cxxflags>-std=c++11 ;`nusing python : 3.5 : c:\\Python35-x64 : c:\\Python35-x64\\include : c:\\Python35-x64\\libs ;`n" | Set-Content $env:HOMEDRIVE\$env:HOMEPATH\user-config.jam'
+  - type %HOMEDRIVE%%HOMEPATH%\user-config.jam
+  - cd %ROOT_DIRECTORY%
+  - set PATH=c:\msys64\mingw32\bin;%PATH%
+  - g++ --version
+
   - choco install ninja
   - g++ --version
   - cd %APPVEYOR_BUILD_FOLDER%\bindings\lib\libtorrent
