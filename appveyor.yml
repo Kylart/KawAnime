@@ -51,9 +51,12 @@ install:
   - cd %ROOT_DIRECTORY%
   - set PATH=c:\msys64\mingw32\bin;%PATH%
   - g++ --version
+  - echo %ROOT_DIRECTORY%
+  - cd %BOOST_BUILD_PATH%\src\engine
+  - build.bat >nul
+  - cd %ROOT_DIRECTORY%
 
   - choco install ninja
-  - g++ --version
   - cd %APPVEYOR_BUILD_FOLDER%\bindings\lib\libtorrent
   - mkdir build && cd build
   - cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=14 -G Ninja ..
