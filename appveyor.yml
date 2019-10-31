@@ -46,15 +46,14 @@ install:
   - cd %BOOST_BUILD_PATH%\src\engine
   - build.bat >nul
 
-  - choco install ninja
   - cd %APPVEYOR_BUILD_FOLDER%\bindings\lib\libtorrent
   - mkdir build && cd build
   - set "PATH=c:\Python27-x64;%PATH%"
+  - cmake --help
   - cmake -DCMAKE_CXX_STANDARD=14 -Dbuild_tools=ON -G "Visual Studio 14 2015 Win64" ..
   - cmake --build . --config Release -- -verbosity:minimal
   - cmake --install .
   - set "PATH=c:/Program Files/libtorrent/;%PATH%"
-  - set CXXFLAGS="-std=c++14"
   - cd %APPVEYOR_BUILD_FOLDER%
   - npm install
 
