@@ -46,7 +46,7 @@ install:
   - echo %BOOST_ROOT%
   - echo %BOOST_BUILD_PATH%
   - set PATH=%PATH%;%BOOST_BUILD_PATH%\src\engine\bin.ntx86
-  - ps: '"using msvc : 14.0 ;`nusing gcc : : : <cxxflags>-std=c++11 ;`nusing python : 3.5 : c:\\Python35-x64 : c:\\Python35-x64\\include : c:\\Python35-x64\\libs ;`n" | Set-Content $env:HOMEDRIVE\$env:HOMEPATH\user-config.jam'
+  - ps: '"using msvc : 14.0 ;`nusing gcc : : : <cxxflags>-std=c++14 ;`nusing python : 3.5 : c:\\Python35-x64 : c:\\Python35-x64\\include : c:\\Python35-x64\\libs ;`n" | Set-Content $env:HOMEDRIVE\$env:HOMEPATH\user-config.jam'
   - type %HOMEDRIVE%%HOMEPATH%\user-config.jam
   - cd %ROOT_DIRECTORY%
   - set PATH=c:\msys64\mingw32\bin;%PATH%
@@ -59,7 +59,7 @@ install:
   - choco install ninja
   - cd %APPVEYOR_BUILD_FOLDER%\bindings\lib\libtorrent
   - mkdir build && cd build
-  - cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=14 -G Ninja ..
+  - cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=14 -DBOOST_ROOT=%BOOST_ROOT% -G Ninja ..
   - ninja
   - ninja install
   - cd %APPVEYOR_BUILD_FOLDER%
