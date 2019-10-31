@@ -16,7 +16,7 @@ install:
   - choco install ninja
   - cd %APPVEYOR_BUILD_FOLDER%\bindings\lib\libtorrent
   - mkdir build && cd build
-  - cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=14 -G Ninja ..
+  - cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=14 -G Ninja %APPVEYOR_BUILD_FOLDER%\bindings\lib\libtorrent
   - ninja
   - ninja install
   - cd %APPVEYOR_BUILD_FOLDER%
