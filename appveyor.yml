@@ -13,10 +13,11 @@ init:
 
 install:
   - ps: Install-Product node 12 x64
+  - git submodule update --init --recursive
   - choco install ninja
   - cd %APPVEYOR_BUILD_FOLDER%\bindings\lib\libtorrent
   - mkdir build && cd build
-  - cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=14 -G Ninja %APPVEYOR_BUILD_FOLDER%\bindings\lib\libtorrent
+  - cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=14 -G Ninja ..
   - ninja
   - ninja install
   - cd %APPVEYOR_BUILD_FOLDER%
