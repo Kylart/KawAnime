@@ -6,6 +6,9 @@ project(kawabinds)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_BUILD_TYPE Release)
 
+# LibGCrypt
+set(CMAKE_MODULE_PATH "lib/libtorrent/cmake/Modules")
+
 # Essential include files to build a node addon,
 # you should add this line in every CMake.js based project.
 include_directories(${CMAKE_JS_INC})
