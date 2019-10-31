@@ -24,6 +24,7 @@ environment:
     #   crypto: openssl
     #   bjam: 1
     - variant: test_debug
+      cmake: 1
       compiler: gcc
       model: 64
       crypto: openssl
