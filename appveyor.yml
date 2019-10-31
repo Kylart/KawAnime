@@ -32,6 +32,7 @@ environment:
 
 install:
   - ps: Install-Product node 12 x64
+  - ps: '"using msvc : 14.0 ;`nusing gcc : : : <cxxflags>-std=c++14 ;`nusing python : 3.5 : c:\\Python35-x64 : c:\\Python35-x64\\include : c:\\Python35-x64\\libs ;`n" | Set-Content $env:HOMEDRIVE\$env:HOMEPATH\user-config.jam'
   - git submodule update --init --recursive
   - choco install ninja
   - g++ --version
