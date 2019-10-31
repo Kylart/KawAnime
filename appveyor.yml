@@ -43,7 +43,10 @@ install:
   - if not defined include ( set include="" )
   - cd %ROOT_DIRECTORY%
   - set BOOST_ROOT=c:\Libraries\boost_1_69_0
-  - dir %BOOST_ROOT%
+  - set BOOST_BUILD_PATH=%BOOST_ROOT%\tools\build
+  - echo %BOOST_ROOT%
+  - echo %BOOST_BUILD_PATH%
+  - set PATH=%PATH%;%BOOST_BUILD_PATH%\src\engine\bin.ntx86
   - ps: '"using msvc : 14.0 ;`nusing gcc : : : <cxxflags>-std=c++14 ;`nusing python : 3.5 : c:\\Python35-x64 : c:\\Python35-x64\\include : c:\\Python35-x64\\libs ;`n" | Set-Content $env:HOMEDRIVE\$env:HOMEPATH\user-config.jam'
   - type %HOMEDRIVE%%HOMEPATH%\user-config.jam
   - cd %ROOT_DIRECTORY%
