@@ -54,7 +54,7 @@ install:
   - g++ --version
   - echo %ROOT_DIRECTORY%
   - cd %BOOST_BUILD_PATH%\src\engine
-  - build.bat >nul
+  - build.bat
   - cd %ROOT_DIRECTORY%
 
   - choco install ninja
