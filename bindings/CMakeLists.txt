@@ -53,8 +53,11 @@ find_library(LIBTORRENT_LIB torrent-rasterbar)
 target_include_directories(${PROJECT_NAME} PRIVATE ${LIBTORRENT_INCLUDE_PATH})
 target_link_libraries(${PROJECT_NAME} ${LIBTORRENT_LIB})
 
-find_path(BOOST_INCLUDE_PATH boost)
-target_include_directories(${PROJECT_NAME} PRIVATE ${BOOST_INCLUDE_PATH})
+
+find_package(Boost)
+if(Boost_FOUND)
+  target_include_directories(${PROJECT_NAME} PRIVATE ${Boost_INCLUDE_DIRS})
+endif()
 
 # Include N-API wrappers
 execute_process(COMMAND node -p "require('node-addon-api').include"
