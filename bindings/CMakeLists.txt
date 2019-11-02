@@ -38,6 +38,12 @@ add_library(${PROJECT_NAME} SHARED ${SOURCE_FILES})
 
 target_include_directories(${PROJECT_NAME} PRIVATE "lib/anitomy")
 
+find_package(Boost)
+if(Boost_FOUND)
+  target_include_directories(${PROJECT_NAME} PRIVATE ${Boost_INCLUDE_DIRS})
+  target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARY_DIRS})
+endif()
+
 ## Libtorrent
 # Checking Version
 # Getting installed version of libtorrent
@@ -52,12 +58,6 @@ find_library(LIBTORRENT_LIB torrent-rasterbar)
 
 target_include_directories(${PROJECT_NAME} PRIVATE ${LIBTORRENT_INCLUDE_PATH})
 target_link_libraries(${PROJECT_NAME} ${LIBTORRENT_LIB})
-
-
-find_package(Boost)
-if(Boost_FOUND)
-  target_include_directories(${PROJECT_NAME} PRIVATE ${Boost_INCLUDE_DIRS})
-endif()
 
 # Include N-API wrappers
 execute_process(COMMAND node -p "require('node-addon-api').include"
