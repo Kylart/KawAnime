@@ -9,11 +9,12 @@ set(CMAKE_BUILD_TYPE Release)
 
 # Windows things...
 if (MSVC_VERSION GREATER_EQUAL "1900")
-    include(CheckCXXCompilerFlag)
-    CHECK_CXX_COMPILER_FLAG("/std:c++latest" _cpp_latest_flag_supported)
-    if (_cpp_latest_flag_supported)
-        add_compile_options("/std:c++14")
-    endif()
+  message("MSVC 19 detected (${MSVC_VERSION}), setting flags")
+  include(CheckCXXCompilerFlag)
+  CHECK_CXX_COMPILER_FLAG("/std:c++14" _cpp_14_flag_supported)
+  if (_cpp_14_flag_supported)
+    add_compile_options("/std:c++14")
+  endif()
 endif()
 
 # LibGCrypt
