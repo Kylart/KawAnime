@@ -45,9 +45,10 @@ install:
   - echo %ROOT_DIRECTORY%
   - cd %BOOST_BUILD_PATH%\src\engine
   - build.bat >nul
+  - cd %BOOST_ROOT%
+  - bjam cxxstd=14 release --with-python --with-system --layout=system address-model=64 link=shared stage
 
   - cd %APPVEYOR_BUILD_FOLDER%\bindings\lib\libtorrent
-  - bjam cxxstd=14 release --with-python --with-system --layout=system address-model=64 link=shared stage
   - mkdir build && cd build
   - set "PATH=c:\Python27-x64;%PATH%"
   - cmake -DBOOST_LIBRARYDIR=%BOOST_ROOT%\stage\lib -DCMAKE_CXX_STANDARD=14 -Dbuild_tools=ON -G "Visual Studio 15 2017" -A x64 ..
