@@ -4,6 +4,7 @@ cmake_minimum_required(VERSION 3.12.0 FATAL_ERROR)
 project(kawabinds)
 
 set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_BUILD_TYPE Release)
 
 # LibGCrypt
