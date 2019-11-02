@@ -52,7 +52,8 @@ install:
 
   - cd %APPVEYOR_BUILD_FOLDER%\bindings\lib\libtorrent
   - mkdir build && cd build
-  - cmake -DBOOST_LIBRARYDIR=%BOOST_ROOT%\stage\lib -DCMAKE_CXX_STANDARD=14 -Dbuild_tools=ON -G "Visual Studio 15 2017" -A x64 ..
+  - set BOOST_LIBRARYDIR=%BOOST_ROOT%\stage\lib
+  - cmake -DBOOST_LIBRARYDIR=%BOOST_LIBRARYDIR% -DCMAKE_CXX_STANDARD=14 -Dbuild_tools=ON -G "Visual Studio 15 2017" -A x64 ..
   - cmake --build . --config Release -- -verbosity:minimal
   - cmake --install .
   - set "PATH=c:/Program Files (x86)/libtorrent/;%PATH%"
