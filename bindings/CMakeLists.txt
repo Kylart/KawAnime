@@ -38,12 +38,6 @@ add_library(${PROJECT_NAME} SHARED ${SOURCE_FILES})
 
 target_include_directories(${PROJECT_NAME} PRIVATE "lib/anitomy")
 
-find_package(Boost)
-if(Boost_FOUND)
-  target_include_directories(${PROJECT_NAME} PRIVATE ${Boost_INCLUDE_DIRS})
-  target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARY_DIRS})
-endif()
-
 ## Libtorrent
 # Checking Version
 # Getting installed version of libtorrent
