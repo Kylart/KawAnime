@@ -1,4 +1,4 @@
-image: Visual Studio 2015
+image: Visual Studio 2017
 
 cache:
   - '%USERPROFILE%\.electron'
@@ -14,7 +14,7 @@ init:
 environment:
   matrix:
     - variant: test_release
-      compiler: msvc-14.0
+      compiler: gcc
       model: 64
       python: 1
       crypto: openssl
@@ -47,13 +47,14 @@ install:
   - build.bat >nul
 
   - cd %APPVEYOR_BUILD_FOLDER%\bindings\lib\libtorrent
+  - bjam cxxstd=14 release --with-python --with-system --layout=system address-model=64 link=shared stage
   - mkdir build && cd build
   - set "PATH=c:\Python27-x64;%PATH%"
-  - cmake --help
-  - cmake -DCMAKE_CXX_STANDARD=14 -Dbuild_tools=ON -G "Visual Studio 14 2015 Win64" ..
+  - cmake -DBOOST_LIBRARYDIR=%BOOST_ROOT%\stage\lib -DCMAKE_CXX_STANDARD=14 -Dbuild_tools=ON -G "Visual Studio 15 2017" -A x64 ..
   - cmake --build . --config Release -- -verbosity:minimal
   - cmake --install .
   - set "PATH=c:/Program Files/libtorrent/;%PATH%"
+
   - cd %APPVEYOR_BUILD_FOLDER%
   - npm install
 
