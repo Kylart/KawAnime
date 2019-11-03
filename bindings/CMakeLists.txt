@@ -38,9 +38,12 @@ add_library(${PROJECT_NAME} SHARED ${SOURCE_FILES})
 
 target_include_directories(${PROJECT_NAME} PRIVATE "lib/anitomy")
 
+find_package(Boost)
+
+target_include_directories(${PROJECT_NAME} PRIVATE ${Boost_INCLUDE_DIRS})
+target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES})
+
 ## Libtorrent
-# Checking Version
-# Getting installed version of libtorrent
 find_package(LibtorrentRasterbar 1.2 REQUIRED)
 
 # TODO: Would be great to have libtorrent build with cmake dependancy.
