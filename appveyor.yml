@@ -36,7 +36,7 @@ install:
   - set BOOST_BUILD_PATH=%BOOST_ROOT%\tools\build
   - echo %BOOST_ROOT%
   - echo %BOOST_BUILD_PATH%
-  - set PATH=%PATH%;%BOOST_BUILD_PATH%\src\engine\bin.ntx64
+  - set PATH=%PATH%;%BOOST_BUILD_PATH%\src\engine\bin.ntx86
   - ps: '"using msvc : 14.0 ;`nusing gcc : : : <cxxflags>-std=c++14 ;`n" | Set-Content $env:HOMEDRIVE\$env:HOMEPATH\user-config.jam'
   - type %HOMEDRIVE%%HOMEPATH%\user-config.jam
   - cd %ROOT_DIRECTORY%
@@ -46,6 +46,7 @@ install:
   - cd %BOOST_BUILD_PATH%\src\engine
   - build.bat >nul
   - cd %BOOST_ROOT%
+  - dir %BOOST_BUILD_PATH%\src\engine
   - bjam cxxstd=14 release --with-system --layout=system address-model=64 link=shared stage
 
   - cd %APPVEYOR_BUILD_FOLDER%\bindings\lib\libtorrent
