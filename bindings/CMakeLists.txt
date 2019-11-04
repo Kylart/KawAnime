@@ -9,12 +9,17 @@ set(CMAKE_BUILD_TYPE Release)
 
 # Windows things...
 if (MSVC_VERSION GREATER_EQUAL "1900")
-  message("MSVC 19 detected (${MSVC_VERSION}), setting flags")
   include(CheckCXXCompilerFlag)
   CHECK_CXX_COMPILER_FLAG("/std:c++14" _cpp_14_flag_supported)
   if (_cpp_14_flag_supported)
     add_compile_options("/std:c++14")
   endif()
+
+  set(BOOST_USE_STATIC_LIBS ON)
+  set(Boost_USE_MULTITHREADED ON)
+  find_package(Boost COMPONENTS filesystem REQUIRED)
+
+  include_directories(${Boost_INCLUDE_DIRS})
 endif()
 
 # LibGCrypt
@@ -37,11 +42,6 @@ file(
 add_library(${PROJECT_NAME} SHARED ${SOURCE_FILES})
 
 target_include_directories(${PROJECT_NAME} PRIVATE "lib/anitomy")
-
-find_package(Boost)
-
-target_include_directories(${PROJECT_NAME} PRIVATE ${Boost_INCLUDE_DIRS})
-target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES})
 
 ## Libtorrent
 find_package(LibtorrentRasterbar 1.2 REQUIRED)
@@ -74,4 +74,9 @@ target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_JS_INC})
 
 # Essential library files to link to a node addon
 # You should add this line in every CMake.js based project
-target_link_libraries(${PROJECT_NAME} ${CMAKE_JS_LIB})
+if(MSVC)
+  target_link_libraries(${PROJECT_NAME} ${CMAKE_JS_LIB};${Boost_LIBRARIES})
+else()
+  target_link_libraries(${PROJECT_NAME} ${CMAKE_JS_LIB})
+endif()
+
