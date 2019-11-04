@@ -46,7 +46,7 @@ install:
   - build.bat >nul
   - cd %BOOST_ROOT%
   # - bjam cxxstd=14 release --toolset=msvc --with-system --build-type=complete address-model=64 link=shared stage
-  - b2 cxxstd=14 address-model=64 threading=multi --with-system --with-timer --toolset=msvc
+  - b2 cxxstd=14 address-model=64 threading=multi --with-system --with-date_time --toolset=msvc
 
   - cd %APPVEYOR_BUILD_FOLDER%\bindings\lib\libtorrent
   - mkdir build && cd build
