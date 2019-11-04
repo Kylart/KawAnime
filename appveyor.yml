@@ -41,19 +41,17 @@ install:
   - type %HOMEDRIVE%%HOMEPATH%\user-config.jam
   - cd %ROOT_DIRECTORY%
   - set PATH=c:\msys64\mingw32\bin;%PATH%
-  - g++ --version
-  - set CC=gcc
-  - set CXX=g++
   - echo %ROOT_DIRECTORY%
   - cd %BOOST_BUILD_PATH%\src\engine
   - build.bat >nul
   - cd %BOOST_ROOT%
   - dir %BOOST_BUILD_PATH%\src\engine
-  - bjam cxxstd=14 release --toolset=msvc --with-system --layout=system address-model=64 architecture=x86 link=shared stage
+  - bjam cxxstd=14 release --toolset=msvc --with-system --layout=system address-model=64 link=shared stage
 
   - cd %APPVEYOR_BUILD_FOLDER%\bindings\lib\libtorrent
   - mkdir build && cd build
   - set BOOST_LIBRARYDIR=%BOOST_ROOT%\stage\lib
+  - dir %BOOST_LIBRARYDIR%
   - cmake -DBOOST_LIBRARYDIR=%BOOST_LIBRARYDIR% -DCMAKE_CXX_STANDARD=14 -Dbuild_tools=ON -G "Visual Studio 15 2017 Win64" ..
   - cmake --build . --config Release -- -verbosity:minimal
   - cmake --install .
