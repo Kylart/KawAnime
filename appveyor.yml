@@ -42,6 +42,8 @@ install:
   - cd %ROOT_DIRECTORY%
   - set PATH=c:\msys64\mingw32\bin;%PATH%
   - g++ --version
+  - set CC=gcc
+  - set CXX=g++
   - echo %ROOT_DIRECTORY%
   - cd %BOOST_BUILD_PATH%\src\engine
   - build.bat >nul
@@ -52,7 +54,7 @@ install:
   - cd %APPVEYOR_BUILD_FOLDER%\bindings\lib\libtorrent
   - mkdir build && cd build
   - set BOOST_LIBRARYDIR=%BOOST_ROOT%\stage\lib
-  - cmake -DBOOST_LIBRARYDIR=%BOOST_LIBRARYDIR% -DCMAKE_CXX_STANDARD=14 -Dbuild_tools=ON -G "Visual Studio 15 2017" -A x64 ..
+  - cmake -DBOOST_LIBRARYDIR=%BOOST_LIBRARYDIR% -DCMAKE_CXX_STANDARD=14 -Dbuild_tools=ON ..
   - cmake --build . --config Release -- -verbosity:minimal
   - cmake --install .
   - set "PATH=c:/Program Files (x86)/libtorrent/;%PATH%"
