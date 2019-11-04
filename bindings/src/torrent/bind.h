@@ -16,6 +16,7 @@
 
 #include <napi.h>
 
+#include "windows.h"
 #include "client_session.h"
 #include "version.h"
 
