@@ -85,7 +85,7 @@ Napi::Value Client::GetTorrentsList(const Napi::CallbackInfo& info) {
 Napi::Value Client::AddTorrent(const Napi::CallbackInfo& info) {
   Napi::Env env = info.Env();
 
-  int argc = info.Length();
+  size_t argc = info.Length();
   if (argc < 2 && !info[0].IsString() && !info[1].IsString()) {
     Napi::TypeError::New(env, "Not enough arguments provided.").ThrowAsJavaScriptException();
     return env.Null();
@@ -120,7 +120,7 @@ Napi::Value Client::AddTorrent(const Napi::CallbackInfo& info) {
 Napi::Value Client::RemoveTorrent(const Napi::CallbackInfo& info) {
   Napi::Env env = info.Env();
 
-  int argc = info.Length();
+  size_t argc = info.Length();
   if (argc < 1 && !info[0].IsNumber()) {
     Napi::TypeError::New(env, "Not enough arguments provided.").ThrowAsJavaScriptException();
     return env.Null();
@@ -141,7 +141,7 @@ Napi::Value Client::RemoveTorrent(const Napi::CallbackInfo& info) {
 Napi::Value Client::PauseTorrent(const Napi::CallbackInfo& info) {
   Napi::Env env = info.Env();
 
-  int argc = info.Length();
+  size_t argc = info.Length();
   if (argc < 1 && !info[0].IsNumber()) {
     Napi::TypeError::New(env, "Not enough arguments provided.").ThrowAsJavaScriptException();
     return env.Null();
@@ -161,7 +161,7 @@ Napi::Value Client::PauseTorrent(const Napi::CallbackInfo& info) {
 Napi::Value Client::ResumeTorrent(const Napi::CallbackInfo& info) {
   Napi::Env env = info.Env();
 
-  int argc = info.Length();
+  size_t argc = info.Length();
   if (argc < 1 && !info[0].IsNumber()) {
     Napi::TypeError::New(env, "Not enough arguments provided.").ThrowAsJavaScriptException();
     return env.Null();
