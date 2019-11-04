@@ -45,8 +45,7 @@ install:
   - cd %BOOST_BUILD_PATH%\src\engine
   - build.bat >nul
   - cd %BOOST_ROOT%
-  - dir %BOOST_BUILD_PATH%\src\engine
-  - bjam cxxstd=14 release --toolset=msvc --with-system --built-type=complete address-model=64 link=shared stage
+  - bjam cxxstd=14 release --toolset=msvc --with-system --build-type=complete address-model=64 link=shared stage
 
   - cd %APPVEYOR_BUILD_FOLDER%\bindings\lib\libtorrent
   - mkdir build && cd build
