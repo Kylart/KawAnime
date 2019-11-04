@@ -9,8 +9,6 @@ set(CMAKE_BUILD_TYPE Release)
 
 # Windows things...
 if (MSVC_VERSION GREATER_EQUAL "1900")
-  set(CMAKE_GENERATOR_PLATFORM x64)
-
   include(CheckCXXCompilerFlag)
   CHECK_CXX_COMPILER_FLAG("/std:c++14" _cpp_14_flag_supported)
   if (_cpp_14_flag_supported)
