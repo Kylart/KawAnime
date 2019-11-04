@@ -31,21 +31,15 @@ install:
   - if not defined crypto ( set crypto=built-in )
   - if not defined linkflags ( set linkflags="" )
   - if not defined include ( set include="" )
-  - cd %ROOT_DIRECTORY%
+  - ps: '"using msvc : 14.0 ;`nusing gcc : : : <cxxflags>-std=c++14 ;`n" | Set-Content $env:HOMEDRIVE\$env:HOMEPATH\user-config.jam'
   - set BOOST_ROOT=c:\Libraries\boost_1_69_0
   - set BOOST_BUILD_PATH=%BOOST_ROOT%\tools\build
-  - echo %BOOST_ROOT%
-  - echo %BOOST_BUILD_PATH%
-  - set PATH=%PATH%;%BOOST_BUILD_PATH%\src\engine\bin.ntx86
-  - ps: '"using msvc : 14.0 ;`nusing gcc : : : <cxxflags>-std=c++14 ;`n" | Set-Content $env:HOMEDRIVE\$env:HOMEPATH\user-config.jam'
   - type %HOMEDRIVE%%HOMEPATH%\user-config.jam
-  - cd %ROOT_DIRECTORY%
+  - set PATH=%PATH%;%BOOST_BUILD_PATH%\src\engine\bin.ntx86
   - set PATH=c:\msys64\mingw32\bin;%PATH%
-  - echo %ROOT_DIRECTORY%
   - cd %BOOST_BUILD_PATH%\src\engine
   - build.bat >nul
   - cd %BOOST_ROOT%
-  # - bjam cxxstd=14 release --toolset=msvc --with-system --build-type=complete address-model=64 link=shared stage
   - b2 cxxstd=14 address-model=64 threading=multi --with-system --with-date_time --toolset=msvc-14.1
 
   - cd %APPVEYOR_BUILD_FOLDER%\bindings\lib\libtorrent
@@ -55,6 +49,7 @@ install:
   - cmake -DBOOST_LIBRARYDIR=%BOOST_LIBRARYDIR% -DCMAKE_CXX_STANDARD=14 -Dbuild_tools=ON -G "Visual Studio 15 2017 Win64" ..
   - cmake --build . --config Release -- -verbosity:minimal
   - cmake --install .
+  - set "PATH=%BOOST_LIBRARYDIR%;%PATH%"
   - set "PATH=c:/Program Files/libtorrent/;%PATH%"
 
   - cd %APPVEYOR_BUILD_FOLDER%
