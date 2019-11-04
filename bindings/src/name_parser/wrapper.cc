@@ -42,6 +42,8 @@ std::wstring Wrapper::ToWideString(Napi::String input, Napi::Env env) {
     std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
     return converter.from_bytes(_input);
   } catch(std::range_error& e) {
+    (void)e;
+
     size_t length = _input.length();
     std::wstring result;
 

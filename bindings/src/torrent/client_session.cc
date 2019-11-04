@@ -187,7 +187,7 @@ Napi::Value Client::GetClientInfo(const Napi::CallbackInfo& info) {
   double download_rate = 0.0;
   double upload_rate = 0.0;
   float progress = 0;
-  int nb_torrents = torrents.size();
+  size_t nb_torrents = torrents.size();
 
   for (auto const& torrent : torrents) {
     lt::torrent_status status = torrent.status();

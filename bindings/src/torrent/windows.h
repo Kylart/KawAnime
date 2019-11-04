@@ -10,26 +10,15 @@
  *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- */ 
+ */
 
-#ifndef BINDINGS_SRC_TORRENT_UTILS_H_
-#define BINDINGS_SRC_TORRENT_UTILS_H_
+#ifndef BINDINGS_SRC_TORRENT_WINDOWS_H_
+#define BINDINGS_SRC_TORRENT_WINDOWS_H_
 
-#include <napi.h>
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
+// Windows 10, Needed by Boost
+#define WINVER 0x0A00
+#define _WIN32_WINNT 0x0A00
+#endif
 
-#include <vector>
-
-#include <libtorrent/session.hpp>
-#include <libtorrent/torrent_handle.hpp>
-#include <libtorrent/torrent_status.hpp>
-
-#include "windows.h"
-
-namespace LtUtils {
-
-Napi::Object formatTorrentInfo(Napi::Env env, lt::torrent_handle torrent);
-lt::torrent_handle findTorrent(lt::session * session, std::uint32_t to_find_id);
-
-}  // namespace LtUtils
-
-#endif  // BINDINGS_SRC_TORRENT_UTILS_H_
+#endif  // BINDINGS_SRC_TORRENT_WINDOWS_H_

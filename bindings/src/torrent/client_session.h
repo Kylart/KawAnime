@@ -15,12 +15,6 @@
 #ifndef BINDINGS_SRC_TORRENT_CLIENT_SESSION_H_
 #define BINDINGS_SRC_TORRENT_CLIENT_SESSION_H_
 
-#if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
-// Windows 10, Needed by Boost
-#define WINVER 0x0A00
-#define _WIN32_WINNT 0x0A00
-#endif
-
 #include <napi.h>
 
 #include <cstdlib>
@@ -39,6 +33,7 @@
 #include <libtorrent/torrent_flags.hpp>
 #include <libtorrent/magnet_uri.hpp>
 
+#include "windows.h"
 #include "utils.h"
 
 namespace LtSession {
