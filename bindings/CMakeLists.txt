@@ -19,7 +19,10 @@ if (MSVC_VERSION GREATER_EQUAL "1900")
   set(Boost_USE_MULTITHREADED ON)
   find_package(Boost COMPONENTS filesystem date_time REQUIRED)
 
+  message("include dir: ${Boost_INCLUDE_DIRS}")
+  message("link dir: ${Boost_LIBRARY_DIR}")
   include_directories(${Boost_INCLUDE_DIRS})
+  link_directories(${Boost_LIBRARY_DIR})
 endif()
 
 # LibGCrypt
