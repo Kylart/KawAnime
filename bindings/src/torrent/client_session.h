@@ -33,7 +33,6 @@
 #include <libtorrent/torrent_flags.hpp>
 #include <libtorrent/magnet_uri.hpp>
 
-#include "windows.h"
 #include "utils.h"
 
 namespace LtSession {

@@ -23,8 +23,6 @@
 #include <libtorrent/torrent_handle.hpp>
 #include <libtorrent/torrent_status.hpp>
 
-#include "windows.h"
-
 namespace LtUtils {
 
 Napi::Object formatTorrentInfo(Napi::Env env, lt::torrent_handle torrent);

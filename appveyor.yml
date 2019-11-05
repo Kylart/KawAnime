@@ -34,12 +34,9 @@ install:
   - set BOOST_ROOT=c:\Libraries\boost_1_69_0
   - set BOOST_BUILD_PATH=%BOOST_ROOT%\tools\build
   - type %HOMEDRIVE%%HOMEPATH%\user-config.jam
-  - set PATH=%PATH%;%BOOST_BUILD_PATH%\src\engine\bin.ntx86
-  - set PATH=c:\msys64\mingw32\bin;%PATH%
-  - cd %BOOST_BUILD_PATH%\src\engine
-  - build.bat >nul
+  - bootstrap.bat
   - cd %BOOST_ROOT%
-  - b2 cxxstd=14 address-model=64 threading=multi --with-system --with-date_time --toolset=msvc-14.1 link=static runtime-link=shared
+  - b2 cxxstd=14 address-model=64 threading=multi --with-system --with-date_time --toolset=msvc-14.1 link=static runtime-link=shared stage
 
   - cd %APPVEYOR_BUILD_FOLDER%\bindings\lib\libtorrent
   - mkdir build && cd build
