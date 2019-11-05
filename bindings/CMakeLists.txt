@@ -9,19 +9,6 @@ set(CMAKE_BUILD_TYPE Release)
 
 # Windows things...
 if (MSVC_VERSION GREATER_EQUAL "1900")
-  macro(get_WIN32_WINNT version)
-  if (WIN32 AND CMAKE_SYSTEM_VERSION)
-      set(ver ${CMAKE_SYSTEM_VERSION})
-      string(REPLACE "." "" ver ${ver})
-      string(REGEX REPLACE "([0-9])" "0\\1" ver ${ver})
-
-      set(${version} "0x${ver}")
-  endif()
-  endmacro()
-
-  get_WIN32_WINNT(ver)
-  add_definitions(-D_WIN32_WINNT=${ver})
-
   include(CheckCXXCompilerFlag)
   CHECK_CXX_COMPILER_FLAG("/std:c++14" _cpp_14_flag_supported)
   if (_cpp_14_flag_supported)
