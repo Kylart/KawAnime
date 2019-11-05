@@ -11,16 +11,6 @@ platform:
 init:
   - git config --global core.autocrlf input
 
-environment:
-  matrix:
-    - variant: test_release
-      compiler: gcc
-      model: 64
-      python: 1
-      crypto: openssl
-      bjam: 1
-      cmake: 1
-
 install:
   - ps: Install-Product node 12 x64
   - git submodule update --init --recursive
