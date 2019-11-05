@@ -33,6 +33,7 @@ install:
   - ps: '"using msvc : 14.1 ;`nusing gcc : : : <cxxflags>-std=c++14 ;`n" | Set-Content $env:HOMEDRIVE\$env:HOMEPATH\user-config.jam'
   - set BOOST_ROOT=c:\Libraries\boost_1_69_0
   - set BOOST_BUILD_PATH=%BOOST_ROOT%\tools\build
+  - set PATH=c:\msys64\mingw32\bin;%PATH%
   - type %HOMEDRIVE%%HOMEPATH%\user-config.jam
   - cd %BOOST_BUILD_PATH%
   - bootstrap.bat
