@@ -26,12 +26,11 @@ install:
   - git submodule update --init --recursive
 
   - set ROOT_DIRECTORY=%CD%
-  - cd %ROOT_DIRECTORY%
   - if not defined compiler ( set compiler="" )
   - if not defined crypto ( set crypto=built-in )
   - if not defined linkflags ( set linkflags="" )
   - if not defined include ( set include="" )
-  - ps: '"using msvc : 14.0 ;`nusing gcc : : : <cxxflags>-std=c++14 ;`n" | Set-Content $env:HOMEDRIVE\$env:HOMEPATH\user-config.jam'
+  - ps: '"using msvc : 14.1 ;`nusing gcc : : : <cxxflags>-std=c++14 ;`n" | Set-Content $env:HOMEDRIVE\$env:HOMEPATH\user-config.jam'
   - set BOOST_ROOT=c:\Libraries\boost_1_69_0
   - set BOOST_BUILD_PATH=%BOOST_ROOT%\tools\build
   - type %HOMEDRIVE%%HOMEPATH%\user-config.jam
@@ -40,7 +39,7 @@ install:
   - cd %BOOST_BUILD_PATH%\src\engine
   - build.bat >nul
   - cd %BOOST_ROOT%
-  - b2 cxxstd=14 address-model=64 threading=multi --with-system --with-date_time --toolset=msvc-14.1 link=shared
+  - b2 cxxstd=14 address-model=64 threading=multi --with-system --with-date_time --toolset=msvc-14.1 link=static runtime-link=shared
 
   - cd %APPVEYOR_BUILD_FOLDER%\bindings\lib\libtorrent
   - mkdir build && cd build

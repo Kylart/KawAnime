@@ -17,7 +17,7 @@ if (MSVC_VERSION GREATER_EQUAL "1900")
 
   set(BOOST_USE_STATIC_LIBS ON)
   set(Boost_USE_MULTITHREADED ON)
-  find_package(Boost COMPONENTS filesystem REQUIRED)
+  find_package(Boost COMPONENTS filesystem date_time REQUIRED)
 
   include_directories(${Boost_INCLUDE_DIRS})
 endif()
