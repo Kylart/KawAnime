@@ -40,7 +40,7 @@ install:
   - cd %BOOST_BUILD_PATH%\src\engine
   - build.bat >nul
   - cd %BOOST_ROOT%
-  - b2 cxxstd=14 address-model=64 threading=multi --with-system --with-date_time --toolset=msvc-14.1
+  - b2 cxxstd=14 address-model=64 threading=multi --with-system --with-date_time --toolset=msvc-14.1 link=shared
 
   - cd %APPVEYOR_BUILD_FOLDER%\bindings\lib\libtorrent
   - mkdir build && cd build
