@@ -20,9 +20,9 @@ if (MSVC_VERSION GREATER_EQUAL "1900")
   find_package(Boost COMPONENTS filesystem date_time REQUIRED)
 
   message("include dir: ${Boost_INCLUDE_DIRS}")
-  message("link dir: ${Boost_LIBRARY_DIR}")
+  message("link dir: ${BOOST_LIBRARYDIR}")
   include_directories(${Boost_INCLUDE_DIRS})
-  link_directories(${Boost_LIBRARY_DIR})
+  link_directories(${BOOST_LIBRARYDIR})
 endif()
 
 # LibGCrypt
