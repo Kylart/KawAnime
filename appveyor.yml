@@ -46,7 +46,8 @@ install:
   - npm install
 
   - del /Q/S %APPVEYOR_BUILD_FOLDER%\bindings\lib\libtorrent\build\libtorrent.sln
-  - del /Q/S %APPVEYOR_BUILD_FOLDER%\bindings\build\kawabinds.sln
+
+build: off
 
 test_script:
   - node --version
