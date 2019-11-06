@@ -48,6 +48,7 @@ install:
 build: off
 
 test_script:
+  - node bindings/examples.js
   - node --version
   - npm --version
   - npm run lint
