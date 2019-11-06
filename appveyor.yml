@@ -45,6 +45,9 @@ install:
   - cd %APPVEYOR_BUILD_FOLDER%
   - npm install
 
+build:
+  project: KawAnime
+
 test_script:
   - node --version
   - npm --version
