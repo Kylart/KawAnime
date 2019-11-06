@@ -49,7 +49,6 @@ install:
 build: off
 
 test_script:
-  - node %APPVEYOR_BUILD_FOLDER%\bindings/example.js
   - node --version
   - npm --version
   - npm run lint
