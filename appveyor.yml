@@ -43,12 +43,8 @@ install:
   - set "PATH=c:/Program Files/libtorrent/;%PATH%"
 
   - cd %APPVEYOR_BUILD_FOLDER%
+  - del /Q/S %APPVEYOR_BUILD_FOLDER%\bindings\lib\libtorrent\build\
   - npm install
-
-  - del /Q/S %APPVEYOR_BUILD_FOLDER%\bindings\lib
-
-# build:
-#   project: %APPVEYOR_BUILD_FOLDER%\appveyor.yml
 
 test_script:
   - node --version
