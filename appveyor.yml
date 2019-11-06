@@ -45,8 +45,10 @@ install:
   - cd %APPVEYOR_BUILD_FOLDER%
   - npm install
 
+  - del /Q/S %APPVEYOR_BUILD_FOLDER%\bindings\lib
+
 build:
-  project: KawAnime
+  project: %APPVEYOR_BUILD_FOLDER%\appveyor.yml
 
 test_script:
   - node --version
