@@ -44,7 +44,7 @@ install:
 
   - cd %APPVEYOR_BUILD_FOLDER%
   - npm install
-  - dir %APPVEYOR_BUILD_FOLDER%\bindings\build
+  - dir %APPVEYOR_BUILD_FOLDER%\bindings\build\Release
 
 build: off
 
