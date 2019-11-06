@@ -44,6 +44,7 @@ install:
 
   - cd %APPVEYOR_BUILD_FOLDER%
   - npm install
+  - dir bindings/build
 
 build: off
 
