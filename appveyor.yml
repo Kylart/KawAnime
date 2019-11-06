@@ -47,8 +47,8 @@ install:
 
   - del /Q/S %APPVEYOR_BUILD_FOLDER%\bindings\lib
 
-build:
-  project: %APPVEYOR_BUILD_FOLDER%\appveyor.yml
+# build:
+#   project: %APPVEYOR_BUILD_FOLDER%\appveyor.yml
 
 test_script:
   - node --version
