@@ -44,12 +44,12 @@ install:
 
   - cd %APPVEYOR_BUILD_FOLDER%
   - npm install
-  - dir bindings/build
+  - dir %APPVEYOR_BUILD_FOLDER%\bindings\build
 
 build: off
 
 test_script:
-  - node bindings/example.js
+  - node %APPVEYOR_BUILD_FOLDER%\bindings/example.js
   - node --version
   - npm --version
   - npm run lint
