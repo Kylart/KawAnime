@@ -43,8 +43,10 @@ install:
   - set "PATH=c:/Program Files/libtorrent/;%PATH%"
 
   - cd %APPVEYOR_BUILD_FOLDER%
-  - del /Q/S %APPVEYOR_BUILD_FOLDER%\bindings\lib\libtorrent\build\
   - npm install
+
+  - del /Q/S %APPVEYOR_BUILD_FOLDER%\bindings\lib\libtorrent\build\libtorrent.sln
+  - del /Q/S %APPVEYOR_BUILD_FOLDER%\bindings\build\kawabinds.sln
 
 test_script:
   - node --version
