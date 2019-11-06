@@ -45,8 +45,6 @@ install:
   - cd %APPVEYOR_BUILD_FOLDER%
   - npm install
 
-  - del /Q/S %APPVEYOR_BUILD_FOLDER%\bindings\lib\libtorrent\build\libtorrent.sln
-
 build: off
 
 test_script:
