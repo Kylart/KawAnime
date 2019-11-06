@@ -30,6 +30,7 @@
     "test": "cross-env IS_TEST=true mocha --reporter mochawesome"
   },
   "dependencies": {
+    "bindings": "^1.5.0",
     "buttercup": "^2.15.4",
     "chalk": "^2.4.2",
     "electron-updater": "^4.1.2",
@@ -72,7 +73,7 @@
     "material-design-icons-iconfont": "^5.0.1",
     "mocha": "^6.2.0",
     "mochawesome": "^4.1.0",
-    "node-loader": "^0.6.0",
+    "native-ext-loader": "^2.3.0",
     "pug": "^2.0.4",
     "pug-plain-loader": "^1.0.0",
     "roboto-fontface": "^0.10.0",

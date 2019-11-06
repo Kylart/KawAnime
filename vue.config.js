@@ -37,6 +37,7 @@ module.exports = {
   },
   pluginOptions: {
     electronBuilder: {
+      externals: ['kawabinds'],
       builderOptions: {
         appId: 'KawAnime',
         productName: 'KawAnime',
@@ -80,8 +81,8 @@ module.exports = {
           .module
           .rule('node')
           .test(/\.node$/)
-          .use('node-loader')
-          .loader('node-loader')
+          .use('native-ext-loader')
+          .loader('native-ext-loader')
           .end()
 
         config
