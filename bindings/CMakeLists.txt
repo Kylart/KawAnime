@@ -8,24 +8,22 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_BUILD_TYPE Release)
 
 # Windows things...
-if (MSVC_VERSION GREATER_EQUAL "1900")
-  set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "/DELAYLOAD:node.exe" )
-
-  include(CheckCXXCompilerFlag)
-  CHECK_CXX_COMPILER_FLAG("/std:c++14" _cpp_14_flag_supported)
-  if (_cpp_14_flag_supported)
-    add_compile_options("/std:c++14")
-  endif()
+if (MSVC)
+  if (MSVC_VERSION GREATER_EQUAL "1900")
+    include(CheckCXXCompilerFlag)
+    CHECK_CXX_COMPILER_FLAG("/std:c++14" _cpp_14_flag_supported)
+    if (_cpp_14_flag_supported)
+      add_compile_options("/std:c++14")
+    endif(_cpp_14_flag_supported)
+  endif(MSVC_VERSION GREATER_EQUAL "1900")
 
   set(BOOST_USE_STATIC_LIBS ON)
   set(Boost_USE_MULTITHREADED ON)
   find_package(Boost COMPONENTS filesystem date_time REQUIRED)
 
-  message("include dir: ${Boost_INCLUDE_DIRS}")
-  message("link dir: ${BOOST_LIBRARYDIR}")
   include_directories(${Boost_INCLUDE_DIRS})
   link_directories(${BOOST_LIBRARYDIR})
-endif()
+endif(MSVC)
 
 # LibGCrypt
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/lib/libtorrent/cmake/Modules)
@@ -33,6 +31,10 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/lib/libtorrent/cmake/M
 # Essential include files to build a node addon,
 # you should add this line in every CMake.js based project.
 include_directories(${CMAKE_JS_INC})
+
+if (MSVC)
+  set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "/DELAYLOAD:node.exe" )
+endif (MSVC)
 
 # Build a shared library named after the project from the files in `src/`
 file(
