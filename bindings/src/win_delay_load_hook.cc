@@ -37,8 +37,7 @@ static FARPROC WINAPI load_exe_hook(unsigned int event, DelayLoadInfo* info) {
   HMODULE processModule = GetModuleHandle(NULL);
 
   // Get the path to the executable.
-  unsigned int kMaxPath = _MAX_PATH;
-  TCHAR processPath[kMaxPath];
+  TCHAR processPath[_MAX_PATH];  // NOLINT
   GetModuleFileName(processModule, processPath, _MAX_PATH);
 
   // Get the name of the current executable.
