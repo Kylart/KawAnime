@@ -30,7 +30,6 @@
     "test": "cross-env IS_TEST=true mocha --reporter mochawesome"
   },
   "dependencies": {
-    "bindings": "^1.5.0",
     "buttercup": "^2.15.4",
     "chalk": "^2.4.2",
     "electron-updater": "^4.1.2",
@@ -102,6 +101,7 @@
   },
   "cmake-js": {
     "runtime": "electron",
-    "runtimeVersion": "4.2.5"
+    "runtimeVersion": "4.2.5",
+    "arch": "x64"
   }
 }
