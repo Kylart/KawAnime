@@ -32,16 +32,6 @@ install:
   - cd %BOOST_ROOT%
   - b2 cxxstd=14 address-model=64 threading=multi --with-system --with-date_time --toolset=msvc-14.1 link=static runtime-link=shared stage
 
-  - cd %APPVEYOR_BUILD_FOLDER%\bindings\lib\libtorrent
-  - mkdir build && cd build
-  - set BOOST_LIBRARYDIR=%BOOST_ROOT%\stage\lib
-  - dir %BOOST_LIBRARYDIR%
-  - cmake -DBOOST_LIBRARYDIR=%BOOST_LIBRARYDIR% -DCMAKE_CXX_STANDARD=14 -Dbuild_tools=ON -G "Visual Studio 15 2017 Win64" ..
-  - cmake --build . --config Release -- -verbosity:minimal
-  - cmake --install .
-  - set "PATH=%BOOST_LIBRARYDIR%;%PATH%"
-  - set "PATH=c:/Program Files/libtorrent/;%PATH%"
-
   - cd %APPVEYOR_BUILD_FOLDER%
   - npm install
   - dir %APPVEYOR_BUILD_FOLDER%\bindings\build\Release

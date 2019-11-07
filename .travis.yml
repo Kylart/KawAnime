@@ -19,7 +19,6 @@ jobs:
       name: Mac
       install:
         - brew install ninja
-        - bindings/scripts/install_libtorrent.sh
         - npm install
       script:
         - npm run lint
@@ -44,9 +43,6 @@ jobs:
       before_script:
         - "export DISPLAY=:99.0"
       install:
-        - cmake --version
-        - sudo ln -s $(which cmake) /usr/local/bin/
-        - sudo ./bindings/scripts/install_libtorrent.sh
         - npm install
       script:
         - npm run lint

@@ -32,6 +32,13 @@ endif(MSVC)
 # LibGCrypt
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/lib/libtorrent/cmake/Modules)
 
+# Boost
+# list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../node_modules/boost-lib/cmake)
+# include(BoostLib)
+
+# require_boost_libs(">= 1.69.0" "system;date_time")
+# include_directories(${Boost_INCLUDE_DIRS})
+
 # Essential include files to build a node addon,
 # you should add this line in every CMake.js based project.
 include_directories(${CMAKE_JS_INC})
@@ -51,17 +58,11 @@ add_library(${PROJECT_NAME} SHARED ${SOURCE_FILES})
 target_include_directories(${PROJECT_NAME} PRIVATE "lib/anitomy")
 
 ## Libtorrent
-find_package(LibtorrentRasterbar 1.2 REQUIRED)
+set(LIBTORRENT_DIR "lib/libtorrent")
+add_subdirectory(${LIBTORRENT_DIR})
 
-# TODO: Would be great to have libtorrent build with cmake dependancy.
-# set(LIBTORRENT_DIR "lib/libtorrent")
-# add_subdirectory(${LIBTORRENT_DIR})
-
-find_path(LIBTORRENT_INCLUDE_PATH libtorrent)
-find_library(LIBTORRENT_LIB torrent-rasterbar)
-
-target_include_directories(${PROJECT_NAME} PRIVATE ${LIBTORRENT_INCLUDE_PATH})
-target_link_libraries(${PROJECT_NAME} ${LIBTORRENT_LIB})
+target_include_directories(${PROJECT_NAME} PRIVATE ${LIBTORRENT_DIR}/include)
+target_link_libraries(${PROJECT_NAME} torrent-rasterbar)
 
 # Include N-API wrappers
 execute_process(COMMAND node -p "require('node-addon-api').include"
