@@ -23,7 +23,10 @@ if (MSVC)
 
   include_directories(${Boost_INCLUDE_DIRS})
   link_directories(${BOOST_LIBRARYDIR})
+
+  add_compile_definitions(WIN32_LEAN_AND_MEAN)
 endif(MSVC)
+
 
 # LibGCrypt
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/lib/libtorrent/cmake/Modules)
