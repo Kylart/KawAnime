@@ -32,10 +32,6 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/lib/libtorrent/cmake/M
 # you should add this line in every CMake.js based project.
 include_directories(${CMAKE_JS_INC})
 
-if (MSVC)
-  set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "/DELAYLOAD:node.exe" )
-endif (MSVC)
-
 # Build a shared library named after the project from the files in `src/`
 file(
   GLOB
@@ -74,6 +70,10 @@ target_include_directories(${PROJECT_NAME} PRIVATE ${NODE_ADDON_API_DIR})
 
 # Gives our library file a .node extension without any "lib" prefix
 set_target_properties(${PROJECT_NAME} PROPERTIES PREFIX "" SUFFIX ".node")
+
+if (MSVC)
+  set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "/DELAYLOAD:node.exe" )
+endif (MSVC)
 
 # Essential include files to build a node addon,
 # You should add this line in every CMake.js based project
