@@ -24,7 +24,7 @@ if (MSVC)
   include_directories(${Boost_INCLUDE_DIRS})
   link_directories(${BOOST_LIBRARYDIR})
 
-  add_compile_definitions(_WIN32_WINNT 0x0602)
+  # add_compile_definitions(_WIN32_WINNT 0x0A00)
   add_compile_definitions(WIN32_LEAN_AND_MEAN)
 endif(MSVC)
 
