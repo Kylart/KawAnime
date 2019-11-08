@@ -57,6 +57,9 @@ If you have any problems installing for your OS, you can contact me anytime in t
 
 ## Installation
 Be sure that Npm is installed. You can find how to install npm (node) [here](https://nodejs.org/en/).
+
+You will need to have Boost (version 1.65.0 minimum) installed on your system. You can find Boost [here](https://www.boost.org/users/download/).
+
 ```
 git clone https://github.com/Kylart/KawAnime
 ```
