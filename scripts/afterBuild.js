@@ -23,4 +23,6 @@ function windows () {
   })
 }
 
-module.exports = actions[process.platform]()
+(
+  actions[process.platform] || (() => {})
+)()
