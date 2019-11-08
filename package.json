@@ -11,9 +11,10 @@
   "license": "MIT",
   "scripts": {
     "dev": "cross-env NODE_ENV=development vue-cli-service electron:serve",
-    "start": "cross-env NODE_ENV=production electron dist/bundled/background.js",
+    "start": "cross-env NODE_ENV=production npm run build:after && electron dist/bundled/background.js",
     "build": "vue-cli-service electron:build",
-    "build:bindings": "cmake-js --CDCMAKE_CXX_STANDARD=14 --CDBOOST_LIBRARYDIR=%BOOST_LIBRARYDIR% -d bindings -O bindings/build",
+    "build:after": "node scripts/afterBuild.js",
+    "build:bindings": "cmake-js build -d bindings -O bindings/build",
     "pack": "npm run build -- --dir",
     "dist": "npm run dist:mac && npm run dist:win && npm run dist:linux",
     "dist:mac": "npm run build -- --mac",
@@ -23,11 +24,11 @@
     "publish:linux": "npm run build -- --linux deb AppImage -p always",
     "publish:win": "npm run build -- --win --x64 --ia32 -p always",
     "lint": "vue-cli-service lint",
-    "compile:bindings": "cmake-js compile --CDCMAKE_CXX_STANDARD=14 --CDBOOST_LIBRARYDIR=%BOOST_LIBRARYDIR% -d bindings -O bindings/build",
+    "compile:bindings": "cmake-js compile -d bindings -O bindings/build",
     "install:deps": "bash bindings/scripts/install.sh",
     "postinstall": "npm run compile:bindings && electron-builder install-app-deps",
     "postuninstall": "electron-builder install-app-deps",
-    "test": "cross-env IS_TEST=true mocha --reporter mochawesome"
+    "test": "cross-env IS_TEST=true npm run build:after && mocha --reporter mochawesome"
   },
   "dependencies": {
     "buttercup": "^2.15.4",
@@ -65,7 +66,7 @@
     "cmake-js": "^6.0.0",
     "cross-env": "^5.2.1",
     "electron": "^4.2.5",
-    "electron-builder": "20.41.0",
+    "electron-builder": "^20.44.4",
     "eslint": "^6.4.0",
     "eslint-plugin-vue": "^5.2.3",
     "lint-staged": "^9.2.5",
@@ -81,7 +82,7 @@
     "spectron": "^6.0.0",
     "stylus": "^0.54.7",
     "stylus-loader": "^3.0.2",
-    "vue-cli-plugin-electron-builder": "^1.3.5",
+    "vue-cli-plugin-electron-builder": "^1.4.0",
     "vue-cli-plugin-vuetify": "^0.6.3",
     "vue-template-compiler": "^2.6.10",
     "vuetify-loader": "^1.3.0"

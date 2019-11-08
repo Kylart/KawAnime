@@ -73,7 +73,16 @@ module.exports = {
           schemes: [
             'kawanime-app'
           ]
-        }]
+        }],
+        win: {
+          extraFiles: [
+            {
+              from: '.\\bindings\\build\\Release',
+              to: '.',
+              filter: ['*.dll']
+            }
+          ]
+        }
       },
       chainWebpackMainProcess: (config) => {
         // Chain webpack config for electron main process only

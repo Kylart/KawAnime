@@ -17,13 +17,6 @@ if (MSVC)
     endif(_cpp_14_flag_supported)
   endif(MSVC_VERSION GREATER_EQUAL "1900")
 
-  set(BOOST_USE_STATIC_LIBS ON)
-  set(Boost_USE_MULTITHREADED ON)
-  find_package(Boost COMPONENTS filesystem date_time REQUIRED)
-
-  include_directories(${Boost_INCLUDE_DIRS})
-  link_directories(${BOOST_LIBRARYDIR})
-
   # add_compile_definitions(_WIN32_WINNT 0x0A00)
   add_compile_definitions(WIN32_LEAN_AND_MEAN)
 endif(MSVC)
@@ -76,16 +69,14 @@ target_include_directories(${PROJECT_NAME} PRIVATE ${NODE_ADDON_API_DIR})
 # Gives our library file a .node extension without any "lib" prefix
 set_target_properties(${PROJECT_NAME} PROPERTIES PREFIX "" SUFFIX ".node")
 
+if(MSVC)
+  set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "/DELAYLOAD:node.exe" )
+endif (MSVC)
+
 # Essential include files to build a node addon,
 # You should add this line in every CMake.js based project
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_JS_INC})
 
 # Essential library files to link to a node addon
 # You should add this line in every CMake.js based project
-if(MSVC)
-  set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "/DELAYLOAD:node.exe" )
-  target_link_libraries(${PROJECT_NAME} ${CMAKE_JS_LIB};${Boost_LIBRARIES})
-else()
-  target_link_libraries(${PROJECT_NAME} ${CMAKE_JS_LIB})
-endif()
-
+target_link_libraries(${PROJECT_NAME} ${CMAKE_JS_LIB})
