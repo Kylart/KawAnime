@@ -29,6 +29,9 @@
 #include <libtorrent/torrent_handle.hpp>
 #include <libtorrent/torrent_status.hpp>
 
+#include <libtorrent/file.hpp>
+#include <libtorrent/file_storage.hpp>
+
 #include "utils.h"
 
 namespace LtTorrent {
@@ -46,6 +49,7 @@ class Torrent : public Napi::ObjectWrap<Torrent> {
 
   Napi::Value Pause(const Napi::CallbackInfo& info);
   Napi::Value Resume(const Napi::CallbackInfo& info);
+  Napi::Value GetFiles(const Napi::CallbackInfo& info);
   Napi::Value Info(const Napi::CallbackInfo& info);
 };
 

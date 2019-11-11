@@ -13,8 +13,8 @@ function logNames () {
   const torrents = client.getTorrents()
 
   torrents.forEach((torrent) => {
-    const { id, name, isPaused } = torrent.info()
-    console.log(`${id} --> ${name}: ${isPaused}`)
+    const { id, name, isPaused, files } = torrent.info()
+    console.log(`${id} --> ${name}: ${isPaused}`, files)
   })
 }
 

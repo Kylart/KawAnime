@@ -60,6 +60,34 @@ Napi::Value Torrent::Resume(const Napi::CallbackInfo& info) {
   return Napi::Boolean::New(info.Env(), true);
 }
 
+Napi::Value Torrent::GetFiles(const Napi::CallbackInfo& info) {
+  Napi::Env env = info.Env();
+  Napi::Array result = Napi::Array::New(env);
+  unsigned int index = 0;
+
+  std::vector<libtorrent::open_file_state> files = this->torrent.file_status();
+  lt::torrent_status status = this->torrent.status();
+  auto torrent_info = status.torrent_file.lock();
+
+  if (!torrent_info->is_valid()) return result;
+
+  unsigned int num_files = torrent_info->num_files();
+
+  for (lt::file_index_t i(0); i != num_files; ++i) {
+    Napi::Object entry = Napi::Object::New(env);
+
+    lt::file_storage storage = torrent_info->files();
+
+    entry.Set("size", Napi::Number::New(env, storage.file_size(i)));
+    entry.Set("filename", Napi::String::New(env, storage.file_name(i).to_string().c_str()));
+    entry.Set("path", Napi::String::New(env, storage.file_path(i).c_str()));
+
+    result.Set(static_cast<int>(i), entry);
+  }
+
+  return result;
+}
+
 Napi::Value Torrent::Info(const Napi::CallbackInfo& info) {
   Napi::Env env = info.Env();
   Napi::Object result = Napi::Object::New(env);
@@ -94,6 +122,8 @@ Napi::Value Torrent::Info(const Napi::CallbackInfo& info) {
   result.Set(
       "timeRemaining",
       status.download_rate != 0 ? ((status.total - status.total_done) / status.download_rate) * 1000.0 : INT_MAX);
+
+  result.Set("files", this->GetFiles(info));
 
   return result;
 }
