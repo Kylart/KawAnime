@@ -15,7 +15,6 @@ let client = null
 let infoIntervalID = null
 let torrentsMap = []
 
-// TODO: Handle torrent storage
 app.on('quit', () => {
   client && save(client, torrentsMap)
 })
@@ -79,7 +78,7 @@ function info (event) {
   try {
     const result = {
       client: client.getClientInfo(),
-      torrents: client.getTorrents()
+      torrents: client.getTorrents().map((torrent) => torrent.info())
     }
 
     if (!event) return result
@@ -99,8 +98,8 @@ function actOnTorrent (event, { torrent, action }) {
     logger.info(`${action} requested on torrent ${torrent.id}`)
 
     const success = {
-      resume: (id) => client.resumeTorrent(id),
-      pause: (id) => client.pauseTorrent(id),
+      resume: (id) => client.getTorrent(id).resume(),
+      pause: (id) => client.getTorrent(id).pause(),
       destroy: (id) => {
         client.removeTorrent(id)
 
@@ -115,7 +114,6 @@ function actOnTorrent (event, { torrent, action }) {
       ? event.sender.send(events.act.success)
       : event.sender.send(events.act.error, { msg: `Could not ${action} torrent, please retry later.` })
   } catch (e) {
-    console.log(e)
     logger.error('Could not act on torrent', { action, msg: e.message, torrent })
     event.sender.send(events.act.error, { msg: `An error occurred while trying to ${action} torrent.` })
   }

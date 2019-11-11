@@ -12,8 +12,8 @@
  * all copies or substantial portions of the Software.
  */ 
 
-#ifndef BINDINGS_SRC_TORRENT_CLIENT_SESSION_H_
-#define BINDINGS_SRC_TORRENT_CLIENT_SESSION_H_
+#ifndef BINDINGS_SRC_TORRENT_TORRENT_H_
+#define BINDINGS_SRC_TORRENT_TORRENT_H_
 
 #include <napi.h>
 
@@ -22,43 +22,33 @@
 #include <memory>
 #include <vector>
 
-#include <boost/version.hpp>
-
 #include <libtorrent/session_stats.hpp>
 #include <libtorrent/session.hpp>
 
 #include <libtorrent/torrent_info.hpp>
 #include <libtorrent/torrent_handle.hpp>
 #include <libtorrent/torrent_status.hpp>
-#include <libtorrent/torrent_flags.hpp>
-#include <libtorrent/magnet_uri.hpp>
 
 #include "utils.h"
-#include "torrent.h"
 
-namespace LtSession {
+namespace LtTorrent {
 
-class Client : public Napi::ObjectWrap<Client> {
+class Torrent : public Napi::ObjectWrap<Torrent> {
  public:
-  static Napi::Object Init(Napi::Env env, Napi::Object exports);
-  Client(const Napi::CallbackInfo& info);
+  static Napi::Object NewInstance(Napi::Env env, lt::torrent_handle torrent);
+  Torrent(const Napi::CallbackInfo &info);
+
+  Napi::Object obj;
 
  private:
   static Napi::FunctionReference constructor;
+  lt::torrent_handle torrent;
 
-  lt::session session;
-  lt::session_proxy session_proxy;
-
-  Napi::Value Destroy(const Napi::CallbackInfo& info);
-  Napi::Value AddTorrent(const Napi::CallbackInfo& info);
-  Napi::Value RemoveTorrent(const Napi::CallbackInfo& info);
-  Napi::Value GetTorrents(const Napi::CallbackInfo &info);
-  Napi::Value GetTorrent(const Napi::CallbackInfo &info);
-  Napi::Value GetClientInfo(const Napi::CallbackInfo& info);
-  Napi::Value HasTorrents(const Napi::CallbackInfo& info);
-  Napi::Value IsDestroyed(const Napi::CallbackInfo& info);
+  Napi::Value Pause(const Napi::CallbackInfo& info);
+  Napi::Value Resume(const Napi::CallbackInfo& info);
+  Napi::Value Info(const Napi::CallbackInfo& info);
 };
 
-}  // namespace LtSession
+}  // namespace LtTorrent
 
-#endif  // BINDINGS_SRC_TORRENT_CLIENT_SESSION_H_
+#endif  // BINDINGS_SRC_TORRENT_TORRENT_H_

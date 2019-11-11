@@ -22,19 +22,16 @@ Napi::Object Client::Init(Napi::Env env, Napi::Object exports) {
   Napi::HandleScope scope(env);
 
   Napi::Function func = DefineClass(
-    env,
-    "Client",
-    {
-      InstanceMethod("destroy", &Client::Destroy),
-      InstanceMethod("addTorrent", &Client::AddTorrent),
-      InstanceMethod("removeTorrent", &Client::RemoveTorrent),
-      InstanceMethod("pauseTorrent", &Client::PauseTorrent),
-      InstanceMethod("resumeTorrent", &Client::ResumeTorrent),
-      InstanceMethod("getTorrents", &Client::GetTorrentsList),
-      InstanceMethod("getClientInfo", &Client::GetClientInfo),
-      InstanceMethod("hasTorrents", &Client::HasTorrents),
-      InstanceMethod("isDestroyed", &Client::IsDestroyed)
-    });
+      env,
+      "Client",
+      {InstanceMethod("destroy", &Client::Destroy),
+       InstanceMethod("addTorrent", &Client::AddTorrent),
+       InstanceMethod("getTorrents", &Client::GetTorrents),
+       InstanceMethod("getTorrent", &Client::GetTorrent),
+       InstanceMethod("removeTorrent", &Client::RemoveTorrent),
+       InstanceMethod("getClientInfo", &Client::GetClientInfo),
+       InstanceMethod("hasTorrents", &Client::HasTorrents),
+       InstanceMethod("isDestroyed", &Client::IsDestroyed)});
 
   constructor = Napi::Persistent(func);
   constructor.SuppressDestruct();
@@ -58,28 +55,36 @@ Napi::Value Client::Destroy(const Napi::CallbackInfo& info) {
   return Napi::Boolean::New(env, true);
 }
 
-Napi::Value Client::GetTorrentsList(const Napi::CallbackInfo& info) {
+Napi::Value Client::GetTorrents(const Napi::CallbackInfo& info) {
   Napi::Env env = info.Env();
   Napi::Array result = Napi::Array::New(env);
-  std::uint32_t index = 0;
-
-  if (!this->session.is_valid()) {
-    Napi::Error::New(env, "Client is destroyed.").ThrowAsJavaScriptException();
-    return env.Null();
-  }
+  unsigned int index = 0;
 
   std::vector<lt::torrent_handle> torrents = this->session.get_torrents();
 
-  for (auto const& torrent : torrents) {
-    Napi::Object entry = LtUtils::formatTorrentInfo(env, torrent);
+  for (auto const& torrent_handle : torrents) {
+    Napi::Object obj = LtTorrent::Torrent::NewInstance(env, torrent_handle);
 
-    result.Set(index, entry);
+    result.Set(index, obj);
     ++index;
   }
 
-  result.Set("length", torrents.size());
-
   return result;
+}
+
+Napi::Value Client::GetTorrent(const Napi::CallbackInfo& info) {
+  Napi::Env env = info.Env();
+
+  size_t argc = info.Length();
+  if (argc < 1 && !info[0].IsNumber()) {
+    Napi::TypeError::New(env, "Not enough arguments provided.").ThrowAsJavaScriptException();
+    return env.Null();
+  }
+
+  std::uint32_t to_find_id = info[0].As<Napi::Number>().Int32Value();
+  lt::torrent_handle torrent = LtUtils::findTorrent(&this->session, to_find_id);
+
+  return LtTorrent::Torrent::NewInstance(env, torrent);
 }
 
 Napi::Value Client::AddTorrent(const Napi::CallbackInfo& info) {
@@ -133,46 +138,6 @@ Napi::Value Client::RemoveTorrent(const Napi::CallbackInfo& info) {
     this->session.remove_torrent(torrent);
 
     return Napi::Boolean::New(env, true);
-  }
-
-  return env.Null();
-}
-
-Napi::Value Client::PauseTorrent(const Napi::CallbackInfo& info) {
-  Napi::Env env = info.Env();
-
-  size_t argc = info.Length();
-  if (argc < 1 && !info[0].IsNumber()) {
-    Napi::TypeError::New(env, "Not enough arguments provided.").ThrowAsJavaScriptException();
-    return env.Null();
-  }
-
-  std::uint32_t to_find_id = info[0].As<Napi::Number>().Int32Value();
-  lt::torrent_handle torrent = LtUtils::findTorrent(&this->session, to_find_id);
-
-  if (torrent.is_valid()) {
-    torrent.pause();
-    return Napi::Boolean::New(env, static_cast<bool>(torrent.flags() & lt::torrent_flags::paused));
-  }
-
-  return env.Null();
-}
-
-Napi::Value Client::ResumeTorrent(const Napi::CallbackInfo& info) {
-  Napi::Env env = info.Env();
-
-  size_t argc = info.Length();
-  if (argc < 1 && !info[0].IsNumber()) {
-    Napi::TypeError::New(env, "Not enough arguments provided.").ThrowAsJavaScriptException();
-    return env.Null();
-  }
-
-  std::uint32_t to_find_id = info[0].As<Napi::Number>().Int32Value();
-  lt::torrent_handle torrent = LtUtils::findTorrent(&this->session, to_find_id);
-
-  if (torrent.is_valid()) {
-    torrent.resume();
-    return Napi::Boolean::New(env, !static_cast<bool>(torrent.flags() & lt::torrent_flags::paused));
   }
 
   return env.Null();
