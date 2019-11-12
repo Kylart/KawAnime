@@ -61,7 +61,7 @@ Be sure that Npm is installed. You can find how to install npm (node) [here](htt
 You will need to have Boost (version 1.65.0 minimum) installed on your system. You can find Boost [here](https://www.boost.org/users/download/). Only `date_time` and `system` libraries are required by this project.
 
 ```
-git clone https://github.com/Kylart/KawAnime
+git clone --recursive https://github.com/Kylart/KawAnime
 ```
 ```
 cd KawAnime/
