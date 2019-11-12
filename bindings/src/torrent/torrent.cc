@@ -110,6 +110,7 @@ Napi::Value Torrent::Info(const Napi::CallbackInfo& info) {
   result.Set("progress", status.progress_ppm / 1000000.0);
   result.Set("done", status.is_finished);
   result.Set("totalSize", status.total);
+  result.Set("magnetURI", lt::make_magnet_uri(this->torrent));
   result.Set("downloaded", status.total_done);
   result.Set("state", state_str[status.state]);
   result.Set("uploadRate", status.upload_rate);

@@ -29,6 +29,8 @@
 #include <libtorrent/torrent_handle.hpp>
 #include <libtorrent/torrent_status.hpp>
 
+#include <libtorrent/magnet_uri.hpp>
+
 #include <libtorrent/file.hpp>
 #include <libtorrent/file_storage.hpp>
 

@@ -22,8 +22,8 @@
           v-flex(d-flex, justify-center)
             v-btn(v-if='!action.displayInfo', icon, @click='action.action', large)
               v-icon(:color='action.color', large) {{ action.icon }}
-        //- v-flex(d-flex, justify-center)
-        //-   torrent-info(:torrent='torrent')
+        v-flex(d-flex, justify-center)
+          torrent-info(:torrent='torrent')
 </template>
 
 <script>

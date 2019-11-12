@@ -38,16 +38,16 @@
               strong {{ formattedLength.unit }}
 
           .caption
-            caption.grey--text.text-uppercase Downloaded
+            caption.grey--text.text-uppercase Download speed
             div
-              span.display-1.font-weight-black {{ formatBytes(torrent.downloaded).value }}
-              strong {{ formatBytes(torrent.downloaded).unit }}
+              span.display-1.font-weight-black {{ formatBytes(torrent.downloadRate).value }}
+              strong {{ formatBytes(torrent.downloadRate).unit }}/s
 
           .caption
-            caption.grey--text.text-uppercase Uploaded
+            caption.grey--text.text-uppercase Upload Speed
             div
-              span.display-1.font-weight-black {{ formatBytes(torrent.uploaded).value }}
-              strong {{ formatBytes(torrent.uploaded).unit }}
+              span.display-1.font-weight-black {{ formatBytes(torrent.uploadRate).value }}
+              strong {{ formatBytes(torrent.uploadRate).unit }}/s
 
         .files-container.pl-2.pr-2pt-2.mt-2
           .header Files
@@ -59,8 +59,8 @@
               v-tooltip(top)
                 template(v-slot:activator='{ on }')
                   .file-title(v-on='on')
-                    span.name {{ file.name }}
-                    v-icon(:color='getFileStatus(file).color') {{ getFileStatus(file).icon }}
+                    span.name.ellipsis {{ file.filename }}
+                    //- v-icon(:color='getFileStatus(file).color') {{ getFileStatus(file).icon }}
 
                 span {{ file.path }}
 </template>
@@ -78,7 +78,7 @@ export default {
 
   computed: {
     totalLength () {
-      return this.torrent.files.reduce((acc, { length }) => (acc + length), 0)
+      return this.torrent.files.reduce((acc, { size }) => (acc + size), 0)
     },
     formattedLength () {
       return this.formatBytes(this.totalLength)
