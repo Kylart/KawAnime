@@ -58,7 +58,10 @@ If you have any problems installing for your OS, you can contact me anytime in t
 ## Installation
 Be sure that Npm is installed. You can find how to install npm (node) [here](https://nodejs.org/en/).
 
+You will need CMake (v3.12 minimum) to build native dependencies as this project using cmake-js; you can download and install CMake [here](https://cmake.org/download/). Also, you will need a C++ compiler to build native libraries (Clang, GCC and MSVC are all supported).
+
 You will need to have Boost (version 1.65.0 minimum) installed on your system. You can find Boost [here](https://www.boost.org/users/download/). Only `date_time` and `system` libraries are required by this project.
+
 
 ```
 git clone --recursive https://github.com/Kylart/KawAnime
@@ -70,7 +73,14 @@ cd KawAnime/
 npm install
 ```
 
+If `postinstall` script fails, it probably means that you lack one of the requirements listed above. You should install them and retry.
+
 ## Run in dev
+
+##### Build native bindings
+```
+npm run build:bindings
+```
 
 ##### Start app
 ```
@@ -135,6 +145,9 @@ KawAnime is developed using the following technologies, many thanks to
 * [Electron](https://electron.atom.io)
 * [Vue.js](https://vuejs.org)
 * [Vuetify](https://vuetifyjs.com)
+* [Libtorrent](https://libtorrent.org)
+* [Anitomy](https://github.com/erengy/anitomy)
+* [TorrentStream](https://github.com/mafintosh/torrent-stream)
 
 ## License
 MIT License
