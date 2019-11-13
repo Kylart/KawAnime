@@ -56,8 +56,7 @@ export default {
       const { name, msg } = data
 
       this.$log('Could not retrieve information for', name, msg)
-
-      setTimeout(this.updateInfo, 750)
+      // TODO: Might be great to add not found template information
     },
 
     setHandlers () {
