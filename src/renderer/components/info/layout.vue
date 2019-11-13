@@ -130,7 +130,7 @@
                 )
               v-flex.actions(xs2)
                 v-btn(large, icon, @click='watch(ep)')
-                  v-icon(large) play_circle_outlined
+                  v-icon(large) play_circle_outline
                 v-btn(large, icon, @click='download(ep)')
                   v-icon(large) file_download
 
@@ -184,7 +184,7 @@ export default {
   mounted () {
     if (!this.info.hasOwnProperty('episodesInfo')) {
       this.$store.dispatch('info/getEps', {
-        name: this.info.title.en,
+        name: this.current ? this.current.anime_title || this.current.title : this.info.title.en,
         id: this.info.id,
         malId: this.info.malId
       })
