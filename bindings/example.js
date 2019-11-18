@@ -13,8 +13,8 @@ function logNames () {
   const torrents = client.getTorrents()
 
   torrents.forEach((torrent) => {
-    const { id, name, isPaused, files } = torrent.info()
-    console.log(`${id} --> ${name}: ${isPaused}`, files)
+    const { id, name, isPaused, files, downloadLimit, downloadRate } = torrent.info()
+    console.log(`${id} --> ${name} (${isPaused ? 'PAUSED' : 'RUNNING'}): ${downloadRate} / ${downloadLimit}`, files)
   })
 }
 
@@ -35,4 +35,7 @@ setTimeout(() => {
 setTimeout(() => {
   console.log('Resuming first')
   client.getTorrents()[0].resume()
+
+  console.log('setting limit')
+  client.getTorrents()[0].setLimit(1000, 'download')
 }, 6000)

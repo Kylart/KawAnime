@@ -51,6 +51,7 @@ class Torrent : public Napi::ObjectWrap<Torrent> {
 
   Napi::Value Pause(const Napi::CallbackInfo& info);
   Napi::Value Resume(const Napi::CallbackInfo& info);
+  Napi::Value SetLimit(const Napi::CallbackInfo& info);
   Napi::Value GetFiles(const Napi::CallbackInfo& info);
   Napi::Value Info(const Napi::CallbackInfo& info);
 };

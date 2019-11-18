@@ -35,6 +35,7 @@ Napi::Object Torrent::NewInstance(Napi::Env env, lt::torrent_handle torrent) {
         env,
         "Torrent",
         {InstanceMethod("info", &Torrent::Info),
+         InstanceMethod("setLimit", &Torrent::SetLimit),
          InstanceMethod("pause", &Torrent::Pause),
          InstanceMethod("resume", &Torrent::Resume)});
 
@@ -60,10 +61,30 @@ Napi::Value Torrent::Resume(const Napi::CallbackInfo& info) {
   return Napi::Boolean::New(info.Env(), true);
 }
 
+Napi::Value Torrent::SetLimit(const Napi::CallbackInfo& info) {
+  Napi::Env env = info.Env();
+
+  size_t argc = info.Length();
+  if (argc < 2 && !info[0].IsNumber()) {
+    Napi::TypeError::New(env, "Invalid argument.").ThrowAsJavaScriptException();
+    return env.Null();
+  }
+
+  int64_t limit = info[0].As<Napi::Number>().Int64Value();
+  std::string type = info[1].As<Napi::String>().Utf8Value();
+  bool is_upload = type == "upload";
+
+  if (is_upload)
+    this->torrent.set_upload_limit(limit);
+  else
+    this->torrent.set_download_limit(limit);
+
+  return Napi::Boolean::New(env, true);
+}
+
 Napi::Value Torrent::GetFiles(const Napi::CallbackInfo& info) {
   Napi::Env env = info.Env();
   Napi::Array result = Napi::Array::New(env);
-  unsigned int index = 0;
 
   std::vector<libtorrent::open_file_state> files = this->torrent.file_status();
   lt::torrent_status status = this->torrent.status();
@@ -105,6 +126,8 @@ Napi::Value Torrent::Info(const Napi::CallbackInfo& info) {
       "Checking (r)"};
 
   result.Set("id", this->torrent.id());
+  result.Set("downloadLimit", this->torrent.download_limit());
+  result.Set("uploadLimit", this->torrent.upload_limit());
 
   result.Set("name", status.name.c_str());
   result.Set("progress", status.progress_ppm / 1000000.0);
