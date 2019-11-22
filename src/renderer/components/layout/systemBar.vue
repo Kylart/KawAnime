@@ -4,7 +4,7 @@
     .window-icon.non-dragable(v-if="$store.state.platform !== 'darwin'")
       v-icon.not-close(@click="actOnWindow('minimize')") remove
       v-icon.not-close(@click="actOnWindow('maximize')") check_box_outline_blank
-      v-icon.close(@click="actOnWindow('close')") close
+      v-icon.close-icon(@click="actOnWindow('close')") close
 </template>
 
 <script>
@@ -39,22 +39,23 @@ export default {
     cursor pointer
     height 100%
 
-  .close, .not-close
+  .close-icon, .not-close
     text-align center
     margin 0
     height 100%
     width 25px
 
   .not-close
-    padding-top 4px
+    padding-top 2px
     font-size 17px
 
     &:hover
       background-color rgba(255, 255, 255, 0.25)
 
-  .close
+  .close-icon
     padding-top 2px
-    font-size 18px
+    font-size 20px
+    font-weight bold
 
     &:hover
       background-color rgba(240, 71, 71, 0.7)
