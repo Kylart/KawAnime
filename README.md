@@ -127,6 +127,10 @@ npm run dist:linux
 #### For Windows OS only
 ```
 npm run dist:win
+
+# Or, to have a portable version. This will give you a `KawAnime.exe`
+# file that you can move around, e.g. on a USB key
+npm run dist:portable
 ```
 
 Distributable will then be in the `dist` folder.
