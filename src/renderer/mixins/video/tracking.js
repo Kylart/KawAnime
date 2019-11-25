@@ -1,5 +1,4 @@
-import { mapMutations } from 'vuex'
-import { localLists } from '@/store/helpers'
+import { localLists, services, global } from '@/store/helpers'
 
 export default {
   beforeDestroy () {
@@ -33,9 +32,10 @@ export default {
   methods: {
     // Brings __llAdd, __llMove, __llDelete, __llGet and __llInfo
     ...localLists.actions,
-    ...mapMutations({
-      tellUser: 'setInfoSnackbar'
-    }),
+    // Brings __sSet, __sHasUser, __sIsConnected, __sGetList, __sUpdateList and  __sExternal
+    ...services.actions,
+    // Brings __SetLeftDrawer and __TellUser
+    ...global.mutations,
     trackLocal (refName, refEp) {
       // Finding entries with the same name
       const lists = this.__llLists
@@ -68,7 +68,7 @@ export default {
         // If the entry is fully watched, we should move it to seen
         if (entry.nbEp && +refEp === +entry.nbEp) {
           this.$log(`Moving ${entry.name} to \`seen\` list as it reached maximum known episode.`)
-          this.tellUser(`${entry.name} completed. Niiice!`)
+          this.__TellUser(`${entry.name} completed. Niiice!`)
 
           this.__llMove({ entry, target: 'seen' })
         }
@@ -88,7 +88,7 @@ export default {
 
         if (progress && +progress >= +refEp) return
 
-        this.$store.dispatch('services/updateList', {
+        this.__sUpdateList({
           service: provider,
           args: {
             isEdit: true,
