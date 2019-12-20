@@ -70,8 +70,14 @@
 </template>
 
 <script>
+// For some reason, they are not correctly imported and cannot
+// be used dynamically by the usual import
+import { VAutocomplete, VCombobox } from 'vuetify/lib'
+
 export default {
   name: 'List-Form',
+
+  components: { VAutocomplete, VCombobox },
 
   props: ['name', 'elems', 'filtered-elems'],
 
