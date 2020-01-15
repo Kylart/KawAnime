@@ -120,7 +120,6 @@ export default {
       ].forEach(this.mpv.observe)
 
       this.mpv.property('hwdec', 'auto')
-      console.log(this.torrent, this.filepath)
       this.mpv.command('loadfile', this.torrent ? `http://localhost:${this.port}` : this.filepath)
 
       this.$emit('ready')
