@@ -128,18 +128,24 @@ export default {
     addListeners (e) {
       if (this.listeners.hasOwnProperty(e.keyCode)) this.listeners[e.keyCode]()
     },
-    setNext (next) {
-      // Doing this allows us to rebuild the player from scratch, making
-      // all the work needed for the subtitles, history and stuff...
-      this.controls = { name: 'playerKey', value: Math.random() }
+    setNext () {
+      const { neighbours } = this.$store.state.streaming.player
+
+      if (!neighbours) return
+
+      const { next } = neighbours
+
+      this.$store.dispatch('streaming/play', {
+        isTorrent: next.hasOwnProperty('link') && next.link,
+        link: next.path || next.link,
+        name: `${next.title} - ${next.ep}`,
+        neighbours: null
+      })
 
       this.$nextTick(() => {
-        this.$store.dispatch('streaming/play', {
-          isTorrent: next.hasOwnProperty('link'),
-          link: next.path || next.link,
-          name: `${next.title} - ${next.ep}`,
-          neighbours: null
-        })
+        // Doing this allows us to rebuild the player from scratch, making
+        // all the work needed for the history and stuff...
+        this.controls = { name: 'playerKey', value: Math.random() }
       })
     }
   },

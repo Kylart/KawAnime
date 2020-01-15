@@ -108,17 +108,17 @@ export default {
       this.mpv = mpv;
       [
         'pause',
-        'time-pos',
         'percent-pos',
         'duration',
         'media-title',
-        'track-list/count'
+        'track-list/count',
+        'volume',
+        'eof-reached'
       ].forEach(this.mpv.observe)
 
       this.mpv.property('hwdec', 'auto')
+      console.log(this.torrent, this.filepath)
       this.mpv.command('loadfile', this.torrent ? `http://localhost:${this.port}` : this.filepath)
-
-      this.mpv.observe('volume')
 
       this.$emit('ready')
       this.triggerConfigActions()
@@ -128,10 +128,9 @@ export default {
 
       if (name.match(/track-list\//)) return this.handleTracks(name, value)
       if (name.match(/^volume$/)) return this.setVolume(value)
+      if (name.match(/^eof-reached$/) && value) return this.$emit('sendNext')
 
-      if (!this.hasOwnProperty(name)) {
-        return
-      }
+      if (!this.hasOwnProperty(name)) return
 
       this.$set(this, name, value)
     },
