@@ -1,6 +1,8 @@
 export default {
   setPlayer (state, data) {
-    state.player = data
+    for (const property of Object.keys(data)) {
+      state.player[property] = data[property]
+    }
   },
   setNeighbours (state, data) {
     state.player.neighbours = data
@@ -8,19 +10,12 @@ export default {
   close (state) {
     state.player.show = false
   },
-  setTerm (state, val) {
-    state.page.term = val
-  },
-  setTorrents (state, torrents) {
-    state.page.torrents = torrents
-  },
-  setInfos (state, data) {
-    state.page.infos = data
-  },
-  setCurrent (state, val) {
-    state.page.current = val
-  },
   setEps (state, val) {
     state.page.eps = val
+  },
+  setControl (state, { name, value }) {
+    if (!state.player.controls.hasOwnProperty(name)) throw new Error('[Video Player] Invalid control property mutation')
+
+    state.player.controls[name] = value
   }
 }

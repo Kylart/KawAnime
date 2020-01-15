@@ -55,21 +55,27 @@ _KawAnime_ is completely cross-platform.
 
 If you have any problems installing for your OS, you can contact me anytime in the `issues` section.
 
-## Installation
-Be sure that Npm is installed. You can find how to install npm (node) [here](https://nodejs.org/en/).
+## Building
 
-You will need CMake (v3.12 minimum) to build native dependencies as this project using cmake-js; you can download and install CMake [here](https://cmake.org/download/). Also, you will need a C++ compiler to build native libraries (Clang, GCC and MSVC are all supported).
+### Dependencies
 
-You will need to have Boost (version 1.65.0 minimum) installed on your system. You can find Boost [here](https://www.boost.org/users/download/). Only `date_time` and `system` libraries are required by this project.
+* Be sure that Npm is installed. You can find how to install npm (node) [here](https://nodejs.org/en/).
 
+* You will need CMake (v3.12 minimum) to build native dependencies as this project using cmake-js; you can download and install CMake [here](https://cmake.org/download/). Also, you will need a C++ compiler to build native libraries (Clang, GCC and MSVC are all supported).
 
-```
+* You will need to have Boost (version 1.65.0 minimum) installed on your system. You can find Boost [here](https://www.boost.org/users/download/). Only `date_time` and `system` libraries are required by this project.
+
+* This app uses MPV via [mpv.js](https://github.com/Kagami/mpv.js) but you will need libmpv on your machine. You can find instructions on how to install libmpv [here](https://github.com/Kagami/mpv.js#get-libmpv).
+
+```bash
 git clone --recursive https://github.com/Kylart/KawAnime
 ```
-```
+
+```bash
 cd KawAnime/
 ```
-```
+
+```bash
 npm install
 ```
 

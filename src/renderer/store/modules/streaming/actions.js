@@ -7,7 +7,15 @@ export default {
   play ({ commit, dispatch }, opts) {
     const { isTorrent = false } = opts
 
-    const event = isTorrent ? eventsList.streaming.init : eventsList.video.init
+    // We don't need to do anything if it's not a torrent
+    if (!isTorrent) {
+      commit('setPlayer', { name: opts.name, path: opts.link, show: true })
+      dispatch('getNeighbours')
+
+      return
+    }
+
+    const event = eventsList.streaming.init
     const handler = (e, data) => {
       commit('setPlayer', { ...data, show: true })
       dispatch('getNeighbours')

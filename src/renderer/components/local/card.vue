@@ -247,7 +247,7 @@ export default {
     text-align right
 
     &>div
-      padding 0 10px 8px
+      padding 8px 10px
       display inline-block
       width 30%
       border-radius 0 0 0 3px

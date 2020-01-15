@@ -1,12 +1,15 @@
 <script>
 import VSlider from 'vuetify/lib/components/VSlider/VSlider'
 
-import Hover from '@/mixins/video/hover'
+// import Hover from '@/mixins/video/hover'
 
 export default {
   name: 'progress-bar',
 
-  mixins: [ VSlider, Hover ],
+  mixins: [
+    VSlider
+    // Hover
+  ],
 
   props: {
     buffer: Array,
@@ -119,12 +122,12 @@ export default {
     // Override
     genChildren () {
       return [
-        this.genBuffers(),
+        // this.genBuffers(),
         this.genInput(),
         this.genTrackContainer(),
         this.genSteps(),
-        this.genHoverPreviewContainer(),
-        this.genHoverThumbContainer(),
+        // this.genHoverPreviewContainer(),
+        // this.genHoverThumbContainer(),
         this.genThumbContainer(
           this.formatLabel(this.internalValue),
           this.inputWidth,

@@ -1,21 +1,21 @@
 <template lang="pug">
-  .video-dialog-container(draggable='false', :style="{ 'z-index': z }")
+  .video-dialog-container(draggable='false', :style="{ 'z-index': controls.z }")
     v-scale-transition
       .video-dialog(v-show='show', :style='style')
         template(v-if='show')
           player(
-            :key='playerKey',
+            ref='player',
+            :key='controls.playerKey',
             @sendNext='setNext',
             @fullscreen='toggleFullScreen',
-            ref='player',
-            :value='videoUrl',
-            :title='title',
-            :fullscreen='fullscreen',
-            :isMinimized='isMinimized'
+            @ready='center()',
+            :filepath='values.path',
+            :torrent='values.torrent',
+            :port='values.port'
           )
 
     v-fade-transition
-      .video-overlay(v-show='show && !isMinimized')
+      .video-overlay(v-show='show && !controls.isMinimized')
 </template>
 
 <script>
@@ -28,50 +28,38 @@ export default {
     Player
   },
 
-  data () {
-    return {
-      videoPort: null,
-      playerKey: Math.random(),
-      fullscreen: false,
-      height: 85,
-      width: 85,
-      bottom: 0,
-      right: 0,
-      z: 5,
-      isMinimized: false
-    }
-  },
-
   computed: {
+    controls: {
+      get () {
+        return this.values.controls
+      },
+      set ({ name, value }) {
+        this.$store.commit('streaming/setControl', { name, value })
+      }
+    },
+
     values () {
       return this.$store.state.streaming.player
     },
     show () {
       return this.values.show
     },
-    videoUrl () {
-      return `http://localhost:${this.values.port}`
-    },
     title () {
       return this.values.name
     },
     style () {
       return {
-        width: this.width + '%',
-        height: this.height + '%',
-        bottom: this.bottom + '%',
-        right: this.right + '%',
-        'z-index': this.z
+        width: this.controls.width + '%',
+        height: this.controls.height + '%',
+        bottom: this.controls.bottom + '%',
+        right: this.controls.right + '%',
+        'z-index': this.controls.z
       }
     },
     listeners () {
       return {
-        32: () => this.togglePlay(),
-        27: () => this.fullscreen ? this.toggleFullScreen() : this.close(),
-        37: () => this.forward(-5),
-        39: () => this.forward(5),
-        38: () => this.increaseVolume(5),
-        40: () => this.increaseVolume(-5)
+        // Escape key
+        27: () => this.controls.fullscreen ? this.toggleFullScreen() : this.close()
       }
     }
   },
@@ -79,14 +67,14 @@ export default {
   methods: {
     center () {
       this.$nextTick(() => {
-        const el = document.getElementsByTagName('video')[0]
+        const el = document.querySelector('.video-player')
 
         if (el) {
           const { clientHeight: videoHeight, clientWidth: videoWidth } = el
           const { innerHeight: winHeight, innerWidth: winWidth } = window
 
-          this.bottom = (((winHeight - videoHeight) / winHeight) * 100) / 2
-          this.right = (((winWidth - videoWidth) / winWidth) * 100) / 2
+          this.controls = { name: 'bottom', value: (((winHeight - videoHeight) / winHeight) * 100) / 2 }
+          this.controls = { name: 'right', value: (((winWidth - videoWidth) / winWidth) * 100) / 2 }
         }
       })
     },
@@ -94,49 +82,45 @@ export default {
       this.$store.commit('streaming/close')
     },
     minimize () {
-      if (this.isMinimized) {
-        this.width = 85
-        this.height = 85
+      if (this.controls.isMinimized) {
+        this.controls = { name: 'width', value: 85 }
+        this.controls = { name: 'height', value: 85 }
 
         this.center()
       } else {
-        this.width = 40
-        this.height = 40
+        this.controls = { name: 'width', value: 40 }
+        this.controls = { name: 'height', value: 40 }
 
-        this.bottom = 0
-        this.right = 0
+        this.controls = { name: 'bottom', value: 0 }
+        this.controls = { name: 'right', value: 0 }
       }
 
-      this.$nextTick(() => this.$refs.player.setHeight())
-
-      this.isMinimized = !this.isMinimized
+      this.controls = { name: 'isMinimized', value: !this.controls.isMinimized }
     },
     async toggleFullScreen () {
-      this.fullscreen = !this.fullscreen
-      this.$setFullScreen(this.fullscreen)
+      this.controls = { name: 'fullscreen', value: !this.controls.fullscreen }
+      this.$setFullScreen(this.controls.fullscreen)
 
-      this.isMinimized = false
+      this.controls = { name: 'isMinimized', value: false }
 
-      if (this.fullscreen) {
-        this.z = 10
-        this.width = 100
-        this.height = 100
-        this.bottom = 0
-        this.right = 0
+      if (this.controls.fullscreen) {
+        this.controls = { name: 'z', value: 10 }
+        this.controls = { name: 'width', value: 100 }
+        this.controls = { name: 'height', value: 100 }
+        this.controls = { name: 'bottom', value: 0 }
+        this.controls = { name: 'right', value: 0 }
       } else {
-        this.width = 85
-        this.height = 85
-        this.z = 5
+        this.controls = { name: 'width', value: 85 }
+        this.controls = { name: 'height', value: 85 }
+        this.controls = { name: 'z', value: 5 }
         this.center()
       }
-
-      this.$nextTick(() => this.$refs.player.setHeight())
     },
     forward (value) {
-      this.$refs.player.$refs.layout.timeForward(value)
+      this.$refs.player.timeForward(value)
     },
     increaseVolume (value) {
-      this.$refs.player.$refs.layout.increaseVolume(value)
+      this.$refs.player.increaseVolume(value)
     },
     togglePlay () {
       this.$refs.player.togglePlay()
@@ -147,7 +131,7 @@ export default {
     setNext (next) {
       // Doing this allows us to rebuild the player from scratch, making
       // all the work needed for the subtitles, history and stuff...
-      this.playerKey = Math.random()
+      this.controls = { name: 'playerKey', value: Math.random() }
 
       this.$nextTick(() => {
         this.$store.dispatch('streaming/play', {
@@ -163,8 +147,6 @@ export default {
   watch: {
     async show (val) {
       if (val) {
-        this.center()
-
         if (this.isMinimized) {
           this.minimize()
         }
@@ -187,7 +169,6 @@ export default {
     left 0
     width 100%
     height 100%
-    pointer-events none
     user-select none
 
     .video-dialog
@@ -195,7 +176,6 @@ export default {
       min-width 500px
       position absolute
       transition bottom 0.25s ease, right 0.25s ease
-      pointer-events all
 
     .video-overlay
       position absolute
@@ -204,5 +184,4 @@ export default {
       width 100%
       height 100%
       background-color rgba(0, 0, 0, 0.5)
-      pointer-events all
 </style>

@@ -13,7 +13,6 @@ import seasons from './seasons'
 import episodes from './episodes'
 import localLists from './localLists'
 import torrent from './torrent'
-import video from './video'
 import streaming from './streaming'
 import isOnline from './isOnline'
 import vault from './vault'
@@ -33,7 +32,6 @@ const services = [
   ...localLists,
   ...torrent,
   ...vault,
-  ...video,
   ...streaming,
   ...registerService,
   ...watchLists,

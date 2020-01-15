@@ -1,6 +1,4 @@
-import { finished } from 'stream'
 import torrentStream from 'torrent-stream'
-import Matroska from 'matroska-subtitles'
 
 import { eventsList } from 'vendor'
 import createServer from './createServer'
@@ -9,25 +7,8 @@ import { Logger } from '../../utils'
 const logger = new Logger('Streaming')
 
 const events = eventsList.streaming
-const subEvents = eventsList.video
 
 let engine
-let subtitleStream = null
-let subIntervalId = null
-
-function initParser (event) {
-  const parser = new Matroska()
-
-  parser.once('tracks', (tracks) => {
-    event.sender.send(subEvents.tracks.success, tracks)
-  })
-
-  parser.on('subtitle', (subtitle, trackNumber) => {
-    event.sender.send(subEvents.subtitles.success, { subtitle, trackNumber })
-  })
-
-  return parser
-}
 
 function init (event, { link }) {
   engine = torrentStream(link)
@@ -56,35 +37,6 @@ function init (event, { link }) {
   engine.listen()
 }
 
-function streamSubs (event) {
-  const parser = initParser(event)
-
-  subIntervalId && clearInterval(subIntervalId)
-
-  const stream = () => {
-    const file = engine.files[0]
-
-    subtitleStream = file.createReadStream()
-    subtitleStream.pipe(parser)
-  }
-
-  const createStream = () => {
-    stream()
-
-    subIntervalId = setInterval(() => {
-      if (subtitleStream) {
-        finished(subtitleStream, (err) => {
-          if (err) console.error(err)
-
-          stream()
-        })
-      }
-    }, 300)
-  }
-
-  createStream()
-}
-
 function shutDown (event) {
   if (engine) {
     engine.destroy(() => {
@@ -96,6 +48,5 @@ function shutDown (event) {
 
 export default [
   { eventName: events.init.main, handler: init },
-  { eventName: events.stop.main, handler: shutDown },
-  { eventName: events.subs.main, handler: streamSubs }
+  { eventName: events.stop.main, handler: shutDown }
 ]

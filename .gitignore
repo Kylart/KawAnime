@@ -35,3 +35,7 @@ mochawesome-report
 
 # C++ Bindings
 bindings/build
+
+# External libs binaries
+public/mpv/*
+!public/mpv/.gitkeep

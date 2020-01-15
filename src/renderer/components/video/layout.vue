@@ -6,22 +6,17 @@
 
       //- Window buttons
       .window-buttons
-        v-btn.video-size(color='secondary', dark, icon, outlined, @click.stop='actOnWindow("minimize")', v-show='!fullscreen')
-          v-icon {{ isMinimized ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}
+        v-btn.video-size(color='secondary', dark, icon, outlined, @click.stop='actOnWindow("minimize")', v-show='!controls.fullscreen')
+          v-icon {{ controls.isMinimized ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}
 
         v-btn.video-close.mr-2.ml-4(color='secondary', dark, icon, outlined, @click.stop='actOnWindow("close")')
           v-icon close
 
-      //- Center play button
-      v-icon.video-play(dark, @click.stop='togglePlay', v-if='paused') play_arrow
-
       //- Loading object
-      v-progress-circular.video-waiting(dark, indeterminate, v-show='waiting')
+      //- v-progress-circular.video-waiting(dark, indeterminate, v-show='waiting')
 
       player-controls(
         v-bind='controls',
-        :paused='paused',
-        :fullscreen='fullscreen'
       )
 </template>
 
@@ -36,12 +31,14 @@ export default {
   },
 
   props: [
-    'video',
     'title',
-    'waiting',
-    'paused',
-    'fullscreen',
-    'isMinimized'
+    'timeline',
+    'duration',
+    'hasSubs',
+    'subs',
+    'currentLang',
+    // 'waiting',
+    'pause'
   ],
 
   data: () => ({
@@ -49,32 +46,23 @@ export default {
     timeoutID: null,
 
     // Controls
-    muted: false,
-    timeline: 0,
-    currentTime: 0,
-    duration: 0,
-    volume: 100,
-    buffered: [],
-    hasTracks: false,
-    numToLang: {},
-    currentLang: null
+    buffered: []
   }),
 
   computed: {
     controls () {
       return {
-        muted: this.muted,
+        ...this.$store.state.streaming.player.controls,
         timeline: this.timeline,
-        currentTime: this.currentTime,
-        duration: this.duration,
-        volume: this.volume,
+        currentTime: this.formatTime(this.timeline),
+        duration: this.formatTime(this.duration),
         buffered: this.buffered,
 
-        hasTracks: this.hasTracks,
-        numToLang: this.numToLang,
-        currentLang: this.currentLang,
+        pause: this.pause,
 
-        video: this.video
+        hasSubs: this.hasSubs,
+        numToLang: this.subs,
+        currentLang: this.currentLang
       }
     }
   },
@@ -92,36 +80,6 @@ export default {
       this.$emit('hide')
     },
 
-    updateSubtitlesData () {
-      this.hasTracks = Object.keys(this.$parent.tracks).length
-      this.numToLang = this.$parent.numToLang
-      this.currentLang = this.$parent.currentLang
-    },
-    updateTime () {
-      const { video } = this
-
-      if (video) {
-        this.currentTime = this.formatTime(video.currentTime)
-        this.timeline = 100 / video.duration * video.currentTime
-        this.duration = this.formatTime(video.duration)
-      }
-    },
-    updateBuffer () {
-      const { video } = this
-
-      if (video) {
-        const buffered = []
-
-        for (let i = 0, l = video.buffered.length; i < l; ++i) {
-          buffered.push([
-            video.buffered.start(i) / video.duration * 100,
-            video.buffered.end(i) / video.duration * 100
-          ])
-        }
-
-        this.buffered = buffered
-      }
-    },
     formatTime (time = 0) {
       const minutes = ('0' + Math.floor(time / 60)).slice(-2)
       const seconds = ('0' + Math.floor(time % 60)).slice(-2)
@@ -135,43 +93,34 @@ export default {
       this.$emit('toggleFullScreen')
     },
     toggleMute () {
-      this.muted = this.video.muted = !this.muted
+      this.$emit('mute')
     },
     actOnWindow (action) {
       this.$emit('actOnWindow', action)
     },
-    changeTimeline (value) {
-      const { video } = this
-      if (video) { video.currentTime = video.duration * ((this.timeline = value) / 100).toFixed(10) }
-    },
     timeForward (value) {
-      const { video } = this
-
-      if (video) {
-        video.currentTime += value
-      }
+      this.$emit('timeForward', value)
     },
     changeVolume (value) {
-      if (this.video) this.video.volume = (this.volume = value) / 100
+      this.$emit('volume', value)
+    },
+    seek (value) {
+      this.$emit('seek', value)
     },
     increaseVolume (value) {
-      const { video } = this
+      const currentVolume = this.controls.volume * 100
+      let newVolume = currentVolume + value
 
-      if (video) {
-        const currentVolume = video.volume * 100
-        let newVolume = currentVolume + value
+      newVolume = newVolume >= 0 && newVolume <= 100
+        ? newVolume
+        : currentVolume
 
-        newVolume = newVolume >= 0 && newVolume <= 100
-          ? newVolume
-          : currentVolume
+      this.volume = newVolume
 
-        this.volume = newVolume
-        this.video.volume = newVolume / 100
-      }
+      // this.video.volume = newVolume / 100
     },
     setTrack (track) {
       this.$emit('trackChange', track)
-      this.updateSubtitlesData()
     }
   }
 }
@@ -184,7 +133,6 @@ export default {
     left 0
     width 100%
     height 100%
-    pointer-events none
 
     .video-title
       position absolute
@@ -203,7 +151,6 @@ export default {
 
       .video-close, .video-size
         cursor pointer
-        pointer-events all
 
     .video-waiting
       position absolute
@@ -212,15 +159,4 @@ export default {
       height 10% !important
       width 10% !important
       transform translate(-50%, -50%)
-
-    .video-play
-      cursor pointer
-      pointer-events all
-      position absolute
-      left 50%
-      top 50%
-      transform translate(-50%, -50%)
-      height 100px
-      width 100px
-      font-size 100px
 </style>

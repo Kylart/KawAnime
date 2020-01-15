@@ -74,6 +74,15 @@ module.exports = {
             'kawanime-app'
           ]
         }],
+        mac: {
+          extraResources: [
+            {
+              from: './public/mpv',
+              to: 'mpv',
+              filter: ['*.dylib', '*.node']
+            }
+          ]
+        },
         win: {
           extraFiles: [
             {

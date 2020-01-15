@@ -3,201 +3,228 @@
     @mousemove='onMouseMove',
     :style='{ cursor: !layoutShow ? "none" : null }'
   )
-    video(
-      ref='video',
-      crossorigin='anonymous',
-      name='kawanime-player',
-      :preload="isMagnet ? 'metadata' : 'auto'",
-      @pause='paused = true',
-      @play='paused = false',
-      @timeupdate='onTimelineChangeEvent',
-      @waiting='waiting = true',
-      @canplay='onCanPlay',
-      @progress='onProgress',
-      @seeked='onSeeked',
-      @ended='onEnded',
-      @click='togglePlay',
-      @dblclick='toggleFullScreen',
-      :src='value'
-    ) Your browser does not support HTML5 video.
 
-    cues-container(
-      v-show='isAss && trackNumber',
-      ref='cuesContainer',
-      :cues='currentTrack'
+    wrapper(
+      ref='video',
+      name='kawanime-player',
+      :onReady='handleMPVReady',
+      :onPropertyChange='handlePropertyChange',
+      @toggleFullScreen='toggleFullScreen',
+      @togglePlay='togglePlay'
     )
 
     layout(
       ref='layout',
-      :video='$refs.video',
-      :title='videoTitle',
-      :waiting='waiting',
-      :paused='paused',
-      :fullscreen='fullscreen',
-      :isMinimized='isMinimized',
-      @trackChange='setTrack',
-      @togglePlay='togglePlay',
+      :timeline='timeline',
+      :pause='pause',
+      :duration='duration',
+      :title='name',
+      :hasSubs='hasSubs',
+      :currentLang='currentSubLang',
+      :subs='subs'
+      @seek='seek',
+      @timeForward='timeForward',
+      @volume='setVolume',
       @toggleFullScreen='toggleFullScreen',
+      @togglePlay='togglePlay',
+      @trackChange='setTrack',
       @actOnWindow='actOnWindow',
+      @mute='toggleMute',
       @show='layoutShow = true',
       @hide='layoutShow = false'
     )
 </template>
 
 <script>
-// Comps
-import Layout from '@/components/video/layout.vue'
-import CuesContainer from '@/components/video/cues/container.vue'
+// Components
+import Wrapper from './wrapper.vue'
+import Layout from './layout.vue'
 
-// Mixins and methods
-import Tracks from '@/mixins/video/tracks'
-import Subtitles from '@/mixins/video/subtitles'
-import Style from '@/mixins/video/getStyle'
-import Tracking from '@/mixins/video/tracking'
+// Mixins
+import UserConfig from '@/mixins/video/userConfig.js'
 
 export default {
-  name: 'video-player',
+  name: 'MpvPlayer',
 
-  components: {
-    CuesContainer,
-    Layout
-  },
+  components: { Wrapper, Layout },
 
-  mixins: [ Tracks, Subtitles, Style, Tracking ],
-
-  props: ['value', 'title', 'fullscreen', 'isMinimized'],
+  mixins: [ UserConfig ],
 
   data () {
     return {
+      mpv: null,
+      pause: false,
+      timeline: 0,
+      duration: 0,
       waiting: false,
-      paused: true,
-      layoutShow: true,
       name: '',
-      hasAppendedToHistory: false
+      hasAppendedToHistory: false,
+
+      layoutShow: true,
+
+      propertyMap: {
+        'time-pos': 'timeline',
+        'media-title': 'name'
+      },
+
+      hasSubs: false,
+      tracks: {},
+      currentSubLang: null
     }
   },
 
-  mounted () {
-    const { video, layout } = this.$refs
-
-    video.addEventListener('loadedmetadata', () => {
-      // We need to get the subtitles only when the torrent is ready to be read.
-      // Otherwise, there is no file to get the subtitles from.
-      this.setHeight()
-      layout.reveal()
-
-      if (this.config.autoplay) this.togglePlay()
-
-      if (this.isMagnet) this.$ipc.send(this.$eventsList.streaming.subs.main)
-
-      if (this.title) {
-        this.addToHistory()
-      }
-    })
-
-    video && !this.fullscreen && this.config.fullscreen && this.toggleFullScreen()
-  },
-
-  beforeDestroy () {
-    this.eventSource && this.eventSource.close()
-
-    // Removing cue styling from head
-    const styleTag = document.querySelector(`style[name="${this.value}"]`)
-    styleTag instanceof Node && document.head.removeChild(styleTag)
-
-    this.isMagnet
-      ? this.$ipc.send(this.$eventsList.streaming.stop.main)
-      : this.$ipc.send(this.$eventsList.video.stop.main)
+  props: {
+    filepath: String,
+    torrent: [ String, null, undefined ],
+    port: [ Number, null, undefined ]
   },
 
   computed: {
-    config: {
+    controls: {
       get () {
-        return this.$store.state.config.config.video
+        return this.$store.state.streaming.player.controls
       },
-      set () {}
+      set ({ name, value }) {
+        this.$store.commit('streaming/setControl', { name, value })
+      }
     },
-    player: {
-      get () {
-        return this.$store.state.streaming.player
-      },
-      set () {}
-    },
-    isMagnet () {
-      return !!this.player.torrent
-    },
-    videoTitle () {
-      return this.title || this.name
+    subs () {
+      return Object.keys(this.tracks)
+        .reduce((acc, trackNumber) => {
+          const { type, lang } = this.tracks[trackNumber]
+
+          if (type === 'sub') acc[trackNumber] = (lang || 'unknown').slice(0, 2)
+
+          return acc
+        }, {})
     }
   },
 
   methods: {
-    onTimelineChangeEvent () {
-      const { video, cuesContainer, layout } = this.$refs
+    actOnWindow (type) {
+      this.$parent[type]()
+    },
+    handleMPVReady (mpv) {
+      this.mpv = mpv;
+      [
+        'pause',
+        'time-pos',
+        'duration',
+        'media-title',
+        'track-list/count'
+      ].forEach(this.mpv.observe)
 
-      if (video) {
-        layout.updateTime()
-        cuesContainer.updateTimeline(video.currentTime)
+      this.mpv.property('hwdec', 'auto')
+      this.mpv.command('loadfile', this.torrent ? `http://localhost:${this.port}` : this.filepath)
 
-        if (this.isAss) cuesContainer.updateActiveCues()
+      this.mpv.observe('volume')
+
+      this.$emit('ready')
+      this.triggerConfigActions()
+    },
+    handlePropertyChange (name, value) {
+      name = this.propertyMap[name] || name
+
+      if (name.match(/track-list\//)) return this.handleTracks(name, value)
+      if (name.match(/^volume$/)) return this.setVolume(value)
+
+      if (!this.hasOwnProperty(name)) {
+        return
+      }
+
+      this.$set(this, name, value)
+    },
+    handleTracks (propertyName, value) {
+      if (propertyName === 'track-list/count') {
+        if (!value) return
+
+        for (let i = 1; i <= value; ++i) {
+          this.mpv.observe(`track-list/${i}/type`)
+          this.mpv.observe(`track-list/${i}/lang`)
+          this.mpv.observe(`track-list/${i}/default`)
+          this.mpv.observe(`track-list/${i}/id`)
+          this.mpv.observe(`track-list/${i}/type`)
+          this.mpv.observe(`track-list/${i}/src`)
+          this.mpv.observe(`track-list/${i}/title`)
+          this.mpv.observe(`track-list/${i}/lang`)
+          this.mpv.observe(`track-list/${i}/selected`)
+        }
+
+        return
+      }
+
+      if (propertyName.match(/track-list\/\d+/)) {
+        const parts = propertyName.split('/')
+        const trackNumber = +parts[1]
+        const type = parts[2]
+        const storedTrack = this.tracks[trackNumber] || {}
+
+        if (value === 'sub' && !this.hasSubs) this.hasSubs = true
+
+        this.$set(this.tracks, trackNumber, { ...storedTrack, [type]: value })
+
+        // Setting current language for the controls to know
+        if (this.tracks[trackNumber] && this.tracks[trackNumber].type && this.tracks[trackNumber].type === 'sub') {
+          if (this.tracks[trackNumber].selected && this.tracks[trackNumber].lang) {
+            this.$set(this, 'currentSubLang', this.tracks[trackNumber].lang.slice(0, 2))
+          }
+        }
       }
     },
-    onProgress () {
-      const { video, layout } = this.$refs
+    setTrack (track) {
+      const { selected, id } = this.tracks[track]
 
-      if (video) {
-        layout.updateBuffer()
-      }
-    },
-    onCanPlay () {
-      this.waiting = false
-    },
-    onSeeked () {
-      // Needed for subtitle timing
-      this.index = 0
-      if (this.isMagnet) this.$ipc.send(this.$eventsList.streaming.subs.main)
-    },
-    onEnded () {
-      const { neighbours } = this.$store.state.streaming.player
+      if (selected) {
+        // Disabling selected track
+        this.mpv.property('sid', 'no')
 
-      if (neighbours) {
-        const { next } = neighbours
-        this.$emit('sendNext', next)
+        // internal tracking
+        this.$set(this.tracks[track], 'selected', false)
+        this.currentSubLang = null
       } else {
-        this.fullscreen && this.toggleFullScreen()
+        // Enabling new track
+        this.mpv.property('sid', id)
+
+        // internal tracking
+        this.$set(this.tracks[track], 'selected', true)
+        this.currentSubLang = this.subs[track]
       }
     },
-    onMouseMove (e) {
-      if (Math.abs(e.movementX) > 1 || Math.abs(e.movementY) > 1) { this.$refs.layout.reveal() }
+    seek (value) {
+      this.mpv.command('seek', value, 'absolute-percent')
     },
-    togglePlay () {
-      const { video, layout } = this.$refs
+    timeForward (value) {
+      this.mpv.command('seek', value)
+    },
+    setVolume (value, relative) {
+      if (this.mpv) {
+        if (relative) value = this.controls.volume + value
 
-      this.paused ? video.play() : video.pause()
+        this.mpv.property('volume', value)
+        this.controls = { name: 'volume', value }
+      }
+    },
+    toggleMute () {
+      this.mpv.property('mute', !this.controls.muted)
+      this.controls = { name: 'muted', value: !this.controls.muted }
+    },
+    togglePlay (e) {
+      if (!this.duration) return
 
-      layout.reveal()
+      this.mpv.property('pause', !this.pause)
     },
     toggleFullScreen () {
       this.$emit('fullscreen')
     },
-    actOnWindow (type) {
-      this.$parent[type]()
-    },
-    addToHistory () {
-      if (!this.hasAppendedToHistory) {
-        this.$store.dispatch('history/append', {
-          type: this.isMagnet ? 'Stream' : 'Play',
-          text: this.videoTitle
-        })
 
-        this.hasAppendedToHistory = true
-      }
+    onMouseMove (e) {
+      if (Math.abs(e.movementX) > 1 || Math.abs(e.movementY) > 1) this.$refs.layout.reveal()
     }
   }
 }
 </script>
 
-<style lang="stylus">
+<style lang="stylus" scoped>
   .video-player
     background-color black
     line-height 0px
@@ -208,16 +235,4 @@ export default {
 
     &:fullscreen
       width 100vw
-
-    video
-      height 100%
-      width 100%
-
-  .cue
-    background-color rgba(0, 0, 0, 0)
-    -webkit-font-smoothing antialiased
-    width 95%
-    font-family "Open Sans", sans-serif
-    font-weight 500
-    line-height 1.25
 </style>

@@ -11,7 +11,7 @@ import {
 import './startUp'
 import './services'
 import { dir } from './utils'
-import { localFiles } from './externals'
+import { localFiles, mpv as setupMPV } from './externals'
 import external from './events'
 import menuTemplate from './menu'
 
@@ -33,6 +33,8 @@ protocol.registerStandardSchemes(['app'], { secure: true })
 // When upgrading to Electron 5
 // protocol.registerSchemesAsPrivileged([{ scheme: 'app', privileges: { secure: true, standard: true } }])
 
+setupMPV(app)
+
 function createWindow () {
   // Create the browser window.
   win = new BrowserWindow({
@@ -49,8 +51,10 @@ function createWindow () {
     titleBarStyle: 'hidden',
     frame: process.platform === 'darwin',
     show: false,
+    useContentSize: process.platform !== 'linux',
     webPreferences: {
-      nodeIntegration: true
+      nodeIntegration: true,
+      plugins: true // For mpv.js
     }
   })
 
