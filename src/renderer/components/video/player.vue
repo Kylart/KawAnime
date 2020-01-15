@@ -17,6 +17,7 @@
       ref='layout',
       :timeline='timeline',
       :pause='pause',
+      :mute='mute',
       :duration='duration',
       :title='name',
       :hasSubs='hasSubs',
@@ -58,6 +59,7 @@ export default {
       duration: 0,
       waiting: false,
       name: '',
+      mute: false,
       hasAppendedToHistory: false,
 
       layoutShow: true,
@@ -113,7 +115,8 @@ export default {
         'media-title',
         'track-list/count',
         'volume',
-        'eof-reached'
+        'eof-reached',
+        'mute'
       ].forEach(this.mpv.observe)
 
       this.mpv.property('hwdec', 'auto')

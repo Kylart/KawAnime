@@ -6,13 +6,13 @@
           v-container(pa-0, grid-list-xs)
             v-layout(row, wrap, justify-space-between, align-center)
               v-flex(xs3, d-flex, justify-center, align-center)
-                v-icon(@click='toggleMute', v-html="muted ? 'volume_off' : 'volume_up'")
+                v-icon(@click='toggleMute', v-html="mute ? 'volume_off' : 'volume_up'")
                 v-slider.volume.ma-0.ml-1(
                   thumb-label,
                   hide-details, dark,
                   color='secondary accent-2',
                   max='100',
-                  :value='muted ? 0 : volume',
+                  :value='mute ? 0 : volume',
                   @input='changeVolume',
                 )
 
@@ -67,7 +67,6 @@ export default {
   components: { ProgressBar },
 
   props: [
-    'muted',
     'timeline',
     'currentTime',
     'duration',
@@ -76,7 +75,8 @@ export default {
     'hasSubs',
     'numToLang',
     'currentLang',
-    'pause'
+    'pause',
+    'mute'
   ],
 
   computed: {

@@ -37,7 +37,8 @@ export default {
     'hasSubs',
     'subs',
     'currentLang',
-    'pause'
+    'pause',
+    'mute'
   ],
 
   data: () => ({
@@ -58,6 +59,7 @@ export default {
         buffered: this.buffered,
 
         pause: this.pause,
+        mute: this.mute,
 
         hasSubs: this.hasSubs,
         numToLang: this.subs,
