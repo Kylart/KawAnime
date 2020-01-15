@@ -50,7 +50,7 @@
                   dark, hide-details, color='secondary accent-2',
                   :step='0',
                   :buffer='buffered',
-                  :value='timeline / 10',
+                  :value='timeline',
                   :duration='duration',
                   @input='changeTimeline'
                 )

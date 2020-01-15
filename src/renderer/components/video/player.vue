@@ -63,7 +63,7 @@ export default {
       layoutShow: true,
 
       propertyMap: {
-        'time-pos': 'timeline',
+        'percent-pos': 'timeline',
         'media-title': 'name'
       },
 
@@ -109,6 +109,7 @@ export default {
       [
         'pause',
         'time-pos',
+        'percent-pos',
         'duration',
         'media-title',
         'track-list/count'

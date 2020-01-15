@@ -34,14 +34,16 @@ export default {
     window.addEventListener('click', this.click)
     window.addEventListener('contextmenu', this.click)
     window.addEventListener('wheel', this.wheel)
-    window.addEventListener('keypress', this.keypress)
+
+    window.addEventListener('keydown', this.keypress)
   },
 
   beforeDestroy () {
     window.removeEventListener('click', this.click)
     window.removeEventListener('contextmenu', this.click)
     window.removeEventListener('wheel', this.wheel)
-    window.removeEventListener('keypress', this.keypress)
+
+    window.removeEventListener('keydown', this.keypress)
   },
 
   methods: {
@@ -104,7 +106,7 @@ export default {
       // Ignore exit keys for default keybindings settings.
       if ([
         'q', 'Q', 'ESC', 'POWER', 'STOP',
-        'CLOSE_WIN', 'CLOSE_WIN', 'Ctrl+c',
+        'CLOSE_WIN', 'Ctrl+c',
         'AR_PLAY_HOLD', 'AR_CENTER_HOLD'
       ].includes(key)) return
 

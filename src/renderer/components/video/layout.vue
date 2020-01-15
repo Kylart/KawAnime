@@ -37,7 +37,6 @@ export default {
     'hasSubs',
     'subs',
     'currentLang',
-    // 'waiting',
     'pause'
   ],
 
@@ -54,7 +53,7 @@ export default {
       return {
         ...this.$store.state.streaming.player.controls,
         timeline: this.timeline,
-        currentTime: this.formatTime(this.timeline),
+        currentTime: this.formatTime((this.timeline / 100) * this.duration),
         duration: this.formatTime(this.duration),
         buffered: this.buffered,
 
