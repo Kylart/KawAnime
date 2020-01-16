@@ -72,14 +72,12 @@ module.exports = {
           ]
         }],
         mac: {
-          extraFiles: [
+          extraResources: [
             {
               from: './bindings/build/Release',
               to: '.',
               filter: ['*.dylib']
-            }
-          ],
-          extraResources: [
+            },
             {
               from: './public/mpv',
               to: 'mpv',
@@ -89,14 +87,12 @@ module.exports = {
         },
         linux: {
           category: 'Network',
-          extraFiles: [
+          extraResources: [
             {
               from: './bindings/build/Release',
               to: '.',
               filter: ['*.so']
-            }
-          ],
-          extraResources: [
+            },
             {
               from: './public/mpv',
               to: 'mpv',
@@ -105,14 +101,12 @@ module.exports = {
           ]
         },
         win: {
-          extraFiles: [
+          extraResources: [
             {
               from: '.\\bindings\\build\\Release',
               to: '.',
               filter: ['*.dll']
-            }
-          ],
-          extraResources: [
+            },
             {
               from: '.\\public\\mpv',
               to: 'mpv',
