@@ -2,7 +2,7 @@ import { mapActions, mapMutations } from 'vuex'
 
 export default {
   beforeDestroy () {
-    const { name: refName, ep: refEp } = this.parsedName
+    const { anime_title: refName, episode_number: refEp } = this.parsedName
     const { autoTracking } = this.$store.state.config.config
     const providersAutoTracking = Object.keys(autoTracking).reduce((acc, provider) => {
       return provider === 'local'
@@ -14,17 +14,6 @@ export default {
 
     autoTracking.local && this.trackLocal(refName, refEp)
     providersAutoTracking.some(Boolean) && this.trackProviders(refName, refEp, providersAutoTracking)
-  },
-
-  computed: {
-    parsedName () {
-      const parts = this.videoTitle.split(' - ')
-
-      return {
-        name: parts[0],
-        ep: parts[1]
-      }
-    }
   },
 
   methods: {

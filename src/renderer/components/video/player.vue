@@ -71,7 +71,9 @@ export default {
 
       hasSubs: false,
       tracks: {},
-      currentSubLang: null
+      currentSubLang: null,
+
+      parsedName: null
     }
   },
 
@@ -131,6 +133,9 @@ export default {
       if (name.match(/track-list\//)) return this.handleTracks(name, value)
       if (name.match(/^volume$/)) return this.setVolume(value)
       if (name.match(/^eof-reached$/) && value) return this.$emit('sendNext')
+
+      // Originally media-title
+      if (name.match(/^name$/)) return this.addToHistory(value)
 
       if (!this.hasOwnProperty(name)) return
 
@@ -221,6 +226,35 @@ export default {
 
     onMouseMove (e) {
       if (Math.abs(e.movementX) > 1 || Math.abs(e.movementY) > 1) this.$refs.layout.reveal()
+    },
+
+    /**
+     * Will add current file to the history
+     *
+     * @param {String} value Title as found by MPV
+     */
+    addToHistory (value) {
+      // If we are streaming a torrent, the name will come from the torrent's name
+      // Otherwise, it will be from the file itself once parsed by MPV.
+      const name = this.torrent ? this.$store.state.streaming.player.name : value
+
+      try {
+        // Simply parsing and applying the name
+        this.parsedName = this.$ipc.sendSync(this.$eventsList.parse.main, name)
+        this.name = `${this.parsedName.anime_title} - ${this.parsedName.episode_number}`
+      } catch (e) {
+        // We fallback to the found value
+        this.name = value
+      }
+
+      if (!this.hasAppendedToHistory) {
+        this.$store.dispatch('history/append', {
+          type: this.torrent ? 'Stream' : 'Play',
+          text: this.name
+        })
+
+        this.hasAppendedToHistory = true
+      }
     }
   }
 }
