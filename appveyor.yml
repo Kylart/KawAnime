@@ -15,6 +15,11 @@ install:
   - ps: Install-Product node 12 x64
   - git submodule update --init --recursive
 
+  - curl /o mpv.7z https://mpv.srsfckn.biz/mpv-dev-latest.7z
+  - 7z /o mpv mpv.7z
+  - copy mpv\x86_64\mpv-1.dll C:\Windows\system32\
+  - dir C:\Windows\system32\
+
   - set ROOT_DIRECTORY=%CD%
   - if not defined compiler ( set compiler="" )
   - if not defined crypto ( set crypto=built-in )
