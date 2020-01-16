@@ -18,7 +18,7 @@ jobs:
         - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
       name: Mac
       install:
-        - brew install ninja
+        - brew install mpv ninja
         - npm install
       script:
         - npm run lint
@@ -36,6 +36,8 @@ jobs:
             - gcc-5
             - ninja-build
             - libboost-system-dev
+            - libmpv1
+            - libavformat-dev
       env: CC=gcc-5 CXX=g++-5
       name: Linux
       services:
