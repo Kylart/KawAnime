@@ -55,9 +55,6 @@ module.exports = {
             }
           ]
         },
-        linux: {
-          category: 'Network'
-        },
         nsis: {
           oneClick: false,
           allowToChangeInstallationDirectory: true
@@ -75,11 +72,35 @@ module.exports = {
           ]
         }],
         mac: {
+          extraFiles: [
+            {
+              from: './bindings/build/Release',
+              to: '.',
+              filter: ['*.dylib']
+            }
+          ],
           extraResources: [
             {
               from: './public/mpv',
               to: 'mpv',
               filter: ['*.dylib', '*.node']
+            }
+          ]
+        },
+        linux: {
+          category: 'Network',
+          extraFiles: [
+            {
+              from: './bindings/build/Release',
+              to: '.',
+              filter: ['*.so']
+            }
+          ],
+          extraResources: [
+            {
+              from: './public/mpv',
+              to: 'mpv',
+              filter: ['*.so', '*.node']
             }
           ]
         },
@@ -89,6 +110,13 @@ module.exports = {
               from: '.\\bindings\\build\\Release',
               to: '.',
               filter: ['*.dll']
+            }
+          ],
+          extraResources: [
+            {
+              from: '.\\public\\mpv',
+              to: 'mpv',
+              filter: ['*.dll', '*.node']
             }
           ]
         }
