@@ -1,14 +1,17 @@
 const { resolve, extname } = require('path')
-const { copyFileSync, readdirSync } = require('fs')
+const { copyFileSync, readdirSync, mkdirSync, existsSync } = require('fs')
 
 const NATIVE_ADDON_RELEASE_PATH = resolve(__dirname, '..', 'bindings', 'build', 'Release')
 const BUNDLE_PATH = resolve(__dirname, '..', 'dist', 'bundled')
+
+const MPV_PUBLIC_PATH = resolve(__dirname, '..', 'public', 'mpv')
+const MPV_PATH = resolve(__dirname, '..', 'dist', 'mpv')
 
 const actions = {
   win32: windows
 }
 
-function windows () {
+function moveNativeAddonFiles () {
   const nativeFiles = readdirSync(NATIVE_ADDON_RELEASE_PATH)
 
   nativeFiles.forEach((filename) => {
@@ -21,6 +24,28 @@ function windows () {
       )
     }
   })
+}
+
+function moveMPVFiles () {
+  const mpvFiles = readdirSync(MPV_PUBLIC_PATH)
+
+  if (!existsSync(MPV_PATH)) mkdirSync(MPV_PATH)
+
+  mpvFiles.forEach((filename) => {
+    if (['.dll', '.node'].includes(extname(filename))) {
+      console.log(`Moving ${filename} to ${MPV_PATH}`)
+
+      copyFileSync(
+        resolve(MPV_PUBLIC_PATH, filename),
+        resolve(MPV_PATH, filename)
+      )
+    }
+  })
+}
+
+function windows () {
+  moveNativeAddonFiles()
+  moveMPVFiles()
 }
 
 (
