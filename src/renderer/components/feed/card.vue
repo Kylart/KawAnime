@@ -29,7 +29,7 @@
           pa-0,
           key='overlay'
         )
-          v-layout(fill-height, align-center row, wrap)
+          v-layout(fill-height, align-center row, wrap, ml-0)
             v-flex.overlay-icon(@click='watch', xs4, fill-height)
               v-icon.large play_arrow
             v-flex.pa-0.download-container(xs4, fill-height)
