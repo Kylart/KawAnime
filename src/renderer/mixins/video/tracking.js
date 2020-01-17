@@ -10,6 +10,8 @@ export default {
         : acc.concat(provider)
     }, [])
 
+    if (!refEp) return
+
     this.$log(`Setting auto tracking for ${refName} - ${refEp}`)
 
     autoTracking.local && this.trackLocal(refName, refEp)

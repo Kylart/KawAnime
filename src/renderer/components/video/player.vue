@@ -241,7 +241,7 @@ export default {
       try {
         // Simply parsing and applying the name
         this.parsedName = this.$ipc.sendSync(this.$eventsList.parse.main, name)
-        this.name = `${this.parsedName.anime_title} - ${this.parsedName.episode_number}`
+        this.name = `${this.parsedName.anime_title} - ${this.parsedName.episode_number || 'N/A'}`
       } catch (e) {
         // We fallback to the found value
         this.name = value
