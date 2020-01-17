@@ -98,19 +98,16 @@
 </template>
 
 <script>
+import { listStatus as status } from '@/store/modules/lists.js'
+
 export default {
   data () {
+    const service = 'anilist'
+
     return {
       service: 'anilist',
       datePickers: [false, false],
-      status: [
-        { text: 'Watching', value: 'CURRENT' },
-        { text: 'Rewatching', value: 'REPEATING' },
-        { text: 'Completed', value: 'COMPLETED' },
-        { text: 'Paused', value: 'PAUSED' },
-        { text: 'Dropped', value: 'DROPPED' },
-        { text: 'Plan to watch', value: 'PLANNING' }
-      ],
+      status: status[service],
       initForm: {
         status: '',
         score: 0,

@@ -130,18 +130,16 @@
 </template>
 
 <script>
+import { listStatus as status } from '@/store/modules/lists.js'
+
 export default {
   data () {
+    const service = 'mal'
+
     return {
-      service: 'mal',
+      service,
       datePickers: [false, false],
-      status: [
-        { text: 'Watching', value: 1 },
-        { text: 'Completed', value: 2 },
-        { text: 'On Hold', value: 3 },
-        { text: 'Dropped', value: 4 },
-        { text: 'Plan to watch', value: 6 }
-      ],
+      status: status[service],
       score: [
         { text: 'None', value: null },
         { text: '1 - Appalling', value: 1 },

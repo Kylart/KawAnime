@@ -73,3 +73,28 @@ export const sections = [
   { name: 'Notifications', value: 6, icon: 'add_alert' },
   { name: 'System', value: 7, icon: 'build' }
 ]
+
+export const listStatus = {
+  anilist: [
+    { text: 'Watching', value: 'CURRENT' },
+    { text: 'Rewatching', value: 'REPEATING' },
+    { text: 'Completed', value: 'COMPLETED' },
+    { text: 'Paused', value: 'PAUSED' },
+    { text: 'Dropped', value: 'DROPPED' },
+    { text: 'Plan to watch', value: 'PLANNING' }
+  ],
+  kitsu: [
+    { text: 'Current', value: 'current' },
+    { text: 'Completed', value: 'completed' },
+    { text: 'On Hold', value: 'on_hold' },
+    { text: 'Dropped', value: 'dropped' },
+    { text: 'Planned', value: 'planned' }
+  ],
+  mal: [
+    { text: 'Watching', value: 1 },
+    { text: 'Completed', value: 2 },
+    { text: 'On Hold', value: 3 },
+    { text: 'Dropped', value: 4 },
+    { text: 'Plan to watch', value: 6 }
+  ]
+}

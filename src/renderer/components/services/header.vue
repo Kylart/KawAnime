@@ -1,7 +1,7 @@
 <template lang="pug">
   //- We just need a refresh and add button, tag research and name research fields
   v-container(grid-list-xl, pa-0)
-    v-layout(justify-space-around, align-center)
+    v-layout(justify-space-between, align-center)
       .provider-name {{ providerName }}
       v-flex(
         xs12, sm6, md4,
@@ -25,7 +25,14 @@
           hint='Looking for something?'
         )
 
-      v-flex(xs12, sm4, md3)
+      v-flex(xs12, sm6, md2)
+        v-select(
+          label=''
+          :items='categories',
+          v-model='category'
+        )
+
+      v-flex(xs12, sm4, md2, d-flex, justify-center)
         v-btn(icon, large, @click='refresh')
           v-icon(large) refresh
 
@@ -36,6 +43,8 @@
 </template>
 
 <script>
+import { listStatus as status } from '@/store/modules/lists.js'
+
 import ImportModal from '@/components/services/import.vue'
 
 export default {
@@ -43,14 +52,25 @@ export default {
 
   components: { ImportModal },
 
-  props: ['provider', 'hasTags', 'list'],
+  props: [
+    'provider',
+    'hasTags',
+    'list'
+  ],
 
   data: () => ({
     selectedTags: [],
-    searchTerm: ''
+    searchTerm: '',
+    category: null
   }),
 
   computed: {
+    categories () {
+      return [
+        { text: 'None', value: null },
+        ...status[this.provider]
+      ]
+    },
     providerName () {
       return this.$store.state.config.providers.find(({ value }) => value === this.provider).text
     },

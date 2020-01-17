@@ -8,7 +8,8 @@
             :hasTags='hasTags',
             :list='creds.list',
             @tags='setTags',
-            @term='setTerm'
+            @term='setTerm',
+            @filter='filterList'
           )
 
           list(
@@ -16,7 +17,7 @@
             :hasTags='hasTags',
             :tags='search.tags',
             :term='search.term',
-            :list='creds.list',
+            :list='filteredList',
             :provider='provider'
           )
 
@@ -59,6 +60,9 @@ export default {
     },
     hasCreds () {
       return this.creds.has
+    },
+    filteredList () {
+      return null
     }
   },
 
@@ -68,6 +72,9 @@ export default {
     },
     setTerm (term) {
       this.search.term = term
+    },
+    filterList (models) {
+
     }
   }
 }

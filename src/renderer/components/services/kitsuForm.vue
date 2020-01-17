@@ -100,18 +100,16 @@
 </template>
 
 <script>
+import { listStatus as status } from '@/store/modules/lists.js'
+
 export default {
   data () {
+    const service = 'kitsu'
+
     return {
-      service: 'kitsu',
+      service,
       datePickers: [false, false],
-      status: [
-        { text: 'Current', value: 'current' },
-        { text: 'Completed', value: 'completed' },
-        { text: 'On Hold', value: 'on_hold' },
-        { text: 'Dropped', value: 'dropped' },
-        { text: 'Planned', value: 'planned' }
-      ],
+      status: status[service],
       initForm: {
         status: '',
         progress: null,
