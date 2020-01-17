@@ -52,6 +52,7 @@ function createWindow () {
     frame: process.platform === 'darwin',
     show: false,
     useContentSize: process.platform !== 'linux',
+    offscreen: true,
     webPreferences: {
       nodeIntegration: true,
       plugins: true // For mpv.js
