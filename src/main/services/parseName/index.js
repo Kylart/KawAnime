@@ -7,7 +7,7 @@ const events = eventsList.parse
 
 const logger = new Logger('Parse')
 
-async function news (event, name) {
+async function parse (event, name) {
   try {
     event.returnValue = bindings.parseName(name)
   } catch (e) {
@@ -18,5 +18,5 @@ async function news (event, name) {
 
 export default {
   eventName: events.main,
-  handler: news
+  handler: parse
 }

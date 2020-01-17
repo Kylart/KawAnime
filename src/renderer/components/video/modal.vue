@@ -28,6 +28,13 @@ export default {
     Player
   },
 
+  data: () => ({
+    preventSleep: {
+      on: false,
+      id: null
+    }
+  }),
+
   computed: {
     controls: {
       get () {
@@ -147,11 +154,28 @@ export default {
         // all the work needed for the history and stuff...
         this.controls = { name: 'playerKey', value: Math.random() }
       })
+    },
+    togglePreventSleep () {
+      const event = this.$eventsList.preventSleep.main
+
+      try {
+        this.preventSleep.id = this.$ipc.sendSync(event, this.preventSleep.id)
+        this.preventSleep.on = true
+      } catch (e) {
+        this.$log('Could not prevent app from sleeping.')
+
+        this.preventSleep = {
+          on: false,
+          id: null
+        }
+      }
     }
   },
 
   watch: {
     async show (val) {
+      this.togglePreventSleep()
+
       if (val) {
         if (this.isMinimized) {
           this.minimize()

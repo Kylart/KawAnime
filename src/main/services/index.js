@@ -9,6 +9,7 @@ import history from './history'
 import local from './local'
 import news from './news'
 import parseName from './parseName'
+import preventSleep from './preventSleep'
 import seasons from './seasons'
 import episodes from './episodes'
 import localLists from './localLists'
@@ -37,6 +38,7 @@ const services = [
   ...watchLists,
   news,
   parseName,
+  preventSleep,
   seasons,
   episodes,
   isOnline,

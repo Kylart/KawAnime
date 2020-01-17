@@ -15,7 +15,8 @@ const events = [
   'isOnline',
   'externalOpen',
   'analytics',
-  'parse'
+  'parse',
+  'preventSleep'
 ]
 
 export default events
