@@ -39,3 +39,5 @@ bindings/build
 # External libs binaries
 public/mpv/*
 !public/mpv/.gitkeep
+public/kawabinds/*
+!public/kawabinds/.gitkeep

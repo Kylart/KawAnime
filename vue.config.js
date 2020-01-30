@@ -19,6 +19,7 @@ const getAllFiles = (dir) =>
 const VERSION = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'package.json'))).version
 const VENDOR_PATH = path.join(__dirname, 'src', 'vendor')
 const BIDNINGS_PATH = path.join(__dirname, 'bindings')
+const PUBLIC_PATH = path.join(__dirname, 'public')
 
 process.env.VUE_APP_KAWANIME_VERSION = VERSION
 
@@ -71,20 +72,6 @@ module.exports = {
             'kawanime-app'
           ]
         }],
-        mac: {
-          extraResources: [
-            {
-              from: './bindings/build/Release',
-              to: '.',
-              filter: ['*.dylib']
-            },
-            {
-              from: './public/mpv',
-              to: 'mpv',
-              filter: ['*.dylib', '*.node']
-            }
-          ]
-        },
         linux: {
           category: 'Network',
           extraResources: [
@@ -130,6 +117,7 @@ module.exports = {
           .alias
           .set('vendor', VENDOR_PATH)
           .set('kawabinds', BIDNINGS_PATH)
+          .set('public', PUBLIC_PATH)
       },
       chainWebpackRendererProcess: (config) => {
         // Chain webpack config for electron renderer process only
