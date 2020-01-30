@@ -19,7 +19,6 @@ const getAllFiles = (dir) =>
 const VERSION = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'package.json'))).version
 const VENDOR_PATH = path.join(__dirname, 'src', 'vendor')
 const BIDNINGS_PATH = path.join(__dirname, 'bindings')
-const PUBLIC_PATH = path.join(__dirname, 'public')
 
 process.env.VUE_APP_KAWANIME_VERSION = VERSION
 
@@ -42,6 +41,11 @@ module.exports = {
       builderOptions: {
         appId: 'KawAnime',
         productName: 'KawAnime',
+
+        // See https://github.com/electron-userland/electron-builder/issues/2738#issuecomment-378837434
+        // Not needed anyway
+        asar: false,
+
         dmg: {
           contents: [
             {
@@ -73,33 +77,7 @@ module.exports = {
           ]
         }],
         linux: {
-          category: 'Network',
-          extraResources: [
-            {
-              from: './bindings/build/Release',
-              to: '.',
-              filter: ['*.so']
-            },
-            {
-              from: './public/mpv',
-              to: 'mpv',
-              filter: ['*.so', '*.node']
-            }
-          ]
-        },
-        win: {
-          extraResources: [
-            {
-              from: '.\\bindings\\build\\Release',
-              to: '.',
-              filter: ['*.dll']
-            },
-            {
-              from: '.\\public\\mpv',
-              to: 'mpv',
-              filter: ['*.dll', '*.node']
-            }
-          ]
+          category: 'Network'
         }
       },
       chainWebpackMainProcess: (config) => {
@@ -117,7 +95,7 @@ module.exports = {
           .alias
           .set('vendor', VENDOR_PATH)
           .set('kawabinds', BIDNINGS_PATH)
-          .set('public', PUBLIC_PATH)
+          .set('plugin', process.env.NODE_ENV === 'development' ? path.join(__dirname, 'public') : __dirname)
       },
       chainWebpackRendererProcess: (config) => {
         // Chain webpack config for electron renderer process only
