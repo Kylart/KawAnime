@@ -43,13 +43,14 @@ import Layout from './layout.vue'
 
 // Mixins
 import UserConfig from '@/mixins/video/userConfig.js'
+import Tracking from '@/mixins/video/tracking.js'
 
 export default {
   name: 'MpvPlayer',
 
   components: { Wrapper, Layout },
 
-  mixins: [ UserConfig ],
+  mixins: [ UserConfig, Tracking ],
 
   data () {
     return {
