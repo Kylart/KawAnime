@@ -33,6 +33,7 @@
 <p align="center"><img width="80%" src="https://imgur.com/OpSfhDn.png"/></p>
 
 # Features
+
 Disclaimer : KawAnime is built for otaku/anime-fans. The software will contain images and sounds sourced from anime. Do not try if you're not prepared.
 
 Use KawAnime to:
@@ -51,6 +52,7 @@ Use KawAnime to:
 Feel free to check the official website for [a demo of all the available features.](https://kawanime.com/#features)
 
 ## About OS
+
 _KawAnime_ is completely cross-platform.
 
 If you have any problems installing for your OS, you can contact me anytime in the `issues` section.
@@ -84,21 +86,25 @@ If `postinstall` script fails, it probably means that you lack one of the requir
 ## Run in dev
 
 ##### Build native bindings
+
 ```
 npm run build:bindings
 ```
 
 ##### Start app
+
 ```
 npm run dev
 ```
 
 ##### Lint
+
 ```
 npm run lint
 ```
 
 #### Testing
+
 To run tests, you have to build a production ready bundle:
 ```
 npm run pack
@@ -110,28 +116,31 @@ npm run test
 ```
 
 ## Generating distributable apps
+
 This feature uses [electron-builder](https://github.com/electron-userland/electron-builder).
 
 Find help to use it on your platform
 [here](https://github.com/electron-userland/electron-builder/wiki/Multi-Platform-Build).
 
-#### For every OS
-```
-npm run dist
-```
+#### For Mac OS
 
-#### For Mac OS only
 ```
+npm run collect:dylibs
 npm run dist:mac
 ```
 
-#### For Linux OS only
+#### For Linux OS
+
 ```
+npm run move:libs
 npm run dist:linux
 ```
 
-#### For Windows OS only
+#### For Windows OS
+
 ```
+npm run move:libs
+
 npm run dist:win
 
 # Or, to have a portable version. This will give you a `KawAnime.exe`
@@ -142,6 +151,7 @@ npm run dist:portable
 Distributable will then be in the `dist` folder.
 
 ## Contributing
+
 Any contribution is appreciated.
 
 1. Fork it!
@@ -151,15 +161,19 @@ Any contribution is appreciated.
 5. Submit a pull request.
 
 ## Thanks
+
 KawAnime is developed using the following technologies, many thanks to
+
 * [Electron](https://electron.atom.io)
 * [Vue.js](https://vuejs.org)
 * [Vuetify](https://vuetifyjs.com)
 * [Libtorrent](https://libtorrent.org)
 * [Anitomy](https://github.com/erengy/anitomy)
+* [Mpv.js](https://github.com/Kagami/mpv.js/)
 * [TorrentStream](https://github.com/mafintosh/torrent-stream)
 
 ## License
+
 MIT License
 
 Copyright (c) Kylart
