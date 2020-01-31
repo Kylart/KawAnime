@@ -37,7 +37,6 @@ mochawesome-report
 bindings/build
 
 # External libs binaries
+public/*.dylib
 public/mpv/*
 !public/mpv/.gitkeep
-public/kawabinds/*
-!public/kawabinds/.gitkeep
