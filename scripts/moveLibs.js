@@ -7,7 +7,7 @@ const BINDINGS_BUILD_DIR = join(__dirname, '..', 'bindings', 'build', 'Release')
 const FILE_NAME = {
   darwin: 'libtorrent-rasterbar.10.dylib',
   win32: 'libtorrent-rasterbar.dll'
-}[process.platform] || '.so'
+}[process.platform] || 'libtorrent-rasterbar.so'
 
 readdirSync(BINDINGS_BUILD_DIR)
   .forEach((file) => {
