@@ -1,5 +1,5 @@
 import { setupCreds } from '../../vault'
-import { TOKEN_URL, LIST_URL as USER_URL } from '../utils'
+import { TOKEN_URL, USERS_URL as USER_URL } from '../utils'
 import { https } from '../../../utils'
 import { eventsList } from 'vendor'
 import sendToWindows from '../../sendToWindows'

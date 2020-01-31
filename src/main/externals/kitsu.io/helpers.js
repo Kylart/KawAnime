@@ -147,18 +147,8 @@ export function formatSearch (data) {
 }
 
 export function formatList (data) {
-  const { entries, animes } = data.included.reduce(
-    (acc, elem) => {
-      elem.type === 'libraryEntries'
-        ? acc.entries.push(elem)
-        : acc.animes.push(elem)
-
-      return acc
-    }, {
-      entries: [],
-      animes: []
-    }
-  )
+  const entries = data.data
+  const animes = data.included
 
   return entries.map(({ id, attributes: entry }, index) => {
     const anime = animes[index].attributes
