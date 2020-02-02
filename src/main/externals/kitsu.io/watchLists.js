@@ -1,14 +1,21 @@
 import { https } from '../../utils'
-import { LIST_URL, UPDATE_LIST_URL } from './utils'
+import { USERS_URL, LIST_URL } from './utils'
 import { retrieveToken, isAuthed } from './auth'
 
 import { formatList } from './helpers'
 
 async function get (username) {
   try {
+    const userData = await https.get(USERS_URL, [
+      { name: 'filter[slug]', value: username }
+    ])
+
+    const { id: userId } = userData.data[0] // Hopefully we won't run into doubles
+
     const data = await https.get(LIST_URL, [
-      { name: 'filter[name]', value: username },
-      { name: 'include', value: 'libraryEntries,libraryEntries.anime' }
+      { name: 'filter[user_id]', value: userId },
+      { name: 'include', value: 'anime' },
+      { name: 'page[limit]', value: '500' }
     ], {}, false)
 
     return formatList(data)
@@ -31,7 +38,7 @@ async function update (opts) {
   }
 
   if (isEdit) {
-    await https.patch(`${UPDATE_LIST_URL}/${id}`, {
+    await https.patch(`${LIST_URL}/${id}`, {
       data: {
         type: 'library-entries',
         id,
@@ -39,7 +46,7 @@ async function update (opts) {
       }
     }, [], headers)
   } else {
-    await https.post(UPDATE_LIST_URL, {
+    await https.post(LIST_URL, {
       data: {
         type: 'library-entries',
         attributes: data,
