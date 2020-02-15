@@ -1,5 +1,8 @@
 <template lang="pug">
-  .video-dialog-container(draggable='false', :style="{ 'z-index': controls.z }")
+  .video-dialog-container(
+    draggable='false',
+    :style="{ 'z-index': controls.z, 'pointer-events': controls.fullscreen ? 'all' : 'none' }"
+  )
     v-scale-transition
       .video-dialog(v-show='show', :style='style')
         template(v-if='show')
@@ -60,6 +63,7 @@ export default {
         height: this.controls.height + '%',
         bottom: this.controls.bottom + '%',
         right: this.controls.right + '%',
+        'pointer-events': 'all',
         'z-index': this.controls.z
       }
     },

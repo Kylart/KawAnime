@@ -6,7 +6,8 @@ export default {
     style: {
       display: 'block',
       width: '100%',
-      height: '100%'
+      height: '100%',
+      'pointer-events': 'none' // Allows cursor to be handle directly by MPV?
     },
     plugin: null,
     mimeType: 'application/x-mpvjs',
@@ -36,6 +37,8 @@ export default {
     window.addEventListener('wheel', this.wheel)
 
     window.addEventListener('keydown', this.keypress)
+
+    this.property('cursor-autohide', 'always')
   },
 
   beforeDestroy () {
