@@ -50,28 +50,28 @@ export default {
       return img
     },
     setVideo () {
-      const video = document.querySelector('video[name="kawanime-player"]')
       this.hover.video = document.createElement('video')
       this.hover.video.setAttribute('crossOrigin', 'anonymous')
 
       this.hover.video.addEventListener('loadedmetadata', () => {
         if (!this.hover.value) return
 
-        this.hover.video.currentTime = (this.hover.value / 100) * video.duration
+        this.hover.video.currentTime = (this.hover.value / 100) * this.hover.video.duration
       })
 
       this.hover.video.addEventListener('seeked', () => {
         this.hover.show && this.setVideoThumbnail()
       })
 
-      this.hover.video.src = video.src
+      this.hover.video.src = this.$store.state.streaming.player.isTorrent
+        ? `http://localhost:${this.$store.state.streaming.player.port}`
+        : `file://${this.$store.state.streaming.player.path}`
     },
     setVideoThumbnail (value = this.hover.value) {
       const canvas = document.createElement('canvas')
-      const video = document.querySelector('video[name="kawanime-player"]')
 
-      canvas.height = video.videoHeight
-      canvas.width = video.videoWidth
+      canvas.height = this.hover.video.videoHeight
+      canvas.width = this.hover.video.videoWidth
 
       const context = canvas.getContext('2d')
 

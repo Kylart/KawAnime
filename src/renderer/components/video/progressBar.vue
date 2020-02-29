@@ -1,14 +1,14 @@
 <script>
 import VSlider from 'vuetify/lib/components/VSlider/VSlider'
 
-// import Hover from '@/mixins/video/hover'
+import Hover from '@/mixins/video/hover'
 
 export default {
   name: 'progress-bar',
 
   mixins: [
-    VSlider
-    // Hover
+    VSlider,
+    Hover
   ],
 
   props: {
@@ -111,7 +111,7 @@ export default {
     genHoverPreviewContainer () {
       return this.$createElement('div', {
         on: this.genListeners(),
-        staticClass: 'hello-im-preview',
+        staticClass: 'preview',
         style: {
           height: '12px',
           width: '100%'
@@ -126,8 +126,8 @@ export default {
         this.genInput(),
         this.genTrackContainer(),
         this.genSteps(),
-        // this.genHoverPreviewContainer(),
-        // this.genHoverThumbContainer(),
+        this.genHoverPreviewContainer(),
+        this.genHoverThumbContainer(),
         this.genThumbContainer(
           this.formatLabel(this.internalValue),
           this.inputWidth,

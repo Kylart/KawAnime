@@ -55,6 +55,7 @@ function createWindow () {
     offscreen: true,
     webPreferences: {
       nodeIntegration: true,
+      webSecurity: false,
       plugins: true // For mpv.js
     }
   })
