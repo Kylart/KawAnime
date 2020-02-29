@@ -7,7 +7,7 @@ export default {
       display: 'block',
       width: '100%',
       height: '100%',
-      'pointer-events': 'none' // Allows cursor to be handle directly by MPV?
+      'pointer-events': 'none' // Allows cursor to be handled directly by MPV?
     },
     plugin: null,
     mimeType: 'application/x-mpvjs',
