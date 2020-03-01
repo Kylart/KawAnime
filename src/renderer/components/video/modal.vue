@@ -18,7 +18,10 @@
           )
 
     v-fade-transition
-      .video-overlay(v-show='show && !controls.isMinimized')
+      .video-overlay(
+        v-show='show && !controls.isMinimized',
+        :style="{ 'pointer-events': controls.isMinimized ? 'none' : 'all' }"
+      )
 </template>
 
 <script>
@@ -186,8 +189,6 @@ export default {
         }
 
         window.addEventListener('keydown', this.addListeners)
-
-        await this.$store.dispatch('streaming/getNeighbours')
       } else {
         window.removeEventListener('keydown', this.addListeners)
       }

@@ -9,7 +9,7 @@ export default {
 
     // We don't need to do anything if it's not a torrent
     if (!isTorrent) {
-      commit('setPlayer', { name: opts.name, path: opts.link, show: true })
+      commit('setPlayer', { name: opts.name, path: opts.link, show: true, isTorrent })
       dispatch('getNeighbours')
 
       return
@@ -17,7 +17,7 @@ export default {
 
     const event = eventsList.streaming.init
     const handler = (e, data) => {
-      commit('setPlayer', { ...data, show: true })
+      commit('setPlayer', { ...data, show: true, isTorrent })
       dispatch('getNeighbours')
       ipcRenderer.removeListener(event.success, handler)
     }
