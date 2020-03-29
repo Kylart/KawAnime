@@ -45,13 +45,14 @@ build: off
 
 artifacts:
   - path: 'public\*.dll'
+  - path: 'public\*.node'
   - path: 'dist\*.exe'
 
 test_script:
   - node --version
   - npm --version
   - npm run lint
-  - npm run pack
+  - npm run dist:win
   # - npm run test
 
 deploy_script:
