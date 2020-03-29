@@ -5,12 +5,16 @@ const { join, basename } = require('path')
 const PUBLIC_DIR = join(__dirname, '..', 'public')
 
 function moveToPublic (filepath) {
-  console.log(`[KawAnime] Copying ${filepath} to public directory.`)
+  try {
+    console.log(`[KawAnime] Copying ${filepath} to public directory.`)
 
-  copyFileSync(
-    filepath,
-    join(PUBLIC_DIR, basename(filepath))
-  )
+    copyFileSync(
+      filepath,
+      join(PUBLIC_DIR, basename(filepath))
+    )
+  } catch (e) {
+    console.warn(`[KawAnime] Could not find ${filepath}`)
+  }
 }
 
 function linux () {
