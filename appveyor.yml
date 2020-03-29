@@ -19,9 +19,6 @@ install:
   - 7z x -ompv mpv.7z
   - copy mpv\x86_64\mpv-1.dll C:\Windows\system32\
 
-  - dir C:\OpenSSL-Win64
-  - dir C:\OpenSSL-Win64\lib
-
   - set ROOT_DIRECTORY=%CD%
   - if not defined compiler ( set compiler="" )
   - if not defined crypto ( set crypto=built-in )
@@ -48,6 +45,7 @@ build: off
 
 artifacts:
   - path: 'public\*.dll'
+  - path: 'dist\*.exe'
 
 test_script:
   - node --version
