@@ -1,22 +1,31 @@
-const { readdirSync, copyFileSync } = require('fs')
-const { join } = require('path')
+const { homedir } = require('os')
+const { copyFileSync } = require('fs')
+const { join, basename } = require('path')
 
 const PUBLIC_DIR = join(__dirname, '..', 'public')
-const BINDINGS_BUILD_DIR = join(__dirname, '..', 'bindings', 'build', 'Release')
 
-const FILE_NAME = {
-  darwin: 'libtorrent-rasterbar.10.dylib',
-  win32: 'libtorrent-rasterbar.dll'
-}[process.platform] || 'libtorrent-rasterbar.so'
+function moveToPublic (filepath) {
+  console.log(`[KawAnime] Copying ${filepath} to public directory.`)
 
-readdirSync(BINDINGS_BUILD_DIR)
-  .forEach((file) => {
-    if (file !== FILE_NAME) return
+  copyFileSync(
+    filepath,
+    join(PUBLIC_DIR, basename(filepath))
+  )
+}
 
-    console.log(`[KawAnime] Moving ${file} to public directory.`)
+function linux () {
+  // TODO
+}
 
-    copyFileSync(
-      join(BINDINGS_BUILD_DIR, file),
-      join(PUBLIC_DIR, file)
-    )
-  })
+function windows () {
+  const sys32Path = join(homedir().split('\\')[0], 'Windows', 'System32')
+  const requiredDlls = [
+    'libcrypto-1_1-x64.dll',
+    'libssl-1_1-x64.dll'
+  ].map((dll) => join(sys32Path, dll))
+
+  requiredDlls.forEach(moveToPublic)
+}
+
+if (process.platform === 'win32') windows()
+else linux()
