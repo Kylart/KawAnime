@@ -11,6 +11,9 @@ platform:
 init:
   - git config --global core.autocrlf input
 
+artifacts:
+  - path: `dist\*.exe`
+
 install:
   - ps: Install-Product node 12 x64
   - git submodule update --init --recursive
