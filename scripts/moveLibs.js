@@ -3,6 +3,7 @@ const { copyFileSync } = require('fs')
 const { join, basename } = require('path')
 
 const PUBLIC_DIR = join(__dirname, '..', 'public')
+const BINDINGS_BUILD_PATH = join(__dirname, '..', 'bindings', 'build', 'Release')
 
 function moveToPublic (filepath) {
   try {
@@ -27,6 +28,8 @@ function windows () {
     'libcrypto-1_1-x64.dll',
     'libssl-1_1-x64.dll'
   ].map((dll) => join(sys32Path, dll))
+
+  requiredDlls.push(join(BINDINGS_BUILD_PATH, 'torrent-rasterbar.dll'))
 
   requiredDlls.forEach(moveToPublic)
 }

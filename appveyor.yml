@@ -46,6 +46,9 @@ install:
 
 build: off
 
+artifacts:
+  - path: 'public\*.dll'
+
 test_script:
   - node --version
   - npm --version
