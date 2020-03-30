@@ -35,6 +35,7 @@
   "dependencies": {
     "buttercup": "^2.16.1",
     "chalk": "^3.0.0",
+    "crypto-js": "^4.0.0",
     "electron-updater": "^4.2.5",
     "lodash": "^4.17.15",
     "mal-scraper": "^2.6.8",
