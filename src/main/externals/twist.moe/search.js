@@ -35,18 +35,19 @@ export async function getAll () {
  *
  * @param {Entry} entry Entry to get the episodes of
  *
- * @returns {[FormattedEpisodes]}
+ * @returns {[FormattedEpisode]}
  */
 export async function getEpisodes (entry) {
   try {
     /** @type {[RawEpisode]} */
-    const rawEps = await https.get(`${API_URL}/anime/${entry.slug.slug}/sources`, [], DEFAULT_HEADERS)
+    const rawEps = await https.get(`${API_URL}/anime/${entry.slug.slug}/sources`, [], { ...DEFAULT_HEADERS, json: true })
 
     return rawEps
       .map(({ id, source, number }) => ({
         id,
         source,
         number,
+        title: `${entry.title} - ${number}`,
         url: [BASE_URL, decrypt(source)].join('')
       }))
       .filter(({ url }) => url)

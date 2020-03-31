@@ -48,3 +48,15 @@
  * @property {String} FormattedEpisode.source
  * @property {Number} FormattedEpisode.number
  */
+
+/** @type {Entry} */
+export const Entry = null
+
+/** @type {FormattedEntry} */
+export const FormattedEntry = null
+
+/** @type {RawEpisode} */
+export const RawEpisode = null
+
+/** @type {FormattedEpisode} */
+export const FormattedEpisode = null
