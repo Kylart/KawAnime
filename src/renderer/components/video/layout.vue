@@ -49,6 +49,10 @@ export default {
     buffered: []
   }),
 
+  mounted () {
+    setTimeout(this.hide, 1500)
+  },
+
   computed: {
     controls () {
       return {
