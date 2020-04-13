@@ -131,12 +131,12 @@ npm run dist:mac
 
 #### For Linux OS
 
-On Linux, as there are so many distros, you'll need to install dependency packages first. Either from source or using your package manager.
+On Linux you'll need to install dependency packages first. Either from source or using your package manager (e.g. `apt` on Debian-like systems).
 
 Here's the list of the dependencies:
 * (Required) A C/C++ Compiler, `gcc` is recommended.
 * (Required) [Boost](https://www.boost.org/) > 1.65.0 -- Used by Libtorrent, only the `system` component is required. You can install `libboost-system-dev` using `apt`
-* (Required) [Libtorrent](https://www.libtorrent.org/) > 1.1.0 -- If you don't have any version installed, the build command will install it for you
+* (Required) [LibtorrentRasterbar](https://www.libtorrent.org/) > 1.1.0 -- If you don't have any version installed, the build command will install it for you. You can install `libtorrent-rasterbar-dev` using `apt`.
 * (Optional) [MPV](https://mpv.io/installation/) -- Only if you want to use the internal player. You can install `libmpv1` and `libavformat-dev` using `apt`
 
 ```
