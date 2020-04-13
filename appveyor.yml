@@ -38,7 +38,6 @@ install:
 
   - cd %APPVEYOR_BUILD_FOLDER%
   - npm install
-  - npm run move:libs
   - dir %APPVEYOR_BUILD_FOLDER%\public
 
 build: off
