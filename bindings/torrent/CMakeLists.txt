@@ -1,5 +1,7 @@
 project(kawatorrent)
 
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake/")
+
 # Essential include files to build a node addon,
 # you should add this line in every CMake.js based project.
 include_directories(${CMAKE_JS_INC})
@@ -21,11 +23,23 @@ add_library(${PROJECT_NAME} SHARED ${SOURCE_FILES})
 list(APPEND CMAKE_MODULE_PATH lib/libtorrent/cmake/Modules)
 
 # Libtorrent
-set(LIBTORRENT_DIR lib/libtorrent)
-add_subdirectory(${LIBTORRENT_DIR})
+find_package(LibtorrentRasterbar)
+find_package(Boost REQUIRED COMPONENTS system)
 
-target_include_directories(${PROJECT_NAME} PRIVATE ${LIBTORRENT_DIR}/include)
-target_link_libraries(${PROJECT_NAME} torrent-rasterbar)
+if (LibtorrentRasterbar_FOUND)
+  target_include_directories(${PROJECT_NAME} PRIVATE ${LibtorrentRasterbar_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS})
+  target_link_libraries(${PROJECT_NAME} ${LibtorrentRasterbar_LIBRARIES} ${Boost_LIBRARIES})
+
+  add_definitions(${LibtorrentRasterbar_DEFINITIONS})
+else()
+  message("Could not find installed version of libtorrent, building one.")
+
+  set(LIBTORRENT_DIR lib/libtorrent)
+  add_subdirectory(${LIBTORRENT_DIR})
+
+  target_include_directories(${PROJECT_NAME} PRIVATE ${LIBTORRENT_DIR}/include)
+  target_link_libraries(${PROJECT_NAME} torrent-rasterbar)
+endif()
 
 # Include N-API wrappers
 execute_process(COMMAND node -p "require('node-addon-api').include"
