@@ -132,15 +132,12 @@ npm run dist:mac
 #### For Linux OS
 
 ```
-npm run move:libs
 npm run dist:linux
 ```
 
 #### For Windows OS
 
 ```
-npm run move:libs
-
 npm run dist:win
 
 # Or, to have a portable version. This will give you a `KawAnime.exe`

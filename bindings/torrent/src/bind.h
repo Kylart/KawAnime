@@ -11,8 +11,8 @@
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
  */ 
-#ifndef BINDINGS_SRC_TORRENT_BIND_H_
-#define BINDINGS_SRC_TORRENT_BIND_H_
+#ifndef BINDINGS_TORRENT_SRC_BIND_H_
+#define BINDINGS_TORRENT_SRC_BIND_H_
 
 #include <napi.h>
 
@@ -25,4 +25,4 @@ void SetUp(Napi::Env env, Napi::Object exports);
 
 }  // namespace Torrent
 
-#endif  // BINDINGS_SRC_TORRENT_BIND_H_
+#endif  // BINDINGS_TORRENT_SRC_BIND_H_

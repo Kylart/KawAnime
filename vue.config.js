@@ -78,6 +78,9 @@ module.exports = {
         }],
         linux: {
           category: 'Network'
+        },
+        mac: {
+          identity: null // Disables Signing, no money
         }
       },
       chainWebpackMainProcess: (config) => {

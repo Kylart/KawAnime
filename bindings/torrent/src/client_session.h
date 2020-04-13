@@ -12,8 +12,8 @@
  * all copies or substantial portions of the Software.
  */ 
 
-#ifndef BINDINGS_SRC_TORRENT_CLIENT_SESSION_H_
-#define BINDINGS_SRC_TORRENT_CLIENT_SESSION_H_
+#ifndef BINDINGS_TORRENT_SRC_CLIENT_SESSION_H_
+#define BINDINGS_TORRENT_SRC_CLIENT_SESSION_H_
 
 #include <napi.h>
 
@@ -61,4 +61,4 @@ class Client : public Napi::ObjectWrap<Client> {
 
 }  // namespace LtSession
 
-#endif  // BINDINGS_SRC_TORRENT_CLIENT_SESSION_H_
+#endif  // BINDINGS_TORRENT_SRC_CLIENT_SESSION_H_

@@ -4,8 +4,10 @@ const { join, basename } = require('path')
 
 const IS_CI = process.env.CI || process.env.APPVEYOR
 
-const PUBLIC_DIR = join(__dirname, '..', 'public')
-const BINDINGS_BUILD_PATH = join(__dirname, '..', 'bindings', 'build', 'Release')
+const ROOT_PATH = join(__dirname, '..', '..', '..')
+
+const PUBLIC_DIR = join(ROOT_PATH, 'public')
+const BINDINGS_BUILD_PATH = join(ROOT_PATH, 'bindings', 'build', 'Release')
 
 function moveToPublic (filepath) {
   try {
@@ -20,10 +22,6 @@ function moveToPublic (filepath) {
   }
 }
 
-function linux () {
-  // TODO
-}
-
 function windows () {
   const sys32Path = IS_CI ? 'C:\\OpenSSL-Win64' : join(homedir().split('\\')[0], 'Windows', 'System32')
   const requiredDlls = [
@@ -36,5 +34,4 @@ function windows () {
   requiredDlls.forEach(moveToPublic)
 }
 
-if (process.platform === 'win32') windows()
-else linux()
+windows()

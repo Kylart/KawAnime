@@ -12,8 +12,8 @@
  * all copies or substantial portions of the Software.
  */ 
 
-#ifndef BINDINGS_SRC_TORRENT_UTILS_H_
-#define BINDINGS_SRC_TORRENT_UTILS_H_
+#ifndef BINDINGS_TORRENT_SRC_UTILS_H_
+#define BINDINGS_TORRENT_SRC_UTILS_H_
 
 #include <napi.h>
 
@@ -30,4 +30,4 @@ lt::torrent_handle findTorrent(lt::session * session, std::uint32_t to_find_id);
 
 }  // namespace LtUtils
 
-#endif  // BINDINGS_SRC_TORRENT_UTILS_H_
+#endif  // BINDINGS_TORRENT_SRC_UTILS_H_

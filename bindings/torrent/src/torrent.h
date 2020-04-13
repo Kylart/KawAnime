@@ -12,8 +12,8 @@
  * all copies or substantial portions of the Software.
  */ 
 
-#ifndef BINDINGS_SRC_TORRENT_TORRENT_H_
-#define BINDINGS_SRC_TORRENT_TORRENT_H_
+#ifndef BINDINGS_TORRENT_SRC_TORRENT_H_
+#define BINDINGS_TORRENT_SRC_TORRENT_H_
 
 #include <napi.h>
 
@@ -58,4 +58,4 @@ class Torrent : public Napi::ObjectWrap<Torrent> {
 
 }  // namespace LtTorrent
 
-#endif  // BINDINGS_SRC_TORRENT_TORRENT_H_
+#endif  // BINDINGS_TORRENT_SRC_TORRENT_H_
