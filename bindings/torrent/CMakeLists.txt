@@ -23,8 +23,7 @@ add_library(${PROJECT_NAME} SHARED ${SOURCE_FILES})
 list(APPEND CMAKE_MODULE_PATH lib/libtorrent/cmake/Modules)
 
 # Libtorrent
-find_package(LibtorrentRasterbar)
-find_package(Boost REQUIRED COMPONENTS system)
+find_package(LibtorrentRasterbar EXACT 1.2)
 
 if (LibtorrentRasterbar_FOUND)
   target_include_directories(${PROJECT_NAME} PRIVATE ${LibtorrentRasterbar_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS})
