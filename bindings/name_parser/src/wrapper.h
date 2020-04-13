@@ -11,8 +11,8 @@
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
  */
-#ifndef BINDINGS_SRC_NAME_PARSER_WRAPPER_H_
-#define BINDINGS_SRC_NAME_PARSER_WRAPPER_H_
+#ifndef BINDINGS_NAME_PARSER_SRC_WRAPPER_H_
+#define BINDINGS_NAME_PARSER_SRC_WRAPPER_H_
 
 #include <anitomy/anitomy.h>
 #include <napi.h>
@@ -53,4 +53,4 @@ class Wrapper {
 
 }  // namespace Wrapper
 
-#endif  // BINDINGS_SRC_NAME_PARSER_WRAPPER_H_
+#endif  // BINDINGS_NAME_PARSER_SRC_WRAPPER_H_

@@ -1,3 +1,3 @@
-import bindings from 'kawabinds'
+import bindings from 'kawabinds/name_parser'
 
 export default bindings.parseName

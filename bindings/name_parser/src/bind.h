@@ -12,8 +12,8 @@
  * all copies or substantial portions of the Software.
  */
 
-#ifndef BINDINGS_SRC_NAME_PARSER_BIND_H_
-#define BINDINGS_SRC_NAME_PARSER_BIND_H_
+#ifndef BINDINGS_NAME_PARSER_SRC_BIND_H_
+#define BINDINGS_NAME_PARSER_SRC_BIND_H_
 
 #include <napi.h>
 
@@ -25,4 +25,4 @@ void SetUp(Napi::Env env, Napi::Object exports);
 
 }  // namespace NameParser
 
-#endif  // BINDINGS_SRC_NAME_PARSER_BIND_H_
+#endif  // BINDINGS_NAME_PARSER_SRC_BIND_H_

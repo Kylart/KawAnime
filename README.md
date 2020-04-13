@@ -33,6 +33,7 @@
 <p align="center"><img width="80%" src="https://imgur.com/OpSfhDn.png"/></p>
 
 # Features
+
 Disclaimer : KawAnime is built for otaku/anime-fans. The software will contain images and sounds sourced from anime. Do not try if you're not prepared.
 
 Use KawAnime to:
@@ -51,6 +52,7 @@ Use KawAnime to:
 Feel free to check the official website for [a demo of all the available features.](https://kawanime.com/#features)
 
 ## About OS
+
 _KawAnime_ is completely cross-platform.
 
 If you have any problems installing for your OS, you can contact me anytime in the `issues` section.
@@ -63,7 +65,7 @@ If you have any problems installing for your OS, you can contact me anytime in t
 
 * You will need CMake (v3.12 minimum) to build native dependencies as this project using cmake-js; you can download and install CMake [here](https://cmake.org/download/). Also, you will need a C++ compiler to build native libraries (Clang, GCC and MSVC are all supported).
 
-* You will need to have Boost (version 1.65.0 minimum) installed on your system. You can find Boost [here](https://www.boost.org/users/download/). Only `date_time` and `system` libraries are required by this project.
+* You will need to have Boost (version 1.65.0 minimum) installed on your system. You can find Boost [here](https://www.boost.org/users/download/).Only the `system` library is required by this project.
 
 * This app uses MPV via [mpv.js](https://github.com/Kagami/mpv.js) but you will need libmpv on your machine. You can find instructions on how to install libmpv [here](https://github.com/Kagami/mpv.js#get-libmpv).
 
@@ -84,21 +86,25 @@ If `postinstall` script fails, it probably means that you lack one of the requir
 ## Run in dev
 
 ##### Build native bindings
+
 ```
 npm run build:bindings
 ```
 
 ##### Start app
+
 ```
 npm run dev
 ```
 
 ##### Lint
+
 ```
 npm run lint
 ```
 
 #### Testing
+
 To run tests, you have to build a production ready bundle:
 ```
 npm run pack
@@ -110,27 +116,39 @@ npm run test
 ```
 
 ## Generating distributable apps
+
 This feature uses [electron-builder](https://github.com/electron-userland/electron-builder).
 
 Find help to use it on your platform
 [here](https://github.com/electron-userland/electron-builder/wiki/Multi-Platform-Build).
 
-#### For every OS
-```
-npm run dist
-```
+#### For Mac OS
 
-#### For Mac OS only
 ```
+npm run collect:dylibs
 npm run dist:mac
 ```
 
-#### For Linux OS only
+#### For Linux OS
+
+On Linux you'll need to install dependency packages first. Either from source or using your package manager (e.g. `apt` on Debian-like systems).
+
+Here's the list of the dependencies:
+* (Required) A C/C++ Compiler, `gcc` is recommended.
+* (Required) [Boost](https://www.boost.org/) > 1.65.0 -- Used by Libtorrent, only the `system` component is required. You can install `libboost-dev` or `libboost-all-dev` using `apt`
+* (Optional) [LibtorrentRasterbar](https://www.libtorrent.org/) > 1.2 -- If you don't have any valid version installed, the build command will install it for you.
+* (Optional) [MPV](https://mpv.io/installation/) -- Only if you want to use the internal player. You can install `libmpv1` and `libavformat-dev` using `apt`
+
+Once all those are installed, you can run the following commands. This will generate a `.snap` and a `.AppImage` in the `dist` folder that you can use. Alternatively you can
+use the `kawanime` executable in the `dist/linux-unpacked` folder.
+
 ```
+npm run install
 npm run dist:linux
 ```
 
-#### For Windows OS only
+#### For Windows OS
+
 ```
 npm run dist:win
 
@@ -142,6 +160,7 @@ npm run dist:portable
 Distributable will then be in the `dist` folder.
 
 ## Contributing
+
 Any contribution is appreciated.
 
 1. Fork it!
@@ -151,15 +170,19 @@ Any contribution is appreciated.
 5. Submit a pull request.
 
 ## Thanks
+
 KawAnime is developed using the following technologies, many thanks to
+
 * [Electron](https://electron.atom.io)
 * [Vue.js](https://vuejs.org)
 * [Vuetify](https://vuetifyjs.com)
 * [Libtorrent](https://libtorrent.org)
 * [Anitomy](https://github.com/erengy/anitomy)
+* [Mpv.js](https://github.com/Kagami/mpv.js/)
 * [TorrentStream](https://github.com/mafintosh/torrent-stream)
 
 ## License
+
 MIT License
 
 Copyright (c) Kylart

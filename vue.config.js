@@ -41,6 +41,11 @@ module.exports = {
       builderOptions: {
         appId: 'KawAnime',
         productName: 'KawAnime',
+
+        // See https://github.com/electron-userland/electron-builder/issues/2738#issuecomment-378837434
+        // Not needed anyway
+        asar: false,
+
         dmg: {
           contents: [
             {
@@ -71,48 +76,11 @@ module.exports = {
             'kawanime-app'
           ]
         }],
-        mac: {
-          extraResources: [
-            {
-              from: './bindings/build/Release',
-              to: '.',
-              filter: ['*.dylib']
-            },
-            {
-              from: './public/mpv',
-              to: 'mpv',
-              filter: ['*.dylib', '*.node']
-            }
-          ]
-        },
         linux: {
-          category: 'Network',
-          extraResources: [
-            {
-              from: './bindings/build/Release',
-              to: '.',
-              filter: ['*.so']
-            },
-            {
-              from: './public/mpv',
-              to: 'mpv',
-              filter: ['*.so', '*.node']
-            }
-          ]
+          category: 'Network'
         },
-        win: {
-          extraResources: [
-            {
-              from: '.\\bindings\\build\\Release',
-              to: '.',
-              filter: ['*.dll']
-            },
-            {
-              from: '.\\public\\mpv',
-              to: 'mpv',
-              filter: ['*.dll', '*.node']
-            }
-          ]
+        mac: {
+          identity: null // Disables Signing, no money
         }
       },
       chainWebpackMainProcess: (config) => {
@@ -130,6 +98,7 @@ module.exports = {
           .alias
           .set('vendor', VENDOR_PATH)
           .set('kawabinds', BIDNINGS_PATH)
+          .set('plugin', process.env.NODE_ENV === 'development' ? path.join(__dirname, 'public') : __dirname)
       },
       chainWebpackRendererProcess: (config) => {
         // Chain webpack config for electron renderer process only

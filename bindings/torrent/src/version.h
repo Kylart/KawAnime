@@ -12,8 +12,8 @@
  * all copies or substantial portions of the Software.
  */ 
 
-#ifndef BINDINGS_SRC_TORRENT_VERSION_H_
-#define BINDINGS_SRC_TORRENT_VERSION_H_
+#ifndef BINDINGS_TORRENT_SRC_VERSION_H_
+#define BINDINGS_TORRENT_SRC_VERSION_H_
 
 #include <napi.h>
 
@@ -25,4 +25,4 @@ Napi::Value Get(Napi::Env env);
 
 }  // namespace LtVersion
 
-#endif  // BINDINGS_SRC_TORRENT_VERSION_H_
+#endif  // BINDINGS_TORRENT_SRC_VERSION_H_

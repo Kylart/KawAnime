@@ -57,7 +57,6 @@ jobs:
         - npm run lint
         - npm run pack
         - npm run test
-        - "[[ $TRAVIS_BRANCH == master ]] && npm run publish:linux || echo \"Skipped Deploy Step\""
 
 notifications:
   email: false

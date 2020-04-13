@@ -11,8 +11,8 @@
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
  */ 
-#ifndef BINDINGS_SRC_NAME_PARSER_PARSE_H_
-#define BINDINGS_SRC_NAME_PARSER_PARSE_H_
+#ifndef BINDINGS_NAME_PARSER_SRC_PARSE_H_
+#define BINDINGS_NAME_PARSER_SRC_PARSE_H_
 
 #include <napi.h>
 
@@ -30,4 +30,4 @@ Napi::Value parse(const Napi::CallbackInfo& info);
 
 }  // namespace Parser
 
-#endif  // BINDINGS_SRC_NAME_PARSER_PARSE_H_
+#endif  // BINDINGS_NAME_PARSER_SRC_PARSE_H_

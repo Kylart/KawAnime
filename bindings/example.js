@@ -1,4 +1,4 @@
-const { torrent } = require('./build/Release/kawabinds.node')
+const { torrent } = require('./build/Release/kawatorrent.node')
 
 const client = new torrent.Client()
 

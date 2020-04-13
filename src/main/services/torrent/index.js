@@ -1,6 +1,6 @@
 import { app } from 'electron'
 
-import bindings from 'kawabinds'
+import bindings from 'kawabinds/torrent'
 import { sendToWindows } from '../../externals'
 import { eventsList } from 'vendor'
 import { save, load } from './storage'
