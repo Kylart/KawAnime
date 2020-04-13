@@ -22,7 +22,6 @@
     "dist:portable": "cross-env NODE_ENV=production npm run build -- --win portable",
     "dist:linux": "cross-env NODE_ENV=production npm run build -- --linux",
     "publish:mac": "npm run build -- --mac -p always",
-    "publish:linux": "npm run build -- --linux -p always",
     "publish:win": "npm run build -- --win --x64 -p always",
     "publish:portable": "npm run build -- --win portable -p always",
     "lint": "vue-cli-service lint",
