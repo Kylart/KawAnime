@@ -24,8 +24,8 @@ list(APPEND CMAKE_MODULE_PATH lib/libtorrent/cmake/Modules)
 find_package(LibtorrentRasterbar 1.2)
 
 if (LibtorrentRasterbar_FOUND)
-  target_include_directories(${PROJECT_NAME} PRIVATE ${LibtorrentRasterbar_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS})
-  target_link_libraries(${PROJECT_NAME} ${LibtorrentRasterbar_LIBRARIES} ${Boost_LIBRARIES})
+  target_include_directories(${PROJECT_NAME} PRIVATE ${libtorrent_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS})
+  target_link_libraries(${PROJECT_NAME} PUBLIC LibtorrentRasterbar::torrent-rasterbar ${Boost_LIBRARIES})
 
   add_definitions(${LibtorrentRasterbar_DEFINITIONS})
 else()
