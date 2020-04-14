@@ -37,7 +37,6 @@ module.exports = {
   },
   pluginOptions: {
     electronBuilder: {
-      externals: ['kawabinds'],
       builderOptions: {
         appId: 'KawAnime',
         productName: 'KawAnime',

@@ -1,39 +1,29 @@
 language: node_js
 node_js: "12"
 
-cache:
-  directories:
-    - $HOME/.cache/electron
-    - $HOME/.cache/electron-builder
-
-sudo: required
-
 jobs:
   include:
     -
       os: osx
+      name: Mac - Libtorrent Build
       osx_image: xcode11.2
-      env:
-        - ELECTRON_CACHE=$HOME/.cache/electron
-        - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
       addons:
         homebrew:
-          packages: ['autoconf', 'automake', 'ffmpeg', 'freetype', 'fribidi',
-                    'libass', 'libtool', 'little-cms2', 'luajit', 'nasm',
-                    'pkg-config', 'python']
+          packages: ['ninja', 'mpv']
           update: true
-      name: Mac
+      env:
+        - USE_HARD_LINKS=false # From https://github.com/electron-userland/electron-builder/issues/3179
       install:
-        - brew install mpv
-        - brew install ninja
         - npm install
       script:
+        - "npm run collect:dylibs"
         - npm run lint
         - npm run pack
         # - npm run test
 
     - 
       os: linux
+      name: Linux - Libtorrent Build
       dist: bionic
       addons:
         apt:
@@ -45,12 +35,51 @@ jobs:
             - libboost-system-dev
             - libmpv1
             - libavformat-dev
-      env: CC=gcc-5 CXX=g++-5
-      name: Linux
+      env:
+        - CC=gcc-5
+        - CXX=g++-5
+        - USE_HARD_LINKS=false # From https://github.com/electron-userland/electron-builder/issues/3179
       services:
         - xvfb
       before_script:
         - "export DISPLAY=:99.0"
+      install:
+        - npm install
+      script:
+        - npm run lint
+        - npm run pack
+        - npm run test
+
+    - 
+      os: linux
+      name: Linux - Libtorrent Pre-installed
+      dist: bionic
+      addons:
+        apt:
+          update: true
+          packages:
+            - g++-5
+            - gcc-5
+            - ninja-build
+            - libboost-system-dev
+            - libmpv1
+            - libavformat-dev
+      env:
+        - CC=gcc-5
+        - CXX=g++-5
+        - USE_HARD_LINKS=false # From https://github.com/electron-userland/electron-builder/issues/3179
+      services:
+        - xvfb
+      before_script:
+        - "export DISPLAY=:99.0"
+      before_install:
+        # Installing Libtorrent
+        - git clone --branch=RC_1_2 https://github.com/arvidn/libtorrent
+        - cd libtorrent
+        - mkdir build && cd build
+        - cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=14 -G Ninja ..
+        - ninja -j4
+        - sudo ninja install
       install:
         - npm install
       script:
