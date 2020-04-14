@@ -1,6 +1,6 @@
 module.exports = function () {
   describe('General window behaviour', function () {
-    it('should be visible', async function () {
+    it('should be visible', function () {
       return this.app.client
         .getWindowCount()
         .should.eventually.have.at.least(1)

@@ -16,7 +16,7 @@
       v-container(grid-list-md)
         v-layout(row, wrap, justify-center)
           v-flex(xs6)
-            v-text-field(
+            v-text-field#info-search-input(
               ref='input',
               v-model='term',
               label='Search',
@@ -141,7 +141,7 @@ export default {
       })
     },
     search: debounce(function () {
-      if (this.term.length < 3) return
+      if (this.term && this.term.length < 3) return
 
       this.loading = true
 

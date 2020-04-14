@@ -18,6 +18,6 @@ describe('KawAnime main test routine', function () {
 
   require('./hooks')()
 
-  require('./container')
   require('./app')
+  require('./container')
 })

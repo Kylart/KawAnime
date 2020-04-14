@@ -6,6 +6,8 @@ const BEST_ANIME = {
   id: 20047
 }
 
+const SEARCH_INPUT = 'input#info-search-input'
+
 module.exports = function () {
   describe('Search modal', function () {
     before(function (done) {
@@ -95,13 +97,13 @@ module.exports = function () {
       return this.app.client
         .$('.toolbar > div > *:nth-child(5)').click()
         .pause(500)
-        .$('input').hasFocus().should.eventually.be.true
+        .$(SEARCH_INPUT).hasFocus().should.eventually.be.true
         .saveScreenshot('test/screenshots/search_modal.png')
     })
 
     it('should make a research', function () {
       return this.app.client
-        .$('input').addValue(BEST_ANIME.name)
+        .$(SEARCH_INPUT).addValue(BEST_ANIME.name)
         .pause(500)
         .waitUntilTextExists('.v-dialog .container > div:last-child > div:nth-child(1)', BEST_ANIME.name, 7500)
         .saveScreenshot('test/screenshots/search_modal_results.png')
@@ -109,7 +111,7 @@ module.exports = function () {
 
     it('should open the result into the modal and set it fullscreen', function () {
       return this.app.client
-        .$('.v-dialog .container > div:last-child > div:nth-child(1)').click()
+        .$('.v-dialog .container > div:last-child > div:nth-child(1) > .entry').click()
         .waitUntil(async () => this.app.client.$('.info-container').isExisting(), 10000)
         .pause(1000)
         .saveScreenshot('test/screenshots/search_modal_info.png')
@@ -120,7 +122,7 @@ module.exports = function () {
         .waitUntilTextExists('.info-container', this.sakuraTrick.title.native)
         .getText('.score').should.eventually.equal(`${this.sakuraTrick.averageScore} / 100`)
         .getText('.users').should.eventually.equal(this.sakuraTrick.stats.scoreDistribution.reduce((acc, { amount }) => (acc + amount), 0) + ' votes')
-        .$('.v-image > div:nth-child(2)').getAttribute('style')
+        .$('.info-container .v-image > div:nth-child(2)').getAttribute('style')
         .should.eventually.include(this.sakuraTrick.coverImage.extraLarge || this.sakuraTrick.coverImage.large)
         .$$('.characters-container > *').should.eventually.have.length(this.sakuraTrick.characters.edges.length + 1)
         .$$('.staff-container > *').should.eventually.have.length(this.sakuraTrick.staff.edges.length)
@@ -145,7 +147,7 @@ module.exports = function () {
 
     it('should exit on escape key press', function () {
       return this.app.client
-        .$('input').hasFocus().should.eventually.be.true
+        .$(SEARCH_INPUT).hasFocus().should.eventually.be.true
         .keys([ 'Escape' ]).pause(750)
         .$('.v-dialog').isVisible().should.eventually.be.false
     })
