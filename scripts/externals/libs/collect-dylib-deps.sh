@@ -27,7 +27,12 @@ then
 
   set +x
   copy_deps /usr/local/lib/libmpv.1.dylib public/mpv
-  copy_deps bindings/build/Release/libtorrent-rasterbar.10.dylib public
+  
+  if [ -f bindings/build/Release/libtorrent-rasterbar.10.dylib ]
+  then
+    copy_deps bindings/build/Release/libtorrent-rasterbar.10.dylib public
+  fi
+
   set -x
 
   # See <https://github.com/Kagami/boram/issues/11>.
