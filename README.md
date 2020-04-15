@@ -30,7 +30,7 @@
   </a>
 </p>
 
-<p align="center"><img width="80%" src="https://imgur.com/OpSfhDn.png"/></p>
+<p align="center"><img width="80%" src="https://i.imgur.com/23jgsq5.png"/></p>
 
 # Features
 
