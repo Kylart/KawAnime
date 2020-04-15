@@ -39,5 +39,6 @@ bindings/build
 # External libs binaries
 public/*.dylib
 public/*.dll
+public/*.node
 public/mpv/*
 !public/mpv/.gitkeep
