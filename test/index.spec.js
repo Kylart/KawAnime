@@ -13,6 +13,10 @@
  *   - Webdriver.io: https://webdriver.io/docs/api/browser/waitUntil.html
  */
 
+describe('KawaBinds main test routine', function () {
+  require('./bindings')
+})
+
 describe('KawAnime main test routine', function () {
   this.timeout(30000)
 
