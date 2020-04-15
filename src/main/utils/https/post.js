@@ -7,6 +7,17 @@ import Cache from '../cache'
 const logger = new Logger('Http:Post')
 const cache = new Cache()
 
+/**
+ * Makes a POST request.
+ *
+ * @param {String} url Base URL endpoint
+ * @param {Object | String} data Data to send along. Can be a JSON string
+ * @param {[{ name: String, value: String }]} [params = []] List of parameter to use
+ * @param {import('http').OutgoingHttpHeaders} [headers = {}] Headers to send with the request
+ * @param {Boolean} [useCache = true] If you want the request response to be cached
+ *
+ * @returns {Promise<Object>}
+ */
 export default function (url, data, params = [], headers = {}, useCache = true) {
   return new Promise((resolve, reject) => {
     const _url = formUrl(url, params)
@@ -41,7 +52,13 @@ export default function (url, data, params = [], headers = {}, useCache = true) 
           return reject(new Error(`Request failed with code ${res.statusCode} - ${res.statusMessage}, ${response}`))
         }
 
-        const result = JSON.parse(response)
+        let result = response
+
+        try {
+          result = JSON.parse(response)
+        } catch (e) {}
+
+        // TODO: Handle redirections
 
         useCache && cache.set(cacheKey, result)
         resolve(result)

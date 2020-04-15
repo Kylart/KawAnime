@@ -7,6 +7,16 @@ import Cache from '../cache'
 const logger = new Logger('Http:Get')
 const cache = new Cache()
 
+/**
+ * Makes a GET request.
+ *
+ * @param {String} url Base URL endpoint
+ * @param {[{ name: String, value: String }]} [params = []] List of parameter to use
+ * @param {import('http').OutgoingHttpHeaders} [headers = {}] Headers to send with the request
+ * @param {Boolean} [useCache = true] If you want the request response to be cached
+ *
+ * @returns {Promise<Object>}
+ */
 export default function (url, params = [], headers = {}, useCache = true) {
   return new Promise((resolve, reject) => {
     const _url = formUrl(url, params)
@@ -27,12 +37,18 @@ export default function (url, params = [], headers = {}, useCache = true) {
 
       if (res.statusCode >= 400) return reject(new Error(`Request failed with code ${res.statusCode} - ${res.statusMessage}`))
 
+      // TODO: Handle redirection
+
       res.setEncoding('utf8')
 
       res.on('data', (chunk) => { data += chunk })
 
       res.once('end', () => {
-        const result = JSON.parse(data)
+        let result = data
+
+        try {
+          result = JSON.parse(data)
+        } catch (e) {}
 
         useCache && cache.set(_url, result)
         resolve(result)

@@ -5,6 +5,16 @@ import Logger from '../logger'
 
 const logger = new Logger('Http:Patch')
 
+/**
+ * Makes a PATCH request.
+ *
+ * @param {String} url Base URL endpoint
+ * @param {Object | String} data Data to send along. Can be a JSON string
+ * @param {[{ name: String, value: String }]} [params = []] List of parameter to use
+ * @param {import('http').OutgoingHttpHeaders} [headers = {}] Headers to send with the request
+ *
+ * @returns {Promise<Object>}
+ */
 export default function (url, data, params = [], headers = {}) {
   return new Promise((resolve, reject) => {
     const _url = formUrl(url, params)
@@ -27,11 +37,17 @@ export default function (url, data, params = [], headers = {}) {
       res.on('data', (chunk) => { response += chunk })
 
       res.on('end', () => {
-        const result = JSON.parse(response)
-
         if (res.statusCode >= 400) {
           return reject(new Error(`Request failed with code ${res.statusCode} - ${res.statusMessage}, ${response}`))
         }
+
+        let result = response
+
+        try {
+          result = JSON.parse(response)
+        } catch (e) {}
+
+        // TODO: Handle redirections
 
         resolve(result)
       })
