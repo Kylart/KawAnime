@@ -5,7 +5,8 @@
     permanent,
     app,
     clipped,
-    :mini-variant.sync='mini'
+    mini-variant-width='68',
+    :mini-variant.sync='mini',
     v-model='show'
   )
     v-list(dense, nav)
