@@ -1,3 +1,5 @@
+import sanitizeHtml from 'sanitize-html'
+
 function capitalize (word) {
   return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
 }
@@ -124,7 +126,7 @@ export function formatSeason (data) {
         nbEp: entry.episodes || '?',
         fromType: entry.source ? beautify(entry.source) : '',
         genres: entry.genres,
-        synopsis: entry.description ? entry.description.replace(/<br>/g, '') : 'No synopsis yet.',
+        synopsis: entry.description ? sanitizeHtml(entry.description, { allowedTags: ['b', 'i', 'em', 'strong', 'a'] }) : 'No synopsis yet.',
         score: entry.averageScore,
         scoreOutOf: 100,
         picture: entry.coverImage.extraLarge || entry.coverImage.large,

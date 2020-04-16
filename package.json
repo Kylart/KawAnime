@@ -43,6 +43,7 @@
     "pump": "^3.0.0",
     "range-parser": "^1.2.1",
     "rimraf": "^3.0.2",
+    "sanitize-html": "^1.23.0",
     "torrent-stream": "^1.2.0",
     "vue": "^2.6.11",
     "vue-router": "^3.1.6",

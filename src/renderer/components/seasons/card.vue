@@ -42,7 +42,10 @@
                   span {{ info.genres.join(' / ') }}
               v-divider
               v-flex(xs7)
-                .synopsis {{ info.synopsis }}
+                template(v-if="provider === 'anilist'")
+                  .synopsis(v-html='info.synopsis')
+                template(v-else)
+                  .synopsis {{ info.synopsis }}
               v-flex(xs1, d-flex, justify-space-between, align-end)
                 .producers.ellipsis By {{ info.producers.join(' and ') }}
                 .rating {{ info.score }} #[span / {{ info.scoreOutOf || 10 }}]
@@ -62,6 +65,12 @@ export default {
     name () {
       return this.info.title
     },
+    provider: {
+      get () {
+        return this.$store.state.config.config.infoProvider.seasons
+      },
+      set () {}
+    },
     lists: {
       get () {
         return this.$store.state.watchLists.listNames.filter(
@@ -71,7 +80,7 @@ export default {
       set () {}
     },
     pictureUrl () {
-      if (this.$store.state.config.config.infoProvider.seasons !== 'mal') return this.info.picture
+      if (this.provider !== 'mal') return this.info.picture
 
       const url = this.info.picture
       const sizeRegex = /\/r\/\d*x\d*/
