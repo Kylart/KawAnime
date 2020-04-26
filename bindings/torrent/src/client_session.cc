@@ -152,6 +152,7 @@ Napi::Value Client::GetClientInfo(const Napi::CallbackInfo& info) {
   double download_rate = 0.0;
   double upload_rate = 0.0;
   float progress = 0;
+  int peers = 0;
   size_t nb_torrents = torrents.size();
 
   for (auto const& torrent : torrents) {
@@ -160,12 +161,13 @@ Napi::Value Client::GetClientInfo(const Napi::CallbackInfo& info) {
     download_rate += status.download_rate;
     upload_rate += status.upload_rate;
     progress += status.progress;
+    peers += status.num_peers;
   }
 
   result.Set("downloadRate", download_rate);
   result.Set("uploadRate", upload_rate);
   result.Set("ratio", upload_rate / download_rate);
-  result.Set("peers", lt::find_metric_idx("peer.num_peers_connected"));
+  result.Set("peers", peers);
   result.Set("progress", progress / static_cast<float>(nb_torrents));
   result.Set("nbTorrents", nb_torrents);
 
