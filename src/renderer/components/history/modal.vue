@@ -6,13 +6,13 @@
     @keydown.esc='close()'
   )
     template(v-slot:activator='{ on }')
-      v-btn(color='secondary', dark, @click='refresh()', v-on='on')
+      v-btn(color='secondary', dark, @click='refresh', v-on='on')
         | History
     v-card
       v-card-title.headline History
       v-divider
       v-card-text
-        v-layout(row, wrap, justify-center)
+        v-row(justify='center')
           v-expansion-panels(popout, v-if='Object.keys(elems).length')
             v-expansion-panel.history-elem(
               ripple, lazy,
@@ -22,26 +22,25 @@
               v-expansion-panel-header
                 .day {{ item }}
               v-expansion-panel-content
-                v-card
-                  v-card-text.lighten-3.info-container
-                    v-layout(row, wrap)
-                      template(v-for='info in history[item]')
-                        v-flex.pl-1.time.entry(xs2, :class='isDelete(info.type)')
-                          | {{ info.time }}
-                        v-flex.type.entry(xs2, :class='isDelete(info.type)')
-                          | {{ info.type }}
-                        v-flex.ellipsis.text.entry(xs7, :class='isDelete(info.type)')
-                          | {{ info.text }}
-                        v-flex.entry(xs1, :class='isDelete(info.type)')
-                          v-icon.delete-entry(@click.stop='clearEntry(info, item)')
-                            | clear
-          v-flex.empty-history(xs4, v-else) No entry yet, go watch some anime ~
+                v-container.py-0
+                  v-row
+                    template(v-for='info in history[item]')
+                      v-col.pl-1.time.entry(cols='2', :class='isDelete(info.type)')
+                        | {{ info.time }}
+                      v-col.type.entry(cols='2', :class='isDelete(info.type)')
+                        | {{ info.type }}
+                      v-col.ellipsis.text.entry(cols='7', :class='isDelete(info.type)')
+                        | {{ info.text }}
+                      v-col.entry(cols='1', :class='isDelete(info.type)')
+                        v-icon.delete-entry(@click.stop='clearEntry(info, item)')
+                          | clear
+          v-col.empty-history(cols='4', v-else) No entry yet, go watch some anime ~
       v-divider
       v-card-actions(style='padding-right: 20px;')
         v-spacer
         v-btn.blue--text.darken-1(
           text,
-          @click="close()"
+          @click="close"
         ) Close
 </template>
 
@@ -160,9 +159,6 @@ export default {
 
   .delete
     colored($colors.delete.back, $colors.delete.border)
-
-  .info-container
-    background-color: $colors.dark
 
   .day
     position relative
