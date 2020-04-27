@@ -2,7 +2,7 @@ export default {
   setModal (state, data) {
     state.modal = data
   },
-  closeModal (state) {
-    state.modal.show = false
+  showPromptModal (state, bool) {
+    state.show = bool
   }
 }

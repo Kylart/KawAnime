@@ -1,103 +1,127 @@
 <template lang="pug">
-  v-card.background
+  v-card.downloader.background
     .left
     .right
 
-    v-container(fill-height)
-      v-layout.form(row, wrap, justify-center, align-center)
-        .input-container(
-          v-for='(input, i) in inputs',
-          :key='input.name'
-        )
-          v-text-field(
-            v-model='inputs[i].model',
-            :label='input.label',
-            :placeholder='input.placeholder',
-            :required='input.required',
-            :type='input.type',
-            min='0'
+    v-card-text
+      v-form.form(v-model='valid')
+        v-container
+          template(
+            v-for='(input, i) in inputs'
           )
-        .quality-container
-          v-radio-group.group-container(v-model='quality', row)
-            v-radio(
-              v-for='quality in qualities',
-              :key='quality',
-              :label='quality',
-              :value='quality',
-              color='orange'
-            )
+            v-row(justify='center')
+              v-col(cols='12', sm='8', md='7')
+                v-text-field(
+                  v-model='inputs[i].model',
+                  outlined,
+                  :id='input.ref',
+                  :ref='input.ref',
+                  :label='input.label',
+                  :placeholder='input.placeholder',
+                  :required='input.required',
+                  :type='input.type',
+                  :rules='input.rules',
+                  :hide-details='i === 2',
+                  min='0'
+                )
 
-    .button-container
-      .button
-        v-btn(block, :loading='searching', @click='download') Download
+          v-row(justify='center')
+            v-col(cols='12', sm='8')
+              v-radio-group.qualities(v-model='quality', row)
+                v-radio(
+                  v-for='quality in qualities',
+                  :key='quality',
+                  :label='quality',
+                  :value='quality',
+                  color='orange'
+                )
+
+          v-row(justify='center')
+            v-col(cols='12', sm='8', md='6', lg='4')
+              v-btn(
+                block,
+                color='primary',
+                :disabled='!valid',
+                :loading='searching',
+                @click='onSubmit'
+              ) Download
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex'
+
 export default {
   name: 'Downloader',
 
   mounted () {
-    // We initialize those variables from the store's config
-    ['quality', 'fansub', 'feed']
-      .forEach(
-        (_var) => this.$set(this, _var, this.$store.state.config.config[_var])
-      )
+    this.quality = this.config.quality
 
-    this.$ipc.on(this.$eventsList.download.success, () => {
-      this.$emit('downloaded')
+    this.$nextTick(() => {
+      this.$refs.name[0].focus()
     })
   },
 
-  data: () => ({
-    inputs: [{
-      placeholder: 'What are you looking for?',
-      label: 'Name',
-      model: '',
-      type: 'text',
-      required: true
-    }, {
-      placeholder: 'From when?',
-      label: 'Min episode',
-      model: '',
-      type: 'number',
-      required: false
-    }, {
-      placeholder: 'Until when?',
-      label: 'Max episode',
-      model: '',
-      type: 'number',
-      required: false
-    }],
-    quality: '',
-    fansub: '',
-    feed: '',
-    searching: false
-  }),
+  data () {
+    return {
+      valid: false,
+      searching: false,
+
+      quality: null,
+      inputs: [{
+        placeholder: 'What are you looking for?',
+        label: 'Name',
+        model: '',
+        type: 'text',
+        ref: 'name',
+        rules: [
+          (value) => (value && value.length > 1) || 'At least two characters are required.'
+        ],
+        required: true
+      }, {
+        placeholder: 'From when?',
+        label: 'Min episode',
+        model: '',
+        type: 'number',
+        ref: 'from',
+        required: false
+      }, {
+        placeholder: 'Until when?',
+        label: 'Max episode',
+        model: '',
+        type: 'number',
+        ref: 'until',
+        required: false
+      }]
+    }
+  },
 
   computed: {
-    qualities: {
-      get () {
-        return this.$store.state.config.qualities
-      },
-      set () {}
-    },
+    ...mapState('config', [
+      'qualities',
+      'config'
+    ]),
+
     form () {
       return {
         name: this.inputs[0].model,
         fromEp: this.inputs[1].model,
         untilEp: this.inputs[2].model,
         quality: this.quality,
-        fansub: this.fansub,
-        feed: this.feed
+        fansub: this.config.fansub,
+        feed: this.config.feed
       }
     }
   },
 
   methods: {
-    async download () {
+    ...mapActions('downloader', [
+      'download'
+    ]),
+
+    async onSubmit () {
       this.searching = true
 
-      await this.$store.dispatch('downloader/download', this.form)
+      await this.download(this.form)
 
       this.searching = false
     }
@@ -118,6 +142,7 @@ export default {
       z-index 10
       bottom 3%
       background-size contain
+      pointer-events none
 
     .left
       left 2%
@@ -130,27 +155,5 @@ export default {
       background-image url('../../assets/images/downloader-char-right.png')
 
   .form
-    padding-top 16px
     background-color rgba(0, 0, 0, 0.6)
-
-    .input-container
-      width 55%
-      padding 16px 8px
-
-    .quality-container
-      padding 16px 48px
-      width 80%
-      display flex
-      justify-content space-between
-
-      .group-container
-        width 100%
-
-  .button-container
-    display flex
-    justify-content center
-
-    .button
-      width 50%
-      padding 8px
 </style>

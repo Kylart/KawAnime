@@ -4,29 +4,30 @@ module.exports = function () {
       return this.app.client
         .$('.toolbar > div > *:nth-child(8)').click()
         .pause(500).saveScreenshot('test/screenshots/downloader_modal.png')
-        .getText('.button-container .button').should.eventually.equal('DOWNLOAD')
-        .isExisting('.input-container').should.eventually.be.true
-        .isExisting('.quality-container').should.eventually.be.true
-        .isExisting('.left').should.eventually.be.true
-        .isExisting('.right').should.eventually.be.true
+        .getText('.downloader button').should.eventually.equal('DOWNLOAD')
+        .isExisting('.downloader.background').should.eventually.be.true
+        .isExisting('.downloader .qualities').should.eventually.be.true
+        .isExisting('.downloader .left').should.eventually.be.true
+        .isExisting('.downloader .right').should.eventually.be.true
     })
 
     it('should fill in the form and show the magnet modal', function () {
       return this.app.client
-        .$('.input-container:nth-child(1) input').addValue('Sakura Trick')
+        .$('.downloader #name').hasFocus().should.eventually.be.true
+        .$('.downloader #name').addValue('Sakura Trick')
         .keys([ 'Tab' ])
-        .$('.input-container:nth-child(2) input').hasFocus().should.eventually.be.true
-        .$('.input-container:nth-child(2) input').addValue('4')
+        .$('.downloader #from').hasFocus().should.eventually.be.true
+        .$('.downloader #from').addValue('4')
         .keys([ 'Tab' ])
-        .$('.input-container:nth-child(3) input').hasFocus().should.eventually.be.true
-        .$('.input-container:nth-child(3) input').addValue('8')
+        .$('.downloader #until').hasFocus().should.eventually.be.true
+        .$('.downloader #until').addValue('8')
         .keys([ 'Tab', 'ArrowRight', 'ArrowLeft', 'ArrowLeft', 'ArrowRight', 'ArrowRight' ]) // Should select 1080p quality
-        .$('.quality-container div[role="radiogroup"] div:nth-child(4) input').hasFocus().should.eventually.be.true
+        .$('.qualities div[role="radiogroup"] div:nth-child(4) input').hasFocus().should.eventually.be.true
         .saveScreenshot('test/screenshots/downloader_modal_filled.png')
         .keys([ 'Tab', 'Enter' ])
         .waitUntil(() => this.app.client.$('#magnet-modal').isVisible(), 10000)
         .pause(500)
-        .isVisible('.quality-container').should.eventually.be.false
+        .isVisible('.qualities').should.eventually.be.false
         .isVisible('.left').should.eventually.be.false
         .isVisible('.right').should.eventually.be.false
         .pause(500)

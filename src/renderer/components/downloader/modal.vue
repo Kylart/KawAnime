@@ -7,7 +7,7 @@
             v-icon file_download
         span Quick download
 
-    layout(@downloaded='show = false')
+    layout
 </template>
 
 <script>
@@ -18,8 +18,11 @@ export default {
 
   components: { Layout },
 
-  data: () => ({
-    show: false
-  })
+  computed: {
+    show: {
+      get () { return this.$store.state.downloader.show },
+      set (bool) { this.$store.commit('downloader/showPromptModal', bool) }
+    }
+  }
 }
 </script>
