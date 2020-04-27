@@ -8,37 +8,34 @@
       height='200px'
     )
       transition-group(name='overlay-trans', mode='out-in')
-        v-container(
-          v-if='!overlay'
-          fill-height,
-          fluid,
-          pa-2,
+        v-container.fill-height(
+          v-if='!overlay',
           key='normal'
         )
-          v-layout.text(fill-height, column, justify-space-between)
-            v-flex.entry-title(xs2) {{ name }}
-            v-flex.text-center(v-if='!picture', xs2)
+          v-row.fill-height.flex-column.text(justify='space-between')
+            .pa-0.entry-title
+              .px-2 {{ name }}
+            .text-center(v-if='!picture')
               v-progress-circular(indeterminate)
-            v-flex.entry-ep(xs2, v-if='episodeLabel')
-              span {{ episodeLabel }}
+            .text-right.entry-ep
+              .pr-1 {{ episodeLabel }}
 
-        v-container.overlay(
+        v-container.fill-height.overlay(
           v-else
-          fill-height,
           fluid,
           pa-0,
           key='overlay'
         )
-          v-layout(fill-height, align-center row, wrap, ml-0)
-            v-flex.overlay-icon(@click='watch', xs4, fill-height)
+          v-row.ml-0.fill-height(align='center', no-gutters)
+            v-col.overlay-icon(@click='watch', cols='4')
               v-icon.large play_arrow
-            v-flex.pa-0.download-container(xs4, fill-height)
-              v-layout.ma-0(fill-height, column)
-                v-flex.overlay-icon(@click='download', xs6, fill-height)
+            v-col.pa-0.download-container(cols='4')
+              v-row.fill-height.ma-0.flex-column(align='center')
+                v-col.overlay-icon(@click='download')
                   v-icon.large file_download
-                v-flex.overlay-icon(@click='downloadAll', xs6, fill-height)
+                v-col.overlay-icon(@click='downloadAll')
                   v-icon.large cloud_download
-            v-flex.overlay-icon(@click='more', xs4, fill-height)
+            v-col.overlay-icon(@click='more', cols='4')
               v-icon.large more_horiz
 
     v-card-actions
@@ -212,6 +209,7 @@ export default {
     justify-content center
     align-items center
     transition all .25s
+    height 100%
     cursor pointer
 
     &:hover
@@ -232,15 +230,29 @@ export default {
     color white
 
   .entry-title
-    padding 2px 4px
-    background-color rgba(0, 0, 0, 0.4)
+    div
+      height 100%
+      line-height 2em
+      width 100%
+      display flex
+      align-items center
+      justify-content flex-start
+      background-color rgba(0, 0, 0, 0.5)
 
   .entry-ep
-    text-align right
+    height 20%
     font-size 16px
+    display flex
+    justify-content flex-end
 
-    span
-      padding 2px 4px
+    div
+      height 100%
+      min-width 25%
+      display flex
+      align-items center
+      justify-content flex-end
+      border-top-left-radius: 100px 200px;
+      border-bottom-left-radius: 100px 200px;
       background-color rgba(0, 0, 0, 0.4)
 
   .fansub

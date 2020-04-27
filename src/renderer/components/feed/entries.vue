@@ -2,11 +2,11 @@
   v-container(
     grid-list-lg, fluid, pt-2
   )
-    v-layout(row, wrap, justify-center)
-      v-flex(xs12)
-        v-layout(row, wrap, justify-space-between, align-center)
-          v-flex.time(xs12, sm4, md3, d-flex, justify-center) Updated {{ time }}
-          v-flex(xs12, sm8, md4)
+    v-row(justify='center', dense)
+      v-col(cols='12')
+        v-row(justify='space-between', align='center', no-gutters)
+          v-col.d-flex.justify-center.time(cols='12', sm='4', md='3') Updated {{ time }}
+          v-col(cols='12', sm='8', md='4')
             v-text-field(
               name='Search', ref='term',
               label='Looking for something?',
@@ -16,9 +16,9 @@
               :loading='isRefreshing',
               @keyup.enter='search'
             )
-          v-flex(xs12, md4)
-            v-layout(justify-space-around)
-              v-flex(xs3)
+          v-col(cols='12', md='4')
+            v-row(jutify='space-around', dense)
+              v-col(cols='3')
                 v-select(
                   label='Feed',
                   :items='feeds',
@@ -26,20 +26,20 @@
                   item-text='text',
                   item-value='value'
                 )
-              v-flex(xs6)
+              v-col(cols='6')
                 v-combobox(
                   label='Fansub',
                   :items='fansubs',
                   v-model='config.fansub'
                 )
-              v-flex(xs3)
+              v-col(cols='3')
                 v-select(
                   label='Quality',
                   :items='order(qualities)',
                   v-model='config.quality'
                 )
-      v-flex(
-        xs12, sm6, md3, lg3, xl2,
+      v-col(
+        cols='12', sm='6', md='3', lg='3', xl='2',
         v-for='(entry, i) in entries',
         :key='entry.name'
       )
