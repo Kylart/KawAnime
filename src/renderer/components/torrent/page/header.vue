@@ -1,7 +1,6 @@
 <template lang="pug">
-  v-flex(xs12)
-    v-layout(justify-end)
-      v-btn(@click='showDialog') Add Torrent
+  v-row.px-4(justify='end')
+    v-btn(@click='showDialog') Add Torrent
 </template>
 
 <script>

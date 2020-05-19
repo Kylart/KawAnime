@@ -44,7 +44,7 @@ export default {
       }, {
         title: 'Torrent',
         action: 'file_download',
-        href: '/torrenting'
+        href: '/torrent'
       },
       { divider: true },
       { header: 'Library' },

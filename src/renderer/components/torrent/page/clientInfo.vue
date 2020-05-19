@@ -1,42 +1,44 @@
 <template lang="pug">
-  v-flex(xs12, mb-2)
-    v-card.pt-0.pl-4.pr-4.pb-4
-      v-card-title.title-text.text-uppercase Overall information
+  v-container(fluid)
+    v-card
+      v-card-title Overall information
 
       v-divider
 
-      v-layout(
-        column,
-        align-start,
-        pt-6
-      )
+      v-card-text
+        .d-flex.flex-column.align-start
 
-        v-layout.speeds-container(justify-space-between)
-          template(v-for='speedName in speeds')
-            div.captions
-              caption.grey--text.text-uppercase {{ speedName.text }}
+          v-container(fluid)
+            v-row.speeds-container(justify='space-between')
+              template(v-for='speedName in speeds')
+                .captions
+                  caption.grey--text.text-uppercase {{ speedName.text }}
 
-              div
-                span.display-1.font-weight-black {{ currentSpeed[speedName.value].value }}
-                strong(v-if='currentSpeed[speedName.value]') {{ currentSpeed[speedName.value].unit }}
+                  div
+                    span.display-1 {{ currentSpeed[speedName.value].value }}
+                    strong(v-if='currentSpeed[speedName.value]') {{ currentSpeed[speedName.value].unit }}
 
-        .graph
-          v-sparkline(
-            height='75',
-            :key='graph.current',
-            :smooth='16',
-            :gradient='["#f72047", "#ffd200", "#1feaea"]',
-            :line-width='1',
-            :value='graph.values',
-            :fill='graph.fill',
-            auto-draw,
-            stroke-linecap='round'
-          )
+          v-container.px-8(fluid)
+            v-sparkline(
+              height='75',
+              :key='graph.current',
+              :smooth='16',
+              :gradient='["#f72047", "#ffd200", "#1feaea"]',
+              :line-width='1',
+              :value='graph.values',
+              :fill='graph.fill',
+              auto-draw,
+              stroke-linecap='round'
+            )
 </template>
 
 <script>
 export default {
   name: 'Torrent-Client',
+
+  props: [
+    'client'
+  ],
 
   data: () => ({
     speeds: [
@@ -55,17 +57,11 @@ export default {
   }),
 
   computed: {
-    client: {
-      get () {
-        return this.$store.state.torrents.client
-      },
-      set () {}
-    },
     currentSpeed () {
       return {
         download: this.formatBytes(this.client.downloadRate),
         upload: this.formatBytes(this.client.uploadRate),
-        ratio: { value: `${(this.client.ratio * 100).toFixed(2)}%`, unit: '' },
+        ratio: { value: `${((this.client.ratio || 0) * 100).toFixed(2)}%`, unit: '' },
         progress: { value: `${(this.client.progress * 100).toFixed(2)}%`, unit: '' },
         nbTorrents: { value: this.client.nbTorrents, unit: '' },
         peers: { value: this.client.peers, unit: '' }
@@ -89,10 +85,7 @@ export default {
     addGraphValue (client) {
       const { downloadRate: value } = client
 
-      if (+value) {
-        // this.graph.current = value
-        this.graph.values.push(value)
-      }
+      if (+value) this.graph.values.push(value)
     }
   },
 
@@ -111,17 +104,9 @@ export default {
     text-align center
     font-weight 500
 
-  .speeds-container
-    width 100%
-    padding 0 15%
-
   .captions
     display flex
     flex-direction column
     justify-content space-around
     align-items center
-
-  .graph
-    width 100%
-    padding 0 25%
 </style>

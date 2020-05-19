@@ -6,9 +6,9 @@ export default [
     name: 'feed',
     component: Releases
   }, {
-    path: '/torrenting',
-    name: 'torrenting',
-    component: () => import(/* webpackChunkName: "torrent" */ './torrenting.vue')
+    path: '/torrent',
+    name: 'torrent',
+    component: () => import(/* webpackChunkName: "torrent" */ './torrent.vue')
   }, {
     path: '/localPage',
     name: 'localPage',

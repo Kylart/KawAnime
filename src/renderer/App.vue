@@ -35,7 +35,7 @@ import Toolbar from '@/components/layout/toolbar.vue'
 import SystemBar from '@/components/layout/systemBar.vue'
 
 // Global comps
-import TorrentDialog from '@/components/torrents/dialog.vue'
+import TorrentDialog from '@/components/torrent/global/dialog.vue'
 import MagnetsModal from '@/components/magnets/modal.vue'
 import WatchListsModal from '@/components/localLists/modalForm.vue'
 import VideoModal from '@/components/video/modal.vue'

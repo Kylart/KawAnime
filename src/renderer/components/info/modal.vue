@@ -13,9 +13,9 @@
       )
         v-icon search
     v-card(v-if='!searching && !current')
-      v-container(grid-list-md)
-        v-layout(row, wrap, justify-center)
-          v-flex(xs6)
+      v-container
+        v-row(justify='center')
+          v-col(cols='6')
             v-text-field#info-search-input(
               ref='input',
               v-model='term',
@@ -28,9 +28,9 @@
 
         v-divider(v-show='results.length')
 
-        v-layout(row, wrap, justify-center, mt-2, v-if='results.length')
+        v-row.mt-2(jusitfy='center', v-if='results.length')
           template(v-for='entry in results')
-            v-flex(xs3, @click='getInfo(entry)')
+            v-col(col='6', @click='getInfo(entry)')
               v-card.entry.elevation-5(
                 ripple)
                 v-img(

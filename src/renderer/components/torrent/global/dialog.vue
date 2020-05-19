@@ -12,7 +12,7 @@
       v-divider
 
       v-card-text.pt-0
-        v-layout(row, wrap, justify-space-around, align-center)
+        v-row(justify='space-around', align='center')
           .grey--text.text-uppercase Download Path:
           v-tooltip(top)
             template(v-slot:activator='{ on }')
@@ -22,17 +22,17 @@
           v-btn(icon, text, large)
             v-icon(large, color='blue', @click='addEntry') add_circle
 
-        div.torrents-container
+        .torrents-container
           template(v-for='(entry, index) in torrents')
             template(v-if='entry.show')
-              v-layout(justify-space-between, align-center)
+              v-row(justify='space-between', align='center')
                 v-text-field(v-model='entry.torrent', @paste='handlePaste')
                 v-btn(icon)
                   v-icon(@click='removeEntry(index)') close
                 v-btn(icon)
                   v-icon(@click='playEntry(index)') play_circle_outline
             template(v-else)
-              v-layout.choice(justify-space-between, align-center)
+              v-row.choice(justify='space-between', align='center')
                 v-btn(@click='openDialog(index)') Open file
                 v-btn(@click='showEntry(index)') Enter magnet
 
