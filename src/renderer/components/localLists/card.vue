@@ -8,56 +8,67 @@
       span {{ entry.name }}
 
       template(v-slot:activator='{ on: tooltip }')
-        .card-container(v-on='tooltip')
-          v-img.img(
-            @click='handleClick',
-            :src='img',
-            :lazy-src='img',
-            :loading='!img',
-            contain,
-            position='left center'
-          )
+        v-container.pa-0.fill-height(fluid, v-on='tooltip')
+          .d-flex.justify-space-between.ma-0.pr-1.fill-height.card-container
 
-          .center-container(@click='handleClick')
-            .name-container.text.ellipsis {{ entry.name }}
+            //- Image
+            v-img.img(
+              @click='handleClick',
+              :src='img',
+              :lazy-src='img',
+              :loading='!img',
+              contain,
+              position='left center'
+            )
 
-            .progress
-              v-progress-linear(
-                :value='progress.value',
-                height='15'
-              )
-              span.text {{ progress.text }}
+            //- Entry information
+            .information.pa-2(@click='handleClick')
+              .name.ellipsis {{ entry.name }}
 
-            v-container
-              v-layout(justify-space-around)
-                template(v-for='action in actions')
-                  v-flex
-                    v-btn(
-                      small,
-                      :icon='!!action.icon',
-                      @click.stop='action.cb',
-                      v-show='action.show'
-                    ) {{ action.text }}
-                      template(v-show='action.icon')
-                        v-icon {{ action.icon }}
-
-          .menu
-            .checkbox(@click='handleClick')
-              v-checkbox(v-model='selected', color='success', disabled, hide-details, height='10')
-
-            v-menu(transition='slide-x-transition')
-              template(v-slot:activator='{ on: menu }')
-                v-btn.btn(v-on='menu', icon, large)
-                  v-icon(large, color='secondary') more_horiz
-              v-list
-                v-list-item(
-                  v-for='option in menus',
-                  :key='option.icon',
-                  @click='option.method'
+              .progress
+                v-progress-linear(
+                  :value='progress.value',
+                  height='15'
                 )
-                  v-list-item-avatar
-                    v-icon {{ option.icon }}
-                  v-list-item-title {{ option.text }}
+                .text {{ progress.text }}
+
+              v-container.py-0.actions
+                v-row(justify='space-around')
+                  template(v-for='action in actions')
+                    v-col
+                      v-btn(
+                        small,
+                        :icon='!!action.icon',
+                        @click.stop='action.cb',
+                        v-show='action.show'
+                      ) {{ action.text }}
+                        template(v-show='action.icon')
+                          v-icon {{ action.icon }}
+
+            //- Right side with checkbox and menu
+            .menu
+              v-checkbox.pl-2(
+                @click='handleClick',
+                v-model='selected',
+                color='success',
+                disabled,
+                hide-details,
+                height='10'
+              )
+
+              v-menu(transition='slide-x-transition')
+                template(v-slot:activator='{ on: menu }')
+                  v-btn.btn(v-on='menu', icon, large)
+                    v-icon(large, color='secondary') more_horiz
+                v-list
+                  v-list-item(
+                    v-for='option in menus',
+                    :key='option.icon',
+                    @click='option.method'
+                  )
+                    v-list-item-avatar
+                      v-icon {{ option.icon }}
+                    v-list-item-title {{ option.text }}
 </template>
 
 <script>
@@ -183,20 +194,37 @@ export default {
     background-position center center
 
   .card-container
-    display flex
-    justify-content space-between
-    align-items center
-    height 100%
+    width 100%
+    background-color rgba(30, 30, 30, 0.65)
 
-  .img
-    max-height 100%
-    max-width 30%
+    .img
+      max-height 100%
+      max-width 30%
+
+    .information
+      width 55%
+
+      .name, .progress, .actions
+        min-height 30%
+        display flex
+        align-items center
+
+      .name
+        line-height 22px
+        font-size 20px
+        letter-spacing 0.03em
+        font-weight 500
+
+      .progress
+        .text
+          padding 0 8px
+          min-width 30%
+          font-size 16px
+          white-space nowrap
 
   .menu
     padding 8px 0
-    height 100%
-    max-width 20%
-    min-width 5%
+    min-width 7%
 
     display flex
     flex-direction column
@@ -205,37 +233,4 @@ export default {
 
     .btn
       background-color rgba(30, 30, 30, 0.5)
-
-  .center-container
-    padding 15px 8px
-    height 100%
-    width 55%
-    display flex
-    flex-direction column
-    justify-content space-between
-    align-items center
-
-    .name-container
-      width 100%
-
-    .text
-      line-height 22px
-      font-size 20px
-      letter-spacing 0.03em
-      font-weight 500
-
-    .progress
-      width 100%
-      display flex
-      justify-content space-around
-      align-items center
-
-      .text
-        padding 0 8px
-        min-width 30%
-        font-size 16px
-        white-space nowrap
-
-  .card-container
-    background-color rgba(30, 30, 30, 0.65)
 </style>

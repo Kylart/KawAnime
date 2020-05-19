@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-container(fluid, grid-list-md, pa-1, pt-0)
+  v-container(fluid, pa-0)
     v-dialog(
       v-model='filter.show',
       width='60%',
@@ -16,9 +16,9 @@
 
         v-card-text
           v-container(grid-list-md)
-            v-layout(row, wrap, justify-center, align-center)
+            v-row(justify='center', align='center')
               template(v-for='form in filterForm')
-                v-flex(xs6)
+                v-col(cols='6')
                   component(:is='form.component', v-bind='form.props', v-model="filter.models[form.model]")
 
         v-divider
@@ -28,14 +28,14 @@
           v-btn(@click='applyFilters') Apply
           v-btn.blue--text(text, @click='filter.show = false') Cancel
 
-    v-layout(row, wrap, justify-space-between)
-      v-flex(xs12, sm6 md4, lg3)
-        v-layout(align-center)
-          v-flex(d-flex, justify-center)
+    v-row.px-4(justify='space-between')
+      v-col(cols='12', sm='6' md='4', lg='3')
+        v-row(align='center', justify='space-around')
+          .d-flex.justify-center
             v-btn(icon, @click="$emit('selectAll')")
               v-icon select_all
 
-          v-flex(d-flex, justify-center)
+          .d-flex.justify-center
             v-menu(open-on-hover, transition='slide-x-transition')
               template(v-slot:activator='{ on }')
                 v-btn(v-on='on') Move to
@@ -49,21 +49,21 @@
                     v-icon {{ list.icon }}
                   v-list-item-title {{ list.name }}
 
-          v-flex(d-flex, justify-center)
+          .d-flex.justify-center
             v-btn(icon, color='red', @click="$emit('deleteSelected')")
               v-icon delete
 
-          v-flex(d-flex, justify-center)
+          .d-flex.justify-center
             .label(xs12, sm3, md2, lg1) {{ nbElems }} {{ label }}
 
-      v-flex(xs12, sm4, md3, lg2)
-        v-layout(justify-space-around)
-          v-flex(d-flex, justify-center)
+      v-col(cols='12', sm='4', md='3', lg='2')
+        v-row(justify='space-around')
+          .d-flex.justify-center
             v-btn(@click='showFilterForm')
               v-icon filter_list
               span.pl-2 Filter
 
-          v-flex(d-flex, justify-center)
+          .d-flex.justify-center
             v-btn(@click='showForm')
               v-icon add
               span.pl-2 Add

@@ -1,9 +1,10 @@
 <template lang="pug">
-  div
+  v-container.pa-0.watch-list(fluid)
     v-tabs(
       v-model='active',
       background-color='secondary',
-      grow, icons-and-text
+      grow,
+      icons-and-text
     )
       v-tab(
         v-for='list in lists',
@@ -44,5 +45,7 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-
+  .watch-list {
+    overflow-x hidden
+  }
 </style>

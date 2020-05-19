@@ -2,15 +2,15 @@
   v-dialog(v-model='show', persistent, absolute, width='700', @keydown.esc='close()')
     v-card.pa-2
       v-card-title.grey--text.text-uppercase
-        v-layout(justify-center, align-center)
+        v-row(justify='center', align='center')
           div Setup list entry
 
       v-divider
 
       v-card-text
-        v-container(grid-list-md)
-          v-layout(align-center, justify-space-around)
-            v-flex
+        v-container
+          v-row(align='center', justify='space-around')
+            v-col
               v-text-field(
                 v-model='entry.name',
                 ref='name',
@@ -20,7 +20,7 @@
                 clearable
               )
 
-            v-flex
+            v-col
               v-text-field(
                 v-model='entry.progress',
                 type='number',
@@ -31,7 +31,7 @@
                 hide-details
               )
 
-            v-flex
+            v-col
               v-select(
                 v-model='entry.list',
                 :items='availableLists',
@@ -41,9 +41,9 @@
                 hide-details
               )
 
-        v-container(grid-list-md)
-          v-layout(align-center, justify-space-around)
-            v-flex
+        v-container
+          v-row(align='center', justify='space-around')
+            v-col
               v-combobox(
                 multiple, small-chips, deletable-chips,
                 label='Tags',
@@ -52,7 +52,7 @@
                 hide-details
               )
 
-            v-flex
+            v-col
               v-text-field(
                 v-model='entry.score',
                 type='number',
@@ -64,7 +64,7 @@
               )
 
         v-container
-          v-layout(justify-center, align-center)
+          v-row(justify='center', align='center')
             v-textarea(
               v-model='entry.note',
               label='Comment',

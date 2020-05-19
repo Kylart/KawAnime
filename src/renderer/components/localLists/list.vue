@@ -1,29 +1,28 @@
 <template lang="pug">
-  v-container(fluid, grid-list-md, pt-2)
-    v-layout(row, wrap)
-      v-flex(xs12)
-        list-form(
-          :name='name',
-          :elems='originalEntries',
-          :filtered-elems='entries',
-          @selectAll='selectAll',
-          @move='move',
-          @deleteSelected='deleteSelected',
-          @filter='filterEntries'
-        )
+  v-container.pt-0(fluid)
+    list-form(
+      :name='name',
+      :elems='originalEntries',
+      :filtered-elems='entries',
+      @selectAll='selectAll',
+      @move='move',
+      @deleteSelected='deleteSelected',
+      @filter='filterEntries'
+    )
 
-      transition-group(name='list', tag='div', class='trans layout row wrap')
-        template(v-for='entry in reduced')
-          v-flex(
-            :key='`${entry.key}-${entry.name}`',
-            xs12, sm6, md4, lg3, xl2
+    //- Simulates `v-row(dense)`
+    transition-group(name='list', tag='div', class='row row--dense')
+      template(v-for='entry in reduced')
+        v-col(
+          :key='`${entry.key}-${entry.name}`',
+          cols='12', sm='6', md='4', lg='3', xl='2'
+        )
+          card(
+            @clicked='select(entry)',
+            @delete='remove(entry)',
+            :entry='entry',
+            :selected='isSelected(entry)'
           )
-            card(
-              @clicked='select(entry)',
-              @delete='remove(entry)',
-              :entry='entry',
-              :selected='isSelected(entry)'
-            )
 </template>
 
 <script>
@@ -129,8 +128,3 @@ export default {
   }
 }
 </script>
-
-<style lang="stylus" scoped>
-  .trans
-    width 100%
-</style>
