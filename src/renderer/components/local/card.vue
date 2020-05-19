@@ -8,33 +8,31 @@
         @mouseleave='hideOverlay'
       )
       transition-group(name='overlay-trans')
-        v-container.overlay(
+        v-container.overlay.fill-height(
           v-if='hover',
           key='overlay',
-          fill-height,
           fluid,
           pa-0
         )
-          v-layout(fill-height, align-center row, wrap, ml-0)
-            v-flex.overlay-icon(@click='play', xs6, fill-height)
+
+          v-row.ml-0.fill-height(align='center', no-gutters)
+            v-col.overlay-icon(@click='play', cols='6')
               v-icon.large play_arrow
-            v-flex.pa-0.download-container(xs6, fill-height)
-              v-layout.ma-0(fill-height, column)
-                v-flex.overlay-icon(@click='more', xs6, fill-height)
+            v-col.pa-0.fill-height(cols='6')
+              v-row.fill-height.ma-0.flex-column(align='center', no-gutters)
+                v-col.overlay-icon(@click='more')
                   v-icon.large more_horiz
-                v-flex.overlay-icon.delete(@click='remove', xs6, fill-height)
+                v-col.overlay-icon.delete(@click='remove')
                   v-icon.large(color='#EF5350') delete
 
-        v-container(
+        v-container.fill-height(
           v-else,
-          key='main'
-          fill-height,
-          fluid,
+          key='main',
           pa-0
         )
-          v-layout.text(fill-height, column, justify-space-between)
+          v-row.fill-height.flex-column.text(justify='space-between')
             template(v-if='file.eps')
-              v-flex(xs2, pt-0)
+              v-col.pt-0
                 .entry-eps
                   div(
                     @mouseenter='setEpHover(true)',
@@ -48,25 +46,27 @@
                       dense
                     )
             template(v-else)
-              v-flex.entry-ep(xs2)
+              v-col.entry-ep
                 span {{ file.animeType2 }}
-            v-flex.text-center(v-if='!picture', xs2)
+            .text-center(v-if='!picture')
               v-progress-circular(indeterminate)
-            v-flex.entry-title(xs2)
+            .px-2.entry-title
               div {{ file.title }}
 
-    v-card-actions
-      v-layout.actions(justify-space-around)
-        template(v-for='list in lists')
-          v-tooltip(top)
-            template(v-slot:activator='{ on }')
-              v-btn(
-                v-on='on',
-                @click='_addTo(list.list)',
-                icon
-              )
-                v-icon(:color="_isIn(list.list) ? '#66BB6A' : 'default'") {{ list.icon }}
-            span {{ _isIn(list.list) ? 'Remove from' : 'Add to' }} {{ list.name }}
+    v-card-actions.py-1
+      template(v-for='list in lists')
+        v-spacer
+        v-tooltip(top)
+          template(v-slot:activator='{ on }')
+            v-btn(
+              v-on='on',
+              @click='_addTo(list.list)',
+              icon
+            )
+              v-icon(:color="_isIn(list.list) ? '#66BB6A' : 'default'") {{ list.icon }}
+          span {{ _isIn(list.list) ? 'Remove from' : 'Add to' }} {{ list.name }}
+
+      v-spacer
 </template>
 
 <script>
@@ -216,6 +216,7 @@ export default {
     justify-content center
     align-items center
     transition all .25s
+    height 100%
     cursor pointer
 
     &:hover
@@ -264,7 +265,4 @@ export default {
       padding 8px 12px
       border-radius 0 0 0 3px
       background-color rgba(0, 0, 0, 0.6)
-
-  .actions
-    padding 4px 16px !important
 </style>

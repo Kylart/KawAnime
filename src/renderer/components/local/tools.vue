@@ -1,7 +1,7 @@
 <template lang="pug">
-  v-layout(row, wrap, justify-space-between, align-center)
-    v-flex.left(xs12, sm6, md5, lg4, xl3, d-flex, justify-space-around, align-center)
-      v-layout(justify-space-around, align-center)
+  v-row(justify='space-between', align='center')
+    v-col.left(cols='12', sm='6', md='5', lg='4', xl='3', d-flex, justify='space-around', align='center')
+      v-row(justify='space-around', align='center')
         span.label(v-show='hasFiles') {{ nbElems }} {{ label }}
 
         history
@@ -23,7 +23,7 @@
           hint='Search for files recursively?'
         )
 
-    v-flex.right-buttons(xs12, sm5, md4)
+    v-col.right-buttons(cols='12', sm='5', md='4')
       v-btn(icon, large, @click='refresh', :loading='refreshing')
         v-icon(large) refresh
       v-btn(text, @click='changeDir') Change Dir

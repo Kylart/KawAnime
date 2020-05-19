@@ -6,7 +6,7 @@
         :current='current', :return-cb='resetCurrent'
       )
 
-      v-container(v-else, fluid, grid-list-lg, pt-1, pb-0, key='tools')
+      v-container.py-0(v-else, fluid, key='tools')
         tools(:nb-elems='files.length', :resetting='resetting', @reset='reset', ref='tools')
 
         transition(name='list')
@@ -15,11 +15,13 @@
         transition-group(
           v-if='files.length',
           ref='files',
-          :key='filesKey', name='list',
-          class='trans layout row wrap justify-space-around', tag='div'
+          :key='filesKey',
+          class='trans row row--dense justify-space-around',
+          name='list',
+          tag='div'
         )
           template(v-for='file in groupedFiles')
-            v-flex(xs12, sm6, md3, lg3, xl2, :key='`${file.title} - ${file.ep || ""}`')
+            v-col(cols='12', sm='6', md='3', lg='3', xl='2', :key='`${file.title} - ${file.ep || ""}`')
               card(:reset='resetting', :file='file', @more='setCurrent', @refresh='refresh')
 </template>
 
