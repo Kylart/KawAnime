@@ -1,9 +1,7 @@
 <template lang="pug">
-  v-container(fluid, pt-2, grid-list-md)
-    v-layout
-      v-spacer
-
-      v-flex(xs10, sm5, md3, xl1)
+  v-container
+    v-row(justify='end')
+      v-col(cols='10', sm='5', md='3', xl='1')
         v-select(
           label='Data source',
           v-model='feed',

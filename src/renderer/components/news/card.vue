@@ -1,9 +1,9 @@
 <template lang="pug">
   v-hover
     v-card.news(ripple, hover, slot-scope='{ hover }')
-      v-container(fluid, fill-height, pa-0)
-        v-layout(row, wrap)
-          v-flex(xs4, pt-0)
+      v-container.pa-0(fluid, fill-height)
+        v-row.fill-height(dense)
+          v-col.pa-0(cols='4')
             v-img(
               contain,
               position='left center'
@@ -21,14 +21,15 @@
                   div
                     v-btn(icon, large)
                       v-icon(large) open_in_new
-          v-flex(xs8)
-            v-container(fluid, fill-height, pa-0, pr-2, pb-2)
-              v-layout(column)
-                v-flex.entry-title(xs1) {{ info.title }}
+
+          v-col.pa-0(cols='8')
+            v-container.pa-0.pr-2.pb-2(fill-height)
+              .d-block.fill-height
+                .py-2.entry-title {{ info.title }}
+
                 v-divider
 
-                v-flex.entry-text(xs11, pt-2)
-                  div {{ info.text }}
+                .mx-2.my-auto.entry-text {{ info.text }} {{ info.text }}
 </template>
 
 <script>
@@ -85,11 +86,12 @@ export default {
       text-align center
       font-size 16px
       line-height 20px
+      min-height 12%
 
     .entry-text
       text-align justify
       font-size 13px
-      max-height 100%
+      max-height 75%
       overflow-y auto
 
       div

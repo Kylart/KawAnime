@@ -4,18 +4,20 @@
 
     transition(name='fade', mode='out-in')
       v-container(
-        fluid, fill-height,
+        fluid,
+        fill-height,
         v-if='isRefreshing || !entries.length', key='loading'
       )
         loader
 
       v-container(
-        fluid, grid-list-md,
-        v-else, key='news'
+        v-else,
+        key='news',
+        fluid,
       )
-        v-layout(row, wrap)
+        v-row(dense)
           template(v-for='entry in reduced')
-            v-flex(xs12, md6, lg4, xl3)
+            v-col(cols='12', md='6', lg='4', xl='3')
               card(:info='entry')
 </template>
 
