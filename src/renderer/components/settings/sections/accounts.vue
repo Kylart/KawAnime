@@ -10,12 +10,14 @@
     template(v-for='website in websites')
       v-card.elevation-12.mb-3
         v-card-title.section-title {{ website.title }}
+
         v-divider
+
         v-card-text
-          v-container(grid-list-lg, pa-0)
-            v-layout(justify-space-around, align-center, pr-2, pl-2)
+          v-container.pa-0
+            v-row.px-2(justify='space-around', align='center')
               template(v-for='input in getInputs(website.service)')
-                v-flex
+                v-col
                   template(v-if="input.value === 'password'")
                     v-text-field(
                       clearable,
@@ -32,7 +34,7 @@
                       clearable
                     )
 
-            v-layout(justify-end, align-center, pr-2)
+            v-row.pr-2(justify='end', align='center')
               v-btn(text, @click='updateCreds(website)')
                 v-icon save
                 .pl-2 Save
@@ -51,9 +53,11 @@
                   hint='Enable auto tracking?'
                   v-model='autoTracking[website.service]'
                 )
+
         v-card-actions
           v-spacer
-          v-layout(column, align-end)
+
+          div
             .conditions If you only need to see you watch lists, only setup your username
             .conditions To remove an account, remove the username and press Update
 </template>

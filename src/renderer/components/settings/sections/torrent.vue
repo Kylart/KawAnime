@@ -7,21 +7,23 @@
       v-card-title.section-title Download settings
       v-divider
       v-card-text
-        v-container(grid-list-lg, pa-0)
-          v-layout(row, wrap, justify-center, align-center)
-            v-flex(xs12, sm4, md2)
+        v-row.pa-0
+          v-row(justify='center', align='center')
+            v-col(cols='12', sm='4', md='2')
               v-btn(text, @click='openDialog') Change Dir
-            v-flex(xs12, sm8, md8)
+            v-col(cols='12', sm='8', md='8')
               .path.ellipsis.pl-2 {{ path }}
-            v-flex(xs12, sm6, md4)
+            v-col(cols='12', sm='6', md='4')
               v-btn(:disabled='isDefault', :loading='defaultLoading', @click='setDefault') {{ defaultLabel }}
 
     v-card.elevation-12
       v-card-title.section-title Streaming settings
+
       v-divider
+
       v-card-text
-        v-container(grid-list-lg, pa-0)
-          v-layout(justify-space-around, align-center)
+        v-container.pa-0
+          v-row(justify='space-around', align='center')
             v-btn(text, @click="openDialog('streaming')") Change Dir
             .path.ellipsis.pl-2 {{ streamingPath }}
             v-tooltip(top)
@@ -34,6 +36,7 @@
                 v-btn(icon, v-on='on', @click='resetToTmp')
                   v-icon(large) refresh
               span Reset to temporary folder
+
       v-card-actions
         v-spacer
         v-layout(column, align-end)

@@ -5,8 +5,8 @@
     v-divider
     v-card-text
       v-container(grid-list-lg, pa-0)
-        v-layout(row, wrap, justify-center)
-          v-flex(xs12, sm6, md4)
+        v-row(justify='center')
+          v-col(cols='12', sm='6', md='4')
             v-select(
               label='Feed',
               :items='feeds',
@@ -16,7 +16,7 @@
               persistent-hint,
               hint='What torrent feed should be used?'
             )
-          v-flex(xs12, sm6, md4)
+          v-col(cols='12', sm='6', md='4')
             v-combobox(
               label='Fansub',
               :items='fansubs',
@@ -24,7 +24,7 @@
               persistent-hint,
               hint='What fansub do you want to check first?'
             )
-          v-flex(xs12, sm6, md4)
+          v-col(cols='12', sm='6', md='4')
             v-select(
               label='Quality',
               :items='order(qualities)',
@@ -32,9 +32,10 @@
               persistent-hint,
               hint='What quality should the files have?'
             )
+
     v-card-actions.pr-3.pl-3
       v-spacer
-      span.conditions * All changes will be applied after restart
+      .conditions * All changes will be applied after restart
 </template>
 
 <script>

@@ -3,9 +3,9 @@
     v-card-title.section-title Information providers configuration
     v-divider
     v-card-text
-      v-container(grid-list-lg, pa-0, pb-2)
-        v-layout(row, wrap, justify-space-around, align-baseline)
-          v-flex(xs12, sm6, md4, lg3, xl2)
+      v-container.pa-0.pb-2
+        v-row(justify='space-around', align='baseline')
+          v-col(cols='12', sm='6', md='4', lg='3', xl='2')
             v-select(
               label='Search',
               :items='without(excludes.search)',
@@ -13,7 +13,7 @@
               persistent-hint,
               hint='What search engine is the best for you?.'
             )
-          v-flex(xs12, sm6, md4, lg3)
+          v-col(cols='12', sm='6', md='4', lg='3')
             v-select(
               label='Information',
               :items='without(excludes.info)',
@@ -21,7 +21,7 @@
               persistent-hint,
               hint='Where does the core anime information should be fetched.'
             )
-          v-flex(xs12, sm6, md4, lg3)
+          v-col(cols='12', sm='6', md='4', lg='3')
             v-select(
               label='Episodes',
               :items='without(excludes.episodes)',
@@ -29,7 +29,7 @@
               persistent-hint,
               hint='Where the episodes information (names, date,...) come from.'
             )
-          v-flex(xs12, sm6, md4, lg3)
+          v-col(cols='12', sm='6', md='4', lg='3')
             v-select(
               label='Seasonal information',
               :items='without(excludes.seasons)',
@@ -37,7 +37,7 @@
               persistent-hint,
               hint='Which one gives the best seasonal chart?'
             )
-          v-flex(xs12, sm6, md4, lg3)
+          v-col(cols='12', sm='6', md='4', lg='3')
             v-select(
               label='News',
               :items='without(excludes.news)',

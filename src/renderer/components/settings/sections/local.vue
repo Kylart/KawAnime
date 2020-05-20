@@ -5,27 +5,28 @@
     v-divider
     v-card-text
       v-container(grid-list-lg, pa-0)
-        v-layout(row, wrap, justify-center, align-center)
-          v-flex(xs12, sm4, md2)
+        v-row(justify='center', align='center')
+          v-col(cols='12', sm='4', md='2')
             v-btn(text, @click='openDialog') Change Dir
-          v-flex(xs12, sm8, md6)
+          v-col(cols='12', sm='8', md='6')
             .path.ellipsis.pl-2 {{ path }}
-          v-flex(xs12, md4, d-flex, align-center, justify-space-around)
-            v-switch.mt-0(
-              v-model='inside',
-              color='primary',
-              :label="inside ? 'Inside' : 'Outside'"
-              persistent-hint,
-              hint='Play in KawAnime?'
-            )
+          v-col(cols='12', md='4')
+            .d-flex.align-center.justify-space-around
+              v-switch.mt-0(
+                v-model='inside',
+                color='primary',
+                :label="inside ? 'Inside' : 'Outside'"
+                persistent-hint,
+                hint='Play in KawAnime?'
+              )
 
-            v-switch.mt-0(
-              v-model='recursiveSearch',
-              color='primary',
-              :label="recursiveSearch ? 'Recursive' : 'Folder only'"
-              persistent-hint,
-              hint='Search for files recursively?'
-            )
+              v-switch.mt-0(
+                v-model='recursiveSearch',
+                color='primary',
+                :label="recursiveSearch ? 'Recursive' : 'Folder only'"
+                persistent-hint,
+                hint='Search for files recursively?'
+              )
 </template>
 
 <script>

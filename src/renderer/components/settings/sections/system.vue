@@ -4,9 +4,9 @@
     v-card-title.section-title System configuration
     v-divider
     v-card-text
-      v-container(grid-list-lg, pa-0, pb-2)
-        v-layout(row, wrap, justify-space-around, align-center)
-          v-flex(xs12, sm3)
+      v-container.pa-0.pb-2
+        v-row(justify='space-around', align='center')
+          v-col(cols='12', sm='3')
             v-switch.mt-0(
               v-model='tray',
               color='primary',
@@ -14,7 +14,7 @@
               persistent-hint,
               hint='*Should KawAnime be in your tray?'
             )
-          v-flex(xs12, sm3)
+          v-col(cols='12', sm='3')
             v-switch.mt-0(
               v-model='autoStart',
               color='primary',
@@ -22,7 +22,7 @@
               persistent-hint,
               hint='*Should KawAnime start on boot?'
             )
-          v-flex(xs12, sm3)
+          v-col(cols='12', sm='3')
             v-switch.mt-0(
               v-model='darkTheme',
               color='primary',
@@ -30,7 +30,7 @@
               persistent-hint,
               hint='Theme to apply'
             )
-          v-flex(xs12, sm3)
+          v-col(cols='12', sm='3')
             v-switch.mt-0(
               v-model='analytics',
               color='primary',
@@ -39,9 +39,9 @@
               hint='Allows the app to send events to our server (mainly to know how many users we have)'
             )
 
-      v-container(grid-list-lg, pa-0, mt-6)
-        v-layout(row, wrap, justify-space-around, align-center)
-          v-flex(xs12, sm6, md3)
+      v-container.pa-0.mt-6
+        v-row(justify='space-around', align='center')
+          v-col(cols='12', sm='6', md='3')
               v-text-field(
                 label='Window\'s width',
                 v-model='width',
@@ -50,7 +50,7 @@
                 persistent-hint,
                 hint='How wide the window is.'
               )
-          v-flex(xs12, sm6, md3)
+          v-col(cols='12', sm='6', md='3')
             v-text-field(
               label='Window\'s height',
               v-model='height',
@@ -60,9 +60,9 @@
               hint='How high the window is.'
             )
 
-      v-container(grid-list-lg, pa-0, mt-2)
-        v-layout(row, wrap, justify-space-around, align-center)
-          v-flex(xs12, sm4, md4)
+      v-container.pa-0.mt-2
+        v-layout(justify='space-around', align='center')
+          v-col(cols='12', sm='4', md='4')
               v-text-field(
                 label='Window\'s x position',
                 v-model='windowX',
@@ -72,7 +72,7 @@
                 persistent-hint,
                 hint='Distance (in px) from the left of the screen.'
               )
-          v-flex(xs12, sm4, md4)
+          v-col(cols='12', sm='4', md='4')
             v-text-field(
               label='Window\'s y position',
               v-model='windowY',
@@ -82,7 +82,7 @@
               persistent-hint,
               hint='Distance (in px) from the top of the screen.'
             )
-          v-flex(xs12, sm4, md2)
+          v-col(xs12, sm='4', md='2')
             v-switch.mt-0(
               v-model='center',
               color='primary',
@@ -90,9 +90,10 @@
               persistent-hint,
               hint='Toggle to center.'
             )
+
     v-card-actions.pr-3.pl-3
       v-spacer
-      span.conditions * Changes will be applied after restart
+      .conditions * Changes will be applied after restart
 </template>
 
 <script>

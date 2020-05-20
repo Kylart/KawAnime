@@ -3,9 +3,9 @@
     v-card-title.section-title Video configuration
     v-divider
     v-card-text
-      v-container(grid-list-lg, pa-0, pb-2)
-        v-layout(row, wrap, justify-space-around, align-baseline)
-          v-flex(xs12, sm6, md3)
+      v-container.pa-0.pb-2
+        v-row(justify='space-around', align-baseline)
+          v-col(cols='12', sm='6', md='3')
             v-switch.mt-0(
               v-model='autoPlay',
               color='primary',
@@ -13,7 +13,7 @@
               persistent-hint,
               hint='Should the video play ASAP?'
             )
-          v-flex(xs12, sm6, md3)
+          v-col(cols='12', sm='6', md='3')
             v-switch.mt-0(
               v-model='fullscreen',
               color='primary',
@@ -21,7 +21,7 @@
               persistent-hint,
               hint='Should the video start on fullscreen?'
             )
-          v-flex(xs12, sm6, md3)
+          v-col(cols='12', sm='6', md='3')
             v-select(
               label='Subtitle language',
               :items='subtitlesLanguages',
@@ -29,7 +29,7 @@
               persistent-hint,
               hint='The subtitles language the player should try to load.'
             )
-          v-flex(xs12, sm6, md3)
+          v-col(cols='12', sm='6', md='3')
             v-select(
               label='Quality',
               :items='order(qualities)',

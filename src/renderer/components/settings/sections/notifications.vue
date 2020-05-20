@@ -4,9 +4,9 @@
     v-card-title.section-title Notifications configuration
     v-divider
     v-card-text
-      v-container(grid-list-lg, pa-0)
-        v-layout(row, wrap, justify-center, align-center)
-          v-flex(xs12, sm8, md6, lg4)
+      v-container.pa-0
+        v-row(justify='center', align='center')
+          v-col(cols='12', sm='8', md='6', lg='4')
             v-select(
               label='Notification sound',
               :items='sounds',
@@ -14,7 +14,7 @@
               persistent-hint,
               hint='What sound should be used to notify you?'
             )
-          v-flex(xs9, sm10, md4)
+          v-col(cols='9', sm='10', md='4')
             v-slider(
               v-model='volume',
               append-icon='volume_up',
@@ -22,7 +22,7 @@
               thumb-label,
               hide-details
             )
-          v-flex(xs3, sm2)
+          v-col(cols='3', sm='2')
             v-btn(icon, large, @click='play')
               v-icon(large) play_circle_outline
 </template>
