@@ -26,13 +26,14 @@
       v-tab-item(v-for='season in tabs', :key='season')
         transition(name='fade', mode='out-in')
           v-container(
-            key='season', v-if='!refreshing',
-            fluid, grid-list-md, pt-0
+            v-if='!refreshing',
+            key='season',
+            fluid
           )
-            v-layout(justify-space-between, align-center, pa-6)
-              .label {{ entries.length }} {{ label }}
+            v-row.px-3(justify='space-between', align='center')
+              .title.font-weight-light {{ entries.length }} {{ label }}
 
-              .filters-container
+              .d-flex.align-center.justify-space-between
                 v-text-field(
                   label='Search'
                   v-model='term',
@@ -43,7 +44,7 @@
                   v-icon filter_list
                   span.pl-2 Filter
 
-            v-layout(row, wrap)
+            v-row(justify='center', dense)
               template(v-for='entry in reduced')
                 card(:info='entry')
 
@@ -55,6 +56,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 import Card from '@/components/seasons/card.vue'
 import SeasonForm from '@/components/seasons/form.vue'
 import Loader from '@/components/seasons/loader.vue'
@@ -73,11 +76,15 @@ export default {
 
   data: () => ({
     active: 0,
+    term: '',
+
+    // Reduced mixin
     sup: 8,
     initSup: 8,
-    term: '',
+
     filter: {
       show: false,
+      // Filter mixin
       form: {
         list: [],
         score: null,
@@ -90,17 +97,13 @@ export default {
   }),
 
   computed: {
-    seasons () {
-      return this.$store.state.seasons.seasons
-    },
+    ...mapState('seasons', {
+      seasons: 'seasons',
+      refreshing: 'isRefreshing'
+    }),
+
     tabs () {
       return Object.keys(this.seasons).sort((a, b) => a.length - b.length)
-    },
-    refreshing: {
-      get () {
-        return this.$store.state.seasons.isRefreshing
-      },
-      set () {}
     },
     originalEntries () {
       const tab = this.tabs[this.active]
@@ -137,17 +140,3 @@ export default {
   }
 }
 </script>
-
-<style lang="stylus" scoped>
-  .filters-container
-    display flex
-    justify-content space-between
-    align-items center
-    min-width 30%
-
-  .label
-    font-size 18px
-    letter-spacing 0.05em
-    font-weight 300
-    padding 0 8px
-</style>

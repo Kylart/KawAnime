@@ -1,9 +1,9 @@
 <template lang="pug">
-  v-flex.entry(xs12, sm6, lg4)
+  v-col.entry(cols='12', sm='6', lg='4')
     v-hover
-      v-card(ripple, slot-scope='{ hover }')
-        v-layout(row, wrap)
-          v-flex.pt-0.pb-0(xs4)
+      v-card(slot-scope='{ hover }')
+        v-row
+          v-col.py-0(cols='4')
             v-img(
               :src='pictureUrl'
               :lazy-src='pictureUrl',
@@ -26,32 +26,49 @@
                         )
                           v-icon {{ list.icon }}
                       span {{ _isIn(list.list) ? 'Remove from' : 'Add to' }} {{ list.name }}
-          v-flex.pa-2.pr-3(xs8)
-            v-layout(row, wrap, column)
-              v-flex(xs2, d-flex, justify-space-between)
-                v-tooltip(top)
-                  template(v-slot:activator='{ on }')
-                    span.entry-title.ellipsis(v-on='on') {{ info.title }}
-                  span {{ info.title }}
-                .nb-ep.ellipsis {{ episodeLabel }}
-              v-flex(xs2, d-flex, justify-space-between)
-                .source.ellipsis {{ info.fromType }}
-                v-tooltip(top)
-                  template(v-slot:activator='{ on }')
-                    span.genres.ellipsis(v-on='on') {{ info.genres.join(' / ') }}
-                  span {{ info.genres.join(' / ') }}
+
+          v-col.py-0(cols='8')
+            v-card(flat)
+              v-card-title.py-2
+                  v-tooltip(top)
+                    template(v-slot:activator='{ on }')
+                      span.entry-title.ellipsis(v-on='on') {{ info.title }}
+                    span {{ info.title }}
+
+                  v-spacer
+
+                  .nb-ep.ellipsis {{ episodeLabel }}
+
+                  .source.ellipsis {{ info.fromType }}
+
+                  v-spacer
+
+                  v-tooltip(top)
+                    template(v-slot:activator='{ on }')
+                      span.genres.ellipsis(v-on='on') {{ info.genres.join(' / ') }}
+                    span {{ info.genres.join(' / ') }}
+
               v-divider
-              v-flex(xs7)
+
+              v-card-text.py-2.synopsis
                 template(v-if="provider === 'anilist'")
-                  .synopsis(v-html='info.synopsis')
+                  div(v-html='info.synopsis')
                 template(v-else)
-                  .synopsis {{ info.synopsis }}
-              v-flex(xs1, d-flex, justify-space-between, align-end)
+                  div {{ info.synopsis }}
+
+              v-divider
+
+              v-card-actions
                 .producers.ellipsis By {{ info.producers.join(' and ') }}
+
+                v-spacer
+
                 .rating {{ info.score }} #[span / {{ info.scoreOutOf || 10 }}]
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 import Status from '@/mixins/lists/status.js'
 
 export default {
@@ -62,22 +79,24 @@ export default {
   props: ['info'],
 
   computed: {
+    ...mapState('config', [
+      'config'
+    ]),
+    ...mapState('watchLists', [
+      'listNames'
+    ]),
+
+    provider () {
+      return this.config.infoProvider.seasons
+    },
+    lists () {
+      return this.listNames.filter(
+        ({ list }) => ['watchList', 'watching', 'seen'].includes(list)
+      )
+    },
+
     name () {
       return this.info.title
-    },
-    provider: {
-      get () {
-        return this.$store.state.config.config.infoProvider.seasons
-      },
-      set () {}
-    },
-    lists: {
-      get () {
-        return this.$store.state.watchLists.listNames.filter(
-          ({ list }) => ['watchList', 'watching', 'seen'].includes(list)
-        )
-      },
-      set () {}
     },
     pictureUrl () {
       if (this.provider !== 'mal') return this.info.picture

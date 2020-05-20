@@ -1,7 +1,7 @@
 <template lang="pug">
   v-container(grid-list-md)
-    v-layout(justify-space-around, align-center)
-      v-flex(xs12, sm3, offset-sm1)
+    v-row(justify='space-around', align='center')
+      v-col(xs='12', sm='3', offset-sm='1')
         v-select(
           label='Season',
           :items='seasons',
@@ -9,7 +9,7 @@
           item-text='name',
           item-value='value'
         )
-      v-flex(xs12, sm3)
+      v-col(xs='12', sm='3')
         v-text-field(
           label='Year'
           type='number',
@@ -17,7 +17,7 @@
           min='1917',
           :max='(new Date()).getFullYear() + 1'
         )
-      v-flex(xs12, sm2)
+      v-col(xs='12', sm='2')
         v-btn(block, @click='refresh') Refresh
 </template>
 

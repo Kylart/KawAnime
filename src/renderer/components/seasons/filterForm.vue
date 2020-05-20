@@ -14,10 +14,10 @@
       v-divider
 
       v-card-text
-        v-container(grid-list-md)
-          v-layout(row, wrap, justify-center, align-center)
+        v-container
+          v-row(dense, justify='center', align='center')
             template(v-for='form in filterForm')
-              v-flex(xs6)
+              v-col(cols='6')
                 component(:is='form.component', v-bind='form.props', v-model="filter.models[form.model]")
 
       v-divider
@@ -105,6 +105,7 @@ export default {
 
       return filters
     },
+
     filterForm () {
       return [{
         component: 'v-autocomplete',
