@@ -5,12 +5,14 @@
       v-btn(icon, @click='close')
         v-icon close
 
-    v-layout
-      v-flex.pa-3(xs3)
-        drawer(@routeUpdate='setRoute', :indexKey='route')
-      v-flex.pa-5(xs9)
-        v-expand-transition(mode='out-in')
-          component(:is='currentSectionComponent', :key='currentSectionComponent.name')
+    v-card-text
+      v-container(fluid)
+        v-row
+          v-col.pa-3(cols='3')
+            drawer(@routeUpdate='setRoute', :indexKey='route')
+          v-col.pa-5(cols='9')
+            v-expand-transition(mode='out-in')
+              component(:is='currentSectionComponent', :key='currentSectionComponent.name')
 </template>
 
 <script>

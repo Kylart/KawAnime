@@ -39,7 +39,7 @@
 
       v-card-actions
         v-spacer
-        v-layout(column, align-end)
+        div
           .conditions When streaming, the file is temporarely kept on your computer
           .conditions You can keep those if you choose another folder that the temporary one
 </template>

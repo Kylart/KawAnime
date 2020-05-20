@@ -61,7 +61,7 @@
             )
 
       v-container.pa-0.mt-2
-        v-layout(justify='space-around', align='center')
+        v-row(justify='space-around', align='center')
           v-col(cols='12', sm='4', md='4')
               v-text-field(
                 label='Window\'s x position',
