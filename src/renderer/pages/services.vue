@@ -2,7 +2,7 @@
   v-container(fluid, pt-0)
     transition(name='fade', mode='out-in')
       template(v-if='hasCreds || hasList')
-        v-layout(column, key='list')
+        .d-flex.flex-column(key='list')
           tools(
             :provider='provider',
             :hasTags='hasTags',

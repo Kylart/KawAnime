@@ -22,11 +22,9 @@
               contain
             )
               template(v-slot:placeholder)
-                v-layout(
-                  fill-height,
-                  align-center,
-                  justify-center,
-                  ma-0
+                v-row.fill-height.ma-0(
+                  align='center',
+                  justify='center'
                 )
                   v-progress-circular(indeterminate)
           td.entry-title {{ item.title }}
@@ -39,7 +37,7 @@
                 .text-xs-right.normal-text.ellipsis(v-on='on') {{ item[hasTags ? 'tags' : 'note'] }}
               span {{ item[hasTags ? 'tags' : 'note'] }}
           td
-            v-layout(column, align-center, justify-center)
+            .d-flex.flex-column.justify-center.align-center
               span.pb-1 {{ item.progress }} / {{ item.nbEp || '??' }}
               v-progress-linear.ma-0(:value='(item.progress / item.nbEp) * 100', :max='item.nbEp')
           template(v-if='isConnected')

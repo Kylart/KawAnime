@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-dialog(v-model='show', persistent, absolute, max-width='800', @keydown.esc='close()')
+  v-dialog(v-model='show', persistent, absolute, max-width='800', @keydown.esc='close')
     v-card.pa-2
       v-card-title.entry-title.grey--text
         .text-uppercase(xs9, offset-xs1) {{ addOrEdit }} a list entry
@@ -12,8 +12,8 @@
 
       v-card-text
         v-container(grid-list-md, pb-0, pt-0)
-          v-layout(row, wrap, justify-space-around)
-            v-flex(xs4)
+          v-row(justify='space-around')
+            v-col(cols='4')
               v-select(
                 label='Status'
                 :items='status',
@@ -23,7 +23,7 @@
                 item-value='value',
                 item-text='text'
               )
-            v-flex(xs4)
+            v-col(cols='4')
               v-text-field(
                 type='number',
                 min='0',
@@ -33,14 +33,14 @@
                 persistent-hint,
                 hint='How many episode have you watched?'
               )
-            v-flex(xs2)
+            v-col(cols='2')
               v-switch(
                 label='Private?',
                 v-model='form.private',
                 color='primary'
               )
             template(v-for='i in 2')
-              v-flex(xs3)
+              v-col(cols='3')
                 v-menu(
                   ref='pickers',
                   v-model='datePickers[i - 1]',
@@ -64,7 +64,7 @@
                     @input='datePickers[i - 1] = false',
                     scrollable
                   )
-            v-flex(xs3)
+            v-col(cols='3')
               v-text-field(
                 type='number',
                 label='Score',
@@ -76,7 +76,7 @@
                 item-value='value',
                 item-text='text'
               )
-            v-flex(xs3)
+            v-col(cols='3')
               v-text-field(
                 type='number',
                 label='Time rewatched',
@@ -84,7 +84,7 @@
                 persistent-hint,
                 v-model='form.reconsumeCount'
               )
-            v-flex(xs12, pt-2)
+            v-col.pt-2(cols='2')
               v-textarea(
                 label="Custom notes",
                 outlined,
@@ -94,9 +94,9 @@
       v-divider
 
       v-card-actions
-        v-layout(justify-space-around)
-          v-btn(@click='submit()') submit
-          v-btn.red.lighten-1(@click='deleteEntry()') delete
+        v-row(justify='space-around')
+          v-btn(@click='submit') submit
+          v-btn.red.lighten-1(@click='deleteEntry') delete
 </template>
 
 <script>

@@ -1,10 +1,10 @@
 <template lang="pug">
   //- We just need a refresh and add button, tag research and name research fields
-  v-container(grid-list-xl, pa-0)
-    v-layout(justify-space-around, align-center)
+  v-container(fluid).pa-0
+    v-row(justify='space-around', align='center')
       .provider-name {{ providerName }}
-      v-flex(
-        xs12, sm6, md4,
+      v-col(
+        cols='12', sm='6', md='4',
         v-show='hasTags'
       )
         v-combobox(
@@ -16,7 +16,7 @@
           hint='Filter by tags'
         )
 
-      v-flex(xs12, sm6, md4)
+      v-col(cols='12', sm='6', md='3')
         v-text-field(
           label='Search',
           v-model='term',
@@ -25,7 +25,7 @@
           hint='Looking for something?'
         )
 
-      v-flex(xs12, sm4, md3)
+      v-col(cols='12', sm='4', md='2')
         v-btn(icon, large, @click='refresh')
           v-icon(large) refresh
 

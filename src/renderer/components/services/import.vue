@@ -19,30 +19,28 @@
       v-divider
 
       v-card-text
-        v-container(grid-list-md, pa-0)
-          v-layout(column, justify-space-between, align-center)
-            v-flex
-              v-select(
-                label='From',
-                hint='Which list to export.',
-                persistent-hint,
-                :items='sources',
-                v-model='source'
-              )
+        v-container
+          .d-flex.flex-column.justify-space-between.align-center
+            v-select(
+              label='From',
+              hint='Which list to export.',
+              persistent-hint,
+              :items='sources',
+              v-model='source'
+            )
 
             v-scale-transition(group)
               template(v-if='source')
-                v-flex.text-center(key='icon')
-                  v-icon(large) keyboard_arrow_down
+                v-icon(large, key='icon') keyboard_arrow_down
 
-                v-flex(key='select')
-                  v-select(
-                    label='To',
-                    hint='Where to import it.',
-                    persistent-hint,
-                    :items='targets',
-                    v-model='target'
-                  )
+                v-select(
+                  key='select',
+                  label='To',
+                  hint='Where to import it.',
+                  persistent-hint,
+                  :items='targets',
+                  v-model='target'
+                )
 
       v-divider
 
