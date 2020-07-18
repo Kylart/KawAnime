@@ -22,6 +22,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 import Card from '@/components/news/card.vue'
 import NewsForm from '@/components/news/form.vue'
 import Loader from '@/components/news/loader.vue'
@@ -42,35 +44,10 @@ export default {
   }),
 
   computed: {
-    entries: {
-      get () {
-        return this.$store.state.news.data
-      },
-      set () {}
-    },
-    isRefreshing: {
-      get () {
-        return this.$store.state.news.refreshing
-      },
-      set () {}
-    }
+    ...mapState('news', {
+      entries: 'data',
+      isRefreshing: 'refreshing'
+    })
   }
 }
 </script>
-
-<style lang="stylus" scoped>
-  /* ----- Refresh button ----- */
-  .refresh-button-container
-    display inline-block
-    text-align right
-    margin-top 5px
-    margin-bottom 2px
-    padding-right 3%
-
-  .refresh-button
-    display inline-block
-
-  /* ---------- ELEM ---------- */
-  .news-container
-    padding 0 0 1% 1%
-</style>
