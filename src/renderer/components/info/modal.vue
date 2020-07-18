@@ -28,24 +28,28 @@
 
         v-divider(v-show='results.length')
 
-        v-row.mt-2(jusitfy='center', v-if='results.length')
+        v-row.mt-2(justify='center', v-if='results.length')
           template(v-for='entry in results')
-            v-col(col='6', @click='getInfo(entry)')
-              v-card.entry.elevation-5(
-                ripple)
+            v-col(cols='6', md='4', lg='3', @click='getInfo(entry)')
+              v-card.entry(ripple)
                 v-img(
                   :src='entry.img',
                   :lazy-src='entry.img',
                   height='150',
                   contain
                 )
-                .entry-title {{ entry.name }}
+                .body-1.text-center.py-1 {{ entry.name }}
 
-    v-card.loading.pb-2(v-else-if='searching')
-      p Grabbing those data...
-      p Please bear with us for a moment.
+    v-card.loading.text-center(v-else-if='searching')
+      //- Just for spacing purposes
+      v-card-title
+
+      v-card-text
+        p Grabbing those data...
+        p Please bear with us for a moment.
 
       v-divider
+
       v-card-actions
         v-spacer
         v-btn(@click='back') Cancel
@@ -221,17 +225,8 @@ export default {
     cursor pointer
     height 100%
 
-    .entry-title
-      font-size 18px
-      text-align center
-      letter-spacing 0.04em
-      font-weight 300
-      padding 10px
-
   .loading
     min-height 150px
-    text-align center
-    padding 30px
 
     p
       font-size 28px
