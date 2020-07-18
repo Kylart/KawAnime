@@ -27,7 +27,7 @@
           color='green'
         )
           template(v-slot='{ value }')
-            strong {{ Math.ceil(value) }}%
+            strong {{ Math.floor(value) }}%
 
       template(v-slot:item.timeRemaining='{ item }')
         td.ellipsis {{ getRemainingTime(item) }}
@@ -82,7 +82,7 @@ export default {
       const endsIn = parseInt(Date.now() + torrent.timeRemaining)
 
       return torrent.timeRemaining
-        ? 'Ends ' + moment(endsIn).fromNow()
+        ? moment(endsIn).fromNow()
         : 'Unknown...'
     }
   }
