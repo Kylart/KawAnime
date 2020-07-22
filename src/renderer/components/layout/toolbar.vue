@@ -34,7 +34,7 @@ import { config } from 'vendor'
 
 // Components
 import Settings from '@/components/settings/modal.vue'
-import Searcher from '@/components/info/modal.vue'
+import Searcher from '@/components/info/dialog.vue'
 import Downloader from '@/components/downloader/modal.vue'
 
 export default {
