@@ -28,14 +28,18 @@
             @refresh='episodesKey += 1'
           )
 
-      //- Return button
-      v-btn(
-        color='primary',
-        fixed, fab
-        bottom, right,
-        @click='returnCb'
-      )
-        v-icon chevron_left
+    //- Return button
+    v-btn(
+      color='primary',
+      fixed, fab
+      bottom, right,
+      @click='returnCb'
+    )
+      v-icon chevron_left
+
+    services(
+      :info='info'
+    )
 </template>
 
 <script>
@@ -46,6 +50,7 @@ import General from '@/components/info/general.vue'
 import Characters from '@/components/info/characters.vue'
 import Staff from '@/components/info/staff.vue'
 import Episodes from '@/components/info/episodes.vue'
+import Services from '@/components/info/services.vue'
 
 export default {
   name: 'Info-Displayer',
@@ -54,7 +59,8 @@ export default {
     General,
     Characters,
     Staff,
-    Episodes
+    Episodes,
+    Services
   },
 
   props: {
@@ -69,16 +75,7 @@ export default {
 
   data: () => ({
     tab: null,
-    episodesKey: 0,
-
-    actions: {
-      show: false,
-      exclude: {
-        mal: [ 'kitsu', 'anilist' ],
-        anilist: [ 'kitsu', 'mal' ],
-        kitsu: [ 'anilist', 'mal' ]
-      }
-    }
+    episodesKey: 0
   }),
 
   computed: {
@@ -89,50 +86,7 @@ export default {
     },
     info () {
       return this.getEntryInfo(this.title, this.current.isLocal) || {}
-    },
-
-    providers () {
-      const excludedProviders = this.actions.exclude[this.provider]
-
-      return [
-        ...this.$store.state.config.providers
-          .filter(({ value }) => !excludedProviders.includes(value)),
-        { value: 'local', text: 'Local', action: 'sort_by_alpha' }
-      ]
-    },
-    provider () {
-      return this.$store.state.info.modal.overrideProvider || this.$store.state.config.config.infoProvider.info
-    }
-  },
-
-  methods: {
-    addTo (provider) {
-      const isLocal = provider === 'local'
-
-      if (isLocal) {
-        this.$store.commit('watchLists/setEntry', {
-          name: this.info.title.en,
-          nbEp: this.info.nbEpisodes || '??'
-        })
-        this.$store.commit('watchLists/toggleForm', true)
-      } else {
-        this.$store.commit('services/setFormEntry', {
-          service: provider,
-          entry: {
-            malId: +this.info.malId,
-            mediaId: +this.info.id,
-            id: +this.info.id,
-            title: this.info.title.en,
-            nbEp: this.info.nbEpisodes || null
-          }
-        })
-        this.$store.commit('services/showForm', { service: provider, bool: true })
-      }
     }
   }
 }
 </script>
-
-<style lang="stylus" scoped>
-
-</style>
