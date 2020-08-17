@@ -1,6 +1,6 @@
 export default `
   query ($name: String) {
-    Media(search: $name) {
+    Media(search: $name, type: ANIME) {
       title {
         english
         romaji
