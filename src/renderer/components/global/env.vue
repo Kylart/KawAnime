@@ -11,6 +11,7 @@
     top 0
     z-index 1000
     text-align center
+    pointer-events none
 
     span
       line-height 24px
