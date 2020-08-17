@@ -31,7 +31,7 @@
     //- Return button
     v-btn(
       color='primary',
-      fixed, fab
+      fixed, fab,
       bottom, right,
       @click='returnCb'
     )

@@ -19,6 +19,7 @@
 
 <script>
 import { mapState } from 'vuex'
+import { merge } from 'lodash'
 
 // Components
 import Episode from '@/components/info/episode.vue'
@@ -97,21 +98,7 @@ export default {
         return acc
       }, {})
     },
-
-    hasInfo () {
-      return !!this.episodesInfo && !!this.episodesInfo.length
-    },
-    episodes () {
-      if (this.hasInfo) {
-        return this.episodesInfo.reduce((acc, info) => ({
-          [info.epNumber]: {
-            ...info,
-            links: this.hasLinks && this.links[info.epNumber]
-          },
-          ...acc
-        }), {})
-      }
-
+    formattedLinks () {
       if (this.hasLinks) {
         return Object.keys(this.links).reduce((acc, epNumber) => ({
           [epNumber]: {
@@ -121,6 +108,28 @@ export default {
           ...acc
         }), {})
       }
+
+      return {}
+    },
+
+    hasInfo () {
+      return !!this.episodesInfo && !!this.episodesInfo.length
+    },
+    episodes () {
+      if (this.hasInfo) {
+        return merge(
+          this.episodesInfo.reduce((acc, info) => ({
+            [info.epNumber]: {
+              ...info,
+              links: this.hasLinks && this.links[info.epNumber]
+            },
+            ...acc
+          }), {}),
+          this.formattedLinks
+        )
+      }
+
+      if (this.hasLinks) return this.formattedLinks
 
       return {}
     }
