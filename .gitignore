@@ -41,4 +41,6 @@ public/*.dylib
 public/*.dll
 public/*.node
 public/mpv/*
+# Temporary
+!public/mpv/*.dll
 !public/mpv/.gitkeep
