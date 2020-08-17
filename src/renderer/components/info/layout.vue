@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-card
+  v-card.info-container
     v-container.pa-0(fluid)
       general(
         :info='info'

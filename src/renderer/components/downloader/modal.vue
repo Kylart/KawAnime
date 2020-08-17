@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-dialog(absolute, v-model='show', width='65%')
+  v-dialog(absolute, v-model='show', width='65%', @keydown.esc='show = false')
     template(v-slot:activator='{ on: dialog }')
       v-tooltip(left)
         template(v-slot:activator='{ on: tooltip }')

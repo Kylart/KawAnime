@@ -8,7 +8,7 @@
         :style='style',
         ref='characters'
       )
-        v-row(dense, justify='center')
+        v-row.characters-container(dense, justify='center')
           template(v-for='character in characters')
             character(
               :key='`${character.name} -- ${character.link}`',

@@ -1,6 +1,6 @@
 <template lang="pug">
   div
-    v-dialog(v-model='values.show', absolute, max-width='800', @keydown.esc='close()')
+    v-dialog(v-model='values.show', absolute, max-width='800', @keydown.esc='close')
       v-card#magnet-modal
         v-card-title.pb-2.pt-2
           h2.mb-0.pa-2.headline.ellipsis Results for #[strong {{ values.title }}]

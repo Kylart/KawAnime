@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-card
+  v-card#release-entry
     v-img(
       @mouseenter='showOverlay',
       @mouseleave='hideOverlay',

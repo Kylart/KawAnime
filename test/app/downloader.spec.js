@@ -48,8 +48,8 @@ module.exports = function () {
 
     it('should close the magnet modal when hitting the escape key', async function () {
       return this.app.client
-        .$('#magnet-modal > div:nth-child(4) > button').click()
-        .pause(500)
+        .$('#magnet-modal').click()
+        .keys(['Escape']).pause(750)
         .isVisible('#magnet-modal').should.eventually.be.false
     })
   })
