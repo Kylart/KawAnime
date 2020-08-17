@@ -2,7 +2,7 @@
   v-dialog(v-model='show', persistent, absolute, max-width='800', @keydown.esc='close')
     v-card.pa-2
       v-card-title.entry-title.grey--text
-        .text-uppercase(xs='9', offset-xs='1') {{ addOrEdit }} a list entry
+        .text-uppercase(cols='9', offset='1') {{ addOrEdit }} a list entry
         span {{ entryTitle }}
         v-spacer
         v-btn(icon, outlined, @click='close')
@@ -13,7 +13,7 @@
       v-card-text
         v-container.py-0
           v-row(justify='space-around')
-            v-col(xs='4')
+            v-col(cols='4')
               v-select(
                 label='Status'
                 :items='status',
@@ -23,7 +23,7 @@
                 item-value='value',
                 item-text='text'
               )
-            v-col(xs='4')
+            v-col(cols='4')
               v-text-field(
                 type='number',
                 min='0',
@@ -33,14 +33,14 @@
                 persistent-hint,
                 hint='How many episode have you watched?'
               )
-            v-col(xs='2')
+            v-col(cols='2')
               v-switch(
                 label='Private?',
                 v-model='form.private',
                 color='primary'
               )
             template(v-for='i in 2')
-              v-col(xs='3')
+              v-col(cols='3')
                 v-menu(
                   ref='pickers',
                   v-model='datePickers[i - 1]',
@@ -64,7 +64,7 @@
                     @input='datePickers[i - 1] = false',
                     scrollable
                   )
-            v-col(xs='3')
+            v-col(cols='3')
               v-text-field(
                 type='number',
                 label='Score',
@@ -74,7 +74,7 @@
                 item-value='value',
                 item-text='text'
               )
-            v-col(xs='3')
+            v-col(cols='3')
               v-text-field(
                 type='number',
                 label='Time rewatched',
@@ -82,7 +82,7 @@
                 persistent-hint,
                 v-model='form.repeat'
               )
-            v-col(xs='12', pt-2)
+            v-col(cols='12', pt-2)
               v-textarea(
                 label="Custom notes",
                 outlined,

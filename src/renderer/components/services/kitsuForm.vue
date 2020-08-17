@@ -2,7 +2,7 @@
   v-dialog(v-model='show', persistent, absolute, max-width='800', @keydown.esc='close')
     v-card.pa-2
       v-card-title.entry-title.grey--text
-        .text-uppercase(xs9, offset-xs1) {{ addOrEdit }} a list entry
+        .text-uppercase(cols='9', offset='1') {{ addOrEdit }} a list entry
         span {{ entryTitle }}
         v-spacer
         v-btn(icon, outlined, @click='close')
