@@ -9,7 +9,7 @@ const BEST_ANIME = {
 const SEARCH_INPUT = 'input#info-search-input'
 
 module.exports = function () {
-  describe.only('Search modal', function () {
+  describe('Search modal', function () {
     before(function (done) {
       this.timeout(30000)
       Promise.all([
@@ -127,7 +127,7 @@ module.exports = function () {
 
     it('should go back to results', function () {
       return this.app.client
-        .$('.info-container > .container > button').click()
+        .$('.info-container > button').click()
         .pause(500)
         .waitUntilTextExists('.v-dialog .container > div:last-child > div:nth-child(1)', BEST_ANIME.name, 7500)
     })

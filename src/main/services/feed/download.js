@@ -11,7 +11,6 @@ const events = eventsList.download
 function formatMagnets (data, searchData, feed) {
   const magnets = []
   const eps = []
-  const isPantsu = feed === 'pantsu'
 
   data.forEach((elem) => {
     const parsed = parse(elem.name)
@@ -23,7 +22,7 @@ function formatMagnets (data, searchData, feed) {
       magnets.push({
         originalName: elem.name,
         name: parsed.anime_title || 'Unknown',
-        link: isPantsu ? elem.magnet : elem.links.magnet,
+        link: elem.magnet,
         nb: ep,
         quality: parsed.video_resolution || 'Unknown',
         fansub: parsed.release_group || 'Unknown'
