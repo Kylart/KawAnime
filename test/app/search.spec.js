@@ -127,7 +127,7 @@ module.exports = function () {
 
     it('should go back to results', function () {
       return this.app.client
-        .$('.info-container > button').click()
+        .$('.actions-container > button').click()
         .pause(500)
         .waitUntilTextExists('.v-dialog .container > div:last-child > div:nth-child(1)', BEST_ANIME.name, 7500)
     })

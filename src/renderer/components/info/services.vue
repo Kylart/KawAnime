@@ -1,32 +1,39 @@
 <template lang="pug">
-  v-speed-dial(
-    v-model='show',
-    top, left, absolute,
-    open-on-hover,
-    direction='right',
-    transition='slide-x-transition'
-  )
-    template(v-slot:activator)
-      v-btn#info-actions(
-        color='primary',
-        v-model='show',
-        fab
-      )
-        v-icon(v-if='show') close
-        v-icon(v-else) account_circle
+  .actions-container
+    v-btn(
+      fab,
+      color='primary',
+      @click='returnCb'
+    )
+      v-icon chevron_left
 
-    template(v-for='_provider in providers')
-      v-tooltip(top)
-        template(v-slot:activator='{ on }')
-          v-btn(
-            fab, small,
-            v-on='on',
-            @click='addTo(_provider.value)'
-          )
-            v-icon(v-if='_provider.action') {{ _provider.action }}
-            div(v-else, :class="{ 'provider-icon': true, [`${_provider.value}-icon`]: true }")
+    v-speed-dial(
+      v-model='show',
+      open-on-hover,
+      direction='right',
+      transition='slide-x-transition'
+    )
+      template(v-slot:activator)
+        v-btn.ml-3#info-actions(
+          fab,
+          color='primary',
+          v-model='show'
+        )
+          v-icon(v-if='show') close
+          v-icon(v-else) account_circle
 
-        span Add to my {{ _provider.text }} list
+      template(v-for='_provider in providers')
+        v-tooltip(top)
+          template(v-slot:activator='{ on }')
+            v-btn(
+              fab, small,
+              v-on='on',
+              @click='addTo(_provider.value)'
+            )
+              v-icon(v-if='_provider.action') {{ _provider.action }}
+              div(v-else, :class="{ 'provider-icon': true, [`${_provider.value}-icon`]: true }")
+
+          span Add to my {{ _provider.text }} list
 </template>
 
 <script>
@@ -39,6 +46,12 @@ export default {
     // Brings `info` prop
     Info
   ],
+
+  props: {
+    'return-cb': {
+      type: Function
+    }
+  },
 
   data: () => ({
     show: false,
@@ -91,3 +104,13 @@ export default {
   }
 }
 </script>
+
+<style lang="stylus" scoped>
+  .actions-container
+    width 100%
+    display flex
+
+    position absolute
+    top 20px
+    left 20px
+</style>

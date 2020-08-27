@@ -28,17 +28,9 @@
             @refresh='episodesKey += 1'
           )
 
-    //- Return button
-    v-btn(
-      color='primary',
-      fixed, fab,
-      bottom, right,
-      @click='returnCb'
-    )
-      v-icon chevron_left
-
     services(
-      :info='info'
+      :info='info',
+      :return-cb='returnCb'
     )
 </template>
 
@@ -85,6 +77,8 @@ export default {
       return (this.current.anime_title || this.current.title).replace(':', '')
     },
     info () {
+      // TODO: This is preventing reactivity. It might be possible to improve
+      // this by using mapState.
       return this.getEntryInfo(this.title, this.current.isLocal) || {}
     }
   }
