@@ -16,13 +16,12 @@ export default {
     }
 
     const event = eventsList.streaming.init
-    const handler = (e, data) => {
+
+    ipcRenderer.once(event.success, (e, data) => {
       commit('setPlayer', { ...data, show: true, isTorrent })
       dispatch('getNeighbours')
-      ipcRenderer.removeListener(event.success, handler)
-    }
+    })
 
-    ipcRenderer.on(event.success, handler)
     ipcRenderer.send(event.main, opts)
   },
   getNeighbours ({ rootState, state, commit, rootGetters }) {

@@ -22,7 +22,12 @@ function init (event, { link }) {
     const server = createServer(file)
     server.listen()
 
-    event.sender.send(events.init.success, { torrent: link, name: file.name, path: file.path, port: server.address().port })
+    event.sender.send(events.init.success, {
+      link,
+      name: file.name,
+      path: file.path,
+      port: server.address().port
+    })
   })
 
   // Pause/Resume downloading as needed

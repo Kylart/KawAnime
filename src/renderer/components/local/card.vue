@@ -184,7 +184,8 @@ export default {
         this.$store.dispatch('streaming/play', {
           link: this.path,
           name: this.title,
-          neighbours: null
+          neighbours: null,
+          isTorrent: false
         })
       } else {
         this.$electron.shell.openItem(this.path)
