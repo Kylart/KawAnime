@@ -123,7 +123,7 @@ export default {
       this.controls = { name: 'muted', value: !this.controls.muted }
     },
     togglePlay (bool) {
-      this.mpv.property('pause', !this.pause)
+      this.mpv.property('pause', !this.controls.pause)
       this.controls = { name: 'pause', value: !this.controls.pause }
     },
     toggleFullScreen () {
@@ -142,7 +142,7 @@ export default {
     addToHistory (value) {
       // If we are streaming a torrent, the name will come from the torrent's name
       // Otherwise, it will be from the file itself once parsed by MPV.
-      const name = this.player.isTorrent ? this.$store.state.streaming.player.name : value
+      const name = this.player.isTorrent ? this.player.name : value
 
       try {
         // Simply parsing and applying the name
