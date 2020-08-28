@@ -3,6 +3,7 @@ node_modules
 /dist
 
 /test/screenshots/*.png
+downloads/
 
 # local env files
 .env.local
