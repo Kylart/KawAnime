@@ -11,10 +11,7 @@
             :key='controls.playerKey',
             @sendNext='setNext',
             @fullscreen='toggleFullScreen',
-            @ready='center()',
-            :filepath='values.path',
-            :torrent='values.torrent',
-            :port='values.port'
+            @ready='center'
           )
 
     v-fade-transition

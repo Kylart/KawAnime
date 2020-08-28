@@ -5,6 +5,7 @@ export default {
     neighbours: null,
     controls: {
       title: '',
+      pause: true,
       volume: 100,
       fullscreen: false,
       height: 85,
@@ -14,7 +15,9 @@ export default {
       z: 5,
       isMinimized: false,
       muted: false,
-      playerKey: Math.random()
+      playerKey: Math.random(),
+      duration: 0,
+      timeline: 0
     }
   }
 }

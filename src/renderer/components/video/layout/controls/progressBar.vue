@@ -13,9 +13,6 @@ export default {
 
   props: {
     buffer: Array,
-    duration: {
-      default: '00:00'
-    },
     // Override
     thumbLabel: {
       type: Boolean,
@@ -30,18 +27,7 @@ export default {
 
   computed: {
     maxTime () {
-      if (!this.duration) return 0
-
-      const parts = this.duration.split(':')
-      const isHours = parts.length === 3
-
-      const hours = (isHours && parts[0]) || 0
-      const minutes = (isHours && parts[1]) || parts[0] || 0
-      const seconds = (isHours && parts[2]) || parts[1] || 0
-
-      const result = (parseInt(hours) * 3600) + (parseInt(minutes) * 60) + parseInt(seconds)
-
-      return result
+      return this.$store.getters['streaming/controls'].duration
     },
     inputValue: {
       get () {

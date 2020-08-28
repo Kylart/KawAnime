@@ -15,93 +15,55 @@
 
     layout(
       ref='layout',
-      :timeline='timeline',
-      :pause='pause',
-      :mute='mute',
-      :duration='duration',
-      :title='name',
-      :hasSubs='hasSubs',
-      :currentLang='currentSubLang',
-      :subs='subs'
-      @seek='seek',
-      @timeForward='timeForward',
-      @volume='setVolume',
-      @toggleFullScreen='toggleFullScreen',
-      @togglePlay='togglePlay',
-      @trackChange='setTrack',
-      @actOnWindow='actOnWindow',
-      @mute='toggleMute',
-      @show='layoutShow = true',
-      @hide='layoutShow = false'
+      v-on='layout.on',
+      v-bind='layout.bind'
     )
 </template>
 
 <script>
 // Components
 import Wrapper from './wrapper.vue'
-import Layout from './layout.vue'
+import Layout from './layout/index.vue'
 
 // Mixins
+import Tracks from '@/mixins/video/tracks'
 import UserConfig from '@/mixins/video/userConfig.js'
 import Tracking from '@/mixins/video/tracking.js'
+import LayoutBinds from '@/mixins/video/layout.js'
 
 export default {
   name: 'MpvPlayer',
 
   components: { Wrapper, Layout },
 
-  mixins: [ UserConfig, Tracking ],
+  mixins: [ Tracks, UserConfig, Tracking, LayoutBinds ],
 
-  data () {
-    return {
-      mpv: null,
-      pause: false,
-      timeline: 0,
-      duration: 0,
-      waiting: false,
-      name: '',
-      mute: false,
-      hasAppendedToHistory: false,
+  data: () => ({
+    mpv: null,
+    name: '',
+    hasAppendedToHistory: false,
 
-      layoutShow: true,
+    layoutShow: true,
 
-      propertyMap: {
-        'percent-pos': 'timeline',
-        'media-title': 'name'
-      },
+    propertyMap: {
+      'percent-pos': 'timeline',
+      'media-title': 'name'
+    },
 
-      hasSubs: false,
-      tracks: {},
-      currentSubLang: null,
-
-      parsedName: null
-    }
-  },
-
-  props: {
-    filepath: String,
-    torrent: [ String, null, undefined ],
-    port: [ Number, null, undefined ]
-  },
+    parsedName: null
+  }),
 
   computed: {
+    player () {
+      return this.$store.state.streaming.player
+    },
     controls: {
       get () {
-        return this.$store.state.streaming.player.controls
+        return this.player.controls
       },
       set ({ name, value }) {
         this.$store.commit('streaming/setControl', { name, value })
       }
-    },
-    subs () {
-      return Object.keys(this.tracks)
-        .reduce((acc, trackNumber) => {
-          const { type, lang } = this.tracks[trackNumber]
-
-          if (type === 'sub') acc[trackNumber] = (lang || 'unknown').slice(0, 2)
-
-          return acc
-        }, {})
     }
   },
 
@@ -123,7 +85,7 @@ export default {
       ].forEach(this.mpv.observe)
 
       this.mpv.property('hwdec', 'auto')
-      this.mpv.command('loadfile', this.torrent ? `http://localhost:${this.port}` : this.filepath)
+      this.mpv.command('loadfile', this.player.isTorrent ? `http://localhost:${this.player.port}` : this.player.path)
 
       this.$emit('ready')
       this.triggerConfigActions()
@@ -138,65 +100,9 @@ export default {
       // Originally media-title
       if (name.match(/^name$/)) return this.addToHistory(value)
 
-      if (!this.hasOwnProperty(name)) return
+      if (!this.controls.hasOwnProperty(name)) return
 
-      this.$set(this, name, value)
-    },
-    handleTracks (propertyName, value) {
-      if (propertyName === 'track-list/count') {
-        if (!value) return
-
-        for (let i = 1; i <= value; ++i) {
-          this.mpv.observe(`track-list/${i}/type`)
-          this.mpv.observe(`track-list/${i}/lang`)
-          this.mpv.observe(`track-list/${i}/default`)
-          this.mpv.observe(`track-list/${i}/id`)
-          this.mpv.observe(`track-list/${i}/type`)
-          this.mpv.observe(`track-list/${i}/src`)
-          this.mpv.observe(`track-list/${i}/title`)
-          this.mpv.observe(`track-list/${i}/lang`)
-          this.mpv.observe(`track-list/${i}/selected`)
-        }
-
-        return
-      }
-
-      if (propertyName.match(/track-list\/\d+/)) {
-        const parts = propertyName.split('/')
-        const trackNumber = +parts[1]
-        const type = parts[2]
-        const storedTrack = this.tracks[trackNumber] || {}
-
-        if (value === 'sub' && !this.hasSubs) this.hasSubs = true
-
-        this.$set(this.tracks, trackNumber, { ...storedTrack, [type]: value })
-
-        // Setting current language for the controls to know
-        if (this.tracks[trackNumber] && this.tracks[trackNumber].type && this.tracks[trackNumber].type === 'sub') {
-          if (this.tracks[trackNumber].selected && this.tracks[trackNumber].lang) {
-            this.$set(this, 'currentSubLang', this.tracks[trackNumber].lang.slice(0, 2))
-          }
-        }
-      }
-    },
-    setTrack (track) {
-      const { selected, id } = this.tracks[track]
-
-      if (selected) {
-        // Disabling selected track
-        this.mpv.property('sid', 'no')
-
-        // internal tracking
-        this.$set(this.tracks[track], 'selected', false)
-        this.currentSubLang = null
-      } else {
-        // Enabling new track
-        this.mpv.property('sid', id)
-
-        // internal tracking
-        this.$set(this.tracks[track], 'selected', true)
-        this.currentSubLang = this.subs[track]
-      }
+      this.controls = { name, value }
     },
     seek (value) {
       this.mpv.command('seek', value, 'absolute-percent')
@@ -216,10 +122,9 @@ export default {
       this.mpv.property('mute', !this.controls.muted)
       this.controls = { name: 'muted', value: !this.controls.muted }
     },
-    togglePlay (e) {
-      if (!this.duration) return
-
+    togglePlay (bool) {
       this.mpv.property('pause', !this.pause)
+      this.controls = { name: 'pause', value: !this.controls.pause }
     },
     toggleFullScreen () {
       this.$emit('fullscreen')
@@ -237,21 +142,24 @@ export default {
     addToHistory (value) {
       // If we are streaming a torrent, the name will come from the torrent's name
       // Otherwise, it will be from the file itself once parsed by MPV.
-      const name = this.torrent ? this.$store.state.streaming.player.name : value
+      const name = this.player.isTorrent ? this.$store.state.streaming.player.name : value
 
       try {
         // Simply parsing and applying the name
         this.parsedName = this.$ipc.sendSync(this.$eventsList.parse.main, name)
-        this.name = `${this.parsedName.anime_title} - ${this.parsedName.episode_number || 'N/A'}`
+        this.controls = {
+          name: 'title',
+          value: `${this.parsedName.anime_title} - ${this.parsedName.episode_number || 'N/A'}`
+        }
       } catch (e) {
         // We fallback to the found value
-        this.name = value
+        this.controls = { name: 'title', value }
       }
 
       if (!this.hasAppendedToHistory) {
         this.$store.dispatch('history/append', {
-          type: this.torrent ? 'Stream' : 'Play',
-          text: this.name
+          type: this.player.isTorrent ? 'Stream' : 'Play',
+          text: this.controls.title
         })
 
         this.hasAppendedToHistory = true

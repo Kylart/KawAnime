@@ -10,7 +10,11 @@ export default {
 
   methods: {
     triggerConfigActions () {
-      if (this.userConfig.autoplay) this.mpv.property('pause', false)
+      if (this.userConfig.autoplay) {
+        this.mpv.property('pause', false)
+        this.controls = { name: 'pause', value: false }
+      }
+
       if (this.userConfig.fullscreen) this.$nextTick(this.toggleFullScreen)
     }
   }
