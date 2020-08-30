@@ -48,12 +48,22 @@ export default {
   },
 
   data: () => ({
-    show: true,
     timeoutID: null
   }),
 
   mounted () {
     setTimeout(this.hide, 1500)
+  },
+
+  computed: {
+    show: {
+      get () {
+        return this.$store.getters['streaming/controls'].show
+      },
+      set (bool) {
+        this.$store.commit('streaming/setControl', { name: 'show', value: bool })
+      }
+    }
   },
 
   methods: {

@@ -1,7 +1,7 @@
 <template lang="pug">
   .video-player(
     @mousemove='onMouseMove',
-    :style='{ cursor: !layoutShow ? "none" : null }'
+    :style='{ cursor: !controls.show ? "none" : null }'
   )
 
     wrapper(
@@ -42,8 +42,6 @@ export default {
     mpv: null,
     name: '',
     hasAppendedToHistory: false,
-
-    layoutShow: true,
 
     propertyMap: {
       'percent-pos': 'timeline',

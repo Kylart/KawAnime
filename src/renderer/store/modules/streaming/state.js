@@ -4,6 +4,7 @@ export default {
     link: {},
     neighbours: null,
     controls: {
+      show: true,
       title: '',
       pause: true,
       volume: 100,

@@ -11,8 +11,6 @@ export default {
           actOnWindow: this.actOnWindow,
           mute: this.toggleMute,
           updateTrack: this.setTrack
-          // show: this.layoutShow = true,
-          // hide: this.layoutShow = false
         },
         bind: {
           subtitles: this.subtitles,
