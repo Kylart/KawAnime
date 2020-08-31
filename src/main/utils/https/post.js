@@ -11,7 +11,7 @@ export default function (url, data, params = [], headers = {}, useCache = true) 
   return new Promise((resolve, reject) => {
     const _url = formUrl(url, params)
     const _data = typeof data === 'string' ? data : JSON.stringify(data)
-    const cacheKey = [ _url, _data ].join('|')
+    const cacheKey = [_url, _data].join('|')
 
     if (useCache && cache.has(cacheKey)) {
       logger.info('Retrieved info from cache!')

@@ -2,30 +2,26 @@ import { getWatchListFromUser } from 'mal-scraper'
 import { formatList } from './helpers'
 
 export default async function (username) {
-  try {
-    let result = []
-    let offset = 0
+  let result = []
+  let offset = 0
 
-    for (;;) {
-      const data = await getWatchListFromUser(username, offset)
+  for (;;) {
+    const data = await getWatchListFromUser(username, offset)
 
-      if (data) {
-        offset += data.length
+    if (data) {
+      offset += data.length
 
-        result = [ ...result, ...data ]
+      result = [...result, ...data]
 
-        // MAL max page result is 300, so we look for the next entries
-        // only if there are 300 entries.
-        if (data.length !== 300) {
-          break
-        }
-      } else {
+      // MAL max page result is 300, so we look for the next entries
+      // only if there are 300 entries.
+      if (data.length !== 300) {
         break
       }
+    } else {
+      break
     }
-
-    return formatList(result)
-  } catch (e) {
-    throw e
   }
+
+  return formatList(result)
 }

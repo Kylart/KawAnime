@@ -19,19 +19,15 @@ async function getHeaders () {
 }
 
 async function get (username) {
-  try {
-    const { data } = await graphql(
-      GRAPHQL_ENDPOINT,
-      watchLists.get,
-      { username },
-      await getHeaders(),
-      false
-    )
+  const { data } = await graphql(
+    GRAPHQL_ENDPOINT,
+    watchLists.get,
+    { username },
+    await getHeaders(),
+    false
+  )
 
-    return formatList(data)
-  } catch (e) {
-    throw e
-  }
+  return formatList(data)
 }
 
 async function update (opts) {

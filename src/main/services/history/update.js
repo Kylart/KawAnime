@@ -5,7 +5,7 @@ import { localFiles } from '../../externals'
 const logger = new Logger('History (Update)')
 const FILE_NAME = 'history.json'
 
-const actions = [ 'append', 'remove' ]
+const actions = ['append', 'remove']
 
 function getCurrentFile () {
   return localFiles.getFile(FILE_NAME)

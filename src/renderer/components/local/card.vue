@@ -78,7 +78,7 @@ import Ipc from '@/mixins/localFiles/ipc.js'
 export default {
   name: 'Local-Card',
 
-  mixins: [ Status, Ipc ],
+  mixins: [Status, Ipc],
 
   props: ['file', 'reset'],
 
@@ -97,7 +97,7 @@ export default {
   }),
 
   computed: {
-    ...mapGetters('info', [ 'getEntryInfo' ]),
+    ...mapGetters('info', ['getEntryInfo']),
     lists: {
       get () {
         return this.$store.state.watchLists.listNames

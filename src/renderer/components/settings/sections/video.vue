@@ -47,7 +47,7 @@ import Order from '@/mixins/config/order.js'
 export default {
   name: 'Video-Section',
 
-  mixins: [ Order, Update ],
+  mixins: [Order, Update],
 
   computed: {
     video: {

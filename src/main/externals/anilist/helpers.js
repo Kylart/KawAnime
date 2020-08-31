@@ -141,7 +141,7 @@ export function formatSeason (data) {
 
 export function formatList (data) {
   return data.MediaListCollection.lists
-    .reduce((acc, list) => [ ...acc, ...list.entries ], [])
+    .reduce((acc, list) => [...acc, ...list.entries], [])
     .map((entry) => ({
       ...entry,
       id: entry.media.id,

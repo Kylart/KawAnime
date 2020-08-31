@@ -1,15 +1,15 @@
 import { mal, kitsu, anilist } from '../../externals'
 
 export default {
-  'url': {
+  url: {
     mal: mal.fromUrl
   },
-  'name': {
+  name: {
     mal: mal.fromName,
     kitsu: kitsu.fromName,
     anilist: anilist.fromName
   },
-  'term': {
+  term: {
     mal: mal.searchTerm,
     kitsu: kitsu.searchTerm,
     anilist: anilist.searchTerm

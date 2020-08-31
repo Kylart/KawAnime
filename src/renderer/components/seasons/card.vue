@@ -74,7 +74,7 @@ import Status from '@/mixins/lists/status.js'
 export default {
   name: 'Season-Card',
 
-  mixins: [ Status ],
+  mixins: [Status],
 
   props: ['info'],
 

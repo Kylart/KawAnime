@@ -11,7 +11,7 @@ export default {
     const _name = sanitize(name)
 
     Object.keys(state.info).forEach((key) => {
-      const hasInfo = state.info[key].hasOwnProperty(_name)
+      const hasInfo = Object.prototype.hasOwnProperty.call(state.info[key], _name)
 
       if (hasInfo) state.info[key][_name].episodesInfo = data
     })
@@ -20,7 +20,7 @@ export default {
     const _name = sanitize(name)
 
     Object.keys(state.info).forEach((key) => {
-      const hasInfo = state.info[key].hasOwnProperty(_name)
+      const hasInfo = Object.prototype.hasOwnProperty.call(state.info[key], _name)
 
       if (hasInfo) state.info[key][_name].episodesLinks = data
     })

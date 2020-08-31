@@ -43,7 +43,7 @@ export default {
       // 2. Check the watching episodes in the feed and simply take the next one;
       // 3. (Later) Skip the already seen episodes.
       if (isMagnet) {
-        const [ title, ep ] = name.split(' - ')
+        const [title, ep] = name.split(' - ')
 
         log('Setting neighbours for magnet', name)
 

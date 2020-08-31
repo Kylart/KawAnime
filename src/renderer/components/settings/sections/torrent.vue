@@ -51,7 +51,7 @@ import Update from '@/mixins/config/update.js'
 export default {
   name: 'Torrent-Section',
 
-  mixins: [ Update ],
+  mixins: [Update],
 
   data: () => ({
     isDefault: false,

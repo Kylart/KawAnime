@@ -14,7 +14,7 @@ function handler (event, data) {
   try {
     update(data)
 
-    logger.info(`Updated user configuration.`)
+    logger.info('Updated user configuration.')
 
     event.sender.send(events.success)
   } catch (e) {

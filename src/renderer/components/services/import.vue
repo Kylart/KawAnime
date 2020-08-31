@@ -79,13 +79,13 @@ export default {
       { text: 'Anilist.co', value: 'anilist' },
       { text: 'Kitsu.io', value: 'kitsu' }
     ],
-    excludedTargets: [ 'mal', 'anilist', 'kitsu' ],
+    excludedTargets: ['mal', 'anilist', 'kitsu'],
     statusValues: {
-      watchList: [ 'Plan to watch', 'Planned', 'Planning' ],
-      watching: [ 'Watching', 'Current' ],
-      seen: [ 'Completed' ],
-      dropped: [ 'Dropped' ],
-      onHold: [ 'On Hold', 'Paused' ]
+      watchList: ['Plan to watch', 'Planned', 'Planning'],
+      watching: ['Watching', 'Current'],
+      seen: ['Completed'],
+      dropped: ['Dropped'],
+      onHold: ['On Hold', 'Paused']
     }
   }),
 

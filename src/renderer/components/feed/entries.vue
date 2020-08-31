@@ -66,7 +66,7 @@ export default {
 
   components: { Card },
 
-  mixins: [ Order ],
+  mixins: [Order],
 
   async mounted () {
     this.$nextTick(async () => {

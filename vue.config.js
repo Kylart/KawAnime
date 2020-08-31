@@ -28,7 +28,7 @@ module.exports = {
     resolve: {
       alias: {
         '@': path.join(__dirname, 'src', 'renderer'),
-        'vendor': VENDOR_PATH
+        vendor: VENDOR_PATH
       }
     },
     entry: {
@@ -103,7 +103,7 @@ module.exports = {
         // Chain webpack config for electron renderer process only
         // The following example will set IS_ELECTRON to true in your app
         config.plugin('define').tap((args) => {
-          args[0]['IS_ELECTRON'] = true
+          args[0].IS_ELECTRON = true
           return args
         })
       },

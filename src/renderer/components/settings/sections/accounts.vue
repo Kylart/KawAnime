@@ -72,7 +72,7 @@ import Update from '@/mixins/config/update.js'
 export default {
   name: 'Accounts-Section',
 
-  mixins: [ Update ],
+  mixins: [Update],
 
   components: { ImportModal },
 
@@ -121,7 +121,7 @@ export default {
     },
     updateCreds (website) {
       // Setting those credentials for this service
-      this.$store.dispatch(`services/set`, website)
+      this.$store.dispatch('services/set', website)
       this.$store.dispatch('services/getList', { service: website.service })
     },
     register (website) {

@@ -72,7 +72,7 @@ export default {
 
   components: { Card, SeasonForm, Loader, FilterForm },
 
-  mixins: [ Filters, Reduced ],
+  mixins: [Filters, Reduced],
 
   data: () => ({
     active: 0,

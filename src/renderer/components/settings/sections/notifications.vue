@@ -34,7 +34,7 @@ import Update from '@/mixins/config/update.js'
 export default {
   name: 'Notifications-Section',
 
-  mixins: [ Update ],
+  mixins: [Update],
 
   computed: {
     sounds: {

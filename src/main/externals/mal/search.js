@@ -3,36 +3,24 @@ import { search, getInfoFromName, getInfoFromURL } from 'mal-scraper'
 import { formatInfo, formatSearch } from './helpers'
 
 async function searchTerm (term) {
-  try {
-    const data = await search.search('anime', {
-      term,
-      maxResults: 10
-    })
+  const data = await search.search('anime', {
+    term,
+    maxResults: 10
+  })
 
-    return formatSearch(data.slice(0, 10))
-  } catch (e) {
-    throw e
-  }
+  return formatSearch(data.slice(0, 10))
 }
 
 async function fromName ({ name }) {
-  try {
-    const rawData = await getInfoFromName(name, false)
+  const rawData = await getInfoFromName(name, false)
 
-    return formatInfo(rawData)
-  } catch (e) {
-    throw e
-  }
+  return formatInfo(rawData)
 }
 
 async function fromUrl ({ url }) {
-  try {
-    const rawData = await getInfoFromURL(url)
+  const rawData = await getInfoFromURL(url)
 
-    return formatInfo(rawData)
-  } catch (e) {
-    throw e
-  }
+  return formatInfo(rawData)
 }
 
 export default {

@@ -5,23 +5,19 @@ import { retrieveToken, isAuthed } from './auth'
 import { formatList } from './helpers'
 
 async function get (username) {
-  try {
-    const userData = await https.get(USERS_URL, [
-      { name: 'filter[slug]', value: username }
-    ])
+  const userData = await https.get(USERS_URL, [
+    { name: 'filter[slug]', value: username }
+  ])
 
-    const { id: userId } = userData.data[0] // Hopefully we won't run into doubles
+  const { id: userId } = userData.data[0] // Hopefully we won't run into doubles
 
-    const data = await https.get(LIST_URL, [
-      { name: 'filter[user_id]', value: userId },
-      { name: 'include', value: 'anime' },
-      { name: 'page[limit]', value: '500' }
-    ], {}, false)
+  const data = await https.get(LIST_URL, [
+    { name: 'filter[user_id]', value: userId },
+    { name: 'include', value: 'anime' },
+    { name: 'page[limit]', value: '500' }
+  ], {}, false)
 
-    return formatList(data)
-  } catch (e) {
-    throw e
-  }
+  return formatList(data)
 }
 
 async function update (opts) {

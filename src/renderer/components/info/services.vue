@@ -56,9 +56,9 @@ export default {
   data: () => ({
     show: false,
     exclude: {
-      mal: [ 'kitsu', 'anilist' ],
-      anilist: [ 'kitsu', 'mal' ],
-      kitsu: [ 'anilist', 'mal' ]
+      mal: ['kitsu', 'anilist'],
+      anilist: ['kitsu', 'mal'],
+      kitsu: ['anilist', 'mal']
     }
   }),
 

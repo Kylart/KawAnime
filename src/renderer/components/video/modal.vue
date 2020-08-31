@@ -137,7 +137,7 @@ export default {
       this.$refs.player.togglePlay()
     },
     addListeners (e) {
-      if (this.listeners.hasOwnProperty(e.keyCode)) this.listeners[e.keyCode]()
+      if (Object.prototype.hasOwnProperty.call(this.listeners, e.keyCode)) this.listeners[e.keyCode]()
     },
     setNext () {
       const { neighbours } = this.$store.state.streaming.player
@@ -147,7 +147,7 @@ export default {
       const { next } = neighbours
 
       this.$store.dispatch('streaming/play', {
-        isTorrent: next.hasOwnProperty('link') && next.link,
+        isTorrent: Object.prototype.hasOwnProperty.call(next, 'link') && next.link,
         link: next.path || next.link,
         name: `${next.title} - ${next.ep}`,
         neighbours: null

@@ -71,7 +71,7 @@ export default {
   }),
 
   computed: {
-    ...mapGetters('info', [ 'getEntryInfo' ]),
+    ...mapGetters('info', ['getEntryInfo']),
 
     title () {
       return (this.current.anime_title || this.current.title).replace(':', '')

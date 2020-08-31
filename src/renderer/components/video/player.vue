@@ -36,7 +36,7 @@ export default {
 
   components: { Wrapper, Layout },
 
-  mixins: [ Tracks, UserConfig, Tracking, LayoutBinds ],
+  mixins: [Tracks, UserConfig, Tracking, LayoutBinds],
 
   data: () => ({
     mpv: null,
@@ -98,7 +98,7 @@ export default {
       // Originally media-title
       if (name.match(/^name$/)) return this.addToHistory(value)
 
-      if (!this.controls.hasOwnProperty(name)) return
+      if (!Object.prototype.hasOwnProperty.call(this.controls, name)) return
 
       this.controls = { name, value }
     },

@@ -19,7 +19,7 @@ export const update = {
     log(`Successfully ${isUpdate ? 'updated' : 'saved'} local information for ${title}.`)
 
     // We update the store data too.
-    if (isUpdate && rootState.info.info.local.hasOwnProperty(title)) {
+    if (isUpdate && Object.prototype.hasOwnProperty.call(rootState.info.info.local, title)) {
       commit('info/set', {
         isLocal: true,
         name: title,
@@ -30,6 +30,6 @@ export const update = {
     }
   },
   error (msg) {
-    log(`An error occurred while updating locals informaton.`, msg)
+    log('An error occurred while updating locals informaton.', msg)
   }
 }

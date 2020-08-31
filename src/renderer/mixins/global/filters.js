@@ -1,7 +1,7 @@
 import Lists from '@/mixins/lists/lists.js'
 
 export default {
-  mixins: [ Lists ],
+  mixins: [Lists],
 
   computed: {
     entries () {

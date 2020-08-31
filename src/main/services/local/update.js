@@ -36,7 +36,7 @@ function handler (event, data) {
 
     // If asked for an update but the key is not in storage,
     // we simply exit return success.
-    if (isUpdate && !storage.hasOwnProperty(key)) {
+    if (isUpdate && !Object.prototype.hasOwnProperty.call(storage, key)) {
       return
     }
 

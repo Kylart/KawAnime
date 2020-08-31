@@ -7,7 +7,7 @@ export default {
       const volume = rootState.config.config.notificationVolume
       document.player = new window.Audio(sounds[sound.replace(/\s/g, '')])
       document.player.volume = volume
-    } catch (e) { void e }
+    } catch (e) {}
   },
   play () {
     if (!document.player.src.includes('sounds/None.mp3')) {

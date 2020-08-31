@@ -47,7 +47,7 @@ const mainQuery = Object.keys(types).reduce((acc, type) => {
   const header = `${type}: Page(perPage: 10000) {`
   const filter = `media(season: $season, seasonYear: $year ${formatFilter}, isAdult: false) {`
 
-  acc += [ header, filter, queryCore ].join('\n')
+  acc += [header, filter, queryCore].join('\n')
 
   return acc
 }, '')

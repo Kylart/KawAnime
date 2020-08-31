@@ -120,7 +120,7 @@ export default {
       if (!malList) return []
 
       return malList
-        .reduce((acc, { tags }) => [ ...acc, ...tags.split(', ') ], [])
+        .reduce((acc, { tags }) => [...acc, ...tags.split(', ')], [])
         .filter(({ tag }, index, arr) => !arr.includes(tag))
         .filter(Boolean)
         .sort()

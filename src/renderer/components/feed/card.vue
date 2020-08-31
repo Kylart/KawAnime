@@ -63,7 +63,7 @@ import Status from '@/mixins/lists/status.js'
 export default {
   name: 'Feed-Card',
 
-  mixins: [ Status ],
+  mixins: [Status],
 
   props: ['info'],
 
@@ -80,7 +80,7 @@ export default {
   }),
 
   computed: {
-    ...mapGetters('info', [ 'getEntryInfo' ]),
+    ...mapGetters('info', ['getEntryInfo']),
     hasFansub () {
       return this.$store.state.releases.params.fansub !== 'None'
     },

@@ -36,7 +36,7 @@ import Update from '@/mixins/config/update.js'
 export default {
   name: 'Local-Section',
 
-  mixins: [ Update ],
+  mixins: [Update],
 
   computed: {
     inside: {

@@ -35,7 +35,7 @@ const getHeader = ({ key, name }) => `${keyPrefix}${key}: Media(search: "${encod
 export default function (entries) {
   const queries = entries.reduce((acc, entry) => {
     const header = getHeader(entry)
-    const query = [ header, CORE_QUERY ].join('\n')
+    const query = [header, CORE_QUERY].join('\n')
 
     acc.push(query)
 
@@ -44,5 +44,5 @@ export default function (entries) {
 
   const mainQuery = queries.join('\n')
 
-  return [ 'query {', mainQuery, '}' ].join('\n')
+  return ['query {', mainQuery, '}'].join('\n')
 }

@@ -93,7 +93,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters('info', [ 'getEntryInfo' ]),
+    ...mapGetters('info', ['getEntryInfo']),
     provider: {
       get () {
         return this.$store.state.info.modal.overrideProvider || this.$store.state.config.config.infoProvider.search

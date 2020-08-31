@@ -39,7 +39,7 @@ export default {
 
   components: { ListForm, Card },
 
-  mixins: [ Filters, Reduced ],
+  mixins: [Filters, Reduced],
 
   props: ['name'],
 

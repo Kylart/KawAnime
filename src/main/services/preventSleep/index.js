@@ -27,7 +27,7 @@ async function togglePreventSleep (event, id) {
 
     return
   } catch (e) {
-    logger.error(`Could not prevent computer from sleeping.`, e.message)
+    logger.error('Could not prevent computer from sleeping.', e.message)
   }
 
   event.returnValue = null

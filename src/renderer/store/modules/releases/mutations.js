@@ -12,15 +12,15 @@ export default {
     const { params } = state
 
     // Only checking for existence
-    if (!state.releases.data.hasOwnProperty(params.feed)) {
+    if (!Object.prototype.hasOwnProperty.call(state.releases.data, params.feed)) {
       state.releases.data[params.feed] = {}
     }
 
-    if (!state.releases.data[params.feed].hasOwnProperty(params.fansub)) {
+    if (!Object.prototype.hasOwnProperty.call(state.releases.data[params.feed], params.fansub)) {
       state.releases.data[params.feed][params.fansub] = {}
     }
 
-    if (!state.releases.data[params.feed][params.fansub].hasOwnProperty(params.quality)) {
+    if (!Object.prototype.hasOwnProperty.call(state.releases.data[params.feed][params.fansub], params.quality)) {
       state.releases.data[params.feed][params.fansub][params.quality] = []
     }
 

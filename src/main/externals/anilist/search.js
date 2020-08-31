@@ -5,23 +5,15 @@ import * as queries from './queries'
 import { formatSearch, formatInfo } from './helpers'
 
 async function searchTerm (term) {
-  try {
-    const { data } = await graphql(GRAPHQL_ENDPOINT, queries.search, { term })
+  const { data } = await graphql(GRAPHQL_ENDPOINT, queries.search, { term })
 
-    return formatSearch(data)
-  } catch (e) {
-    throw e
-  }
+  return formatSearch(data)
 }
 
 async function fromName ({ name }) {
-  try {
-    const { data } = await graphql(GRAPHQL_ENDPOINT, queries.info, { name })
+  const { data } = await graphql(GRAPHQL_ENDPOINT, queries.info, { name })
 
-    return formatInfo(data)
-  } catch (e) {
-    throw e
-  }
+  return formatInfo(data)
 }
 
 export default {

@@ -61,7 +61,7 @@ export default {
       if (!this.hasTags || !this.list || !this.list.length) return []
 
       return this.list
-        .reduce((acc, { tags }) => [ ...acc, ...tags.split(', ') ], [])
+        .reduce((acc, { tags }) => [...acc, ...tags.split(', ')], [])
         .filter(({ tag }, index, arr) => !arr.includes(tag))
         .filter(Boolean)
         .sort()

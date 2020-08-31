@@ -54,15 +54,15 @@ import Update from '@/mixins/config/update.js'
 export default {
   name: 'Video-Section',
 
-  mixins: [ Update ],
+  mixins: [Update],
 
   data: () => ({
     excludes: {
       search: [],
       info: [],
-      episodes: [ 'anilist' ],
-      news: [ 'kitsu', 'anilist' ],
-      seasons: [ 'kitsu' ]
+      episodes: ['anilist'],
+      news: ['kitsu', 'anilist'],
+      seasons: ['kitsu']
     }
   }),
 

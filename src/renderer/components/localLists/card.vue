@@ -143,7 +143,7 @@ export default {
           ? { text: `${this.entry.progress} / ??`, value: 70 }
           : hasNbEp
             ? { text: `?? / ${this.entry.nbEp}`, value: 0 }
-            : { text: `Unknown`, value: 0 }
+            : { text: 'Unknown', value: 0 }
     }
   },
 

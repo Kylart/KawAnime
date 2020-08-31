@@ -46,7 +46,7 @@ import Update from '@/mixins/config/update.js'
 export default {
   name: 'Feed-Section',
 
-  mixins: [ Order, Update ],
+  mixins: [Order, Update],
 
   computed: {
     qualities: {

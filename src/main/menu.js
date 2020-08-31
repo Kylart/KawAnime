@@ -6,7 +6,7 @@ const electron = require('electron')
 const { app } = electron
 
 const template = () => {
-  let menu = [
+  const menu = [
     {
       label: 'Edit',
       submenu: [

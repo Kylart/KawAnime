@@ -6,13 +6,13 @@ export const get = {
     commit('set', data)
   },
   error (msg) {
-    log(`An error occurred while gathering the history.`)
+    log('An error occurred while gathering the history.')
   }
 }
 
 export const append = {
   success (dispatch) {
-    log(`Successfully appended to history.`)
+    log('Successfully appended to history.')
     dispatch('get')
   },
   error (msg) {
@@ -26,6 +26,6 @@ export const remove = {
     dispatch('get')
   },
   error (msg) {
-    log(`Could not remove entry from history.`, msg)
+    log('Could not remove entry from history.', msg)
   }
 }

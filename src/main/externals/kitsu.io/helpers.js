@@ -108,7 +108,7 @@ export function formatEps (rawData) {
 }
 
 export async function formatInfo (rawData) {
-  const [ { data: { anime: { nodes: [ info ] } } }, studios, genres ] = await Promise.all([
+  const [{ data: { anime: { nodes: [info] } } }, studios, genres] = await Promise.all([
     getInfo(rawData[0].id),
     getProd(rawData[0].relationships.productions.links.related),
     getGenres(rawData[0].relationships.genres.links.related)

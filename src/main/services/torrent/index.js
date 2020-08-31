@@ -13,7 +13,7 @@ const events = eventsList.torrent
 // Torrent client
 let client = null
 let infoIntervalID = null
-let torrentsMap = []
+const torrentsMap = []
 
 app.on('quit', () => {
   client && save(client, torrentsMap)

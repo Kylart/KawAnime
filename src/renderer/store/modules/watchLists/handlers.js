@@ -20,7 +20,7 @@ function checkInfo ({ rootState, state, dispatch }, data) {
 
     list.forEach((entry) => {
       const shouldCheck = [
-        !entry.hasOwnProperty('nbEp') || entry.nbEp === '??',
+        !Object.prototype.hasOwnProperty.call(entry, 'nbEp') || entry.nbEp === '??',
         now - entry._timestamp > twoWeeksDiff,
         !entry.img,
         !entry.bannerImg
@@ -58,7 +58,7 @@ export const update = {
     checkInfo({ rootState, state, dispatch }, data)
   },
   error (msg) {
-    log(`An error occurred while updating the watch lists.`, msg)
+    log('An error occurred while updating the watch lists.', msg)
   }
 }
 

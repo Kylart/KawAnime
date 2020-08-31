@@ -50,7 +50,7 @@
 export default {
   name: 'Service-List',
 
-  props: [ 'provider', 'list', 'tags', 'term', 'hasTags' ],
+  props: ['provider', 'list', 'tags', 'term', 'hasTags'],
 
   mounted () {
     this.setEdit()

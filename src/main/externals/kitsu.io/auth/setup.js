@@ -22,7 +22,7 @@ async function getUserId (username) {
  * @param {boolean} isRefresh Whether or not to user the refresh_token grant type.
  */
 async function getAccessToken ({ token, username, email, password }, isRefresh = false) {
-  const [ data, userId ] = await Promise.all([
+  const [data, userId] = await Promise.all([
     https.post(TOKEN_URL, {
       grant_type: isRefresh ? 'refresh_token' : 'password',
       ...(

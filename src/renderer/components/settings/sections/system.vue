@@ -105,7 +105,7 @@ import Update from '@/mixins/config/update.js'
 export default {
   name: 'System-Section',
 
-  mixins: [ Update ],
+  mixins: [Update],
 
   data: () => ({
     minSize: 200

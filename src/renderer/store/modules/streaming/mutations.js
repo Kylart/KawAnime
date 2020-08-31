@@ -14,7 +14,9 @@ export default {
     state.page.eps = val
   },
   setControl (state, { name, value }) {
-    if (!state.player.controls.hasOwnProperty(name)) throw new Error('[Video Player] Invalid control property mutation')
+    if (!Object.prototype.hasOwnProperty.call(state.player.controls, name)) {
+      throw new Error('[Video Player] Invalid control property mutation')
+    }
 
     state.player.controls[name] = value
   }

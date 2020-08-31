@@ -36,7 +36,7 @@ export default {
 
   components: { Card, NewsForm, Loader },
 
-  mixins: [ Reduced ],
+  mixins: [Reduced],
 
   data: () => ({
     sup: 8,

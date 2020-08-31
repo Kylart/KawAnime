@@ -113,7 +113,7 @@ export default {
       // Is Sync
       this.$store.dispatch(
         'localFiles/reset',
-        this.files.reduce((acc, { title }) => acc.includes(title) ? acc : [ ...acc, title ], [])
+        this.files.reduce((acc, { title }) => acc.includes(title) ? acc : [...acc, title], [])
       )
 
       this.filesKey = Math.random()

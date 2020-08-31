@@ -9,7 +9,7 @@
 
 export default {
   data: () => ({
-    providerNames: [ 'mal', 'anilist', 'kitsu' ],
+    providerNames: ['mal', 'anilist', 'kitsu'],
     localListsStatus: {
       0: 'watchList',
       1: 'watching',
