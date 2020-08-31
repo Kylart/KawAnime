@@ -2,7 +2,7 @@
   v-menu(offset-overflow, offset-y, top)
     template(v-slot:activator='{ on }')
       v-btn.ma-0(v-on='on', small, outlined, icon, color='secondary accent-2')
-        v-icon(small) list
+        v-icon(small) music_note
 
     v-list(dense).subtitle-lang
       v-list-item(
