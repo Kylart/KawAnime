@@ -4,7 +4,14 @@
       v-btn.ma-0(v-on='on', small, outlined, icon, color='secondary accent-2')
         v-icon(small) subtitles
 
-    v-list(dense).subtitle-lang
+    v-list(
+      dense,
+      subheader
+    )
+      v-subheader Subtitle Track
+
+      v-divider
+
       v-list-item(
         v-for='track in subtitles.tracks',
         :key='track.id',
@@ -12,12 +19,16 @@
       )
         v-list-item-title(
           :class="{ 'blue--text': subtitles.current && track.id === subtitles.current.id }"
-        ) {{ track.lang }}
+        ) {{ getLangName(track) }}
 </template>
 
 <script>
+import LangName from '@/mixins/video/tracks/languageName.js'
+
 export default {
   name: 'Subtitles',
+
+  mixins: [LangName],
 
   props: {
     subtitles: {

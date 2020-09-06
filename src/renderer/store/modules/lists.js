@@ -30,16 +30,16 @@ export const qualities = [
   '1080p'
 ]
 
-export const subtitlesLanguages = [
-  { value: 'en', text: 'English' },
-  { value: 'ar', text: 'Arabic' },
-  { value: 'ge', text: 'German' },
-  { value: 'sp', text: 'Spanish' },
-  { value: 'fr', text: 'French' },
-  { value: 'it', text: 'Italian' },
-  { value: 'po', text: 'Portuguese' },
-  { value: 'ru', text: 'Russian' }
-]
+export const subtitlesLanguages = {
+  eng: 'English',
+  ara: 'Arabic',
+  ger: 'German',
+  spa: 'Spanish',
+  fre: 'French',
+  ita: 'Italian',
+  por: 'Portuguese',
+  rus: 'Russian'
+}
 
 export const providers = [
   { value: 'mal', text: 'MyAnimeList.net' },
