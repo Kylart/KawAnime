@@ -38,7 +38,10 @@ export const subtitlesLanguages = {
   fre: 'French',
   ita: 'Italian',
   por: 'Portuguese',
-  rus: 'Russian'
+  rus: 'Russian',
+  jpn: 'Japanese',
+  chn: 'Chinese',
+  kor: 'Korean'
 }
 
 export const providers = [
