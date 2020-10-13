@@ -1,17 +1,16 @@
-import https from './https'
+import { request, gql } from 'graphql-request'
 
 export default async function (url, query, variables, headers = {}, useCache = false) {
   try {
-    const response = await https.post(url, {
-      query,
-      variables
-    }, [], headers, useCache)
+    const data = await request(url, gql`${query}`, variables)
 
-    if (response.errors) throw new Error(response.errors[0].message)
-
-    return response
+    return { data }
   } catch (e) {
-    console.log('FAILED QUERY', query, variables, headers)
+    e.query = query
+    e.variables = variables
+    e.headers = headers
+    e.url = url
+
     throw e
   }
 }

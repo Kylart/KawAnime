@@ -30,7 +30,15 @@ const CORE_QUERY = `
   }
 `
 
-const getHeader = ({ key, name }) => `${keyPrefix}${key}: Media(search: "${encodeURIComponent(name).replace(/%20/g, ' ')}") {`
+const getHeader = ({ key, name }) => {
+  const term = name
+    .replace(/"/g, '\\"')
+    // Removes parenthesis groups
+    .replace(/\s*\([^)]*\)\s*/g, '')
+    .trim()
+
+  return `${keyPrefix}${key}: Media(search: "${term}") {`
+}
 
 export default function (entries) {
   const queries = entries.reduce((acc, entry) => {
@@ -44,5 +52,5 @@ export default function (entries) {
 
   const mainQuery = queries.join('\n')
 
-  return ['query {', mainQuery, '}'].join('\n')
+  return ['query KawAnime {', mainQuery, '}'].join('\n')
 }

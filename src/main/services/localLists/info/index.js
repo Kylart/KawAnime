@@ -12,27 +12,80 @@ const events = eventsList.localLists.info
 const keyPrefix = 'a'
 const NB_MAX_QUERIES = 20
 
+/**
+ * This method modifies its given arguments.
+ * Handles Not found errors in long GraphQL queries. It will feed the `failures`
+ * argument so that it's possible to retry failed queries without the Not Found
+ * names.
+ *
+ * @param {Error} error
+ * @param {Array} entries CurrentEntries of the query. Will be modified.
+ * @param {Array} failures Accumulator that will receive the error. Will be modified.
+ *
+ * @returns {undefined}
+ */
+function handleFailures (error, entries, failures) {
+  // Trying to find which query made the error
+  const { response: { errors }, query } = error
+
+  errors.forEach(({ locations, status }) => {
+    // Only Not Found errors
+    if (status === 404) {
+      locations.forEach(({ line }) => {
+        const entryName = query.split('\n')[line - 1].match(/"([^)]+)"/)[0].slice(1, -1)
+        const entryIndex = entries.findIndex(
+          ({ name }) => {
+            return entryName === name
+              // treatment applied to headers
+              .replace(/"/g, '\\"')
+              .replace(/\s*\([^)]*\)\s*/g, '')
+              .trim()
+          }
+        )
+
+        if (entryIndex >= 0) {
+          entries.splice(entryIndex, 1)
+        }
+      })
+    }
+  })
+
+  failures.push(
+    graphql(GRAPHQL_ENDPOINT, makeQuery(entries))
+      .catch((error) => logger.error('Persistent Error for GraphQL request', error))
+  )
+}
+
 async function getInfo (entries) {
   // Let's make a maximum of 20 entries per query
   const queries = []
+  const failures = []
   const nbQueries = Math.floor(entries.length / NB_MAX_QUERIES) + 1
 
   for (let i = 0; i < nbQueries; ++i) {
     const start = i * NB_MAX_QUERIES
     const end = start + NB_MAX_QUERIES
 
-    const query = makeQuery(entries.slice(start, end))
+    const currentEntries = entries.slice(start, end)
+    const query = makeQuery(currentEntries)
 
-    queries.push(graphql(GRAPHQL_ENDPOINT, query).catch((err) => {
-      console.log(`Query #${i} failed`, err)
-      throw err
-    }))
+    queries.push(
+      graphql(GRAPHQL_ENDPOINT, query)
+        .catch((err) => handleFailures(err, currentEntries, failures))
+    )
   }
 
-  const results = await Promise.all(queries)
+  let results = await Promise.all(queries)
+  results = [
+    ...results,
+    ...(await Promise.all(failures)
+      .catch((err) => logger.error('Could not save failures...', err))
+    )
+  ]
 
   return format(
     results
+      .filter(Boolean)
       .reduce((acc, { data }) => {
         Object.keys(data).forEach((key) => {
           acc[key] = data[key]
@@ -74,7 +127,7 @@ async function handler (event, entries) {
 
     event.sender.send(events.success, storage)
   } catch (e) {
-    logger.error('An error occurred.', e.stack)
+    logger.error('Could not update watch list info.', e.message)
     event.sender.send(events.error, e.message)
   }
 }
