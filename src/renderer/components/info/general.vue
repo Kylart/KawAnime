@@ -14,9 +14,9 @@
 
           v-divider
 
-          v-row(justify='space-between')
+          v-row(justify='space-between', no-gutters)
             //- Center part:
-            v-col.pb-0
+            v-col.pb-0(cols='8')
               //-   -- Synopsis
               v-container(fluid)
                 .body-2.synopsis(
@@ -28,8 +28,11 @@
               //-   -- Genres and studios
               v-row(justify='space-between')
 
-                v-col(cols='5').ellipsis
-                  i {{ info.genres.join(', ') }}
+                v-col(cols='5')
+                  v-tooltip(top)
+                    template(v-slot:activator='{ on }')
+                      i.ellipsis {{ info.genres.join(', ') }}
+                    span {{ info.genres.join(', ') }}
 
                 v-col(cols='5')
                   v-tooltip(top)
@@ -45,19 +48,20 @@
             //- Right part:
             //-   -- Status sentence
             //-   -- Mark
-            v-col.d-flex.flex-column.justify-space-around.align-center(cols='3')
-              v-container(fluid)
-                .caption {{ info.sentence }}
+            v-col(cols='3')
+              .d-flex.flex-column.justify-space-around.align-center
+                v-container(fluid)
+                  .caption {{ info.sentence }}
 
-              v-container(fluid)
-                .text-center
-                  v-progress-circular(
-                    rotate='270',
-                    size='80',
-                    :value='score',
-                    :color='scoreColor'
-                  )
-                    span {{ info.score }} / {{ info.scoreOutOf }}
+                v-container(fluid)
+                  .text-center
+                    v-progress-circular(
+                      rotate='270',
+                      size='80',
+                      :value='score',
+                      :color='scoreColor'
+                    )
+                      span {{ info.score }} / {{ info.scoreOutOf }}
 </template>
 
 <script>
