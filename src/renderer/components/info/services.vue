@@ -107,7 +107,8 @@ export default {
 
 <style lang="stylus" scoped>
   .actions-container
-    width 100%
+    min-width 150px
+    width 25%
     display flex
 
     position absolute
