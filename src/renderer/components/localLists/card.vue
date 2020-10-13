@@ -35,13 +35,14 @@
               v-container.py-0.actions
                 v-row(justify='space-around')
                   template(v-for='action in actions')
-                    v-col
+                    v-col(:cols="actions.length === 2 ? '6' : '4'")
                       v-btn(
                         small,
                         :icon='!!action.icon',
                         @click.stop='action.cb',
                         v-show='action.show'
-                      ) {{ action.text }}
+                      )
+                        span {{ action.text }}
                         template(v-show='action.icon')
                           v-icon {{ action.icon }}
 
@@ -223,7 +224,7 @@ export default {
           white-space nowrap
 
   .menu
-    padding 8px 0
+    padding 8px 0 14px
     min-width 7%
 
     display flex
