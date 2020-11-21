@@ -31,7 +31,7 @@
                 v-col(cols='5')
                   v-tooltip(top)
                     template(v-slot:activator='{ on }')
-                      i.ellipsis {{ info.genres.join(', ') }}
+                      .ellipsis.font-italic(v-on='on') {{ info.genres.join(', ') }}
                     span {{ info.genres.join(', ') }}
 
                 v-col(cols='5')
