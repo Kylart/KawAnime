@@ -24,8 +24,7 @@ Napi::Object Client::Init(Napi::Env env, Napi::Object exports) {
   Napi::Function func = DefineClass(
       env,
       "Client",
-      {InstanceMethod("destroy", &Client::Destroy),
-       InstanceMethod("addTorrent", &Client::AddTorrent),
+      {InstanceMethod("addTorrent", &Client::AddTorrent),
        InstanceMethod("getTorrents", &Client::GetTorrents),
        InstanceMethod("getTorrent", &Client::GetTorrent),
        InstanceMethod("removeTorrent", &Client::RemoveTorrent),
@@ -43,16 +42,6 @@ Napi::Object Client::Init(Napi::Env env, Napi::Object exports) {
 Client::Client(const Napi::CallbackInfo& info) : Napi::ObjectWrap<Client>(info) {
   Napi::Env env = info.Env();
   Napi::HandleScope scope(env);
-}
-
-Napi::Value Client::Destroy(const Napi::CallbackInfo& info) {
-  Napi::Env env = info.Env();
-
-  this->session_proxy = this->session.abort();
-  this->session.~session();
-  this->session_proxy.~session_proxy();
-
-  return Napi::Boolean::New(env, true);
 }
 
 Napi::Value Client::GetTorrents(const Napi::CallbackInfo& info) {

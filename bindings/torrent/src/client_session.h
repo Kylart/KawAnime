@@ -49,7 +49,6 @@ class Client : public Napi::ObjectWrap<Client> {
   lt::session session;
   lt::session_proxy session_proxy;
 
-  Napi::Value Destroy(const Napi::CallbackInfo& info);
   Napi::Value AddTorrent(const Napi::CallbackInfo& info);
   Napi::Value RemoveTorrent(const Napi::CallbackInfo& info);
   Napi::Value GetTorrents(const Napi::CallbackInfo &info);

@@ -30,7 +30,13 @@ function initInfoInterval () {
 
       sendToWindows(events.info.success, info())
 
-      if (!client.getTorrents().length) stopInfoInterval()
+      if (!client.getTorrents().length) {
+        stopInfoInterval()
+
+        // Destroying client, kinda
+        logger.info('No torrent left in client. Destroying client.')
+        client = null
+      }
     }, 1000)
   }
 }
