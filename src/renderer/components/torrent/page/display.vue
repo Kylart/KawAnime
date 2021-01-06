@@ -9,11 +9,12 @@
     )
 
       template(v-slot:item.actions='{ item }')
-        v-btn(icon, @click="actOnTorrent(item.isPaused ? 'resume' : 'pause', item)")
-          v-icon {{ item.isPaused ? 'play_arrow' : 'stop' }}
+        td.d-flex.align-center
+          v-btn(icon, @click="actOnTorrent(item.isPaused ? 'resume' : 'pause', item)")
+            v-icon {{ item.isPaused ? 'play_arrow' : 'stop' }}
 
-        v-btn(icon, @click="actOnTorrent('destroy', item)")
-          v-icon(color='red') delete
+          v-btn(icon, @click="actOnTorrent('destroy', item)")
+            v-icon(color='red') delete
 
       template(v-slot:item.name='{ item }')
         td.ellipsis {{ item.name }}
