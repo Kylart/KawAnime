@@ -14,8 +14,13 @@ export default {
   },
 
   methods: {
+    /**
+     * @param {ClipboardEvent} e
+     */
     handlePaste (e) {
       const text = e.clipboardData.getData('text')
+
+      if (e.target.tagName.toUpperCase() === 'INPUT') return
 
       if (/magnet:\?/.test(text)) {
         if (!this.isClientPage) {
