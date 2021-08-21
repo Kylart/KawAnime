@@ -7,7 +7,7 @@ export const feeds = [{
 }]
 
 export const fansubs = [
-  'HorribleSubs',
+  'SubsPlease',
   'Erai-raws',
   'PuyaSubs!',
   'Fuyu',
