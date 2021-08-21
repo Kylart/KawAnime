@@ -58,15 +58,15 @@ jobs:
         apt:
           update: true
           packages:
-            - g++-5
-            - gcc-5
             - ninja-build
             - libboost-system-dev
             - libmpv1
             - libavformat-dev
       env:
-        - CC=gcc-5
-        - CXX=g++-5
+        - CC=gcc
+        - CXX=g++
+        - CMAKE_C_COMPILER=gcc
+        - CMAKE_CXX_COMPILER=g++
         - USE_HARD_LINKS=false # From https://github.com/electron-userland/electron-builder/issues/3179
       services:
         - xvfb
