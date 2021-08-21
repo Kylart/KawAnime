@@ -31,7 +31,6 @@ module.exports = function () {
       this.client = new this.bindings.torrent.Client()
 
       this.client.addTorrent.should.be.a('function')
-      this.client.destroy.should.be.a('function')
       this.client.addTorrent.should.be.a('function')
       this.client.getTorrents.should.be.a('function')
       this.client.getTorrent.should.be.a('function')
