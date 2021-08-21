@@ -13,8 +13,8 @@
 </p>
 
 <p align="center">
-  <a href="https://travis-ci.org/Kylart/KawAnime?branch=dev" target="_blank">
-    <img src="https://travis-ci.org/Kylart/KawAnime.svg?branch=dev"/>
+  <a href="https://travis-ci.com/Kylart/KawAnime?branch=dev" target="_blank">
+    <img src="https://app.travis-ci.com/Kylart/KawAnime.svg?branch=dev"/>
   </a>
   <a href="https://ci.appveyor.com/project/Kylart/kawanime" target="_blank">
     <img src="https://ci.appveyor.com/api/projects/status/sgvh8294bt0hlo83/branch/dev?svg=true"/>
