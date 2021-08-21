@@ -53,7 +53,7 @@ jobs:
     - 
       os: linux
       name: Linux - Libtorrent Pre-installed
-      dist: bionic
+      dist: focal
       addons:
         apt:
           update: true
