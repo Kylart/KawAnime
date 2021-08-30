@@ -1,6 +1,6 @@
 {
   "name": "KawAnime",
-  "version": "0.4.2",
+  "version": "0.5.0",
   "main": "background.js",
   "repository": "https://github.com/Kylart/KawAnime.git",
   "description": "The ultimate otaku software",
