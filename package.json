@@ -47,9 +47,9 @@
     "rimraf": "^3.0.2",
     "sanitize-html": "^1.27.4",
     "torrent-stream": "^1.2.0",
-    "vue": "^2.6.12",
+    "vue": "^2.6.14",
     "vue-router": "^3.4.3",
-    "vuetify": "^2.3.10",
+    "vuetify": "2.3.10",
     "vuex": "^3.5.1"
   },
   "devDependencies": {
