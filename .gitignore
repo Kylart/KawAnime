@@ -45,3 +45,4 @@ public/mpv/*
 # Temporary
 !public/mpv/*.dll
 !public/mpv/.gitkeep
+!public/mpv/macos

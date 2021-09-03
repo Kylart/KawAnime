@@ -12,7 +12,7 @@ on:
 jobs:
   build:
 
-    runs-on: macos-latest
+    runs-on: macos-11
 
     strategy:
       matrix:
@@ -27,7 +27,11 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+
+    - run: brew install boost mpv
+
     - run: npm install
+    - run: npm run collect:dylibs
     - run: npm run dist:mac
     - run: npm test
     - name: Download a Build Artifact
