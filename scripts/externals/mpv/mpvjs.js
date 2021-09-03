@@ -12,7 +12,6 @@ const { URL } = require('url')
 
 const targz = require('targz')
 const rimraf = require('rimraf')
-const { platform } = require('os')
 
 const LATEST_RELEASE_VERSION = 'v0.3.0'
 
@@ -76,7 +75,7 @@ function saveFile (response) {
   response.on('end', decompress)
 }
 
-if (platform === 'darwin') {
+if (process.platform === 'darwin') {
   copyFileSync(
     join(TARGET_DIR, 'macos', BINARY_NAME),
     join(TARGET_DIR, BINARY_NAME)
