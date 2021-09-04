@@ -42,4 +42,11 @@ jobs:
       uses: actions/download-artifact@v2.0.10
       with:
         # Destination path
-        path: dist/ # optional
+        name: dist
+        path: dist # optional
+    - name: Download test Artifact
+      uses: actions/download-artifact@v2.0.10
+      with:
+        # Destination path
+        name: mochawesome-report
+        path: mochawesome-report # optional
