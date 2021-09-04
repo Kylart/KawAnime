@@ -16,6 +16,7 @@ jobs:
 
     env:
       CSC_IDENTITY_AUTO_DISCOVERY: false
+      USE_HARD_LINKS: false
 
     strategy:
       matrix:
@@ -31,7 +32,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
 
-    - run: brew install boost mpv
+    - run: brew install boost mpv ninja
 
     - run: npm install
     - run: npm run collect:dylibs
