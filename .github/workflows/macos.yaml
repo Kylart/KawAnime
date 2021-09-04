@@ -40,13 +40,13 @@ jobs:
     - run: ls ${GITHUB_WORKSPACE}/dist
     - run: npm test
     - name: Upload a Build Artifact
-      uses: actions/upload-artifact@v2.0.10
+      uses: actions/upload-artifact@v2
       with:
         # Destination path
         name: "KawAnime-0.5.0.dmg"
         path: ${GITHUB_WORKSPACE}/dist/KawAnime-0.5.0.dmg
     # - name: Download test Artifact
-    #   uses: actions/download-artifact@v2.0.10
+    #   uses: actions/download-artifact@v2
     #   with:
     #     # Destination path
     #     name: mochawesome-report
