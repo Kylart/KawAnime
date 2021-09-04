@@ -43,10 +43,10 @@ jobs:
       with:
         # Destination path
         name: dist
-        path: dist # optional
+        path: ${GITHUB_WORKSPACE}/dist # optional
     - name: Download test Artifact
       uses: actions/download-artifact@v2.0.10
       with:
         # Destination path
         name: mochawesome-report
-        path: mochawesome-report # optional
+        path: ${GITHUB_WORKSPACE}/mochawesome-report # optional
