@@ -39,8 +39,8 @@ jobs:
     - run: npm run dist:mac
     - run: ls ${GITHUB_WORKSPACE}/dist
     - run: npm test
-    - name: Download a Build Artifact
-      uses: actions/download-artifact@v2.0.10
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v2.0.10
       with:
         # Destination path
         name: "KawAnime-0.5.0.dmg"
