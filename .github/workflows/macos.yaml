@@ -44,12 +44,10 @@ jobs:
       with:
         # Destination path
         name: dist
-        path: |
-          ${GITHUB_WORKSPACE}/dist/KawAnime*
-          ${GITHUB_WORKSPACE}/dist/latest-mac.yml
+        path: dist/
     - name: Download test Artifact
       uses: actions/download-artifact@v2.0.10
       with:
         # Destination path
         name: mochawesome-report
-        path: ${GITHUB_WORKSPACE}/mochawesome-report # optional
+        path: mochawesome-report/ # optional
