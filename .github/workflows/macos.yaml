@@ -12,7 +12,7 @@ on:
 jobs:
   build:
 
-    runs-on: macos-11
+    runs-on: macos-10.15
 
     env:
       CSC_IDENTITY_AUTO_DISCOVERY: false
@@ -42,7 +42,10 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: dist
-        path: dist/
+        path: |
+          dist/
+          !dist/mac
+          !dist/bundled
     - name: Download test Artifact
       uses: actions/upload-artifact@v2
       with:
