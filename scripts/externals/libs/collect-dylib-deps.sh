@@ -36,7 +36,7 @@ then
   set -x
 
   # See <https://github.com/Kagami/boram/issues/11>.
-  # install_name_tool -change /System/Library/Frameworks/CoreImage.framework/Versions/A/CoreImage /System/Library/Frameworks/QuartzCore.framework/Versions/A/Frameworks/CoreImage.framework/Versions/A/CoreImage ./public/mpv/libavfilter.7.dylib
+  install_name_tool -change /System/Library/Frameworks/CoreImage.framework/Versions/A/CoreImage /System/Library/Frameworks/QuartzCore.framework/Versions/A/Frameworks/CoreImage.framework/Versions/A/CoreImage ./public/mpv/libavfilter.7.dylib
   install_name_tool -change /usr/local/opt/mpv/lib/libmpv.1.dylib '@loader_path/libmpv.1.dylib' ./public/mpv/mpvjs.node
 
   install_name_tool -change "@rpath/libtorrent-rasterbar.10.dylib" "@loader_path/libtorrent-rasterbar.10.dylib" bindings/build/Release/kawatorrent.node
