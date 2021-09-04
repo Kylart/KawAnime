@@ -14,6 +14,9 @@ jobs:
 
     runs-on: macos-11
 
+    env:
+      CSC_IDENTITY_AUTO_DISCOVERY: false
+
     strategy:
       matrix:
         node-version: [12.x]
