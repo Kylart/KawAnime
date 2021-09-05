@@ -39,11 +39,12 @@ then
   install_name_tool -change /System/Library/Frameworks/CoreImage.framework/Versions/A/CoreImage /System/Library/Frameworks/QuartzCore.framework/Versions/A/Frameworks/CoreImage.framework/Versions/A/CoreImage ./public/mpv/libavfilter.7.dylib
   install_name_tool -change /usr/local/opt/mpv/lib/libmpv.1.dylib '@loader_path/libmpv.1.dylib' ./public/mpv/mpvjs.node
 
-  cp bindings/build/Release/kawatorrent.node public/kawatorrent.node
-  cp bindings/build/Release/kawaparser.node public/kawaparser.node
+  cp ./bindings/build/Release/kawatorrent.node ./public/kawatorrent.node
+  cp ./bindings/build/Release/kawaparser.node ./public/kawaparser.node
 
-  install_name_tool -change "@rpath/libtorrent-rasterbar.10.dylib" "@loader_path/libtorrent-rasterbar.10.dylib" public/kawatorrent.node
-  install_name_tool -change "@rpath/libboost_system.dylib" "@loader_path/libboost_system.dylib" public/kawatorrent.node 
+  install_name_tool -change "@rpath/libtorrent-rasterbar.10.dylib" "@loader_path/libtorrent-rasterbar.10.dylib" ./public/kawatorrent.node
+  install_name_tool -change "@rpath/libboost_system.dylib" "@loader_path/libboost_system.dylib" ./public/kawatorrent.node 
+  install_name_tool -change "/usr/local/opt/boost/lib/libboost_system-mt.dylib" "@loader_path/libboost_system.dylib" ./public/kawatorrent.node 
 
   copy_deps bindings/build/Release/kawatorrent.node public
   copy_deps bindings/build/Release/kawaparser.node public
