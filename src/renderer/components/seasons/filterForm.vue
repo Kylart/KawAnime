@@ -8,7 +8,7 @@
     v-card
       v-card-title.grey--text.text-uppercase
         v-spacer
-        span Advanced research
+        span Advanced search
         v-spacer
 
       v-divider

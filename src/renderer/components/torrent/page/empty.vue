@@ -1,6 +1,6 @@
 <template lang="pug">
   .main
-    .text So you've come to me to get your animes once again?
+    .text So you've come to me to get your anime once again?
     .text How cute.
     .img-container
       video(muted, autoplay, loop)
