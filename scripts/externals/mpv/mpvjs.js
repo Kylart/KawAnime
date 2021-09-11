@@ -5,7 +5,7 @@
  * We need to place it to public/mpv/mpvjs.node
  */
 
-const { createWriteStream, renameSync, unlinkSync } = require('fs')
+const { createWriteStream, renameSync, unlinkSync, copyFileSync } = require('fs')
 const { join } = require('path')
 const https = require('https')
 const { URL } = require('url')
@@ -15,7 +15,7 @@ const rimraf = require('rimraf')
 
 const LATEST_RELEASE_VERSION = 'v0.3.0'
 
-const BASE_URL = `https://github.com/Kagami/mpv.js/releases/download`
+const BASE_URL = 'https://github.com/Kagami/mpv.js/releases/download'
 
 const BINARY_NAME = 'mpvjs.node'
 
@@ -75,17 +75,24 @@ function saveFile (response) {
   response.on('end', decompress)
 }
 
-https.get(url, function (response) {
-  // Following redirect
-  if (response.statusCode > 300 && response.statusCode < 400 && response.headers.location) {
-    const { hostname } = new URL(response.headers.location)
+if (process.platform === 'darwin') {
+  copyFileSync(
+    join(TARGET_DIR, 'macos', BINARY_NAME),
+    join(TARGET_DIR, BINARY_NAME)
+  )
+} else {
+  https.get(url, function (response) {
+    // Following redirect
+    if (response.statusCode > 300 && response.statusCode < 400 && response.headers.location) {
+      const { hostname } = new URL(response.headers.location)
 
-    if (hostname) {
-      https.get(response.headers.location, saveFile)
+      if (hostname) {
+        https.get(response.headers.location, saveFile)
+      } else {
+        throw new Error('Error while redirecting.')
+      }
     } else {
-      throw new Error('Error while redirecting.')
+      saveFile(response)
     }
-  } else {
-    saveFile(response)
-  }
-})
+  })
+}

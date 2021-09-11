@@ -7,7 +7,7 @@ export default {
   filename: 'config.json',
   template: {
     config: {
-      fansub: 'HorribleSubs',
+      fansub: 'SubsPlease',
       quality: '720p',
       feed: 'si',
       autoTracking: {
