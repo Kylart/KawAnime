@@ -9,7 +9,7 @@
           item-text='text',
           item-value='value',
           persistent-hint,
-          hint='Where should we get those news?'
+          hint='Where should we get that news from?'
         )
 
       .refresh

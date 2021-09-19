@@ -49,7 +49,7 @@ export default {
       { divider: true },
       { header: 'Library' },
       {
-        title: 'Animes',
+        title: 'Anime',
         action: 'tv',
         href: '/localPage'
       },
