@@ -143,7 +143,7 @@ Once all those are installed, you can run the following commands. This will gene
 use the `kawanime` executable in the `dist/linux-unpacked` folder.
 
 ```
-npm run install
+npm run postinstall
 npm run dist:linux
 ```
 
