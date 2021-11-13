@@ -32,7 +32,7 @@ jobs:
         cache: 'npm'
     - run: sudo apt update
     - run: sudo apt install cmake ninja-build libboost-all-dev libmpv1 libavformat-dev
-    - run: npm install
+    - run: npm run postinstall
     - run: npm run dist:linux
     
 #     - name: gabrielbb/xvfb-action
@@ -48,9 +48,9 @@ jobs:
       with:
         name: dist
         path: |
-          dist/*.snap
+          !dist/*.snap
           dist/*.AppImage
-          dist/linux-unpacked
+          !dist/linux-unpacked
           !dist/linux
           !dist/bundled
     - name: Download test Artifact
