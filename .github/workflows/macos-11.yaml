@@ -12,7 +12,7 @@ on:
 jobs:
   build:
 
-    runs-on: macos-10.15
+    runs-on: macos-11
 
     env:
       CSC_IDENTITY_AUTO_DISCOVERY: false
